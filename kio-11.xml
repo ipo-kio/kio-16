@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="kio-11" default="all">
+
+    <!--
+    put smth like this in kio-11.properties
+
+    path.variable.flex_ant_home=/opt/flex/ant
+    FLEX_HOME=/opt/flex
+    -->
+    <property file="kio-11.properties"/>
+
+    <taskdef
+            resource="flexTasks.tasks"
+            classpath="${path.variable.flex_ant_home}/lib/flexTasks.jar"
+            />
+
+    <!-- Uncomment the following property if no tests compilation is needed -->
+    <property name="skip.tests" value="true"/>
+    <property name="flex.build.incremental" value="false"/>
+
+    <!-- Compiler options -->
+
+    <property name="compiler.debug" value="on"/>
+    <property name="compiler.generate.no.warnings" value="off"/>
+    <property name="compiler.args" value=""/>
+    <property name="compiler.max.memory" value="128m"/>
+    <patternset id="ignored.files">
+        <exclude name="**/CVS/**"/>
+        <exclude name="**/SCCS/**"/>
+        <exclude name="**/RCS/**"/>
+        <exclude name="**/rcs/**"/>
+        <exclude name="**/.DS_Store/**"/>
+        <exclude name="**/.svn/**"/>
+        <exclude name="**/.pyc/**"/>
+        <exclude name="**/.pyo/**"/>
+        <exclude name="**/*.pyc/**"/>
+        <exclude name="**/*.pyo/**"/>
+        <exclude name="**/.git/**"/>
+        <exclude name="**/*.hprof/**"/>
+        <exclude name="**/_svn/**"/>
+        <exclude name="**/.hg/**"/>
+        <exclude name="**/*.lib/**"/>
+        <exclude name="**/*~/**"/>
+        <exclude name="**/*.orig/**"/>
+    </patternset>
+    <patternset id="library.patterns">
+        <include name="*.zip"/>
+        <include name="*.war"/>
+        <include name="*.egg"/>
+        <include name="*.ear"/>
+        <include name="*.swc"/>
+        <include name="*.jar"/>
+    </patternset>
+    <patternset id="compiler.resources">
+        <include name="**/?*.properties"/>
+        <include name="**/?*.xml"/>
+        <include name="**/?*.gif"/>
+        <include name="**/?*.png"/>
+        <include name="**/?*.jpeg"/>
+        <include name="**/?*.jpg"/>
+        <include name="**/?*.html"/>
+        <include name="**/?*.dtd"/>
+        <include name="**/?*.tld"/>
+        <include name="**/?*.ftl"/>
+        <include name="**/?*.js"/>
+        <include name="**/?*.css"/>
+        <include name="**/?*.swf"/>
+    </patternset>
+
+
+    <!-- Application Server Libraries -->
+
+    <!-- Modules -->
+
+
+    <!-- Module kio-11 -->
+
+    <dirname property="module.kio-11.basedir" file="${ant.file}"/>
+
+    <property name="compiler.args.kio-11" value="${compiler.args}"/>
+
+    <property name="kio-11.output.dir" value="${module.kio-11.basedir}/out/production/kio-11-release"/>
+    <property name="kio-11.testoutput.dir" value="${module.kio-11.basedir}/out/test/kio-11"/>
+
+    <path id="kio-11.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <path id="kio-11.module.production.classpath"/>
+
+    <path id="kio-11.runtime.production.module.classpath">
+        <pathelement location="${kio-11.output.dir}"/>
+    </path>
+
+    <path id="kio-11.module.classpath">
+        <pathelement location="${kio-11.output.dir}"/>
+    </path>
+
+    <path id="kio-11.runtime.module.classpath">
+        <pathelement location="${kio-11.testoutput.dir}"/>
+        <pathelement location="${kio-11.output.dir}"/>
+    </path>
+
+
+    <patternset id="excluded.from.module.kio-11">
+        <patternset refid="ignored.files"/>
+    </patternset>
+
+    <patternset id="excluded.from.compilation.kio-11">
+        <patternset refid="excluded.from.module.kio-11"/>
+    </patternset>
+
+    <path id="kio-11.module.sourcepath">
+        <dirset dir="${module.kio-11.basedir}">
+            <include name="src"/>
+        </dirset>
+    </path>
+
+
+    <target name="compile.module.kio-11" depends="compile.module.kio-11.production,compile.module.kio-11.tests"
+            description="Compile module kio-11"/>
+
+    <target name="compile.module.kio-11.production" description="Compile module kio-11; production classes">
+        <mkdir dir="${kio-11.output.dir}"/>
+        <!-- Russian -->
+        <!--
+        <antcall target="compile.module.kio-11.production.level-language">
+            <param name="level" value="1"/>
+            <param name="language" value="ru"/>
+        </antcall>
+
+        <antcall target="compile.module.kio-11.production.level-language">
+            <param name="level" value="2"/>
+            <param name="language" value="ru"/>
+        </antcall>
+        -->
+
+        <!-- Spanish -->
+
+        <!--
+        <antcall target="compile.module.kio-11.production.level-language">
+            <param name="level" value="1"/>
+            <param name="language" value="es"/>
+        </antcall>
+
+        <antcall target="compile.module.kio-11.production.level-language">
+            <param name="level" value="2"/>
+            <param name="language" value="es"/>
+        </antcall>
+        -->
+        <!-- Bulgarian -->
+
+        <antcall target="compile.module.kio-11.production.level-language">
+            <param name="level" value="1"/>
+            <param name="language" value="bg"/>
+        </antcall>
+
+        <antcall target="compile.module.kio-11.production.level-language">
+            <param name="level" value="2"/>
+            <param name="language" value="bg"/>
+        </antcall>
+
+        <!--<copy todir="${kio-11.output.dir}">
+            <fileset dir="${module.kio-11.basedir}/src">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+        </copy>-->
+    </target>
+
+    <target name="compile.module.kio-11.production.level-language"
+            description="Compile KIO for specific level and language">
+        <property name="level_lang.output.dir" value="${kio-11.output.dir}/KIO_${level}_${language}"/>
+        <property name="level_lang.output.file_name" value="KIO_${level}_${language}"/>
+
+        <mkdir dir="${level_lang.output.dir}"/>
+
+        <mxmlc
+                file="${module.kio-11.basedir}/src/ru/ipo/kio/_11/KIO_conditional.mxml"
+                output="${level_lang.output.dir}/KIO.files/${level_lang.output.file_name}.swf"
+                keep-generated-actionscript="false"
+                actionscript-file-encoding="UTF-8"
+                optimize="true"
+                static-link-runtime-shared-libraries="true"
+                incremental="${flex.build.incremental}"
+                compiler.debug="false"
+                >
+            <source-path path-element="${module.kio-11.basedir}/src"/>
+            <define name="KIO::language" value="'${language}'"/>
+            <define name="KIO::level" value="${level}"/>
+            <default-size width="900" height="600"/>
+        </mxmlc>
+
+        <html-wrapper
+                width="900"
+                height="600"
+                express-install="true"
+                version-detection="true"
+                bgcolor="#AAAAAA"
+                history="false"
+                application="app"
+                file="KIO_index.html"
+                version-major="10"
+                version-minor="0"
+                version-revision="0"
+                output="${level_lang.output.dir}/KIO.files"
+                swf="${level_lang.output.file_name}"
+                title="KIO ${level} ${language}"
+                />
+        <copy
+                file="${module.kio-11.basedir}/src/KIO.html"
+                todir="${level_lang.output.dir}"
+                description="copy index (main) html file to start contest"
+                />
+
+        <zip destfile="${kio-11.output.dir}/KIO_${level}_${language}.zip" description="zip for ${level} ${language}">
+            <fileset dir="${level_lang.output.dir}">
+                <exclude name="**/*.swf.cache"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="compile.module.kio-11.certificate" description="Compile module kio-11 certificate viewer">
+        <property name="cert_view.output.dir" value="${kio-11.output.dir}/kio_cert"/>
+        <property name="cert_view.output.file_name" value="CertificateView"/>
+
+        <mkdir dir="${cert_view.output.dir}"/>
+
+        <mxmlc
+                file="${module.kio-11.basedir}/src/ru/ipo/kio/_11/checker/CertificateView.as"
+                output="${cert_view.output.dir}/KIO.files/${cert_view.output.file_name}.swf"
+                keep-generated-actionscript="false"
+                actionscript-file-encoding="UTF-8"
+                optimize="true"
+                static-link-runtime-shared-libraries="true"
+                incremental="${flex.build.incremental}"
+                compiler.debug="false"
+                >
+            <source-path path-element="${module.kio-11.basedir}/src"/>
+            <default-size width="900" height="600"/>
+        </mxmlc>
+
+        <html-wrapper
+                width="100%"
+                height="100%"
+                express-install="true"
+                version-detection="true"
+                bgcolor="#AAAAAA"
+                history="false"
+                application="app"
+                file="KIO_index.html"
+                version-major="10"
+                version-minor="0"
+                version-revision="0"
+                output="${cert_view.output.dir}/KIO.files"
+                swf="${cert_view.output.file_name}"
+                title="KIO Certificates"
+                />
+        <copy
+                file="${module.kio-11.basedir}/src/KIO.html"
+                tofile="${cert_view.output.dir}/KIO_certs.html"
+                description="copy index (main) html file to start contest"
+                />
+
+        <zip destfile="${kio-11.output.dir}/KIO_certs.zip" description="zip for russian certificates">
+            <fileset dir="${cert_view.output.dir}">
+                <exclude name="**/*.swf.cache"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="compile.module.kio-11.tests" depends="compile.module.kio-11.production"
+            description="compile module kio-11; test classes" unless="skip.tests"/>
+
+    <target name="clean.module.kio-11" description="cleanup module">
+        <delete dir="${kio-11.output.dir}"/>
+        <delete dir="${kio-11.testoutput.dir}"/>
+    </target>
+
+    <target name="init" description="Build initialization">
+        <!-- Perform any build initialization in this target -->
+    </target>
+
+    <target name="clean" depends="clean.module.kio-11" description="cleanup all"/>
+
+    <target name="build.modules" depends="init, clean, compile.module.kio-11" description="build all modules"/>
+
+    <target name="all" depends="build.modules" description="build all"/>
+</project>

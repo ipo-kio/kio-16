@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CertificateCorrector/CertificateCorrector.iml" filepath="$PROJECT_DIR$/CertificateCorrector/CertificateCorrector.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kio-11.iml" filepath="$PROJECT_DIR$/kio-11.iml" />
+    </modules>
+  </component>
+</project>
+
