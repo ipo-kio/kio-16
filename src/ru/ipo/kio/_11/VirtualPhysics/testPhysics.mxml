@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+        layout="absolute"
+	applicationComplete="startKIO()">
+	 <mx:Script><![CDATA[
+         public function startKIO():void {
+             //Запуск основного класса
+             var er:PhysicsRunner = new PhysicsRunner();
+             this.addChild(er);
+         }
+         ]]></mx:Script>
+</mx:Application>

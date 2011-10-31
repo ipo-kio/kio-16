@@ -1,0 +1,124 @@
+ /*This file contains texts that are common to all problems and that are used in the Shell*/
+{   
+    "contest_header":"Contest CTE-2011",
+    "contest_level":["Level I", "Level II"],
+    "help":{ /*Manual General*/
+		"all_problems": <<< /*Such quotes <<< >>> mark the text, that spans multiple lines.
+		                    Multiline text is always treated as html, so you can use tags like <p> and <br>.
+							Don't use double quotes in the multiline text*/
+			<p>Cuando usted está resolviendo un problema el programa flash guarda su mejor solución automáticamente usando memoria proporcionada por un manejador de flash. 
+			La cantidad de esta memoria es asignada en la primera ejecución del programa de la tarea. 
+			Algunos programas en su computador, los que limpian la memoria del computador, pueden borrar sus soluciones temporales. 
+			Por eso  cada vez que usted termine de trabjar en un problema, debe guardar su solución haciendo click en el botón “Guardar mejor solución”. 
+			Después de eso el programa le ofrecerá elegir una carpeta para guardar y darle un nombre al archivo. 
+			Este es el archivo que usted necesita enviarle al comité organizador de la CTE a través de la página de la CTE. 
+			Si quiere seguir resolviendo los problemas usando otro computador usted necesita llevar este archivo con usted y toda la información necesaria no se perderá.
+
+            Cuando esté resolviendo los problemas puede necesitar guardar una solución intermedia y abrirla después para mejorarla. 
+			Puede hacer esto usando los botones para guardar y abrir una de las soluciones intermedias. 
+			Los botones de limpieza pueden ayudarle a borrar todos los elementos constructivos del campo de trabajo.
+</p>
+		>>>
+	},
+	"buttons":{
+		"load_workspace": "Cargar mejor solución y cuestionario",
+		"save_workspace": "Guardar mejores resultados y cuestionario"
+	},
+	"contest_panel":{
+	    "problem_header":"Problema", 
+		"current_solution_caption" : "Solución",
+		"help_header" : "Ayuda",
+		"records_and_anketa_header" : "Mejores resultados y cuestionario",
+		"record_header" : "Puntaje más alto",
+		"buttons":{
+			"help" : "Ayuda",
+			"statement": "Enunciado",
+			"load" : "Cargar",
+			"save" : "Salvar",
+			"clear" : "Limpiar",
+			"back" : "Cerrar"
+		}
+    },
+    "files":{
+        "all_files": "Todos los archivos",
+        "results": "Resultados y cuestionario",
+        "solutions": "Solucines de los problemas"
+    },
+    "screen":{
+		"buttons":{
+			"continue_": "Continuar",
+            "loadWorkspace" : "Cargar"
+        },
+        "welcome":{
+			"mainMessage": <<<
+				<p class='h1'>¡Bienvenido a la competencia CTE-2011!</p>
+				<p>Nos encanta ofrecerle 3 problemas para resolver y darle un saludo de bienvenida.</p>
+				<p>Antes de comenzar a resolver los problemas usted necesita:</p>
+				<li>Permitir que el programa guarde información en el disco duro</li>
+				<li>Llenar el cuestionario</li>
+				<p>Para continuar haga click en el boton \"Continuar\".</p>
+			>>>,
+            "loadWorkspace": "Si usted ha salvado soluciones usted puede cargarlas:"
+        },
+        "settings":{
+			"mainMessage": <<<
+				<p class='h1'>Cambio de las especificaciones de la competencia</p>
+				<p>Para trabajar con el programa usted necesita permitirle que almacene datos en su disco duro.
+				Haga click sobre 'Configuración' y adecue las especificaciones como se muestra en la figura</p>
+			>>>,
+            "mainMessageContinuation": <<<
+				<p>Asegurese que </p>
+				<li>el chulo 'not to ask' no esté activo</li>
+				<li>El slider sea de al menos  1 megabyte</li>
+				<p class='warning'>¡Advertencia! Si usted pone mal las especificaciones el programa le pedirá ponerlas correctamente y no continuará hasta que usted lo haga.</p>
+			>>>,
+			"configure_button": "Configuración"
+        },
+        "form": {
+            "field_must_be_filled": "Se requiere el campo",
+            "header": "Llene el cuestionario",
+            "participant_name": "Nombre y apellido del participante (En mayúsculas)",
+			"name": "Nombre",
+			"surname": "Apellido",
+			"second_name": "Segundo apellido",
+			"connection": "Contactos",
+			"e_mail": "e-mail",
+			"institution": "Institución Educativa",
+			"institution_name": "Nombre",
+			"grade": "Grado",
+			"address": "Dirección",
+			"name_restriction": "A-ZÑÇÁÉÍÓÚÜ" /*You can write down a range of recognizable symbols here, ñç¿¡áéíóúü*/
+        },
+        "problems": {
+            "fill_form": "Llene el cuestionario",
+			"header": "Seleccione un problema",
+            "about":"Acerca del progrma"
+        },
+        "problem": {
+            "screen_header":"Problema"
+			},
+        "about": {
+            "header": "Acerca de la competencia CTE", /*About authors and copy right*/
+            "text" : <<<
+                <p class='h1'>Instituto de aprendizaje productivo de la Academia Rusa de Educación</p>
+                <p class='h1'>Revista Herramientas Computacionales en Educación</p>
+				<p><br></p>
+                <p><b>Comité Organizativo Internacional:</b> Sergey Pozdnyakov (Russia),Maria Losada (Colombia), Emiliya Velikova (Bulgaria), Anastasia Dementeva (Russia)</p>
+                <p><b>Idea del proyecto y autores de los problemas:</b> Sergey Pozdnyakov, Ilya Posov, Denis stepulenok, M.Udovin</p>
+                <p><b>Organizadores y Metodistas:</b>  Sergey Pozdnyakov, Ilya Posov, Sophie Entina, Anastasia Dementeva</p>
+                <p><b>Programadores:</b> Ilya Posov, A. Anikina, A. Baldichev, A. Karasavov, D. Kostigov, V. Manukyan, K. Ferticov</p>
+                <p><b>Diseño:</b> Anna Vasilkova</p>
+                <p><b>Webmaster:</b> Nikolai Yasnov</p>
+                <p><b>Secretaria:</b> Tatyana Myand</p>
+                <p><b>Traducción a español:</b> Mario Cruz</p>
+                <p class='h2'> <br>© Center of information technologies in education «CTE»</br></p>
+            >>>
+		},
+		    "space_settings":{
+            "warning":"¡Atención!",
+            "action":"Para poder trabajar con el programa CTE usted necesita almacenar información en el disco duro.\nAbrfa la ventana de configuración y permita que el programa use al menos un megabyte. Para hacer que las configuraciones estén iguales al gráfico:",
+            "after":"Unicamente después de hacer esto usted podrá cerrar la venana"
+		}
+        }
+    }
+

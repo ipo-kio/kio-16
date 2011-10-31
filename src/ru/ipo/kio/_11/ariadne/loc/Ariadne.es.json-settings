@@ -1,0 +1,58 @@
+ {
+    "title": "Ovillo de Ariadna",
+    "message": "El problema estará disponible después",
+    "statement": <<<
+		<p>De acuerdo a una leyenda griega había días cuando los atenienses tenían que sacrificar siete jóvenes y siete doncellas cada año al Minotauro. 
+		Un día, dentro de los elegidos para el sacrificio estaba Teseo, un joven que se ofreció como voluntario para ir y matar al Minotauro. 
+		Ariadna se enamoró de Teseo a primera vista, y lo ayudó dándole una espada y un ovillo de lana roja con un extremo atado a la entrada, 
+		de tal manera que él pudiera encontrar el camino de salida del laberinto de Minotauro.
+
+        Para resolver el problema usted necesita iluminar un  rastro de ovillo para ayudar a Teseo a salir del laberinto. 
+		En su camino usted encontrará diferentes obstáculos – huecos llenos de agua, arbustos y montañas – que disminuirán la velocidad del caminante. 
+		El ovillo mágico hace que Teseo sea invisible y le permite subir en las paredes del laberinto y esquivar otros obstáculos convirtiéndose en varios animales. 
+		Sin embargo, esas transformaciones disminuyen la velocidad de Teseo.
+
+        Para resolver el problema usted debe iluminar un trazo que llevará a Teseo usando tan poco tiempo como sea posible para salir del laberinto.
+
+        Note que Fermat, un matemático sobresaliente del siglo XVII encontró que la solución de tales problemas es similar al comportamiento de un rayo de luz.
+</p>
+	>>>,
+	"help":<<<
+		<p>Para iluminar un trazo debe  hacer click izquierdo en los nodos de la red donde quiere construirlo. 
+		El trazo consiste de segmentos que unen los puntos en el mismo orden en que usted los puso. 
+		Si quiere  cambiar la ubicación de los puntos necesita arrastrarlos a lugares nuevos con el mouse.
+
+        Para borrar un punto usted debe seleccionarlo haciendo doble click y haciendo click en el botón Eliminar.
+
+        Para añadir un punto en algún punto en la mitad de un camino, haga click en uno de los segmentos. 
+		Luego si usted hace click izquierdo en cualquier lugar del campo, el último segmento del trazo será dividido en dos segmentos. 
+		Cuando usted cambie el camino, su longitud y tiempo de desplazamiento será calculado automáticamente.
+
+        Si usted pasa el mouse sobre cualquier parte del laberinto obtendrá un aviso mostrando la velocidad de Teseo en esa parte del camino.
+</p>
+	>>>,
+	"buttons":{ /*Text on buttons*/
+		/*"remove_step": "Borrar el último paso",*/
+		"remove_dot": "Borrar\nel punto",
+		"show_ticks": "Mostrar\ncamino",
+		"hide_ticks": "Ocultar\ncamino",
+		"show_hero": "Mostrar\nheroe",
+		"hide_hero": "Ocultar\nheroe"
+    },
+	"results":{
+	    "current_results_header":"Resultados",
+	    "record_header":"Record",
+		"length":"Longitud",
+		"length_metr":"m",  /*meter*/
+		"time":"Tiempo",
+		"time_sec":"seg"	/*second*/
+	},
+    "hover":{
+	    "sand":"arena",
+		"lake":"lago",
+		"wall":"pared",
+		"mountains":"montañas",
+		"forest":"bosque",
+		"speed":"sm/s"  /*metros por segundo*/
+    }
+}

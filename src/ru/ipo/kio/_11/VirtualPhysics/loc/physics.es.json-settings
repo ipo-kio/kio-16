@@ -1,0 +1,57 @@
+﻿ {
+    "message": "El problema estará disponible después",
+    "title": "Patrones de Leyes Físicas",
+    "statement": <<<
+		<p>Al comienzo del siglo XVII Johanes Kepler formuló leyes de movimiento celestial basado en las observaciones de Tycho Brahe. 
+		Estas leyes se volvieron la base de las leyes universales de la gravitación de Newton. 
+		Después de eso se han descubierto muchas leyes de física nuevas: la ley de la iteración electromagnética, 
+		leyes de iteración entre partículas y otras. Pero leyes físicas generales que relacionen todos los fenómenos del mundo macro y micro son aún desconocidas.
+	
+        Uno de los métodos que los físicos usan en su trabajo es un modelo teórico que explica algún nuevo fenómeno físico.
+
+        Le ofrecemos crear leyes de iteración de partículas: hay dos clases de partículas que están marcadas con colores diferentes. 
+		El único parámetro de iteración es una distancia entre partículas iteractuando (r).
+
+        Usted necesita formular tres leyes de atracción y de repulsión: dos de ellas deben describir iteración entre dos partículas del mismo color y una ley más – iteración entre dos partículas de colores distintos. 
+		Usted debería tratar de crear leyes de acuerdo a qué partículas de colores distintos deberían estar distribuidas entre dos mitades diferentes del rectángulo. 
+		Aún más, las partículas deben estar distribuidas en sus mitades de forma tan pareja como sea posible, 
+		lo cual quiere decir que cada celda debería contener una partícula y cada partícula debe estar situada tan cerca del centro de la celda como sea posible. 
+		Las leyes pueden ser establecidas como funciones del argumento r.
+</p>
+	>>>,
+	"help":<<<
+		<p>Se establece la posición de las partículas. 
+		Usted necesita  escribir fórmulas de tres leyes de atracción y repulsión en las ventanas correspondientes con el teclado virtual y hacer click en el botón que dispara un experimento. 
+		Si resulta que usando estas leyes es imposible calcular el comportamiento de las partículas, recibirá un mensaje de advertencia y el experimento no se disparará. 
+		En ese caso necesita mejorar sus fórmulas: use factores que reducirán la fuerza o funciones que la aumentaran más lentamente (disminuir la distancia r).
+
+        Usted puede detener un experimento haciendo click en el botón correspondiente. 
+		Para obtener resultados más rápidos haga click en el botón que acelera un experimento (note que obtener resultados inmediatamente es imposible debido a la complejidad de calcular la posición de todas las partículas).
+</p>
+	>>>,
+	"buttons":{ /*Text on buttons*/
+		"run":"Ejecutar",
+		"pause":"Pausa",
+		"clear":"Limpiar",
+		"speed_slower":"Ir más lento",
+		"speed_higher":"Ir más rápido"
+    },
+	"results":{
+		"check":"Verificar",
+		"results":"Resultado",
+		"wrong_half":"En la mitad equivocada",
+		"cell_ball":"Número de celdas\ncon una bola",
+        "dist_center":"Distancia al centro",
+        "record":"Record",
+        "functions":"Funciones de fuerzas de iteración",
+        "f_r_r":"F(r:r) =",  	/*r - red, g - green*/
+        "f_r_g":"F(r:v) =",
+        "f_g_g":"F(v:v) ="
+	},
+	
+    "alert":{
+	    "mistake":"Error",
+		"new_record_header":"¡Felicitaciones!",
+		"new_record_message":"¡Nuevo record!"
+    }	
+}

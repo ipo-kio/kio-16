@@ -1,0 +1,96 @@
+ {
+    "title1":"Robot con Ojos Afilados",
+	"title2":"Códigos Postales",
+    "statement1": <<<
+		<p>Para resolver este problema usted debe construir un esquema del ojo del robot de tal manera que él pueda reconocer todos los dígitos de un reloj electrónico.
+
+           Al construirlo usted puede usar compuertas lógicas como  Y(And), O(Or) , No(Not). 
+		   La compuerta Y da una señal de salida solamente si recibe señales a través de ambas entradas; 
+		   la compuerta O  si recibe señal de al menos de una de las entradas. 
+		   La compuerta No bloquea una señal de entrada y genera una señal si no hay señal de entrada. 
+
+           El ganador es aquel cuyo robot pueda reconocer todos los números y tenga la construcción más simple 
+		   (consistiendo del menor número de compuertas Y, O , No).
+</p>
+	>>>,
+	"statement2": <<<
+		<p> En la Unión Soviética el sistema de clasificación automática fue usado por primera vez en la segunda mitad del siglo XX. 
+		Un sistema especial de códigos postales y equipos que reconocían estos códigos postales fueron desarrollados para el sistema de clasificación de cartas. 
+		Este sistema está aún en uso en Rusia.
+
+        Para resolver el problema usted necesita crear un equipo que pueda reconocer dígitos escri
+        tos con tipos establecidos para este sistema.
+		Cada dígito consiste de un conjunto de líneas incluyendo tres líneas horizontales, cuatro líneas verticales y dos líneas inclinadas. 
+		Cada línea puede ser reconocida únicamente por el elemento lector correspondiente. 
+
+        Cada salida de un elemento es una entrada para el esquema de reconocimiento y debe identificar un dígito con base en las líneas reconocidas. 
+        El esquema consiste de compuertas lógicas Y(And), O(Or) , No(Not). 
+		La compuerta Y da una señal de salida solamente si recibe señales a través de ambas entradas; 
+		la compuerta O  si recibe señal de al menos de una de las entradas. 
+		La compuerta No bloquea una señal de entrada y genera una señal si no hay señal de entrada. 
+
+        Pero pueden ocurrir algunas complicaciones, por ejemplo, un elemento lector se puede dañar y dejar de reconocer el dígito correspondiente correctamente. 
+        Usted debe desarrollar un esquema de tal manera que reconozca dígitos correctamente aún si uno de los elementos del dígito no pueda ser leído.
+
+        Se califica una solución al problema de acuerdo a dos parámetros:
+        1.) El número de dígitos que son reconocidos correctamente teniendo en cuenta un posible error leyendo uno de los elementos del dígito (usted debe tratar de aumentar este parámetro)*;
+        2.) Número de compuertas del esquema (use tan  pocas como sea posible).
+        * Note que están todas las combinaciones de una letra siendo leída (hay 10 dígitos en total: de 0 a 9) y un elemento dañado 
+		(hay 9 versiones de elementos dañados y uno más que corresponde a que todos los elementos estén intactos) representados en la tabla de resultados.
+
+</p>
+	>>>,
+	
+	"help":<<<
+		<p>Usted puede usar compuertas Y, O, No  y cables para construir un plano del robot. 
+		Se puede arrastrar cualquier número de ellos al campo de trabajo desde el panel izquierdo. 
+		Usted puede conectar compuertas directamente o por cables (se permite conectar cualquier número de cables a la salida de una compuerta  y únicamente uno a cada entrada de una compuerta). 
+		Para hacer una conexión usted debe arrastrar un conector situado en el extremo de un cable para colocarlo donde quiera. 
+		Si arrastra un elemento  a la caneca de reciclaje se borrará.
+
+        Para desconectar una compuerta usted debe seleccionar un cable haciendo click izquierdo y luego seleccionar el conector del cable y hacer click en el botón Desconectar.   
+		En algunas situaciones puede ser útil añadir una parte adicional al cable para colocar elementos en un orden necesario. 
+		En ese caso usted debe seleccionar un cable para dividirlo en dos cables conectados y hacer click en el botón Insertar que añade una junta a un cable. 
+</p>
+	>>>,
+    "buttons": {
+        "split": "Partir",
+        "reset": "Desconectar"
+    },
+    "gates": {
+        "and": "y",
+        "or": "o",
+        "not": "no",
+        "nop": "vacio" /*"vacío"*/
+    },
+    "results": {
+        "correct" : "bien",
+        "wrong" : "mal",
+		"hint_correct_0" : "Bien: Si no hay elementos danados el digito {digit} es reconocido correctamente.",
+      /*"hint_correct_0" : "Bien: Si no hay elementos dañados el dìgito {digit} es reconocido correctamente.",*/
+        "hint_wrong_0" : "Mal: Si no hay elementos danado el digito {digit} no es reconocido correctamente.",
+      /*"hint_wrong_0" : "Mal: Si no hay elementos dañado el dígito {digit} no es reconocido correctamente.",*/
+        "hint_correct" : "Bien: A pesar del dano en la linea # {line},  el digito {digit} es reconocido correctamente",
+      /*"hint_correct" : "Bien: A pesar del daño en la línea # {line},  el dígito {digit} es reconocido correctamente",*/
+        "hint_wrong" : "Mal: Cuando se leyo con la linea # {line} danada,  el digito {digit} fue reconocido incorrectamente",
+      /*"hint_wrong" : "Mal: Cuando se leyó con la linea # {line} dañada,  el dígito {digit} fue reconocido incorrectamente",*/
+        "lines" : [
+            "-",
+            "arriba",
+            "izquierda arriba",
+            "inclinado arriba",
+            "derecha arriba",
+            "medio",
+            "izquierda inferior",
+            "inclinado abajo",
+            "derecha abajo",
+            "abajo"
+        ],
+		"result" : "Resultado",
+        "record" : "Record",
+        "recognition_info_header" : "Son reconocidos",
+        "recognition_info_1" : "digitos de 10", /*dígitos*/
+        "recognition_info_2" : "situaciones",
+        "elements_info" : "Compuertas"
+    }
+}

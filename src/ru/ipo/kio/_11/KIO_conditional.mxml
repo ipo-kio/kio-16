@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- intended to be run in ant, KIO::language and KIO::level are conditionals that are set in compiler settings-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+                layout="absolute"
+                applicationComplete="startKIO()">
+    <mx:Script><![CDATA[
+        import ru.ipo.kio.api.KioApi;
+
+        public function startKIO():void {
+            //Запуск основного класса
+            //KIO::language and KIO::level variables are set in ant script
+            KioApi.language = KIO::language;
+            var shell:KioShell = new KioShell(KIO::level);
+            this.addChild(shell);
+        }
+        ]]></mx:Script>
+</mx:Application>
