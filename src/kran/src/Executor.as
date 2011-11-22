@@ -56,7 +56,7 @@ package
 				}
 				case 40: //Down Arrow
 				{
-					// если под краном ничего нет ИЛИ (кран закрыт И кран пуст)
+					// если под краном ничего нет ИЛИ (кран открыт И кран пуст)
 					if (cubeArray[kran.Position] == null || (!kran.isClosed() && !kran.hasCube()))
 						kran.moveDown();
 					break;
@@ -72,7 +72,6 @@ package
 					kran.close();
 					if (kran.isDown() && cubeArray[kran.Position] != undefined)
 					{
-						linker.link(kran, cubeArray[kran.Position]);
 						takeCube(cubeArray[kran.Position]);
 					}
 					break;
@@ -81,9 +80,9 @@ package
 				{
 					try
 					{
-						kran.release();	
 						if (kran.isDown())
 							putCube(kran.getCube());
+						kran.release();	
 					}
 					catch (e:String)
 					{
@@ -95,14 +94,14 @@ package
 			//Вытащить из массива чтобы потом перетащить в нужную позицию
 			private function takeCube(cube:Cube):void
 			{
-				takenCube = cube;
-					cubeArray[cube.Position] = null;
+				linker.link(kran, cube);
+				cubeArray[kran.Position] = null;
 			}
 			//положить в массив
 			private function putCube(cube:Cube):void
 			{
 				//if (cubeArray[cube.Position] == null);
-				cubeArray.push(cube);
+				cubeArray[kran.Position] = kran.getCube();
 			}
 	}
 }
