@@ -45,7 +45,7 @@ package
 			stage.addChild(txtField);
 			stage.addChild(button);
 			
-		}
+ 		}
 		
 	}
 	

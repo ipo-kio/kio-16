@@ -8,9 +8,8 @@ package
 	 * ...
 	 * @author Eddiw
 	 */
-	public class Kran
+	public class Kran implements IMove
 	{
-		private const HORIZONTAL_STEP:int = 130;
 		
 		private var Graphic:KranGraphic;
 		
@@ -31,9 +30,9 @@ package
 				Graphic.x = 0;
 				Graphic.y = 0;
 				position = 0;
-				closed = false;
+				closed = true;
 				verticalLock = false;
-				close();
+				cube = null;
 		}
 		
 		public function addToStage(stage:Stage):void
@@ -44,43 +43,86 @@ package
 		public function moveLeft():void
 		{	
 			-- position;
-			Graphic.moveLeft(HORIZONTAL_STEP);
+			Graphic.moveLeft();
+			if (cube != null)
+				cube.moveLeft();
 		}
 		public function moveRight():void
 		{ 
 			++ position; 
-			Graphic.moveRight(HORIZONTAL_STEP);
+			Graphic.moveRight();
+			if (cube != null)
+				cube.moveRight();
 		}
 		
 		public function moveDown():void 
 		{
 			if (!verticalLock)
-			Graphic.moveDown();
+				Graphic.moveDown();
+			if (cube != null)
+				cube.moveDown();
 			verticalLock = true;
 		}
 		
 		public function moveUp():void
 		{
 			if (verticalLock)
-			Graphic.moveUp();
+				Graphic.moveUp();
+			if (cube != null)
+				cube.moveUp();
 			verticalLock = false;
 		}
 		public function close():void
 		{
-			if (!closed)
+			if  (closed == false)
 			{
 				closed = true;
-				this.Graphic.Rightfoot.rotation -= 30;
-				this.Graphic.rotateAroundPoint(Graphic.Leftfoot, 20 , Graphic.leftAxizPoint);
+				this.Graphic.Rightfoot.rotation += 30;
+				this.Graphic.rotateAroundPoint(Graphic.Leftfoot, -20 , Graphic.leftAxizPoint);
 			}
-			else release();
 		}
 		
 		public function release():void
 		{
-			closed = false;
-			this.Graphic.Rightfoot.rotation += 30;
-			this.Graphic.rotateAroundPoint(Graphic.Leftfoot, -20 , Graphic.leftAxizPoint);
+			if (this.cube != null && !this.isDown())
+				throw "Can't release at top";
+			if (closed == true)
+			{
+				closed = false;
+				this.Graphic.Rightfoot.rotation -= 30;
+				this.Graphic.rotateAroundPoint(Graphic.Leftfoot, 20 , Graphic.leftAxizPoint);
+				cube = null;	
+			}
+		}
+		
+		public function get Position():uint
+		{
+			return this.position;
+		}
+		
+		public function getCube():Cube
+		{
+			return this.cube;
+		}
+		
+		public function setCube(cube:Cube):void
+		{
+			this.cube = cube;
+		}
+		
+		public function isClosed():Boolean
+		{
+			return closed;
+		}
+		
+		public function hasCube():Boolean
+		{
+			return (cube == null) ? false : true;
+		}
+		
+		public function isDown():Boolean
+		{
+			return verticalLock ? true : false;
 		}
 	}
 

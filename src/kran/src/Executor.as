@@ -12,18 +12,30 @@ package
 	{
 		private var kran:Kran;
 		private var cubeArray: Array;
+		private var linker: Linker;
+		private var takenCube:Cube;
+		
 		
 		public function Executor() 
 		{
-			cubeArray = new Array;
+			cubeArray = new Array(8);
+			for (var i:int = 0; i < 8; i++)
+//
+			linker = new Linker;
 		}
 
 		public function init(stage : Stage):void
 		{
 			//инициализация массива кубиков
-			for ( var i:int = 1; i < 5; i++)
-				cubeArray.push(new Cube(i).addToStage(stage));
-			
+			for ( var i:int = 0; i < 5; i++)
+				cubeArray[i] = new Cube(i);
+			//рисуем
+			for each(var cube:Cube in cubeArray)
+			{
+				cube.addToStage(stage);		
+				cube.draw();
+			}
+				
 			kran = new Kran();
 			kran.addToStage(stage);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHandler);
@@ -44,7 +56,9 @@ package
 				}
 				case 40: //Down Arrow
 				{
-					kran.moveDown();
+					// если под краном ничего нет ИЛИ (кран закрыт И кран пуст)
+					if (cubeArray[kran.Position] == null || (!kran.isClosed() && !kran.hasCube()))
+						kran.moveDown();
 					break;
 				}
 				case 38: //Up Arrow
@@ -52,12 +66,43 @@ package
 					kran.moveUp();
 					break;
 				}
-				case 32: //Space
+				case 67: //'C' Close
 				{
+					
 					kran.close();
+					if (kran.isDown() && cubeArray[kran.Position] != undefined)
+					{
+						linker.link(kran, cubeArray[kran.Position]);
+						takeCube(cubeArray[kran.Position]);
+					}
 					break;
+				}
+				case 82: //'R' Release
+				{
+					try
+					{
+						kran.release();	
+						if (kran.isDown())
+							putCube(kran.getCube());
+					}
+					catch (e:String)
+					{
+						trace(e);
+					}
 				}
 			}
 		}
+			//Вытащить из массива чтобы потом перетащить в нужную позицию
+			private function takeCube(cube:Cube):void
+			{
+				takenCube = cube;
+					cubeArray[cube.Position] = null;
+			}
+			//положить в массив
+			private function putCube(cube:Cube):void
+			{
+				//if (cubeArray[cube.Position] == null);
+				cubeArray.push(cube);
+			}
 	}
 }

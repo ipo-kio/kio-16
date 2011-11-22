@@ -7,8 +7,9 @@ package  {
 	import flash.geom.Matrix;
 	
 	[Embed(source="../lib/Kran1.swf#Kran")]
-	public class KranGraphic extends Sprite {
+	public class KranGraphic extends Sprite implements IMove {
 		
+		private const HORIZONTAL_STEP:int = 130;
 		
 		public var Rightfoot: MovieClip;
 		public var Leftfoot: MovieClip;
@@ -39,13 +40,13 @@ package  {
 			target.transform.matrix = m;
 		}
 		
-		public function moveRight(howMuch: int):void
+		public function moveRight():void
 		{
-			this.x += howMuch;
+			this.x += HORIZONTAL_STEP;
 		}
-		public function moveLeft(howMuch: int):void
+		public function moveLeft():void
 		{
-			this.x -= howMuch;
+			this.x -= HORIZONTAL_STEP;
 		}
 		public function moveDown():void
 		{
