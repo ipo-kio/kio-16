@@ -55,12 +55,12 @@ package
 				cube.moveRight();
 		}
 		
-		public function moveDown():void 
+		public function moveDown(howMuch:int):void 
 		{
 			if (!verticalLock)
-				Graphic.moveDown();
+				Graphic.moveDown(howMuch);
 			if (cube != null)
-				cube.moveDown();
+				cube.moveDown(howMuch);
 			verticalLock = true;
 		}
 		
@@ -125,5 +125,4 @@ package
 			return verticalLock ? true : false;
 		}
 	}
-
 }

@@ -14,11 +14,11 @@ package
 			graphics.lineStyle(3);
 			for (var i:int = 0; i < 8; i++)
 			{
-				graphics.moveTo(STEP * i, 400);
-				graphics.lineTo(STEP * i, 450);
-				graphics.lineTo(STEP * i + STEP, 450);
+				graphics.moveTo(STEP * i, 600);
+				graphics.lineTo(STEP * i, 650);
+				graphics.lineTo(STEP * i + STEP, 650);
 			}
-			graphics.lineTo(STEP * i, 400);
+			graphics.lineTo(STEP * i, 600);
 		}
 		public function addToStage(stage:Stage):void
 		{

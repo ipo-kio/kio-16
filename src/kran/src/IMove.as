@@ -9,7 +9,7 @@ package
 	{
 		function moveLeft():void;
 		function moveRight():void;
-		function moveDown():void;
+		function moveDown(howMuch:int):void;
 		function moveUp():void;
 	}
 	

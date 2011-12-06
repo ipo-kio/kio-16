@@ -48,14 +48,14 @@ package  {
 		{
 			this.x -= HORIZONTAL_STEP;
 		}
-		public function moveDown():void
+		public function moveDown(howMuch:int):void
 		{
-			this.y += 200;
-			heightBar.scaleY = -10;
+			this.y += howMuch;
+			heightBar.scaleY = -20;
 		}
 		public function moveUp():void
 		{
-			this.y -= 200;
+			this.y = 0;
 			heightBar.scaleY = 1;
 		}
 	}

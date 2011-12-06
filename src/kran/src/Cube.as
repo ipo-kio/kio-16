@@ -5,7 +5,7 @@ package
 	 * ...
 	 * @author Eddiw
 	 */
-	public class Cube implements IMove
+	public class Cube /*implements IMove*/
 	{
 		
 		private const HEIGHT:int = 100;
@@ -14,34 +14,37 @@ package
 		private var color:int;
 		private var height:uint;
 		private var width:uint;
-		private var position:uint;
+		private var xPosition:uint;
+		private var yPosition:uint
 		private var verticalLock:Boolean;
 		
 		private var graphic:CubeGraphic;
 				
-		public function Cube(pos:uint)
+		public function Cube(xpos:uint, ypos:uint)
 		{
 			this.color = 0;
 			this.height = HEIGHT;
 			this.width = WIDTH;
-			this.position = pos;
+			this.xPosition = xpos;
+			this.yPosition = ypos;
 			this.verticalLock = true;
 			this.graphic = new CubeGraphic();
+			this.draw();
 		}
 		
 		public function draw():void
 		{			
-			this.graphic.draw(position, width, height, color);
+			this.graphic.draw(xPosition, yPosition, width, height, color);
 		}
 		
 		public function movePosition(dx:int):void
 		{
-			this.position += dx;
+			this.xPosition += dx;
 		}
 		
 		public function get Position():uint
 		{
-			return this.position;
+			return this.xPosition;
 		}
 		
 		public function addToStage(stage:Stage):void
@@ -59,11 +62,11 @@ package
 			graphic.moveRight();
 		}
 		
-		public function moveDown():void
+		public function moveDown(howMuch:int):void
 		{
 			if (!verticalLock) {
 				verticalLock = !verticalLock;
-				graphic.moveDown();
+				graphic.moveDown(howMuch);
 			}
 				
 		}
@@ -71,8 +74,13 @@ package
 		{
 			if (verticalLock) {
 				verticalLock = !verticalLock;
-				graphic.moveUp();
+				graphic.moveUp(400 - (this.yPosition*HEIGHT));
 			}
+		}
+		
+		public function setYpos(ypos:int):void
+		{
+			yPosition = ypos;
 		}
 	}
 
