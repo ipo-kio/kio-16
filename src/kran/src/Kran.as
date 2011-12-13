@@ -55,6 +55,18 @@ package
 				cube.moveRight();
 		}
 		
+		public function reset():void
+		{
+			position = 0;
+			verticalLock = false;
+			if (!isClosed())
+				close();
+			if (hasCube())
+				this.cube.clear();
+			this.cube = null;
+			this.Graphic.reset();
+		}
+		
 		public function moveDown(howMuch:int):void 
 		{
 			if (!verticalLock)

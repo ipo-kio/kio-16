@@ -58,5 +58,11 @@ package  {
 			this.y = 0;
 			heightBar.scaleY = 1;
 		}
+		
+		public function reset():void
+		{
+			this.x = 0;
+			this.y = 0;
+		}
 	}
 }

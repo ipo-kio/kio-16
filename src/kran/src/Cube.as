@@ -1,6 +1,9 @@
 package  
 {
 	import flash.display.Stage;
+	import flash.events.TextEvent;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	/**
 	 * ...
 	 * @author Eddiw
@@ -17,24 +20,30 @@ package
 		private var xPosition:uint;
 		private var yPosition:uint
 		private var verticalLock:Boolean;
+		private var letter:String;
 		
 		private var graphic:CubeGraphic;
 				
-		public function Cube(xpos:uint, ypos:uint)
+		public function Cube(xpos:uint, ypos:uint, color:uint = 0)
 		{
-			this.color = 0;
+			this.color = color;
 			this.height = HEIGHT;
 			this.width = WIDTH;
 			this.xPosition = xpos;
 			this.yPosition = ypos;
 			this.verticalLock = true;
-			this.graphic = new CubeGraphic();
+			this.graphic = new CubeGraphic(xPosition,yPosition,width,height,color);
 			this.draw();
 		}
 		
 		public function draw():void
 		{			
-			this.graphic.draw(xPosition, yPosition, width, height, color);
+			this.graphic.draw();
+		}
+		
+		public function clear():void
+		{
+			this.graphic.clear();
 		}
 		
 		public function movePosition(dx:int):void
@@ -81,6 +90,28 @@ package
 		public function setYpos(ypos:int):void
 		{
 			yPosition = ypos;
+		}
+		
+		public function setLetter(letter : String):void
+		{
+			this.letter = letter;
+			graphic.setText(letter);
+		}
+		
+		public function getLetter():String
+		{
+			return letter;
+		}
+		
+		public function setColor(color:uint):void
+		{
+			this.color = color;
+			this.graphic.setColor(color);
+		}
+		
+		public function getColor():uint
+		{
+			return color;
 		}
 	}
 

@@ -20,11 +20,8 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			var Exec:Executor = new Executor; Exec.init(stage);
-			
-			var arr:ArrayGraphic = new ArrayGraphic;
-			arr.draw();
-			arr.addToStage(stage);			
+			var Exec:Executor = new Executor; 
+			Exec.init(stage);		
  		}
 		
 	}

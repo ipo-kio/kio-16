@@ -9,7 +9,7 @@ package
 	public class ArrayGraphic extends Sprite
 	{
 		public const STEP: int = 130;
-		public function draw(): void
+		public function ArrayGraphic(): void
 		{
 			graphics.lineStyle(3);
 			for (var i:int = 0; i < 8; i++)
