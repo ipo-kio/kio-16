@@ -20,8 +20,8 @@ public class KioShell extends UIComponent {
 
     private var _level:int;
 
-    public function KioShell(level:int) {
-        _level = level;
+    public function KioShell(/*level:int*/) {
+        _level = 0;//level;
 
         if (stage)
             init();

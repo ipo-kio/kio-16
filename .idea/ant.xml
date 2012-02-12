@@ -4,7 +4,7 @@
     <defaultAnt bundledAnt="true" />
     <buildFile url="file://$PROJECT_DIR$/kio-11.xml">
       <additionalClassPath>
-        <entry path="file:///opt/flex/ant/lib/flexTasks.jar" />
+        <entry path="file://C:/opt/flex/ant/lib/flexTasks.jar" />
       </additionalClassPath>
       <antReference projectDefault="true" />
       <customJdkName value="1.6" />
