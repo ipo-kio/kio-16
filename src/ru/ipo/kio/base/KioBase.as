@@ -83,7 +83,7 @@ public class KioBase {
         basicInitialization(problem.level, problem.year, stage, [problem]);
 
         //this index will be needed in setting of current problem
-        KioBase.instance.lsoProxy.userIndex = 0;
+        _lsoProxy.setOneProblemDebugRegime();
         currentProblem = problem;
     }
 

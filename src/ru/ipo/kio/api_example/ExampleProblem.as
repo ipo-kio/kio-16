@@ -31,7 +31,7 @@ public class ExampleProblem implements KioProblem {
         //на котором ее предлагается использовать. Чтобы не вписывать данные в код, их можно
         //загружать с помощью класса Settings. См. задачи 2011 года. Класс Settings читает
         //данные из расширенного json-файла (допустимы комментарии и многострочные строки)
-        KioApi.registerLocalization(ID, 'ru', {
+        KioApi.registerLocalization(ID, KioApi.L_RU, {
             title: "Задача HelloWorld", //Этот заголовок отображается сверху в окне задачи
             message: "Hello World"
         });

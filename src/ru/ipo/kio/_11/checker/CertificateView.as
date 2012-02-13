@@ -19,7 +19,7 @@ import flash.text.TextFormatAlign;
 
 import mx.graphics.codec.PNGEncoder;
 
-import com.adobe.serialization.json.JSON;
+import com.adobe.serialization.json.JSON_k;
 
 import flash.display.BitmapData;
 import flash.display.SimpleButton;
@@ -369,7 +369,7 @@ public class CertificateView extends Sprite {
     private function fileLoaded(event:Event, cert_data:String = null):void {
         var certificate:Object;
         if (cert_data)
-            certificate = JSON.decode(JSON.decode(cert_data).json_certificate);
+            certificate = JSON_k.decode(JSON_k.decode(cert_data).json_certificate);
         else
             certificate = loadCertificate(certificateFile.data);
 
@@ -577,11 +577,11 @@ public class CertificateView extends Sprite {
     }
 
     private function loadCertificate(data:ByteArray):Object {
-        var keyed_certificate:Object = JSON.decode(data.readUTFBytes(data.length));
+        var keyed_certificate:Object = JSON_k.decode(data.readUTFBytes(data.length));
         var json_certificate:String = keyed_certificate.json_certificate;
         if (KioChecker.signString(json_certificate) != keyed_certificate.signature)
             throw new IOError('Подпись не соответствует сертификату');
-        return JSON.decode(json_certificate);
+        return JSON_k.decode(json_certificate);
     }
 
     private function printClick(event:Event):void {

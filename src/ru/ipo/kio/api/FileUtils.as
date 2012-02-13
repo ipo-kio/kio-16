@@ -1,5 +1,5 @@
 package ru.ipo.kio.api {
-import com.adobe.serialization.json.JSON;
+import com.adobe.serialization.json.JSON_k;
 
 import flash.events.Event;
 import flash.net.FileFilter;
@@ -32,7 +32,7 @@ public class FileUtils {
 //					var o : Object = data.readObject();
                 var solUTF:String = data.readUTFBytes(data.length);
                 try {
-                    var sol:Object = JSON.decode(solUTF);
+                    var sol:Object = JSON_k.decode(solUTF);
                     problem.loadSolution(sol);
                 } catch (error:Error) {
                     //TODO show error message
@@ -49,13 +49,13 @@ public class FileUtils {
         //data.writeObject(sol);
         //fr.save(data);
 
-        fr.save(JSON.encode(sol), SOLUTION_FILE_NAME + inventDate() + ".kio-" + problem.id + "-" + KioBase.instance.level);
+        fr.save(JSON_k.encode(sol), SOLUTION_FILE_NAME + inventDate() + ".kio-" + problem.id + "-" + KioBase.instance.level);
     }
 
     public static function saveAll():void {
         var fr:FileReference = new FileReference();
         var sol:Object = KioBase.instance.lsoProxy.userData;
-        fr.save(JSON.encode(sol), RESULTS_FILE_NAME + inventDate() + ".kio-" + KioBase.instance.level);
+        fr.save(JSON_k.encode(sol), RESULTS_FILE_NAME + inventDate() + ".kio-" + KioBase.instance.level);
     }
 
     private static function inventDate():String {
@@ -84,7 +84,7 @@ public class FileUtils {
                 var data:ByteArray = fr.data;
                 var solUTF:String = data.readUTFBytes(data.length);
 //                try {
-                    var allData:* = JSON.decode(solUTF);
+                    var allData:* = JSON_k.decode(solUTF);
                     KioBase.instance.loadAllData(allData);
                 /*} catch (error:Error) {
                     //TODO show error message

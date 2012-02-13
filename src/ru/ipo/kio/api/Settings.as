@@ -6,8 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 package ru.ipo.kio.api {
-import com.adobe.serialization.json.JSON;
 import com.adobe.serialization.json.JSONParseError;
+import com.adobe.serialization.json.JSON_k;
 
 import mx.core.ByteArrayAsset;
 
@@ -36,7 +36,7 @@ public class Settings {
         });
 
         try {
-            _data = JSON.decode(text);
+            _data = JSON_k.decode(text);
         } catch (e:JSONParseError) {
             var ind:int = e.location - 10;
             if (ind < 0)

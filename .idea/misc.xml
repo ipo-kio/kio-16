@@ -13,15 +13,8 @@
     <option name="scrTextFileName" value="" />
     <option name="historyRevisionsNumber" value="4" />
   </component>
-  <component name="DependencyValidationManager">
-    <option name="SKIP_IMPORT_STATEMENTS" value="false" />
-  </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
-  </component>
-  <component name="Git.Settings">
-    <option name="CHECKOUT_INCLUDE_TAGS" value="false" />
-    <option name="UPDATE_CHANGES_POLICY" value="STASH" />
   </component>
   <component name="IdProvider" IDEtalkID="8B67FF93B3823769601447A243A625C1" />
   <component name="JavadocGenerationManager">
@@ -44,7 +37,7 @@
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="flex (player 10.0)" project-jdk-type="Flex SDK Type">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="flex_sdk_4.6.0.23201B (player 11.1)" project-jdk-type="Flex SDK Type">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="VssConfiguration">
@@ -81,5 +74,6 @@
       <option name="VERSION" />
     </GetOptions>
   </component>
+  <component name="WebServicesPlugin" addRequiredLibraries="true" />
 </project>
 

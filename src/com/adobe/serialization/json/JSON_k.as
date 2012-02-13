@@ -45,7 +45,7 @@ package com.adobe.serialization.json
 	 *		var myObject:Object = JSON.decode( jsonString );
 	 *	</code>
 	 */
-	public class JSON
+	public class JSON_k
 	{
 		/**
 		 * Encodes a object into a JSON string.

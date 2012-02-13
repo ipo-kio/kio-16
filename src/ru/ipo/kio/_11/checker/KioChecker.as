@@ -7,7 +7,7 @@
  */
 package ru.ipo.kio._11.checker {
 
-import com.adobe.serialization.json.JSON;
+import com.adobe.serialization.json.JSON_k;
 
 import flash.events.Event;
 import flash.events.TimerEvent;
@@ -165,7 +165,7 @@ public class KioChecker extends UIComponent {
                         continue;
                     var input:ByteArray = zip.getInput(entry);
                     var json:String = input.readUTFBytes(input.length);
-                    var cert:Object = JSON.decode(json);
+                    var cert:Object = JSON_k.decode(json);
                     old_checked_logins.push(getLogin(entry.name));
                     certificates[cert._level].push(cert);
                 }
@@ -309,9 +309,9 @@ public class KioChecker extends UIComponent {
     private function writeTemporaryCerts(last_cert:int):void {
         var c:Object;
         for each (c in certificates[1])
-            write(c._login + '.kio--c', JSON.encode(c));
+            write(c._login + '.kio--c', JSON_k.encode(c));
         for each (c in certificates[2])
-            write(c._login + '.kio--c', JSON.encode(c));
+            write(c._login + '.kio--c', JSON_k.encode(c));
 
 
         if (!NEED_RESULTS) {
@@ -364,7 +364,7 @@ public class KioChecker extends UIComponent {
         for each (var l:int in [1,2])
             for each (var c:Object in certificates[l])
                 if (!OUTPUT_ONLY_NEW_CERTS || new_checked_logins.indexOf(c._login) != -1)
-                    write(c._login + '.kio-certificate', JSON.encode(sign(c)));
+                    write(c._login + '.kio-certificate', JSON_k.encode(sign(c)));
         for each (l in [1,2])
             makeTable(l, certificates[l], levelProblems[l], levelProblemHeaders[l]);
 
@@ -499,7 +499,7 @@ public class KioChecker extends UIComponent {
 
     private function processSolution(login:String, input:ByteArray):Object {
         var solUTF:String = input.readUTFBytes(input.length);
-        var data:* = JSON.decode(solUTF);
+        var data:* = JSON_k.decode(solUTF);
 
         var level:int = data.kio_base.level;
         var anketa:* = data.kio_base.anketa;
@@ -543,7 +543,7 @@ public class KioChecker extends UIComponent {
 
     private function updateSolution(level:int, certificate:Object, probs:Array, input:ByteArray):void {
         var solUTF:String = input.readUTFBytes(input.length);
-        var data:* = JSON.decode(solUTF);
+        var data:* = JSON_k.decode(solUTF);
 
         var problems:Array = [];
         for each (var p_ind:int in probs) {
@@ -579,7 +579,7 @@ public class KioChecker extends UIComponent {
     }
 
     private function sign(certificate:Object):Object {
-        var cert:String = JSON.encode(certificate);
+        var cert:String = JSON_k.encode(certificate);
 
         return {
             json_certificate: cert,

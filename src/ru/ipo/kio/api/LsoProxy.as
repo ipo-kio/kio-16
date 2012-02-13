@@ -60,6 +60,7 @@ public class LsoProxy {
         for (var i:int = 0; i < _data.users.length; i++)
             if (!_data.users[i].kio_base || !_data.users[i].kio_base.anketa_filled)
                 remove_indexes.push(i);
+
         for (i = remove_indexes.length - 1; i >= 0; i--)
             _data.users.splice(remove_indexes[i], 1);
     }
@@ -77,7 +78,7 @@ public class LsoProxy {
         var local:SharedObject = SharedObject.getLocal("ru/ipo/kio/" + year + "/" + level, "/");
         local.addEventListener(NetStatusEvent.NET_STATUS, function (event:Event):void {
             trace('net status handled');
-            //TODO find out WHY this event was not triggered before. (google suggests it is just not handled at all in linux)
+            //TODO find out WHY this event was not triggered before. (google suggests it is just not triggered at all in linux)
         });
         return local;
     }
@@ -131,9 +132,15 @@ public class LsoProxy {
     }
 
     public function get userData():Object {
-        if (!_data.users) {
+        if (!_data.users  || _data.users.length == 0) {
             _data.users = [{}];
             user_index = 0;
+        }
+
+        if (one_problem_debug_regime) {
+            if (! _data.one_problem_debug_user)
+                _data.one_problem_debug_user = {};
+            return _data.one_problem_debug_user;
         }
 
         return _data.users[user_index];
@@ -168,6 +175,7 @@ public class LsoProxy {
     //-------------------------------------------------------
 
     private var user_index:int = -1;
+    private var one_problem_debug_regime:Boolean = false;
 
     public function userCount():int {
         normalize_users();
@@ -194,6 +202,10 @@ public class LsoProxy {
     public function createNewParticipant():void {
         _data.users.push({});
         userIndex = _data.users.length - 1;
+    }
+
+    public function setOneProblemDebugRegime():void {
+        one_problem_debug_regime = true;
     }
 }
 }
