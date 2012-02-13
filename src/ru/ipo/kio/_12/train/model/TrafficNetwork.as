@@ -9,8 +9,6 @@ import flash.events.TimerEvent;
 import flash.sampler._getInvocationCount;
 import flash.utils.Timer;
 
-import org.osmf.layout.PaddingLayoutFacet;
-
 import ru.ipo.kio._12.train.util.Pair;
 import ru.ipo.kio._12.train.util.TrafficNetworkCreator;
 
