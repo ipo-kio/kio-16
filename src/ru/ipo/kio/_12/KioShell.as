@@ -23,7 +23,7 @@ public class KioShell extends Sprite {
 
     public function KioShell() {
         KioApi.language = KioApi.L_ES;
-        _level = 1;
+        _level = 0;
 
         if (stage)
             init();
