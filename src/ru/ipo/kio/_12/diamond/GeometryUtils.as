@@ -162,13 +162,13 @@ public class GeometryUtils {
         var x:Number = s1.y - s2.y;
         var y:Number = s2.x - s1.x;
 
-        var l:Number = Math.sqrt(x * x + y * y);
+        var l:Number = 1; //Math.sqrt(x * x + y * y);
         
         return new Vertex2D(x / l,  y / l);
     }
 
-    //r1 lays on segment, returns a point such that r1-p is the reflected ray
-    public static function reflect_ray(r0:Vertex2D, r1:Vertex2D, s1:Vertex2D, s2:Vertex2D, eta:Number) {
+    //r1 lays on segment, returns a vector parallel to the reflected ray
+    public static function reflect_ray(r0:Vertex2D, r1:Vertex2D, s1:Vertex2D, s2:Vertex2D):Vertex2D {
         //reflected vector = r
         //initial vector = i
         //normal vector = n
@@ -176,9 +176,59 @@ public class GeometryUtils {
 
         var n:Vertex2D = normal_for_segment(s1, s2);
         //test n goes to the incoming half-plane
+        
+        var n_norm_sq:Number = n.x * n.x + n.y * n.y;
 
-
+        var mul:Number = scal_prod(r0, r1, Vertex2D.ZERO, n);
+        trace('mul = ' + mul);
+        
+        return new Vertex2D(
+                r1.x - r0.x - 2 * mul * n.x / n_norm_sq,
+                r1.y - r0.y - 2 * mul * n.y / n_norm_sq
+        );
     }
+    
+    public static function normalize(v:Vertex2D):Vertex2D {
+        var l:Number = Math.sqrt(v.x * v.x + v.y * v.y);
+        return new Vertex2D(
+                v.x / l,
+                v.y / l
+        );
+    }
+
+    public static function normalize2(v1:Vertex2D, v2:Vertex2D):Vertex2D {
+        var x:Number = v2.x - v1.x;
+        var y:Number = v2.y - v1.y;
+        var l:Number = Math.sqrt(x * x + y * y);
+        return new Vertex2D(x / l, y / l);
+    }
+
+    //r1 lays on segment, returns a vector parallel to the refracted ray
+    public static function refract_ray(r0:Vertex2D, r1:Vertex2D, s1:Vertex2D, s2:Vertex2D, eta12:Number):Vertex2D {
+        var i:Vertex2D = normalize2(r0, r1);
+        var n:Vertex2D = normalize(normal_for_segment(s1, s2));
+
+        //make sure that normal goes to the half plane with the incoming ray
+        var cos_ti:Number = - scal_prod(Vertex2D.ZERO, i, Vertex2D.ZERO, n);
+        if (cos_ti < 0) {
+            n = new Vertex2D(-n.x, -n.y);
+            cos_ti = -cos_ti;
+        }
+
+        var sin_tn:Number = eta12 * eta12 * (1 - cos_ti * cos_ti);
+
+        if (sin_tn > 1)
+            return null; //Total internal reflection
+
+        var k2:Number = eta12 * cos_ti - Math.sqrt(1 - sin_tn);
+        
+        return new Vertex2D(
+                cos_ti * i.x + k2 * n.x,
+                cos_ti * i.y + k2 * n.y
+        );
+    }
+
+
 
 }
 }
