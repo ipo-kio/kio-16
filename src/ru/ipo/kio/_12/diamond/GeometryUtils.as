@@ -74,9 +74,6 @@ public class GeometryUtils {
                 }
             }
         
-        trace('after angles sort:');
-        trace(poly);
-
         var stack:Array = new Array(p0, poly[1]);
         for (i = 2; i < poly.length; i++)
             while (true) {
@@ -180,8 +177,7 @@ public class GeometryUtils {
         var n_norm_sq:Number = n.x * n.x + n.y * n.y;
 
         var mul:Number = scal_prod(r0, r1, Vertex2D.ZERO, n);
-        trace('mul = ' + mul);
-        
+
         return new Vertex2D(
                 r1.x - r0.x - 2 * mul * n.x / n_norm_sq,
                 r1.y - r0.y - 2 * mul * n.y / n_norm_sq
@@ -228,7 +224,74 @@ public class GeometryUtils {
         );
     }
 
+    //returns [intersection, i, j]
+    //don't intersect with i0, i0 + 1
+    //take_min = true means the closest intersection will be chosen
+    public static function intersect_ray_and_poly(r0:Vertex2D, r1:Vertex2D, d:Array, i0:int, take_min:Boolean):Array {
+        var s:Array = []; //candidates
+        for (var i:int = 0; i < d.length; i++) {
+            var j:int = i - 1;
 
+            if (j < 0)
+                j = d.length - 1;
+
+            //don't intersect with i0 - j0
+            if (j == i0)
+                continue;
+
+            var p:Vertex2D = intersect_ray_and_segment(r0, r1, d[i], d[j]);
+            
+            if (p != null)
+                s.push([p, j]);
+        }
+
+        if (take_min) {
+            var min:Array = null;
+            var min_d:Number = Number.MAX_VALUE;
+            for each (var r:Array in s) {
+                var l:Number = (r0.x - s[0].x) * (r0.x - s[0].x) + (r0.y - s[0].y) * (r0.y - s[0].y);
+                if (l < min_d) {
+                    min_d = l;
+                    min = r;
+                }
+            }
+
+            return min;
+        } else {
+            //code duplication is not a mortal sin
+            var max:Array = null;
+            var max_d:Number = Number.MIN_VALUE;
+            for each (r in s) {
+                l = (r0.x - s[0].x) * (r0.x - s[0].x) + (r0.y - s[0].y) * (r0.y - s[0].y);
+                if (l > max_d) {
+                    max_d = l;
+                    max = r;
+                }
+            }
+            
+            return max;
+        }
+    }
+
+//    //returns [1. first ray 2. internal rays 3. out rays]
+//    public static function trace_rays(r0:Vertex2D, r1:Vertex2D, d:Array/*Vertex2D*/, eta:Number):Array {
+//        var int_rays:Array = [];
+//        var out_rays:Array = [];
+//
+//        var first_intersection:Array = intersect_ray_and_poly(r0, r1, d, -1, -1, false);
+//
+//        if (first_intersection == null)
+//            return [[r0, first_intersection[0]], [], []];
+//
+//        var cur_int:Array = first_intersection;
+//
+//        while (true) {
+//            var rfl_r:Vertex2D = reflect_ray(r0, r1, d[cur_int[1]], d[cur_int[2]]);
+//            var rfr_r:Vertex2D = refract_ray(r0, r1, d[cur_int[1]], d[cur_int[2]], eta);
+//        }
+//
+//        return [[r0, first_intersection[0]], int_rays, out_rays];
+//    }
 
 }
 }

@@ -48,6 +48,10 @@ public class Vertex2D extends EventDispatcher {
         _y = y;
         dispatchEvent(MOVE_EVENT);
     }
+    
+    public function plus(v:Vertex2D) {
+        return new Vertex2D(_x + v.x, _y + v.y);
+    }
 
     override public function toString():String {
         return '(' + _x + ', ' + _y + ')';
