@@ -6,21 +6,22 @@
  * To change this template use File | Settings | File Templates.
  */
 package ru.ipo.kio._12.diamond.view {
-import flash.display.BitmapData;
-import flash.display.BlendMode;
 import flash.display.DisplayObject;
 import flash.display.Sprite;
-import flash.geom.Point;
+import flash.events.Event;
+
+import ru.ipo.kio._11.semiramida.SemiramidaProblem;
 
 import ru.ipo.kio._12.diamond.Vertex2D;
 
 import ru.ipo.kio._12.diamond.model.Diamond;
+import ru.ipo.kio._12.diamond.model.Ray;
 
 public class Eye extends Sprite {
-    
+
     [Embed(source='../resources/eye.png', mimeType='image/png')]
     public static const EYE_IMAGE_CLASS:Class;
-    
+
     private static const img_x0:int = 5;
     private static const img_y0:int = 15;
 
@@ -44,16 +45,21 @@ public class Eye extends Sprite {
     private static const field_W:Number = field_d0 + field_w + rays_extra_width;
     private static const field_H:Number = field_h + rays_extra_height;
 
-    private static const min_angle:int = - Math.PI / 4;
-    private static const max_angle:int = + Math.PI / 4;
-    
+    private static const min_angle:int = -Math.PI / 4;
+    private static const max_angle:int = +Math.PI / 4;
+
     private var _angle:Number;
 
     private var _scaler:LinearScaler;
 
-    private var rays_layer:DisplayObject = null;
+    private var rays_layer:Sprite = null;
+
+    private var diamond:Diamond;
 
     public function Eye(diamond:Diamond) {
+
+        this.diamond = diamond;
+
         var dx:Number = 0;
         var dy:Number = field_h * field_scale / 2;
 
@@ -73,28 +79,34 @@ public class Eye extends Sprite {
         var mainImage:DisplayObject = new EYE_IMAGE_CLASS;
         mainImage.x = dx - img_x0;
         mainImage.y = dy - img_y0;
-        addChild(mainImage);
-
-        addChild(diamond_view);
 
         graphics.beginFill(0x000000);
         graphics.drawRect(
                 0,
-                - rays_extra_height * field_scale / 2,
+                -rays_extra_height * field_scale / 2,
                 (field_d0 + field_h + rays_extra_width) * field_scale,
                 (field_w + rays_extra_height) * field_scale
         );
         graphics.endFill();
-        
+
+        _angle = 0;
+
         update();
+
+        diamond.addEventListener(Diamond.UPDATE, function(e:Event):void {
+            update();
+        });
+
+        addChild(mainImage);
+        addChild(diamond_view);
     }
-    
+
     public function set angle(value:Number):void {
         value = Math.max(value, min_angle);
         value = Math.min(value, max_angle);
-        
+
         _angle = value;
-        
+
         update();
     }
 
@@ -109,41 +121,43 @@ public class Eye extends Sprite {
             rays_layer = null;
         }
 
-        var rays_bd:BitmapData = new BitmapData(field_W, field_H);
+        var ray:Ray = new Ray(
+                null,
+                new Vertex2D(0, 0),
+                new Vertex2D(Math.cos(_angle), Math.sin(_angle)),
+                false,
+                -1,
+                1
+        );
 
-        var v1:Vertex2D = new Vertex2D(0, 0);
-        var v2:Vertex2D = new Vertex2D(30, 10);
+        rays_layer = new Sprite();
 
-        var p1:Point = _scaler.vertex2point(v1);
-        var p2:Point = _scaler.vertex2point(v2);
+        for (var col:int = 0; col <= 2; col ++) {
+            ray.recurse_bild_rays(diamond.hull, Diamond.ETA + 0.01 * col);
 
-        trace(p1.x + ', ' + p1.y);
-        trace(p2.x + ', ' + p2.y);
+            var ray_color_layer:Sprite = new Sprite();
 
-        //RayDrawUtils.drawRay(rays_bd, p1, p2, 0xFFFF0000, 0.5);
+            add_all_rays(ray, ray_color_layer, 0xFF << (col * 8));
 
-        var s:Sprite = new Sprite();
-
-        var s1:Sprite = new Sprite();
-        var s2:Sprite = new Sprite();
-
-        s1.graphics.lineStyle(3, 0xFF0000);
-        s1.graphics.moveTo(p1.x, p1.y);
-        s1.graphics.lineTo(p2.x, p2.y);
-
-        s2.graphics.lineStyle(10, 0x00FF00);
-        s2.graphics.moveTo(p1.x, p1.y);
-        s2.graphics.lineTo(p2.x, p2.y);
-
-        s1.blendMode = BlendMode.ADD;
-        s2.blendMode = BlendMode.ADD;
-
-        s.addChild(s1);
-        s.addChild(s2);
-
-        rays_layer = s;//new Bitmap(rays_bd);
+            rays_layer.addChild(ray_color_layer);
+        }
 
         addChild(rays_layer);
+    }
+
+    private function add_all_rays(ray:Ray, s:Sprite, color:uint):void {
+        s.addChild(new VisibleRay(ray, _scaler, color,
+                0,
+                - field_h / 2 - rays_extra_height / 2,
+                field_d0 + field_h + rays_extra_width,
+                field_h / 2 + rays_extra_height / 2)
+        );
+
+        for (var i:int = 0; i <= 1; i++) {
+            var rr:Ray = ray.get_reflect_refract_ray(i);
+            if (rr != null)
+                add_all_rays(rr, s, color);
+        }
     }
 
 }

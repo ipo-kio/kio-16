@@ -83,10 +83,11 @@ public class DiamondView extends Sprite {
         //draw edges
         graphics.clear();
         graphics.beginFill(0x000000, 0.01);
+        graphics.lineStyle(1, 0x222222);
         graphics.drawRect(scaled_min_p.x, scaled_min_p.y, scaled_max_p.x - scaled_min_p.x, scaled_max_p.y - scaled_min_p.y);
         graphics.endFill();
         
-        graphics.lineStyle(3, 0x0000AA);
+        graphics.lineStyle(1, 0x888888);
 
             var hullVerticesCount:int = _diamond.hullVertexCount;
         for (i = 0; i < hullVerticesCount; i++) {

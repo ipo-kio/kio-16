@@ -49,8 +49,32 @@ public class Vertex2D extends EventDispatcher {
         dispatchEvent(MOVE_EVENT);
     }
     
-    public function plus(v:Vertex2D) {
+    public function plus(v:Vertex2D):Vertex2D {
         return new Vertex2D(_x + v.x, _y + v.y);
+    }
+
+    public function minus(v:Vertex2D):Vertex2D {
+        return new Vertex2D(_x - v.x, _y - v.y);
+    }
+    
+    public function get angle():Number {
+        return Math.atan2(_y, _x);
+    }
+    
+    public function mul(a:Number):Vertex2D {
+        return new Vertex2D(_x * a, _y * a);
+    }
+
+    public function get length():Number {
+        return Math.sqrt(_x * _x + _y * _y);
+    }
+
+    public function get normalize():Vertex2D {
+        var l:Number = length;
+        if (length < 1e-8) //TODO
+            return new Vertex2D(0, 0);
+        else
+            return new Vertex2D(_x / l, _y / l);
     }
 
     override public function toString():String {

@@ -97,7 +97,7 @@ public class VertexView extends Sprite {
         down_view.graphics.drawCircle(0, 0, 5);
         down_view.graphics.endFill();
         
-        normal_view.graphics.lineStyle(1, 0xFFFFFF);
+        normal_view.graphics.lineStyle(1, 0x888888);
         normal_view.graphics.drawRect(-3, -3, 6, 6);
     }
 

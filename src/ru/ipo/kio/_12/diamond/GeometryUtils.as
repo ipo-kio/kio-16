@@ -199,8 +199,9 @@ public class GeometryUtils {
         return new Vertex2D(x / l, y / l);
     }
 
-    //r1 lays on segment, returns a vector parallel to the refracted ray
-    public static function refract_ray(r0:Vertex2D, r1:Vertex2D, s1:Vertex2D, s2:Vertex2D, eta12:Number):Vertex2D {
+    //r1 lays on segment, returns a vector parallel to the refracted ray.
+    //returns [vector, refraction percent]
+    public static function refract_ray(r0:Vertex2D, r1:Vertex2D, s1:Vertex2D, s2:Vertex2D, eta12:Number):Array {
         var i:Vertex2D = normalize2(r0, r1);
         var n:Vertex2D = normalize(normal_for_segment(s1, s2));
 
@@ -216,12 +217,18 @@ public class GeometryUtils {
         if (sin_tn > 1)
             return null; //Total internal reflection
 
-        var k2:Number = eta12 * cos_ti - Math.sqrt(1 - sin_tn);
-        
-        return new Vertex2D(
-                cos_ti * i.x + k2 * n.x,
-                cos_ti * i.y + k2 * n.y
-        );
+        var k2:Number = eta12 * cos_ti - Math.sqrt(1 - sin_tn * sin_tn);
+
+        var cos_tn:Number = Math.sqrt(1 - sin_tn * sin_tn);
+        var r_perp:Number = Math.pow((eta12 * cos_ti - cos_tn) / (eta12 * cos_ti + cos_tn), 2);
+        var r_par:Number = Math.pow((cos_ti - eta12 * cos_tn) / (cos_ti + eta12 * cos_tn), 2);
+
+        return [new Vertex2D(
+                eta12 * i.x + k2 * n.x,
+                eta12 * i.y + k2 * n.y
+        ),
+                1 - (r_par + r_perp) / 2
+        ];
     }
 
     //returns [intersection, i, j]
@@ -235,7 +242,7 @@ public class GeometryUtils {
             if (j < 0)
                 j = d.length - 1;
 
-            //don't intersect with i0 - j0
+            //don't intersect with i0
             if (j == i0)
                 continue;
 
@@ -249,7 +256,7 @@ public class GeometryUtils {
             var min:Array = null;
             var min_d:Number = Number.MAX_VALUE;
             for each (var r:Array in s) {
-                var l:Number = (r0.x - s[0].x) * (r0.x - s[0].x) + (r0.y - s[0].y) * (r0.y - s[0].y);
+                var l:Number = (r0.x - r[0].x) * (r0.x - r[0].x) + (r0.y - r[0].y) * (r0.y - r[0].y);
                 if (l < min_d) {
                     min_d = l;
                     min = r;
@@ -262,7 +269,7 @@ public class GeometryUtils {
             var max:Array = null;
             var max_d:Number = Number.MIN_VALUE;
             for each (r in s) {
-                l = (r0.x - s[0].x) * (r0.x - s[0].x) + (r0.y - s[0].y) * (r0.y - s[0].y);
+                l = (r0.x - r[0].x) * (r0.x - r[0].x) + (r0.y - r[0].y) * (r0.y - r[0].y);
                 if (l > max_d) {
                     max_d = l;
                     max = r;
