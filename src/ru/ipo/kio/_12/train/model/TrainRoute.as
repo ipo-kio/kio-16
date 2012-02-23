@@ -70,6 +70,8 @@ public class TrainRoute {
         return t;
     }
 
-
+    public function clear():void {
+       _rails = new Vector.<Rail>();
+    }
 }
 }

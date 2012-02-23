@@ -44,5 +44,18 @@ public class RailEnd extends VisibleEntity{
         }
         return false;
     }
+
+
+    public function getAllNearConnectors():Vector.<RailConnector> {
+        var list:Vector.<RailConnector> = new Vector.<RailConnector>();
+        for(var i:int=0; i<_connectors.length; i++){
+            list.push(_connectors[i]);
+            var end:RailEnd = _connectors[i].getAnotherEnd(this);
+            for(var j:int=0; j<end.connectors.length; j++){
+                list.push(end.connectors[j]);
+            }
+         }
+        return list;
+    }
 }
 }
