@@ -10,7 +10,6 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
-import flash.system.System;
 import flash.utils.Dictionary;
 
 import ru.ipo.kio._12.diamond.Vertex2D;
@@ -25,18 +24,27 @@ public class DiamondView extends Sprite {
     private var x_max:int;
     private var y_max:int;
 
-    private var vert2view:Dictionary/*Vertex2D -> VertexView*/ = new Dictionary();
+    private var scaler:Scaler;
+    private var scaled_min_p:Point;
+    private var scaled_max_p:Point;
 
-    public function DiamondView(diamond:Diamond, x_min:int, y_min:int, x_max:int, y_max:int) {
+    private const vert2view:Dictionary/*Vertex2D -> VertexView*/ = new Dictionary();
+
+    public function DiamondView(diamond:Diamond, x_min:int, y_min:int, x_max:int, y_max:int, scaler:Scaler) {
         _diamond = diamond;
         
         this.x_min = x_min;
         this.y_min = y_min;
         this.x_max = x_max;
         this.y_max = y_max;
+        
+        this.scaler = scaler;
+
+        scaled_min_p = scaler.vertex2point(new Vertex2D(x_min, y_min));
+        scaled_max_p = scaler.vertex2point(new Vertex2D(x_max, y_max));
 
         _diamond.addEventListener(Diamond.UPDATE, diamond_update);
-        addEventListener(MouseEvent.DOUBLE_CLICK, create_vertex)
+        addEventListener(MouseEvent.DOUBLE_CLICK, create_vertex);
         
         doubleClickEnabled = true;
 
@@ -47,8 +55,7 @@ public class DiamondView extends Sprite {
         if (_diamond.vertexCount >= 20)
             return;
         
-        //TODO add scale
-        var vertex:Vertex2D = new Vertex2D(event.localX, event.localY);
+        var vertex:Vertex2D = scaler.point2vertex(new Point(event.localX, event.localY));
         _diamond.addVertex(vertex);
     }
 
@@ -60,7 +67,7 @@ public class DiamondView extends Sprite {
         for (var i:int = 0; i < v_count; i++) {
             var vertex:Vertex2D = _diamond.getVertex(i);
             if (!vert2view[vertex]) {
-                var view:VertexView = new VertexView(vertex, x_min, y_min, x_max, y_max);
+                var view:VertexView = new VertexView(vertex, x_min, y_min, x_max, y_max, scaler);
                 vert2view[vertex] = view;
                 addChild(view);
             }
@@ -75,14 +82,14 @@ public class DiamondView extends Sprite {
 
         //draw edges
         graphics.clear();
-        graphics.beginFill(0xFFFFFF);
-        graphics.drawRect(x_min, y_min, x_max, y_max); //todo scale
+        graphics.beginFill(0x000000, 0.01);
+        graphics.lineStyle(1, 0x222222);
+        graphics.drawRect(scaled_min_p.x, scaled_min_p.y, scaled_max_p.x - scaled_min_p.x, scaled_max_p.y - scaled_min_p.y);
         graphics.endFill();
         
-        graphics.lineStyle(3, 0x0000AA);
+        graphics.lineStyle(1, 0x888888);
 
-        trace('UPDATING ' + new Date().time);
-        var hullVerticesCount:int = _diamond.hullVertexCount;
+            var hullVerticesCount:int = _diamond.hullVertexCount;
         for (i = 0; i < hullVerticesCount; i++) {
             var j:int = i + 1;
             if (j == hullVerticesCount)

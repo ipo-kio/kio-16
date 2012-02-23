@@ -14,6 +14,8 @@ import ru.ipo.kio._12.diamond.Vertex2D;
 
 public class Diamond extends EventDispatcher {
 
+    public static const ETA:Number = 2.417; //2.
+
     private var _vertices:Array/*Vertex2D*/ = [];
     private var _hull:Array/*Vertex2D*/ = [];
 
@@ -24,7 +26,6 @@ public class Diamond extends EventDispatcher {
     }
 
     private function update_convex_hull():void {
-        trace(_vertices);
         _hull = GeometryUtils.convex_hull(_vertices);
     }
 
@@ -81,6 +82,10 @@ public class Diamond extends EventDispatcher {
     private function vertex_moved(event:Event):void {
         update_convex_hull();
         dispatchEvent(UPDATE_EVENT);
+    }
+
+    public function get hull():Array {
+        return _hull;
     }
 }
 }

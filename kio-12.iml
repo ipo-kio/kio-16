@@ -5,7 +5,7 @@
     <option name="USE_CUSTOM_CONFIG_FILE" value="true" />
     <option name="CUSTOM_CONFIG_FILE" value="$MODULE_DIR$/compiler-config.xml" />
     <option name="OUTPUT_FILE_NAME" value="kio_11.swf" />
-    <option name="TARGET_PLAYER_VERSION" value="11.1" />
+    <option name="TARGET_PLAYER_VERSION" value="10.0.0" />
     <option name="VERSION" value="3" />
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
@@ -15,6 +15,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Spotlights" level="project" />
   </component>
 </module>
 

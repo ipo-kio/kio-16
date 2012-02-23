@@ -15,10 +15,11 @@ import flash.geom.Rectangle;
 
 import ru.ipo.kio._12.diamond.Vertex2D;
 
+import spark.effects.Scale;
+
 public class VertexView extends Sprite {
 
-//    private var _x_scale:int = 5;
-//    private var _y_scale:int = 5;
+    private var scaler:Scaler;
 
     private var _x_min:int;
     private var _y_min:int;
@@ -38,12 +39,14 @@ public class VertexView extends Sprite {
     private const down_view:Sprite = new Sprite();
     private const hit_test_view:Sprite = new Sprite();
 
-    public function VertexView(v:Vertex2D, x_min:int, y_min:int, x_max:int, y_max:int) {
+    public function VertexView(v:Vertex2D, x_min:int, y_min:int, x_max:int, y_max:int, scaler:Scaler) {
         _v = v;
         _x_min = x_min;
         _y_min = y_min;
         _x_max = x_max;
         _y_max = y_max;
+
+        this.scaler = scaler;
         
         _v.addEventListener(Vertex2D.MOVE, vertex_moved);
 
@@ -82,7 +85,7 @@ public class VertexView extends Sprite {
     }
 
     private function init_views():void {
-        hit_test_view.graphics.beginFill(0x000000);
+        hit_test_view.graphics.beginFill(0xFF00FF);
         hit_test_view.graphics.drawCircle(0, 0, 5);
         hit_test_view.graphics.endFill();
 
@@ -94,23 +97,23 @@ public class VertexView extends Sprite {
         down_view.graphics.drawCircle(0, 0, 5);
         down_view.graphics.endFill();
         
-        normal_view.graphics.lineStyle(1, 0x00000);
+        normal_view.graphics.lineStyle(1, 0x888888);
         normal_view.graphics.drawRect(-3, -3, 6, 6);
     }
 
     private function vertex_moved(event:Event = null):void {
-        //TODO set scale here
-        x = _v.x;
-        y = _v.y;
+        var p:Point = scaler.vertex2point(_v);
+        x = p.x;
+        y = p.y;
     }
 
     private function mouse_move(e:MouseEvent):void {
         if (!moving_point)
             return;
 
-        //TODO scale here
-        var _x:Number = x;
-        var _y:Number = y;
+        var v2d:Vertex2D = scaler.point2vertex(new Point(x, y));
+        var _x:Number = v2d.x;
+        var _y:Number = v2d.y;
         
         _x = Math.max(_x, _x_min);
         _y = Math.max(_y, _y_min);
@@ -121,9 +124,12 @@ public class VertexView extends Sprite {
     }
 
     private function mouse_down(e:MouseEvent):void {
-        //TODO scale here
+        
+        var p_min:Point = scaler.vertex2point(new Vertex2D(_x_min, _y_min));
+        var p_max:Point = scaler.vertex2point(new Vertex2D(_x_max, _y_max));
+
         current_view = down_view;
-        startDrag(false, new Rectangle(_x_min, _y_min, _x_max - _x_min, _y_max - _y_min));
+        startDrag(false, new Rectangle(p_min.x, p_min.y, p_max.x - p_min.x, p_max.y - p_min.y));
         moving_point = true;
     }
 
@@ -141,7 +147,7 @@ public class VertexView extends Sprite {
     }
 
     public function get screenPoint():Point {
-        return new Point(x, y); //TODO set scale here
+        return new Point(x, y);
     }
     
     public function get current_view():DisplayObject {

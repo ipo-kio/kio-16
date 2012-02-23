@@ -25,12 +25,14 @@ public class DiamondWorkspace extends Sprite {
         removeEventListener(Event.ADDED_TO_STAGE, init);
         
         var d:Diamond = new Diamond();
-        d.addVertex(new Vertex2D(10, 20));
-        d.addVertex(new Vertex2D(100, 300));
-        d.addVertex(new Vertex2D(400, 500));
-        d.addVertex(new Vertex2D(200, 50));
+        d.addVertex(new Vertex2D(20, 10));
+        d.addVertex(new Vertex2D(30, -15));
+        d.addVertex(new Vertex2D(40, 5));
+        d.addVertex(new Vertex2D(50, -10));
 
-        var dv:DiamondView = new DiamondView(d, 0, 0, 600, 600);
+        var dv:Eye = new Eye(d);
+        dv.x = 150;
+        dv.y = 150;
 
         addChild(dv);
     }
