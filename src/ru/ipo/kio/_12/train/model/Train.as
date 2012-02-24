@@ -8,7 +8,17 @@ import ru.ipo.kio._12.train.model.types.RailStationType;
 import ru.ipo.kio._12.train.view.TrainView;
 
 public class Train extends VisibleEntity {
-    
+
+    private var _destination:RailStationType;
+
+    public function get destination():RailStationType {
+        return _destination;
+    }
+
+    public function set destination(value:RailStationType):void {
+        _destination = value;
+    }
+
     private var _rail:Rail;
     
     private var _route:TrainRoute = new TrainRoute();
@@ -20,10 +30,14 @@ public class Train extends VisibleEntity {
     private var tick:int =0;
 
     private var count:int =0;
-    
-    public function Train() {
+
+
+    public function Train(destination:RailStationType) {
+        _destination = destination;
         view=new TrainView(this);
+
     }
+
 
     public function get rail():Rail {
         return _rail;
@@ -85,6 +99,24 @@ public class Train extends VisibleEntity {
        rail = route.rails[0];
        tick = 0;
         count = 0;
+    }
+    
+    public function moveLast():void{
+        count = route.rails.length-1;
+        rail = route.rails[count];
+    }
+
+    public function isFinished():Boolean{
+        return count >= route.rails.length;
+    }
+
+    public function isDirect():Boolean {
+        if(route.rails.length<=1 || count == 0){
+            return true;
+        }
+        var preRail:Rail = route.rails[count-1];
+        
+        return rail.firstEnd.isConnected(preRail);
     }
 }
 }

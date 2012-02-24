@@ -24,7 +24,11 @@ public class Rail extends VisibleEntity {
 
     private var passengers:Vector.<Passenger> = new Vector.<Passenger>();
 
+    private var leavedPassengers:Vector.<Passenger> = new Vector.<Passenger>();
+
     private var _active:Boolean;
+
+    private var _id:int;
     
     public function Rail(trafficNetword:TrafficNetwork, type:RailType, firstPoint:Point, secondPoint:Point) {
         _type=type;
@@ -35,7 +39,9 @@ public class Rail extends VisibleEntity {
     }
     
     public function addPassenger(passenger:Passenger):void{
+        if(passengers.length<4){
         passengers.push(passenger);
+        }
     }
     
     public function getPassengers():Vector.<Passenger>{
@@ -130,11 +136,40 @@ public class Rail extends VisibleEntity {
         for(var i:int=passengers.length-1; i>=0; i--){
             if(passengers[i].destination == train.getClosestStation()){
                train.passengers.push(passengers[i]);
+               leavedPassengers.push(passengers[i]);
                passengers.splice(i, 1);
             }
         }
     }
 
+    public function restorePassengers():void{
+        for(var i:int=leavedPassengers.length-1; i>=0; i--){
+            passengers.push(leavedPassengers[i]);
+        }
+        leavedPassengers = new Vector.<Passenger>();
+    }
 
+    public function getConnector(rail:Rail):RailConnector{
+        for (var i:int = 0; i < firstEnd.connectors.length; i++) {
+            if(firstEnd.connectors[i].getAnotherRail(this)==rail){
+                return firstEnd.connectors[i];
+            }
+        }
+        for (var i:int = 0; i < secondEnd.connectors.length; i++) {
+            if(secondEnd.connectors[i].getAnotherRail(this)==rail){
+                return secondEnd.connectors[i];
+            }
+        }
+        return null;
+    }
+
+
+    public function get id():int {
+        return _id;
+    }
+
+    public function set id(value:int):void {
+        _id = value;
+    }
 }
 }

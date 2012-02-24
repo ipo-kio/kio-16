@@ -8,6 +8,8 @@ package ru.ipo.kio._12 {
 import flash.display.Sprite;
 import flash.events.Event;
 
+import ru.ipo.kio.api_example.ExampleProblem;
+
 /*
 import ru.ipo.kio._11.VirtualPhysics.PhysicsProblem;
 import ru.ipo.kio._11.ariadne.AriadneProblem;
@@ -36,11 +38,12 @@ public class KioShell extends Sprite {
 
         KioBase.instance.init(this,
                 [
+                        new ExampleProblem(_level)
 //                    new SemiramidaProblem(_level),
 //                    new DigitProblem(_level),
 //                    _level == 1 ? new AriadneProblem : new PhysicsProblem
                 ],
-                2011,
+                2012,
                 _level
         );
 

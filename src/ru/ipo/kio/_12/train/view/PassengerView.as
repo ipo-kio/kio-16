@@ -10,10 +10,24 @@ import ru.ipo.kio._12.train.model.Passenger;
 
 import ru.ipo.kio._12.train.model.Rail;
 import ru.ipo.kio._12.train.model.TrafficNetwork;
+import ru.ipo.kio._12.train.model.types.RailStationType;
 import ru.ipo.kio._12.train.model.types.RailType;
+import ru.ipo.kio.base.displays.AboutDisplay;
 
 public class PassengerView extends BasicView {
-    
+
+    [Embed(source='../_resources/Dot_red.png')]
+    private static const LEVEL_1_RED:Class;
+
+    [Embed(source='../_resources/Dot_green.png')]
+    private static const LEVEL_1_GREEN:Class;
+
+    [Embed(source='../_resources/Dot_blue.png')]
+    private static const LEVEL_1_BLUE:Class;
+
+    [Embed(source='../_resources/Dot_yellow.png')]
+    private static const LEVEL_1_YELLOW:Class;
+
     private var passenger:Passenger;
     
     public function PassengerView(passenger:Passenger) {
@@ -23,15 +37,24 @@ public class PassengerView extends BasicView {
     }
 
     private function place(passenger:Passenger):void {
-
+        var line;
+        if(passenger.destination==RailStationType.FIRST){
+            line = new LEVEL_1_BLUE;
+        }
+        else if(passenger.destination==RailStationType.SECOND){
+            line = new LEVEL_1_YELLOW;
+        }
+        else if(passenger.destination==RailStationType.THIRD){
+            line = new LEVEL_1_RED;
+        }
+        else if(passenger.destination==RailStationType.FOURTH){
+            line = new LEVEL_1_GREEN;
+        }
+        addChild(line);
     }
 
      public override function update():void{
-         graphics.clear();
-         graphics.lineStyle(0,passenger.destination.color);
-         graphics.beginFill(passenger.destination.color);
-         graphics.drawCircle(-TrafficNetwork.instance.passengerSize,-TrafficNetwork.instance.passengerSize, TrafficNetwork.instance.passengerSize);
-         graphics.endFill();
+
      }
 }
 }

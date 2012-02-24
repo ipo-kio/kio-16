@@ -6,41 +6,63 @@
 package ru.ipo.kio._12.train.model {
 import ru.ipo.kio._12.train.model.types.RailConnectorType;
 
-public class RailConnector {
+public class RailConnector extends VisibleEntity {
     
-    private var type:RailConnectorType;
+    private var _type:RailConnectorType;
 
-    private var firstEnd:RailEnd;
+    private var _firstEnd:RailEnd;
 
-    private var secondEnd:RailEnd;
+    private var _secondEnd:RailEnd;
     
     public function RailConnector(type:RailConnectorType,  firstEnd:RailEnd, secondEnd:RailEnd) {
-        this.type = type;
-        this.firstEnd=firstEnd;
-        this.secondEnd=secondEnd;
+        this._type = type;
+        this._firstEnd=firstEnd;
+        this._secondEnd=secondEnd;
         firstEnd.addConnector(this);
         secondEnd.addConnector(this);
     }
     
     public function getAnotherRail(rail:Rail):Rail{
-        if(firstEnd.rail == rail){
-            return secondEnd.rail;
-        }else if(secondEnd.rail == rail){
-            return firstEnd.rail;
+        if(_firstEnd.rail == rail){
+            return _secondEnd.rail;
+        }else if(_secondEnd.rail == rail){
+            return _firstEnd.rail;
         }else{
             throw new Error("There is no such rail in connector");
         }
     }
 
     public function getAnotherEnd(end:RailEnd):RailEnd{
-        if(firstEnd==end){
-            return secondEnd;
-        }else if(secondEnd==end){
-            return firstEnd;
+        if(_firstEnd==end){
+            return _secondEnd;
+        }else if(_secondEnd==end){
+            return _firstEnd;
         }else{
             return null;
         }
     
+    }
+
+    public function get type():RailConnectorType {
+        return _type;
+    }
+
+    public function set type(value:RailConnectorType):void {
+        _type = value;
+    }
+
+
+    public function toString():String {
+        return "[type: "+_type.name+"]";
+    }
+
+
+    public function get firstEnd():RailEnd {
+        return _firstEnd;
+    }
+
+    public function get secondEnd():RailEnd {
+        return _secondEnd;
     }
 }
 }

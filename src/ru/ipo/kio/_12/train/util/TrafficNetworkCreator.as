@@ -22,6 +22,7 @@ import ru.ipo.kio._12.train.model.TrainStation;
 import ru.ipo.kio._12.train.model.types.RailConnectorType;
 import ru.ipo.kio._12.train.model.types.RailStationType;
 import ru.ipo.kio._12.train.model.types.RailType;
+import ru.ipo.kio._12.train.view.CrossConnectorView;
 
 public class TrafficNetworkCreator {
 
@@ -40,57 +41,34 @@ public class TrafficNetworkCreator {
         return _instance;
     }
 
-    public function createTrafficNetwork(/*file:String*/):TrafficNetwork{
+    public function createTrafficNetwork(level:int):TrafficNetwork{
         trafficNetwork = TrafficNetwork.instance;
-        //var loader:URLLoader = new URLLoader();
-        //loader.dataFormat = URLLoaderDataFormat.TEXT;
-        //loader.addEventListener( Event.COMPLETE, handleComplete );
-        //loader.load( new URLRequest(file));
-        handleComplete(null);
+        trafficNetwork.level=level;
+        if(level == 1){
+            generateFirstLevel();
+        }
+        trafficNetwork.timeOfStep=1000;
+        trafficNetwork.view.update();
         return trafficNetwork;
     }
 
-    private function handleComplete( event:Event ):void {
-        //var params:XML = new XML( event.target.data );
-        var size:String="A";
-        var maxPassengers:int=4;
-//        for(var i:int = 0; i<params.children().length(); i++){
-//            var name:String = params.children()[i].attributes()[0];
-//            if(name == "size"){
-//               size = params.children()[i].attributes()[1];
-//            }else if(name == "maxPassengers"){
-//               maxPassengers = new Number(params.children()[i].attributes()[1]);
-//            }else if(name == "stepTime"){
-//                trafficNetwork.timeOfStep = new Number(params.children()[i].attributes()[1]);
-//            }
-//        }
-        trafficNetwork.timeOfStep=1000;
-        buildRails(size, maxPassengers);
-        trafficNetwork.view.update();
-        //result.text = "passengers "+trafficNetwork.amountOfPassengers;
-    }
-
-    private function buildRails(size:String, maxPassengers:int):void {
-        trafficNetwork.railLength = 100;
-        trafficNetwork.railWidth = 5;
-        trafficNetwork.railSpace = 10;
-        trafficNetwork.passengerSize = 3;
-        trafficNetwork.passengerSpace = 2;
-        trafficNetwork.maxPassengers=maxPassengers;
-        if(size == "A"){
-            generateFirstLevel();
-        }
-    }
 
     private function generateFirstLevel():void {
-        var size:int = 3;
-        var initX:int = 100;
-        var initY:int = 100;
+        trafficNetwork.railLength = 33;
+        trafficNetwork.railWidth = 42;
+        trafficNetwork.railSpace = 21;
+        trafficNetwork.passengerSize = 3;
+        trafficNetwork.passengerSpace = 2;
+        trafficNetwork.maxPassengers=4;
+        var size:int = 5;
+        var initX:int = 130+133;
+        var initY:int = 115
         generateGrid(size, initX, initY);
-        generateTopSemiRound(size);
-        generateBottomSemiRound(size);
-        generateLeftSemiRound(size);
-        generateRightSemiRound(size);
+
+        generateTopSemiRound(size, RailStationType.FIRST, 0);
+        generateBottomSemiRound(size, RailStationType.THIRD, 1);
+        generateLeftSemiRound(size, RailStationType.FOURTH, 1);
+        generateRightSemiRound(size, RailStationType.SECOND, 0);
 
         var firstRowRailFirst:Rail = trafficNetwork.getRail(0);
         var firstRowRailLast:Rail = trafficNetwork.getRail(size-1);
@@ -101,26 +79,57 @@ public class TrafficNetworkCreator {
         var lastColumnRailFirst:Rail = trafficNetwork.getRail(2*size*(size+1)-size);
         var lastColumnRailLast:Rail = trafficNetwork.getRail(2*(size+1)*size-1);
 
-        var stationOne:TrainStation = TrainStation(generateTopLeftRound(firstRowRailFirst, firstColumnRailFirst, RailStationType.FIRST));
-        var initRail1:Rail = generateTopRightRound(firstRowRailLast, lastColumnRailFirst);
-        var initRail2:Rail = generateBottomLeftRound(lastRowRailFirst, firstColumnRailLast);
-        var stationTwo:TrainStation = TrainStation(generateBottomRightRound(lastRowRailLast, lastColumnRailLast, RailStationType.SECOND));
+        var initRail1:Rail = generateTopLeftRound(firstRowRailFirst, firstColumnRailFirst);
+        var initRail2:Rail = generateTopRightRound(firstRowRailLast, lastColumnRailFirst);
+        var initRail4:Rail = generateBottomLeftRound(lastRowRailFirst, firstColumnRailLast);
+        var initRail3:Rail = generateBottomRightRound(lastRowRailLast, lastColumnRailLast);
+
+        addConnectorViews(size);
+
+        addTrain(0xb0d01b, initRail4, RailStationType.FOURTH);
+        addTrain(0xdf86701, initRail3, RailStationType.THIRD);
+        addTrain(0x88b7ff, initRail1, RailStationType.FIRST);
+        addTrain(0xffc21b, initRail2, RailStationType.SECOND);
+    }
     
-        var train1:Train = new Train();
-        train1.rail = initRail1;
-        train1.color = 0x7fc7ff;
-        train1.route.addRail(initRail1);
+    private function addTrain(color:int, initRail:Rail, type:RailStationType){
+        var train1:Train = new Train(type);
+        train1.rail = initRail;
+        train1.color = color;
+        train1.route.addRail(initRail);
         trafficNetwork.trains.push(train1);
         trafficNetwork.view.addChild(train1.view);
+    }
 
-        var train2:Train = new Train();
-        train2.rail = initRail2;
-        train2.color = 0xdf73ff;
-        train2.route.addRail(initRail2);
-        trafficNetwork.trains.push(train2);
-        trafficNetwork.view.addChild(train2.view);
-
-    
+    private function addConnectorViews(size:int):void {
+        for (var i:int = 0; i < size + 1; i++) {
+            for (var j:int = 0; j < size; j++) {
+                var index:int = j+i*size;
+                var rail:Rail = trafficNetwork.getRail(index);
+                if(j == 0){
+                    var view:CrossConnectorView = new CrossConnectorView();
+                    view.x = rail.firstEnd.point.x - trafficNetwork.railSpace*2;
+                    view.y = rail.firstEnd.point.y - trafficNetwork.railSpace;
+                    trafficNetwork.view.addChild(view);
+                    var connectors:Vector.<RailConnector> =  rail.firstEnd.getAllNearConnectors();
+                    trafficNetwork.connectorViews.push(view);
+                    for(var k:int = 0; k<connectors.length; k++){
+                        connectors[k].view = view;
+                        view.connectors.push(connectors[k]);
+                    }
+                }
+                var view:CrossConnectorView = new CrossConnectorView();
+                view.x = rail.secondEnd.point.x;
+                view.y = rail.secondEnd.point.y - trafficNetwork.railSpace;
+                trafficNetwork.view.addChild(view);
+                var connectors:Vector.<RailConnector> =  rail.secondEnd.getAllNearConnectors();
+                trafficNetwork.connectorViews.push(view);
+                for(var k:int = 0; k<connectors.length; k++){
+                    connectors[k].view = view;
+                    view.connectors.push(connectors[k]);
+                }
+            }
+        }
     }
 
 
@@ -136,6 +145,10 @@ public class TrafficNetworkCreator {
 
         new RailConnector(RailConnectorType.TOP_RIGHT, lastRowRailLast.secondEnd, bottomRightRail.secondEnd);
         new RailConnector(RailConnectorType.BOTTOM_LEFT, lastColumnRailLast.secondEnd, bottomRightRail.firstEnd);
+
+        new RailConnector(RailConnectorType.HORIZONTAL, lastRowRailLast.secondEnd, bottomRightRail.firstEnd);
+        new RailConnector(RailConnectorType.VERTICAL, lastColumnRailLast.secondEnd, bottomRightRail.secondEnd);
+
         new RailConnector(RailConnectorType.TOP_LEFT, bottomRightRail.firstEnd, bottomRightRail.secondEnd);
 
         return bottomRightRail;
@@ -149,6 +162,10 @@ public class TrafficNetworkCreator {
 
         new RailConnector(RailConnectorType.BOTTOM_RIGHT, firstColumnRailLast.secondEnd, bottomLeftRail.secondEnd);
         new RailConnector(RailConnectorType.TOP_LEFT, lastRowRailFirst.firstEnd, bottomLeftRail.firstEnd);
+
+        new RailConnector(RailConnectorType.HORIZONTAL, lastRowRailFirst.firstEnd, bottomLeftRail.secondEnd);
+        new RailConnector(RailConnectorType.VERTICAL, firstColumnRailLast.secondEnd, bottomLeftRail.firstEnd);
+
         new RailConnector(RailConnectorType.TOP_RIGHT, bottomLeftRail.firstEnd, bottomLeftRail.secondEnd);
 
         return bottomLeftRail;
@@ -162,6 +179,10 @@ public class TrafficNetworkCreator {
 
         new RailConnector(RailConnectorType.BOTTOM_RIGHT, firstRowRailLast.secondEnd, topRightRail.firstEnd);
         new RailConnector(RailConnectorType.TOP_LEFT, lastColumnRailFirst.firstEnd, topRightRail.secondEnd);
+
+        new RailConnector(RailConnectorType.HORIZONTAL, firstRowRailLast.secondEnd, topRightRail.secondEnd);
+        new RailConnector(RailConnectorType.VERTICAL, lastColumnRailFirst.firstEnd, topRightRail.firstEnd);
+
         new RailConnector(RailConnectorType.BOTTOM_LEFT, topRightRail.firstEnd, topRightRail.secondEnd);
 
         return topRightRail;
@@ -179,31 +200,45 @@ public class TrafficNetworkCreator {
 
         new RailConnector(RailConnectorType.BOTTOM_LEFT, firstRowRailFirst.firstEnd, topLeftRail.secondEnd);
         new RailConnector(RailConnectorType.TOP_RIGHT, firstColumnRailFirst.firstEnd, topLeftRail.firstEnd);
+        new RailConnector(RailConnectorType.HORIZONTAL, firstRowRailFirst.firstEnd, topLeftRail.firstEnd);
+        new RailConnector(RailConnectorType.VERTICAL, firstColumnRailFirst.firstEnd, topLeftRail.secondEnd);
         new RailConnector(RailConnectorType.BOTTOM_RIGHT, topLeftRail.firstEnd, topLeftRail.secondEnd);
         return topLeftRail;
     }
 
-    private function generateRightSemiRound(size:int):void {
-       for (var i:int = size*(size+1)*2-size+1; i < size*(size+1)*2; i += 2) {
+    private function generateRightSemiRound(size:int, stationType:RailStationType=null, stationIndex:int=0):void {
+       
+        for (var i:int = size*(size+1)*2-size+1, c:int = 0; i < size*(size+1)*2; i += 2, c++) {
             var rail:Rail = trafficNetwork.getRail(i);
-            var railRight:Rail = addPassengers(new Rail(trafficNetwork, RailType.SEMI_ROUND_RIGHT,
+            var railRight:Rail = stationType!=null && stationIndex == c?
+                    new TrainStation(stationType, trafficNetwork, RailType.SEMI_ROUND_RIGHT,
+                    new Point(rail.firstEnd.point.x + trafficNetwork.railSpace, rail.firstEnd.point.y - trafficNetwork.railSpace),
+                    new Point(rail.secondEnd.point.x + trafficNetwork.railSpace, rail.secondEnd.point.y + trafficNetwork.railSpace)):                    
+                    addPassengers(new Rail(trafficNetwork, RailType.SEMI_ROUND_RIGHT,
                     new Point(rail.firstEnd.point.x + trafficNetwork.railSpace, rail.firstEnd.point.y - trafficNetwork.railSpace),
                     new Point(rail.secondEnd.point.x + trafficNetwork.railSpace, rail.secondEnd.point.y + trafficNetwork.railSpace)));
             trafficNetwork.addRail(railRight);
             new RailConnector(RailConnectorType.BOTTOM_LEFT, trafficNetwork.getRail(i - 1).secondEnd, railRight.firstEnd);
             new RailConnector(RailConnectorType.TOP_LEFT, railRight.secondEnd, trafficNetwork.getRail(i + 1).firstEnd);
+
             new RailConnector(RailConnectorType.TOP_LEFT, railRight.firstEnd, rail.firstEnd);
             new RailConnector(RailConnectorType.BOTTOM_LEFT, railRight.secondEnd, rail.secondEnd);
-            new RailConnector(RailConnectorType.HORIZONTAL, railRight.firstEnd, trafficNetwork.getRail(size * (1 + i-(size*(size+1)*2-size))-1).firstEnd);
+
+            new RailConnector(RailConnectorType.HORIZONTAL, railRight.firstEnd, trafficNetwork.getRail(size * (1 + i-(size*(size+1)*2-size))-1).secondEnd);
             new RailConnector(RailConnectorType.HORIZONTAL, railRight.secondEnd, trafficNetwork.getRail(size * (2 + i-(size*(size+1)*2-size))-1).secondEnd);
+
         }
     }
 
 
-    private function generateLeftSemiRound(size:int):void {
-        for (var i:int = size*(size+1)+1; i < size*(size+2); i += 2) {
+    private function generateLeftSemiRound(size:int, stationType:RailStationType=null, stationIndex:int=0):void {
+        for (var i:int = size*(size+1)+1, c:int = 0; i < size*(size+2); i += 2, c++) {
             var rail:Rail = trafficNetwork.getRail(i);
-            var railLeft:Rail = addPassengers(new Rail(trafficNetwork, RailType.SEMI_ROUND_LEFT,
+            var railLeft:Rail = stationType!=null && stationIndex == c?
+                    new TrainStation(stationType, trafficNetwork, RailType.SEMI_ROUND_LEFT,
+                            new Point(rail.firstEnd.point.x - trafficNetwork.railSpace, rail.firstEnd.point.y - trafficNetwork.railSpace),
+                            new Point(rail.secondEnd.point.x - trafficNetwork.railSpace, rail.secondEnd.point.y + trafficNetwork.railSpace)):
+                            addPassengers(new Rail(trafficNetwork, RailType.SEMI_ROUND_LEFT,
                     new Point(rail.firstEnd.point.x - trafficNetwork.railSpace, rail.firstEnd.point.y - trafficNetwork.railSpace),
                     new Point(rail.secondEnd.point.x - trafficNetwork.railSpace, rail.secondEnd.point.y + trafficNetwork.railSpace)));
             trafficNetwork.addRail(railLeft);
@@ -217,10 +252,14 @@ public class TrafficNetworkCreator {
     }
 
 
-    private function generateBottomSemiRound(size:int):void {
-        for(var i:int = size*size+1; i<size*(size+1); i+=2){
+    private function generateBottomSemiRound(size:int, stationType:RailStationType=null, stationIndex:int=0):void {
+        for(var i:int = size*size+1, c:int = 0; i<size*(size+1); i+=2, c++){
             var rail:Rail = trafficNetwork.getRail(i);
-            var railDown:Rail = addPassengers(new Rail(trafficNetwork, RailType.SEMI_ROUND_BOTTOM,
+            var railDown:Rail = stationType!=null && stationIndex == c?
+                    new TrainStation(stationType, trafficNetwork, RailType.SEMI_ROUND_BOTTOM,
+                            new Point(rail.firstEnd.point.x-trafficNetwork.railSpace, rail.firstEnd.point.y+trafficNetwork.railSpace),
+                            new Point(rail.secondEnd.point.x+trafficNetwork.railSpace, rail.secondEnd.point.y+trafficNetwork.railSpace)):
+                    addPassengers(new Rail(trafficNetwork, RailType.SEMI_ROUND_BOTTOM,
                     new Point(rail.firstEnd.point.x-trafficNetwork.railSpace, rail.firstEnd.point.y+trafficNetwork.railSpace),
                     new Point(rail.secondEnd.point.x+trafficNetwork.railSpace, rail.secondEnd.point.y+trafficNetwork.railSpace)));
             trafficNetwork.addRail(railDown);
@@ -233,10 +272,14 @@ public class TrafficNetworkCreator {
         }
     }
 
-    private function generateTopSemiRound(size:int):void {
-        for (var i:int = 1; i < size; i += 2) {
+    private function generateTopSemiRound(size:int, stationType:RailStationType=null, stationIndex:int=0):void {
+        for (var i:int = 1, c:int = 0; i < size; i += 2, c++) {
             var rail:Rail = trafficNetwork.getRail(i);
-            var railUp:Rail = addPassengers(new Rail(trafficNetwork, RailType.SEMI_ROUND_TOP,
+            var railUp:Rail = stationType!=null && stationIndex == c?
+                    new TrainStation(stationType, trafficNetwork, RailType.SEMI_ROUND_TOP,
+                    new Point(rail.firstEnd.point.x - trafficNetwork.railSpace, rail.firstEnd.point.y - trafficNetwork.railSpace),
+                    new Point(rail.secondEnd.point.x + trafficNetwork.railSpace, rail.secondEnd.point.y - trafficNetwork.railSpace)):
+                    addPassengers(new Rail(trafficNetwork, RailType.SEMI_ROUND_TOP,
                     new Point(rail.firstEnd.point.x - trafficNetwork.railSpace, rail.firstEnd.point.y - trafficNetwork.railSpace),
                     new Point(rail.secondEnd.point.x + trafficNetwork.railSpace, rail.secondEnd.point.y - trafficNetwork.railSpace)));
             trafficNetwork.addRail(railUp);
@@ -309,16 +352,27 @@ public class TrafficNetworkCreator {
     private function addPassengers(rail:Rail):Rail{
       var max:int = trafficNetwork.maxPassengers;
       var realNumber = Math.round(Math.random()*max);
-      var firstType = Math.round(Math.random()*realNumber);
-      var secondType = realNumber-firstType;
-        
-      for(var i:int =0; i<firstType; i++){
+      realNumber=4;
+      var secondDivisor = Math.round(Math.random()*realNumber);
+      var firstDivisor = Math.round(Math.random()*secondDivisor);
+      var thirdDivisor = secondDivisor+Math.round(Math.random()*realNumber-secondDivisor);
+
+      for(var i:int =0; i<firstDivisor; i++){
           rail.addPassenger(new Passenger(RailStationType.FIRST));
       }
 
-      for(var i:int =0; i<secondType; i++){
+      for(var i:int =firstDivisor; i<secondDivisor; i++){
           rail.addPassenger(new Passenger(RailStationType.SECOND));
       }
+
+      for(var i:int =secondDivisor; i<thirdDivisor; i++){
+           rail.addPassenger(new Passenger(RailStationType.THIRD));
+      }
+
+       for(var i:int =thirdDivisor; i<realNumber; i++){
+           rail.addPassenger(new Passenger(RailStationType.FOURTH));
+       }
+
 
       return rail;
     }
