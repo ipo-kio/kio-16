@@ -51,7 +51,7 @@ public class Ray {
                 _is_internal ? 1 / eta : eta
         );
 
-        if (refraction_data != null)  {
+        if (refraction_data != null) {
             //TODO eval p1 and p2
             var rfr_ray:Vertex2D = refraction_data[0];
 
@@ -101,6 +101,9 @@ public class Ray {
         if (level > 20 || percent < 0.001)
             return;
 
+        if (d == null)
+            return;
+
         reflect_refract(d, eta);
 
         var no_children:Boolean = true;
@@ -128,6 +131,10 @@ public class Ray {
     //0 - reflect, 1 - refract
     public function get_reflect_refract_ray(ind:int):Ray {
         return _reflect_refract_rays[ind];
+    }
+
+    public function get is_internal():Boolean {
+        return _is_internal;
     }
 }
 }

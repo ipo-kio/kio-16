@@ -16,9 +16,15 @@ import flash.text.TextFieldAutoSize;
 import ru.ipo.kio._12.diamond.GeometryUtils;
 import ru.ipo.kio._12.diamond.Vertex2D;
 import ru.ipo.kio._12.diamond.model.Ray;
+import ru.ipo.kio._12.diamond.model.Spectrum;
 
 public class VisibleRay extends Sprite {
     private var info_text:TextField; 
+    
+    private static function visible_energy(energy:Number):Number {
+        return Math.pow(energy, 1/3);
+//        return Math.pow((0.2 + energy) / 1.2, 1/3);
+    }
     
     public function VisibleRay(ray:Ray, scaler:Scaler, color:uint, x_min:Number, y_min:Number, x_max:Number, y_max:Number) {
         var r2:Vertex2D = ray.r2;
@@ -31,13 +37,13 @@ public class VisibleRay extends Sprite {
             ], -1, false);
             if (intersection != null && intersection[0] != null)
                 r2 = intersection[0];
+            
+            if (ray.is_internal)
+                r2 = ray.r1;
         }
 
-        var r:uint = ((color >> 16) & 0xFF) * Math.pow(ray.energy, 1/6);
-        var g:uint = ((color >> 8) & 0xFF) * Math.pow(ray.energy, 1/6);
-        var b:uint = (color & 0xFF) * Math.pow(ray.energy, 1/6);
-
-        color = (r << 16) | (g << 8) | b;
+        var e:Number = visible_energy(ray.energy);
+        color = Spectrum.multiply_color(color, e);
 
         if (r2 == null) {
             trace('ERROR #02ffe32');
@@ -80,11 +86,11 @@ public class VisibleRay extends Sprite {
         info_text.y = text_pos.y - info_text.textHeight / 2 - 10 * ray_p_vec.x / l;
         
         info_text.visible = false;
+        info_text.mouseEnabled = false;
         
         addChild(info_text);
         
         addEventListener(MouseEvent.ROLL_OVER, function (event:MouseEvent):void {
-            trace('over ray');
             info_text.visible = true;
         });
 

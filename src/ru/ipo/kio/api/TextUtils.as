@@ -96,6 +96,16 @@ public class TextUtils {
         return tf;
     }
 
+    /*public static function drawTextW(text:String, width:int, size:int, align:String, color:uint, alpha:Number, fontName:String):TextField {
+        var tf:TextField;
+        if (width < 0)
+            tf = drawText(text, size, align, color, alpha);
+        else
+            tf = drawTextWidth(text, width, size, align, color, alpha);
+
+        tf.setTextFormat(new TextFormat(fontName, size));
+    }*/
+
     private static var textOutInfo:Dictionary = new Dictionary();
 
     public static function moveTo(container:DisplayObjectContainer, x:int, y:int, lineSkip:int, width:int = -1):void {

@@ -11,6 +11,7 @@ import flash.events.EventDispatcher;
 import ru.ipo.kio._12.diamond.GeometryUtils;
 
 import ru.ipo.kio._12.diamond.Vertex2D;
+import ru.ipo.kio._12.diamond.view.Eye;
 
 public class Diamond extends EventDispatcher {
 
@@ -18,6 +19,8 @@ public class Diamond extends EventDispatcher {
 
     private var _vertices:Array/*Vertex2D*/ = [];
     private var _hull:Array/*Vertex2D*/ = [];
+
+    private var _spectrum:Spectrum = null;
 
     public static const UPDATE:String = 'vertices update';
     private static const UPDATE_EVENT:Event = new Event(UPDATE);
@@ -27,6 +30,8 @@ public class Diamond extends EventDispatcher {
 
     private function update_convex_hull():void {
         _hull = GeometryUtils.convex_hull(_vertices);
+
+        _spectrum = new Spectrum(this, Eye.MIN_ANGLE, Eye.MAX_ANGLE);
     }
 
     public function addVertex(v:Vertex2D):void {
@@ -86,6 +91,10 @@ public class Diamond extends EventDispatcher {
 
     public function get hull():Array {
         return _hull;
+    }
+
+    public function get spectrum():Spectrum {
+        return _spectrum;
     }
 }
 }
