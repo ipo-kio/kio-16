@@ -227,7 +227,8 @@ public class GeometryUtils {
                 eta12 * i.x + k2 * n.x,
                 eta12 * i.y + k2 * n.y
         ),
-                1 - (r_par + r_perp) / 2
+//                1 - (r_par + r_perp) / 2
+                1/2
         ];
     }
 
@@ -235,6 +236,9 @@ public class GeometryUtils {
     //don't intersect with i0, i0 + 1
     //take_min = true means the closest intersection will be chosen
     public static function intersect_ray_and_poly(r0:Vertex2D, r1:Vertex2D, d:Array, i0:int, take_min:Boolean):Array {
+        if (d == null)
+            return null;
+        
         var s:Array = []; //candidates
         for (var i:int = 0; i < d.length; i++) {
             var j:int = i - 1;
