@@ -8,6 +8,7 @@ package ru.ipo.kio._12.train.view {
 import flash.display.Sprite;
 
 import ru.ipo.kio._12.train.model.RailConnector;
+import ru.ipo.kio._12.train.model.TrafficNetwork;
 import ru.ipo.kio._12.train.model.types.RailConnectorType;
 import ru.ipo.kio._12.train.util.ConnectorInPath;
 
@@ -16,6 +17,9 @@ public class CrossConnectorView extends BasicView {
     [Embed(source='../_resources/Cross_section.png')]
     private static const LEVEL_1_CROSS:Class;
 
+    [Embed(source='../_resources/zero/Cross_section.png')]
+    private static const LEVEL_0_CROSS:Class;
+
     private var _connectors:Vector.<RailConnector> = new Vector.<RailConnector>();
 
     private var _connectorInPath:Vector.<ConnectorInPath> = new Vector.<ConnectorInPath>();
@@ -23,8 +27,13 @@ public class CrossConnectorView extends BasicView {
     private var holst:Sprite = new Sprite();
 
     public function CrossConnectorView() {
-        var line = new LEVEL_1_CROSS;
-        addChild(line);
+        if(TrafficNetwork.instance.level==1){
+            var line = new LEVEL_1_CROSS;
+            addChild(line);
+        }else if(TrafficNetwork.instance.level==0){
+            var line = new LEVEL_0_CROSS;
+            addChild(line);
+        }
         holst.x=0;
         holst.y=0;
         addChild(holst);

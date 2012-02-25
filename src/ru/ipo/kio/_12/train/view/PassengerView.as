@@ -28,6 +28,13 @@ public class PassengerView extends BasicView {
     [Embed(source='../_resources/Dot_yellow.png')]
     private static const LEVEL_1_YELLOW:Class;
 
+    [Embed(source='../_resources/zero/Dot_red.png')]
+    private static const LEVEL_0_RED:Class;
+
+    [Embed(source='../_resources/zero/Dot_blue.png')]
+    private static const LEVEL_0_BLUE:Class;
+
+
     private var passenger:Passenger;
     
     public function PassengerView(passenger:Passenger) {
@@ -39,13 +46,21 @@ public class PassengerView extends BasicView {
     private function place(passenger:Passenger):void {
         var line;
         if(passenger.destination==StationType.FIRST){
-            line = new LEVEL_1_BLUE;
+            if(TrafficNetwork.instance.level==1){
+                line = new LEVEL_1_BLUE;
+            }else if(TrafficNetwork.instance.level==0){
+                line = new LEVEL_0_BLUE;
+            }
         }
         else if(passenger.destination==StationType.SECOND){
             line = new LEVEL_1_YELLOW;
         }
         else if(passenger.destination==StationType.THIRD){
-            line = new LEVEL_1_RED;
+            if(TrafficNetwork.instance.level==1){
+                line = new LEVEL_1_RED;
+            }else if(TrafficNetwork.instance.level==0){
+                line = new LEVEL_0_RED;
+            }
         }
         else if(passenger.destination==StationType.FOURTH){
             line = new LEVEL_1_GREEN;

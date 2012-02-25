@@ -47,9 +47,50 @@ public class TrafficNetworkCreator {
         if(level == 1){
             generateFirstLevel();
         }
+        else if(level == 0){
+            generateZeroLevel();
+        }
         trafficNetwork.timeOfStep=1000;
         trafficNetwork.view.update();
         return trafficNetwork;
+    }
+
+    private function generateZeroLevel():void {
+        trafficNetwork.railLength = 55;
+        trafficNetwork.railWidth = 51;
+        trafficNetwork.railSpace = 25;
+        trafficNetwork.passengerSize = 3;
+        trafficNetwork.passengerSpace = 2;
+        trafficNetwork.maxPassengers=4;
+        trafficNetwork.amountOfTrain = 2;
+        var size:int = 3;
+        var initX:int = 130+164;
+        var initY:int = 133
+        generateGrid(size, initX, initY);
+
+        generateTopSemiRound(size);
+        generateBottomSemiRound(size);
+        generateLeftSemiRound(size);
+        generateRightSemiRound(size);
+
+        var firstRowRailFirst:Rail = trafficNetwork.getRail(0);
+        var firstRowRailLast:Rail = trafficNetwork.getRail(size-1);
+        var lastRowRailFirst:Rail = trafficNetwork.getRail(size*size);
+        var lastRowRailLast:Rail = trafficNetwork.getRail(size*(size+1)-1);
+        var firstColumnRailFirst:Rail = trafficNetwork.getRail(size*(size+1));
+        var firstColumnRailLast:Rail = trafficNetwork.getRail(size*(size+1)+size-1);
+        var lastColumnRailFirst:Rail = trafficNetwork.getRail(2*size*(size+1)-size);
+        var lastColumnRailLast:Rail = trafficNetwork.getRail(2*(size+1)*size-1);
+
+        var initRail2:Rail = generateTopRightRound(firstRowRailLast, lastColumnRailFirst);
+        var initRail4:Rail = generateBottomLeftRound(lastRowRailFirst, firstColumnRailLast);
+
+        addConnectorViews(size);
+
+        addTrain(0xdf86701, initRail4, StationType.THIRD);
+//        addTrain(0xdf86701, initRail3, StationType.THIRD);
+//        addTrain(0x88b7ff, initRail1, StationType.FIRST);
+        addTrain(0x88b7ff, initRail2, StationType.FIRST);
     }
 
 
@@ -60,6 +101,7 @@ public class TrafficNetworkCreator {
         trafficNetwork.passengerSize = 3;
         trafficNetwork.passengerSpace = 2;
         trafficNetwork.maxPassengers=4;
+        trafficNetwork.amountOfTrain = 4;
         var size:int = 5;
         var initX:int = 130+133;
         var initY:int = 115
@@ -320,9 +362,17 @@ public class TrafficNetworkCreator {
         var row:Vector.<Rail> = new Vector.<Rail>();
         var shift:int = trafficNetwork.railSpace*2+trafficNetwork.railLength;
         for(var i:int = 0; i<size; i++){
-           var rail:Rail = addPassengers(new Rail(trafficNetwork, RailType.HORIZONTAL,
-                   new Point(point.x+trafficNetwork.railSpace+i*shift, point.y),
-                   new Point(point.x+trafficNetwork.railSpace+i*shift+trafficNetwork.railLength, point.y)));
+           var rail:Rail = trafficNetwork.cnt==0  && i==0  && trafficNetwork.level==0 ?
+                   new TrainStation(StationType.FIRST,trafficNetwork, RailType.HORIZONTAL,
+                           new Point(point.x+trafficNetwork.railSpace+i*shift, point.y),
+                           new Point(point.x+trafficNetwork.railSpace+i*shift+trafficNetwork.railLength, point.y)):
+                   trafficNetwork.cnt==9 && i==2 && trafficNetwork.level==0 ?
+                           new TrainStation(StationType.THIRD,trafficNetwork, RailType.HORIZONTAL,
+                                   new Point(point.x+trafficNetwork.railSpace+i*shift, point.y),
+                                   new Point(point.x+trafficNetwork.railSpace+i*shift+trafficNetwork.railLength, point.y)):
+                   addPassengers(new Rail(trafficNetwork, RailType.HORIZONTAL,
+                           new Point(point.x+trafficNetwork.railSpace+i*shift, point.y),
+                           new Point(point.x+trafficNetwork.railSpace+i*shift+trafficNetwork.railLength, point.y)));
            row.push(rail);
            if(i>0){
                var previousRail:Rail = row[i-1];
@@ -355,7 +405,8 @@ public class TrafficNetworkCreator {
         var counter:int = 0;
         for(var i:int = 0; i<intervals.length; i++){
             for(var j:int = counter; j<intervals[i]; j++){
-                rail.addPassenger(new Passenger(StationType.getByNumber(j)));
+                rail.addPassenger(new Passenger(StationType.getByNumber(i)));
+                counter++;
             }
         }
       

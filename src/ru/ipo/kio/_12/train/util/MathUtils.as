@@ -12,6 +12,7 @@ public class MathUtils {
 
     public static function splitInterval(topBound:int, amount:int):Vector.<int>{
         var intervals:Vector.<int> = new Vector.<int>();
+        //var currentTop:int = topBound;
         var currentTop:int = Math.round(Math.random()*topBound);
         intervals.push(currentTop);
         for(var i:int = 0; i<amount-1; i++){

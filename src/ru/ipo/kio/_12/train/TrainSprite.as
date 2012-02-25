@@ -23,6 +23,9 @@ public class TrainSprite extends Sprite
     [Embed(source='_resources/Background.png')]
     private static const LEVEL_1_BACKGROUNG:Class;
 
+    [Embed(source='_resources/zero/Background_01.png')]
+    private static const LEVEL_0_BACKGROUNG:Class;
+
     public function TrainSprite(level:int, readonly:Boolean, id:String = null)
     {
         var api:KioApi = KioApi.instance(id ? id : TrainProblem.ID);
@@ -37,8 +40,13 @@ public class TrainSprite extends Sprite
           background.x=130;
           background.y=0;
           addChild(background);
-
           addChild(TrafficNetwork.instance.view);
+        }else if(level ==0 ){
+            var background = new LEVEL_0_BACKGROUNG;
+            background.x=130;
+            background.y=0;
+            addChild(background);
+            addChild(TrafficNetwork.instance.view);
         }
         
 //       if (!readonly)

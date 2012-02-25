@@ -58,7 +58,7 @@ public class TrafficNetwork extends VisibleEntity {
 
     private var _level;
 
-    private var cnt:int = 0;
+    private var _cnt:int = 0;
 
     private var _fault:Boolean;
 
@@ -114,8 +114,8 @@ public class TrafficNetwork extends VisibleEntity {
         view.addChild(rail.view);
         (RailView(rail.view)).addSelector();
         _amountOfPassengers+=rail.getPassengers().length;
-        rail.id=cnt;
-        cnt++;
+        rail.id=_cnt;
+        _cnt++;
     }
 
     public function getRail(index:int):Rail{
@@ -515,6 +515,10 @@ public class TrafficNetwork extends VisibleEntity {
 
     public function set timeOfTrip(value:int):void {
         _timeOfTrip = value;
+    }
+
+    public function get cnt():int {
+        return _cnt;
     }
 }
 }

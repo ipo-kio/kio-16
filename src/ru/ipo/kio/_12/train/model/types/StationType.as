@@ -10,9 +10,9 @@ public final class StationType {
 
     public static const FIRST:StationType = new StationType(0, "first", 0xcd5c5c);
 
-    public static const SECOND:StationType = new StationType(1, "second", 0x4682b4);
+    public static const SECOND:StationType = new StationType(2, "second", 0x4682b4);
 
-    public static const THIRD:StationType = new StationType(2, "third", 0x00ff00);
+    public static const THIRD:StationType = new StationType(1, "third", 0x00ff00);
 
     public static const FOURTH:StationType = new StationType(3, "fourth", 0xffff00);
 

@@ -26,7 +26,7 @@ public class TrainRunner  extends Sprite {
     private function init(e:Event = null):void {
         removeEventListener(Event.ADDED_TO_STAGE, init);
         KioApi.language = KioApi.L_RU;
-        KioBase.instance.initOneProblem(this, new TrainProblem(1));
+        KioBase.instance.initOneProblem(this, new TrainProblem(0));
     }
 
 }

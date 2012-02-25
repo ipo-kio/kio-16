@@ -33,9 +33,13 @@ public class TrainStationView extends RailView {
         super(station);
         if(TrafficNetwork.instance.level==1){
             placeFirstLevel(station);
+        }else if(TrafficNetwork.instance.level==0){
+            placeZeroLevel(station);
         }
 
-        addEventListener(Event.ADDED, function(e:Event):void{placeFirstLevelCircle();});
+        if(TrafficNetwork.instance.level==1){
+            addEventListener(Event.ADDED, function(e:Event):void{placeFirstLevelCircle();});
+        }
 
         update();
     }
@@ -118,6 +122,14 @@ public class TrainStationView extends RailView {
             if (rail.type == RailType.SEMI_ROUND_RIGHT) {
                 passengers[i].view.x = rail.view.x + rail.view.width + passengerSize * 3;
                 passengers[i].view.y = rail.view.y + rail.view.height/2 + (i % 2 == 1 ? + i* (passengerSize+passengerSpace) : - i*(passengerSize+passengerSpace));
+            }
+            if (rail.type == RailType.HORIZONTAL && rail.id == 11) {
+                passengers[i].view.x = rail.view.x + rail.view.width/2 + (i % 2 == 1 ? + i* (passengerSize+passengerSpace) : - i*(passengerSize+passengerSpace));
+                passengers[i].view.y = rail.view.y + rail.view.height + passengerSize * 3;
+            }
+            if (rail.type == RailType.HORIZONTAL && rail.id == 0) {
+                passengers[i].view.x = rail.view.x + rail.view.width/2 + (i % 2 == 1 ? + i* (passengerSize+passengerSpace) : - i*(passengerSize+passengerSpace));
+                passengers[i].view.y = rail.view.y - passengerSize * 3;
             }
 
         }
