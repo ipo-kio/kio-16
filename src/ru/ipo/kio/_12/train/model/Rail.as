@@ -132,7 +132,7 @@ public class Rail extends VisibleEntity {
         return null;
     }
 
-    public function action(train:Train){
+    public function processPassengers(train:Train){
         for(var i:int=passengers.length-1; i>=0; i--){
             if(passengers[i].destination == train.getClosestStation()){
                train.passengers.push(passengers[i]);

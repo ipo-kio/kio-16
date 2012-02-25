@@ -13,7 +13,10 @@ import ru.ipo.kio._12.train.model.Passenger;
 
 import ru.ipo.kio._12.train.model.Rail;
 import ru.ipo.kio._12.train.model.TrafficNetwork;
+import ru.ipo.kio._12.train.model.TrafficNetwork;
+import ru.ipo.kio._12.train.model.Train;
 import ru.ipo.kio._12.train.model.types.RailType;
+import ru.ipo.kio._12.train.model.types.StationType;
 import ru.ipo.kio._12.train.util.Pair;
 
 public class RailView extends BasicView {
@@ -129,6 +132,47 @@ public class RailView extends BasicView {
         }
         addChild(line);
         addChild(holst);
+
+    }
+
+    public function addSelector():void{
+
+    var selector:Sprite = new Sprite();
+    selector.graphics.beginFill(0xff0000,0);
+    selector.graphics.drawCircle(0,0,30);
+    selector.graphics.endFill();
+    var addSelector:Boolean = false;
+    var trainType:StationType;
+
+     if (rail.type == RailType.ROUND_TOP_LEFT) {
+            addSelector=true;
+            trainType = StationType.FIRST;
+        } else if (rail.type == RailType.ROUND_TOP_RIGHT) {
+            addSelector=true;
+            trainType = StationType.SECOND;
+        } else if (rail.type == RailType.ROUND_BOTTOM_LEFT) {
+            addSelector=true;
+            trainType = StationType.FOURTH;
+        }  else if (rail.type == RailType.ROUND_BOTTOM_RIGHT) {
+            addSelector=true;
+            trainType = StationType.THIRD;
+        }
+
+
+        selector.x = x+width/2;
+        selector.y = y+height/2;
+        if(addSelector){
+            TrafficNetwork.instance.view.addChild(selector);
+        }
+
+        selector.addEventListener(MouseEvent.CLICK, function(event:Event):void{
+            var train:Train = TrafficNetwork.instance.getTrainByType(trainType);
+            if(TrafficNetwork.instance.activeTrain == train){
+                TrafficNetwork.instance.activeTrain = null;
+            }else{
+                TrafficNetwork.instance.activeTrain = train;
+            }
+        });
     }
 
      public override function update():void{
@@ -140,7 +184,7 @@ public class RailView extends BasicView {
          
 
          if(rail.active){
-             var glow_white:GlowFilter = new GlowFilter(0xFF0000, 1, 5, 5, 10, 3);
+             var glow_white:GlowFilter = new GlowFilter(TrafficNetwork.instance.activeTrain.color, 1, 5, 5, 10, 3);
              filters = new Array(glow_white);
          }else{
              filters = new Array();
@@ -151,12 +195,12 @@ public class RailView extends BasicView {
              var trainColor:int = counts[i].train.color;
              if(counts[i].count>0){
              drawRail(i, TrafficNetwork.instance.activeTrain == counts[i].train ? 0xffffff:trainColor,
-                     TrafficNetwork.instance.activeTrain == counts[i].train ? 1:counts[i].count, length, space,
+                     TrafficNetwork.instance.activeTrain == counts[i].train ? 1:0.3*Math.log(counts[i].count)/Math.log(0.05)+1, length, space,
                      TrafficNetwork.instance.activeTrain == counts[i].train);
              }
          }
 
-         updatePassengers(length, width, space);
+         updatePassengers(rail.getPassengers(), length, space);
      }
 
     private function drawRail(index:int, color:int, alpha:Number, length:int, space:int, active:Boolean=false):void {
@@ -283,8 +327,7 @@ public class RailView extends BasicView {
     }
     
 
-    private function updatePassengers(length:int, width:int, space:int):void {
-        var passengers:Vector.<Passenger> = rail.getPassengers();
+    protected function updatePassengers(passengers:Vector.<Passenger>, length:int, space:int):void {
         for (var i:int = 0; i < passengers.length; i++) {
             if (rail.trafficNetwork.view.contains(passengers[i].view)) {
                 rail.trafficNetwork.view.removeChild(passengers[i].view);

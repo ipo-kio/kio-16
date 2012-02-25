@@ -13,7 +13,7 @@ import ru.ipo.kio._12.train.model.Passenger;
 import ru.ipo.kio._12.train.model.TrafficNetwork;
 
 import ru.ipo.kio._12.train.model.Train;
-import ru.ipo.kio._12.train.model.types.RailStationType;
+import ru.ipo.kio._12.train.model.types.StationType;
 import ru.ipo.kio._12.train.model.types.RailType;
 import ru.ipo.kio._12.train.view.gui.BlueTram;
 import ru.ipo.kio._12.train.view.gui.GreenTram;
@@ -54,19 +54,19 @@ public class TrainView extends BasicView {
 
 
         
-        if(train.destination==RailStationType.FIRST){
+        if(train.destination==StationType.FIRST){
             tram = new BlueTram();
             addChild(tram);
         }
-        else if(train.destination==RailStationType.SECOND){
+        else if(train.destination==StationType.SECOND){
             tram = new YellowTram();
             addChild(tram);
         }
-        else if(train.destination==RailStationType.THIRD){
+        else if(train.destination==StationType.THIRD){
             tram = new RedTram();
             addChild(tram);
         }
-        else if(train.destination==RailStationType.FOURTH){
+        else if(train.destination==StationType.FOURTH){
             tram = new GreenTram();
             addChild(tram);
         }

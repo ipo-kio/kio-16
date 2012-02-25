@@ -4,7 +4,7 @@
  * @since: 12.02.12
  */
 package ru.ipo.kio._12.train.model {
-import ru.ipo.kio._12.train.model.types.RailStationType;
+import ru.ipo.kio._12.train.model.types.StationType;
 
 public class TrainRoute {
     

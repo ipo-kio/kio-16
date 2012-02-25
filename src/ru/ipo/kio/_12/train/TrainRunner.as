@@ -6,6 +6,9 @@
 package ru.ipo.kio._12.train {
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.system.System;
+
+import ru.ipo.kio._12.train.util.MathUtils;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.base.KioBase;
@@ -13,6 +16,7 @@ import ru.ipo.kio.base.KioBase;
 public class TrainRunner  extends Sprite {
 
     public function TrainRunner() {
+
         if (stage)
             init();
         else

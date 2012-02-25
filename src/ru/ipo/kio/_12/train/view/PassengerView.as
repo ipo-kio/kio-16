@@ -10,7 +10,7 @@ import ru.ipo.kio._12.train.model.Passenger;
 
 import ru.ipo.kio._12.train.model.Rail;
 import ru.ipo.kio._12.train.model.TrafficNetwork;
-import ru.ipo.kio._12.train.model.types.RailStationType;
+import ru.ipo.kio._12.train.model.types.StationType;
 import ru.ipo.kio._12.train.model.types.RailType;
 import ru.ipo.kio.base.displays.AboutDisplay;
 
@@ -38,16 +38,16 @@ public class PassengerView extends BasicView {
 
     private function place(passenger:Passenger):void {
         var line;
-        if(passenger.destination==RailStationType.FIRST){
+        if(passenger.destination==StationType.FIRST){
             line = new LEVEL_1_BLUE;
         }
-        else if(passenger.destination==RailStationType.SECOND){
+        else if(passenger.destination==StationType.SECOND){
             line = new LEVEL_1_YELLOW;
         }
-        else if(passenger.destination==RailStationType.THIRD){
+        else if(passenger.destination==StationType.THIRD){
             line = new LEVEL_1_RED;
         }
-        else if(passenger.destination==RailStationType.FOURTH){
+        else if(passenger.destination==StationType.FOURTH){
             line = new LEVEL_1_GREEN;
         }
         addChild(line);

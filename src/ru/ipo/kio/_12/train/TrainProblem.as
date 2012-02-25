@@ -70,6 +70,7 @@ public class TrainProblem implements KioProblem {
     public function loadSolution(solution:Object):Boolean {
         if (solution) {
 
+            TrafficNetwork.instance.resetToEdit();
             var trains:Vector.<Train> = TrafficNetwork.instance.trains;
             for(var i:int = 0; i<trains.length; i++){
                 var train:Train = trains[i];
@@ -79,7 +80,7 @@ public class TrainProblem implements KioProblem {
                     train.route.addRail(TrafficNetwork.instance.getRailById(arr[j]));
                 }
             }
-             TrafficNetwork.instance.stopAnimate();
+            TrafficNetwork.instance.moveTrainToLast();
             TrafficNetwork.instance.view.update();
             return true;
         } else
@@ -87,6 +88,11 @@ public class TrainProblem implements KioProblem {
     }
 
     public function check(solution:Object):Object {
+        TrafficNetwork.instance.calc();
+        var result:Object = new Object();
+        result.passengers = TrafficNetwork.instance.amountOfHappyPassengers;
+        result.time = TrafficNetwork.instance.timeOfTrip;
+        result.fault = TrafficNetwork.instance.fault;
         return new Object();
     }
 

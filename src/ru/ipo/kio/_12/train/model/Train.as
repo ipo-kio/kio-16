@@ -4,18 +4,18 @@
  * @since: 12.02.12
  */
 package ru.ipo.kio._12.train.model {
-import ru.ipo.kio._12.train.model.types.RailStationType;
+import ru.ipo.kio._12.train.model.types.StationType;
 import ru.ipo.kio._12.train.view.TrainView;
 
 public class Train extends VisibleEntity {
 
-    private var _destination:RailStationType;
+    private var _destination:StationType;
 
-    public function get destination():RailStationType {
+    public function get destination():StationType {
         return _destination;
     }
 
-    public function set destination(value:RailStationType):void {
+    public function set destination(value:StationType):void {
         _destination = value;
     }
 
@@ -27,12 +27,14 @@ public class Train extends VisibleEntity {
     
     private var _passengers:Vector.<Passenger> = new Vector.<Passenger>();
 
-    private var tick:int =0;
+    private var _tick:int =0;
 
     private var count:int =0;
 
+    private var _pathTime:int = 0;
 
-    public function Train(destination:RailStationType) {
+
+    public function Train(destination:StationType) {
         _destination = destination;
         view=new TrainView(this);
 
@@ -72,7 +74,7 @@ public class Train extends VisibleEntity {
     }
 
 
-    public function getClosestStation():RailStationType {
+    public function getClosestStation():StationType {
         for(var i:int = count; i<route.rails.length; i++){
             var rail:Rail = route.rails[i];
             if(rail instanceof TrainStation){
@@ -83,22 +85,24 @@ public class Train extends VisibleEntity {
     }
 
     public function action():void {
-      if(rail.type.length>tick+1){
-          tick++;
+      if(rail.type.length>_tick+1){
+          _tick++;
       }else{
-          tick = 0;
-          rail.action(this);
+          _tick = 0;
+          rail.processPassengers(this);
           count++;
           if(route.rails.length>count){
             rail = route.rails[count];
           }
       }
+      _pathTime++;
     }
 
     public function reset():void{
        rail = route.rails[0];
-       tick = 0;
+       _tick = 0;
         count = 0;
+        _pathTime=0;
     }
     
     public function moveLast():void{
@@ -117,6 +121,14 @@ public class Train extends VisibleEntity {
         var preRail:Rail = route.rails[count-1];
         
         return rail.firstEnd.isConnected(preRail);
+    }
+
+    public function get tick():int {
+        return _tick;
+    }
+
+    public function get pathTime():int {
+        return _pathTime;
     }
 }
 }

@@ -9,12 +9,16 @@ import flash.events.TimerEvent;
 import flash.sampler._getInvocationCount;
 import flash.utils.Timer;
 
+import ru.ipo.kio._12.train.model.types.RegimeType;
+import ru.ipo.kio._12.train.model.types.StationType;
+
 import ru.ipo.kio._12.train.util.ConnectorInPath;
 
 import ru.ipo.kio._12.train.util.Pair;
 import ru.ipo.kio._12.train.util.TrafficNetworkCreator;
 import ru.ipo.kio._12.train.view.BasicView;
 import ru.ipo.kio._12.train.view.CrossConnectorView;
+import ru.ipo.kio._12.train.view.RailView;
 
 import ru.ipo.kio._12.train.view.TrafficNetworkView;
 
@@ -34,6 +38,8 @@ public class TrafficNetwork extends VisibleEntity {
 
     private var _passengerSpace:int;
 
+    private var _regime:RegimeType = RegimeType.EDIT;
+
     private var _rails:Vector.<Rail> = new Vector.<Rail>();
 
     private var _connectorViews:Vector.<BasicView> = new Vector.<BasicView>();
@@ -42,9 +48,11 @@ public class TrafficNetwork extends VisibleEntity {
     
     private var _activeTrain:Train;
 
-    private var _amountOfPassengers:int =0;
+    private var _amountOfPassengers:int = 0;
 
-    private var _amountOfHappyPassengers:int =0;
+    private var _amountOfHappyPassengers:int = 0;
+
+    private var _timeOfTrip:int = 0;
 
     private var _timeOfStep = 1000;
 
@@ -52,18 +60,10 @@ public class TrafficNetwork extends VisibleEntity {
 
     private var cnt:int = 0;
 
-    private var _animate:Boolean = false;
-
-    private var _playing:Boolean = false;
     private var _fault:Boolean;
 
-    public function get playing():Boolean {
-        return _playing;
-    }
+    private var _amountOfTrain:int;
 
-    public function set playing(value:Boolean):void {
-        _playing = value;
-    }
 
     public static function get instance():TrafficNetwork {
         if(TrafficNetwork._instance == null)
@@ -112,6 +112,7 @@ public class TrafficNetwork extends VisibleEntity {
     public function addRail(rail:Rail):void{
         _rails.push(rail);
         view.addChild(rail.view);
+        (RailView(rail.view)).addSelector();
         _amountOfPassengers+=rail.getPassengers().length;
         rail.id=cnt;
         cnt++;
@@ -192,124 +193,6 @@ public class TrafficNetwork extends VisibleEntity {
        return false;
     }
 
-    public function tryClose():void {
-      if(activeTrain.route.rails.length>1 && activeTrain.route.getLastEnd().isConnected(activeTrain.rail)){
-          activeTrain.route.addRail(activeTrain.rail);
-          activeTrain.route.finish();
-          activeTrain=null;
-      }
-        view.update();
-    }
-
-    public function calc():void{
-        _timeOfStep = 0;
-        play();
-        _timeOfStep = 1000;
-    }
-
-    public function play():void {
-//        for(var i:int = 0; i<trains.length; i++){
-//            if(!trains[i].route.finished){
-//                return;
-//            }
-//        }
-
-        if(playing)
-            return;
-
-        stopAnimate();
-        startAnimate();
-
-        playing=true;
-        
-        var timer:Timer = new Timer(_timeOfStep, getMaximumLength());
-
-        timer.addEventListener(TimerEvent.TIMER, function(event:Event):void{
-            if(fault){
-                TrafficNetworkCreator.instance.result.text = "error";
-                timer.stop();
-                playing = false;
-                animate = false;
-                return;
-            }
-
-            for(var i:int = 0; i<trains.length; i++){
-                var train:Train =  trains[i];
-                train.action();
-            }
-            checkError();
-            view.update();
-        });
-
-        timer.addEventListener(TimerEvent.TIMER_COMPLETE, function(event:Event):void{
-            TrafficNetworkCreator.instance.result.text = "passengers: "+amountOfHappyPassengers+"/"+amountOfPassengers+
-                    "\ntime: "+getMaximumLength();
-            playing = false;
-            animate = false;
-        });
-        
-        timer.start();
-    }
-
-    private function checkError():void {
-        for(var i:int = 0; i<trains.length; i++){
-            var train:Train =  trains[i];
-            for(var j:int = i+1; j<trains.length; j++){
-                var train1:Train =  trains[j];
-                if(train.rail==train1.rail){
-                    fault=true;
-                }
-
-            }
-
-        }
-    }
-
-    public function initial():void{
-        if(fault){
-            stopAnimate();
-            startAnimate();
-        }
-        step();
-    }
-
-    public function step():void{
-        if(playing)
-            return;
-        
-        if(fault){
-            return;
-        }
-
-        if(!animate){
-            stopAnimate();
-            startAnimate();
-        }
-        for(var i:int = 0; i<trains.length; i++){
-            var train:Train =  trains[i];
-            train.action();
-        }
-        checkError();
-        view.update();
-    }
-
-    public function resetTrains():void{
-        for(var i:int = 0; i<trains.length; i++){
-            var train:Train =  trains[i];
-            train.reset();
-            view.update();
-        }
-    }
-
-    private function getMaximumLength():int {
-        var l:int = 0;
-        for(var i:int = 0; i<trains.length; i++){
-            if(trains[i].route.time>l){
-                l = trains[i].route.time;
-            }
-        }
-        return l;
-    }
 
     public function get amountOfHappyPassengers():int {
         return _amountOfHappyPassengers;
@@ -347,7 +230,7 @@ public class TrafficNetwork extends VisibleEntity {
         for(var i:int = 0; i<trains.length; i++){
             var tempTrain:Train = trains[i];
             var tick:int = 0;
-            
+
             for(var j:int=0; j<tempTrain.route.rails.length-1; j++){
                 var rail:Rail = tempTrain.route.rails[j];
                 var railNext:Rail = tempTrain.route.rails[j+1];
@@ -358,85 +241,232 @@ public class TrafficNetwork extends VisibleEntity {
         }
     }
 
-    public function get animate():Boolean {
-        return _animate;
+    private function checkError():void {
+        for(var i:int = 0; i<trains.length; i++){
+            var train:Train =  trains[i];
+            for(var j:int = i+1; j<trains.length; j++){
+                var train1:Train =  trains[j];
+                if(train.rail==train1.rail){
+                    fault=true;
+                }
+
+            }
+
+        }
     }
 
-    public function set animate(value:Boolean):void {
-        _animate = value;
+    public function resetTrains():void{
+        for(var i:int = 0; i<trains.length; i++){
+            var train:Train =  trains[i];
+            train.reset();
+            view.update();
+        }
     }
+
+    private function getMaximumLength():int {
+        var l:int = 0;
+        for(var i:int = 0; i<trains.length; i++){
+            if(trains[i].route.time>l){
+                l = trains[i].route.time;
+            }
+        }
+        return l;
+    }
+
 
 
     public function addToActiveRoute(rail:Rail):void {
-        if(playing)
-            return;
+        resetToEdit();
         activeTrain.route.addRail(rail);
-        stopAnimate();
+        moveTrainToLast();
         view.update();
     }
 
     public function removeLastFromActive():void {
-        if(playing)
-            return;
+        resetToEdit();
         if(activeTrain!=null){
             if(activeTrain.route.rails.length>1){
                 activeTrain.route.removeLast();
             }
         }
-        stopAnimate();
+        moveTrainToLast();
         view.update();
     }
 
     public function clearRoutes():void {
-        if(playing)
-            return;
+        resetToEdit();
+        if(activeTrain!=null){
+            while(activeTrain.route.rails.length>1){
+                activeTrain.route.removeLast();
+            }
+        }else{
         for(var i:int = 0; i<trains.length; i++){
             var tempTrain:Train = trains[i];
             while(tempTrain.route.rails.length>1){
                 tempTrain.route.removeLast();
             }
         }
-        stopAnimate();
+        }
+        moveTrainToLast();
         view.update();
     }
 
     public function set activeTrain(value:Train):void {
-        if(playing)
-            return;
-        if(value!=null){
-            stopAnimate();
-        }
         _activeTrain = value;
+        if(value!=null){
+            resetToEdit();
+            moveTrainToLast();
+        }
         view.update();
-        if(value == null){
-            trace("active: empty")
-        }else{
-            trace("active: "+value.color);
+
+    }
+
+    public function calc():void{
+        initial();
+
+        var max:int = getMaximumLength();
+        
+        for(var j:int = 0; j<max; j++){
+            doAction();
         }
     }
 
+    var timer:Timer;
 
-    public function startAnimate():void{
-        amountOfHappyPassengers=0;
-        animate = true;
+    public function play():void {
+
+        if(_regime==RegimeType.PLAY){
+            return;
+        }
+
+        moveToStep();
+
+        _regime = RegimeType.PLAY;
+        
+        if(timer!=null){
+            timer.stop();
+        }
+
+        timer = new Timer(_timeOfStep, getMaximumLength());
+
+        timer.addEventListener(TimerEvent.TIMER, function(event:Event):void{
+            if(regime!=RegimeType.PLAY){
+                return;
+            }
+            doAction();
+        });
+
+        timer.start();
+    }
+
+    private function doAction():void {
+        for (var i:int = 0; i < trains.length; i++) {
+            var train:Train = trains[i];
+            train.action();
+        }
+        checkError();
+        TrafficNetworkCreator.instance.result.text = "passengers: " + amountOfHappyPassengers + "/" + amountOfPassengers +
+                "\ntime: " + timeOfTrip / amountOfHappyPassengers;
+        
+        if(_fault){
+            TrafficNetworkCreator.instance.result.text += "\n Столкновение";
+        }
+
+        view.update();
+    }
+
+
+
+    public function initial():void{
         activeTrain=null;
+        resetToEdit();
+        moveToStep();
+        resetToEdit();
+        moveToStep();
+    }
+
+    public function step():void{
+        moveToStep();
+        doAction();
+    }
+
+
+    public function moveToStep():void{
+
+        if(_regime==RegimeType.STEP){
+            return;
+        }
+
+        if(_regime==RegimeType.PLAY){
+            if(timer!=null){
+                timer.stop;
+            }
+            _regime = RegimeType.STEP;
+            return;
+        }
+
+        activeTrain=null;
+
+        _regime = RegimeType.STEP;
+
+        TrafficNetworkCreator.instance.result.text = "";
+
+        _fault=false;
+        amountOfHappyPassengers=0;
+        timeOfTrip = 0;
+
         for(var i:int = 0; i<trains.length; i++){
             var tempTrain:Train = trains[i];
             tempTrain.reset();
         }
+
+        for(var i:int = 0; i<rails.length; i++){
+            rails[i].restorePassengers();
+            if(rails[i] instanceof TrainStation){
+                ( TrainStation (rails[i])).reset();
+            }
+        }
+
     }
 
-    public function stopAnimate():void{
-        TrafficNetworkCreator.instance.result.text = "";
-        animate=false;
-        _fault=false;
+    public function moveTrainToLast():void{
         for(var i:int = 0; i<trains.length; i++){
             var tempTrain:Train = trains[i];
             tempTrain.moveLast();
         }
+    }
+
+
+    public function resetToEdit():void{
+
+        if(regime==RegimeType.PLAY){
+            if(timer!=null){
+                timer.stop;
+            }
+        }
+
+        if(regime==RegimeType.EDIT){
+            return;
+        }
+
+        _regime = RegimeType.EDIT;
+
+        TrafficNetworkCreator.instance.result.text = "";
+
+        _fault=false;
+        amountOfHappyPassengers=0;
+        timeOfTrip = 0;
+
+        for(var i:int = 0; i<trains.length; i++){
+            var tempTrain:Train = trains[i];
+            tempTrain.reset();
+        }
         
         for(var i:int = 0; i<rails.length; i++){
             rails[i].restorePassengers();
+            if(rails[i] instanceof TrainStation){
+                ( TrainStation (rails[i])).reset();
+            }
         }
     }
 
@@ -455,6 +485,36 @@ public class TrafficNetwork extends VisibleEntity {
             }
         }
         throw new Error("Can't find rail with id "+id);
+    }
+
+    public function get regime():RegimeType {
+        return _regime;
+    }
+
+    public function get amountOfTrain():int {
+        return _amountOfTrain;
+    }
+
+    public function set amountOfTrain(value:int):void {
+        _amountOfTrain = value;
+    }
+    
+    public function getTrainByType(type:StationType):Train{
+        for(var i:int = 0; i<trains.length; i++){
+            if(trains[i].destination==type){
+                return trains[i];
+            }
+        }
+        throw new Error("Can't find train by type: "+type.toString());
+        
+    }
+
+    public function get timeOfTrip():int {
+        return _timeOfTrip;
+    }
+
+    public function set timeOfTrip(value:int):void {
+        _timeOfTrip = value;
     }
 }
 }
