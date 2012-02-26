@@ -14,6 +14,7 @@ import ru.ipo.kio._12.train.util.TrafficNetworkCreator;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
+import ru.ipo.kio.api.Settings;
 
 public class TrainProblem implements KioProblem {
 
@@ -23,14 +24,15 @@ public class TrainProblem implements KioProblem {
 
     private var _level:int;
 
+    [Embed(source="loc/Train.ru.json-settings",mimeType="application/octet-stream")]
+    public static var TRAIN_RU:Class;
+
     public function TrainProblem(level:int, readonly:Boolean = false) {
         _level = level;
 
         KioApi.initialize(this);
 
-        KioApi.registerLocalization(ID, KioApi.L_RU, {
-            title: "Трамваи"
-        });
+        KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU).data);
 
         TrafficNetworkCreator.instance.createTrafficNetwork(level);
         sp = new TrainSprite(level, readonly);

@@ -88,7 +88,7 @@ public class TrainView extends BasicView {
         }
         else if(train.rail.type == RailType.ROUND_TOP_RIGHT){
             rotation = 45;
-            if(TrafficNetwork.instance.level==1){
+            if(TrafficNetwork.instance.level==1 || TrafficNetwork.instance.level==2){
                 x += 73;
                 y += 23;
             }else if(TrafficNetwork.instance.level==0){
@@ -98,7 +98,7 @@ public class TrainView extends BasicView {
         }
         else if(train.rail.type == RailType.ROUND_BOTTOM_LEFT){
             rotation = 45;
-            if(TrafficNetwork.instance.level==1){
+            if(TrafficNetwork.instance.level==1  || TrafficNetwork.instance.level==2){
                 x += 23;
                 y += 76;
             }else if(TrafficNetwork.instance.level==0){

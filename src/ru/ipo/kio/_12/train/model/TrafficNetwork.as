@@ -294,7 +294,9 @@ public class TrafficNetwork extends VisibleEntity {
     }
 
     public function clearRoutes():void {
-        resetToEdit();
+        if(level!=2){
+            resetToEdit();
+        }
         if(activeTrain!=null){
             while(activeTrain.route.rails.length>1){
                 activeTrain.route.removeLast();
@@ -467,6 +469,10 @@ public class TrafficNetwork extends VisibleEntity {
             if(rails[i] instanceof TrainStation){
                 ( TrainStation (rails[i])).reset();
             }
+        }
+        
+        if(level ==2){
+            clearRoutes();
         }
     }
 

@@ -5,6 +5,7 @@
  */
 package ru.ipo.kio._12.train.model {
 import ru.ipo.kio._12.train.model.types.StationType;
+import ru.ipo.kio._12.train.view.CrossConnectorView;
 import ru.ipo.kio._12.train.view.TrainView;
 
 public class Train extends VisibleEntity {
@@ -32,6 +33,8 @@ public class Train extends VisibleEntity {
     private var count:int =0;
 
     private var _pathTime:int = 0;
+    
+    private var state:int = 0;
 
 
     public function Train(destination:StationType) {
@@ -91,8 +94,21 @@ public class Train extends VisibleEntity {
           _tick = 0;
           rail.processPassengers(this);
           count++;
-          if(route.rails.length>count){
-            rail = route.rails[count];
+
+          if(TrafficNetwork.instance.level==2){
+              if(route.rails.length==1){
+                  var end:RailEnd = rail.secondEnd;
+              }else{
+                  var end:RailEnd = route.getLastEnd();
+              }
+              var connectors:Vector.<RailConnector> = end.connectors;
+              (CrossConnectorView(connectors[0].view)).type = (CrossConnectorView(connectors[0].view)).type.next();
+              route.rails.push(connectors[0].getAnotherRail(rail));
+              rail = route.rails[count];
+          }else{
+            if(route.rails.length>count){
+               rail = route.rails[count];
+            }
           }
       }
       _pathTime++;
@@ -103,6 +119,7 @@ public class Train extends VisibleEntity {
        _tick = 0;
         count = 0;
         _pathTime=0;
+        state = 0;
     }
     
     public function moveLast():void{

@@ -17,27 +17,22 @@ import ru.ipo.kio._12.train.model.types.RailType;
 
 public class TrainStationView extends RailView {
 
-    [Embed(source='../_resources/Circle_blue.png')]
+    [Embed(source='../_resources/one/Circle_blue.png')]
     private static const LEVEL_1_BLUE:Class;
 
-    [Embed(source='../_resources/Circle_green.png')]
+    [Embed(source='../_resources/one/Circle_green.png')]
     private static const LEVEL_1_GREEN:Class;
 
-    [Embed(source='../_resources/Circle_red.png')]
+    [Embed(source='../_resources/one/Circle_red.png')]
     private static const LEVEL_1_RED:Class;
 
-    [Embed(source='../_resources/Circle_yellow.png')]
+    [Embed(source='../_resources/one/Circle_yellow.png')]
     private static const LEVEL_1_YELLOW:Class;
 
     public function TrainStationView(station:TrainStation) {
         super(station);
-        if(TrafficNetwork.instance.level==1){
-            placeFirstLevel(station);
-        }else if(TrafficNetwork.instance.level==0){
-            placeZeroLevel(station);
-        }
 
-        if(TrafficNetwork.instance.level==1){
+        if(TrafficNetwork.instance.level==1 || TrafficNetwork.instance.level==2){
             addEventListener(Event.ADDED, function(e:Event):void{placeFirstLevelCircle();});
         }
 

@@ -16,6 +16,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Spotlights" level="project" />
+    <orderEntry type="library" name="Components" level="project" />
   </component>
 </module>
 
