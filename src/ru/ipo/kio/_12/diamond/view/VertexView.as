@@ -137,6 +137,20 @@ public class VertexView extends Sprite {
         if (!moving_point)
             return;
 
+        //---------------------
+        // update
+        /*var v2d:Vertex2D = scaler.point2vertex(new Point(x, y));
+        var _x:Number = v2d.x;
+        var _y:Number = v2d.y;
+
+        _x = Math.max(_x, _x_min);
+        _y = Math.max(_y, _y_min);
+        _x = Math.min(_x, _x_max);
+        _y = Math.min(_y, _y_max);
+
+        _v.setXY(_x, _y);*/
+        //----------------------
+
         stopDrag();
         moving_point = false;
         current_view = over_view;

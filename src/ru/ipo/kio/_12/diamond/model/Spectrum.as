@@ -16,7 +16,7 @@ public class Spectrum {
             0x0000FF
     ];
     public static var COLORS_COUNT:int = COLORS.length;
-    public static var TICKS_MAX:int = 100;
+    public static var TICKS_MAX:int = 42;
 
     private var _table:Array;
     private var _mean_light:Number;

@@ -54,7 +54,7 @@ public class VisibleRay extends Sprite {
         var p2:Point = scaler.vertex2point(r2);
         
         blendMode = BlendMode.ADD;
-        graphics.lineStyle(2, color);
+        graphics.lineStyle(3, color);
         graphics.moveTo(p1.x, p1.y);
         graphics.lineTo(p2.x, p2.y);
 
