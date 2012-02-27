@@ -35,9 +35,10 @@ public class TrainStation extends Rail {
        for(var i:int=train.passengers.length-1; i>=0; i--){
            if(train.passengers[i].destination==stationType){
                _passengers.push(train.passengers[i]);
-               train.passengers.splice(i, 1);
                TrafficNetwork.instance.amountOfHappyPassengers++;
-               TrafficNetwork.instance.timeOfTrip+=train.pathTime;
+               TrafficNetwork.instance.timeOfTrip+=train.passengers[i].time;
+               train.passengers.splice(i, 1);
+
            }
        }
     }

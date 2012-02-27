@@ -24,7 +24,11 @@ public class TrafficNetworkCreator {
 
     private static var _instance:TrafficNetworkCreator;
 
-    private var _result:TextField;
+    private var _resultTime:TextField;
+
+    private var _resultAmount:TextField;
+
+    private var _resultCrash:TextField;
 
     private var trafficNetwork:TrafficNetwork;
 
@@ -413,12 +417,28 @@ public class TrafficNetworkCreator {
         return rail;
     }
 
-    public function get result():TextField {
-        return _result;
+    public function get resultTime():TextField {
+        return _resultTime;
     }
 
-    public function set result(value:TextField):void {
-        _result = value;
+    public function set resultTime(value:TextField):void {
+        _resultTime = value;
+    }
+
+    public function get resultAmount():TextField {
+        return _resultAmount;
+    }
+
+    public function set resultAmount(value:TextField):void {
+        _resultAmount = value;
+    }
+
+    public function get resultCrash():TextField {
+        return _resultCrash;
+    }
+
+    public function set resultCrash(value:TextField):void {
+        _resultCrash = value;
     }
 }
 }

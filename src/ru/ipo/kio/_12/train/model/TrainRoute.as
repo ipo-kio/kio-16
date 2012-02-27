@@ -40,6 +40,56 @@ public class TrainRoute {
        return count;
     }
 
+    public function getAmountOfDirectInput(rail:Rail):int {
+        var cnt:int = 0;
+        var temp:Rail = _rails[0];
+        if(temp == rail)
+            cnt++;
+        if(_rails.length==1){
+             return cnt;
+        }
+
+        var next:Rail = _rails[1];
+        var end:RailEnd = next.getAnotherEnd(next.getEnd(temp));
+        if(next == rail && !end.isFirst()){
+            cnt++;
+        }
+
+        for(var i:int = 2; i<_rails.length; i++){
+            var next:Rail = _rails[i];
+            end = next.getEndBy(end);
+            end = next.getAnotherEnd(end);
+            if(next == rail && !end.isFirst()){
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
+    public function getAmountOfReverseInput(rail:Rail):int {
+        var cnt:int = 0;
+        var temp:Rail = _rails[0];
+        if(_rails.length==1){
+            return cnt;
+        }
+
+        var next:Rail = _rails[1];
+        var end:RailEnd = next.getAnotherEnd(next.getEnd(temp));
+        if(next == rail && end.isFirst()){
+            cnt++;
+        }
+
+        for(var i:int = 2; i<_rails.length; i++){
+            var next:Rail = _rails[i];
+            end = next.getEndBy(end);
+            end = next.getAnotherEnd(end);
+            if(next == rail && end.isFirst()){
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
     public function getLastEnd():RailEnd {
         var temp:Rail = _rails[0];
         var next:Rail = _rails[1];

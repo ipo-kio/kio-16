@@ -158,8 +158,9 @@ public class TrafficNetwork extends VisibleEntity {
     public function getRouteColor(rail:Rail):Vector.<Pair> {
         var counts:Vector.<Pair> = new Vector.<Pair>();
         for(var i:int = 0; i<trains.length; i++){
-            var count:int = trains[i].route.getAmountOfInput(rail);
-                counts.push(new Pair(trains[i], count));
+            var count1:int = trains[i].route.getAmountOfDirectInput(rail);
+            var count2:int = trains[i].route.getAmountOfReverseInput(rail);
+            counts.push(new Pair(trains[i], count1, count2));
         }
         return counts;
     }
@@ -249,7 +250,16 @@ public class TrafficNetwork extends VisibleEntity {
                 if(train.rail==train1.rail){
                     fault=true;
                 }
+                if(train.tick==0 && train1.tick==0
+                   && train.getPreRail()!=null
+                   && train1.getPreRail()!=null){
 
+                    var c1:RailConnector = train.rail.getConnector(train.getPreRail());
+                    var c2:RailConnector = train1.rail.getConnector(train1.getPreRail());
+                    
+                    if(c1!=null && c2!=null && c1.view==c2.view)
+                        fault = true;
+                }
             }
 
         }
@@ -367,11 +377,11 @@ public class TrafficNetwork extends VisibleEntity {
             train.action();
         }
         checkError();
-        TrafficNetworkCreator.instance.result.text = "passengers: " + amountOfHappyPassengers + "/" + amountOfPassengers +
-                "\ntime: " + timeOfTrip / amountOfHappyPassengers;
+        TrafficNetworkCreator.instance.resultAmount.htmlText = "<p align='center'>"+amountOfHappyPassengers + "/" + amountOfPassengers+"</p>";
+        TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>"+ (timeOfTrip / amountOfHappyPassengers).toFixed(3)+"</p>";
         
         if(_fault){
-            TrafficNetworkCreator.instance.result.text += "\n Столкновение";
+            TrafficNetworkCreator.instance.resultCrash.visible = true;
         }
 
         view.update();
@@ -411,7 +421,10 @@ public class TrafficNetwork extends VisibleEntity {
 
         _regime = RegimeType.STEP;
 
-        TrafficNetworkCreator.instance.result.text = "";
+        TrafficNetworkCreator.instance.resultCrash.visible = false;
+        TrafficNetworkCreator.instance.resultAmount.htmlText = "<p align='center'>0</p>";
+        TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>0</p>";
+
 
         _fault=false;
         amountOfHappyPassengers=0;
@@ -453,7 +466,9 @@ public class TrafficNetwork extends VisibleEntity {
 
         _regime = RegimeType.EDIT;
 
-        TrafficNetworkCreator.instance.result.text = "";
+        TrafficNetworkCreator.instance.resultCrash.visible = false;
+        TrafficNetworkCreator.instance.resultAmount.htmlText = "<p align='center'>0</p>";
+        TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>0</p>";
 
         _fault=false;
         amountOfHappyPassengers=0;

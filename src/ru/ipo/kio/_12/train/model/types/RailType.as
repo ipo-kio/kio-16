@@ -44,5 +44,58 @@ public final class RailType {
     public function toString():String {
         return "RailType{_length=" + String(_length) + ",_name=" + String(_name) + "}";
     }
+
+    public function getConnector(arrow:ArrowStateType, first:Boolean):RailConnectorType{
+        if(arrow == ArrowStateType.DIRECT){
+            if(this==HORIZONTAL ||
+               this==SEMI_ROUND_LEFT||
+               this==SEMI_ROUND_RIGHT||
+               (this==ROUND_TOP_LEFT && first)||
+               (this==ROUND_TOP_RIGHT && !first)||
+               (this==ROUND_BOTTOM_RIGHT && first)||
+               (this==ROUND_BOTTOM_LEFT && !first)){
+                return RailConnectorType.HORIZONTAL;
+            }else{
+                return RailConnectorType.VERTICAL;
+            }
+        }else if(arrow == ArrowStateType.RIGHT){
+            if(this==HORIZONTAL && first)
+                return RailConnectorType.BOTTOM_LEFT;
+            else if(this==HORIZONTAL && !first)
+                return RailConnectorType.TOP_RIGHT;
+            else if(this==VERTICAL && first)
+                return RailConnectorType.TOP_LEFT;
+            else if(this==VERTICAL && !first)
+                return RailConnectorType.BOTTOM_RIGHT;
+            else if(this==SEMI_ROUND_TOP)
+                return RailConnectorType.BOTTOM_RIGHT;
+            else if(this==SEMI_ROUND_BOTTOM)
+                return RailConnectorType.TOP_RIGHT;
+            else if(this==SEMI_ROUND_LEFT)
+                return RailConnectorType.TOP_RIGHT;
+            else if(this==SEMI_ROUND_RIGHT)
+                return RailConnectorType.BOTTOM_LEFT;
+        } else if(arrow == ArrowStateType.LEFT){
+            if(this==HORIZONTAL && first)
+                return RailConnectorType.TOP_LEFT;
+            else if(this==HORIZONTAL && !first)
+                return RailConnectorType.BOTTOM_RIGHT;
+            else if(this==VERTICAL && first)
+                return RailConnectorType.TOP_RIGHT;
+            else if(this==VERTICAL && !first)
+                return RailConnectorType.BOTTOM_LEFT;
+            else if(this==SEMI_ROUND_TOP)
+                return RailConnectorType.BOTTOM_LEFT;
+            else if(this==SEMI_ROUND_BOTTOM)
+                return RailConnectorType.TOP_RIGHT;
+            else if(this==SEMI_ROUND_LEFT)
+                return RailConnectorType.BOTTOM_RIGHT;
+            else if(this==SEMI_ROUND_RIGHT)
+                return RailConnectorType.TOP_LEFT;
+
+        }
+        throw new Error("Can't get connector... ");
+
+    }
 }
 }

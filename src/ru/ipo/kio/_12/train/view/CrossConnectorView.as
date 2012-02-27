@@ -12,7 +12,6 @@ import flash.events.MouseEvent;
 import ru.ipo.kio._12.train.model.RailConnector;
 import ru.ipo.kio._12.train.model.TrafficNetwork;
 import ru.ipo.kio._12.train.model.types.ArrowStateType;
-import ru.ipo.kio._12.train.model.types.RailConnectorType;
 import ru.ipo.kio._12.train.util.ConnectorInPath;
 
 public class CrossConnectorView extends BasicView {
@@ -93,16 +92,20 @@ public class CrossConnectorView extends BasicView {
      public override function update():void{
          holst.graphics.clear();
 
+         if(TrafficNetwork.instance.level==2){
+
          line1.visible =false;
          line2.visible =false;
          line3.visible =false;
          
          if(_type == ArrowStateType.DIRECT){
-             line1.visible=true;
-         }else if(_type == ArrowStateType.RIGHT){
              line2.visible=true;
-         }else if(_type == ArrowStateType.LEFT){
+         }else if(_type == ArrowStateType.RIGHT){
              line3.visible=true;
+         }else if(_type == ArrowStateType.LEFT){
+             line1.visible=true;
+         }
+
          }
 
          _connectorInPath.sort(function compare(x:ConnectorInPath, y:ConnectorInPath):Number {

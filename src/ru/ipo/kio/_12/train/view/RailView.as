@@ -22,6 +22,20 @@ public class RailView extends BasicView {
 
     private static const RAIL_LEHGTH:int = 18;
 
+    private static const RAIL_LEHGTH_0:int = 24;
+
+    [Embed(source='../_resources/Arrow_blue.png')]
+    private static const BLUE_ARROW:Class;
+
+    [Embed(source='../_resources/Arrow_red.png')]
+    private static const RED_ARROW:Class;
+
+    [Embed(source='../_resources/Arrow_green.png')]
+    private static const GREEN_ARROW:Class;
+
+    [Embed(source='../_resources/Arrow_yellow.png')]
+    private static const YELLOW_ARROW:Class;
+
     private var _rail:Rail;
 
     private var holst:Sprite = new Sprite();
@@ -119,6 +133,9 @@ public class RailView extends BasicView {
     public override function update():void {
         graphics.clear();
         holst.graphics.clear();
+        while(holst.numChildren>0){
+            holst.removeChildAt(0);
+        }
         var length:int = _rail.trafficNetwork.railLength;
         var space:int = _rail.trafficNetwork.railSpace;
         var width:int = _rail.trafficNetwork.railWidth;
@@ -134,9 +151,9 @@ public class RailView extends BasicView {
         var counts:Vector.<Pair> = TrafficNetwork.instance.getRouteColor(_rail);
         for (var i:int = 0; i < counts.length; i++) {
             var trainColor:int = counts[i].train.color;
-            if (counts[i].count > 0) {
+            if (counts[i].count1 > 0 || counts[i].count2 > 0) {
                 drawRail(i, TrafficNetwork.instance.activeTrain == counts[i].train ? 0xffffff : trainColor,
-                        TrafficNetwork.instance.activeTrain == counts[i].train ? 1 : 0.3 * Math.log(counts[i].count) / Math.log(0.05) + 1, length, space,
+                        counts[i].count1, counts[i].count2, length, space,
                         TrafficNetwork.instance.activeTrain == counts[i].train);
             }
         }
@@ -144,15 +161,16 @@ public class RailView extends BasicView {
         updatePassengers(_rail.getPassengers(), length, space);
     }
 
-    private function drawRail(index:int, color:int, alpha:Number, length:int, space:int, active:Boolean = false):void {
+    private function drawRail(index:int, color:int, count1:int, count2:int, length:int, space:int, active:Boolean = false):void {
         if (TrafficNetwork.instance.level == 1 || TrafficNetwork.instance.level == 2) {
-            drawFirstLevel(color, alpha, index, active);
+            drawFirstLevel(color, count1, count2, index, active);
         } else if (TrafficNetwork.instance.level == 0) {
-            drawZeroLevel(color, alpha, index, active);
+            drawZeroLevel(color, count1, count2, index, active);
         }
     }
 
-    private function drawFirstLevel(color:int, alpha:Number, index:int, active:Boolean):void {
+    private function drawFirstLevel(color:int,  count1:int, count2:int, index:int, active:Boolean):void {
+        var alpha=1;
         graphics.lineStyle(1, color, alpha);
         if (_rail.type == RailType.HORIZONTAL) {
             holst.graphics.lineStyle(2, 0x000000, 0.5);
@@ -257,78 +275,251 @@ public class RailView extends BasicView {
         }
     }
 
-    private function drawZeroLevel(color:int, alpha:Number, index:int, active:Boolean):void {
+    private function drawZeroLevel(color:int,  count1:int, count2:int, index:int, active:Boolean):void {
+        var alpha=1;
         graphics.lineStyle(1, color, alpha);
         if (_rail.type == RailType.HORIZONTAL) {
-            holst.graphics.lineStyle(2, 0x000000, 0.5);
-            holst.graphics.moveTo(0, 5 + index * 4);
-            holst.graphics.lineTo(width, 5 + index * 4);
-
             holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
-            holst.graphics.moveTo(0, 3 + index * 4);
-            holst.graphics.lineTo(width, 3 + index * 4);
+            holst.graphics.moveTo(0, 1 + index * 4);
+            holst.graphics.lineTo(width, 1 + index * 4);
+            
+            for(var i:int = 0; i<Math.min(count1, 5); i++){
+                var ar = getArrowByIndexForZero(index);
+                ar.rotation = 180;
+                if(index ==1){
+                    ar.y = 8;
+                    ar.x = 8 +i*3;
+                }else{
+                    ar.y = 4;
+                    ar.x = 20 +i*3;
+                }
+                holst.addChild(ar);
+            }
+
+            for(var i:int = 0; i<Math.min(count2, 5); i++){
+                var ar = getArrowByIndexForZero(index);
+                if(index ==1){
+                    ar.y = 2;
+                    ar.x = width - 10 - i*3;
+                }else{
+                    ar.y = -2;
+                    ar.x = width - 22 - i*3;
+                }
+                holst.addChild(ar);
+            }
+
         } else if (_rail.type == RailType.VERTICAL) {
-            holst.graphics.lineStyle(2, 0x000000, 0.5);
-            holst.graphics.moveTo(5 + index * 4, 0);
-            holst.graphics.lineTo(5 + index * 4, height);
-
             holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
-            holst.graphics.moveTo(3 + index * 4, 0);
-            holst.graphics.lineTo(3 + index * 4, height);
-        } else {
-            if (_rail.type == RailType.SEMI_ROUND_TOP) {
-                holst.graphics.lineStyle(2, 0x000000, 0.5);
-                drawArc(holst, width / 2 - 22, height - 2, 54 - index * 4, -90 / 360, 180 / 360, 20);
-                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
-                drawArc(holst, width / 2 - 22, height - 2, 56 - index * 4, -90 / 360, 180 / 360, 20);
-            } else if (_rail.type == RailType.SEMI_ROUND_BOTTOM) {
-                holst.graphics.lineStyle(2, 0x000000, 0.5);
-                drawArc(holst, width / 2 - 22, 0, 54 - index * 4, 90 / 360, 180 / 360, 20);
-                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
-                drawArc(holst, width / 2 - 22, 0, 56 - index * 4, 90 / 360, 180 / 360, 20);
-            } else if (_rail.type == RailType.SEMI_ROUND_LEFT) {
-                holst.graphics.lineStyle(2, 0x000000, 0.5);
-                drawArc(holst, width, height / 2 - 22, 54 - index * 4, 180 / 360, 180 / 360, 20);
-                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
-                drawArc(holst, width, height / 2 - 22, 56 - index * 4, 180 / 360, 180 / 360, 20);
-            } else if (_rail.type == RailType.SEMI_ROUND_RIGHT) {
-                holst.graphics.lineStyle(2, 0x000000, 0.5);
-                drawArc(holst, 0, height / 2 - 22, 54 - index * 4, 0, 180 / 360, 20);
-                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
-                drawArc(holst, 0, height / 2 - 22, 56 - index * 4, 0, 180 / 360, 20);
-            } else if (_rail.type == RailType.ROUND_TOP_RIGHT) {
-                holst.graphics.lineStyle(2, 0x000000, 0.5);
-                drawArc(holst, width / 2, height / 2, 54 - index * 4, -90 / 360, 0.75, 40);
-                holst.graphics.moveTo(width / 2 - 54 + index * 4, height / 2);
-                holst.graphics.lineTo(width / 2 - 54 + index * 4, height / 2 + RAIL_LEHGTH);
-                holst.graphics.moveTo(width / 2 - RAIL_LEHGTH, height / 2 + 54 - index * 4);
-                holst.graphics.lineTo(width / 2, height / 2 + 54 - index * 4);
+            holst.graphics.moveTo(1 + index * 4, 0);
+            holst.graphics.lineTo(1 + index * 4, height);
 
+            for(var i:int = 0; i<Math.min(count1, 5); i++){
+                var ar = getArrowByIndexForZero(index);
+                ar.rotation = -90;
+                if(index ==1){
+                    ar.y = 8 +i*3;
+                    ar.x = 2
+                }else{
+                    ar.y = 20 +i*3;
+                    ar.x = -2;
+                }
+                holst.addChild(ar);
+            }
+
+            for(var i:int = 0; i<Math.min(count2, 5); i++){
+                var ar = getArrowByIndexForZero(index);
+                ar.rotation = 90;
+                if(index ==1){
+                    ar.y = width - 4 - i*3;
+                    ar.x = 8;
+                }else{
+                    ar.y = width - 16 - i*3;
+                    ar.x = 4;
+                }
+                holst.addChild(ar);
+            }
+
+        } else {
+            var shiftX:int = 22;
+            var shiftY:int = 58;
+
+            if (_rail.type == RailType.SEMI_ROUND_TOP) {
                 holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
-                drawArc(holst, width / 2, height / 2, 56 - index * 4, -90 / 360, 0.75, 40);
-                holst.graphics.moveTo(width / 2 - 56 + index * 4, height / 2);
-                holst.graphics.lineTo(width / 2 - 56 + index * 4, height / 2 + RAIL_LEHGTH);
-                holst.graphics.moveTo(width / 2 - RAIL_LEHGTH, height / 2 + 56 - index * 4);
-                holst.graphics.lineTo(width / 2, height / 2 + 56 - index * 4);
+                drawArc(holst, width / 2 - shiftX, height - 2, 58 - index * 4, -90 / 360, 180 / 360, 20);
+
+
+                for(var i:int = 0; i<Math.min(count1, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 90;
+                    if(index ==1){
+                        ar.y = height-20-3*i;
+                        ar.x = 8;
+                    }else{
+                        ar.y = height-30-3*i;
+                        ar.x = 6;
+                    }
+                    holst.addChild(ar);
+                }
+
+                for(var i:int = 0; i<Math.min(count2, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 90;
+                    if(index ==1){
+                        ar.y = height-20-3*i;
+                        ar.x = width-45;
+                    }else{
+                        ar.y = height-30-3*i;
+                        ar.x = width-43;;
+                    }
+                    holst.addChild(ar);
+                }
+
+            } else if (_rail.type == RailType.SEMI_ROUND_BOTTOM) {
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width / 2 - shiftX, 2, shiftY - index * 4, 90 / 360, 180 / 360, 20);
+
+                for(var i:int = 0; i<Math.min(count1, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = -90;
+                    if(index ==1){
+                        ar.y = 15+3*i;
+                        ar.x = 4;
+                    }else{
+                        ar.y = 25+3*i;
+                        ar.x = 2;
+                    }
+                    holst.addChild(ar);
+                }
+
+                for(var i:int = 0; i<Math.min(count2, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = -90;
+                    if(index ==1){
+                        ar.y = 15+3*i;
+                        ar.x = width-50;
+                    }else{
+                        ar.y = 25+3*i;
+                        ar.x = width-48;;
+                    }
+                    holst.addChild(ar);
+                }
+            } else if (_rail.type == RailType.SEMI_ROUND_LEFT) {
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width-2, height / 2 - 22, shiftY - index * 4, 180 / 360, 180 / 360, 20);
+
+
+                for(var i:int = 0; i<Math.min(count1, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 0;
+                    if(index ==1){
+                        ar.y = 3;
+                        ar.x = width-20-3*i;
+                    }else{
+                        ar.y = 1;
+                        ar.x = width-30-3*i;
+                    }
+                    holst.addChild(ar);
+                }
+
+                for(var i:int = 0; i<Math.min(count2, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 0;
+                    if(index ==1){
+                        ar.y = height-50;
+                        ar.x = width-20-3*i;
+                    }else{
+                        ar.y = height-48;
+                        ar.x = width-30-3*i;
+                    }
+                    holst.addChild(ar);
+                }
+
+
+            } else if (_rail.type == RailType.SEMI_ROUND_RIGHT) {
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, 2, height / 2 - 22, shiftY - index * 4, 0, 180 / 360, 20);
+
+
+                for(var i:int = 0; i<Math.min(count1, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 180;
+                    if(index ==1){
+                        ar.y = 7;
+                        ar.x = 10+3*i;
+                    }else{
+                        ar.y = 5;
+                        ar.x = 20+3*i;
+                    }
+                    holst.addChild(ar);
+                }
+
+                for(var i:int = 0; i<Math.min(count2, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 180;
+                    if(index ==1){
+                        ar.y = height-45;
+                        ar.x = 10+3*i;
+                    }else{
+                        ar.y = height-43;
+                        ar.x = 20+3*i;
+                    }
+                    holst.addChild(ar);
+                }
+
+            } else if (_rail.type == RailType.ROUND_TOP_RIGHT) {
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width / 2-2, height / 2+2, shiftY-2 - index * 4, -90 / 360, 0.75, 40);
+                holst.graphics.moveTo(width / 2 - shiftY + index * 4, height / 2);
+                holst.graphics.lineTo(width / 2 - shiftY + index * 4, height / 2 + RAIL_LEHGTH_0);
+                holst.graphics.moveTo(width / 2 - RAIL_LEHGTH_0, height / 2 + shiftY - index * 4);
+                holst.graphics.lineTo(width / 2, height / 2 + shiftY - index * 4);
+
+
+
+
+                for(var i:int = 0; i<Math.min(count1, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 90;
+                    if(index ==1){
+                        ar.y = height-50-3*i;
+                        ar.x = 18;
+                    }else{
+                        ar.y = height-60-3*i;
+                        ar.x = 15;
+                    }
+                    holst.addChild(ar);
+                }
+
 
             } else if (_rail.type == RailType.ROUND_BOTTOM_LEFT) {
-                holst.graphics.lineStyle(2, 0x000000, 0.5);
-                drawArc(holst, width / 2, height / 2, 54 - index * 4, 90 / 360, 0.75, 40);
-                holst.graphics.moveTo(width / 2, height / 2 - 54 + index * 4);
-                holst.graphics.lineTo(width / 2 + RAIL_LEHGTH, height / 2 - 54 + index * 4);
-                holst.graphics.moveTo(width / 2 + 54 - index * 4, height / 2);
-                holst.graphics.lineTo(width / 2 + 54 - index * 4, height / 2 - RAIL_LEHGTH);
-
                 holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
-                drawArc(holst, width / 2, height / 2, 56 - index * 4, 90 / 360, 0.75, 40);
-                holst.graphics.moveTo(width / 2, height / 2 - 56 + index * 4);
-                holst.graphics.lineTo(width / 2 + RAIL_LEHGTH, height / 2 - 56 + index * 4);
-                holst.graphics.moveTo(width / 2 + 56 - index * 4, height / 2);
-                holst.graphics.lineTo(width / 2 + 56 - index * 4, height / 2 - RAIL_LEHGTH);
+                drawArc(holst, width / 2+2, height / 2-2, shiftY-2 - index * 4, 90 / 360, 0.75, 40);
+                holst.graphics.moveTo(width / 2, height / 2 - shiftY + index * 4);
+                holst.graphics.lineTo(width / 2 + RAIL_LEHGTH_0, height / 2 - shiftY + index * 4);
+                holst.graphics.moveTo(width / 2 + shiftY - index * 4, height / 2);
+                holst.graphics.lineTo(width / 2 + shiftY - index * 4, height / 2 - RAIL_LEHGTH_0);
 
-
+                for(var i:int = 0; i<Math.min(count1, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 0;
+                    if(index ==1){
+                        ar.y = 13;
+                        ar.x = width-40-3*i;
+                    }else{
+                        ar.y = 10;
+                        ar.x = width-50-3*i;
+                    }
+                    holst.addChild(ar);
+                }
             }
         }
+    }
+
+    private function getArrowByIndexForZero(index:int):* {
+        if(index == 1)
+            return new BLUE_ARROW;
+        else
+            return new RED_ARROW;
     }
 
     function drawArc(sprite:Sprite, centerX, centerY, radius, startAngle, arcAngle, steps):void {

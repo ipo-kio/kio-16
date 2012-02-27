@@ -31,6 +31,8 @@ public class TrainView extends BasicView {
     
     public function TrainView(train:Train) {
         this.train=train;
+
+        if(TrafficNetwork.instance.level!=2)
         addEventListener(MouseEvent.CLICK, function(event:Event):void{
 
 //            if(!dragged){

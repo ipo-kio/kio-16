@@ -26,6 +26,7 @@ import ru.ipo.kio._12.train.model.TrafficNetwork;
 import ru.ipo.kio._12.train.util.TrafficNetworkCreator;
 
 import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.api.TextUtils;
 import ru.ipo.kio.base.displays.ShellButton;
 
 public class TrainSprite extends Sprite {
@@ -38,6 +39,9 @@ public class TrainSprite extends Sprite {
 
     [Embed(source='_resources/one/Background.png')]
     private static const LEVEL_1_BACKGROUNG:Class;
+
+    [Embed(source='_resources/label.png')]
+    private static const LABEL:Class;
 
     public function TrainSprite(level:int, readonly:Boolean, id:String = null) {
         var api:KioApi = KioApi.instance(id ? id : TrainProblem.ID);
@@ -79,38 +83,110 @@ public class TrainSprite extends Sprite {
     private function addButtonsForZeroFirstLevel():void {
         var loc:Object = KioApi.getLocalization(TrainProblem.ID);
 
-        createButton(loc.buttons.clear_routes, 15, 68, function (event:MouseEvent) {
+        var tf:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
+        tf.width = 130;
+        tf.htmlText = "<p align='center'>" + loc.headers.edit + "</p>";
+        tf.x = 0;
+        tf.y = 10;
+        addChild(tf);
+
+
+        var tfAnimation:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
+        tfAnimation.width = 130;
+        tfAnimation.htmlText = "<p align='center'>" + loc.headers.animation + "</p>";
+        tfAnimation.x = 0;
+        tfAnimation.y = 165-28;
+        addChild(tfAnimation);
+
+        var tfResult:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
+        tfResult.width = 130;
+        tfResult.htmlText = "<p align='center'>" + loc.headers.result + "</p>";
+        tfResult.x = 0;
+        tfResult.y = 390-28;
+        addChild(tfResult);
+
+        createButton(loc.buttons.clear_routes, 15, 38, function (event:MouseEvent) {
             TrafficNetwork.instance.clearRoutes();
         });
 
-        createButton(loc.buttons.remove_last, 15, 118, function (event:MouseEvent) {
+        createButton(loc.buttons.remove_last, 15, 88, function (event:MouseEvent) {
             TrafficNetwork.instance.removeLastFromActive();
         });
 
-        createButton(loc.buttons.play, 15, 205, function (event:MouseEvent) {
+        createButton(loc.buttons.play, 15, 165, function (event:MouseEvent) {
             TrafficNetwork.instance.play();
         });
 
-        createButton(loc.buttons.step, 15, 254, function (event:MouseEvent) {
+        createButton(loc.buttons.step, 15, 214, function (event:MouseEvent) {
             TrafficNetwork.instance.step();
         });
 
-        createButton(loc.buttons.result, 15, 305, function (event:MouseEvent) {
+        createButton(loc.buttons.result, 15, 265, function (event:MouseEvent) {
             TrafficNetwork.instance.calc();
         });
 
-        createButton(loc.buttons.init, 15, 354, function (event:MouseEvent) {
+        createButton(loc.buttons.init, 15, 314, function (event:MouseEvent) {
             TrafficNetwork.instance.initial();
         });
 
-        var tf:TextField = new TextField();
-        tf.backgroundColor = 0xffffff;
-        tf.background = true;
-        tf.x = 15;
-        tf.y = 400;
-        tf.width = 100;
-        addChild(tf);
-        TrafficNetworkCreator.instance.result = tf;
+
+        var label1 = new LABEL;
+        var label2 = new LABEL;
+        label1.x=15;
+        label2.x=15;
+        label1.y=390;
+        label2.y=470;
+        addChild(label1);
+        addChild(label2);
+
+
+        var tfAmountLabel:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
+        tfAmountLabel.width = 130;
+        tfAmountLabel.htmlText = "<p align='center'>" + loc.headers.amounts + "</p>";
+        tfAmountLabel.x = 0;
+        tfAmountLabel.y = 390;
+        addChild(tfAmountLabel);
+
+        var tfAmount:TextField = new TextField();
+        tfAmount.background = false;
+        tfAmount.x = 15;
+        tfAmount.y = 435;
+        tfAmount.width = 100;
+        tfAmount.height = 20;
+        addChild(tfAmount);
+        tfAmount.htmlText = "<p align='center'>0</p>";
+        TrafficNetworkCreator.instance.resultAmount = tfAmount;
+
+        var tfTimeLabel:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
+        tfTimeLabel.width = 130;
+        tfTimeLabel.htmlText = "<p align='center'>" + loc.headers.time + "</p>";
+        tfTimeLabel.x = 0;
+        tfTimeLabel.y = 470;
+        addChild(tfTimeLabel);
+
+        var tfTime:TextField = new TextField();
+        tfTime.background = false;
+        tfTime.x = 15;
+        tfTime.y = 515;
+        tfTime.width = 100;
+        tfTime.height = 20;
+        tfTime.htmlText = "<p align='center'>0</p>";
+        addChild(tfTime);
+        TrafficNetworkCreator.instance.resultTime = tfTime;
+
+
+
+        var tfCrash:TextField = new TextField();
+        tfCrash.background = true;
+        tfCrash.backgroundColor = 0xaa3333;
+        tfCrash.x = 15;
+        tfCrash.y = 545;
+        tfCrash.width = 100;
+        tfCrash.height = 20;
+        addChild(tfCrash);
+        tfCrash.htmlText = "<p align='center' bgcolor='0xff0000'>Авария</p>";
+        TrafficNetworkCreator.instance.resultCrash = tfCrash;
+        tfCrash.visible = false;
     }
 
     private function addButtonsForSecondLevel():void {
@@ -139,7 +215,7 @@ public class TrainSprite extends Sprite {
         tf.y = 400;
         tf.width = 100;
         //addChild(tf);
-        TrafficNetworkCreator.instance.result = tf;
+        //TrafficNetworkCreator.instance.result = tf;
     }
 
     private function createButton(caption:String, x:int, y:int, func:Function, high:Boolean = true):ShellButton {

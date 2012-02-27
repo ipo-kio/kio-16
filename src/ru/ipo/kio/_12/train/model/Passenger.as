@@ -10,6 +10,8 @@ import ru.ipo.kio._12.train.view.PassengerView;
 public class Passenger extends VisibleEntity {
 
     private var _destination:StationType;
+    
+    private var _time:int = 0;
 
     public function Passenger(destination:StationType) {
         this._destination=destination;
@@ -20,5 +22,12 @@ public class Passenger extends VisibleEntity {
         return _destination;
     }
 
+    public function get time():int {
+        return _time;
+    }
+
+    public function set time(value:int):void {
+        _time = value;
+    }
 }
 }

@@ -9,6 +9,7 @@ import flash.geom.Point;
 import ru.ipo.kio._12.train.model.RailEnd;
 
 import ru.ipo.kio._12.train.model.types.RailType;
+import ru.ipo.kio._12.train.model.types.StationType;
 
 import ru.ipo.kio._12.train.view.RailView;
 
@@ -134,8 +135,9 @@ public class Rail extends VisibleEntity {
 
     public function processPassengers(train:Train){
         for(var i:int=passengers.length-1; i>=0; i--){
-            if(passengers[i].destination == train.getClosestStation()){
+            if(train.containsDestination(passengers[i].destination)){
                train.passengers.push(passengers[i]);
+                passengers[i].time=0;
                leavedPassengers.push(passengers[i]);
                passengers.splice(i, 1);
             }
