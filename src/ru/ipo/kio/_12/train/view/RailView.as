@@ -13,281 +13,538 @@ import ru.ipo.kio._12.train.model.Passenger;
 
 import ru.ipo.kio._12.train.model.Rail;
 import ru.ipo.kio._12.train.model.TrafficNetwork;
+import ru.ipo.kio._12.train.model.Train;
 import ru.ipo.kio._12.train.model.types.RailType;
+import ru.ipo.kio._12.train.model.types.StationType;
 import ru.ipo.kio._12.train.util.Pair;
 
 public class RailView extends BasicView {
 
-    [Embed(source='../_resources/Line_horizontal.png')]
-    private static const LEVEL_1_HORIZONTAL:Class;
-
-    [Embed(source='../_resources/Line_vertical.png')]
-    private static const LEVEL_1_VERTICAL:Class;
-
-    [Embed(source='../_resources/Sector_left.png')]
-    private static const LEVEL_1_SEMI_LEFT:Class;
-
-    [Embed(source='../_resources/Sector_right.png')]
-    private static const LEVEL_1_SEMI_RIGHT:Class;
-
-    [Embed(source='../_resources/Sector_bottom.png')]
-    private static const LEVEL_1_SEMI_BOTTOM:Class;
-
-    [Embed(source='../_resources/Sector_top.png')]
-    private static const LEVEL_1_SEMI_TOP:Class;
-
-    [Embed(source='../_resources/Loop_top_left.png')]
-    private static const LEVEL_1_TOP_LEFT:Class;
-
-    [Embed(source='../_resources/Loop_top_right.png')]
-    private static const LEVEL_1_TOP_RIGHT:Class;
-
-    [Embed(source='../_resources/Loop_bottom_left.png')]
-    private static const LEVEL_1_BOTTOM_LEFT:Class;
-
-    [Embed(source='../_resources/Loop_bottom_right.png')]
-    private static const LEVEL_1_BOTTOM_RIGHT:Class;
-
     private static const RAIL_LEHGTH:int = 18;
 
+    private static const RAIL_LEHGTH_0:int = 24;
 
-    protected var rail:Rail;
-    
+    [Embed(source='../_resources/Arrow_blue.png')]
+    private static const BLUE_ARROW:Class;
+
+    [Embed(source='../_resources/Arrow_red.png')]
+    private static const RED_ARROW:Class;
+
+    [Embed(source='../_resources/Arrow_green.png')]
+    private static const GREEN_ARROW:Class;
+
+    [Embed(source='../_resources/Arrow_yellow.png')]
+    private static const YELLOW_ARROW:Class;
+
+    private var _rail:Rail;
+
     private var holst:Sprite = new Sprite();
-    
+
+    protected var placer:RailViewPlaceHelper;
+
     public function RailView(rail:Rail) {
-        this.rail=rail;
-        if(TrafficNetwork.instance.level==1){
-            placeFirstLevel(rail);
-        }
+        this._rail = rail;
+        placer = new RailViewPlaceHelper(this);
+        placer.placeRail();
+        placer.addPictureAndHolst(holst);
+
         update();
 
-        addEventListener(MouseEvent.MOUSE_OVER, function(event:Event):void{
-           if(TrafficNetwork.instance.isPossibleAdd(rail)){
-                rail.active=true
-           }
-        });
-        addEventListener(MouseEvent.MOUSE_OUT, function(event:Event):void{
-            rail.active=false
-         });
+        if (TrafficNetwork.instance.level != 2) {
+            addRailActivationHandler(rail);
+        }
+    }
 
-        addEventListener(MouseEvent.CLICK, function(event:Event):void{
-            if(rail.active){
+    private function addRailActivationHandler(rail:Rail):void {
+        addEventListener(MouseEvent.MOUSE_OVER, function (event:Event):void {
+            if (TrafficNetwork.instance.isPossibleAdd(rail)) {
+                rail.active = true
+            }
+        });
+        addEventListener(MouseEvent.MOUSE_OUT, function (event:Event):void {
+            rail.active = false
+        });
+
+        addEventListener(MouseEvent.CLICK, function (event:Event):void {
+            if (rail.active) {
                 TrafficNetwork.instance.addToActiveRoute(rail);
-                rail.active=false;
+                rail.active = false;
             }
         });
     }
 
-    protected function placeFirstLevel(rail:Rail):void {
-        if (rail.type == RailType.HORIZONTAL) {
-            x = rail.firstEnd.point.x;
-            y = rail.firstEnd.point.y - rail.trafficNetwork.railSpace;
-            var line = new LEVEL_1_HORIZONTAL;
-            holst.y=12;
-        } else if (rail.type == RailType.VERTICAL) {
-            x = rail.firstEnd.point.x - rail.trafficNetwork.railSpace;
-            y = rail.firstEnd.point.y;
-            var line = new LEVEL_1_VERTICAL;
-            holst.x=12;
-        } else if (rail.type == RailType.SEMI_ROUND_TOP) {
-            x = rail.firstEnd.point.x - rail.trafficNetwork.railSpace;
-            y = rail.firstEnd.point.y - rail.trafficNetwork.railSpace*2;
-            var line = new LEVEL_1_SEMI_TOP;
-            holst.x=12;
-        } else if (rail.type == RailType.SEMI_ROUND_BOTTOM) {
-            x = rail.firstEnd.point.x - rail.trafficNetwork.railSpace;
-            y = rail.firstEnd.point.y;
-            var line = new LEVEL_1_SEMI_BOTTOM;
-            holst.x=12;
-        } else if (rail.type == RailType.SEMI_ROUND_LEFT) {
-            x = rail.firstEnd.point.x-rail.trafficNetwork.railSpace*2;
-            y = rail.firstEnd.point.y-rail.trafficNetwork.railSpace;
-            var line = new LEVEL_1_SEMI_LEFT;
-            holst.y=12;
-        } else if (rail.type == RailType.SEMI_ROUND_RIGHT) {
-            x = rail.firstEnd.point.x;
-            y = rail.firstEnd.point.y-rail.trafficNetwork.railSpace;
-            var line = new LEVEL_1_SEMI_RIGHT;
-            holst.y=12;
-        } else if (rail.type == RailType.ROUND_TOP_LEFT) {
-            x = rail.firstEnd.point.x - 63;
-            y = rail.secondEnd.point.y - 63;
-            var line = new LEVEL_1_TOP_LEFT;
-        } else if (rail.type == RailType.ROUND_TOP_RIGHT) {
-            x = rail.secondEnd.point.x - 30;
-            y = rail.firstEnd.point.y - 63;
-            var line = new LEVEL_1_TOP_RIGHT;
-        } else if (rail.type == RailType.ROUND_BOTTOM_LEFT) {
-            x = rail.secondEnd.point.x - 63;
-            y = rail.firstEnd.point.y - 30;
-            var line = new LEVEL_1_BOTTOM_LEFT;
-        }  else if (rail.type == RailType.ROUND_BOTTOM_RIGHT) {
-            x = rail.firstEnd.point.x - 30;
-            y = rail.secondEnd.point.y - 30;
-            var line = new LEVEL_1_BOTTOM_RIGHT;
+
+    public function addSelector():void {
+
+        if (TrafficNetwork.instance.level == 2) {
+            return;
         }
-        addChild(line);
-        addChild(holst);
+
+        var selector:Sprite = new Sprite();
+        selector.graphics.beginFill(0xff0000, 0);
+        if (TrafficNetwork.instance.level == 1) {
+            selector.graphics.drawCircle(0, 0, 30);
+        } else if (TrafficNetwork.instance.level == 0) {
+            selector.graphics.drawCircle(0, 0, 40);
+        }
+        selector.graphics.endFill();
+        var addSelector:Boolean = false;
+        var trainType:StationType;
+
+        if (_rail.type == RailType.ROUND_TOP_LEFT) {
+            addSelector = true;
+            trainType = StationType.FIRST;
+        } else if (_rail.type == RailType.ROUND_TOP_RIGHT) {
+            addSelector = true;
+            if (TrafficNetwork.instance.level == 1) {
+                trainType = StationType.SECOND;
+            } else if (TrafficNetwork.instance.level == 0) {
+                trainType = StationType.FIRST;
+            }
+        } else if (_rail.type == RailType.ROUND_BOTTOM_LEFT) {
+            addSelector = true;
+            if (TrafficNetwork.instance.level == 1) {
+                trainType = StationType.FOURTH
+            } else if (TrafficNetwork.instance.level == 0) {
+                trainType = StationType.THIRD;
+            }
+        } else if (_rail.type == RailType.ROUND_BOTTOM_RIGHT) {
+            addSelector = true;
+            trainType = StationType.THIRD;
+        }
+
+
+        selector.x = x + width / 2;
+        selector.y = y + height / 2;
+        if (addSelector) {
+            TrafficNetwork.instance.view.addChild(selector);
+        }
+
+        selector.addEventListener(MouseEvent.CLICK, function (event:Event):void {
+            var train:Train = TrafficNetwork.instance.getTrainByType(trainType);
+            if (TrafficNetwork.instance.activeTrain == train) {
+                TrafficNetwork.instance.activeTrain = null;
+            } else {
+                TrafficNetwork.instance.activeTrain = train;
+            }
+        });
     }
 
-     public override function update():void{
-         graphics.clear();
-         holst.graphics.clear();
-         var length:int = rail.trafficNetwork.railLength;
-         var space:int = rail.trafficNetwork.railSpace;
-         var width:int = rail.trafficNetwork.railWidth;
-         
+    public override function update():void {
+        graphics.clear();
+        holst.graphics.clear();
+        while(holst.numChildren>0){
+            holst.removeChildAt(0);
+        }
+        var length:int = _rail.trafficNetwork.railLength;
+        var space:int = _rail.trafficNetwork.railSpace;
+        var width:int = _rail.trafficNetwork.railWidth;
 
-         if(rail.active){
-             var glow_white:GlowFilter = new GlowFilter(0xFF0000, 1, 5, 5, 10, 3);
-             filters = new Array(glow_white);
-         }else{
-             filters = new Array();
-         }
 
-         var counts:Vector.<Pair> = TrafficNetwork.instance.getRouteColor(rail);
-         for(var i:int = 0; i<counts.length; i++){
-             var trainColor:int = counts[i].train.color;
-             if(counts[i].count>0){
-             drawRail(i, TrafficNetwork.instance.activeTrain == counts[i].train ? 0xffffff:trainColor,
-                     TrafficNetwork.instance.activeTrain == counts[i].train ? 1:counts[i].count, length, space,
-                     TrafficNetwork.instance.activeTrain == counts[i].train);
-             }
-         }
-
-         updatePassengers(length, width, space);
-     }
-
-    private function drawRail(index:int, color:int, alpha:Number, length:int, space:int, active:Boolean=false):void {
-        graphics.lineStyle(1, color, alpha);
-        if (rail.type == RailType.HORIZONTAL) {
-            holst.graphics.lineStyle(2,0x000000,0.5);
-            holst.graphics.moveTo(0,5+index*4);
-            holst.graphics.lineTo(width,5+index*4);
-
-            holst.graphics.lineStyle(active?3:2,color,alpha);
-            holst.graphics.moveTo(0,3+index*4);
-            holst.graphics.lineTo(width,3+index*4);
-        } else if (rail.type == RailType.VERTICAL) {
-            holst.graphics.lineStyle(2,0x000000,0.5);
-            holst.graphics.moveTo(5+index*4, 0);
-            holst.graphics.lineTo(5+index*4,height);
-
-            holst.graphics.lineStyle(active?3:2,color,alpha);
-            holst.graphics.moveTo(3+index*4, 0);
-            holst.graphics.lineTo(3+index*4,height);
+        if (_rail.active) {
+            var glow_white:GlowFilter = new GlowFilter(TrafficNetwork.instance.activeTrain.color, 1, 5, 5, 10, 3);
+            filters = new Array(glow_white);
         } else {
-            if (rail.type == RailType.SEMI_ROUND_TOP) {
-                holst.graphics.lineStyle(2,0x000000,0.5);
-                drawArc(holst, width/2-12, height-2, 42-index*4, -90/360, 180/360, 20);
-                holst.graphics.lineStyle(active?3:2,color,alpha);
-                drawArc(holst, width/2-12, height-2, 44-index*4, -90/360, 180/360, 20);
-            } else if (rail.type == RailType.SEMI_ROUND_BOTTOM) {
-                holst.graphics.lineStyle(2,0x000000,0.5);
-                drawArc(holst, width/2-12, 0, 42-index*4, 90/360, 180/360, 20);
-                holst.graphics.lineStyle(active?3:2,color,alpha);
-                drawArc(holst, width/2-12, 0, 44-index*4, 90/360, 180/360, 20);
-            } else if (rail.type == RailType.SEMI_ROUND_LEFT) {
-                holst.graphics.lineStyle(2,0x000000,0.5);
-                drawArc(holst, width, height/2-12, 42-index*4, 180/360, 180/360, 20);
-                holst.graphics.lineStyle(active?3:2,color,alpha);
-                drawArc(holst, width, height/2-12, 44-index*4, 180/360, 180/360, 20);
-            } else if (rail.type == RailType.SEMI_ROUND_RIGHT) {
-                holst.graphics.lineStyle(2,0x000000,0.5);
-                drawArc(holst, 0, height/2-12, 42-index*4, 0, 180/360, 20);
-                holst.graphics.lineStyle(active?3:2,color,alpha);
-                drawArc(holst, 0, height/2-12, 44-index*4, 0, 180/360, 20);
-            } else if (rail.type == RailType.ROUND_TOP_LEFT) {
-                holst.graphics.lineStyle(2,0x000000,0.5);
-                drawArc(holst, width/2, height/2, 42-index*4, -180/360, 0.75, 40);
-                holst.graphics.moveTo(width/2+42-index*4, height/2);
-                holst.graphics.lineTo(width/2+42-index*4, height/2+RAIL_LEHGTH);
-                holst.graphics.moveTo(width/2, height/2+42-index*4);
-                holst.graphics.lineTo(width/2+RAIL_LEHGTH, height/2+42-index*4);
+            filters = new Array();
+        }
 
-                holst.graphics.lineStyle(active?3:2,color,alpha);
-                drawArc(holst, width/2, height/2, 44-index*4, -180/360, 0.75, 40);
-                holst.graphics.moveTo(width/2+44-index*4, height/2);
-                holst.graphics.lineTo(width/2+44-index*4, height/2+RAIL_LEHGTH);
-                holst.graphics.moveTo(width/2, height/2+44-index*4);
-                holst.graphics.lineTo(width/2+RAIL_LEHGTH, height/2+44-index*4);
+        var counts:Vector.<Pair> = TrafficNetwork.instance.getRouteColor(_rail);
+        for (var i:int = 0; i < counts.length; i++) {
+            var trainColor:int = counts[i].train.color;
+            if (counts[i].count1 > 0 || counts[i].count2 > 0) {
+                drawRail(i, TrafficNetwork.instance.activeTrain == counts[i].train ? 0xffffff : trainColor,
+                        counts[i].count1, counts[i].count2, length, space,
+                        TrafficNetwork.instance.activeTrain == counts[i].train);
+            }
+        }
 
-            } else if (rail.type == RailType.ROUND_TOP_RIGHT) {
-                holst.graphics.lineStyle(2,0x000000,0.5);
-                drawArc(holst, width/2, height/2, 42-index*4, -90/360, 0.75, 40);
-                holst.graphics.moveTo(width/2-42+index*4, height/2);
-                holst.graphics.lineTo(width/2-42+index*4, height/2+RAIL_LEHGTH);
-                holst.graphics.moveTo(width/2-RAIL_LEHGTH, height/2+42-index*4);
-                holst.graphics.lineTo(width/2, height/2+42-index*4);
+        updatePassengers(_rail.getPassengers(), length, space);
+    }
 
-                holst.graphics.lineStyle(active?3:2,color,alpha);
-                drawArc(holst, width/2, height/2, 44-index*4, -90/360, 0.75, 40);
-                holst.graphics.moveTo(width/2-44+index*4, height/2);
-                holst.graphics.lineTo(width/2-44+index*4, height/2+RAIL_LEHGTH);
-                holst.graphics.moveTo(width/2-RAIL_LEHGTH, height/2+44-index*4);
-                holst.graphics.lineTo(width/2, height/2+44-index*4);
+    private function drawRail(index:int, color:int, count1:int, count2:int, length:int, space:int, active:Boolean = false):void {
+        if (TrafficNetwork.instance.level == 1 || TrafficNetwork.instance.level == 2) {
+            drawFirstLevel(color, count1, count2, index, active);
+        } else if (TrafficNetwork.instance.level == 0) {
+            drawZeroLevel(color, count1, count2, index, active);
+        }
+    }
 
-            } else if (rail.type == RailType.ROUND_BOTTOM_LEFT) {
-                holst.graphics.lineStyle(2,0x000000,0.5);
-                drawArc(holst, width/2, height/2, 42-index*4, 90/360, 0.75, 40);
-                holst.graphics.moveTo(width/2, height/2-42+index*4);
-                holst.graphics.lineTo(width/2+RAIL_LEHGTH, height/2-42+index*4);
-                holst.graphics.moveTo(width/2+42-index*4, height/2);
-                holst.graphics.lineTo(width/2+42-index*4, height/2-RAIL_LEHGTH);
+    private function drawFirstLevel(color:int,  count1:int, count2:int, index:int, active:Boolean):void {
+        var alpha=1;
+        graphics.lineStyle(1, color, alpha);
+        if (_rail.type == RailType.HORIZONTAL) {
+            holst.graphics.lineStyle(2, 0x000000, 0.5);
+            holst.graphics.moveTo(0, 5 + index * 4);
+            holst.graphics.lineTo(width, 5 + index * 4);
 
-                holst.graphics.lineStyle(active?3:2,color,alpha);
-                drawArc(holst, width/2, height/2, 44-index*4, 90/360, 0.75, 40);
-                holst.graphics.moveTo(width/2, height/2-44+index*4);
-                holst.graphics.lineTo(width/2+RAIL_LEHGTH, height/2-44+index*4);
-                holst.graphics.moveTo(width/2+44-index*4, height/2);
-                holst.graphics.lineTo(width/2+44-index*4, height/2-RAIL_LEHGTH);
+            holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+            holst.graphics.moveTo(0, 3 + index * 4);
+            holst.graphics.lineTo(width, 3 + index * 4);
+        } else if (_rail.type == RailType.VERTICAL) {
+            holst.graphics.lineStyle(2, 0x000000, 0.5);
+            holst.graphics.moveTo(5 + index * 4, 0);
+            holst.graphics.lineTo(5 + index * 4, height);
+
+            holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+            holst.graphics.moveTo(3 + index * 4, 0);
+            holst.graphics.lineTo(3 + index * 4, height);
+        } else {
+            if (_rail.type == RailType.SEMI_ROUND_TOP) {
+                holst.graphics.lineStyle(2, 0x000000, 0.5);
+                drawArc(holst, width / 2 - 12, height - 2, 42 - index * 4, -90 / 360, 180 / 360, 20);
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width / 2 - 12, height - 2, 44 - index * 4, -90 / 360, 180 / 360, 20);
+            } else if (_rail.type == RailType.SEMI_ROUND_BOTTOM) {
+                holst.graphics.lineStyle(2, 0x000000, 0.5);
+                drawArc(holst, width / 2 - 12, 0, 42 - index * 4, 90 / 360, 180 / 360, 20);
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width / 2 - 12, 0, 44 - index * 4, 90 / 360, 180 / 360, 20);
+            } else if (_rail.type == RailType.SEMI_ROUND_LEFT) {
+                holst.graphics.lineStyle(2, 0x000000, 0.5);
+                drawArc(holst, width, height / 2 - 12, 42 - index * 4, 180 / 360, 180 / 360, 20);
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width, height / 2 - 12, 44 - index * 4, 180 / 360, 180 / 360, 20);
+            } else if (_rail.type == RailType.SEMI_ROUND_RIGHT) {
+                holst.graphics.lineStyle(2, 0x000000, 0.5);
+                drawArc(holst, 0, height / 2 - 12, 42 - index * 4, 0, 180 / 360, 20);
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, 0, height / 2 - 12, 44 - index * 4, 0, 180 / 360, 20);
+            } else if (_rail.type == RailType.ROUND_TOP_LEFT) {
+                holst.graphics.lineStyle(2, 0x000000, 0.5);
+                drawArc(holst, width / 2, height / 2, 42 - index * 4, -180 / 360, 0.75, 40);
+                holst.graphics.moveTo(width / 2 + 42 - index * 4, height / 2);
+                holst.graphics.lineTo(width / 2 + 42 - index * 4, height / 2 + RAIL_LEHGTH);
+                holst.graphics.moveTo(width / 2, height / 2 + 42 - index * 4);
+                holst.graphics.lineTo(width / 2 + RAIL_LEHGTH, height / 2 + 42 - index * 4);
+
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width / 2, height / 2, 44 - index * 4, -180 / 360, 0.75, 40);
+                holst.graphics.moveTo(width / 2 + 44 - index * 4, height / 2);
+                holst.graphics.lineTo(width / 2 + 44 - index * 4, height / 2 + RAIL_LEHGTH);
+                holst.graphics.moveTo(width / 2, height / 2 + 44 - index * 4);
+                holst.graphics.lineTo(width / 2 + RAIL_LEHGTH, height / 2 + 44 - index * 4);
+
+            } else if (_rail.type == RailType.ROUND_TOP_RIGHT) {
+                holst.graphics.lineStyle(2, 0x000000, 0.5);
+                drawArc(holst, width / 2, height / 2, 42 - index * 4, -90 / 360, 0.75, 40);
+                holst.graphics.moveTo(width / 2 - 42 + index * 4, height / 2);
+                holst.graphics.lineTo(width / 2 - 42 + index * 4, height / 2 + RAIL_LEHGTH);
+                holst.graphics.moveTo(width / 2 - RAIL_LEHGTH, height / 2 + 42 - index * 4);
+                holst.graphics.lineTo(width / 2, height / 2 + 42 - index * 4);
+
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width / 2, height / 2, 44 - index * 4, -90 / 360, 0.75, 40);
+                holst.graphics.moveTo(width / 2 - 44 + index * 4, height / 2);
+                holst.graphics.lineTo(width / 2 - 44 + index * 4, height / 2 + RAIL_LEHGTH);
+                holst.graphics.moveTo(width / 2 - RAIL_LEHGTH, height / 2 + 44 - index * 4);
+                holst.graphics.lineTo(width / 2, height / 2 + 44 - index * 4);
+
+            } else if (_rail.type == RailType.ROUND_BOTTOM_LEFT) {
+                holst.graphics.lineStyle(2, 0x000000, 0.5);
+                drawArc(holst, width / 2, height / 2, 42 - index * 4, 90 / 360, 0.75, 40);
+                holst.graphics.moveTo(width / 2, height / 2 - 42 + index * 4);
+                holst.graphics.lineTo(width / 2 + RAIL_LEHGTH, height / 2 - 42 + index * 4);
+                holst.graphics.moveTo(width / 2 + 42 - index * 4, height / 2);
+                holst.graphics.lineTo(width / 2 + 42 - index * 4, height / 2 - RAIL_LEHGTH);
+
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width / 2, height / 2, 44 - index * 4, 90 / 360, 0.75, 40);
+                holst.graphics.moveTo(width / 2, height / 2 - 44 + index * 4);
+                holst.graphics.lineTo(width / 2 + RAIL_LEHGTH, height / 2 - 44 + index * 4);
+                holst.graphics.moveTo(width / 2 + 44 - index * 4, height / 2);
+                holst.graphics.lineTo(width / 2 + 44 - index * 4, height / 2 - RAIL_LEHGTH);
 
 
-            } else if (rail.type == RailType.ROUND_BOTTOM_RIGHT) {
-                holst.graphics.lineStyle(2,0x000000,0.5);
-                drawArc(holst, width/2, height/2, 42-index*4, 0/360, 0.75, 40);
-                holst.graphics.moveTo(width/2, height/2-42+index*4);
-                holst.graphics.lineTo(width/2-RAIL_LEHGTH, height/2-42+index*4);
-                holst.graphics.moveTo(width/2-42+index*4, height/2);
-                holst.graphics.lineTo(width/2-42+index*4, height/2-RAIL_LEHGTH);
+            } else if (_rail.type == RailType.ROUND_BOTTOM_RIGHT) {
+                holst.graphics.lineStyle(2, 0x000000, 0.5);
+                drawArc(holst, width / 2, height / 2, 42 - index * 4, 0 / 360, 0.75, 40);
+                holst.graphics.moveTo(width / 2, height / 2 - 42 + index * 4);
+                holst.graphics.lineTo(width / 2 - RAIL_LEHGTH, height / 2 - 42 + index * 4);
+                holst.graphics.moveTo(width / 2 - 42 + index * 4, height / 2);
+                holst.graphics.lineTo(width / 2 - 42 + index * 4, height / 2 - RAIL_LEHGTH);
 
 
-                holst.graphics.lineStyle(active?3:2,color,alpha);
-                drawArc(holst, width/2, height/2, 44-index*4, 0/360, 0.75, 40);
-                holst.graphics.moveTo(width/2, height/2-44+index*4);
-                holst.graphics.lineTo(width/2-RAIL_LEHGTH, height/2-44+index*4);
-                holst.graphics.moveTo(width/2-44+index*4, height/2);
-                holst.graphics.lineTo(width/2-44+index*4, height/2-RAIL_LEHGTH);
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width / 2, height / 2, 44 - index * 4, 0 / 360, 0.75, 40);
+                holst.graphics.moveTo(width / 2, height / 2 - 44 + index * 4);
+                holst.graphics.lineTo(width / 2 - RAIL_LEHGTH, height / 2 - 44 + index * 4);
+                holst.graphics.moveTo(width / 2 - 44 + index * 4, height / 2);
+                holst.graphics.lineTo(width / 2 - 44 + index * 4, height / 2 - RAIL_LEHGTH);
 
             }
         }
     }
 
-    function drawArc(sprite:Sprite, centerX, centerY, radius, startAngle, arcAngle, steps):void{
+    private function drawZeroLevel(color:int,  count1:int, count2:int, index:int, active:Boolean):void {
+        var alpha=1;
+        graphics.lineStyle(1, color, alpha);
+        if (_rail.type == RailType.HORIZONTAL) {
+            holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+            holst.graphics.moveTo(0, 1 + index * 4);
+            holst.graphics.lineTo(width, 1 + index * 4);
+            
+            for(var i:int = 0; i<Math.min(count1, 5); i++){
+                var ar = getArrowByIndexForZero(index);
+                ar.rotation = 180;
+                if(index ==1){
+                    ar.y = 8;
+                    ar.x = 8 +i*3;
+                }else{
+                    ar.y = 4;
+                    ar.x = 20 +i*3;
+                }
+                holst.addChild(ar);
+            }
+
+            for(var i:int = 0; i<Math.min(count2, 5); i++){
+                var ar = getArrowByIndexForZero(index);
+                if(index ==1){
+                    ar.y = 2;
+                    ar.x = width - 10 - i*3;
+                }else{
+                    ar.y = -2;
+                    ar.x = width - 22 - i*3;
+                }
+                holst.addChild(ar);
+            }
+
+        } else if (_rail.type == RailType.VERTICAL) {
+            holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+            holst.graphics.moveTo(1 + index * 4, 0);
+            holst.graphics.lineTo(1 + index * 4, height);
+
+            for(var i:int = 0; i<Math.min(count1, 5); i++){
+                var ar = getArrowByIndexForZero(index);
+                ar.rotation = -90;
+                if(index ==1){
+                    ar.y = 8 +i*3;
+                    ar.x = 2
+                }else{
+                    ar.y = 20 +i*3;
+                    ar.x = -2;
+                }
+                holst.addChild(ar);
+            }
+
+            for(var i:int = 0; i<Math.min(count2, 5); i++){
+                var ar = getArrowByIndexForZero(index);
+                ar.rotation = 90;
+                if(index ==1){
+                    ar.y = width - 4 - i*3;
+                    ar.x = 8;
+                }else{
+                    ar.y = width - 16 - i*3;
+                    ar.x = 4;
+                }
+                holst.addChild(ar);
+            }
+
+        } else {
+            var shiftX:int = 22;
+            var shiftY:int = 58;
+
+            if (_rail.type == RailType.SEMI_ROUND_TOP) {
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width / 2 - shiftX, height - 2, 58 - index * 4, -90 / 360, 180 / 360, 20);
+
+
+                for(var i:int = 0; i<Math.min(count1, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 90;
+                    if(index ==1){
+                        ar.y = height-20-3*i;
+                        ar.x = 8;
+                    }else{
+                        ar.y = height-30-3*i;
+                        ar.x = 6;
+                    }
+                    holst.addChild(ar);
+                }
+
+                for(var i:int = 0; i<Math.min(count2, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 90;
+                    if(index ==1){
+                        ar.y = height-20-3*i;
+                        ar.x = width-45;
+                    }else{
+                        ar.y = height-30-3*i;
+                        ar.x = width-43;;
+                    }
+                    holst.addChild(ar);
+                }
+
+            } else if (_rail.type == RailType.SEMI_ROUND_BOTTOM) {
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width / 2 - shiftX, 2, shiftY - index * 4, 90 / 360, 180 / 360, 20);
+
+                for(var i:int = 0; i<Math.min(count1, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = -90;
+                    if(index ==1){
+                        ar.y = 15+3*i;
+                        ar.x = 4;
+                    }else{
+                        ar.y = 25+3*i;
+                        ar.x = 2;
+                    }
+                    holst.addChild(ar);
+                }
+
+                for(var i:int = 0; i<Math.min(count2, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = -90;
+                    if(index ==1){
+                        ar.y = 15+3*i;
+                        ar.x = width-50;
+                    }else{
+                        ar.y = 25+3*i;
+                        ar.x = width-48;;
+                    }
+                    holst.addChild(ar);
+                }
+            } else if (_rail.type == RailType.SEMI_ROUND_LEFT) {
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width-2, height / 2 - 22, shiftY - index * 4, 180 / 360, 180 / 360, 20);
+
+
+                for(var i:int = 0; i<Math.min(count1, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 0;
+                    if(index ==1){
+                        ar.y = 3;
+                        ar.x = width-20-3*i;
+                    }else{
+                        ar.y = 1;
+                        ar.x = width-30-3*i;
+                    }
+                    holst.addChild(ar);
+                }
+
+                for(var i:int = 0; i<Math.min(count2, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 0;
+                    if(index ==1){
+                        ar.y = height-50;
+                        ar.x = width-20-3*i;
+                    }else{
+                        ar.y = height-48;
+                        ar.x = width-30-3*i;
+                    }
+                    holst.addChild(ar);
+                }
+
+
+            } else if (_rail.type == RailType.SEMI_ROUND_RIGHT) {
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, 2, height / 2 - 22, shiftY - index * 4, 0, 180 / 360, 20);
+
+
+                for(var i:int = 0; i<Math.min(count1, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 180;
+                    if(index ==1){
+                        ar.y = 7;
+                        ar.x = 10+3*i;
+                    }else{
+                        ar.y = 5;
+                        ar.x = 20+3*i;
+                    }
+                    holst.addChild(ar);
+                }
+
+                for(var i:int = 0; i<Math.min(count2, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 180;
+                    if(index ==1){
+                        ar.y = height-45;
+                        ar.x = 10+3*i;
+                    }else{
+                        ar.y = height-43;
+                        ar.x = 20+3*i;
+                    }
+                    holst.addChild(ar);
+                }
+
+            } else if (_rail.type == RailType.ROUND_TOP_RIGHT) {
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width / 2-2, height / 2+2, shiftY-2 - index * 4, -90 / 360, 0.75, 40);
+                holst.graphics.moveTo(width / 2 - shiftY + index * 4, height / 2);
+                holst.graphics.lineTo(width / 2 - shiftY + index * 4, height / 2 + RAIL_LEHGTH_0);
+                holst.graphics.moveTo(width / 2 - RAIL_LEHGTH_0, height / 2 + shiftY - index * 4);
+                holst.graphics.lineTo(width / 2, height / 2 + shiftY - index * 4);
+
+
+
+
+                for(var i:int = 0; i<Math.min(count1, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 90;
+                    if(index ==1){
+                        ar.y = height-50-3*i;
+                        ar.x = 18;
+                    }else{
+                        ar.y = height-60-3*i;
+                        ar.x = 15;
+                    }
+                    holst.addChild(ar);
+                }
+
+
+            } else if (_rail.type == RailType.ROUND_BOTTOM_LEFT) {
+                holst.graphics.lineStyle(active ? 3 : 2, color, alpha);
+                drawArc(holst, width / 2+2, height / 2-2, shiftY-2 - index * 4, 90 / 360, 0.75, 40);
+                holst.graphics.moveTo(width / 2, height / 2 - shiftY + index * 4);
+                holst.graphics.lineTo(width / 2 + RAIL_LEHGTH_0, height / 2 - shiftY + index * 4);
+                holst.graphics.moveTo(width / 2 + shiftY - index * 4, height / 2);
+                holst.graphics.lineTo(width / 2 + shiftY - index * 4, height / 2 - RAIL_LEHGTH_0);
+
+                for(var i:int = 0; i<Math.min(count1, 5); i++){
+                    var ar = getArrowByIndexForZero(index);
+                    ar.rotation = 0;
+                    if(index ==1){
+                        ar.y = 13;
+                        ar.x = width-40-3*i;
+                    }else{
+                        ar.y = 10;
+                        ar.x = width-50-3*i;
+                    }
+                    holst.addChild(ar);
+                }
+            }
+        }
+    }
+
+    private function getArrowByIndexForZero(index:int):* {
+        if(index == 1)
+            return new BLUE_ARROW;
+        else
+            return new RED_ARROW;
+    }
+
+    function drawArc(sprite:Sprite, centerX, centerY, radius, startAngle, arcAngle, steps):void {
         //
         // Rotate the point of 0 rotation 1/4 turn counter-clockwise.
         startAngle -= .25;
         //
         var twoPI = 2 * Math.PI;
-        var angleStep = arcAngle/steps;
+        var angleStep = arcAngle / steps;
         var xx = centerX + Math.cos(startAngle * twoPI) * radius;
         var yy = centerY + Math.sin(startAngle * twoPI) * radius;
         sprite.graphics.moveTo(xx, yy);
-        for(var i=1; i<=steps; i++){
+        for (var i = 1; i <= steps; i++) {
             var angle = startAngle + i * angleStep;
             xx = centerX + Math.cos(angle * twoPI) * radius;
             yy = centerY + Math.sin(angle * twoPI) * radius;
             sprite.graphics.lineTo(xx, yy);
         }
     }
-    
 
-    private function updatePassengers(length:int, width:int, space:int):void {
-        var passengers:Vector.<Passenger> = rail.getPassengers();
+
+    protected function updatePassengers(passengers:Vector.<Passenger>, length:int, space:int):void {
         for (var i:int = 0; i < passengers.length; i++) {
-            if (rail.trafficNetwork.view.contains(passengers[i].view)) {
-                rail.trafficNetwork.view.removeChild(passengers[i].view);
+            if (_rail.trafficNetwork.view.contains(passengers[i].view)) {
+                _rail.trafficNetwork.view.removeChild(passengers[i].view);
             }
         }
 
@@ -295,35 +552,74 @@ public class RailView extends BasicView {
         var passengerSpace:int = TrafficNetwork.instance.passengerSpace;
 
         for (var i:int = 0; i < passengers.length; i++) {
-            rail.trafficNetwork.view.addChild(passengers[i].view);
-            if (rail.type == RailType.HORIZONTAL) {
-                passengers[i].view.x = i % 2 == 1 ? rail.view.x + length / 2 - passengerSize*2 : rail.view.x + length / 2 + passengerSize;
-                passengers[i].view.y = (i % 4 == 1 || i % 4 == 2) ? rail.view.y + passengerSize : rail.view.y + passengerSize * 10;
-            }
-            if (rail.type == RailType.VERTICAL) {
-                passengers[i].view.x = (i % 4 == 1 || i % 4 == 2) ? rail.view.x + passengerSize : rail.view.x + passengerSize * 10;
-                passengers[i].view.y = i % 2 == 1 ? rail.view.y + length / 2 - passengerSize*2 : rail.view.y + length / 2 + passengerSize;
-            }
-            if (rail.type == RailType.SEMI_ROUND_BOTTOM) {
-                passengers[i].view.x = i % 2 == 1 ? space + rail.view.x + length / 2 + passengerSize*5 : space + rail.view.x + length / 2 + passengerSize*8;
-                passengers[i].view.y = (i % 4 == 1 || i % 4 == 2) ? rail.view.y + length / 2 - passengerSize : rail.view.y + length / 2 + passengerSize * 10;
-            }
-            if (rail.type == RailType.SEMI_ROUND_TOP) {
-                passengers[i].view.x = i % 2 == 1 ? space + rail.view.x + length / 2 + passengerSize*5 : space + rail.view.x + length / 2 + passengerSize*8;
-                passengers[i].view.y = (i % 4 == 1 || i % 4 == 2) ? rail.view.y + length / 2 - passengerSize*10 : rail.view.y + length / 2 + passengerSize * 2;
-            }
-            if (rail.type == RailType.SEMI_ROUND_LEFT) {
-                passengers[i].view.x = (i % 4 == 1 || i % 4 == 2) ? rail.view.x + length / 2 - passengerSize*9 : rail.view.x + length / 2 +  passengerSpace;
-                passengers[i].view.y = i % 2 == 1 ? rail.view.y + space + length / 2 + passengerSize*8 : rail.view.y + space + length / 2 +passengerSize*5;
-            }
-            if (rail.type == RailType.SEMI_ROUND_RIGHT) {
-                passengers[i].view.x = (i % 4 == 1 || i % 4 == 2) ? rail.view.x + length / 2  : rail.view.x + length / 2 +  passengerSize * 10;
-                passengers[i].view.y = i % 2 == 1 ? rail.view.y + space + length / 2 + passengerSize*8 : rail.view.y + space + length / 2 +passengerSize*5;
+            _rail.trafficNetwork.view.addChild(passengers[i].view);
+            if (TrafficNetwork.instance.level == 1 || TrafficNetwork.instance.level == 2) {
+                updateForFirst(passengers, i, length, passengerSize, space, passengerSpace);
+            } else if (TrafficNetwork.instance.level == 0) {
+                updateForZero(passengers, i, length, passengerSize, space, passengerSpace);
             }
 
         }
     }
 
 
+    private function updateForZero(passengers:Vector.<Passenger>, i:int, length:int, passengerSize:int, space:int, passengerSpace:int):void {
+        if (_rail.type == RailType.HORIZONTAL) {
+            passengers[i].view.x = i % 2 == 1 ? _rail.view.x + length / 2 - passengerSize * 2 : _rail.view.x + length / 2 + passengerSize;
+            passengers[i].view.y = (i % 4 == 1 || i % 4 == 2) ? _rail.view.y + passengerSize * 4 : _rail.view.y + passengerSize * 10;
+        }
+        if (_rail.type == RailType.VERTICAL) {
+            passengers[i].view.x = (i % 4 == 1 || i % 4 == 2) ? _rail.view.x + passengerSize * 4 : _rail.view.x + passengerSize * 10;
+            passengers[i].view.y = i % 2 == 1 ? _rail.view.y + length / 2 - passengerSize * 2 : _rail.view.y + length / 2 + passengerSize;
+        }
+        if (_rail.type == RailType.SEMI_ROUND_BOTTOM) {
+            passengers[i].view.x = i % 2 == 1 ? space + _rail.view.x + length / 2 + passengerSize * 5 : space + _rail.view.x + length / 2 + passengerSize * 8;
+            passengers[i].view.y = (i % 4 == 1 || i % 4 == 2) ? _rail.view.y + length / 2 + passengerSize * 4 : _rail.view.y + length / 2 + passengerSize * 13;
+        }
+        if (_rail.type == RailType.SEMI_ROUND_TOP) {
+            passengers[i].view.x = i % 2 == 1 ? space + _rail.view.x + length / 2 + passengerSize * 5 : space + _rail.view.x + length / 2 + passengerSize * 8;
+            passengers[i].view.y = (i % 4 == 1 || i % 4 == 2) ? _rail.view.y + length / 2 - passengerSize * 14 : _rail.view.y + length / 2 - passengerSize * 4;
+        }
+        if (_rail.type == RailType.SEMI_ROUND_LEFT) {
+            passengers[i].view.x = (i % 4 == 1 || i % 4 == 2) ? _rail.view.x + length / 2 - passengerSize * 13 : _rail.view.x + length / 2 - passengerSpace * 5;
+            passengers[i].view.y = i % 2 == 1 ? _rail.view.y + space + length / 2 + passengerSize * 8 : _rail.view.y + space + length / 2 + passengerSize * 5;
+        }
+        if (_rail.type == RailType.SEMI_ROUND_RIGHT) {
+            passengers[i].view.x = (i % 4 == 1 || i % 4 == 2) ? _rail.view.x + length / 2 + passengerSize * 4 : _rail.view.x + length / 2 + passengerSize * 13;
+            passengers[i].view.y = i % 2 == 1 ? _rail.view.y + space + length / 2 + passengerSize * 8 : _rail.view.y + space + length / 2 + passengerSize * 5;
+        }
+    }
+
+    private function updateForFirst(passengers:Vector.<Passenger>, i:int, length:int, passengerSize:int, space:int, passengerSpace:int):void {
+        if (_rail.type == RailType.HORIZONTAL) {
+            passengers[i].view.x = i % 2 == 1 ? _rail.view.x + length / 2 - passengerSize * 2 : _rail.view.x + length / 2 + passengerSize;
+            passengers[i].view.y = (i % 4 == 1 || i % 4 == 2) ? _rail.view.y + passengerSize : _rail.view.y + passengerSize * 10;
+        }
+        if (_rail.type == RailType.VERTICAL) {
+            passengers[i].view.x = (i % 4 == 1 || i % 4 == 2) ? _rail.view.x + passengerSize : _rail.view.x + passengerSize * 10;
+            passengers[i].view.y = i % 2 == 1 ? _rail.view.y + length / 2 - passengerSize * 2 : _rail.view.y + length / 2 + passengerSize;
+        }
+        if (_rail.type == RailType.SEMI_ROUND_BOTTOM) {
+            passengers[i].view.x = i % 2 == 1 ? space + _rail.view.x + length / 2 + passengerSize * 5 : space + _rail.view.x + length / 2 + passengerSize * 8;
+            passengers[i].view.y = (i % 4 == 1 || i % 4 == 2) ? _rail.view.y + length / 2 - passengerSize : _rail.view.y + length / 2 + passengerSize * 10;
+        }
+        if (_rail.type == RailType.SEMI_ROUND_TOP) {
+            passengers[i].view.x = i % 2 == 1 ? space + _rail.view.x + length / 2 + passengerSize * 5 : space + _rail.view.x + length / 2 + passengerSize * 8;
+            passengers[i].view.y = (i % 4 == 1 || i % 4 == 2) ? _rail.view.y + length / 2 - passengerSize * 10 : _rail.view.y + length / 2 + passengerSize * 2;
+        }
+        if (_rail.type == RailType.SEMI_ROUND_LEFT) {
+            passengers[i].view.x = (i % 4 == 1 || i % 4 == 2) ? _rail.view.x + length / 2 - passengerSize * 9 : _rail.view.x + length / 2 + passengerSpace;
+            passengers[i].view.y = i % 2 == 1 ? _rail.view.y + space + length / 2 + passengerSize * 8 : _rail.view.y + space + length / 2 + passengerSize * 5;
+        }
+        if (_rail.type == RailType.SEMI_ROUND_RIGHT) {
+            passengers[i].view.x = (i % 4 == 1 || i % 4 == 2) ? _rail.view.x + length / 2 : _rail.view.x + length / 2 + passengerSize * 10;
+            passengers[i].view.y = i % 2 == 1 ? _rail.view.y + space + length / 2 + passengerSize * 8 : _rail.view.y + space + length / 2 + passengerSize * 5;
+        }
+    }
+
+
+    public function get rail():Rail {
+        return _rail;
+    }
 }
 }

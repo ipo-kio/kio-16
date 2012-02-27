@@ -20,10 +20,10 @@ public class RailConnectorType {
     public static const BOTTOM_LEFT:RailConnectorType = new RailConnectorType("bottom-left");
 
     public static const BOTTOM_RIGHT:RailConnectorType = new RailConnectorType("bottom-right");
-    
+
     private var _name:String;
 
- public function RailConnectorType(name:String) {
+    public function RailConnectorType(name:String) {
         this._name = name;
     }
 
@@ -31,5 +31,8 @@ public class RailConnectorType {
         return _name;
     }
 
+    public function toString():String {
+        return "RailConnectorType{_name=" + String(_name) + "}";
+    }
 }
 }

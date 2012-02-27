@@ -7,6 +7,8 @@
 package ru.ipo.kio._12.train.model {
 import flash.geom.Point;
 
+import ru.ipo.kio._12.train.model.types.RailConnectorType;
+
 public class RailEnd extends VisibleEntity{
 
     private var _point:Point;
@@ -45,6 +47,9 @@ public class RailEnd extends VisibleEntity{
         return false;
     }
 
+    public function isFirst():Boolean{
+        return rail.firstEnd==this;
+    }
 
     public function getAllNearConnectors():Vector.<RailConnector> {
         var list:Vector.<RailConnector> = new Vector.<RailConnector>();
@@ -56,6 +61,18 @@ public class RailEnd extends VisibleEntity{
             }
          }
         return list;
+    }
+
+    public function getRailByConnectorType(connectorType:RailConnectorType):Rail {
+        for(var i:int; i<_connectors.length; i++){
+            if(_connectors[i].type==connectorType){
+                var rail:Rail = _connectors[i].getAnotherRail(_rail);
+                if(rail!=null){
+                    return rail;
+                }
+            }
+        }
+        throw new Error("Can't find rail by connector: "+connectorType.toString());
     }
 }
 }

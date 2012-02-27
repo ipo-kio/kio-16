@@ -13,6 +13,7 @@ import ru.ipo.kio.base.KioBase;
 public class TrainRunner  extends Sprite {
 
     public function TrainRunner() {
+
         if (stage)
             init();
         else

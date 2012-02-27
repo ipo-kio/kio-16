@@ -5,7 +5,7 @@
  */
 package ru.ipo.kio._12.train.util {
 import ru.ipo.kio._12.train.model.types.RailConnectorType;
-import ru.ipo.kio._12.train.model.types.RailStationType;
+import ru.ipo.kio._12.train.model.types.StationType;
 
 public class ConnectorInPath {
 

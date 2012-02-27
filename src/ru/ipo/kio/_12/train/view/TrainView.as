@@ -13,7 +13,7 @@ import ru.ipo.kio._12.train.model.Passenger;
 import ru.ipo.kio._12.train.model.TrafficNetwork;
 
 import ru.ipo.kio._12.train.model.Train;
-import ru.ipo.kio._12.train.model.types.RailStationType;
+import ru.ipo.kio._12.train.model.types.StationType;
 import ru.ipo.kio._12.train.model.types.RailType;
 import ru.ipo.kio._12.train.view.gui.BlueTram;
 import ru.ipo.kio._12.train.view.gui.GreenTram;
@@ -31,6 +31,8 @@ public class TrainView extends BasicView {
     
     public function TrainView(train:Train) {
         this.train=train;
+
+        if(TrafficNetwork.instance.level!=2)
         addEventListener(MouseEvent.CLICK, function(event:Event):void{
 
 //            if(!dragged){
@@ -54,19 +56,19 @@ public class TrainView extends BasicView {
 
 
         
-        if(train.destination==RailStationType.FIRST){
+        if(train.destination==StationType.FIRST){
             tram = new BlueTram();
             addChild(tram);
         }
-        else if(train.destination==RailStationType.SECOND){
+        else if(train.destination==StationType.SECOND){
             tram = new YellowTram();
             addChild(tram);
         }
-        else if(train.destination==RailStationType.THIRD){
+        else if(train.destination==StationType.THIRD){
             tram = new RedTram();
             addChild(tram);
         }
-        else if(train.destination==RailStationType.FOURTH){
+        else if(train.destination==StationType.FOURTH){
             tram = new GreenTram();
             addChild(tram);
         }
@@ -88,13 +90,23 @@ public class TrainView extends BasicView {
         }
         else if(train.rail.type == RailType.ROUND_TOP_RIGHT){
             rotation = 45;
-            x += 73;
-            y += 23;
+            if(TrafficNetwork.instance.level==1 || TrafficNetwork.instance.level==2){
+                x += 73;
+                y += 23;
+            }else if(TrafficNetwork.instance.level==0){
+                x += 117;
+                y += 23;
+            }
         }
         else if(train.rail.type == RailType.ROUND_BOTTOM_LEFT){
             rotation = 45;
-            x += 23;
-            y += 76;
+            if(TrafficNetwork.instance.level==1  || TrafficNetwork.instance.level==2){
+                x += 23;
+                y += 76;
+            }else if(TrafficNetwork.instance.level==0){
+                x += 24;
+                y += 120;
+            }
         }
         else if(train.rail.type == RailType.ROUND_BOTTOM_RIGHT){
             rotation = -45;

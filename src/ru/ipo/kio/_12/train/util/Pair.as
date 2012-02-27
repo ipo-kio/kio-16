@@ -10,20 +10,31 @@ public class Pair {
     
     private var _train:Train;
     
-    private var _count:int;
+    private var _count1:int;
+
+    private var _count2:int;
 
 
-    public function Pair(train:Train, count:int) {
+    public function Pair(train:Train, count1:int, count2:int) {
         _train = train;
-        _count = count;
+        _count1 = count1;
+        _count2 = count2;
     }
 
-    public function get count():int {
-        return _count;
+    public function get count1():int {
+        return _count1;
     }
 
-    public function set count(value:int):void {
-        _count = value;
+    public function set count1(value:int):void {
+        _count1 = value;
+    }
+
+    public function get count2():int {
+        return _count2;
+    }
+
+    public function set count2(value:int):void {
+        _count2 = value;
     }
 
     public function get train():Train {

@@ -1,4 +1,5 @@
 /**
+ * Базовый класс отображения
  *
  * @author: Vasily Akimushkin
  * @since: 29.01.12
