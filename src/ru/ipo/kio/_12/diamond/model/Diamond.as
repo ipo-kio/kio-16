@@ -24,14 +24,17 @@ public class Diamond extends EventDispatcher {
 
     public static const UPDATE:String = 'vertices update';
     private static const UPDATE_EVENT:Event = new Event(UPDATE);
+    private var _level:int;
 
-    public function Diamond() {
+    public function Diamond(level:int) {
+        _level = level;
     }
 
     private function update_convex_hull():void {
         _hull = GeometryUtils.convex_hull(_vertices);
 
-        _spectrum = new Spectrum(this, Eye.MIN_ANGLE, Eye.MAX_ANGLE);
+        if (_level == 2)
+            _spectrum = new Spectrum(this, Eye.MIN_ANGLE, Eye.MAX_ANGLE);
     }
 
     public function addVertex(v:Vertex2D):void {

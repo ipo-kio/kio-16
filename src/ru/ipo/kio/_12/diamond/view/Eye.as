@@ -34,7 +34,7 @@ public class Eye extends Sprite {
     //                | v      w       |
     //                |<-------------->|
 
-    private static const field_d0:Number = 20;
+    private static const field_d0:Number = 25;
     private static const field_w:Number = 30;
     private static const field_h:Number = 30;
     private static const field_scale:Number = 10;
@@ -42,24 +42,30 @@ public class Eye extends Sprite {
     private static const rays_extra_width:Number = 5;
     private static const rays_extra_height:Number = 5;
 
+    private static const level_1_x_min:Number = field_d0;
+
     //width and height of the overall field
     private static const field_W:Number = field_d0 + field_w + rays_extra_width;
     private static const field_H:Number = field_h + rays_extra_height;
 
-    public static const MIN_ANGLE:Number = -Math.PI / 6;
-    public static const MAX_ANGLE:Number = +Math.PI / 6;
+    public static const MIN_ANGLE:Number = -Math.PI / 5;
+    public static const MAX_ANGLE:Number = +Math.PI / 5;
 
     private var _angle:Number;
 
     private var _scaler:LinearScaler;
+
+    private var _level:int;
 
     private var rays_layer:Sprite = null;
 
     private var diamond:Diamond;
     public static const ANGLE_CHANGED:String = 'ANGLE CHANGED';
     private static const ANGLE_CHANGED_EVENT:Event = new Event(ANGLE_CHANGED);
+    private var _all_out_points:Array;
 
     public function Eye(diamond:Diamond, level:int) {
+        _level = level;
 
         this.diamond = diamond;
 
@@ -112,8 +118,15 @@ public class Eye extends Sprite {
         addChild(s);
 
         if (level == 1) {
-            //draw half rect
-
+            graphics.lineStyle(1, 0xFFFFFF);
+            var p:Point = _scaler.vertex2point(new Vertex2D(level_1_x_min, - field_h / 2 - rays_extra_height / 2));
+            graphics.moveTo(p.x, p.y);
+            p = _scaler.vertex2point(new Vertex2D(field_d0 + field_h + rays_extra_width, - field_h / 2 - rays_extra_height / 2));
+            graphics.lineTo(p.x, p.y);
+            p = _scaler.vertex2point(new Vertex2D(field_d0 + field_h + rays_extra_width, field_h / 2 + rays_extra_height / 2));
+            graphics.lineTo(p.x, p.y);
+            p = _scaler.vertex2point(new Vertex2D(level_1_x_min, field_h / 2 + rays_extra_height / 2));
+            graphics.lineTo(p.x, p.y);
         }
 
 
@@ -171,6 +184,7 @@ public class Eye extends Sprite {
 
         rays_layer = new Sprite();
 
+        _all_out_points = [];
         for (var col:int = 0; col <= 2; col ++) {
             ray.recurse_bild_rays(diamond.hull, 1/(Diamond.ETA + 0.01 * col));
 
@@ -185,12 +199,24 @@ public class Eye extends Sprite {
     }
 
     private function add_all_rays(ray:Ray, s:Sprite, color:uint):void {
-        s.addChild(new VisibleRay(ray, _scaler, color,
+        var vr:VisibleRay = new VisibleRay(ray, _scaler, color,
                 0,
                 - field_h / 2 - rays_extra_height / 2,
                 field_d0 + field_h + rays_extra_width,
-                field_h / 2 + rays_extra_height / 2)
+                field_h / 2 + rays_extra_height / 2,
+                _level
         );
+
+        s.addChild(vr);
+
+        var oi:Vertex2D = vr.outer_intersection;
+        if (oi != null && oi.x >= level_1_x_min && _level == 1) {
+            _all_out_points.push(oi);
+            var point:Point = _scaler.vertex2point(oi);
+            s.graphics.beginFill(color, 0.5);
+            s.graphics.drawCircle(point.x, point.y, 5);
+            s.graphics.endFill();
+        }
 
         for (var i:int = 0; i <= 1; i++) {
             var rr:Ray = ray.get_reflect_refract_ray(i);
@@ -203,5 +229,39 @@ public class Eye extends Sprite {
         return new Spectrum(diamond, MIN_ANGLE, MAX_ANGLE);
     }
 
+    public function evaluate_outer_intersections():Object {
+        if (_all_out_points.length == 0)
+            return {points:0, variance:1};
+        
+        var x_min:Number = level_1_x_min;
+        var x_max:Number = field_d0 + field_h + rays_extra_width;
+        var y_min:Number = - field_h / 2 - rays_extra_height / 2;
+        var y_max:Number = + field_h / 2 + rays_extra_height / 2;
+        var eps:Number = 1e-6;
+        
+        //sort points
+        var p:Array = new Array(_all_out_points.length);
+        for (var i:int = 0; i < _all_out_points.length; i++) {
+            var v:Vertex2D = _all_out_points[i];
+            if (Math.abs(v.y - y_min) < eps)
+                p[i] = v.x - x_min;
+            else if (Math.abs(v.x - x_max) < eps)
+                p[i] = x_max - x_min + v.y - y_min;
+            else
+                p[i] = x_max - x_min + y_max - y_min + x_max - v.x;
+        }
+        
+        var sum:Number = 0;
+        var sum2:Number = 0;
+        for (i = 0; i < p.length; i++) {
+            sum += p[i];
+            sum2 += p[i] * p[i];
+        }
+        
+        return {
+            points: p.length,
+            variance: Math.sqrt(sum * sum - sum2)
+        };
+    }
 }
 }

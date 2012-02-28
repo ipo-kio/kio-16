@@ -46,6 +46,14 @@ public class DiamondProblem extends Sprite implements KioProblem {
     
     private var current_ray_info:InfoField;
     private var current_info:InfoField;
+    private var record_info:InfoField;
+
+    //level 1 record
+    private var _record_points:int = 0;
+    private var _record_var:Number = 0;
+
+    //level 2 record
+    private var _record_light:Number = 0;
 
     public function DiamondProblem(level:int) {
         _level = level;
@@ -60,50 +68,108 @@ public class DiamondProblem extends Sprite implements KioProblem {
     }
 
     private function init(e:Event = null):void {
-        diamond = new Diamond();
-        diamond.addVertex(new Vertex2D(20, 10));
-        diamond.addVertex(new Vertex2D(30, -15));
-        diamond.addVertex(new Vertex2D(40, 5));
-        diamond.addVertex(new Vertex2D(50, -10));
+        diamond = new Diamond(level);
+        diamond.addVertex(new Vertex2D(25, 10));
+        diamond.addVertex(new Vertex2D(35, -15));
+        diamond.addVertex(new Vertex2D(45, 5));
+        diamond.addVertex(new Vertex2D(55, -10));
 
         eye = new Eye(diamond, _level);
 
         addChild(eye);
 
-        var spectrumView:SpectrumView = new SpectrumView(diamond, eye);
-        spectrumView.x = 0;
-        spectrumView.y = eye.height;//eye.getBounds(this).bottom;
-        addChild(spectrumView);
+        if (level == 2) {
+            var spectrumView:SpectrumView = new SpectrumView(diamond, eye);
+            spectrumView.x = 0;
+            spectrumView.y = eye.height;//eye.getBounds(this).bottom;
+            addChild(spectrumView);
 
-        //current ray info
-        current_ray_info = new InfoField(
-                'Информация о луче',
-                ['Средняя яркость', 'Дисперсия цвета'],
-                2
-        );
-        current_ray_info.x = 0;
-        current_ray_info.y = spectrumView.y + spectrumView.height + 2;
-        addChild(current_ray_info);
+            //current ray info
+            current_ray_info = new InfoField(
+                    'Информация о луче',
+                    ['Средняя яркость', 'Дисперсия цвета'],
+                    2
+            );
+            current_ray_info.x = 0;
+            current_ray_info.y = spectrumView.y + spectrumView.height + 2;
+            addChild(current_ray_info);
 
-        eye.addEventListener(Eye.ANGLE_CHANGED, ray_moved);
-        diamond.addEventListener(Diamond.UPDATE, ray_moved);
-        ray_moved(null);
+            eye.addEventListener(Eye.ANGLE_CHANGED, ray_moved);
+            diamond.addEventListener(Diamond.UPDATE, ray_moved);
+            ray_moved(null);
 
-        //current info
-        current_info = new InfoField(
-                'Текущий результат',
-                ['Усредненная яркость', 'Средняя дисперсия'],
-                2
-        );
-        current_info.x = 0;
-        current_info.y = current_ray_info.y + current_ray_info.height + 2;
-        addChild(current_info);
-        diamond.addEventListener(Diamond.UPDATE, update_current_info);
-        update_current_info(null);
+            //current info
+            current_info = new InfoField(
+                    'Текущий результат',
+                    ['Усредненная яркость', 'Средняя дисперсия'],
+                    2
+            );
+            current_info.x = 0;
+            current_info.y = current_ray_info.y + current_ray_info.height + 2;
+            addChild(current_info);
+
+
+            //record info
+            record_info = new InfoField(
+                    'Рекорд',
+                    ['Усредненная яркость', 'Средняя дисперсия'],
+                    2
+            );
+            record_info.x = 0;
+            record_info.y = current_info.y + current_info.height + 2;
+            addChild(record_info);
+
+            diamond.addEventListener(Diamond.UPDATE, update_current_info_2);
+            update_current_info_2();
+        } else {
+            current_info = new InfoField(
+                    'Текущий результат',
+                    ['Количество точек', 'Равномерность точек'],
+                    2
+            );
+
+            current_info.x = 0;
+            current_info.y = eye.height;
+            addChild(current_info);
+
+            //record info
+            record_info = new InfoField(
+                    'Рекорд',
+                    ['Количество точек', 'Равномерность точек'],
+                    2
+            );
+            record_info.x = 0;
+            record_info.y = current_info.y + current_info.height + 2;
+            addChild(record_info);
+
+            diamond.addEventListener(Diamond.UPDATE, update_current_info_1);
+            eye.addEventListener(Eye.ANGLE_CHANGED, update_current_info_1);
+            update_current_info_1();
+        }
     }
 
-    private function update_current_info(event:Event):void {
+    private function update_current_info_1(event:Event = null):void {
+        var o:Object = eye.evaluate_outer_intersections();
+        current_info.set_values([o.points, o.variance]);
+        api.autoSaveSolution();
+        
+        if (o.points > _record_points || o.points == _record_points && o.variance < _record_var) {
+            _record_points = o.points;
+            _record_var =  o.variance;
+            record_info.set_values([_record_points, _record_var]);
+            api.saveBestSolution();
+        }
+    }
+
+    private function update_current_info_2(event:Event = null):void {
         current_info.set_values([diamond.spectrum.mean_light, diamond.spectrum.mean_disp]);
+        api.autoSaveSolution();
+        
+        if (diamond.spectrum.mean_light > _record_light) {
+             _record_light = diamond.spectrum.mean_light;
+            record_info.set_values([diamond.spectrum.mean_light, diamond.spectrum.mean_disp]);
+            api.saveBestSolution();
+        }
     }
 
     private function ray_moved(event:Event):void {
