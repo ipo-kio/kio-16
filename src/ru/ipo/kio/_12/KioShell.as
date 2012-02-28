@@ -8,14 +8,10 @@ package ru.ipo.kio._12 {
 import flash.display.Sprite;
 import flash.events.Event;
 
-import ru.ipo.kio.api_example.ExampleProblem;
+import ru.ipo.kio._12.diamond.DiamondProblem;
 
-/*
-import ru.ipo.kio._11.VirtualPhysics.PhysicsProblem;
-import ru.ipo.kio._11.ariadne.AriadneProblem;
-import ru.ipo.kio._11.digit.DigitProblem;
-import ru.ipo.kio._11.semiramida.SemiramidaProblem;
-*/
+import ru.ipo.kio._12.futurama.FuturamaProblem;
+
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.base.*;
 
@@ -24,7 +20,7 @@ public class KioShell extends Sprite {
     private var _level:int;
 
     public function KioShell() {
-        KioApi.language = KioApi.L_ES;
+        KioApi.language = KioApi.L_RU;
         _level = 0;
 
         if (stage)
@@ -38,7 +34,11 @@ public class KioShell extends Sprite {
 
         KioBase.instance.init(this,
                 [
-                        new ExampleProblem(_level)
+//                    new ExampleProblem(_level),
+                    new FuturamaProblem(_level),
+                    new DiamondProblem(_level),
+                    new FuturamaProblem(_level)
+//                    new ExampleProblem(_level)
 //                    new SemiramidaProblem(_level),
 //                    new DigitProblem(_level),
 //                    _level == 1 ? new AriadneProblem : new PhysicsProblem

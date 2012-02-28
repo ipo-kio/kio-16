@@ -26,7 +26,7 @@ public class TestFuturama extends Sprite {
 
         KioApi.language = KioApi.L_RU;
 
-        KioBase.instance.initOneProblem(this, new FuturamaProblem(0));
+        KioBase.instance.initOneProblem(this, new FuturamaProblem(2));
     }
 }
 }

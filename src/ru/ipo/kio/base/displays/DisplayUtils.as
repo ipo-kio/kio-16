@@ -51,7 +51,7 @@ public class DisplayUtils {
 
         var header:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13, false);
         header.x = 10;
-        header.y = 0;
+        header.y = 2;
         header.text = title;
         display.addChild(header);
 
