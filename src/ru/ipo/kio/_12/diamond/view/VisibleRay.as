@@ -22,7 +22,7 @@ public class VisibleRay extends Sprite {
     private var info_text:TextField; 
     
     private static function visible_energy(energy:Number):Number {
-        return Math.pow(energy, 1/3);
+        return Math.pow(energy / 1.5, 1/3);
 //        return Math.pow((0.2 + energy) / 1.2, 1/3);
     }
     

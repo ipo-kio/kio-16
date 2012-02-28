@@ -56,7 +56,7 @@ public class Spectrum {
         var ca:Array = new Array(COLORS_COUNT);
 
         for (var col:int = 0; col < COLORS_COUNT; col++) {
-            ray.recurse_bild_rays(diamond.hull, Diamond.ETA + 0.01 * col);
+            ray.recurse_bild_rays(diamond.hull, 1/(Diamond.ETA + 0.01 * col));
             ca[col] = ray.energy;
         }
 

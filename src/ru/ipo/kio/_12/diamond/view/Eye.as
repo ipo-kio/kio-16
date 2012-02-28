@@ -46,8 +46,8 @@ public class Eye extends Sprite {
     private static const field_W:Number = field_d0 + field_w + rays_extra_width;
     private static const field_H:Number = field_h + rays_extra_height;
 
-    public static const MIN_ANGLE:Number = -Math.PI / 4;
-    public static const MAX_ANGLE:Number = +Math.PI / 4;
+    public static const MIN_ANGLE:Number = -Math.PI / 6;
+    public static const MAX_ANGLE:Number = +Math.PI / 6;
 
     private var _angle:Number;
 
@@ -59,7 +59,7 @@ public class Eye extends Sprite {
     public static const ANGLE_CHANGED:String = 'ANGLE CHANGED';
     private static const ANGLE_CHANGED_EVENT:Event = new Event(ANGLE_CHANGED);
 
-    public function Eye(diamond:Diamond) {
+    public function Eye(diamond:Diamond, level:int) {
 
         this.diamond = diamond;
 
@@ -103,6 +103,19 @@ public class Eye extends Sprite {
 
         addChild(mainImage);
         addChild(diamond_view);
+        
+        //draw circle
+        var s:Sprite = new Sprite();
+        s.graphics.lineStyle(0.5, 0x888888);
+        var c_center:Point = _scaler.vertex2point(new Vertex2D(field_d0 + field_w / 2, 0));
+
+        addChild(s);
+
+        if (level == 1) {
+            //draw half rect
+
+        }
+
 
         update();
     }
@@ -159,7 +172,7 @@ public class Eye extends Sprite {
         rays_layer = new Sprite();
 
         for (var col:int = 0; col <= 2; col ++) {
-            ray.recurse_bild_rays(diamond.hull, Diamond.ETA + 0.01 * col);
+            ray.recurse_bild_rays(diamond.hull, 1/(Diamond.ETA + 0.01 * col));
 
             var ray_color_layer:Sprite = new Sprite();
 

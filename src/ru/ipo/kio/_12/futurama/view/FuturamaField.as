@@ -21,7 +21,7 @@ import ru.ipo.kio.base.displays.ShellButton;
 
 public class FuturamaField extends Sprite {
 
-    [Embed(source='../resources/Exchange_Field.png')]
+    [Embed(source='../resources/Monsters_08.png')]
     private static const BG:Class;
 
     private var _forbiddenBases:ForbiddenMovesView;

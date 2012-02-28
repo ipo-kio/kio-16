@@ -88,5 +88,9 @@ public class FuturamaProblem implements KioProblem {
     public function get icon_help():Class {
         return null;
     }
+
+    public function get icon_statement():Class {
+        return null;
+    }
 }
 }

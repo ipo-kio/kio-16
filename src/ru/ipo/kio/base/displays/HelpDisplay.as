@@ -50,7 +50,13 @@ public class HelpDisplay extends Sprite {
 
         var main_text_start:Number = header.y + header.textHeight + 10;
 
-        var imgCl:Class = problem ? problem.icon_help : null;
+        var imgCl:Class = null;
+        if (problem) {
+            if (is_statement)
+                imgCl = problem.icon_statement;
+            else
+                imgCl = problem.icon_help;
+        }
         var img:DisplayObject = null;
         if (imgCl != null) {
             img = new imgCl;

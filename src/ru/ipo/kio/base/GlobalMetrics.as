@@ -10,7 +10,7 @@ ru.ipo.kio.base{
 		public static const STAGE_WIDTH : int = 900;
 		public static const STAGE_HEIGHT : int = 625;
 
-        public static const CONTEST_PANEL_WIDTH : int = 126;
+        public static const CONTEST_PANEL_WIDTH : int = 120;
 		public static const CONTEST_PANEL_HEIGHT : int = STAGE_HEIGHT;
 		
 		public static const WORKSPACE_WIDTH : int = STAGE_WIDTH - CONTEST_PANEL_WIDTH;

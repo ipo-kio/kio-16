@@ -66,7 +66,7 @@ public class DiamondProblem extends Sprite implements KioProblem {
         diamond.addVertex(new Vertex2D(40, 5));
         diamond.addVertex(new Vertex2D(50, -10));
 
-        eye = new Eye(diamond);
+        eye = new Eye(diamond, _level);
 
         addChild(eye);
 
@@ -155,6 +155,10 @@ public class DiamondProblem extends Sprite implements KioProblem {
     }
 
     public function get icon_help():Class {
+        return null;
+    }
+
+    public function get icon_statement():Class {
         return null;
     }
 }
