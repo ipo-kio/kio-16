@@ -1,6 +1,6 @@
  /*This file contains texts that are common to all problems and that are used in the Shell*/
 {   
-    "contest_header":"Contest CTE-2011",
+    "contest_header":"Contest CTE-2012",
     "contest_level":["Level I", "Level II"],
     "help":{ /*Manual General*/
 		"all_problems": <<< /*Such quotes <<< >>> mark the text, that spans multiple lines.
@@ -51,7 +51,7 @@
         },
         "welcome":{
 			"mainMessage": <<<
-				<p class='h1'>¡Bienvenido a la competencia CTE-2011!</p>
+				<p class='h1'>¡Bienvenido a la competencia CTE-2012!</p>
 				<p>Nos encanta ofrecerle 3 problemas para resolver y darle un saludo de bienvenida.</p>
 				<p>Antes de comenzar a resolver los problemas usted necesita:</p>
 				<li>Permitir que el programa guarde información en el disco duro</li>

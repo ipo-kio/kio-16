@@ -13,7 +13,9 @@ public class FuturamaGlobalMetrics {
     public static const RIGHT_PANEL_WIDTH:int = 470;
     public static const RIGHT_PANEL_HEIGHT:int = 470;
 
-    public static const LEFT_PANEL_INNER_RADIUS:int = 85;
+    public static const LEFT_PANEL_INNER_RADIUS:int = 50;
+    public static const LEFT_PANEL_OUTER_RADIUS:int = 52;
+    public static const LEFT_PANEL_DELTA:Number = 1.3;
 
 }
 }

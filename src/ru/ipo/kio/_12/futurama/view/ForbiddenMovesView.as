@@ -8,12 +8,11 @@
 package ru.ipo.kio._12.futurama.view {
 import flash.display.Sprite;
 import flash.events.Event;
-
-import ru.ipo.kio._12.futurama.FuturamaProblem;
+import flash.text.TextField;
 
 import ru.ipo.kio._12.futurama.model.Permutation;
 import ru.ipo.kio._12.futurama.model.Transposition;
-import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.api.TextUtils;
 
 public class ForbiddenMovesView extends Sprite {
     
@@ -36,6 +35,7 @@ public class ForbiddenMovesView extends Sprite {
 
     private var _e1:int = -1;
     private var _e2:int = -1;
+    private var _highlight_move_possible:Boolean = false;
     
     private var arrows_sprite:Sprite = new Sprite();
 
@@ -44,15 +44,13 @@ public class ForbiddenMovesView extends Sprite {
     private static const delta0_0:Number = - Math.PI * 0.85;
     private static const delta0_1:Number = - Math.PI * 0.78;
 
-    public function ForbiddenMovesView(perm:Permutation, is_base:Boolean) {
+    public function ForbiddenMovesView(perm:Permutation, is_base:Boolean, level:int) {
         _is_base = is_base;
         _perm = perm;
         var n:int = perm.n;
 
-        var api:KioApi = KioApi.instance(FuturamaProblem.ID);
-
-        var angles_permute:Array = api.problem.level == 2 ? angles_permute_1 : angles_permute_0;
-        var delta0:Number = api.problem.level == 2 ? delta0_1 : delta0_0;
+        var angles_permute:Array = level == 2 ? angles_permute_1 : angles_permute_0;
+        var delta0:Number = level == 2 ? delta0_1 : delta0_0;
         
         angles = new Array(n);
         for (var i:int = 0; i < n; i++)
@@ -62,18 +60,30 @@ public class ForbiddenMovesView extends Sprite {
         permutation_changed();
         
         if (is_base) {
-            if (api.problem.level == 2)
+            if (level == 2)
                 addChild(new LEFT_BODIES_1);
             else
                 addChild(new LEFT_BODIES_0);
         } else {
-            if (api.problem.level == 2)
+            if (level == 2)
                 addChild(new LEFT_SOULS_1);
             else
                 addChild(new LEFT_SOULS_0);
         }
 
         addChild(arrows_sprite);
+
+        for (i = 0; i < n; i++) {
+            var tf:TextField = TextUtils.createTextFieldWithFont('KioTahoma', 16, false, true);
+            if (_is_base)
+                tf.text = String.fromCharCode('a'.charCodeAt() + i);
+            else
+                tf.text = '' + (i + 1);
+
+            tf.x = -6 + FuturamaGlobalMetrics.LEFT_PANEL_WIDTH / 2 + FuturamaGlobalMetrics.LEFT_PANEL_DELTA * Math.cos(angles[i]) * FuturamaGlobalMetrics.LEFT_PANEL_OUTER_RADIUS;
+            tf.y = -18 + FuturamaGlobalMetrics.LEFT_PANEL_HEIGHT / 2 + Math.sin(angles[i]) * FuturamaGlobalMetrics.LEFT_PANEL_OUTER_RADIUS;
+            addChild(tf);
+        }
     }
 
     private function permutation_changed(event:Event = null):void {
@@ -81,39 +91,41 @@ public class ForbiddenMovesView extends Sprite {
 
         var forbidden_trans:Array = _is_base ? _perm.base_transpositions : _perm.value_transpositions;
 
-        arrows_sprite.graphics.lineStyle(6, 0xFFFF33);
+        arrows_sprite.graphics.lineStyle(1, 0xFFFF33);
         for (var i:int = 0; i < forbidden_trans.length; i++) {
             var tr:Transposition = forbidden_trans[i];
             draw_tr(tr);
         }
 
-        arrows_sprite.graphics.lineStyle(8, 0xFF2233);
-        for (i = 0; i < forbidden_trans.length; i++) {
-            tr = forbidden_trans[i];
-            if (tr.e1 == _e1 && tr.e2 == _e2 || tr.e1 == _e2 && tr.e2 == _e1)
-                draw_tr(tr);
+        if (_e1 >= 0 && _e2 >= 0) {
+            if (_highlight_move_possible)
+                arrows_sprite.graphics.lineStyle(2, 0x22AA33);
+            else
+                arrows_sprite.graphics.lineStyle(2, 0xFF2233);
+            draw_tr(new Transposition(_e1, _e2));
         }
     }
 
     private function draw_tr(tr:Transposition):void {
-        var x1:Number = FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.cos(angles[tr.e1]);
-        var y1:Number = FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.sin(angles[tr.e1]);
+        var x1:Number = -6 + FuturamaGlobalMetrics.LEFT_PANEL_DELTA * FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.cos(angles[tr.e1]);
+        var y1:Number = -18 + FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.sin(angles[tr.e1]);
 
-        var x2:Number = FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.cos(angles[tr.e2]);
-        var y2:Number = FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.sin(angles[tr.e2]);
+        var x2:Number = -6 + FuturamaGlobalMetrics.LEFT_PANEL_DELTA * FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.cos(angles[tr.e2]);
+        var y2:Number = -18 + FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.sin(angles[tr.e2]);
 
-        x1 += FuturamaGlobalMetrics.LEFT_PANEL_WIDTH / 2;
-        y1 += FuturamaGlobalMetrics.LEFT_PANEL_HEIGHT / 2;
-        x2 += FuturamaGlobalMetrics.LEFT_PANEL_WIDTH / 2;
-        y2 += FuturamaGlobalMetrics.LEFT_PANEL_HEIGHT / 2;
+        x1 += 8 + FuturamaGlobalMetrics.LEFT_PANEL_WIDTH / 2;
+        y1 += 16 + FuturamaGlobalMetrics.LEFT_PANEL_HEIGHT / 2;
+        x2 += 8 + FuturamaGlobalMetrics.LEFT_PANEL_WIDTH / 2;
+        y2 += 16 + FuturamaGlobalMetrics.LEFT_PANEL_HEIGHT / 2;
 
         arrows_sprite.graphics.moveTo(x1, y1);
         arrows_sprite.graphics.lineTo(x2, y2);
     }
 
-    public function highlight(e1:int, e2:int):void {
+    public function highlight(e1:int, e2:int, possible:Boolean):void {
         _e1 = e1;
         _e2 = e2;
+        _highlight_move_possible = possible;
         permutation_changed();
     }
 

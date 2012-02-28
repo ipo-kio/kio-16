@@ -11,10 +11,7 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 
-import ru.ipo.kio._12.futurama.FuturamaProblem;
 import ru.ipo.kio._12.futurama.model.Permutation;
-
-import ru.ipo.kio.api.KioApi;
 
 public class PermutationPanel extends Sprite {
 
@@ -126,18 +123,18 @@ public class PermutationPanel extends Sprite {
     private var _selected_head_index:int = -1;
     private var _mouse_over_index:int = -1;
     private var _moving_soul:Sprite = null;
-    private var _api:KioApi;
 
     private var _highlight_rectangle:Sprite;
-    private var _signs_layers:Sprite;
+//    private var _signs_layers:Sprite;
 
-    public function PermutationPanel(perm:Permutation) {
-        _api = KioApi.instance(FuturamaProblem.ID);
+    private var field:FuturamaField;
 
+    public function PermutationPanel(field:FuturamaField, perm:Permutation, level:int) {
         _perm = perm;
         _n = _perm.n;
+        this.field = field;
 
-        if (_api.problem.level == 2) {
+        if (level == 2) {
             var bg:DisplayObject = new BG_1;
             _head_positions = head_positions_1;
             _heads = [
@@ -246,18 +243,28 @@ public class PermutationPanel extends Sprite {
 
                 if (stat == Permutation.STATUS_OK) {
                     need_highlight = true;
+                    field.forbiddenBases.highlight(
+                            _perm.inv_permutation[i],
+                            _perm.inv_permutation[_selected_head_index],
+                            true
+                    );
+                    field.forbiddenValues.highlight(
+                            i,
+                            _selected_head_index,
+                            true
+                    );
                 } else if (_selected_head_index >= 0) {
-                    var futuramaField:FuturamaField = FuturamaField(_api.problem.display);
-
                     if (stat == Permutation.STATUS_BASE_COLLISION)
-                        futuramaField.forbiddenBases.highlight(
+                        field.forbiddenBases.highlight(
                                 _perm.inv_permutation[i],
-                                _perm.inv_permutation[_selected_head_index]
+                                _perm.inv_permutation[_selected_head_index],
+                                false
                         );
                     else
-                        futuramaField.forbiddenValues.highlight(
+                        field.forbiddenValues.highlight(
                                 i,
-                                _selected_head_index
+                                _selected_head_index,
+                                false
                         );
                 }
             } else {
@@ -273,9 +280,8 @@ public class PermutationPanel extends Sprite {
         _heads[i].addEventListener(MouseEvent.ROLL_OUT, function (event:MouseEvent):void {
 //            var head:DisplayObject = DisplayObject(event.target);
 //            head.transform.colorTransform = new ColorTransform();
-            var futuramaField:FuturamaField = FuturamaField(_api.problem.display);
-            futuramaField.forbiddenBases.unhighlight();
-            futuramaField.forbiddenValues.unhighlight();
+            field.forbiddenBases.unhighlight();
+            field.forbiddenValues.unhighlight();
             if (_mouse_over_index >= 0)
                 removeChild(_highlight_rectangle);
             _mouse_over_index = -1;

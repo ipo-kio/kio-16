@@ -47,7 +47,7 @@ public class DisplayUtils {
                     "\"";
         }
         else
-            title = loc.contest_header + ", " + loc.contest_level[-1 + KioBase.instance.level];
+            title = loc.contest_header + ", " + loc.contest_level[KioBase.instance.level];
 
         var header:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13, false);
         header.x = 10;

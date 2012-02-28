@@ -8,7 +8,7 @@
 package ru.ipo.kio.base.resources {
 public class Resources {
 
-    [Embed(source="bg.jpg")]
+    [Embed(source="bg.png")]
     public static const BG_IMAGE:Class;
 
     [Embed(source="Problem_BG.png")]

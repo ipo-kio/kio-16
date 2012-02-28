@@ -25,14 +25,13 @@ public class FuturamaProblem implements KioProblem {
     private var _display:FuturamaField;
 
     public function FuturamaProblem(level:int) {
+        _level = level;
+        _n = _level == 2 ? 9 : 8;
+        _display = new FuturamaField(_n, level);
 
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(FUTURAMA_RU).data);
         
         KioApi.initialize(this);
-        
-        _level = level;
-        _n = _level == 2 ? 9 : 8;
-        _display = new FuturamaField();
     }
 
     public function get n():int {
@@ -46,7 +45,7 @@ public class FuturamaProblem implements KioProblem {
     }
 
     public function get year():int {
-        return 0;
+        return 2012;
     }
 
     public function get level():int {
@@ -58,23 +57,28 @@ public class FuturamaProblem implements KioProblem {
     }
 
     public function get solution():Object {
-        return {};
+        return {perm: _display.perm.serialize()};
     }
 
     public function get best():Object {
-        return {};
+        return {}; //TODO implement
     }
 
     public function loadSolution(solution:Object):Boolean {
-        return {};
+        if (solution == 0)
+            return false;
+
+        _display.perm.unseriazlize(solution.perm);
+        
+        return true;
     }
 
     public function check(solution:Object):Object {
-        return null;
+        return null; //TODO implement
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        return 0;
+        return 0; //TODO implement
     }
 
     public function get icon():Class {
