@@ -79,31 +79,36 @@ public class ForbiddenMovesView extends Sprite {
     private function permutation_changed(event:Event = null):void {
         arrows_sprite.graphics.clear();
 
-        var forbidden_trans:Array = _is_base ? _perm.base_transpositions : _perm.value_transpositions; 
+        var forbidden_trans:Array = _is_base ? _perm.base_transpositions : _perm.value_transpositions;
 
+        arrows_sprite.graphics.lineStyle(6, 0xFFFF33);
         for (var i:int = 0; i < forbidden_trans.length; i++) {
             var tr:Transposition = forbidden_trans[i];
-
-            var x1:Number = FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.cos(angles[tr.e1]);
-            var y1:Number = FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.sin(angles[tr.e1]);
-
-            var x2:Number = FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.cos(angles[tr.e2]);
-            var y2:Number = FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.sin(angles[tr.e2]);
-
-            x1 += FuturamaGlobalMetrics.LEFT_PANEL_WIDTH / 2;
-            y1 += FuturamaGlobalMetrics.LEFT_PANEL_HEIGHT / 2;
-            x2 += FuturamaGlobalMetrics.LEFT_PANEL_WIDTH / 2;
-            y2 += FuturamaGlobalMetrics.LEFT_PANEL_HEIGHT / 2;
-            
-            if (tr.e1 == _e1 && tr.e2 == _e2 || tr.e1 == _e2 && tr.e2 == _e1)
-                arrows_sprite.graphics.lineStyle(8, 0xFF2233);
-            else
-                arrows_sprite.graphics.lineStyle(6, 0xFFFF33);
-
-            arrows_sprite.graphics.moveTo(x1, y1);
-            arrows_sprite.graphics.lineTo(x2, y2);
+            draw_tr(tr);
         }
 
+        arrows_sprite.graphics.lineStyle(8, 0xFF2233);
+        for (i = 0; i < forbidden_trans.length; i++) {
+            tr = forbidden_trans[i];
+            if (tr.e1 == _e1 && tr.e2 == _e2 || tr.e1 == _e2 && tr.e2 == _e1)
+                draw_tr(tr);
+        }
+    }
+
+    private function draw_tr(tr:Transposition):void {
+        var x1:Number = FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.cos(angles[tr.e1]);
+        var y1:Number = FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.sin(angles[tr.e1]);
+
+        var x2:Number = FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.cos(angles[tr.e2]);
+        var y2:Number = FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.sin(angles[tr.e2]);
+
+        x1 += FuturamaGlobalMetrics.LEFT_PANEL_WIDTH / 2;
+        y1 += FuturamaGlobalMetrics.LEFT_PANEL_HEIGHT / 2;
+        x2 += FuturamaGlobalMetrics.LEFT_PANEL_WIDTH / 2;
+        y2 += FuturamaGlobalMetrics.LEFT_PANEL_HEIGHT / 2;
+
+        arrows_sprite.graphics.moveTo(x1, y1);
+        arrows_sprite.graphics.lineTo(x2, y2);
     }
 
     public function highlight(e1:int, e2:int):void {

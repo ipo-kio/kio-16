@@ -2,7 +2,7 @@
 <flex-config xmlns="http://www.adobe.com/2006/flex-config">
     <default-size>
         <width>900</width>
-        <height>620</height>
+        <height>625</height>
     </default-size>
     <static-link-runtime-shared-libraries>true</static-link-runtime-shared-libraries>
 </flex-config>

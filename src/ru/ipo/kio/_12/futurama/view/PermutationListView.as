@@ -50,7 +50,8 @@ public class PermutationListView extends Sprite {
             _texts.push(tf);
         }
 
-        graphics.beginFill(0xFFFFFF);
+        graphics.lineStyle(1, 0x8A8A8A);
+        graphics.beginFill(0xB3B3B3);
         graphics.drawRect(0, 0, Math.ceil(m / COLUMN_ITEMS) * ITEM_WIDTH, COLUMN_ITEMS * ITEM_HEIGHT);
         graphics.endFill();
     }
@@ -86,7 +87,7 @@ public class PermutationListView extends Sprite {
     
     private function print_transposition(tr:Transposition):String {
         if (_is_base) {
-            var ord_a:int = 'A'.charCodeAt();
+            var ord_a:int = 'at'.charCodeAt();
             return String.fromCharCode(ord_a + tr.e1) + '-' + String.fromCharCode(ord_a + tr.e2);
         } else
             return (tr.e1 + 1) + '-' + (tr.e2 + 1);

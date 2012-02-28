@@ -17,10 +17,16 @@ import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.base.displays.ShellButton;
 
 public class FuturamaField extends Sprite {
+
+    [Embed(source='../resources/Exchange_Field.png')]
+    private static const BG:Class;
+
     private var _forbiddenBases:ForbiddenMovesView;
     private var _forbiddenValues:ForbiddenMovesView;
 
     public function FuturamaField() {
+
+        addChild(new BG);
         
         var api:KioApi = KioApi.instance(FuturamaProblem.ID);
         
@@ -29,17 +35,17 @@ public class FuturamaField extends Sprite {
         var perm:Permutation = new Permutation(problem.n);
 
         var moves:PermutationPanel = new PermutationPanel(perm);
-        moves.x = FuturamaGlobalMetrics.LEFT_PANEL_WIDTH;
-        moves.y = 0;
+        moves.x = FuturamaGlobalMetrics.LEFT_PANEL_WIDTH + 13;
+        moves.y = 7;
         addChild(moves);
         
         _forbiddenBases = new ForbiddenMovesView(perm, true);
         _forbiddenValues = new ForbiddenMovesView(perm, false);
         
-        _forbiddenBases.x = 0;
-        _forbiddenBases.y = 0;
-        _forbiddenValues.x = 0;
-        _forbiddenValues.y = FuturamaGlobalMetrics.LEFT_PANEL_HEIGHT;
+        _forbiddenBases.x = 7;
+        _forbiddenBases.y = 7;
+        _forbiddenValues.x = 7;
+        _forbiddenValues.y = FuturamaGlobalMetrics.LEFT_PANEL_HEIGHT + 13;
 
         addChild(_forbiddenBases);
         addChild(_forbiddenValues);
@@ -48,8 +54,8 @@ public class FuturamaField extends Sprite {
         var list_view_base:PermutationListView = new PermutationListView(perm, true);
         var list_view_values:PermutationListView = new PermutationListView(perm, false);
         
-        list_view_base.x = FuturamaGlobalMetrics.LEFT_PANEL_WIDTH + 1;
-        list_view_base.y = FuturamaGlobalMetrics.RIGHT_PANEL_HEIGHT + 1;
+        list_view_base.x = _forbiddenValues.x + _forbiddenValues.width + 6;
+        list_view_base.y = moves.y + moves.height + 2;
         list_view_values.x = list_view_base.x + list_view_base.width + 1;
         list_view_values.y = list_view_base.y;
         

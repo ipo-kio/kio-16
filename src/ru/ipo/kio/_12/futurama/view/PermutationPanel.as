@@ -129,6 +129,7 @@ public class PermutationPanel extends Sprite {
     private var _api:KioApi;
 
     private var _highlight_rectangle:Sprite;
+    private var _signs_layers:Sprite;
 
     public function PermutationPanel(perm:Permutation) {
         _api = KioApi.instance(FuturamaProblem.ID);
@@ -217,6 +218,12 @@ public class PermutationPanel extends Sprite {
         _highlight_rectangle = new Sprite();
         _highlight_rectangle.graphics.lineStyle(2, 0xFFFFFF, 0.5);
         _highlight_rectangle.graphics.drawRect(0, 0, _heads[0].width, 2 * _heads[0].height);
+        
+        //signs layer
+//        _signs_layers = new Sprite();
+//        for (i = 0; i < _heads.length; i++) {
+//
+//        }
     }
 
     private static function wrap(o:DisplayObject):Sprite {
