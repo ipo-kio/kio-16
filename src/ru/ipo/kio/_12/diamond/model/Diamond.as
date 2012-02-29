@@ -99,5 +99,34 @@ public class Diamond extends EventDispatcher {
     public function get spectrum():Spectrum {
         return _spectrum;
     }
+
+    public function serialize():Array {
+        var res:Array = [];
+        for (var i:int = 0; i < _vertices.length; i++)
+            res.push([_vertices[i].x, _vertices[i].y]);
+        return res;
+    }
+
+    public function set vertices(value:Array):void {
+        if (value == null)
+            return;
+
+        _vertices = [];
+        for (var i:int = 0; i < value.length; i++)
+            {
+                var v:Vertex2D = new Vertex2D(value[i][0], value[i][1]);
+                v.addEventListener(Vertex2D.MOVE, vertex_moved);
+                _vertices.push(v);
+            }
+        
+        update_convex_hull();
+        dispatchEvent(UPDATE_EVENT);
+    }
+    
+    public function only_hullize():void {
+        vertices = _hull;
+        update_convex_hull();
+        dispatchEvent(UPDATE_EVENT);
+    }
 }
 }

@@ -29,6 +29,7 @@ public class DiamondView extends Sprite {
     private var scaled_max_p:Point;
 
     private const vert2view:Dictionary/*Vertex2D -> VertexView*/ = new Dictionary();
+    private const views:Array = [];
 
     public function DiamondView(diamond:Diamond, x_min:int, y_min:int, x_max:int, y_max:int, scaler:Scaler) {
         _diamond = diamond;
@@ -69,16 +70,20 @@ public class DiamondView extends Sprite {
             if (!vert2view[vertex]) {
                 var view:VertexView = new VertexView(vertex, x_min, y_min, x_max, y_max, scaler);
                 vert2view[vertex] = view;
+                views.push(view);
                 addChild(view);
             }
             usedVertices[vertex] = 1;
         }
 
-        /*for (var vertex2:Vertex2D in vert2view)
-            if (!usedVertices[vertex2]) {
-                removeChild(vert2view[vertex2]);
-                delete vert2view[vertex2];
-            }*/
+        for (i = views.length - 1; i >= 0; i--) {
+            var v:VertexView = views[i];
+            if (!usedVertices[v.vertex]) {
+                removeChild(v);
+                delete vert2view[v.vertex];
+                views.splice(i, 1);
+            }
+        }
 
         //draw edges
         graphics.clear();
@@ -89,7 +94,7 @@ public class DiamondView extends Sprite {
         
         graphics.lineStyle(1, 0x888888);
 
-            var hullVerticesCount:int = _diamond.hullVertexCount;
+        var hullVerticesCount:int = _diamond.hullVertexCount;
         for (i = 0; i < hullVerticesCount; i++) {
             var j:int = i + 1;
             if (j == hullVerticesCount)

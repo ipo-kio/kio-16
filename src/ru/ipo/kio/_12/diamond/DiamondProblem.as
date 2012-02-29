@@ -197,23 +197,31 @@ public class DiamondProblem extends Sprite implements KioProblem {
     }
 
     public function get solution():Object {
-        return {};
+        return {
+            diamond: diamond.serialize(),
+            angle: eye.angle
+        };
     }
 
     public function get best():Object {
-        return {};
+        return {}; //TODO implement
     }
 
     public function loadSolution(solution:Object):Boolean {
+        if (solution == null)
+            return false;
+        
+        diamond.vertices = solution.diamond;
+        eye.angle = solution.angle;
         return true;
     }
 
     public function check(solution:Object):Object {
-        return {};
+        return {}; //TODO implement
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        return 0;
+        return 0; //TODO implement
     }
 
     public function get icon():Class {
