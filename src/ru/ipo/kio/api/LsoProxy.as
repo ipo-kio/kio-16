@@ -107,6 +107,9 @@ public class LsoProxy {
     public function getProblemData(id:String):Object {
         var ud:Object = userData;
 
+        if (ud == null) //TODO this is a dirty hack
+            return {};
+
         if (!ud[id]) {
             ud[id] = {};
         }

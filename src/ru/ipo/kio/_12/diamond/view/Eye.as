@@ -110,6 +110,7 @@ public class Eye extends Sprite {
             laser_sprite.addChild(laser_image);
             laser_sprite.x = dx;
             laser_sprite.y = dy;
+            laser_sprite.mouseEnabled = false;
             addChild(laser_sprite);
 
             var matrix:Matrix = new Matrix();
@@ -251,8 +252,8 @@ public class Eye extends Sprite {
         if (oi != null && oi.x >= level_1_x_min && _level == 1) {
             _all_out_points.push(oi);
             var point:Point = _scaler.vertex2point(oi);
-            s.graphics.beginFill(color, 0.5);
-            s.graphics.drawCircle(point.x, point.y, 5);
+            s.graphics.beginFill(color, 0.8);
+            s.graphics.drawCircle(point.x + (2 * Math.random() - 1) * 4, point.y + (2 * Math.random() - 1) * 4, 5);
             s.graphics.endFill();
         }
 

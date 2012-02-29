@@ -9,19 +9,18 @@ import flash.display.Sprite;
 import flash.events.Event;
 
 import ru.ipo.kio._12.diamond.DiamondProblem;
-
 import ru.ipo.kio._12.futurama.FuturamaProblem;
-
+import ru.ipo.kio._12.train.TrainProblem;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.base.*;
 
-public class KioShell extends Sprite {
+public class KIOShell_2 extends Sprite {
 
     private var _level:int;
 
-    public function KioShell() {
+    public function KIOShell_2() {
         KioApi.language = KioApi.L_RU;
-        _level = 0;
+        _level = 2;
 
         if (stage)
             init();
@@ -32,22 +31,17 @@ public class KioShell extends Sprite {
     private function init(e:Event = null):void {
         removeEventListener(Event.ADDED_TO_STAGE, init);
 
+        KioApi.localizationSelfTest(KioApi.L_RU);
+
         KioBase.instance.init(this,
                 [
-//                    new ExampleProblem(_level),
                     new FuturamaProblem(_level),
                     new DiamondProblem(_level),
-                    new FuturamaProblem(_level)
-//                    new ExampleProblem(_level)
-//                    new SemiramidaProblem(_level),
-//                    new DigitProblem(_level),
-//                    _level == 1 ? new AriadneProblem : new PhysicsProblem
+                    new TrainProblem(_level)
                 ],
                 2012,
                 _level
         );
-
-        KioApi.localizationSelfTest(KioApi.L_RU);
     }
 
 }

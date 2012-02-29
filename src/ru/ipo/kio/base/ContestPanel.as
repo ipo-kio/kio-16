@@ -47,7 +47,7 @@ public class ContestPanel extends Sprite {
         var saveButton:SimpleButton = placeButton(loc.buttons.save);
         //TODO clear button
 
-        __y0 = 564;
+        __y0 = 590;
 
         var backButton:SimpleButton = placeButton(loc.buttons.back);
 
