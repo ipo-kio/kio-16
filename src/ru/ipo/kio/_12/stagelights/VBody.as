@@ -19,22 +19,34 @@ package ru.ipo.kio._12.stagelights
 		private var _body: IBody;
 		private var _silhouette: MovieClip;
 		
-		public function VBody(body: IBody, silhouette: MovieClip) {
+		public function VBody(body: IBody, silhouette: MovieClip, blend: Boolean = false) {
 			_body = body;
 			_body.addEventListener(Event.CHANGE, refresh);
 			_silhouette = silhouette;
-			_silhouette.transform.colorTransform = new ColorTransform(_body.red / 255, _body.green / 255, _body.blue / 255);
+			if (blend) {
+				_silhouette.blendMode = BlendMode.ADD;
+			}
+			var red: Number = _body.red / 246;
+			var green: Number = _body.green/ 246;
+			var blue: Number = _body.blue / 246;
+			_silhouette.transform.colorTransform = new ColorTransform(red, green, blue);
 			addChild(_silhouette);
 		}
 		
 		public function refresh(e: Event = null): void {
-			_silhouette.transform.colorTransform = new ColorTransform(_body.red / 255, _body.green / 255, _body.blue / 255);
+			var red: Number = _body.red / 246;
+			var green: Number = _body.green/ 246;
+			var blue: Number = _body.blue / 246;
+			_silhouette.transform.colorTransform = new ColorTransform(red, green, blue);
 		}
 		
 		public function get body(): IBody {
 			return _body;
 		}
 		
+		public function get silhouette(): MovieClip {
+			return _silhouette;
+		}
 	}
 
 }

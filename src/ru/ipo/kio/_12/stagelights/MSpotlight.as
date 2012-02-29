@@ -23,10 +23,9 @@ package ru.ipo.kio._12.stagelights
 			if (intensity == -1) {
 				return _color;
 			} else {	
-				var red: uint = (_color >> 16 & 0xFF) * _intensity / 255;
-				var green: uint = (_color >> 8 & 0xFF) * _intensity / 255;
-				var blue: uint = (_color & 0xFF) * _intensity / 255;
-				trace(red + " " + green + " " + blue);
+				var red: uint = Math.round((_color >> 16 & 0xFF) * _intensity / 255);
+				var green: uint = Math.round((_color >> 8 & 0xFF) * _intensity / 255);
+				var blue: uint = Math.round((_color & 0xFF) * _intensity / 255);
 				return (red << 16 & 0xFF0000) | (green << 8 & 0xFF00) | (blue & 0xFF);
 			}
 		}

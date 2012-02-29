@@ -16,10 +16,11 @@ package ru.ipo.kio._12.stagelights
 	public class VSpotlight extends Sprite {
 		
 		private const MOVE_SPEED: int = 5;
-		private const LIGHT_RADIUS: int = 150;
+		private const LIGHT_RADIUS: int = 170;
 		
 		private var _spotlight: ISpotlight;
 		private var _source: MovieClip;
+		private var _osource: MovieClip;
 		private var _light: MovieClip;
 		private var _workspace: IWorkspace;
 		
@@ -29,6 +30,8 @@ package ru.ipo.kio._12.stagelights
 			_spotlight = spotlight;
 			_spotlight.addEventListener(Event.CHANGE, refresh);
 			
+			_osource = new Off();
+	
 			if (light == 0) {
 				_light = new MovieClip();
 				_light.graphics.beginFill(_spotlight.getColor(-1));
@@ -36,9 +39,9 @@ package ru.ipo.kio._12.stagelights
 				_light.graphics.endFill();
 			} else if (light == 1) {
 				_light = new MovieClip();
-				//_light.graphics.beginFill(_spotlight.getColor(-1));
-				//_light.graphics.drawCircle(0, 0, 2);
-				//_light.graphics.endFill();
+				_light.graphics.beginFill(_spotlight.getColor(-1));
+				_light.graphics.drawCircle(0, 0, 0);
+				_light.graphics.endFill();
 			}
 			_light.blendMode = BlendMode.ADD;
 			if (movable) {
@@ -57,14 +60,15 @@ package ru.ipo.kio._12.stagelights
 		private function refresh(e: Event = null): void {
 			var angleNew: Number = 180 * Math.atan((_source.y - _light.y) / (_light.x - _source.x)) / Math.PI;
 				if (_light.x == _source.x) {
-					_source.rotation = 180 * Math.atan((_source.y - _light.y) / (_light.x - _source.x)) / Math.PI - 90;
+					_source.rotation = 180 * Math.atan((_source.y - _light.y) / (_light.x - _source.x)) / Math.PI + 90;
 				} else {
 					if (_light.x < _source.x) {
-						_source.rotation = -angleNew - 90;
-					} else {
 						_source.rotation = -angleNew + 90;
+					} else {
+						_source.rotation = -angleNew - 90;
 					}
 				}
+			_osource.rotation = _source.rotation;
 			_light.transform.colorTransform = new ColorTransform(e.target.intensity / 255, e.target.intensity / 255, e.target.intensity / 255);
 		}
 		
@@ -94,9 +98,9 @@ package ru.ipo.kio._12.stagelights
 					_source.rotation = 0;
 				} else {
 					if (_light.x < _source.x) {
-						_source.rotation = -angleNew - 90;
-					} else {
 						_source.rotation = -angleNew + 90;
+					} else {
+						_source.rotation = -angleNew - 90;
 					}
 				}
 			}
@@ -123,8 +127,14 @@ package ru.ipo.kio._12.stagelights
 			return _dragging;
 		}
 		public function set dragging(value: Boolean): void {
-			trace(_dragging);
 			_dragging = value;
+		}
+		
+		public function get osource(): MovieClip{
+			return _osource;
+		}
+		public function set osource(value: MovieClip): void {
+			_osource = value;
 		}
 	
 	}
