@@ -86,8 +86,17 @@ public class FuturamaProblem implements KioProblem {
         return 0; //TODO implement
     }
 
+    [Embed(source='resources/intro_1.png')]
+    private static var INTRO_1:Class;
+
+    [Embed(source='resources/intro_2.png')]
+    private static var INTRO_2:Class;
+
     public function get icon():Class {
-        return null;
+        if (level == 2)
+            return INTRO_2;
+        else
+            return INTRO_1;
     }
 
     public function get icon_help():Class {
