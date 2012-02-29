@@ -10,6 +10,7 @@ import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
+import flash.geom.Matrix;
 import flash.geom.Point;
 
 import ru.ipo.kio._12.diamond.Vertex2D;
@@ -20,11 +21,17 @@ import ru.ipo.kio._12.diamond.model.Spectrum;
 
 public class Eye extends Sprite {
 
-    [Embed(source='../resources/eye.png', mimeType='image/png')]
+    [Embed(source='../resources/Eye_m.png', mimeType='image/png')]
     public static const EYE_IMAGE_CLASS:Class;
 
-    private static const img_x0:int = 5;
-    private static const img_y0:int = 15;
+    [Embed(source='../resources/Canon.png', mimeType='image/png')]
+    public static const LASER_IMAGE_CLASS:Class;
+
+    private static const canon_x0:int = 149;
+    private static const canon_y0:int = 147;
+
+    private static const img_x0:int = 63;
+    private static const img_y0:int = 55;
 
     //                |----------------|
     //                | ^              |
@@ -34,7 +41,7 @@ public class Eye extends Sprite {
     //                | v      w       |
     //                |<-------------->|
 
-    private static const field_d0:Number = 25;
+    private static var field_d0:Number = 25;
     private static const field_w:Number = 30;
     private static const field_h:Number = 30;
     private static const field_scale:Number = 10;
@@ -42,14 +49,10 @@ public class Eye extends Sprite {
     private static const rays_extra_width:Number = 5;
     private static const rays_extra_height:Number = 5;
 
-    private static const level_1_x_min:Number = field_d0;
+    private static var level_1_x_min:Number = field_d0;
 
-    //width and height of the overall field
-    private static const field_W:Number = field_d0 + field_w + rays_extra_width;
-    private static const field_H:Number = field_h + rays_extra_height;
-
-    public static const MIN_ANGLE:Number = -Math.PI / 5;
-    public static const MAX_ANGLE:Number = +Math.PI / 5;
+    public static const MIN_ANGLE:Number = -Math.PI / 6;
+    public static const MAX_ANGLE:Number = +Math.PI / 6;
 
     private var _angle:Number;
 
@@ -63,9 +66,18 @@ public class Eye extends Sprite {
     public static const ANGLE_CHANGED:String = 'ANGLE CHANGED';
     private static const ANGLE_CHANGED_EVENT:Event = new Event(ANGLE_CHANGED);
     private var _all_out_points:Array;
+    
+    private var laser_sprite:Sprite;
 
     public function Eye(diamond:Diamond, level:int) {
         _level = level;
+
+        if (level == 2) {
+            field_d0 += 3;
+        } else {
+            field_d0 += 5;
+            level_1_x_min = field_d0;
+        }
 
         this.diamond = diamond;
 
@@ -85,9 +97,27 @@ public class Eye extends Sprite {
         diamond_view.x = 0;
         diamond_view.y = 0;
 
-        var mainImage:DisplayObject = new EYE_IMAGE_CLASS;
-        mainImage.x = dx - img_x0;
-        mainImage.y = dy - img_y0;
+        if (_level == 2) {
+            var mainImage:DisplayObject = new EYE_IMAGE_CLASS;
+            mainImage.x = dx - img_x0;
+            mainImage.y = dy - img_y0;
+            addChild(mainImage);
+        } else {
+            laser_sprite = new Sprite();
+            var laser_image:DisplayObject = new LASER_IMAGE_CLASS;
+            laser_image.x = - canon_x0;
+            laser_image.y = - canon_y0;
+            laser_sprite.addChild(laser_image);
+            laser_sprite.x = dx;
+            laser_sprite.y = dy;
+            laser_sprite.mouseEnabled = false;
+            addChild(laser_sprite);
+
+            var matrix:Matrix = new Matrix();
+            matrix.scale(1/3, 1/3);
+            matrix.translate(dx, dy);
+            laser_sprite.transform.matrix = matrix;
+        }
 
         graphics.beginFill(0x000000);
         graphics.drawRect(
@@ -107,7 +137,6 @@ public class Eye extends Sprite {
         addEventListener(MouseEvent.MOUSE_DOWN, mouse_change_angle);
         addEventListener(MouseEvent.MOUSE_MOVE, mouse_change_angle);
 
-        addChild(mainImage);
         addChild(diamond_view);
         
         //draw circle
@@ -129,7 +158,6 @@ public class Eye extends Sprite {
             graphics.lineTo(p.x, p.y);
         }
 
-
         update();
     }
 
@@ -139,7 +167,7 @@ public class Eye extends Sprite {
         
         var v:Vertex2D = _scaler.point2vertex(new Point(event.localX, event.localY));
         
-        if (v.x >= field_d0)
+        if (v.x >= field_d0 - 2)
             return;
 
         var new_angle:Number = Math.atan2(v.y, v.x);
@@ -155,6 +183,17 @@ public class Eye extends Sprite {
         value = Math.min(value, MAX_ANGLE);
 
         _angle = value;
+
+        if (_level == 1) {
+            var dx:Number = 0;
+            var dy:Number = (field_h + rays_extra_height) * field_scale / 2;
+
+            var matrix:Matrix = new Matrix();
+            matrix.scale(1/3, 1/3);
+            matrix.rotate(_angle);
+            matrix.translate(dx, dy);
+            laser_sprite.transform.matrix = matrix;
+        }
 
         update();
 
@@ -213,8 +252,8 @@ public class Eye extends Sprite {
         if (oi != null && oi.x >= level_1_x_min && _level == 1) {
             _all_out_points.push(oi);
             var point:Point = _scaler.vertex2point(oi);
-            s.graphics.beginFill(color, 0.5);
-            s.graphics.drawCircle(point.x, point.y, 5);
+            s.graphics.beginFill(color, 0.8);
+            s.graphics.drawCircle(point.x + (2 * Math.random() - 1) * 4, point.y + (2 * Math.random() - 1) * 4, 5);
             s.graphics.endFill();
         }
 
@@ -260,7 +299,7 @@ public class Eye extends Sprite {
         
         return {
             points: p.length,
-            variance: Math.sqrt(sum * sum - sum2)
+            variance: Math.sqrt(sum2 / p.length - sum * sum / (p.length * p.length))
         };
     }
 }

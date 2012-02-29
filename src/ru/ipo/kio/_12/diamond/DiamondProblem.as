@@ -6,6 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 package ru.ipo.kio._12.diamond {
+import flash.events.MouseEvent;
+
 import ru.ipo.kio._12.diamond.model.Spectrum;
 import ru.ipo.kio._12.diamond.view.*;
 
@@ -18,6 +20,7 @@ import ru.ipo.kio._12.diamond.model.Diamond;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.Settings;
+import ru.ipo.kio.api.controls.GraphicsButton;
 
 //TODO дискретные лучи (?)
 //TODO дискретные точки (?)
@@ -36,6 +39,31 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
     [Embed(source="loc/Diamond.ru.json-settings",mimeType="application/octet-stream")]
     public static var DIAMOND_RU:Class;
+
+    [Embed(source='resources/Button_09a.png', mimeType='image/png')]
+    public static const BT_0:Class;
+
+    [Embed(source='resources/Button_09b.png', mimeType='image/png')]
+    public static const BT_1:Class;
+
+    [Embed(source='resources/Button_09c.png', mimeType='image/png')]
+    public static const BT_2:Class;
+
+    [Embed(source='resources/b1.jpg')]
+    public static const b1:Class;
+    [Embed(source='resources/b2.jpg')]
+    public static const b2:Class;
+    [Embed(source='resources/b3.jpg')]
+    public static const b3:Class;
+    [Embed(source='resources/b4.jpg')]
+    public static const b4:Class;
+    [Embed(source='resources/b5.jpg')]
+    public static const b5:Class;
+
+    [Embed(source='resources/016.png')]
+    public static const LV_1_BG:Class;
+    [Embed(source='resources/024.png')]
+    public static const LV_2_BG:Class;
 
     public static const ID:String = 'diamond';
 
@@ -73,15 +101,22 @@ public class DiamondProblem extends Sprite implements KioProblem {
         diamond.addVertex(new Vertex2D(35, -15));
         diamond.addVertex(new Vertex2D(45, 5));
         diamond.addVertex(new Vertex2D(55, -10));
+        
+        if (_level == 1)
+            addChild(new LV_1_BG);
+        else
+            addChild(new LV_2_BG);
 
         eye = new Eye(diamond, _level);
 
+        eye.x = 88;
+        eye.y = 25;
         addChild(eye);
 
         if (level == 2) {
             var spectrumView:SpectrumView = new SpectrumView(diamond, eye);
-            spectrumView.x = 0;
-            spectrumView.y = eye.height;//eye.getBounds(this).bottom;
+            spectrumView.x = 30;
+            spectrumView.y = 350;
             addChild(spectrumView);
 
             //current ray info
@@ -90,8 +125,8 @@ public class DiamondProblem extends Sprite implements KioProblem {
                     ['Средняя яркость', 'Дисперсия цвета'],
                     2
             );
-            current_ray_info.x = 0;
-            current_ray_info.y = spectrumView.y + spectrumView.height + 2;
+            current_ray_info.x = 58;
+            current_ray_info.y = 524;
             addChild(current_ray_info);
 
             eye.addEventListener(Eye.ANGLE_CHANGED, ray_moved);
@@ -104,8 +139,8 @@ public class DiamondProblem extends Sprite implements KioProblem {
                     ['Усредненная яркость', 'Средняя дисперсия'],
                     2
             );
-            current_info.x = 0;
-            current_info.y = current_ray_info.y + current_ray_info.height + 2;
+            current_info.x = 294;
+            current_info.y = 524;
             addChild(current_info);
 
 
@@ -115,8 +150,8 @@ public class DiamondProblem extends Sprite implements KioProblem {
                     ['Усредненная яркость', 'Средняя дисперсия'],
                     2
             );
-            record_info.x = 0;
-            record_info.y = current_info.y + current_info.height + 2;
+            record_info.x = 529;
+            record_info.y = 524;
             addChild(record_info);
 
             diamond.addEventListener(Diamond.UPDATE, update_current_info_2);
@@ -128,8 +163,8 @@ public class DiamondProblem extends Sprite implements KioProblem {
                     2
             );
 
-            current_info.x = 0;
-            current_info.y = eye.height;
+            current_info.x = 66;
+            current_info.y = 520;
             addChild(current_info);
 
             //record info
@@ -138,14 +173,29 @@ public class DiamondProblem extends Sprite implements KioProblem {
                     ['Количество точек', 'Равномерность точек'],
                     2
             );
-            record_info.x = 0;
-            record_info.y = current_info.y + current_info.height + 2;
+            record_info.x = 460;
+            record_info.y = 520;
             addChild(record_info);
 
             diamond.addEventListener(Diamond.UPDATE, update_current_info_1);
             eye.addEventListener(Eye.ANGLE_CHANGED, update_current_info_1);
             update_current_info_1();
         }
+
+        var remove_extra_button:GraphicsButton = new GraphicsButton(
+                'Удалить лишние точки',
+                new BT_0().bitmapData,
+                new BT_1().bitmapData,
+                new BT_2().bitmapData,
+                'KioTahoma',
+                14, 14, 2, 2, 0, -3
+        );
+        remove_extra_button.x = 570;
+        remove_extra_button.y = 425;
+        addChild(remove_extra_button);
+        remove_extra_button.addEventListener(MouseEvent.CLICK, function (event:Event):void {
+            diamond.only_hullize();
+        });
     }
 
     private function update_current_info_1(event:Event = null):void {
@@ -211,7 +261,7 @@ public class DiamondProblem extends Sprite implements KioProblem {
         if (solution == null)
             return false;
         
-        diamond.vertices = solution.diamond;
+        diamond.unserialize(solution.diamond);
         eye.angle = solution.angle;
 
         if (level == 1)
@@ -235,11 +285,17 @@ public class DiamondProblem extends Sprite implements KioProblem {
     }
 
     public function get icon_help():Class {
-        return null;
+        if (level == 1)
+            return b3;
+        else
+            return b1;
     }
 
     public function get icon_statement():Class {
-        return null;
+        if (level == 1)
+            return b4;
+        else
+            return b5;
     }
 }
 }

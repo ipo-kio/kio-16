@@ -8,27 +8,13 @@
 package ru.ipo.kio._12.futurama.view {
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.text.TextField;
 
 import ru.ipo.kio._12.futurama.model.Permutation;
 import ru.ipo.kio._12.futurama.model.Transposition;
-import ru.ipo.kio.api.TextUtils;
 
 public class ForbiddenMovesView extends Sprite {
     
-    [Embed(source='../resources/Level0/Level0_left_bodies.png')]
-    private static const LEFT_BODIES_0:Class;
-
-    [Embed(source='../resources/Level0/Level0_left_souls.png')]
-    private static const LEFT_SOULS_0:Class;
-
-    [Embed(source='../resources/Level1/Level1_left_bodies.png')]
-    private static const LEFT_BODIES_1:Class;
-
-    [Embed(source='../resources/Level1/Level1_left_souls.png')]
-    private static const LEFT_SOULS_1:Class;
-    
-    private var angles:Array;
+//    private var angles:Array;
 //    private var images:Array;
     private var _is_base:Boolean;
     private var _perm:Permutation;
@@ -39,51 +25,76 @@ public class ForbiddenMovesView extends Sprite {
     
     private var arrows_sprite:Sprite = new Sprite();
 
-    private static const angles_permute_0:Array = [1, 2, 3, 5, 6, 8, 7, 4];
-    private static const angles_permute_1:Array = [1, 2, 5, 3, 7, 9, 8, 6, 4];
-    private static const delta0_0:Number = - Math.PI * 0.85;
-    private static const delta0_1:Number = - Math.PI * 0.78;
+//    private static const angles_permute_0:Array = [1, 2, 3, 5, 6, 8, 7, 4];
+//    private static const angles_permute_1:Array = [1, 2, 5, 3, 7, 9, 8, 6, 4];
+//    private static const delta0_0:Number = - Math.PI * 0.85;
+//    private static const delta0_1:Number = - Math.PI * 0.78;
+
+    private static const coords_base_0:Array = [
+        [105, 120],
+        [136, 106],
+        [175, 107],
+        [100, 152],
+        [194, 130],
+        [194, 164],
+        [122, 178],
+        [163, 180]
+    ];
+    
+    private static const coords_vals_0:Array = [
+        [104, 120],
+        [133, 111],
+        [169, 112],
+        [99, 154],
+        [192, 130],
+        [193, 160],
+        [121, 176],
+        [166, 181]
+    ];
+
+    private static const coords_base_1:Array = [
+        [106, 103],
+        [140, 92],
+        [197, 120],
+        [89, 133],
+        [178, 98],
+        [103, 164],
+        [199, 151],
+        [135, 176],
+        [174, 169]
+    ];
+
+    private static const coords_vals_1:Array = [
+        [107, 113],
+        [143, 104],
+        [199, 125],
+        [91, 134],
+        [175, 110],
+        [103, 164],
+        [199, 154],
+        [132, 173],
+        [169, 169]
+    ];
+    
+    private var _level:int;
 
     public function ForbiddenMovesView(perm:Permutation, is_base:Boolean, level:int) {
         _is_base = is_base;
         _perm = perm;
-        var n:int = perm.n;
+        _level = level;
+//        var n:int = perm.n;
 
-        var angles_permute:Array = level == 2 ? angles_permute_1 : angles_permute_0;
-        var delta0:Number = level == 2 ? delta0_1 : delta0_0;
+//        var angles_permute:Array = level == 2 ? angles_permute_1 : angles_permute_0;
+//        var delta0:Number = level == 2 ? delta0_1 : delta0_0;
         
-        angles = new Array(n);
-        for (var i:int = 0; i < n; i++)
-            angles[angles_permute[i] - 1] = 2 * i * Math.PI / n + delta0;
+//        angles = new Array(n);
+//        for (var i:int = 0; i < n; i++)
+//            angles[angles_permute[i] - 1] = 2 * i * Math.PI / n + delta0;
 
         perm.addEventListener(Permutation.PERMUTATION_CHANGED, permutation_changed);
         permutation_changed();
-        
-        if (is_base) {
-            if (level == 2)
-                addChild(new LEFT_BODIES_1);
-            else
-                addChild(new LEFT_BODIES_0);
-        } else {
-            if (level == 2)
-                addChild(new LEFT_SOULS_1);
-            else
-                addChild(new LEFT_SOULS_0);
-        }
 
         addChild(arrows_sprite);
-
-        for (i = 0; i < n; i++) {
-            var tf:TextField = TextUtils.createTextFieldWithFont('KioTahoma', 16, false, true);
-            if (_is_base)
-                tf.text = String.fromCharCode('a'.charCodeAt() + i);
-            else
-                tf.text = '' + (i + 1);
-
-            tf.x = -6 + FuturamaGlobalMetrics.LEFT_PANEL_WIDTH / 2 + FuturamaGlobalMetrics.LEFT_PANEL_DELTA * Math.cos(angles[i]) * FuturamaGlobalMetrics.LEFT_PANEL_OUTER_RADIUS;
-            tf.y = -18 + FuturamaGlobalMetrics.LEFT_PANEL_HEIGHT / 2 + Math.sin(angles[i]) * FuturamaGlobalMetrics.LEFT_PANEL_OUTER_RADIUS;
-            addChild(tf);
-        }
     }
 
     private function permutation_changed(event:Event = null):void {
@@ -105,18 +116,25 @@ public class ForbiddenMovesView extends Sprite {
             draw_tr(new Transposition(_e1, _e2));
         }
     }
+    
+    private function get_coords(ind:int):Array {
+        if (_level == 2 && _is_base)
+            return coords_base_1[ind];
+        else if (_level == 2 && !_is_base)
+            return coords_vals_1[ind];
+        else if (_is_base)
+            return coords_base_0[ind];
+        else
+            return coords_vals_0[ind];
+    }
 
     private function draw_tr(tr:Transposition):void {
-        var x1:Number = -6 + FuturamaGlobalMetrics.LEFT_PANEL_DELTA * FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.cos(angles[tr.e1]);
-        var y1:Number = -18 + FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.sin(angles[tr.e1]);
-
-        var x2:Number = -6 + FuturamaGlobalMetrics.LEFT_PANEL_DELTA * FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.cos(angles[tr.e2]);
-        var y2:Number = -18 + FuturamaGlobalMetrics.LEFT_PANEL_INNER_RADIUS * Math.sin(angles[tr.e2]);
-
-        x1 += 8 + FuturamaGlobalMetrics.LEFT_PANEL_WIDTH / 2;
-        y1 += 16 + FuturamaGlobalMetrics.LEFT_PANEL_HEIGHT / 2;
-        x2 += 8 + FuturamaGlobalMetrics.LEFT_PANEL_WIDTH / 2;
-        y2 += 16 + FuturamaGlobalMetrics.LEFT_PANEL_HEIGHT / 2;
+        var c1:Array = get_coords(tr.e1);
+        var c2:Array = get_coords(tr.e2);
+        var x1:int = c1[0];
+        var y1:int = c1[1];
+        var x2:int = c2[0];
+        var y2:int = c2[1];
 
         arrows_sprite.graphics.moveTo(x1, y1);
         arrows_sprite.graphics.lineTo(x2, y2);

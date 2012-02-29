@@ -93,7 +93,7 @@ public class Spectrum {
         for (i = 0; i <= TICKS_MAX; i++)
             all_disp += variance(_table[i]);
 
-        _mean_disp = all_disp / (TICKS_MAX + 1);
+        _mean_disp = Math.sqrt(all_disp / (TICKS_MAX + 1));
     }
 
     public function get table():Array {

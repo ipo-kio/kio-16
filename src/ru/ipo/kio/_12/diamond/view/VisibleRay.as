@@ -93,7 +93,7 @@ public class VisibleRay extends Sprite {
         addChild(info_text);
 
         addEventListener(MouseEvent.ROLL_OVER, function (event:MouseEvent):void {
-            info_text.visible = true;
+            //info_text.visible = true;
         });
 
         addEventListener(MouseEvent.ROLL_OUT, function (event:MouseEvent):void {
