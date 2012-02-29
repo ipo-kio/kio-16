@@ -19,30 +19,32 @@ import ru.ipo.kio._12.diamond.model.Ray;
 import ru.ipo.kio._12.diamond.model.Spectrum;
 
 public class VisibleRay extends Sprite {
-    private var info_text:TextField; 
+    private var _outer_intersection:Vertex2D = null;
     
     private static function visible_energy(energy:Number):Number {
-        return Math.pow(energy, 1/3);
-//        return Math.pow((0.2 + energy) / 1.2, 1/3);
+//        return Math.pow(energy, 1/3);
+        return Math.pow((0.1 + energy) / 1.1, 1/2);
     }
     
-    public function VisibleRay(ray:Ray, scaler:Scaler, color:uint, x_min:Number, y_min:Number, x_max:Number, y_max:Number) {
+    public function VisibleRay(ray:Ray, scaler:Scaler, color:uint, x_min:Number, y_min:Number, x_max:Number, y_max:Number, level:int) {
         var r2:Vertex2D = ray.r2;
         if (r2 == null) {
             var intersection:Array = GeometryUtils.intersect_ray_and_poly(ray.r0, ray.r1, [
-                    new Vertex2D(x_min, y_min),
-                    new Vertex2D(x_min, y_max),
-                    new Vertex2D(x_max, y_max),
-                    new Vertex2D(x_max, y_min)
+                new Vertex2D(x_min, y_min),
+                new Vertex2D(x_min, y_max),
+                new Vertex2D(x_max, y_max),
+                new Vertex2D(x_max, y_min)
             ], -1, false);
-            if (intersection != null && intersection[0] != null)
+            if (intersection != null && intersection[0] != null) {
                 r2 = intersection[0];
-            
+                _outer_intersection = r2;
+            }
+
             if (ray.is_internal)
                 r2 = ray.r1;
         }
 
-        var e:Number = visible_energy(ray.energy);
+        var e:Number = level == 1 ? visible_energy(ray.percent) : visible_energy(ray.energy);
         color = Spectrum.multiply_color(color, e);
 
         if (r2 == null) {
@@ -52,14 +54,14 @@ public class VisibleRay extends Sprite {
 
         var p1:Point = scaler.vertex2point(ray.r0);
         var p2:Point = scaler.vertex2point(r2);
-        
+
         blendMode = BlendMode.ADD;
-        graphics.lineStyle(2, color);
+        graphics.lineStyle(3, color);
         graphics.moveTo(p1.x, p1.y);
         graphics.lineTo(p2.x, p2.y);
 
         //add text
-        var number:Number = Math.round(ray.energy * 100);
+        var number:Number = Math.round((level == 1 ? ray.percent : ray.energy) * 100);
         if (number == 0)
             return;
 
@@ -68,7 +70,7 @@ public class VisibleRay extends Sprite {
         var ray_p_to:Point = scaler.vertex2point(r2);
         var ray_p_vec:Point = new Point(ray_p_to.x - ray_p_from.x, ray_p_to.y - ray_p_from.y);
 
-        info_text = new TextField();
+        var info_text:TextField = new TextField();
         info_text.text = number + '%';
         info_text.textColor = 0xFFFFFF;//color;
         info_text.autoSize = TextFieldAutoSize.CENTER;
@@ -79,17 +81,17 @@ public class VisibleRay extends Sprite {
 //        tr.rotate(ray.r1.minus(ray.r0).angle);
 
 //        info_text.transform.matrix = tr;
-        
+
         var l:Number = Math.sqrt(ray_p_vec.x * ray_p_vec.x + ray_p_vec.y * ray_p_vec.y);
-        
+
         info_text.x = text_pos.x - info_text.textWidth / 2 + 10 * ray_p_vec.y / l;
         info_text.y = text_pos.y - info_text.textHeight / 2 - 10 * ray_p_vec.x / l;
-        
+
         info_text.visible = false;
         info_text.mouseEnabled = false;
-        
+
         addChild(info_text);
-        
+
         addEventListener(MouseEvent.ROLL_OVER, function (event:MouseEvent):void {
             info_text.visible = true;
         });
@@ -97,6 +99,10 @@ public class VisibleRay extends Sprite {
         addEventListener(MouseEvent.ROLL_OUT, function (event:MouseEvent):void {
             info_text.visible = false;
         });
+    }
+
+    public function get outer_intersection():Vertex2D {
+        return _outer_intersection;
     }
 }
 }

@@ -33,6 +33,9 @@ package ru.ipo.kio._12.stagelights
 			_parts[1] = new Stagelights(0);
 			addChild(_parts[1]);
 
+			_parts[0].x = 300;
+			_parts[0].y = 300;
+			trace(_parts[0].height);
 			_parts[0].visible = true;
 			_parts[1].visible = false;
 			

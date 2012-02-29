@@ -14,15 +14,15 @@ public class ShellButton extends GraphicsButton {
 
     //small button
 
-    [Embed(source="../resources/buttons/button01.png")]
+    [Embed(source="../resources/buttons/button01a.png")]
     private static const BUTTON_NORMAL:Class;
     private static const BUTTON_NORMAL_BMP:BitmapData = new BUTTON_NORMAL().bitmapData;
 
-    [Embed(source="../resources/buttons/button02.png")]
+    [Embed(source="../resources/buttons/button01b.png")]
     private static const BUTTON_OVER:Class;
     private static const BUTTON_OVER_BMP:BitmapData = new BUTTON_OVER().bitmapData;
 
-    [Embed(source="../resources/buttons/button01.png")]
+    [Embed(source="../resources/buttons/button01c.png")]
     private static const BUTTON_DOWN:Class;
     private static const BUTTON_DOWN_BMP:BitmapData = new BUTTON_DOWN().bitmapData;
 

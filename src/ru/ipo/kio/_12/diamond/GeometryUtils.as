@@ -227,8 +227,8 @@ public class GeometryUtils {
                 eta12 * i.x + k2 * n.x,
                 eta12 * i.y + k2 * n.y
         ),
-//                1 - (r_par + r_perp) / 2
-                1/2
+                1 - (r_par + r_perp) / 2
+//                1/2
         ];
     }
 

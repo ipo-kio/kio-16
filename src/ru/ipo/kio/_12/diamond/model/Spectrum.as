@@ -16,7 +16,7 @@ public class Spectrum {
             0x0000FF
     ];
     public static var COLORS_COUNT:int = COLORS.length;
-    public static var TICKS_MAX:int = 100;
+    public static var TICKS_MAX:int = 42;
 
     private var _table:Array;
     private var _mean_light:Number;
@@ -56,7 +56,7 @@ public class Spectrum {
         var ca:Array = new Array(COLORS_COUNT);
 
         for (var col:int = 0; col < COLORS_COUNT; col++) {
-            ray.recurse_bild_rays(diamond.hull, Diamond.ETA + 0.01 * col);
+            ray.recurse_bild_rays(diamond.hull, 1/(Diamond.ETA + 0.01 * col));
             ca[col] = ray.energy;
         }
 
