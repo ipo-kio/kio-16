@@ -36,6 +36,7 @@ public class TrainStation extends Rail {
            if(train.passengers[i].destination==stationType){
                _passengers.push(train.passengers[i]);
                TrafficNetwork.instance.amountOfHappyPassengers++;
+               TrafficNetwork.instance.times.push(train.passengers[i].time);
                TrafficNetwork.instance.timeOfTrip+=train.passengers[i].time;
                train.passengers.splice(i, 1);
                train.toPasTime=train.count;

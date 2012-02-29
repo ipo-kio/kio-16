@@ -69,6 +69,8 @@ public class TrafficNetwork extends VisibleEntity {
     private var _fault:Boolean;
 
     private var _amountOfTrain:int;
+    
+    private var _times:Array=new Array();
 
 
     public static function get instance():TrafficNetwork {
@@ -347,6 +349,7 @@ public class TrafficNetwork extends VisibleEntity {
     public function calc():void{
         initial();
 
+
         var max:int = getMaximumLength();
         
         for(var j:int = 0; j<max; j++){
@@ -369,6 +372,7 @@ public class TrafficNetwork extends VisibleEntity {
         if(_inner == (8*4-1) ){
             _inner = 0;
             doAction();
+            view.update();
         }else{
             _inner++;
             for(var i:int = 0; i<trains.length; i++){
@@ -420,7 +424,7 @@ public class TrafficNetwork extends VisibleEntity {
         }
         else {
             if(amountOfHappyPassengers!=0)
-            TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>"+ (timeOfTrip / amountOfHappyPassengers).toFixed(3)+"</p>";
+                TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>"+ getMediana()+"</p>";
             else
                 TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>0</p>";
 
@@ -441,11 +445,22 @@ public class TrafficNetwork extends VisibleEntity {
             }else{
                 if(amountOfHappyPassengers>record.pas){
                     updateRecordFirst(maxTime);
-                }else if(amountOfHappyPassengers==record.pas && amountOfHappyPassengers!=0 && record.time>timeOfTrip/amountOfHappyPassengers){
+                }else if(amountOfHappyPassengers==record.pas && amountOfHappyPassengers!=0 && record.time>getMediana()){
                     updateRecordFirst(maxTime);
                 }
             }
 
+        }
+    }
+
+    private function getMediana():int {
+        _times.sort();
+        if(_times.length==0)
+            return 0;
+        if(_times.length%2==1){
+            return times[_times.length/2];
+        }else{
+            return (times[_times.length/2]+times[_times.length/2-2])/2;
         }
     }
 
@@ -473,6 +488,7 @@ public class TrafficNetwork extends VisibleEntity {
 
     public function initial():void{
         activeTrain=null;
+        _times=new Array();
         resetToEdit();
         moveToStep();
         resetToEdit();
@@ -510,6 +526,7 @@ public class TrafficNetwork extends VisibleEntity {
         _fault=false;
         amountOfHappyPassengers=0;
         timeOfTrip = 0;
+        _times=new Array();
 
         for(var i:int = 0; i<trains.length; i++){
             var tempTrain:Train = trains[i];
@@ -636,6 +653,14 @@ public class TrafficNetwork extends VisibleEntity {
 
     public function set amountOfPassengers(value:int):void {
         _amountOfPassengers = value;
+    }
+
+    public function get times():Array {
+        return _times;
+    }
+
+    public function set times(value:Array):void {
+        _times = value;
     }
 }
 }

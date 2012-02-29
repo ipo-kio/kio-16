@@ -43,7 +43,7 @@ public class TrainProblem implements KioProblem {
         if(level ==0)
             KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU_0).data);
         else if(level ==1)
-            KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU_1).data);
+            KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU_0).data);
         else if(level ==2)
             KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU_2).data);
 
@@ -71,10 +71,7 @@ public class TrainProblem implements KioProblem {
         var result:Object = {};
 
         
-        if(level ==2){
-            Automation.instance.states;
 
-        }else{
         var trains:Vector.<Train> = TrafficNetwork.instance.trains;
         for(var i:int = 0; i<trains.length; i++){
             var train:Train = trains[i];
@@ -84,7 +81,19 @@ public class TrainProblem implements KioProblem {
             }
         }
 
-        }
+            result.passengers={};
+            
+            for(var i:int = 0; i<TrafficNetwork.instance.rails.length; i++){
+                var pas:Vector.<Passenger> = TrafficNetwork.instance.rails[i].getPassengers();
+                
+                result.passengers[TrafficNetwork.instance.rails[i].id] = new Array();
+                for(var j:int =0;j<pas.length; j++){
+                    result.passengers[TrafficNetwork.instance.rails[i].id].push(pas[j].destination.number);
+                }
+
+            }
+
+
 
         return result;
     }
@@ -92,10 +101,7 @@ public class TrainProblem implements KioProblem {
     public function loadSolution(solution:Object):Boolean {
         if (solution) {
 
-            if(level ==2){
-                Automation.instance.states;
-                return true;
-            }else{
+
 
             TrafficNetwork.instance.resetToEdit();
             var trains:Vector.<Train> = TrafficNetwork.instance.trains;
@@ -103,6 +109,7 @@ public class TrainProblem implements KioProblem {
                 var train:Train = trains[i];
                 var arr:Array = solution[i];
                 train.route.clear();
+                if(arr!=null)
                 for(var j:int = 0; j<arr.length; j++){
                     train.route.addRail(TrafficNetwork.instance.getRailById(arr[j]));
                 }
@@ -111,11 +118,12 @@ public class TrainProblem implements KioProblem {
 
             TrafficNetwork.instance.view.update();
 
-                TrafficNetwork.instance.calc();
+            TrafficNetwork.instance.calc();
             return true;
-            }
+
         } else
             return false;
+
     }
 
     public function check(solution:Object):Object {

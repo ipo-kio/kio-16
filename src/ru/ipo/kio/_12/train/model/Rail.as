@@ -153,6 +153,7 @@ public class Rail extends VisibleEntity {
     public function restorePassengers():void{
         for(var i:int=leavedPassengers.length-1; i>=0; i--){
             passengers.push(leavedPassengers[i]);
+            leavedPassengers[i].time=0;
         }
         leavedPassengers = new Vector.<Passenger>();
     }

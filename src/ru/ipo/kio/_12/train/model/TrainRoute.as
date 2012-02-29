@@ -102,6 +102,21 @@ public class TrainRoute {
         return end;
     }
 
+    public function getLastEndFor(cnt:int):RailEnd {
+        var temp:Rail = _rails[0];
+        if(cnt ==0)
+            return temp.secondEnd;
+
+        var next:Rail = _rails[1];
+        var end:RailEnd = next.getAnotherEnd(next.getEnd(temp));
+        for(var i:int = 2; i<cnt; i++){
+            var next:Rail = _rails[i];
+            end = next.getEndBy(end);
+            end = next.getAnotherEnd(end);
+        }
+        return end;
+    }
+
     public function finish():void {
        _finished = true;
     }

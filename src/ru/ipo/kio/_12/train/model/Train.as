@@ -107,9 +107,9 @@ public class Train extends VisibleEntity {
             _tick++;
         } else if (route.rails.length > _count + 1){
             _tick = 0;
-            rail.processPassengers(this);
             _count++;
             rail = route.rails[_count];
+            rail.processPassengers(this);
 //          if(TrafficNetwork.instance.level==2){
 //              if(_count<100){
 //
@@ -145,6 +145,7 @@ public class Train extends VisibleEntity {
         _pathTime = 0;
         state = 0;
         _toPasTime = 0;
+        passengers = new Vector.<Passenger>();
     }
 
     public function moveLast():void {
@@ -165,7 +166,15 @@ public class Train extends VisibleEntity {
         }
         var preRail:Rail = route.rails[_count - 1];
 
-        return rail.firstEnd.isConnected(preRail);
+        var res = rail.firstEnd.isConnected(preRail);
+
+        //if(preRail.firstEnd.connectedE(rail.firstEnd) && preRail.secondEnd.connectedE(rail.secondEnd)){
+            return route.getLastEndFor(_count+1)==rail.secondEnd;
+//            dir = !train.isDirect();
+//            trace(dir);
+  //      }
+        
+    //    return res;
     }
 
     public function get tick():int {

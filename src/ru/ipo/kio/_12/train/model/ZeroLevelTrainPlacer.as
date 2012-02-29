@@ -6,6 +6,8 @@
 package ru.ipo.kio._12.train.model {
 import Untitled_fla.MainTimeline;
 
+import flash.sampler.isGetterSetter;
+
 import flash.utils.Dictionary;
 
 import ru.ipo.kio._11_students.CrossedCountry.landscape;
@@ -270,9 +272,9 @@ public class ZeroLevelTrainPlacer {
             {x:54, y:-25, r:0}
         ];
         next[RailType.HORIZONTAL.name + "0" + "true" + RailType.ROUND_TOP_RIGHT.name + "true"] = [
-            {x:24, y:8, r:-90},
-            {x:33, y:-13, r:-45},
-            {x:54, y:-25, r:0}
+            {x:62, y:23, r:-15},
+            {x:77, y:10, r:-45},
+            {x:81, y:-4, r:-75}
         ];
         //----------------------
         //Top
@@ -528,6 +530,10 @@ public class ZeroLevelTrainPlacer {
             }
             else {
                 var dir:Boolean = nextRail.firstEnd.isConnected(train.rail);
+                if(train.rail.firstEnd.connectedE(nextRail.firstEnd) && train.rail.secondEnd.connectedE(nextRail.secondEnd)){
+                    dir = !train.isDirect();
+                    trace(dir);
+                }
                 arr = next[train.rail.type.name + String(train.tick) + train.isDirect() + nextRail.type.name + dir];
                 nxt = dict[nextRail.type.name + String(0) + dir];
             }

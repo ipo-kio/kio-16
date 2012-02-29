@@ -21,7 +21,11 @@ public class FirstLevelTrainPlacer{
 
     private static var next:Dictionary = new Dictionary();
 
+    private static var initial:Boolean = false;
+
     public static function init() {
+        
+        initial = true;
         dict = new Dictionary();
 
         dict[RailType.ROUND_TOP_RIGHT.name + "0" + "true"] = {x:11, y:35, r:-75};
@@ -595,7 +599,9 @@ public class FirstLevelTrainPlacer{
 
 
     public static function place(train:Train, view:TrainView, width:int, height:int) {
-        init();
+        if(!initial){
+            init();
+        }
         var tick:int = train.tick;
         var innerTick:int = TrafficNetwork.instance.inner;
         var nextRail:Rail = train.getNextRail();

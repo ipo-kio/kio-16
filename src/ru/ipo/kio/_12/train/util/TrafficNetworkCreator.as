@@ -29,6 +29,9 @@ public class TrafficNetworkCreator {
     [Embed(source="../_resources/config0",mimeType="application/octet-stream")]
     public static var CONFIG_0:Class;
 
+    [Embed(source="../_resources/config0_1",mimeType="application/octet-stream")]
+    public static var CONFIG_0_1:Class;
+
     [Embed(source="../_resources/config1",mimeType="application/octet-stream")]
     public static var CONFIG_2:Class;
 
@@ -75,9 +78,17 @@ public class TrafficNetworkCreator {
     }
     var second:Boolean = false;
 
+    var first:Boolean = false;
+
     public function createTrafficNetwork(level:int):TrafficNetwork{
         trafficNetwork = TrafficNetwork.instance;
-        if(level==2){
+
+        if(level ==1){
+            level = 0;
+            first = true;
+        }
+
+        if(level ==2){
             level = 1;
             second = true;
         }
@@ -135,6 +146,10 @@ public class TrafficNetworkCreator {
         addTrain(0x88b7ff, initRail2, StationType.FIRST);
 
         var byteArrayAsset:ByteArrayAsset = new CONFIG_0;
+        
+        if(first){
+            byteArrayAsset = new CONFIG_0_1;
+        }
         var text:String = byteArrayAsset.toString();
         var pas:Object = JSON_k.decode(text);
 

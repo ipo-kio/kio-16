@@ -74,5 +74,14 @@ public class RailEnd extends VisibleEntity{
         }
         throw new Error("Can't find rail by connector: "+connectorType.toString());
     }
+
+    public function connectedE(firstEnd:RailEnd):Boolean {
+        for(var i:int=0; i<_connectors.length; i++){
+            var end:RailEnd = _connectors[i].getAnotherEnd(this);
+            if(end == firstEnd)
+                return true;
+        }
+        return false;
+    }
 }
 }

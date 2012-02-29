@@ -52,9 +52,9 @@ public class TrainSprite extends Sprite {
         addChild(leftBackground);
 
         var background;
-        if (level == 1 || level == 2) {
+        if (level == 2) {
             background = new LEVEL_1_BACKGROUNG;
-        } else if (level == 0) {
+        } else if (level == 0 || level == 1) {
             background = new LEVEL_0_BACKGROUNG;
         } else {
             throw new Error("Undefined level: " + level);
@@ -73,16 +73,16 @@ public class TrainSprite extends Sprite {
 //        });
 
 
-        if(level == 0 || level ==1){
-            addButtonsForZeroFirstLevel();
-        }else{
-           addButtonsForSecondLevel();
-           addGrid();
-        }
+       // if(level == 0 || level ==1){
+            addButtonsForZeroFirstLevel(level);
+        //}else{
+         //  addButtonsForSecondLevel();
+          // addGrid();
+        //}
 
     }
 
-    private function addButtonsForZeroFirstLevel():void {
+    private function addButtonsForZeroFirstLevel(level:int):void {
         var loc:Object = KioApi.getLocalization(TrainProblem.ID);
 
         var tf:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
@@ -93,12 +93,18 @@ public class TrainSprite extends Sprite {
         addChild(tf);
 
 
+
         var tfAnimation:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
         tfAnimation.width = 130;
         tfAnimation.htmlText = "<p align='center'>" + loc.headers.animation + "</p>";
         tfAnimation.x = 0;
         tfAnimation.y = 165-28;
         addChild(tfAnimation);
+
+        if(level==2){
+            tfAnimation.y += 20;
+        }
+
 
         var tfResult:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
         tfResult.width = 130;
@@ -123,9 +129,12 @@ public class TrainSprite extends Sprite {
             TrafficNetwork.instance.removeLastFromActive();
         });
 
+        if(level!=2)
+        {
         createButton(loc.buttons.play, 15, 165, function (event:MouseEvent) {
             TrafficNetwork.instance.play();
         });
+        }
 
         createButton(loc.buttons.step, 15, 214, function (event:MouseEvent) {
             TrafficNetwork.instance.step();
