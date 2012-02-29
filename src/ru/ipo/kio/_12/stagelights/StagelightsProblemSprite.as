@@ -39,6 +39,7 @@ import ru.ipo.kio.api.*;
 		public var secondResult: Array = [];
 		public var bandages: int;
 		public var bandage: Array = [];
+		public var flag: Boolean = true;
 		public var crnt: int = 0;
 		private var _api: KioApi;
 		
@@ -161,10 +162,26 @@ import ru.ipo.kio.api.*;
 				api.autoSaveSolution();
 				refreshResult();
 				});
+				stagelights[0].intensitySliders[i].plus.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+				api.autoSaveSolution();
+				refreshResult();
+				});
+				stagelights[0].intensitySliders[i].minus.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+				api.autoSaveSolution();
+				refreshResult();
+				});
 			}
 			for (var j:int = 0; j < 3; j++) {
 				stagelights[1].spotlights[j].spotlight.addEventListener(Event.CHANGE, updt);
 				stagelights[1].intensitySliders[j].addEventListener(SliderEvent.CHANGE, function(e:Event):void {
+				api.autoSaveSolution();
+				refreshResult();
+				});
+				stagelights[1].intensitySliders[j].plus.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+				api.autoSaveSolution();
+				refreshResult();
+				});
+				stagelights[1].intensitySliders[j].minus.addEventListener(MouseEvent.CLICK, function(e:Event):void {
 				api.autoSaveSolution();
 				refreshResult();
 				});
@@ -181,7 +198,7 @@ import ru.ipo.kio.api.*;
 		}
 		
 		private function refreshResult(e: Event = null): void {
-			if (firstMax < results(1) && firstMax != 0) {	
+			if (firstMax < results(1)) {	
 				var time: Timer = new Timer(251, 4);
 				time.start();	
 				time.addEventListener(TimerEvent.TIMER, blinker);
@@ -195,7 +212,7 @@ import ru.ipo.kio.api.*;
 				trace(firstMax);
 				_api.saveBestSolution();
 			}
-			if (secondMax < results(0) && secondMax != 0) {
+			if (secondMax < results(0)) {
 				var time: Timer = new Timer(251, 4);
 				time.start();	
 				time.addEventListener(TimerEvent.TIMER, blinker);
@@ -303,7 +320,6 @@ import ru.ipo.kio.api.*;
 			max0.text = "Лучший результат для I фокуса: исчезновение на " + firstMax + "%";
 			result1.text = "Ваш результат для II фокуса: исчезновение на " + results(0) + "%";
 			max1.text = "Лучший результат для II фокуса: исчезновение на " + secondMax + "%";
-			refreshResult();
 		}
 		
 		

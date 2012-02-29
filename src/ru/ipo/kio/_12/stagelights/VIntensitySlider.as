@@ -18,6 +18,8 @@ package ru.ipo.kio._12.stagelights
 		
 		private var _spotlightController: CIndensityHandler;
 		private var _input: Label;
+		private var _plus: MovieClip;
+		private var _minus: MovieClip;
 		
 		public function VIntensitySlider(spotlightController: CIndensityHandler) {
 			_spotlightController = spotlightController;
@@ -39,16 +41,16 @@ package ru.ipo.kio._12.stagelights
 			_input.textField.height = 18;
 			_input.textField.embedFonts = true;
 			
-			var plus: MovieClip = new Plus();
-			plus.x = -40;
-			plus.y = 2;
-			plus.addEventListener(MouseEvent.CLICK, inc);
-			addChild(plus);
-			var minus: MovieClip = new Minus();
-			minus.x = -21;
-			minus.y = 2;
-			minus.addEventListener(MouseEvent.CLICK, dec);
-			addChild(minus);
+			_plus= new Plus();
+			_plus.x = -40;
+			_plus.y = 2;
+			_plus.addEventListener(MouseEvent.CLICK, inc);
+			addChild(_plus);
+			_minus = new Minus();
+			_minus.x = -21;
+			_minus.y = 2;
+			_minus.addEventListener(MouseEvent.CLICK, dec);
+			addChild(_minus);
 			
 			
 			var format: TextFormat = new TextFormat();
@@ -73,6 +75,13 @@ package ru.ipo.kio._12.stagelights
 		}
 		private function dec(e: Event =  null): void {
 			if (_spotlightController.spotlight.intensity > 0) _spotlightController.spotlight.intensity--;
+		}
+		
+		public function get plus(): MovieClip {
+			return _plus;
+		}
+		public function get minus(): MovieClip {
+			return _minus;
 		}
 		
 	}
