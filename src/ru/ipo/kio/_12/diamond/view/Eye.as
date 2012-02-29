@@ -156,9 +156,9 @@ public class Eye extends Sprite {
 
         _angle = value;
 
-        dispatchEvent(ANGLE_CHANGED_EVENT);
-
         update();
+
+        dispatchEvent(ANGLE_CHANGED_EVENT);
     }
 
 

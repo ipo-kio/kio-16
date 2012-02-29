@@ -213,6 +213,12 @@ public class DiamondProblem extends Sprite implements KioProblem {
         
         diamond.vertices = solution.diamond;
         eye.angle = solution.angle;
+
+        if (level == 1)
+            update_current_info_1();
+        else
+            update_current_info_2();
+
         return true;
     }
 
