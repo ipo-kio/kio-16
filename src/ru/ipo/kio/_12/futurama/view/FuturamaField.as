@@ -21,8 +21,14 @@ import ru.ipo.kio.base.displays.ShellButton;
 
 public class FuturamaField extends Sprite {
 
-    [Embed(source='../resources/Monsters_08.png')]
+    [Embed(source='../resources/Screen_09.png')]
     private static const BG:Class;
+
+    [Embed(source='../resources/0_Level.png')]
+    private static const FM_1:Class;
+
+    [Embed(source='../resources/1_Level.png')]
+    private static const FM_2:Class;
 
     private var _forbiddenBases:ForbiddenMovesView;
     private var _forbiddenValues:ForbiddenMovesView;
@@ -37,6 +43,11 @@ public class FuturamaField extends Sprite {
     public function FuturamaField(n:int, level:int) {
 
         addChild(new BG);
+
+        if (level == 1)
+            addChild(new FM_1);
+        else
+            addChild(new FM_2);
         
         _perm = new Permutation(n);
 
@@ -60,10 +71,10 @@ public class FuturamaField extends Sprite {
         var list_view_base:PermutationListView = new PermutationListView(_perm, true);
         var list_view_values:PermutationListView = new PermutationListView(_perm, false);
         
-        list_view_base.x = _forbiddenValues.x + _forbiddenValues.width + 6;
-        list_view_base.y = moves.y + moves.height + 2;
-        list_view_values.x = list_view_base.x + list_view_base.width + 1;
-        list_view_values.y = list_view_base.y;
+        list_view_base.x = 315;
+        list_view_base.y = 490;
+        list_view_values.x = 495;
+        list_view_values.y = 490;
         
         addChild(list_view_base);
         addChild(list_view_values);
@@ -71,7 +82,7 @@ public class FuturamaField extends Sprite {
         var backButton:ShellButton = new ShellButton('Назад');
         var forwardButton:ShellButton = new ShellButton('Вперед');
         
-        backButton.x = list_view_values.x + list_view_base.width + 1;
+        backButton.x = 495 + 170;
         backButton.y = list_view_values.y;
         addChild(backButton);
 
@@ -87,14 +98,14 @@ public class FuturamaField extends Sprite {
         });
 
         //values
-        var steps_text:TextField = TextUtils.createTextFieldWithFont('KioTahoma', 16, false);
-        var steps_record_text:TextField = TextUtils.createTextFieldWithFont('KioTahoma', 16, false);
+        var steps_text:TextField = TextUtils.createTextFieldWithFont('KioTahoma', 13, false);
+        var steps_record_text:TextField = TextUtils.createTextFieldWithFont('KioTahoma', 13, false);
 
-        steps_value = TextUtils.createTextFieldWithFont('KioTahoma', 16, false);
-        steps_record_value = TextUtils.createTextFieldWithFont('KioTahoma', 16, false);
+        steps_value = TextUtils.createTextFieldWithFont('KioTahoma', 13, false);
+        steps_record_value = TextUtils.createTextFieldWithFont('KioTahoma', 13, false);
 
-        steps_text.textColor = 0x444400;
-        steps_record_text.textColor = 0x444400;
+        steps_text.textColor = 0x000000;
+        steps_record_text.textColor = 0x000000;
         steps_value.textColor = 0x000000;
         steps_record_value.textColor = 0x000000;
 

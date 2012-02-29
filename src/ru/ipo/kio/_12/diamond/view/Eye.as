@@ -20,8 +20,14 @@ import ru.ipo.kio._12.diamond.model.Spectrum;
 
 public class Eye extends Sprite {
 
-    [Embed(source='../resources/eye.png', mimeType='image/png')]
+    [Embed(source='../resources/Eye_m.png', mimeType='image/png')]
     public static const EYE_IMAGE_CLASS:Class;
+
+    [Embed(source='../resources/Canon.png', mimeType='image/png')]
+    public static const LASER_IMAGE_CLASS:Class;
+
+    private static const canon_x0:int = 149;
+    private static const canon_y0:int = 179;
 
     private static const img_x0:int = 5;
     private static const img_y0:int = 15;

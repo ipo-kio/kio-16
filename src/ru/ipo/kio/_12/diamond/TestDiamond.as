@@ -25,7 +25,7 @@ public class TestDiamond extends Sprite {
 
         KioApi.language = KioApi.L_RU;
 
-        KioBase.instance.initOneProblem(this, new DiamondProblem(1));
+        KioBase.instance.initOneProblem(this, new DiamondProblem(2));
     }
 }
 }

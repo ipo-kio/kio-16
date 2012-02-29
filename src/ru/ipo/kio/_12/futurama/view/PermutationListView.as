@@ -17,8 +17,8 @@ import ru.ipo.kio.api.TextUtils;
 public class PermutationListView extends Sprite {
 
     private static const COLUMN_ITEMS:int = 6;
-    private static const ITEM_WIDTH:int = 28;
-    private static const ITEM_HEIGHT:int = 18;
+    private static const ITEM_WIDTH:int = 25;
+    private static const ITEM_HEIGHT:int = 15;
 
     private var _perm:Permutation;
     private var _texts:Array/*TextField*/ = [];
@@ -40,8 +40,7 @@ public class PermutationListView extends Sprite {
             var col:int = i / COLUMN_ITEMS;
             var line:int = i % COLUMN_ITEMS;
 
-            var tf:TextField = TextUtils.createTextFieldWithFont('Arial', 14, false, false);
-            tf.embedFonts = false;
+            var tf:TextField = TextUtils.createTextFieldWithFont('KioTahoma', 12, false, false);
             tf.visible = false;
             tf.x = col * ITEM_WIDTH;
             tf.y = line * ITEM_HEIGHT;
@@ -50,10 +49,6 @@ public class PermutationListView extends Sprite {
             _texts.push(tf);
         }
 
-        graphics.lineStyle(1, 0x8A8A8A);
-        graphics.beginFill(0xB3B3B3);
-        graphics.drawRect(0, 0, Math.ceil(m / COLUMN_ITEMS) * ITEM_WIDTH, COLUMN_ITEMS * ITEM_HEIGHT);
-        graphics.endFill();
     }
 
     private function perm_changed(event:Event = null):void {
