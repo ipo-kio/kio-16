@@ -6,6 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 package ru.ipo.kio._12.diamond {
+import flash.display.GraphicsBitmapFill;
+import flash.display.SimpleButton;
+import flash.events.MouseEvent;
+
 import ru.ipo.kio._12.diamond.model.Spectrum;
 import ru.ipo.kio._12.diamond.view.*;
 
@@ -18,6 +22,7 @@ import ru.ipo.kio._12.diamond.model.Diamond;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.Settings;
+import ru.ipo.kio.api.controls.GraphicsButton;
 
 //TODO дискретные лучи (?)
 //TODO дискретные точки (?)
@@ -36,6 +41,15 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
     [Embed(source="loc/Diamond.ru.json-settings",mimeType="application/octet-stream")]
     public static var DIAMOND_RU:Class;
+
+    [Embed(source='resources/Button_09a.png', mimeType='image/png')]
+    public static const BT_0:Class;
+
+    [Embed(source='resources/Button_09b.png', mimeType='image/png')]
+    public static const BT_1:Class;
+
+    [Embed(source='resources/Button_09c.png', mimeType='image/png')]
+    public static const BT_2:Class;
 
     public static const ID:String = 'diamond';
 
@@ -146,6 +160,21 @@ public class DiamondProblem extends Sprite implements KioProblem {
             eye.addEventListener(Eye.ANGLE_CHANGED, update_current_info_1);
             update_current_info_1();
         }
+
+        var remove_extra_button:GraphicsButton = new GraphicsButton(
+                'Удалить лишние точки',
+                new BT_0().bitmapData,
+                new BT_1().bitmapData,
+                new BT_2().bitmapData,
+                'KioTahoma',
+                14, 14, 2, 2, 0, -3
+        );
+        remove_extra_button.x = 400;
+        remove_extra_button.y = 400;
+        addChild(remove_extra_button);
+        remove_extra_button.addEventListener(MouseEvent.CLICK, function (event:Event):void {
+            diamond.only_hullize();
+        });
     }
 
     private function update_current_info_1(event:Event = null):void {
@@ -211,7 +240,7 @@ public class DiamondProblem extends Sprite implements KioProblem {
         if (solution == null)
             return false;
         
-        diamond.vertices = solution.diamond;
+        diamond.unserialize(solution.diamond);
         eye.angle = solution.angle;
 
         if (level == 1)

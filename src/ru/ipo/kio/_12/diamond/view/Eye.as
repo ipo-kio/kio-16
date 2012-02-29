@@ -10,6 +10,7 @@ import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
+import flash.geom.Matrix;
 import flash.geom.Point;
 
 import ru.ipo.kio._12.diamond.Vertex2D;
@@ -27,10 +28,10 @@ public class Eye extends Sprite {
     public static const LASER_IMAGE_CLASS:Class;
 
     private static const canon_x0:int = 149;
-    private static const canon_y0:int = 179;
+    private static const canon_y0:int = 147;
 
-    private static const img_x0:int = 5;
-    private static const img_y0:int = 15;
+    private static const img_x0:int = 63;
+    private static const img_y0:int = 55;
 
     //                |----------------|
     //                | ^              |
@@ -69,6 +70,8 @@ public class Eye extends Sprite {
     public static const ANGLE_CHANGED:String = 'ANGLE CHANGED';
     private static const ANGLE_CHANGED_EVENT:Event = new Event(ANGLE_CHANGED);
     private var _all_out_points:Array;
+    
+    private var laser_sprite:Sprite;
 
     public function Eye(diamond:Diamond, level:int) {
         _level = level;
@@ -91,9 +94,26 @@ public class Eye extends Sprite {
         diamond_view.x = 0;
         diamond_view.y = 0;
 
-        var mainImage:DisplayObject = new EYE_IMAGE_CLASS;
-        mainImage.x = dx - img_x0;
-        mainImage.y = dy - img_y0;
+        if (_level == 2) {
+            var mainImage:DisplayObject = new EYE_IMAGE_CLASS;
+            mainImage.x = dx - img_x0;
+            mainImage.y = dy - img_y0;
+            addChild(mainImage);
+        } else {
+            laser_sprite = new Sprite();
+            var laser_image:DisplayObject = new LASER_IMAGE_CLASS;
+            laser_image.x = - canon_x0;
+            laser_image.y = - canon_y0;
+            laser_sprite.addChild(laser_image);
+            laser_sprite.x = dx;
+            laser_sprite.y = dy;
+            addChild(laser_sprite);
+
+            var matrix:Matrix = new Matrix();
+            matrix.scale(1/3, 1/3);
+            matrix.translate(dx, dy);
+            laser_sprite.transform.matrix = matrix;
+        }
 
         graphics.beginFill(0x000000);
         graphics.drawRect(
@@ -113,7 +133,6 @@ public class Eye extends Sprite {
         addEventListener(MouseEvent.MOUSE_DOWN, mouse_change_angle);
         addEventListener(MouseEvent.MOUSE_MOVE, mouse_change_angle);
 
-        addChild(mainImage);
         addChild(diamond_view);
         
         //draw circle
@@ -135,7 +154,6 @@ public class Eye extends Sprite {
             graphics.lineTo(p.x, p.y);
         }
 
-
         update();
     }
 
@@ -145,7 +163,7 @@ public class Eye extends Sprite {
         
         var v:Vertex2D = _scaler.point2vertex(new Point(event.localX, event.localY));
         
-        if (v.x >= field_d0)
+        if (v.x >= field_d0 - 2)
             return;
 
         var new_angle:Number = Math.atan2(v.y, v.x);
@@ -161,6 +179,17 @@ public class Eye extends Sprite {
         value = Math.min(value, MAX_ANGLE);
 
         _angle = value;
+
+        if (_level == 1) {
+            var dx:Number = 0;
+            var dy:Number = (field_h + rays_extra_height) * field_scale / 2;
+
+            var matrix:Matrix = new Matrix();
+            matrix.scale(1/3, 1/3);
+            matrix.rotate(_angle);
+            matrix.translate(dx, dy);
+            laser_sprite.transform.matrix = matrix;
+        }
 
         update();
 

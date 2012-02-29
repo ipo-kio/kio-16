@@ -107,14 +107,16 @@ public class Diamond extends EventDispatcher {
         return res;
     }
 
-    public function set vertices(value:Array):void {
+    public function unserialize(value:Array, real_points:Boolean = false):void {
         if (value == null)
             return;
 
         _vertices = [];
         for (var i:int = 0; i < value.length; i++)
             {
-                var v:Vertex2D = new Vertex2D(value[i][0], value[i][1]);
+                var v:Vertex2D = real_points ?
+                        new Vertex2D(value[i].x, value[i].y) :
+                        new Vertex2D(value[i][0], value[i][1]);
                 v.addEventListener(Vertex2D.MOVE, vertex_moved);
                 _vertices.push(v);
             }
@@ -124,7 +126,7 @@ public class Diamond extends EventDispatcher {
     }
     
     public function only_hullize():void {
-        vertices = _hull;
+        unserialize(_hull, true);
         update_convex_hull();
         dispatchEvent(UPDATE_EVENT);
     }
