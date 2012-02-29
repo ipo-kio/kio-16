@@ -418,33 +418,57 @@ public class TrafficNetwork extends VisibleEntity {
             
             TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>"+ maxTime+"</p>";
         }
-        else
+        else {
+            if(amountOfHappyPassengers!=0)
             TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>"+ (timeOfTrip / amountOfHappyPassengers).toFixed(3)+"</p>";
+            else
+                TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>0</p>";
+
+        }
         
         if(_fault){
             TrafficNetworkCreator.instance.resultCrash.visible = true;
         }
         
         view.update();
-        if(finish){
+        if(finish && !fault){
+            if(level ==0 ){
               if(amountOfHappyPassengers>record.pas){
-                  record.pas = amountOfHappyPassengers;
-                  record.time = maxTime;
-                  //RecordBlinkEffect.blink();
-                  api.saveBestSolution();
-                  TrafficNetworkCreator.instance.resultAmountRecord.htmlText = "<p align='center'>"+amountOfHappyPassengers + " из " + amountOfPassengers+"</p>";
-                  TrafficNetworkCreator.instance.resultTimeRecord.htmlText = "<p align='center'>"+ maxTime+"</p>";
-
+                  updateRecordZero(maxTime);
               }else if(amountOfHappyPassengers==record.pas && record.time>maxTime){
-                  record.pas = amountOfHappyPassengers;
-                  record.time = maxTime;
-                  api.saveBestSolution();
-                  TrafficNetworkCreator.instance.resultAmountRecord.htmlText = "<p align='center'>"+amountOfHappyPassengers + " из " + amountOfPassengers+"</p>";
-                  TrafficNetworkCreator.instance.resultTimeRecord.htmlText = "<p align='center'>"+ maxTime+"</p>";
-                  //RecordBlinkEffect.blink();
+                  updateRecordZero(maxTime);
               }
+            }else{
+                if(amountOfHappyPassengers>record.pas){
+                    updateRecordFirst(maxTime);
+                }else if(amountOfHappyPassengers==record.pas && amountOfHappyPassengers!=0 && record.time>timeOfTrip/amountOfHappyPassengers){
+                    updateRecordFirst(maxTime);
+                }
+            }
 
         }
+    }
+
+    private function updateRecordFirst(maxTime:int):void {
+        record.pas = amountOfHappyPassengers;
+        record.time = maxTime;
+        //RecordBlinkEffect.blink();
+        api.saveBestSolution();
+        TrafficNetworkCreator.instance.resultAmountRecord.htmlText = "<p align='center'>" + amountOfHappyPassengers + " из " + amountOfPassengers + "</p>";
+        if(amountOfHappyPassengers!=0)
+            TrafficNetworkCreator.instance.resultTimeRecord.htmlText = "<p align='center'>"+ (timeOfTrip / amountOfHappyPassengers).toFixed(3)+"</p>";
+        else
+            TrafficNetworkCreator.instance.resultTimeRecord.htmlText = "<p align='center'>0</p>";
+    }
+
+
+    private function updateRecordZero(maxTime:int):void {
+        record.pas = amountOfHappyPassengers;
+        record.time = maxTime;
+        //RecordBlinkEffect.blink();
+        api.saveBestSolution();
+        TrafficNetworkCreator.instance.resultAmountRecord.htmlText = "<p align='center'>" + amountOfHappyPassengers + " из " + amountOfPassengers + "</p>";
+        TrafficNetworkCreator.instance.resultTimeRecord.htmlText = "<p align='center'>" + maxTime + "</p>";
     }
 
     public function initial():void{

@@ -30,6 +30,9 @@ public class TrafficNetworkCreator {
     public static var CONFIG_0:Class;
 
     [Embed(source="../_resources/config1",mimeType="application/octet-stream")]
+    public static var CONFIG_2:Class;
+
+    [Embed(source="../_resources/config3",mimeType="application/octet-stream")]
     public static var CONFIG_1:Class;
 
     private static var _instance:TrafficNetworkCreator;
@@ -173,6 +176,20 @@ public class TrafficNetworkCreator {
 
         if(trafficNetwork.level==1){
             var byteArrayAsset:ByteArrayAsset = new CONFIG_1;
+            var text:String = byteArrayAsset.toString();
+            var pas:Object = JSON_k.decode(text);
+
+            for(var i:int = 0; i<TrafficNetwork.instance.rails.length; i++){
+                var ar: Array = pas.passengers[TrafficNetwork.instance.rails[i].id];
+                TrafficNetwork.instance.rails[i].clearPassengers();
+                for(var j:int = 0; j<ar.length; j++){
+                    TrafficNetwork.instance.rails[i].addPassenger(new Passenger(StationType.getByNumber(ar[j])));
+                }
+            }
+        }
+
+        else if(trafficNetwork.level==2){
+            var byteArrayAsset:ByteArrayAsset = new CONFIG_2;
             var text:String = byteArrayAsset.toString();
             var pas:Object = JSON_k.decode(text);
 

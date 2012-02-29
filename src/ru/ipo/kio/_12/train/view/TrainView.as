@@ -41,29 +41,29 @@ public class TrainView extends BasicView {
         if (TrafficNetwork.instance.level != 2)
             addEventListener(MouseEvent.CLICK, function (event:MouseEvent):void {
 
-//                if (event.altKey) {
-//                    train.view.rotation += 15;
-//                    return;
-//                }
-//                if (event.ctrlKey) {
-//                    train.view.rotation -= 15;
-//                    return;
-//                }
-//                if (!dragged) {
-//                    startDrag();
-//                    dragged = true;
-//                } else {
-//                    stopDrag();
-//                    dragged = false;
-//                    trace("{x:"+(-train.rail.view.x + x)+", y:"+(-train.rail.view.y + y)+", r:"+(rotation)+"}");
-//                }
+                if (event.altKey) {
+                    train.view.rotation += 15;
+                    return;
+                }
+                if (event.ctrlKey) {
+                    train.view.rotation -= 15;
+                    return;
+                }
+                if (!dragged) {
+                    startDrag();
+                    dragged = true;
+                } else {
+                    stopDrag();
+                    dragged = false;
+                    trace("{x:"+(-train.rail.view.x + x)+", y:"+(-train.rail.view.y + y)+", r:"+(rotation)+"},");
+                }
 
 
-            if(TrafficNetwork.instance.activeTrain == train){
-                TrafficNetwork.instance.activeTrain = null;
-            }else{
-                TrafficNetwork.instance.activeTrain = train;
-            }
+//            if(TrafficNetwork.instance.activeTrain == train){
+//                TrafficNetwork.instance.activeTrain = null;
+//            }else{
+//                TrafficNetwork.instance.activeTrain = train;
+//            }
             });
 
 
