@@ -148,10 +148,10 @@ public class FuturamaField extends Sprite {
             record_steps = new_steps;
             RecordBlinkEffect.blink(
                     this,
-                    steps_record_value.x - 2,
+                    steps_record_value.x - 3,
                     steps_record_value.y,
                     steps_record_value.textWidth + 10,
-                    steps_record_value.textHeight + 2
+                    steps_record_value.textHeight + 6
             );
             
             steps_record_value.text = '' + new_steps;

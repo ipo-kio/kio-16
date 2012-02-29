@@ -21,6 +21,7 @@ import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.Settings;
 import ru.ipo.kio.api.controls.GraphicsButton;
+import ru.ipo.kio.api.controls.RecordBlinkEffect;
 
 //TODO дискретные лучи (?)
 //TODO дискретные точки (?)
@@ -208,6 +209,7 @@ public class DiamondProblem extends Sprite implements KioProblem {
             _record_var =  o.variance;
             record_info.set_values([_record_points, _record_var]);
             api.saveBestSolution();
+            RecordBlinkEffect.blink(this, record_info.x - 2, record_info.y - 2, record_info.width + 4, record_info.height + 4);
         }
     }
 
@@ -219,6 +221,7 @@ public class DiamondProblem extends Sprite implements KioProblem {
              _record_light = diamond.spectrum.mean_light;
             record_info.set_values([diamond.spectrum.mean_light, diamond.spectrum.mean_disp]);
             api.saveBestSolution();
+            RecordBlinkEffect.blink(this, record_info.x - 2, record_info.y - 2, record_info.width + 4, record_info.height + 4);
         }
     }
 
@@ -280,8 +283,11 @@ public class DiamondProblem extends Sprite implements KioProblem {
         return 0; //TODO implement
     }
 
+    [Embed(source='resources/intro.png')]
+    private static var INTRO:Class;
+
     public function get icon():Class {
-        return null;
+        return INTRO;
     }
 
     public function get icon_help():Class {
