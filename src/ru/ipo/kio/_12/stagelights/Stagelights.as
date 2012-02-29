@@ -72,7 +72,7 @@ package ru.ipo.kio._12.stagelights
 				_intensitySliders[2] = new VIntensitySlider(new CIndensityHandler(_spotlights[2].spotlight));
 				_intensitySliders[2].x = 613;
 				_intensitySliders[2].y = 554;
-				_bodies[0] = new VBody(new MBody(Math.random()*155 + 100, Math.random()*155 + 100, Math.random()*155 + 100), new Body());
+				_bodies[0] = new VBody(new MBody(Math.random()*65 + 180, Math.random()*65 + 180, Math.random()*65 + 180), new Body());
 				_bodies[0].x = 384;
 				_bodies[0].y = 309;
 			} else  if (level == 1) {
@@ -132,9 +132,9 @@ package ru.ipo.kio._12.stagelights
 				_bodies[3].x = 390;
 				_bodies[3].y = 300;
 				_bodies[3].silhouette.height = 600;
-				var bRed: int = Math.random() * 100 + 155;
-				var bBlue: int = Math.random() * 100 + 155;
-				var bGreen: int = Math.random() * 100 + 155;
+				var bRed: int = Math.random()*65 + 180;
+				var bBlue: int = Math.random()*65 + 180;
+				var bGreen: int = Math.random()*65 + 180;
 				_bodies[4] = new VBody(new MBody(bRed, bGreen, 0), new Rabbit());
 				_bodies[4].x = 390;
 				_bodies[4].y = 300;
