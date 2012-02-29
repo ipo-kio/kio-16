@@ -8,13 +8,13 @@ package ru.ipo.kio._12.train.model.types {
 
 public final class RailType {
 
-    public static const ROUND_TOP_RIGHT:RailType = new RailType(2, "round-top-right");
+    public static const ROUND_TOP_RIGHT:RailType = new RailType(4, "round-top-right");
 
-    public static const ROUND_TOP_LEFT:RailType = new RailType(2, "round-top-left");
+    public static const ROUND_TOP_LEFT:RailType = new RailType(4, "round-top-left");
 
-    public static const ROUND_BOTTOM_RIGHT:RailType = new RailType(2, "round-bottom-right");
+    public static const ROUND_BOTTOM_RIGHT:RailType = new RailType(4, "round-bottom-right");
 
-    public static const ROUND_BOTTOM_LEFT:RailType = new RailType(2, "round-bottom-left");
+    public static const ROUND_BOTTOM_LEFT:RailType = new RailType(4, "round-bottom-left");
 
     public static const SEMI_ROUND_TOP:RailType = new RailType(2, "semi-round-top");
 
@@ -26,7 +26,7 @@ public final class RailType {
 
     public static const VERTICAL:RailType = new RailType(1, "vertical");
 
-    public static const HORIZONTAL:RailType = new RailType(1, "vertical");
+    public static const HORIZONTAL:RailType = new RailType(1, "horizontal");
 
     private var _length:int;
     
@@ -67,13 +67,13 @@ public final class RailType {
                 return RailConnectorType.TOP_LEFT;
             else if(this==VERTICAL && !first)
                 return RailConnectorType.BOTTOM_RIGHT;
-            else if(this==SEMI_ROUND_TOP)
+            else if(this==SEMI_ROUND_TOP || (this==ROUND_TOP_LEFT && !first)|| (this==ROUND_BOTTOM_RIGHT && !first))
                 return RailConnectorType.BOTTOM_RIGHT;
-            else if(this==SEMI_ROUND_BOTTOM)
+            else if(this==SEMI_ROUND_BOTTOM || (this==ROUND_BOTTOM_LEFT && !first))
                 return RailConnectorType.TOP_RIGHT;
             else if(this==SEMI_ROUND_LEFT)
                 return RailConnectorType.TOP_RIGHT;
-            else if(this==SEMI_ROUND_RIGHT)
+            else if(this==SEMI_ROUND_RIGHT || (this==ROUND_TOP_RIGHT && !first))
                 return RailConnectorType.BOTTOM_LEFT;
         } else if(arrow == ArrowStateType.LEFT){
             if(this==HORIZONTAL && first)
@@ -84,18 +84,22 @@ public final class RailType {
                 return RailConnectorType.TOP_RIGHT;
             else if(this==VERTICAL && !first)
                 return RailConnectorType.BOTTOM_LEFT;
-            else if(this==SEMI_ROUND_TOP)
+            else if(this==SEMI_ROUND_TOP  || (this==ROUND_TOP_LEFT && !first))
                 return RailConnectorType.BOTTOM_LEFT;
-            else if(this==SEMI_ROUND_BOTTOM)
+            else if(this==SEMI_ROUND_BOTTOM || (this==ROUND_BOTTOM_LEFT && !first))
                 return RailConnectorType.TOP_RIGHT;
             else if(this==SEMI_ROUND_LEFT)
                 return RailConnectorType.BOTTOM_RIGHT;
-            else if(this==SEMI_ROUND_RIGHT)
+            else if(this==SEMI_ROUND_RIGHT || (this==ROUND_TOP_RIGHT && !first) || (this==ROUND_BOTTOM_RIGHT && !first))
                 return RailConnectorType.TOP_LEFT;
 
         }
         throw new Error("Can't get connector... ");
 
+    }
+
+    public function get name():String {
+        return _name;
     }
 }
 }

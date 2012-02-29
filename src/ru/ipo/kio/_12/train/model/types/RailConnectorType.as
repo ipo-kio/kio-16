@@ -9,17 +9,17 @@
 package ru.ipo.kio._12.train.model.types {
 public class RailConnectorType {
 
-    public static const HORIZONTAL:RailConnectorType = new RailConnectorType("horizontal");
+    public static const HORIZONTAL:RailConnectorType = new RailConnectorType("h");
 
-    public static const VERTICAL:RailConnectorType = new RailConnectorType("vertical");
+    public static const VERTICAL:RailConnectorType = new RailConnectorType("v");
 
-    public static const TOP_LEFT:RailConnectorType = new RailConnectorType("top-left");
+    public static const TOP_LEFT:RailConnectorType = new RailConnectorType("tl");
 
-    public static const TOP_RIGHT:RailConnectorType = new RailConnectorType("top-right");
+    public static const TOP_RIGHT:RailConnectorType = new RailConnectorType("tr");
 
-    public static const BOTTOM_LEFT:RailConnectorType = new RailConnectorType("bottom-left");
+    public static const BOTTOM_LEFT:RailConnectorType = new RailConnectorType("bl");
 
-    public static const BOTTOM_RIGHT:RailConnectorType = new RailConnectorType("bottom-right");
+    public static const BOTTOM_RIGHT:RailConnectorType = new RailConnectorType("br");
 
     private var _name:String;
 

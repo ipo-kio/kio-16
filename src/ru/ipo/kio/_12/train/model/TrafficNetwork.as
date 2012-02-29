@@ -21,8 +21,14 @@ import ru.ipo.kio._12.train.view.CrossConnectorView;
 import ru.ipo.kio._12.train.view.RailView;
 
 import ru.ipo.kio._12.train.view.TrafficNetworkView;
+import ru.ipo.kio._12.train.view.TrainView;
+import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.api.controls.RecordBlinkEffect;
 
 public class TrafficNetwork extends VisibleEntity {
+
+
+    public var api:KioApi;
 
     private static var _instance:TrafficNetwork;
 
@@ -274,6 +280,8 @@ public class TrafficNetwork extends VisibleEntity {
     }
 
     private function getMaximumLength():int {
+        if(level == 2)
+            return 100;
         var l:int = 0;
         for(var i:int = 0; i<trains.length; i++){
             if(trains[i].route.time>l){
@@ -290,6 +298,7 @@ public class TrafficNetwork extends VisibleEntity {
         activeTrain.route.addRail(rail);
         moveTrainToLast();
         view.update();
+        api.autoSaveSolution();
     }
 
     public function removeLastFromActive():void {
@@ -301,6 +310,7 @@ public class TrafficNetwork extends VisibleEntity {
         }
         moveTrainToLast();
         view.update();
+        api.autoSaveSolution();
     }
 
     public function clearRoutes():void {
@@ -321,6 +331,7 @@ public class TrafficNetwork extends VisibleEntity {
         }
         moveTrainToLast();
         view.update();
+        api.autoSaveSolution();
     }
 
     public function set activeTrain(value:Train):void {
@@ -343,7 +354,29 @@ public class TrafficNetwork extends VisibleEntity {
         }
     }
 
-    var timer:Timer;
+    private var additionTick = 0;
+    
+    private var _inner:int = 0;
+
+    public function innerTick():void{
+//        if(additionTick != 2 ){
+//            additionTick++;
+//            return;
+//        }
+//
+//        additionTick=0;
+
+        if(_inner == (8*4-1) ){
+            _inner = 0;
+            doAction();
+        }else{
+            _inner++;
+            for(var i:int = 0; i<trains.length; i++){
+                trains[i].view.update();
+            }
+        }
+
+    }
 
     public function play():void {
 
@@ -352,42 +385,67 @@ public class TrafficNetwork extends VisibleEntity {
         }
 
         moveToStep();
-
+        _inner=0;
+        additionTick=0;
         _regime = RegimeType.PLAY;
         
-        if(timer!=null){
-            timer.stop();
-        }
 
-        timer = new Timer(_timeOfStep, getMaximumLength());
-
-        timer.addEventListener(TimerEvent.TIMER, function(event:Event):void{
-            if(regime!=RegimeType.PLAY){
-                return;
-            }
-            doAction();
-        });
-
-        timer.start();
     }
+    
+    var record:Object = {time:999, pas:0};
 
     private function doAction():void {
+        
+        var finish:Boolean = true;
+        
         for (var i:int = 0; i < trains.length; i++) {
             var train:Train = trains[i];
             train.action();
+
+            if(!train.isFinish()){
+                finish = false;
+            }
         }
         checkError();
-        TrafficNetworkCreator.instance.resultAmount.htmlText = "<p align='center'>"+amountOfHappyPassengers + "/" + amountOfPassengers+"</p>";
-        TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>"+ (timeOfTrip / amountOfHappyPassengers).toFixed(3)+"</p>";
+        TrafficNetworkCreator.instance.resultAmount.htmlText = "<p align='center'>"+amountOfHappyPassengers + " из " + amountOfPassengers+"</p>";
+        if(level == 0){
+            var maxTime:int = 0;
+            for(var i:int = 0; i<trains.length; i++){
+                var tempTrain:Train = trains[i];
+                maxTime =  Math.max(tempTrain.toPasTime, maxTime);
+            }
+            
+            
+            TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>"+ maxTime+"</p>";
+        }
+        else
+            TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>"+ (timeOfTrip / amountOfHappyPassengers).toFixed(3)+"</p>";
         
         if(_fault){
             TrafficNetworkCreator.instance.resultCrash.visible = true;
         }
-
+        
         view.update();
+        if(finish){
+              if(amountOfHappyPassengers>record.pas){
+                  record.pas = amountOfHappyPassengers;
+                  record.time = maxTime;
+                  //RecordBlinkEffect.blink();
+                  api.saveBestSolution();
+                  TrafficNetworkCreator.instance.resultAmountRecord.htmlText = "<p align='center'>"+amountOfHappyPassengers + " из " + amountOfPassengers+"</p>";
+                  TrafficNetworkCreator.instance.resultTimeRecord.htmlText = "<p align='center'>"+ maxTime+"</p>";
+
+              }else if(amountOfHappyPassengers==record.pas && record.time>maxTime){
+                  record.pas = amountOfHappyPassengers;
+                  record.time = maxTime;
+                  api.saveBestSolution();
+                  TrafficNetworkCreator.instance.resultAmountRecord.htmlText = "<p align='center'>"+amountOfHappyPassengers + " из " + amountOfPassengers+"</p>";
+                  TrafficNetworkCreator.instance.resultTimeRecord.htmlText = "<p align='center'>"+ maxTime+"</p>";
+                  //RecordBlinkEffect.blink();
+              }
+
+        }
     }
-
-
 
     public function initial():void{
         activeTrain=null;
@@ -410,10 +468,9 @@ public class TrafficNetwork extends VisibleEntity {
         }
 
         if(_regime==RegimeType.PLAY){
-            if(timer!=null){
-                timer.stop;
-            }
             _regime = RegimeType.STEP;
+            _inner=0;
+            additionTick=0;
             return;
         }
 
@@ -455,9 +512,8 @@ public class TrafficNetwork extends VisibleEntity {
     public function resetToEdit():void{
 
         if(regime==RegimeType.PLAY){
-            if(timer!=null){
-                timer.stop;
-            }
+            _inner=0;
+            additionTick=0;
         }
 
         if(regime==RegimeType.EDIT){
@@ -540,6 +596,22 @@ public class TrafficNetwork extends VisibleEntity {
 
     public function get cnt():int {
         return _cnt;
+    }
+
+    public function resetArrows():void {
+        resetToEdit();
+         for(var i:int = 0; i<connectorViews.length; i++){
+             (CrossConnectorView(connectorViews[i])).randomType();
+         }
+        view.update();
+    }
+
+    public function get inner():int {
+        return _inner;
+    }
+
+    public function set amountOfPassengers(value:int):void {
+        _amountOfPassengers = value;
     }
 }
 }

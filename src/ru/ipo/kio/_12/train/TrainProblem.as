@@ -6,10 +6,12 @@
 package ru.ipo.kio._12.train {
 import flash.display.DisplayObject;
 
-import ru.ipo.kio._12.train.model.Rail;
+import ru.ipo.kio._12.train.model.Automation;
+import ru.ipo.kio._12.train.model.Passenger;
 
 import ru.ipo.kio._12.train.model.TrafficNetwork;
 import ru.ipo.kio._12.train.model.Train;
+import ru.ipo.kio._12.train.model.types.StationType;
 import ru.ipo.kio._12.train.util.TrafficNetworkCreator;
 
 import ru.ipo.kio.api.KioApi;
@@ -25,14 +27,25 @@ public class TrainProblem implements KioProblem {
     private var _level:int;
 
     [Embed(source="loc/Train.ru.json-settings",mimeType="application/octet-stream")]
-    public static var TRAIN_RU:Class;
+    public static var TRAIN_RU_0:Class;
+
+    [Embed(source="loc/Train1.ru.json-settings",mimeType="application/octet-stream")]
+    public static var TRAIN_RU_1:Class;
+
+    [Embed(source="loc/Train2.ru.json-settings",mimeType="application/octet-stream")]
+    public static var TRAIN_RU_2:Class;
 
     public function TrainProblem(level:int, readonly:Boolean = false) {
         _level = level;
 
         KioApi.initialize(this);
 
-        KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU).data);
+        if(level ==0)
+            KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU_0).data);
+        else if(level ==1)
+            KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU_1).data);
+        else if(level ==2)
+            KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU_2).data);
 
         TrafficNetworkCreator.instance.createTrafficNetwork(level);
         sp = new TrainSprite(level, readonly);
@@ -57,6 +70,11 @@ public class TrainProblem implements KioProblem {
     public function get solution():Object {
         var result:Object = {};
 
+        
+        if(level ==2){
+            Automation.instance.states;
+
+        }else{
         var trains:Vector.<Train> = TrafficNetwork.instance.trains;
         for(var i:int = 0; i<trains.length; i++){
             var train:Train = trains[i];
@@ -66,11 +84,18 @@ public class TrainProblem implements KioProblem {
             }
         }
 
+        }
+
         return result;
     }
 
     public function loadSolution(solution:Object):Boolean {
         if (solution) {
+
+            if(level ==2){
+                Automation.instance.states;
+                return true;
+            }else{
 
             TrafficNetwork.instance.resetToEdit();
             var trains:Vector.<Train> = TrafficNetwork.instance.trains;
@@ -83,22 +108,23 @@ public class TrainProblem implements KioProblem {
                 }
             }
             TrafficNetwork.instance.moveTrainToLast();
+
             TrafficNetwork.instance.view.update();
+
+                TrafficNetwork.instance.calc();
             return true;
+            }
         } else
             return false;
     }
 
     public function check(solution:Object):Object {
-        TrafficNetwork.instance.calc();
-        var result:Object = new Object();
-        result.passengers = TrafficNetwork.instance.amountOfHappyPassengers;
-        result.time = TrafficNetwork.instance.timeOfTrip;
-        result.fault = TrafficNetwork.instance.fault;
+        //todo
         return new Object();
     }
 
     public function compare(solution1:Object, solution2:Object):int {
+        //todo
         return 1;
     }
 

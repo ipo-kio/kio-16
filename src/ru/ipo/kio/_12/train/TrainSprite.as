@@ -46,6 +46,8 @@ public class TrainSprite extends Sprite {
     public function TrainSprite(level:int, readonly:Boolean, id:String = null) {
         var api:KioApi = KioApi.instance(id ? id : TrainProblem.ID);
 
+        TrafficNetwork.instance.api = api;
+        
         var leftBackground = new LEFT_BACKGROUNG;
         addChild(leftBackground);
 
@@ -102,8 +104,16 @@ public class TrainSprite extends Sprite {
         tfResult.width = 130;
         tfResult.htmlText = "<p align='center'>" + loc.headers.result + "</p>";
         tfResult.x = 0;
-        tfResult.y = 390-28;
+        tfResult.y = 375-18;
         addChild(tfResult);
+
+
+        var tfRecord:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
+        tfRecord.width = 130;
+        tfRecord.htmlText = "<p align='center'>" + loc.headers.record + "</p>";
+        tfRecord.x = 0;
+        tfRecord.y = 470-18;
+        addChild(tfRecord);
 
         createButton(loc.buttons.clear_routes, 15, 38, function (event:MouseEvent) {
             TrafficNetwork.instance.clearRoutes();
@@ -134,7 +144,7 @@ public class TrainSprite extends Sprite {
         var label2 = new LABEL;
         label1.x=15;
         label2.x=15;
-        label1.y=390;
+        label1.y=375;
         label2.y=470;
         addChild(label1);
         addChild(label2);
@@ -144,13 +154,13 @@ public class TrainSprite extends Sprite {
         tfAmountLabel.width = 130;
         tfAmountLabel.htmlText = "<p align='center'>" + loc.headers.amounts + "</p>";
         tfAmountLabel.x = 0;
-        tfAmountLabel.y = 390;
+        tfAmountLabel.y = 375;
         addChild(tfAmountLabel);
 
         var tfAmount:TextField = new TextField();
         tfAmount.background = false;
         tfAmount.x = 15;
-        tfAmount.y = 435;
+        tfAmount.y = 390;
         tfAmount.width = 100;
         tfAmount.height = 20;
         addChild(tfAmount);
@@ -161,10 +171,160 @@ public class TrainSprite extends Sprite {
         tfTimeLabel.width = 130;
         tfTimeLabel.htmlText = "<p align='center'>" + loc.headers.time + "</p>";
         tfTimeLabel.x = 0;
-        tfTimeLabel.y = 470;
+        tfTimeLabel.y = 405;
         addChild(tfTimeLabel);
 
         var tfTime:TextField = new TextField();
+        tfTime.background = false;
+        tfTime.x = 15;
+        tfTime.y = 420;
+        tfTime.width = 100;
+        tfTime.height = 20;
+        tfTime.htmlText = "<p align='center'>0</p>";
+        addChild(tfTime);
+        TrafficNetworkCreator.instance.resultTime = tfTime;
+
+
+
+
+
+        var tfAmountLabel1:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
+        tfAmountLabel1.width = 130;
+        tfAmountLabel1.htmlText = "<p align='center'>" + loc.headers.amounts + "</p>";
+        tfAmountLabel1.x = 0;
+        tfAmountLabel1.y = 375+95;
+        addChild(tfAmountLabel1);
+
+        var tfAmount1:TextField = new TextField();
+        tfAmount1.background = false;
+        tfAmount1.x = 15;
+        tfAmount1.y = 390+95;
+        tfAmount1.width = 100;
+        tfAmount1.height = 20;
+        addChild(tfAmount1);
+        tfAmount1.htmlText = "<p align='center'>0</p>";
+        TrafficNetworkCreator.instance.resultAmountRecord = tfAmount1;
+
+        var tfTimeLabel1:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
+        tfTimeLabel1.width = 130;
+        tfTimeLabel1.htmlText = "<p align='center'>" + loc.headers.time + "</p>";
+        tfTimeLabel1.x = 0;
+        tfTimeLabel1.y = 405+95;
+        addChild(tfTimeLabel1);
+
+        var tfTime1:TextField = new TextField();
+        tfTime1.background = false;
+        tfTime1.x = 15;
+        tfTime1.y = 420+95;
+        tfTime1.width = 100;
+        tfTime1.height = 20;
+        tfTime1.htmlText = "<p align='center'>0</p>";
+        addChild(tfTime1);
+        TrafficNetworkCreator.instance.resultTimeRecord = tfTime1;
+
+
+
+
+        var tfCrash:TextField = new TextField();
+        tfCrash.background = true;
+        tfCrash.backgroundColor = 0xaa3333;
+        tfCrash.x = 15;
+        tfCrash.y = 545;
+        tfCrash.width = 100;
+        tfCrash.height = 20;
+        addChild(tfCrash);
+        tfCrash.htmlText = "<p align='center' bgcolor='0xff0000'>Авария</p>";
+        TrafficNetworkCreator.instance.resultCrash = tfCrash;
+        tfCrash.visible = false;
+    }
+
+
+    var label1;
+
+    var label2;
+
+    var tfAmountLabel:TextField;
+
+    var tfAmount:TextField;
+
+    var tfTimeLabel:TextField;
+
+    var tfTime:TextField;
+
+    private function addButtonsForSecondLevel():void {
+        var loc:Object = KioApi.getLocalization(TrainProblem.ID);
+
+//        var tf:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
+//        tf.width = 130;
+//        tf.htmlText = "<p align='center'>" + loc.headers.edit + "</p>";
+//        tf.x = 0;
+//        tf.y = 140;
+//        addChild(tf);
+//
+//        var tfAnimation:TextField = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
+//        tfAnimation.width = 130;
+//        tfAnimation.htmlText = "<p align='center'>" + loc.headers.animation + "</p>";
+//        tfAnimation.x = 0;
+//        tfAnimation.y = 230-28;
+//        addChild(tfAnimation);
+
+        createButton(loc.buttons.reset, 15, 145, function (event:MouseEvent) {
+            TrafficNetwork.instance.resetArrows();
+        });
+
+        createButton(loc.buttons.play, 15, 195, function (event:MouseEvent) {
+            TrafficNetwork.instance.play();
+        });
+
+        createButton(loc.buttons.step, 15, 245, function (event:MouseEvent) {
+            TrafficNetwork.instance.step();
+        });
+
+        createButton(loc.buttons.result, 15, 295, function (event:MouseEvent) {
+            TrafficNetwork.instance.calc();
+        });
+
+        createButton(loc.buttons.init, 15, 345, function (event:MouseEvent) {
+            TrafficNetwork.instance.initial();
+        });
+
+
+
+        label1 = new LABEL;
+        label2 = new LABEL;
+        label1.x=15;
+        label2.x=15;
+        label1.y=360;
+        label2.y=470;
+        addChild(label1);
+        addChild(label2);
+
+
+        tfAmountLabel = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
+        tfAmountLabel.width = 130;
+        tfAmountLabel.htmlText = "<p align='center'>" + loc.headers.amounts + "</p>";
+        tfAmountLabel.x = 0;
+        tfAmountLabel.y = 390;
+        addChild(tfAmountLabel);
+
+        tfAmount = new TextField();
+        tfAmount.background = false;
+        tfAmount.x = 15;
+        tfAmount.y = 435;
+        tfAmount.width = 100;
+        tfAmount.height = 20;
+        addChild(tfAmount);
+        tfAmount.htmlText = "<p align='center'>0</p>";
+        TrafficNetworkCreator.instance.resultAmount = tfAmount;
+
+        tfTimeLabel = TextUtils.createTextFieldWithFont(TextUtils.FONT_MESSAGES, 13);
+        tfTimeLabel.width = 130;
+        tfTimeLabel.htmlText = "<p align='center'>" + loc.headers.time + "</p>";
+        tfTimeLabel.x = 0;
+        tfTimeLabel.y = 470;
+        addChild(tfTimeLabel);
+
+        tfTime = new TextField();
         tfTime.background = false;
         tfTime.x = 15;
         tfTime.y = 515;
@@ -187,35 +347,8 @@ public class TrainSprite extends Sprite {
         tfCrash.htmlText = "<p align='center' bgcolor='0xff0000'>Авария</p>";
         TrafficNetworkCreator.instance.resultCrash = tfCrash;
         tfCrash.visible = false;
-    }
 
-    private function addButtonsForSecondLevel():void {
-        var loc:Object = KioApi.getLocalization(TrainProblem.ID);
 
-        createButton(loc.buttons.play, 15, 250, function (event:MouseEvent) {
-            TrafficNetwork.instance.play();
-        });
-
-        createButton(loc.buttons.step, 15, 304, function (event:MouseEvent) {
-            TrafficNetwork.instance.step();
-        });
-
-        createButton(loc.buttons.result, 15, 355, function (event:MouseEvent) {
-            TrafficNetwork.instance.calc();
-        });
-
-        createButton(loc.buttons.init, 15, 404, function (event:MouseEvent) {
-            TrafficNetwork.instance.initial();
-        });
-
-        var tf:TextField = new TextField();
-        tf.backgroundColor = 0xffffff;
-        tf.background = true;
-        tf.x = 15;
-        tf.y = 400;
-        tf.width = 100;
-        //addChild(tf);
-        //TrafficNetworkCreator.instance.result = tf;
     }
 
     private function createButton(caption:String, x:int, y:int, func:Function, high:Boolean = true):ShellButton {
@@ -293,18 +426,24 @@ public class TrainSprite extends Sprite {
         dg.sortableColumns = false;
         dg.opaqueBackground=false;
         dg.x = 10;
-        dg.y = 20;
+        dg.y = 10;
 
-        createButton(loc.buttons.expand, 15, 120, function (event:MouseEvent) {
+        createButton(loc.buttons.expand, 15, 110, function (event:MouseEvent) {
             dg.width =110;
             dg.height =400;
             collapse.visible=true;
             add.visible=true;
             remove.visible=true;
+            label1.visible=false;
+            label2.visible=false;
+            tfAmountLabel.visible=false;
+            tfAmount.visible=false;
+            tfTimeLabel.visible=false;
+            tfTime.visible=false;
         },false);
 
         var add:ShellButton = createButton(loc.buttons.add, 15, 450, function (event:MouseEvent) {
-            Automation.instance.states.push(new AutomationStep(10));
+            Automation.instance.states.push(new AutomationStep(0));
             updateDataProvider(dg);
         },false);
 
@@ -317,12 +456,18 @@ public class TrainSprite extends Sprite {
             updateDataProvider(dg);
         },false);
 
-        var collapse:ShellButton = createButton(loc.buttons.collapse, 15, 420, function (event:MouseEvent) {
+        var collapse:ShellButton = createButton(loc.buttons.collapse, 15, 410, function (event:MouseEvent) {
             dg.width = 110;
             dg.height = 100;
             collapse.visible=false;
             add.visible=false;
             remove.visible=false;
+            label1.visible=true;
+            label2.visible=true;
+            tfAmountLabel.visible=true;
+            tfAmount.visible=true;
+            tfTimeLabel.visible=true;
+            tfTime.visible=true;
         },false);
 
         dg.width =110;

@@ -7,6 +7,9 @@
  */
 package ru.ipo.kio._12.train.view {
 
+import flash.events.Event;
+import flash.events.MouseEvent;
+
 import ru.ipo.kio._12.train.model.Passenger;
 import ru.ipo.kio._12.train.model.TrafficNetwork;
 import ru.ipo.kio._12.train.model.types.StationType;
@@ -36,6 +39,12 @@ public class PassengerView extends BasicView {
     public function PassengerView(passenger:Passenger) {
         this.passenger=passenger;
         addPicture(passenger);
+//        addEventListener(MouseEvent.CLICK, function(e:Event):void{
+//            for(var i:int = 0; i<TrafficNetwork.instance.rails.length; i++){
+//                TrafficNetwork.instance.rails[i].removePassenger(passenger);
+//            }
+//            TrafficNetwork.instance.view.update();
+//        });
         update();
     }
 
