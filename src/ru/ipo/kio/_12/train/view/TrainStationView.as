@@ -119,12 +119,22 @@ public class TrainStationView extends RailView {
                 passengers[i].view.y = rail.view.y + rail.view.height/2 + (i % 2 == 1 ? + i* (passengerSize+passengerSpace) : - i*(passengerSize+passengerSpace));
             }
             if (rail.type == RailType.HORIZONTAL && rail.id == 11) {
-                passengers[i].view.x = rail.view.x + rail.view.width/2 + (i % 2 == 1 ? + i* (passengerSize+passengerSpace) : - i*(passengerSize+passengerSpace));
-                passengers[i].view.y = rail.view.y + rail.view.height + passengerSize * 3;
+                if(i<=20){
+                    passengers[i].view.x = 50+ rail.view.x + rail.view.width/2 + (i % 2 == 1 ? + i* (passengerSize+passengerSpace) : - i*(passengerSize+passengerSpace));
+                    passengers[i].view.y = 50+ rail.view.y + rail.view.height + passengerSize * 3+35;
+                }else if ( i>20){
+                    passengers[i].view.x = 50+ rail.view.x + rail.view.width/2 + (i % 2 == 1 ? + (i-20)* (passengerSize+passengerSpace) : - (i-20)*(passengerSize+passengerSpace));
+                    passengers[i].view.y = 50+ rail.view.y + rail.view.height + passengerSize * 3 + 35-8;
+                }
             }
             if (rail.type == RailType.HORIZONTAL && rail.id == 0) {
-                passengers[i].view.x = rail.view.x + rail.view.width/2 + (i % 2 == 1 ? + i* (passengerSize+passengerSpace) : - i*(passengerSize+passengerSpace));
-                passengers[i].view.y = rail.view.y - passengerSize * 3;
+                if(i<=20){
+                    passengers[i].view.x = -80+ rail.view.x + rail.view.width/2 + (i % 2 == 1 ? + i* (passengerSize+passengerSpace) : - i*(passengerSize+passengerSpace));
+                    passengers[i].view.y = rail.view.y - passengerSize * 3;
+                }else if ( i>20){
+                    passengers[i].view.x = -80+rail.view.x + rail.view.width/2 + (i % 2 == 1 ? + (i-20)* (passengerSize+passengerSpace) : - (i-20)*(passengerSize+passengerSpace));
+                    passengers[i].view.y = rail.view.y - passengerSize * 3-8;
+                }
             }
 
         }
