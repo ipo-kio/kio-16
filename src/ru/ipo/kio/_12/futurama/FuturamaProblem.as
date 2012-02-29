@@ -19,6 +19,11 @@ public class FuturamaProblem implements KioProblem {
     [Embed(source="loc/Futurama.ru.json-settings",mimeType="application/octet-stream")]
     public static var FUTURAMA_RU:Class;
 
+    [Embed(source="resources/f1.jpg")]
+    public static var f1:Class;
+    [Embed(source="resources/f2.jpg")]
+    public static var f2:Class;
+
     public static const ID:String = 'id';
     private var _n:int;
     private var _level:int;
@@ -86,11 +91,11 @@ public class FuturamaProblem implements KioProblem {
     }
 
     public function get icon_help():Class {
-        return null;
+        return f2;
     }
 
     public function get icon_statement():Class {
-        return null;
+        return f1;
     }
 }
 }

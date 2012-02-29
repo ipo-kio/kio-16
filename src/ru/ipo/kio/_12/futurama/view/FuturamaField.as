@@ -44,10 +44,10 @@ public class FuturamaField extends Sprite {
 
         addChild(new BG);
 
-        if (level == 1)
-            addChild(new FM_1);
-        else
+        if (level == 2)
             addChild(new FM_2);
+        else
+            addChild(new FM_1);
         
         _perm = new Permutation(n);
 

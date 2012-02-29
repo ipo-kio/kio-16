@@ -41,7 +41,7 @@ public class Eye extends Sprite {
     //                | v      w       |
     //                |<-------------->|
 
-    private static const field_d0:Number = 25;
+    private static var field_d0:Number = 25;
     private static const field_w:Number = 30;
     private static const field_h:Number = 30;
     private static const field_scale:Number = 10;
@@ -49,14 +49,10 @@ public class Eye extends Sprite {
     private static const rays_extra_width:Number = 5;
     private static const rays_extra_height:Number = 5;
 
-    private static const level_1_x_min:Number = field_d0;
+    private static var level_1_x_min:Number = field_d0;
 
-    //width and height of the overall field
-    private static const field_W:Number = field_d0 + field_w + rays_extra_width;
-    private static const field_H:Number = field_h + rays_extra_height;
-
-    public static const MIN_ANGLE:Number = -Math.PI / 5;
-    public static const MAX_ANGLE:Number = +Math.PI / 5;
+    public static const MIN_ANGLE:Number = -Math.PI / 6;
+    public static const MAX_ANGLE:Number = +Math.PI / 6;
 
     private var _angle:Number;
 
@@ -75,6 +71,13 @@ public class Eye extends Sprite {
 
     public function Eye(diamond:Diamond, level:int) {
         _level = level;
+
+        if (level == 2) {
+            field_d0 += 3;
+        } else {
+            field_d0 += 5;
+            level_1_x_min = field_d0;
+        }
 
         this.diamond = diamond;
 
@@ -295,7 +298,7 @@ public class Eye extends Sprite {
         
         return {
             points: p.length,
-            variance: Math.sqrt(sum * sum - sum2)
+            variance: Math.sqrt(sum2 / p.length - sum * sum / (p.length * p.length))
         };
     }
 }
