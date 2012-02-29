@@ -52,9 +52,9 @@ public class TrainSprite extends Sprite {
         addChild(leftBackground);
 
         var background;
-        if (level == 1 || level == 2) {
+        if (level == 2) {
             background = new LEVEL_1_BACKGROUNG;
-        } else if (level == 0) {
+        } else if (level == 0 || level == 1) {
             background = new LEVEL_0_BACKGROUNG;
         } else {
             throw new Error("Undefined level: " + level);

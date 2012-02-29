@@ -43,7 +43,7 @@ public class TrainProblem implements KioProblem {
         if(level ==0)
             KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU_0).data);
         else if(level ==1)
-            KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU_1).data);
+            KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU_0).data);
         else if(level ==2)
             KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU_2).data);
 
@@ -84,6 +84,18 @@ public class TrainProblem implements KioProblem {
             }
         }
 
+            result.passengers={};
+            
+            for(var i:int = 0; i<TrafficNetwork.instance.rails.length; i++){
+                var pas:Vector.<Passenger> = TrafficNetwork.instance.rails[i].getPassengers();
+                
+                result.passengers[TrafficNetwork.instance.rails[i].id] = new Array();
+                for(var j:int =0;j<pas.length; j++){
+                    result.passengers[TrafficNetwork.instance.rails[i].id].push(pas[j].destination.number);
+                }
+
+            }
+
         }
 
         return result;
@@ -111,7 +123,7 @@ public class TrainProblem implements KioProblem {
 
             TrafficNetwork.instance.view.update();
 
-                TrafficNetwork.instance.calc();
+            TrafficNetwork.instance.calc();
             return true;
             }
         } else
