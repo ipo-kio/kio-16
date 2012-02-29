@@ -169,7 +169,6 @@ import ru.ipo.kio.api.*;
 				refreshResult();
 				});
 			}
-			//refreshResult();
 			
 		}
 		
@@ -182,7 +181,7 @@ import ru.ipo.kio.api.*;
 		}
 		
 		private function refreshResult(e: Event = null): void {
-			if (firstMax < results(1)) {	
+			if (firstMax < results(1) && firstMax != 0) {	
 				var time: Timer = new Timer(251, 4);
 				time.start();	
 				time.addEventListener(TimerEvent.TIMER, blinker);
@@ -193,9 +192,10 @@ import ru.ipo.kio.api.*;
 				firstResult[5] = stagelights[0].bodies[5].body.blue;
 				firstResult[4] = stagelights[0].bodies[6].body.green;
 				firstMax = results(1);
+				trace(firstMax);
 				_api.saveBestSolution();
 			}
-			if (secondMax < results(0)) {
+			if (secondMax < results(0) && secondMax != 0) {
 				var time: Timer = new Timer(251, 4);
 				time.start();	
 				time.addEventListener(TimerEvent.TIMER, blinker);
@@ -206,6 +206,7 @@ import ru.ipo.kio.api.*;
 				secondResult[4] = stagelights[1].bodies[0].body.green;
 				secondResult[5] = stagelights[1].bodies[0].body.blue;
 				secondMax = results(0);
+				trace(secondMax);
 				_api.saveBestSolution();
 			}
 			if (results(0) >= 0 && results(0) <= 10) {
@@ -302,6 +303,7 @@ import ru.ipo.kio.api.*;
 			max0.text = "Лучший результат для I фокуса: исчезновение на " + firstMax + "%";
 			result1.text = "Ваш результат для II фокуса: исчезновение на " + results(0) + "%";
 			max1.text = "Лучший результат для II фокуса: исчезновение на " + secondMax + "%";
+			refreshResult();
 		}
 		
 		
