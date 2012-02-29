@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CertificateCorrector/CertificateCorrector.iml" filepath="$PROJECT_DIR$/CertificateCorrector/CertificateCorrector.iml" />
-      <module fileurl="file://D:/KioSchool2/KioSchool2.iml" filepath="D:/KioSchool2/KioSchool2.iml" />
       <module fileurl="file://$PROJECT_DIR$/kio-12.iml" filepath="$PROJECT_DIR$/kio-12.iml" />
     </modules>
   </component>
