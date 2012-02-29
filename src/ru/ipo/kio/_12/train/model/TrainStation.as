@@ -38,6 +38,7 @@ public class TrainStation extends Rail {
                TrafficNetwork.instance.amountOfHappyPassengers++;
                TrafficNetwork.instance.timeOfTrip+=train.passengers[i].time;
                train.passengers.splice(i, 1);
+               train.toPasTime=train.count;
 
            }
        }

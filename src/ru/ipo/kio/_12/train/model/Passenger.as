@@ -29,5 +29,17 @@ public class Passenger extends VisibleEntity {
     public function set time(value:int):void {
         _time = value;
     }
+
+    public function get type():int {
+        if(destination==StationType.FIRST)
+            return 1;
+        if(destination==StationType.SECOND)
+            return 2;
+        if(destination==StationType.THIRD)
+            return 3;
+        if(destination==StationType.FOURTH)
+            return 4;
+        return 0;
+    }
 }
 }

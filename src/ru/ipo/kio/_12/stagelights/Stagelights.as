@@ -72,7 +72,7 @@ package ru.ipo.kio._12.stagelights
 				_intensitySliders[2] = new VIntensitySlider(new CIndensityHandler(_spotlights[2].spotlight));
 				_intensitySliders[2].x = 613;
 				_intensitySliders[2].y = 554;
-				_bodies[0] = new VBody(new MBody(Math.random()*65 + 180, Math.random()*65 + 180, Math.random()*65 + 180), new Body());
+				_bodies[0] = new VBody(new MBody(Math.random()*60 + 140, Math.random()*60 + 140, Math.random()*60 + 140), new Body());
 				_bodies[0].x = 384;
 				_bodies[0].y = 309;
 			} else  if (level == 1) {

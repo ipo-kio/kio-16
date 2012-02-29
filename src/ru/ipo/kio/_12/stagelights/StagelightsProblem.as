@@ -180,7 +180,7 @@ public class StagelightsProblem implements KioProblem {
 			sp.secondMax = solution.secondMax;
 			trace(sp.firstMax + "   " + sp.secondMax);
 			
-			//if (solution.visible) {
+			if (solution.visible) {
 				//sp.stagelights[0].visible = true;
 				//sp.stagelights[1].visible = false;
 				//sp.one.visible = false;
@@ -190,7 +190,7 @@ public class StagelightsProblem implements KioProblem {
 				//sp.max1.visible = false;
 				//sp.two.visible = true;
 				//sp.crnt = 0;
-			//} else {
+			} else {
 				//sp.stagelights[1].visible = true;
 				//sp.stagelights[0].visible = false;
 				//sp.one.visible = true;
@@ -200,13 +200,16 @@ public class StagelightsProblem implements KioProblem {
 				//sp.max0.visible = false;
 				//sp.two.visible = false;
 				//sp.crnt = 1;
-				//for (var k:int = 1; k < 11; k++) {
-					//sp.bandage[k].visible = false;
-				//}
-				//sp.bandage[solution.bandages].visible = true;
-			//}
+				for (var k:int = 1; k < 11; k++) {
+					sp.bandage[k].visible = false;
+				}
+				sp.bandage[solution.bandages].visible = true;
+			}
+			trace("LOAD");
+			sp.refreshResult();
 			sp.max0.text = "Лучший результат для I фокуса: исчезновение на " + sp.firstMax + "%";
 			sp.max1.text = "Лучший результат для II фокуса: исчезновение на " + sp.secondMax + "%";
+			sp.flag = false;
             return true;
         } else
             return false;

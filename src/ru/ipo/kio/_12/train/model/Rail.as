@@ -40,9 +40,14 @@ public class Rail extends VisibleEntity {
     }
     
     public function addPassenger(passenger:Passenger):void{
+        trafficNetwork.amountOfPassengers++;
         if(passengers.length<4){
         passengers.push(passenger);
         }
+    }
+
+    public function clearPassengers():void{
+        passengers =  new Vector.<Passenger>();
     }
     
     public function getPassengers():Vector.<Passenger>{
@@ -50,9 +55,10 @@ public class Rail extends VisibleEntity {
     }
     
     public function removePassenger(passenger:Passenger):Boolean{
-        var removeIndex:int = passengers.indexOf(passengers);
+        var removeIndex:int = passengers.indexOf(passenger);
         if(removeIndex!=-1){
-            passengers = passengers.splice(removeIndex,1);
+            TrafficNetwork.instance.view.removeChild(passenger.view);
+            passengers.splice(removeIndex,1);
             return true;
         }else{
             return false;

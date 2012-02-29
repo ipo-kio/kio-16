@@ -39,6 +39,7 @@ import ru.ipo.kio.api.*;
 		public var secondResult: Array = [];
 		public var bandages: int;
 		public var bandage: Array = [];
+		public var flag: Boolean = true;
 		public var crnt: int = 0;
 		private var _api: KioApi;
 		
@@ -161,10 +162,26 @@ import ru.ipo.kio.api.*;
 				api.autoSaveSolution();
 				refreshResult();
 				});
+				stagelights[0].intensitySliders[i].plus.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+				api.autoSaveSolution();
+				refreshResult();
+				});
+				stagelights[0].intensitySliders[i].minus.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+				api.autoSaveSolution();
+				refreshResult();
+				});
 			}
 			for (var j:int = 0; j < 3; j++) {
 				stagelights[1].spotlights[j].spotlight.addEventListener(Event.CHANGE, updt);
 				stagelights[1].intensitySliders[j].addEventListener(SliderEvent.CHANGE, function(e:Event):void {
+				api.autoSaveSolution();
+				refreshResult();
+				});
+				stagelights[1].intensitySliders[j].plus.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+				api.autoSaveSolution();
+				refreshResult();
+				});
+				stagelights[1].intensitySliders[j].minus.addEventListener(MouseEvent.CLICK, function(e:Event):void {
 				api.autoSaveSolution();
 				refreshResult();
 				});
@@ -180,8 +197,8 @@ import ru.ipo.kio.api.*;
 			stagelight[crnt].refresh();
 		}
 		
-		private function refreshResult(e: Event = null): void {
-			if (firstMax < results(1) && firstMax != 0) {	
+		public function refreshResult(e: Event = null): void {
+			if (firstMax < results(1)) {	
 				var time: Timer = new Timer(251, 4);
 				time.start();	
 				time.addEventListener(TimerEvent.TIMER, blinker);
@@ -195,7 +212,7 @@ import ru.ipo.kio.api.*;
 				trace(firstMax);
 				_api.saveBestSolution();
 			}
-			if (secondMax < results(0) && secondMax != 0) {
+			if (secondMax < results(0)) {
 				var time: Timer = new Timer(251, 4);
 				time.start();	
 				time.addEventListener(TimerEvent.TIMER, blinker);
@@ -209,77 +226,77 @@ import ru.ipo.kio.api.*;
 				trace(secondMax);
 				_api.saveBestSolution();
 			}
-			if (results(0) >= 0 && results(0) <= 10) {
+			if (results(0) >= 50 && results(0) <= 60) {
 				for (var k:int = 1; k < 11; k++) {
 					bandage[k].visible = false;
 				}
 				bandage[1].visible = true;
 				bandages = 1;
 			}
-			if (results(0) >= 10 && results(0) <= 20) {
+			if (results(0) >= 60 && results(0) <= 70) {
 				for (var k:int = 1; k < 11; k++) {
 					bandage[k].visible = false;
 				}
 				bandage[2].visible = true;
 				bandages = 2;
 			}
-			if (results(0) >= 20 && results(0) <= 30) {
+			if (results(0) >= 70 && results(0) <= 77) {
 				for (var k:int = 1; k < 11; k++) {
 					bandage[k].visible = false;
 				}
 				bandage[3].visible = true;
 				bandages = 3;
 			}
-			if (results(0) >= 30 && results(0) <= 40) {
+			if (results(0) >= 77 && results(0) <= 83) {
 				for (var k:int = 1; k < 11; k++) {
 					bandage[k].visible = false;
 				}
 				bandage[4].visible = true;
 				bandages = 4;
 			}
-			if (results(0) >= 40 && results(0) <= 50) {
+			if (results(0) >= 83 && results(0) <= 88) {
 				for (var k:int = 1; k < 11; k++) {
 					bandage[k].visible = false;
 				}
 				bandage[5].visible = true;
 				bandages = 5;
 			}
-			if (results(0) >= 50 && results(0) <= 60) {
+			if (results(0) >= 88 && results(0) <= 92) {
 				for (var k:int = 1; k < 11; k++) {
 					bandage[k].visible = false;
 				}
 				bandage[6].visible = true;
 				bandages = 6;
 			}
-			if (results(0) >= 60 && results(0) <= 70) {
+			if (results(0) >= 92 && results(0) <= 95) {
 				for (var k:int = 1; k < 11; k++) {
 					bandage[k].visible = false;
 				}
 				bandage[7].visible = true;
 				bandages = 7;
 			}
-			if (results(0) >= 70 && results(0) <= 80) {
+			if (results(0) >= 95 && results(0) <= 97) {
 				for (var k:int = 1; k < 11; k++) {
 					bandage[k].visible = false;
 				}
 				bandage[8].visible = true;
 				bandages = 8;
 			}
-			if (results(0) >= 80 && results(0) <= 90) {
+			if (results(0) >= 97 && results(0) <= 98) {
 				for (var k:int = 1; k < 11; k++) {
 					bandage[k].visible = false;
 				}
 				bandage[9].visible = true;
 				bandages = 9;
 			}
-			if (results(0) >= 90 && results(0) <= 95) {
+			if (results(0) >= 98 && results(0) <= 99) {
 				for (var k:int = 1; k < 11; k++) {
 					bandage[k].visible = false;
 				}
 				bandage[10].visible = true;
 				bandages = 10;
 			}
-			if (results(0) >= 95 && results(0) <= 100) {
+			if (results(0) >= 99 && results(0) <= 100) {
 				for (var k:int = 1; k < 11; k++) {
 					bandage[k].visible = false;
 				}
@@ -303,7 +320,6 @@ import ru.ipo.kio.api.*;
 			max0.text = "Лучший результат для I фокуса: исчезновение на " + firstMax + "%";
 			result1.text = "Ваш результат для II фокуса: исчезновение на " + results(0) + "%";
 			max1.text = "Лучший результат для II фокуса: исчезновение на " + secondMax + "%";
-			refreshResult();
 		}
 		
 		

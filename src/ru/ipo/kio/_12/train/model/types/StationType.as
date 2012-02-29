@@ -54,5 +54,9 @@ public final class StationType {
         }
         throw new Error("Can't find type by number "+number);
     }
+
+    public function get number():int {
+        return _number;
+    }
 }
 }

@@ -12,6 +12,7 @@ import flash.events.MouseEvent;
 import ru.ipo.kio._12.train.model.RailConnector;
 import ru.ipo.kio._12.train.model.TrafficNetwork;
 import ru.ipo.kio._12.train.model.types.ArrowStateType;
+import ru.ipo.kio._12.train.model.types.RegimeType;
 import ru.ipo.kio._12.train.util.ConnectorInPath;
 
 public class CrossConnectorView extends BasicView {
@@ -78,9 +79,13 @@ public class CrossConnectorView extends BasicView {
             addChild(line3);
             line3.visible =false;
 
+            randomType();
+
             addEventListener(MouseEvent.CLICK, function(ev:Event):void{
-                _type=_type.next();
-                update();
+                if(TrafficNetwork.instance.regime == RegimeType.EDIT){
+                    _type=_type.next();
+                    update();
+                }
             });
         }
         holst.x=0;
@@ -164,6 +169,16 @@ public class CrossConnectorView extends BasicView {
 
     public function set type(value:ArrowStateType):void {
         _type = value;
+    }
+
+    public function randomType():void {
+      var n:Number = Math.random();
+      if(n<0.33)
+        type = ArrowStateType.DIRECT;
+      else if(n>0.33 && n<0.66)
+        type = ArrowStateType.LEFT;
+      else if(n>0.66)
+        type = ArrowStateType.RIGHT;
     }
 }
 }

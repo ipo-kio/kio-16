@@ -4,8 +4,12 @@
  * @since: 29.01.12
  */
 package ru.ipo.kio._12.train.util {
+import com.adobe.serialization.json.JSON_k;
+
 import flash.geom.Point;
 import flash.text.TextField;
+
+import mx.core.ByteArrayAsset;
 
 import ru.ipo.kio._12.train.model.Passenger;
 
@@ -22,11 +26,40 @@ import ru.ipo.kio._12.train.view.CrossConnectorView;
 
 public class TrafficNetworkCreator {
 
+    [Embed(source="../_resources/config0",mimeType="application/octet-stream")]
+    public static var CONFIG_0:Class;
+
+    [Embed(source="../_resources/config1",mimeType="application/octet-stream")]
+    public static var CONFIG_2:Class;
+
+    [Embed(source="../_resources/config3",mimeType="application/octet-stream")]
+    public static var CONFIG_1:Class;
+
     private static var _instance:TrafficNetworkCreator;
 
     private var _resultTime:TextField;
 
     private var _resultAmount:TextField;
+
+    private var _resultTimeRecord:TextField;
+
+    public function get resultTimeRecord():TextField {
+        return _resultTimeRecord;
+    }
+
+    public function set resultTimeRecord(value:TextField):void {
+        _resultTimeRecord = value;
+    }
+
+    public function get resultAmountRecord():TextField {
+        return _resultAmountRecord;
+    }
+
+    public function set resultAmountRecord(value:TextField):void {
+        _resultAmountRecord = value;
+    }
+
+    private var _resultAmountRecord:TextField;
 
     private var _resultCrash:TextField;
 
@@ -40,10 +73,16 @@ public class TrafficNetworkCreator {
             TrafficNetworkCreator._instance=new TrafficNetworkCreator(new PrivateClass( ));
         return _instance;
     }
+    var second:Boolean = false;
 
     public function createTrafficNetwork(level:int):TrafficNetwork{
         trafficNetwork = TrafficNetwork.instance;
+        if(level==2){
+            level = 1;
+            second = true;
+        }
         trafficNetwork.level=level;
+        
         if(level == 1 || level ==2 ){
             trafficNetwork.railLength = 33;
             trafficNetwork.railWidth = 42;
@@ -94,6 +133,18 @@ public class TrafficNetworkCreator {
 
         addTrain(0xdf86701, initRail4, StationType.THIRD);
         addTrain(0x88b7ff, initRail2, StationType.FIRST);
+
+        var byteArrayAsset:ByteArrayAsset = new CONFIG_0;
+        var text:String = byteArrayAsset.toString();
+        var pas:Object = JSON_k.decode(text);
+
+        for(var i:int = 0; i<TrafficNetwork.instance.rails.length; i++){
+            var ar: Array = pas.passengers[TrafficNetwork.instance.rails[i].id];
+            TrafficNetwork.instance.rails[i].clearPassengers();
+            for(var j:int = 0; j<ar.length; j++){
+                TrafficNetwork.instance.rails[i].addPassenger(new Passenger(StationType.getByNumber(ar[j])));
+            }
+        }
     }
 
 
@@ -128,6 +179,34 @@ public class TrafficNetworkCreator {
         addTrain(0xdf86701, initRail3, StationType.THIRD);
         addTrain(0x88b7ff, initRail1, StationType.FIRST);
         addTrain(0xffc21b, initRail2, StationType.SECOND);
+
+        if(!second){
+            var byteArrayAsset:ByteArrayAsset = new CONFIG_1;
+            var text:String = byteArrayAsset.toString();
+            var pas:Object = JSON_k.decode(text);
+
+            for(var i:int = 0; i<TrafficNetwork.instance.rails.length; i++){
+                var ar: Array = pas.passengers[TrafficNetwork.instance.rails[i].id];
+                TrafficNetwork.instance.rails[i].clearPassengers();
+                for(var j:int = 0; j<ar.length; j++){
+                    TrafficNetwork.instance.rails[i].addPassenger(new Passenger(StationType.getByNumber(ar[j])));
+                }
+            }
+        }
+
+        else if(second){
+            var byteArrayAsset:ByteArrayAsset = new CONFIG_2;
+            var text:String = byteArrayAsset.toString();
+            var pas:Object = JSON_k.decode(text);
+
+            for(var i:int = 0; i<TrafficNetwork.instance.rails.length; i++){
+                var ar: Array = pas.passengers[TrafficNetwork.instance.rails[i].id];
+                TrafficNetwork.instance.rails[i].clearPassengers();
+                for(var j:int = 0; j<ar.length; j++){
+                    TrafficNetwork.instance.rails[i].addPassenger(new Passenger(StationType.getByNumber(ar[j])));
+                }
+            }
+        }
     }
     
     private function addTrain(color:int, initRail:Rail, type:StationType){
@@ -406,14 +485,16 @@ public class TrafficNetworkCreator {
 
 
     private function addPassengers(rail:Rail):Rail{
-        var intervals:Vector.<int> =  MathUtils.splitInterval(trafficNetwork.maxPassengers, trafficNetwork.amountOfTrain);
-        var counter:int = 0;
-        for(var i:int = 0; i<intervals.length; i++){
-            for(var j:int = counter; j<intervals[i]; j++){
-                rail.addPassenger(new Passenger(StationType.getByNumber(i)));
-                counter++;
-            }
-        }
+        if(trafficNetwork.level==2)
+            return rail;
+//        var intervals:Vector.<int> =  MathUtils.splitInterval(trafficNetwork.maxPassengers, trafficNetwork.amountOfTrain);
+//        var counter:int = 0;
+//        for(var i:int = 0; i<intervals.length; i++){
+//            for(var j:int = counter; j<intervals[i]; j++){
+//                rail.addPassenger(new Passenger(StationType.getByNumber(i)));
+//                counter++;
+//            }
+//        }
         return rail;
     }
 
