@@ -73,10 +73,16 @@ public class TrafficNetworkCreator {
             TrafficNetworkCreator._instance=new TrafficNetworkCreator(new PrivateClass( ));
         return _instance;
     }
+    var second:Boolean = false;
 
     public function createTrafficNetwork(level:int):TrafficNetwork{
         trafficNetwork = TrafficNetwork.instance;
+        if(level==2){
+            level = 1;
+            second = true;
+        }
         trafficNetwork.level=level;
+        
         if(level == 1 || level ==2 ){
             trafficNetwork.railLength = 33;
             trafficNetwork.railWidth = 42;
@@ -174,7 +180,7 @@ public class TrafficNetworkCreator {
         addTrain(0x88b7ff, initRail1, StationType.FIRST);
         addTrain(0xffc21b, initRail2, StationType.SECOND);
 
-        if(trafficNetwork.level==1){
+        if(!second){
             var byteArrayAsset:ByteArrayAsset = new CONFIG_1;
             var text:String = byteArrayAsset.toString();
             var pas:Object = JSON_k.decode(text);
@@ -188,7 +194,7 @@ public class TrafficNetworkCreator {
             }
         }
 
-        else if(trafficNetwork.level==2){
+        else if(second){
             var byteArrayAsset:ByteArrayAsset = new CONFIG_2;
             var text:String = byteArrayAsset.toString();
             var pas:Object = JSON_k.decode(text);

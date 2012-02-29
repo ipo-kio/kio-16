@@ -139,6 +139,10 @@ public class TrainProblem implements KioProblem {
     public function get best():Object {
         return null;
     }
+
+    public function get icon_statement():Class {
+        return null;
+    }
 }
 
 }
