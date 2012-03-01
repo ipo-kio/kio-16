@@ -59,7 +59,7 @@ public class StagelightsProblem implements KioProblem {
      * Год задачи
      */
     public function get year():int {
-        return 2011;
+        return 2012;
     }
 
     /**
