@@ -252,7 +252,8 @@ public class Eye extends Sprite {
         if (oi != null && oi.x >= level_1_x_min && _level == 1) {
             _all_out_points.push(oi);
             var point:Point = _scaler.vertex2point(oi);
-            s.graphics.beginFill(color, 0.8);
+            s.graphics.lineStyle(1, color);
+            s.graphics.beginFill(Spectrum.multiply_color(color, ray.percent), 1);
             s.graphics.drawCircle(point.x + (2 * Math.random() - 1) * 4, point.y + (2 * Math.random() - 1) * 4, 5);
             s.graphics.endFill();
         }

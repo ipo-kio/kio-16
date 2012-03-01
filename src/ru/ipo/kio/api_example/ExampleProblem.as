@@ -1,6 +1,8 @@
 package ru.ipo.kio.api_example {
 import flash.display.DisplayObject;
 
+import ru.ipo.kio._12.train.TrainProblem;
+
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 
@@ -32,8 +34,8 @@ public class ExampleProblem implements KioProblem {
         //загружать с помощью класса Settings. См. задачи 2011 года. Класс Settings читает
         //данные из расширенного json-файла (допустимы комментарии и многострочные строки)
         KioApi.registerLocalization(ID, KioApi.L_RU, {
-            title: "Задача HelloWorld", //Этот заголовок отображается сверху в окне задачи
-            message: "Hello World"
+            title: "Трамваи", //Этот заголовок отображается сверху в окне задачи
+            message: "Эта задача будет доступна в обновленной версии программы конкурса в самое ближайшее время"
         });
 
         //теперь можно писать код конструктора, в частности, создавать объекты, которые используют API:
@@ -128,7 +130,7 @@ public class ExampleProblem implements KioProblem {
      * Пример в задаче semiramida
      */
     public function get icon():Class {
-        return null;
+        return TrainProblem.INTRO;
     }
 
     public function get icon_help():Class {
@@ -139,6 +141,10 @@ public class ExampleProblem implements KioProblem {
      * Возвращаем оценку для лучшего решения
      */
     public function get best():Object {
+        return null;
+    }
+
+    public function get icon_statement():Class {
         return null;
     }
 }

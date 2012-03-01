@@ -13,7 +13,7 @@ import ru.ipo.kio._12.train.model.types.RegimeType;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.base.KioBase;
 
-public class TrainRunner  extends Sprite {
+public class TrainRunner extends Sprite {
 
     public function TrainRunner() {
 

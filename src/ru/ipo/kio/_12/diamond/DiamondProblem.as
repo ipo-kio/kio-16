@@ -7,6 +7,7 @@
  */
 package ru.ipo.kio._12.diamond {
 import flash.events.MouseEvent;
+import flash.geom.Matrix;
 
 import ru.ipo.kio._12.diamond.model.Spectrum;
 import ru.ipo.kio._12.diamond.view.*;
@@ -110,14 +111,18 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
         eye = new Eye(diamond, _level);
 
-        eye.x = 88;
+        eye.x = level == 2 ? 130 : 88;
         eye.y = 25;
         addChild(eye);
 
         if (level == 2) {
             var spectrumView:SpectrumView = new SpectrumView(diamond, eye);
-            spectrumView.x = 30;
-            spectrumView.y = 350;
+            var m:Matrix = new Matrix();
+            m.rotate(- Math.PI / 2);
+            m.translate(20, 310);
+            spectrumView.transform.matrix = m;
+//            spectrumView.x = 30;
+//            spectrumView.y = 350;
             addChild(spectrumView);
 
             //current ray info
@@ -180,7 +185,7 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
             diamond.addEventListener(Diamond.UPDATE, update_current_info_1);
             eye.addEventListener(Eye.ANGLE_CHANGED, update_current_info_1);
-            update_current_info_1();
+            update_current_info_1(null, true);
         }
 
         var remove_extra_button:GraphicsButton = new GraphicsButton(
@@ -199,16 +204,18 @@ public class DiamondProblem extends Sprite implements KioProblem {
         });
     }
 
-    private function update_current_info_1(event:Event = null):void {
+    private function update_current_info_1(event:Event = null, no_autosave:Boolean = false):void {
         var o:Object = eye.evaluate_outer_intersections();
         current_info.set_values([o.points, o.variance]);
-        api.autoSaveSolution();
+        if (! no_autosave)
+            api.autoSaveSolution();
         
         if (o.points > _record_points || o.points == _record_points && o.variance < _record_var) {
             _record_points = o.points;
             _record_var =  o.variance;
             record_info.set_values([_record_points, _record_var]);
-            api.saveBestSolution();
+            if (! no_autosave)
+                api.saveBestSolution();
             RecordBlinkEffect.blink(this, record_info.x - 2, record_info.y - 2, record_info.width + 4, record_info.height + 4);
         }
     }
