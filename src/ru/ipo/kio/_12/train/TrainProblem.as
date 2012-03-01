@@ -156,11 +156,16 @@ public class TrainProblem implements KioProblem {
     [Embed(source='_resources/icon_help.jpg')]
     private static var ICON_HELP_01:Class;
 
+    [Embed(source='_resources/icon_statement_2.jpg')]
+    private static var ICON_STATEMENT_02:Class;
+    [Embed(source='_resources/icon_help_2.jpg')]
+    private static var ICON_HELP_02:Class;
+
     public function get icon_help():Class {
         if (_level <= 1)
             return ICON_HELP_01;
         else
-            return null;
+            return ICON_HELP_02;
     }
 
     public function get best():Object {
@@ -171,7 +176,7 @@ public class TrainProblem implements KioProblem {
         if (_level <= 1)
             return ICON_STATEMENT_01;
         else
-            return null;
+            return ICON_STATEMENT_02;
     }
 }
 
