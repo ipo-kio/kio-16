@@ -476,7 +476,7 @@ public class TrafficNetwork extends VisibleEntity {
 
     private function updateRecordFirst(maxTime:int):void {
         record.pas = amountOfHappyPassengers;
-        record.time = maxTime;
+        record.time = getMediana();
         //RecordBlinkEffect.blink();
         api.saveBestSolution();
         TrafficNetworkCreator.instance.resultAmountRecord.htmlText = "<p align='center'>" + amountOfHappyPassengers + " из " + amountOfPassengers + "</p>";

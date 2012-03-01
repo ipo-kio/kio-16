@@ -4,6 +4,7 @@
  * @since: 30.01.12
  */
 package ru.ipo.kio._12.train.view {
+import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 
@@ -14,6 +15,10 @@ import ru.ipo.kio._12.train.model.TrafficNetwork;
 import ru.ipo.kio._12.train.model.TrainStation;
 import ru.ipo.kio._12.train.model.types.StationType;
 import ru.ipo.kio._12.train.model.types.RailType;
+import ru.ipo.kio._12.train.view.gui.BlueCircle;
+import ru.ipo.kio._12.train.view.gui.GreenCircle;
+import ru.ipo.kio._12.train.view.gui.RedCircle;
+import ru.ipo.kio._12.train.view.gui.YellowCircle;
 
 public class TrainStationView extends RailView {
 
@@ -40,49 +45,56 @@ public class TrainStationView extends RailView {
     }
 
     var line;
+    
+    var sp:Sprite;
 
     private function placeFirstLevelCircle():void {
         var station:TrainStation = (TrainStation (rail));
         if(station.stationType==StationType.FIRST){
             line = new LEVEL_1_BLUE;
+            sp = new BlueCircle();
         }
         else if(station.stationType==StationType.SECOND){
             line = new LEVEL_1_YELLOW;
+            sp = new YellowCircle();
         }
         else if(station.stationType==StationType.THIRD){
             line = new LEVEL_1_RED;
+            sp = new RedCircle();
         }
         else if(station.stationType==StationType.FOURTH){
             line = new LEVEL_1_GREEN;
+            sp = new GreenCircle();
         }
 
 
 
         if (rail.type == RailType.SEMI_ROUND_TOP) {
-            line.x = (width-line.width)/2;
-            line.y = -11;
-        } else if (rail.type == RailType.SEMI_ROUND_BOTTOM) {
-            line.x = (width-line.width)/2;
-            line.y = height-38+11;
-        } else if (rail.type == RailType.SEMI_ROUND_RIGHT) {
-            line.x = width-38+11
-            line.y = (height-line.height)/2;
-         } else if (rail.type == RailType.SEMI_ROUND_LEFT) {
-            line.x = -11
-            line.y = (height-line.height)/2;
-        }
-        line.x+=x;
-        line.y+=y;
+            sp.x = (width-line.width)/2;
+            sp.y = -11;
 
-        parent.addChild(line);
+        } else if (rail.type == RailType.SEMI_ROUND_BOTTOM) {
+            sp.x = (width-line.width)/2;
+            sp.y = height-38+11;
+        } else if (rail.type == RailType.SEMI_ROUND_RIGHT) {
+            sp.x = width-38+11
+            sp.y = (height-line.height)/2;
+         } else if (rail.type == RailType.SEMI_ROUND_LEFT) {
+            sp.x = -11
+            sp.y = (height-line.height)/2;
+        }
+        sp.x+=x;
+        sp.y+=y;
+
+        parent.addChild(sp);
     }
 
      public override function update():void{
          super.update();
 
-//         if(line!=null && parent.contains(line)){
-//           parent.removeChild(line);
-//           parent.addChild(line);
+//         if(sp!=null && parent.contains(sp)){
+//           parent.removeChild(sp);
+//           parent.addChild(sp);
 //         }
          
          var length:int = TrafficNetwork.instance.railLength;
