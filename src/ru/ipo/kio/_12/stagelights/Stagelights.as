@@ -41,7 +41,7 @@ package ru.ipo.kio._12.stagelights
 				_spotlights[0].osource.x = 200;
 				_spotlights[0].osource.y = 80;
 				_spotlights[0].osource.visible = false;
-				_spotlights[0].spotlight.intensity = Math.random() * 30 + 55;
+				_spotlights[0].spotlight.intensity = Math.random() * 50 + 30;
 				_spotlights[0].light.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 				_spotlights[1] = new VSpotlight(new MSpotlight(0x00FF00), new Green(), _workspace, 0);
 				_spotlights[1].light.x = 390;
@@ -51,7 +51,7 @@ package ru.ipo.kio._12.stagelights
 				_spotlights[1].osource.x = 390;
 				_spotlights[1].osource.y = 80;
 				_spotlights[1].osource.visible = false;
-				_spotlights[1].spotlight.intensity = Math.random() * 30 + 55;
+				_spotlights[1].spotlight.intensity = Math.random() * 50 + 30;
 				_spotlights[1].light.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 				_spotlights[2] = new VSpotlight(new MSpotlight(0x0000FF), new Blue(), _workspace, 0);
 				_spotlights[2].light.x = 340;
@@ -61,7 +61,7 @@ package ru.ipo.kio._12.stagelights
 				_spotlights[2].osource.x = 580;
 				_spotlights[2].osource.y = 80;
 				_spotlights[2].osource.visible = false;
-				_spotlights[2].spotlight.intensity = Math.random() * 30 + 55;
+				_spotlights[2].spotlight.intensity = Math.random() * 50 + 30;
 				addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 				_intensitySliders[0] = new VIntensitySlider(new CIndensityHandler(_spotlights[0].spotlight));
 				_intensitySliders[0].x = 102;
@@ -72,7 +72,7 @@ package ru.ipo.kio._12.stagelights
 				_intensitySliders[2] = new VIntensitySlider(new CIndensityHandler(_spotlights[2].spotlight));
 				_intensitySliders[2].x = 613;
 				_intensitySliders[2].y = 554;
-				_bodies[0] = new VBody(new MBody(Math.random()*60 + 140, Math.random()*60 + 140, Math.random()*60 + 140), new Body());
+				_bodies[0] = new VBody(new MBody(Math.random()*60 + 180, Math.random()*60 + 180, Math.random()*60 + 180), new Body());
 				_bodies[0].x = 384;
 				_bodies[0].y = 309;
 			} else  if (level == 1) {
@@ -85,7 +85,7 @@ package ru.ipo.kio._12.stagelights
 				_spotlights[0].osource.x = 200;
 				_spotlights[0].osource.y = 450;
 				_spotlights[0].osource.visible = false;
-				_spotlights[0].spotlight.intensity = Math.random() * 30 + 55;
+				_spotlights[0].spotlight.intensity = Math.random() * 50 + 30;
 				_spotlights[0].spotlight.addEventListener(Event.CHANGE, update);
 				_spotlights[1] = new VSpotlight(new MSpotlight(0x00FF00), new Green(), _workspace, 1, false);
 				_spotlights[1].light.x = 390;
@@ -95,7 +95,7 @@ package ru.ipo.kio._12.stagelights
 				_spotlights[1].osource.x = 390;
 				_spotlights[1].osource.y = 450;
 				_spotlights[1].osource.visible = false;
-				_spotlights[1].spotlight.intensity = Math.random() * 30 + 55;
+				_spotlights[1].spotlight.intensity = Math.random() * 50 + 30;
 				_spotlights[1].spotlight.addEventListener(Event.CHANGE, update);
 				_spotlights[2] = new VSpotlight(new MSpotlight(0x0000FF), new Blue(), _workspace, 1, false);
 				_spotlights[2].light.x = 200;
@@ -105,7 +105,7 @@ package ru.ipo.kio._12.stagelights
 				_spotlights[2].osource.x = 580;
 				_spotlights[2].osource.y = 450;
 				_spotlights[2].osource.visible = false;
-				_spotlights[2].spotlight.intensity = Math.random() * 30 + 55;
+				_spotlights[2].spotlight.intensity = Math.random() * 50 + 30;
 				_spotlights[2].spotlight.addEventListener(Event.CHANGE, update);
 				_intensitySliders[0] = new VIntensitySlider(new CIndensityHandler(_spotlights[0].spotlight));
 				_intensitySliders[0].x = 102;
@@ -132,9 +132,9 @@ package ru.ipo.kio._12.stagelights
 				_bodies[3].x = 390;
 				_bodies[3].y = 300;
 				_bodies[3].silhouette.height = 600;
-				var bRed: int = Math.random()*65 + 180;
-				var bBlue: int = Math.random()*65 + 180;
-				var bGreen: int = Math.random()*65 + 180;
+				var bRed: int = Math.random()*70 + 180;
+				var bBlue: int = Math.random()*70 + 180;
+				var bGreen: int = Math.random()*70 + 180;
 				_bodies[4] = new VBody(new MBody(bRed, bGreen, 0), new Rabbit());
 				_bodies[4].x = 390;
 				_bodies[4].y = 300;
