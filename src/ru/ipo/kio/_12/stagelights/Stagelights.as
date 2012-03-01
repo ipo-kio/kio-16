@@ -41,7 +41,7 @@ package ru.ipo.kio._12.stagelights
 				_spotlights[0].osource.x = 200;
 				_spotlights[0].osource.y = 80;
 				_spotlights[0].osource.visible = false;
-				_spotlights[0].spotlight.intensity = Math.random() * 50 + 155;
+				_spotlights[0].spotlight.intensity = Math.random() * 30 + 55;
 				_spotlights[0].light.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 				_spotlights[1] = new VSpotlight(new MSpotlight(0x00FF00), new Green(), _workspace, 0);
 				_spotlights[1].light.x = 390;
@@ -51,7 +51,7 @@ package ru.ipo.kio._12.stagelights
 				_spotlights[1].osource.x = 390;
 				_spotlights[1].osource.y = 80;
 				_spotlights[1].osource.visible = false;
-				_spotlights[1].spotlight.intensity = Math.random() * 50 + 155;
+				_spotlights[1].spotlight.intensity = Math.random() * 30 + 55;
 				_spotlights[1].light.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 				_spotlights[2] = new VSpotlight(new MSpotlight(0x0000FF), new Blue(), _workspace, 0);
 				_spotlights[2].light.x = 340;
@@ -61,7 +61,7 @@ package ru.ipo.kio._12.stagelights
 				_spotlights[2].osource.x = 580;
 				_spotlights[2].osource.y = 80;
 				_spotlights[2].osource.visible = false;
-				_spotlights[2].spotlight.intensity = Math.random() * 50 + 155;
+				_spotlights[2].spotlight.intensity = Math.random() * 30 + 55;
 				addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 				_intensitySliders[0] = new VIntensitySlider(new CIndensityHandler(_spotlights[0].spotlight));
 				_intensitySliders[0].x = 102;
@@ -85,7 +85,7 @@ package ru.ipo.kio._12.stagelights
 				_spotlights[0].osource.x = 200;
 				_spotlights[0].osource.y = 450;
 				_spotlights[0].osource.visible = false;
-				_spotlights[0].spotlight.intensity = Math.random() * 100 + 100;
+				_spotlights[0].spotlight.intensity = Math.random() * 30 + 55;
 				_spotlights[0].spotlight.addEventListener(Event.CHANGE, update);
 				_spotlights[1] = new VSpotlight(new MSpotlight(0x00FF00), new Green(), _workspace, 1, false);
 				_spotlights[1].light.x = 390;
@@ -95,7 +95,7 @@ package ru.ipo.kio._12.stagelights
 				_spotlights[1].osource.x = 390;
 				_spotlights[1].osource.y = 450;
 				_spotlights[1].osource.visible = false;
-				_spotlights[1].spotlight.intensity = Math.random() * 100 + 100;
+				_spotlights[1].spotlight.intensity = Math.random() * 30 + 55;
 				_spotlights[1].spotlight.addEventListener(Event.CHANGE, update);
 				_spotlights[2] = new VSpotlight(new MSpotlight(0x0000FF), new Blue(), _workspace, 1, false);
 				_spotlights[2].light.x = 200;
@@ -105,7 +105,7 @@ package ru.ipo.kio._12.stagelights
 				_spotlights[2].osource.x = 580;
 				_spotlights[2].osource.y = 450;
 				_spotlights[2].osource.visible = false;
-				_spotlights[2].spotlight.intensity = Math.random() * 100 + 100;
+				_spotlights[2].spotlight.intensity = Math.random() * 30 + 55;
 				_spotlights[2].spotlight.addEventListener(Event.CHANGE, update);
 				_intensitySliders[0] = new VIntensitySlider(new CIndensityHandler(_spotlights[0].spotlight));
 				_intensitySliders[0].x = 102;

@@ -20,16 +20,16 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-      <path-element>C:\Users\ovv\Desktop\KIOOOO\src</path-element>
+      <path-element>C:\Users\ovv\Desktop\KIO\src</path-element>
       <path-element>E:\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
     <library-path append="true">
-      <path-element>C:\Users\ovv\Desktop\KIOOOO\src\ru\ipo\kio\_12\stagelights\_resources\fl.swc</path-element>
-      <path-element>C:\Users\ovv\Desktop\KIOOOO\src\ru\ipo\kio\_12\stagelights\_resources\projector.swc</path-element>
+      <path-element>C:\Users\ovv\Desktop\KIO\src\ru\ipo\kio\_12\stagelights\_resources\fl.swc</path-element>
+      <path-element>C:\Users\ovv\Desktop\KIO\src\ru\ipo\kio\_12\stagelights\_resources\projector.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>
-    <path-element>C:\Users\ovv\Desktop\KIOOOO\src\ru\ipo\kio\_12\stagelights\StagelightsRunner.as</path-element>
+    <path-element>C:\Users\ovv\Desktop\KIO\src\ru\ipo\kio\_12\stagelights\StagelightsRunner.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>
