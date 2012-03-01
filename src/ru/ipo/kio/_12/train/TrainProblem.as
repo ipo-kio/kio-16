@@ -5,12 +5,14 @@
  */
 package ru.ipo.kio._12.train {
 import flash.display.DisplayObject;
+import flash.events.Event;
 
 import ru.ipo.kio._12.train.model.Automation;
 import ru.ipo.kio._12.train.model.Passenger;
 
 import ru.ipo.kio._12.train.model.TrafficNetwork;
 import ru.ipo.kio._12.train.model.Train;
+import ru.ipo.kio._12.train.model.types.RegimeType;
 import ru.ipo.kio._12.train.model.types.StationType;
 import ru.ipo.kio._12.train.util.TrafficNetworkCreator;
 
@@ -49,6 +51,12 @@ public class TrainProblem implements KioProblem {
 
         TrafficNetworkCreator.instance.createTrafficNetwork(level);
         sp = new TrainSprite(level, readonly);
+
+        sp.addEventListener(Event.ENTER_FRAME, function(e:Event):void{
+            if(TrafficNetwork.instance.regime==RegimeType.PLAY){
+                TrafficNetwork.instance.innerTick();
+            }
+        });
     }
 
     public function get id():String {
