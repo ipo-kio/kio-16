@@ -8,8 +8,6 @@ package ru.ipo.kio._12 {
 import flash.display.Sprite;
 import flash.events.Event;
 
-import ru.ipo.kio._12.diamond.DiamondProblem;
-
 import ru.ipo.kio._12.futurama.FuturamaProblem;
 import ru.ipo.kio._12.stagelights.StagelightsProblem;
 import ru.ipo.kio._12.train.TrainProblem;

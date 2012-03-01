@@ -64,6 +64,7 @@ public class TextUtils {
             " p , li {font-family: " + FONT_MESSAGES + "; font-size: 14; color:#000000; text-align:justify;} " +
                     ".no_justify {text-align:left;} " +
                     ".h1 { color:#000000; font-size: 16; font-weight:bold;} " +
+                    ".h1c { color:#000000; font-size: 16; font-weight:bold; text-align:center;} " +
                     ".h2 { color:#000000; font-size: 14; font-weight:bold; text-align:left;} " +
                     //".footnote {font-size: 12; } " + //font-weight:bold;} " +
                     ".footnote {color:#222266;}" +

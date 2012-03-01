@@ -12,6 +12,7 @@ import ru.ipo.kio._12.diamond.DiamondProblem;
 import ru.ipo.kio._12.futurama.FuturamaProblem;
 import ru.ipo.kio._12.train.TrainProblem;
 import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.api_example.ExampleProblem;
 import ru.ipo.kio.base.*;
 
 public class KIOShell_1 extends Sprite {
