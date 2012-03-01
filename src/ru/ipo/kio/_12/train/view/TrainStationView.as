@@ -33,14 +33,15 @@ public class TrainStationView extends RailView {
         super(station);
 
         if(TrafficNetwork.instance.level==1 || TrafficNetwork.instance.level==2){
-            addEventListener(Event.ADDED, function(e:Event):void{placeFirstLevelCircle();});
+           addEventListener(Event.ADDED, function(e:Event):void{placeFirstLevelCircle();});
         }
 
-        update();
+       // update();
     }
 
+    var line;
+
     private function placeFirstLevelCircle():void {
-        var line;
         var station:TrainStation = (TrainStation (rail));
         if(station.stationType==StationType.FIRST){
             line = new LEVEL_1_BLUE;
@@ -56,8 +57,6 @@ public class TrainStationView extends RailView {
         }
 
 
-
-        parent.addChild(line);
 
         if (rail.type == RailType.SEMI_ROUND_TOP) {
             line.x = (width-line.width)/2;
@@ -75,11 +74,17 @@ public class TrainStationView extends RailView {
         line.x+=x;
         line.y+=y;
 
+        parent.addChild(line);
     }
 
      public override function update():void{
          super.update();
 
+//         if(line!=null && parent.contains(line)){
+//           parent.removeChild(line);
+//           parent.addChild(line);
+//         }
+         
          var length:int = TrafficNetwork.instance.railLength;
          var space:int = TrafficNetwork.instance.railSpace;
          

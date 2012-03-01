@@ -76,7 +76,7 @@ public class TrafficNetworkCreator {
             TrafficNetworkCreator._instance=new TrafficNetworkCreator(new PrivateClass( ));
         return _instance;
     }
-    var second:Boolean = false;
+    private var _second:Boolean = false;
 
     var first:Boolean = false;
 
@@ -90,7 +90,7 @@ public class TrafficNetworkCreator {
 
         if(level ==2){
             level = 1;
-            second = true;
+            _second = true;
         }
         trafficNetwork.level=level;
         
@@ -195,7 +195,7 @@ public class TrafficNetworkCreator {
         addTrain(0x88b7ff, initRail1, StationType.FIRST);
         addTrain(0xffc21b, initRail2, StationType.SECOND);
 
-        if(!second){
+        if(!_second){
             var byteArrayAsset:ByteArrayAsset = new CONFIG_1;
             var text:String = byteArrayAsset.toString();
             var pas:Object = JSON_k.decode(text);
@@ -209,7 +209,7 @@ public class TrafficNetworkCreator {
             }
         }
 
-        else if(second){
+        else if(_second){
             var byteArrayAsset:ByteArrayAsset = new CONFIG_2;
             var text:String = byteArrayAsset.toString();
             var pas:Object = JSON_k.decode(text);
@@ -535,6 +535,10 @@ public class TrafficNetworkCreator {
 
     public function set resultCrash(value:TextField):void {
         _resultCrash = value;
+    }
+
+    public function get second():Boolean {
+        return _second;
     }
 }
 }

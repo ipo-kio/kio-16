@@ -532,7 +532,6 @@ public class ZeroLevelTrainPlacer {
                 var dir:Boolean = nextRail.firstEnd.isConnected(train.rail);
                 if(train.rail.firstEnd.connectedE(nextRail.firstEnd) && train.rail.secondEnd.connectedE(nextRail.secondEnd)){
                     dir = !train.isDirect();
-                    trace(dir);
                 }
                 arr = next[train.rail.type.name + String(train.tick) + train.isDirect() + nextRail.type.name + dir];
                 nxt = dict[nextRail.type.name + String(0) + dir];

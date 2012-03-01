@@ -48,10 +48,10 @@ public class FirstLevelTrainPlacer{
         dict[RailType.ROUND_BOTTOM_RIGHT.name + "2" + "true"] = {x:84, y:48, r:-90};
         dict[RailType.ROUND_BOTTOM_RIGHT.name + "3" + "true"] = {x:66, y:16, r:-150};
 
-        dict[RailType.SEMI_ROUND_BOTTOM.name + "0" + "false"] = {x:37, y:30, r:30};
-        dict[RailType.SEMI_ROUND_BOTTOM.name + "1" + "false"] = {x:81, y:29, r:-45};
-        dict[RailType.SEMI_ROUND_BOTTOM.name + "0" + "true"] = {x:84, y:26, r:135};
-        dict[RailType.SEMI_ROUND_BOTTOM.name + "1" + "true"] = {x:35, y:28, r:-135};
+        dict[RailType.SEMI_ROUND_BOTTOM.name + "0" + "true"] = {x:37, y:30, r:30};
+        dict[RailType.SEMI_ROUND_BOTTOM.name + "1" + "true"] = {x:81, y:29, r:-45};
+        dict[RailType.SEMI_ROUND_BOTTOM.name + "0" + "false"] = {x:84, y:26, r:135};
+        dict[RailType.SEMI_ROUND_BOTTOM.name + "1" + "false"] = {x:35, y:28, r:-135};
 
         dict[RailType.SEMI_ROUND_TOP.name + "0" + "true"] = {x:29, y:23, r:-45};
         dict[RailType.SEMI_ROUND_TOP.name + "1" + "true"] = {x:84, y:19, r:45};
@@ -625,6 +625,9 @@ public class FirstLevelTrainPlacer{
             }
             else {
                 var dir:Boolean = nextRail.firstEnd.isConnected(train.rail);
+                if(train.rail.firstEnd.connectedE(nextRail.firstEnd) && train.rail.secondEnd.connectedE(nextRail.secondEnd)){
+                    dir = !train.isDirect();
+                }
                 arr = next[train.rail.type.name + String(train.tick) + train.isDirect() + nextRail.type.name + dir];
                 nxt = dict[nextRail.type.name + String(0) + dir];
             }

@@ -346,15 +346,23 @@ public class TrafficNetwork extends VisibleEntity {
 
     }
 
+    var viewUpdateLock:Boolean = false;
+
     public function calc():void{
         initial();
 
 
         var max:int = getMaximumLength();
-        
+
+        viewUpdateLock = true;
+
         for(var j:int = 0; j<max; j++){
             doAction();
         }
+
+        viewUpdateLock=false;
+        
+        view.update();
     }
 
     private var additionTick = 0;
@@ -423,10 +431,10 @@ public class TrafficNetwork extends VisibleEntity {
             TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>"+ maxTime+"</p>";
         }
         else {
-            if(amountOfHappyPassengers!=0)
+            //if(amountOfHappyPassengers!=0)
                 TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>"+ getMediana()+"</p>";
-            else
-                TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>0</p>";
+            //else
+            //    TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>0</p>";
 
         }
         
@@ -434,7 +442,9 @@ public class TrafficNetwork extends VisibleEntity {
             TrafficNetworkCreator.instance.resultCrash.visible = true;
         }
         
-        view.update();
+        if(!viewUpdateLock)
+            view.update();
+
         if(finish && !fault){
             if(level ==0 ){
               if(amountOfHappyPassengers>record.pas){
@@ -454,11 +464,11 @@ public class TrafficNetwork extends VisibleEntity {
     }
 
     private function getMediana():int {
-        _times.sort();
+        _times = _times.sort(Array.NUMERIC);
         if(_times.length==0)
             return 0;
         if(_times.length%2==1){
-            return times[_times.length/2];
+            return times[Math.floor(_times.length/2)];
         }else{
             return (times[_times.length/2]+times[_times.length/2-2])/2;
         }
@@ -470,10 +480,10 @@ public class TrafficNetwork extends VisibleEntity {
         //RecordBlinkEffect.blink();
         api.saveBestSolution();
         TrafficNetworkCreator.instance.resultAmountRecord.htmlText = "<p align='center'>" + amountOfHappyPassengers + " из " + amountOfPassengers + "</p>";
-        if(amountOfHappyPassengers!=0)
-            TrafficNetworkCreator.instance.resultTimeRecord.htmlText = "<p align='center'>"+ (timeOfTrip / amountOfHappyPassengers).toFixed(3)+"</p>";
-        else
-            TrafficNetworkCreator.instance.resultTimeRecord.htmlText = "<p align='center'>0</p>";
+        //if(amountOfHappyPassengers!=0)
+//            TrafficNetworkCreator.instance.resultTimeRecord.htmlText = "<p align='center'>"+ (timeOfTrip / amountOfHappyPassengers).toFixed(3)+"</p>";
+  //      else
+            TrafficNetworkCreator.instance.resultTimeRecord.htmlText = "<p align='center'>"+getMediana()+"</p>";
     }
 
 
