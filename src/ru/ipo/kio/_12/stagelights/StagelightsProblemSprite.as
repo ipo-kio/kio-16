@@ -81,8 +81,81 @@ import ru.ipo.kio.api.*;
 				bandage[k].x = 384;
 				bandage[k].y = 309;
 			}
-			bandages = results(0) / 10 + 1;
-			bandage[bandages].visible = true;
+			if (results(0) >= 0 && results(0) <= 60) {
+				for (var k:int = 1; k < 11; k++) {
+					bandage[k].visible = false;
+				}
+				bandage[1].visible = true;
+				bandages = 1;
+			}
+			if (results(0) >= 60 && results(0) <= 70) {
+				for (var k:int = 1; k < 11; k++) {
+					bandage[k].visible = false;
+				}
+				bandage[2].visible = true;
+				bandages = 2;
+			}
+			if (results(0) >= 70 && results(0) <= 77) {
+				for (var k:int = 1; k < 11; k++) {
+					bandage[k].visible = false;
+				}
+				bandage[3].visible = true;
+				bandages = 3;
+			}
+			if (results(0) >= 77 && results(0) <= 83) {
+				for (var k:int = 1; k < 11; k++) {
+					bandage[k].visible = false;
+				}
+				bandage[4].visible = true;
+				bandages = 4;
+			}
+			if (results(0) >= 83 && results(0) <= 88) {
+				for (var k:int = 1; k < 11; k++) {
+					bandage[k].visible = false;
+				}
+				bandage[5].visible = true;
+				bandages = 5;
+			}
+			if (results(0) >= 88 && results(0) <= 92) {
+				for (var k:int = 1; k < 11; k++) {
+					bandage[k].visible = false;
+				}
+				bandage[6].visible = true;
+				bandages = 6;
+			}
+			if (results(0) >= 92 && results(0) <= 95) {
+				for (var k:int = 1; k < 11; k++) {
+					bandage[k].visible = false;
+				}
+				bandage[7].visible = true;
+				bandages = 7;
+			}
+			if (results(0) >= 95 && results(0) <= 97) {
+				for (var k:int = 1; k < 11; k++) {
+					bandage[k].visible = false;
+				}
+				bandage[8].visible = true;
+				bandages = 8;
+			}
+			if (results(0) >= 97 && results(0) <= 98) {
+				for (var k:int = 1; k < 11; k++) {
+					bandage[k].visible = false;
+				}
+				bandage[9].visible = true;
+				bandages = 9;
+			}
+			if (results(0) >= 98 && results(0) <= 99) {
+				for (var k:int = 1; k < 11; k++) {
+					bandage[k].visible = false;
+				}
+				bandage[10].visible = true;
+				bandages = 10;
+			}
+			if (results(0) >= 99 && results(0) <= 100) {
+				for (var k:int = 1; k < 11; k++) {
+					bandage[k].visible = false;
+				}
+			}
 			
 			stagelight[0].visible = true;
 			stagelight[1].visible = false;  
@@ -187,6 +260,10 @@ import ru.ipo.kio.api.*;
 				});
 			}
 			
+			if (firstMax < results(1)) firstMax = results(1);
+			if (secondMax < results(0)) secondMax = results(0);
+			updt();
+			
 		}
 		
 		public function get stagelights(): Array {
@@ -226,7 +303,7 @@ import ru.ipo.kio.api.*;
 				trace(secondMax);
 				_api.saveBestSolution();
 			}
-			if (results(0) >= 50 && results(0) <= 60) {
+			if (results(0) >= 0 && results(0) <= 60) {
 				for (var k:int = 1; k < 11; k++) {
 					bandage[k].visible = false;
 				}
@@ -374,7 +451,7 @@ import ru.ipo.kio.api.*;
 				var r1: int = stagelight[1].bodies[0].body.red;
 				var g1: int = stagelight[1].bodies[0].body.green;
 				var b1: int = stagelight[1].bodies[0].body.blue;
-				return (1 - calc(r, g, b, r1, g1, b1) / calc(0, 0, 0, 255, 255, 255)) * 100;
+				return (1 - calc(r, g, b, r1, g1, b1) / calc(0, 0, 0, r1, g1, b1)) * 100;
 			} else {
 				var r: int = stagelight[0].bodies[0].body.red;
 				var g: int = stagelight[0].bodies[1].body.green;
@@ -382,12 +459,12 @@ import ru.ipo.kio.api.*;
 				var r1: int = stagelight[0].bodies[4].body.red;
 				var g1: int = stagelight[0].bodies[6].body.green;
 				var b1: int = stagelight[0].bodies[5].body.blue;
-				return (1 - calc(r, g, b, r1, g1, b1) / calc(0, 0, 0, 255, 255, 255)) * 100;
+				return (1 - calc(r, g, b, r1, g1, b1) / calc(0, 0, 0, r1, g1, b1)) * 100;
 			}
 		}
 		
 		private function calc(r1: int, g1: int, b1: int, r2: int, g2: int, b2: int): Number {
-			return Math.sqrt(Math.pow(r1 - r2, 2) + Math.pow(g1 - g2, 2) + Math.pow(b1 - b2, 2));
+			return Math.pow(r1 - r2, 2) + Math.pow(g1 - g2, 2) + Math.pow(b1 - b2, 2);
 		}
 	}
 

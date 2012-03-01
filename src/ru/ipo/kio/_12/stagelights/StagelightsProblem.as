@@ -244,7 +244,7 @@ public class StagelightsProblem implements KioProblem {
      * Возвращает класс изображения с иконкой. Отображается для выбора задачи
      * Пример в задаче semiramida
      */
-	[Embed(source="_resources/intro.png")]
+	[Embed(source="_resources/icon.jpg")]
     public static const ICON:Class;
 	
     public function get icon():Class {
@@ -253,17 +253,17 @@ public class StagelightsProblem implements KioProblem {
 
     [Embed(source='_resources/help_icon.jpg')]
     private const ICON_HELP:Class;
-
-    [Embed(source='_resources/statement.jpg')]
-    private const ICON_STATEMENT:Class;
 	
     public function get icon_help():Class {
-        return ICON_HELP;
+        return null;
     }
 	
     public function get icon_statement():Class {
-        return ICON_STATEMENT;
+        return ICON;
     }
+	
+	
+    
 
     /**
      * Возвращаем оценку для лучшего решения
