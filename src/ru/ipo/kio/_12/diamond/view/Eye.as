@@ -61,6 +61,7 @@ public class Eye extends Sprite {
     private var _level:int;
 
     private var rays_layer:Sprite = null;
+    private var inner_rays_layer:Sprite = null;
 
     private var diamond:Diamond;
     public static const ANGLE_CHANGED:String = 'ANGLE CHANGED';
@@ -142,7 +143,6 @@ public class Eye extends Sprite {
         //draw circle
         var s:Sprite = new Sprite();
         s.graphics.lineStyle(0.5, 0x888888);
-        var c_center:Point = _scaler.vertex2point(new Vertex2D(field_d0 + field_w / 2, 0));
 
         addChild(s);
 
@@ -156,6 +156,11 @@ public class Eye extends Sprite {
             graphics.lineTo(p.x, p.y);
             p = _scaler.vertex2point(new Vertex2D(level_1_x_min, field_h / 2 + rays_extra_height / 2));
             graphics.lineTo(p.x, p.y);
+        } else {
+            inner_rays_layer = new Sprite();
+            inner_rays_layer.x = dx;
+            inner_rays_layer.y = dy;
+            addChild(inner_rays_layer);
         }
 
         update();
@@ -235,6 +240,16 @@ public class Eye extends Sprite {
         }
 
         addChildAt(rays_layer, 0);
+        
+        if (_level == 2) {
+            inner_rays_layer.graphics.clear();
+            inner_rays_layer.graphics.lineStyle(1, 0xAAAAAA, 0.5);
+            inner_rays_layer.graphics.moveTo(0, 0);
+            inner_rays_layer.graphics.lineTo(
+                    - CircleSpectrumView.RADIUS * Math.cos(angle),
+                    - CircleSpectrumView.RADIUS * Math.sin(angle)
+            );
+        }
     }
 
     private function add_all_rays(ray:Ray, s:Sprite, color:uint):void {
@@ -298,6 +313,10 @@ public class Eye extends Sprite {
             points: p.length,
             variance: Math.sqrt(sum2 / p.length - sum * sum / (p.length * p.length))
         };
+    }
+    
+    public function get origin():Point {
+        return _scaler.vertex2point(Vertex2D.ZERO);
     }
 }
 }

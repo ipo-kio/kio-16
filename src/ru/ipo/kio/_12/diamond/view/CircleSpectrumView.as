@@ -10,7 +10,6 @@ import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
-import flash.geom.Matrix;
 
 import ru.ipo.kio._12.diamond.model.Diamond;
 import ru.ipo.kio._12.diamond.model.Spectrum;
@@ -26,8 +25,6 @@ public class CircleSpectrumView extends Sprite {
     public static var TICK_IMAGE_L:DisplayObject = new TICK_IMAGE_CLASS;
     public static var TICK_IMAGE_R:DisplayObject = new TICK_IMAGE_CLASS;
     
-    private static const TICK_HEIGHT:int = TICK_IMAGE_L.height;
-
     private var _diamond:Diamond;
     private var _eye:Eye;
 
@@ -56,9 +53,6 @@ public class CircleSpectrumView extends Sprite {
         });
         
         //mouse move
-        addChild(TICK_IMAGE_L);
-        addChild(TICK_IMAGE_R);
-        update_tick();
         addEventListener(MouseEvent.MOUSE_DOWN, mouse_tick_select);
         addEventListener(MouseEvent.MOUSE_MOVE, mouse_tick_select);
     }
@@ -108,35 +102,7 @@ public class CircleSpectrumView extends Sprite {
         value = Math.max(value, 0);
         value = Math.min(value, Spectrum.TICKS_MAX);
         _position = value;
-        update_tick();
         dispatchEvent(POSITION_CHANGE_EVENT);
-    }
-
-    private function update_tick():void {
-        var a:Number = Eye.MIN_ANGLE + position * (Eye.MAX_ANGLE - Eye.MIN_ANGLE) / Spectrum.TICKS_MAX;
-        var sn:Number = - Math.sin(a);
-        var cs:Number = - Math.cos(a);
-        var r1:Number = RADIUS /*- TICK_IMAGE_L.height*/;
-        var r2:Number = RADIUS + 3 * COLOR_HEIGHT /*+ TICK_IMAGE_L.height*/;
-        
-        var m:Matrix = new Matrix();
-        m.translate(-TICK_IMAGE_L.width / 2, -TICK_IMAGE_L.height / 2);
-        m.rotate(a + Math.PI / 2);
-        m.translate(cs * r1, sn * r1);
-        TICK_IMAGE_L.transform.matrix = m;
-
-        m = new Matrix();
-        m.translate(-TICK_IMAGE_L.width / 2, -TICK_IMAGE_L.height / 2);
-        m.rotate(a - Math.PI / 2);
-        m.translate(cs * r2, sn * r2);
-        TICK_IMAGE_R.transform.matrix = m;
-
-        //TODO implement
-//        TICK_IMAGE_L.x = (_position + 1 / 2) * COLOR_WIDTH - TICK_IMAGE_L.width / 2;
-//        TICK_IMAGE_L.y = 0;
-//
-//        TICK_IMAGE_R.x = TICK_IMAGE_L.x;
-//        TICK_IMAGE_R.y = 2 * TICK_HEIGHT + COLOR_HEIGHT * Spectrum.COLORS_COUNT;
     }
 }
 }

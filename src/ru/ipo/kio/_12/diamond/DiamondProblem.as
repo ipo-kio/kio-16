@@ -114,8 +114,8 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
         if (level == 2) {
             var spectrumView:CircleSpectrumView = new CircleSpectrumView(diamond, eye);
-            spectrumView.x = 130;
-            spectrumView.y = 195;
+            spectrumView.x = eye.x + eye.origin.x;
+            spectrumView.y = eye.y + eye.origin.y;
             addChild(spectrumView);
 
             //current ray info
