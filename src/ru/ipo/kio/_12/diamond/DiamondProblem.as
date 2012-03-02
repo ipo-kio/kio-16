@@ -10,7 +10,6 @@ import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
-import flash.geom.Matrix;
 
 import ru.ipo.kio._12.diamond.model.Diamond;
 import ru.ipo.kio._12.diamond.model.Spectrum;
@@ -35,6 +34,9 @@ public class DiamondProblem extends Sprite implements KioProblem {
             unicodeRange = "U+0000-U+FFFF"
             )]
     private static var DIAMOND_FONT:Class;
+
+    [Embed(source='resources/face.png', mimeType='image/png')]
+    public static const FACE_IMAGE_CLASS:Class;
 
     [Embed(source="loc/Diamond.ru.json-settings",mimeType="application/octet-stream")]
     public static var DIAMOND_RU:Class;
@@ -96,7 +98,7 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
     private function init(e:Event = null):void {
         diamond = new Diamond(level);
-        diamond.addVertex(new Vertex2D(25, 10));
+        diamond.addVertex(new Vertex2D(35, 10));
         diamond.addVertex(new Vertex2D(35, -15));
         diamond.addVertex(new Vertex2D(45, 5));
         diamond.addVertex(new Vertex2D(55, -10));
@@ -108,9 +110,15 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
         eye = new Eye(diamond, _level);
 
-        eye.x = level == 2 ? 130 : 88;
+        eye.x = level == 2 ? 140 : 88;
         eye.y = 25;
+
         addChild(eye);
+
+        var face:DisplayObject = new FACE_IMAGE_CLASS;
+        face.x = 0;
+        face.y = 0;
+        addChild(face);
 
         if (level == 2) {
             var spectrumView:CircleSpectrumView = new CircleSpectrumView(diamond, eye);
@@ -121,11 +129,10 @@ public class DiamondProblem extends Sprite implements KioProblem {
             //current ray info
             current_ray_info = new InfoField(
                     'Информация о луче',
-                    ['Средняя яркость', 'Дисперсия цвета'],
-                    2
+                    ['Средняя яркость', 'Дисперсия цвета']
             );
             current_ray_info.x = 58;
-            current_ray_info.y = 524;
+            current_ray_info.y = 504;
             addChild(current_ray_info);
 
             eye.addEventListener(Eye.ANGLE_CHANGED, ray_moved);
@@ -135,45 +142,41 @@ public class DiamondProblem extends Sprite implements KioProblem {
             //current info
             current_info = new InfoField(
                     'Текущий результат',
-                    ['Усредненная яркость', 'Средняя дисперсия'],
-                    2
+                    ['Усредненная яркость', 'Средняя дисперсия']
             );
             current_info.x = 294;
-            current_info.y = 524;
+            current_info.y = 504;
             addChild(current_info);
 
 
             //record info
             record_info = new InfoField(
                     'Рекорд',
-                    ['Усредненная яркость', 'Средняя дисперсия'],
-                    2
+                    ['Усредненная яркость', 'Средняя дисперсия']
             );
             record_info.x = 529;
-            record_info.y = 524;
+            record_info.y = 504;
             addChild(record_info);
 
             diamond.addEventListener(Diamond.UPDATE, update_current_info_2);
-            update_current_info_2();
+            update_current_info_2(null, true);
         } else {
             current_info = new InfoField(
                     'Текущий результат',
-                    ['Количество точек', 'Равномерность точек'],
-                    2
+                    ['Количество точек', 'Равномерность точек']
             );
 
             current_info.x = 66;
-            current_info.y = 520;
+            current_info.y = 500;
             addChild(current_info);
 
             //record info
             record_info = new InfoField(
                     'Рекорд',
-                    ['Количество точек', 'Равномерность точек'],
-                    2
+                    ['Количество точек', 'Равномерность точек']
             );
             record_info.x = 460;
-            record_info.y = 520;
+            record_info.y = 500;
             addChild(record_info);
 
             diamond.addEventListener(Diamond.UPDATE, update_current_info_1);
@@ -187,7 +190,7 @@ public class DiamondProblem extends Sprite implements KioProblem {
                 new BT_1().bitmapData,
                 new BT_2().bitmapData,
                 'KioTahoma',
-                14, 14, 2, 2, 0, -3
+                12, 12, 2, 2, 0, -3
         );
         remove_extra_button.x = 570;
         remove_extra_button.y = 425;
@@ -209,19 +212,21 @@ public class DiamondProblem extends Sprite implements KioProblem {
             record_info.set_values([_record_points, _record_var]);
             if (! no_autosave)
                 api.saveBestSolution();
-            RecordBlinkEffect.blink(this, record_info.x - 2, record_info.y - 2, record_info.width + 4, record_info.height + 4);
+            RecordBlinkEffect.blink(this, record_info.x - 2, record_info.y - 2 + 30, record_info.width + 4, record_info.height + 4 - 30);
         }
     }
 
-    private function update_current_info_2(event:Event = null):void {
+    private function update_current_info_2(event:Event = null, no_autosave:Boolean = false):void {
         current_info.set_values([diamond.spectrum.mean_light, diamond.spectrum.mean_disp]);
-        api.autoSaveSolution();
+        if (! no_autosave)
+            api.autoSaveSolution();
         
         if (diamond.spectrum.mean_light > _record_light) {
              _record_light = diamond.spectrum.mean_light;
             record_info.set_values([diamond.spectrum.mean_light, diamond.spectrum.mean_disp]);
-            api.saveBestSolution();
-            RecordBlinkEffect.blink(this, record_info.x - 2, record_info.y - 2, record_info.width + 4, record_info.height + 4);
+            if (! no_autosave)
+                api.saveBestSolution();
+            RecordBlinkEffect.blink(this, record_info.x - 2, record_info.y - 2 + 30, record_info.width + 4, record_info.height + 4 - 30);
         }
     }
 

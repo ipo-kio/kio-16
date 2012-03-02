@@ -7,11 +7,9 @@
  */
 package ru.ipo.kio._12.diamond.view {
 import flash.display.BlendMode;
+import flash.display.DisplayObject;
 import flash.display.Sprite;
-import flash.events.MouseEvent;
 import flash.geom.Point;
-import flash.text.TextField;
-import flash.text.TextFieldAutoSize;
 
 import ru.ipo.kio._12.diamond.GeometryUtils;
 import ru.ipo.kio._12.diamond.Vertex2D;
@@ -20,6 +18,9 @@ import ru.ipo.kio._12.diamond.model.Spectrum;
 
 public class VisibleRay extends Sprite {
     private var _outer_intersection:Vertex2D = null;
+
+//    [Embed(source='../resources/face-mask.png')]
+//    private static const FACE_MASK_CLASS:Class;
     
     private static function visible_energy(energy:Number):Number {
 //        return Math.pow(energy, 1/3);
@@ -65,40 +66,12 @@ public class VisibleRay extends Sprite {
         if (number == 0)
             return;
 
-        var text_pos:Point = scaler.vertex2point(ray.r0.plus(r2).mul(0.5));
-        var ray_p_from:Point = scaler.vertex2point(ray.r0);
-        var ray_p_to:Point = scaler.vertex2point(r2);
-        var ray_p_vec:Point = new Point(ray_p_to.x - ray_p_from.x, ray_p_to.y - ray_p_from.y);
-
-        var info_text:TextField = new TextField();
-        info_text.text = number + '%';
-        info_text.textColor = 0xFFFFFF;//color;
-        info_text.autoSize = TextFieldAutoSize.CENTER;
-//        info_text.
-//        var tr:Matrix = new Matrix();
-//        tr.translate(text_pos.x, text_pos.y);
-//        tr.rotate(Math.PI);
-//        tr.rotate(ray.r1.minus(ray.r0).angle);
-
-//        info_text.transform.matrix = tr;
-
-        var l:Number = Math.sqrt(ray_p_vec.x * ray_p_vec.x + ray_p_vec.y * ray_p_vec.y);
-
-        info_text.x = text_pos.x - info_text.textWidth / 2 + 10 * ray_p_vec.y / l;
-        info_text.y = text_pos.y - info_text.textHeight / 2 - 10 * ray_p_vec.x / l;
-
-        info_text.visible = false;
-        info_text.mouseEnabled = false;
-
-        addChild(info_text);
-
-        addEventListener(MouseEvent.ROLL_OVER, function (event:MouseEvent):void {
-            //info_text.visible = true;
-        });
-
-        addEventListener(MouseEvent.ROLL_OUT, function (event:MouseEvent):void {
-            info_text.visible = false;
-        });
+        //add mask
+        /*if (ray.is_internal && ray.r0.length != 0) {
+            var fm:DisplayObject = new FACE_MASK_CLASS;
+            fm.blendMode = BlendMode.MULTIPLY;
+            addChild(fm);
+        }*/
     }
 
     public function get outer_intersection():Vertex2D {
