@@ -30,7 +30,7 @@ public class Eye extends Sprite {
     private static const canon_x0:int = 149;
     private static const canon_y0:int = 147;
 
-    private static const img_x0:int = 63;
+    private static const img_x0:int = 90;
     private static const img_y0:int = 55;
 
     //                |----------------|
@@ -263,10 +263,6 @@ public class Eye extends Sprite {
             if (rr != null)
                 add_all_rays(rr, s, color);
         }
-    }
-    
-    public function get spectrum():Spectrum {
-        return new Spectrum(diamond, MIN_ANGLE, MAX_ANGLE);
     }
 
     public function evaluate_outer_intersections():Object {

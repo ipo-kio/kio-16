@@ -6,18 +6,15 @@
  * To change this template use File | Settings | File Templates.
  */
 package ru.ipo.kio._12.diamond {
+import flash.display.DisplayObject;
+import flash.display.Sprite;
+import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Matrix;
 
+import ru.ipo.kio._12.diamond.model.Diamond;
 import ru.ipo.kio._12.diamond.model.Spectrum;
 import ru.ipo.kio._12.diamond.view.*;
-
-import flash.display.DisplayObject;
-
-import flash.display.Sprite;
-import flash.events.Event;
-
-import ru.ipo.kio._12.diamond.model.Diamond;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.Settings;
@@ -116,13 +113,9 @@ public class DiamondProblem extends Sprite implements KioProblem {
         addChild(eye);
 
         if (level == 2) {
-            var spectrumView:SpectrumView = new SpectrumView(diamond, eye);
-            var m:Matrix = new Matrix();
-            m.rotate(- Math.PI / 2);
-            m.translate(20, 310);
-            spectrumView.transform.matrix = m;
-//            spectrumView.x = 30;
-//            spectrumView.y = 350;
+            var spectrumView:CircleSpectrumView = new CircleSpectrumView(diamond, eye);
+            spectrumView.x = 130;
+            spectrumView.y = 195;
             addChild(spectrumView);
 
             //current ray info
