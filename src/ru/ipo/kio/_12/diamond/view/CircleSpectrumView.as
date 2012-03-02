@@ -46,7 +46,7 @@ public class CircleSpectrumView extends Sprite {
         });
         
         //rotate
-        TICK_IMAGE_R.transform.matrix = new Matrix(1, 0, 0, -1, 0, 0);
+//        TICK_IMAGE_R.transform.matrix = new Matrix(1, 0, 0, -1, 0, 0);
         
         //update
 
@@ -68,11 +68,10 @@ public class CircleSpectrumView extends Sprite {
     }
 
     private function mouse_tick_select(event:MouseEvent):void {
-        //TODO implement
         if (!event.buttonDown)
             return;
         
-        var angle:Number = Math.atan2(event.localY, event.localX);
+        var angle:Number = Math.atan2(-event.localY, -event.localX);
         if (angle < Eye.MIN_ANGLE || angle > Eye.MAX_ANGLE)
             return;
 
@@ -114,12 +113,30 @@ public class CircleSpectrumView extends Sprite {
     }
 
     private function update_tick():void {
-        //TODO implement
-        TICK_IMAGE_L.x = (_position + 1 / 2) * COLOR_WIDTH - TICK_IMAGE_L.width / 2;
-        TICK_IMAGE_L.y = 0;
+        var a:Number = Eye.MIN_ANGLE + position * (Eye.MAX_ANGLE - Eye.MIN_ANGLE) / Spectrum.TICKS_MAX;
+        var sn:Number = - Math.sin(a);
+        var cs:Number = - Math.cos(a);
+        var r1:Number = RADIUS /*- TICK_IMAGE_L.height*/;
+        var r2:Number = RADIUS + 3 * COLOR_HEIGHT /*+ TICK_IMAGE_L.height*/;
+        
+        var m:Matrix = new Matrix();
+        m.translate(-TICK_IMAGE_L.width / 2, -TICK_IMAGE_L.height / 2);
+        m.rotate(a + Math.PI / 2);
+        m.translate(cs * r1, sn * r1);
+        TICK_IMAGE_L.transform.matrix = m;
 
-        TICK_IMAGE_R.x = TICK_IMAGE_L.x;
-        TICK_IMAGE_R.y = 2 * TICK_HEIGHT + COLOR_HEIGHT * Spectrum.COLORS_COUNT;
+        m = new Matrix();
+        m.translate(-TICK_IMAGE_L.width / 2, -TICK_IMAGE_L.height / 2);
+        m.rotate(a - Math.PI / 2);
+        m.translate(cs * r2, sn * r2);
+        TICK_IMAGE_R.transform.matrix = m;
+
+        //TODO implement
+//        TICK_IMAGE_L.x = (_position + 1 / 2) * COLOR_WIDTH - TICK_IMAGE_L.width / 2;
+//        TICK_IMAGE_L.y = 0;
+//
+//        TICK_IMAGE_R.x = TICK_IMAGE_L.x;
+//        TICK_IMAGE_R.y = 2 * TICK_HEIGHT + COLOR_HEIGHT * Spectrum.COLORS_COUNT;
     }
 }
 }
