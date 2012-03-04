@@ -260,7 +260,9 @@ public class TrafficNetwork extends VisibleEntity {
                 }
                 if(train.tick==0 && train1.tick==0
                    && train.getPreRail()!=null
-                   && train1.getPreRail()!=null){
+                   && train1.getPreRail()!=null
+                   && !train.ignoreCrossCrash
+                   && !train1.ignoreCrossCrash){
 
                     var c1:RailConnector = train.rail.getConnector(train.getPreRail());
                     var c2:RailConnector = train1.rail.getConnector(train1.getPreRail());
@@ -412,6 +414,11 @@ public class TrafficNetwork extends VisibleEntity {
         
         for (var i:int = 0; i < trains.length; i++) {
             var train:Train = trains[i];
+            
+            if(train.isFinish()){
+                train.ignoreCrossCrash=true;
+            }
+            
             train.action();
 
             if(!train.isFinish()){

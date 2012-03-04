@@ -101,7 +101,8 @@ public class TrainSprite extends Sprite {
         tfAnimation.y = 165-28;
         addChild(tfAnimation);
 
-        if(level==2){
+        if(level==2)
+       {
             tfAnimation.y += 20;
         }
 
@@ -129,7 +130,7 @@ public class TrainSprite extends Sprite {
             TrafficNetwork.instance.removeLastFromActive();
         });
 
-        if(level!=2)
+       if(level!=2)
         {
         createButton(loc.buttons.play, 15, 165, function (event:MouseEvent) {
             TrafficNetwork.instance.play();

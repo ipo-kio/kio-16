@@ -43,6 +43,8 @@ public class Train extends VisibleEntity {
 
     private var state:int = 0;
 
+    private var _ignoreCrossCrash:Boolean = false;
+
 
     public function Train(destination:StationType) {
         _destination = destination;
@@ -145,6 +147,7 @@ public class Train extends VisibleEntity {
         _pathTime = 0;
         state = 0;
         _toPasTime = 0;
+        ignoreCrossCrash=false;
         passengers = new Vector.<Passenger>();
     }
 
@@ -217,6 +220,14 @@ public class Train extends VisibleEntity {
 
     public function set toPasTime(value:int):void {
         _toPasTime = value;
+    }
+
+    public function get ignoreCrossCrash():Boolean {
+        return _ignoreCrossCrash;
+    }
+
+    public function set ignoreCrossCrash(value:Boolean):void {
+        _ignoreCrossCrash = value;
     }
 }
 }
