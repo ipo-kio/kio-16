@@ -21,6 +21,7 @@ import ru.ipo.kio._12.train.view.CrossConnectorView;
 import ru.ipo.kio._12.train.view.RailView;
 
 import ru.ipo.kio._12.train.view.TrafficNetworkView;
+import ru.ipo.kio._12.train.view.TrainStationView;
 import ru.ipo.kio._12.train.view.TrainView;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.controls.RecordBlinkEffect;
@@ -235,20 +236,20 @@ public class TrafficNetwork extends VisibleEntity {
         _connectorViews = value;
     }
 
-    public function calcConnectors():void {
-        for(var i:int = 0; i<trains.length; i++){
-            var tempTrain:Train = trains[i];
-            var tick:int = 0;
-
-            for(var j:int=0; j<tempTrain.route.rails.length-1; j++){
-                var rail:Rail = tempTrain.route.rails[j];
-                var railNext:Rail = tempTrain.route.rails[j+1];
-                var connector:RailConnector = rail.getConnector(railNext);
-                (CrossConnectorView(connector.view)).connectorInPath.push(new ConnectorInPath(connector.type, i, tick, tempTrain.color, activeTrain==tempTrain));
-                tick+=rail.type.length;
-            }
-        }
-    }
+//    public function calcConnectors():void {
+//        for(var i:int = 0; i<trains.length; i++){
+//            var tempTrain:Train = trains[i];
+//            var tick:int = 0;
+//
+//            for(var j:int=0; j<tempTrain.route.rails.length-1; j++){
+//                var rail:Rail = tempTrain.route.rails[j];
+//                var railNext:Rail = tempTrain.route.rails[j+1];
+//                var connector:RailConnector = rail.getConnector(railNext);
+//                (CrossConnectorView(connector.view)).connectorInPath.push(new ConnectorInPath(connector.type, i, tick, tempTrain.color, activeTrain==tempTrain));
+//                tick+=rail.type.length;
+//            }
+//        }
+//    }
 
     private function checkError():void {
         for(var i:int = 0; i<trains.length; i++){
@@ -372,7 +373,7 @@ public class TrafficNetwork extends VisibleEntity {
     private var _inner:int = 0;
 
     public function innerTick():void{
-//        if(additionTick != 2 ){
+//        if(additionTick != 5 ){
 //            additionTick++;
 //            return;
 //        }
@@ -381,8 +382,18 @@ public class TrafficNetwork extends VisibleEntity {
 
         if(_inner == (8*4-1) ){
             _inner = 0;
+            viewUpdateLock=true;
             doAction();
-            view.update();
+            viewUpdateLock=false;
+            for(var i:int = 0; i<rails.length; i++){
+                if(rails[i].view is TrainStationView){
+                    (TrainStationView(rails[i].view)).updateStationPassengers(railLength, railSpace);
+                }
+            }
+            for(var i:int = 0; i<trains.length; i++){
+                trains[i].view.update();
+            }
+            //view.update();
         }else{
             _inner++;
             for(var i:int = 0; i<trains.length; i++){

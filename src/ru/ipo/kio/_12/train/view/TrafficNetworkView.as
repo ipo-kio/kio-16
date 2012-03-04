@@ -32,11 +32,11 @@ public class TrafficNetworkView extends BasicView {
         }
 
         //обновляем пересечения
-        for(var i:int = 0; i<_trafficNetwork.connectorViews.length; i++){
-            (CrossConnectorView (_trafficNetwork.connectorViews[i])).connectorInPath = new Vector.<ConnectorInPath>();
-        }
+//        for(var i:int = 0; i<_trafficNetwork.connectorViews.length; i++){
+//            (CrossConnectorView (_trafficNetwork.connectorViews[i])).connectorInPath = new Vector.<ConnectorInPath>();
+//        }
 
-        _trafficNetwork.calcConnectors();
+//        _trafficNetwork.calcConnectors();
 
         for(var i:int = 0; i<_trafficNetwork.connectorViews.length; i++){
             _trafficNetwork.connectorViews[i].update();

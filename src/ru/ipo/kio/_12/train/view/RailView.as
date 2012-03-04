@@ -651,7 +651,7 @@ public class RailView extends BasicView {
     }
 
 
-    protected function updatePassengers(passengers:Vector.<Passenger>, length:int, space:int):void {
+    public function updatePassengers(passengers:Vector.<Passenger>, length:int, space:int):void {
         for (var i:int = 0; i < passengers.length; i++) {
             if (_rail.trafficNetwork.view.contains(passengers[i].view)) {
                 _rail.trafficNetwork.view.removeChild(passengers[i].view);

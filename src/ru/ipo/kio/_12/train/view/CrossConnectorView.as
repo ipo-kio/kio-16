@@ -41,7 +41,7 @@ public class CrossConnectorView extends BasicView {
 
     private var _connectors:Vector.<RailConnector> = new Vector.<RailConnector>();
 
-    private var _connectorInPath:Vector.<ConnectorInPath> = new Vector.<ConnectorInPath>();
+//    private var _connectorInPath:Vector.<ConnectorInPath> = new Vector.<ConnectorInPath>();
 
     private var holst:Sprite = new Sprite();
 
@@ -113,18 +113,18 @@ public class CrossConnectorView extends BasicView {
 
          }
 
-         _connectorInPath.sort(function compare(x:ConnectorInPath, y:ConnectorInPath):Number {
-             return x.time-y.time;
-         });
+//         _connectorInPath.sort(function compare(x:ConnectorInPath, y:ConnectorInPath):Number {
+//             return x.time-y.time;
+//         });
          
-         for(var i:int = 0; i<_connectorInPath.length; i++){
-             var connectorInPath:ConnectorInPath = _connectorInPath[i];
-             var index:int = connectorInPath.index;
-             var alpha:Number = 1;
-             var active:Boolean = connectorInPath.active;
-             var color:int =active?0xffffff:connectorInPath.color;
-             var shiftX=12;
-             var shiftY=12;
+//         for(var i:int = 0; i<_connectorInPath.length; i++){
+//             var connectorInPath:ConnectorInPath = _connectorInPath[i];
+//             var index:int = connectorInPath.index;
+//             var alpha:Number = 1;
+//             var active:Boolean = connectorInPath.active;
+//             var color:int =active?0xffffff:connectorInPath.color;
+//             var shiftX=12;
+//             var shiftY=12;
 //             if(connectorInPath.type==RailConnectorType.HORIZONTAL){
 //                 holst.graphics.lineStyle(2,0x000000,0.5);
 //                 holst.graphics.moveTo(0,5+index*4+shiftY);
@@ -143,7 +143,7 @@ public class CrossConnectorView extends BasicView {
 //                 holst.graphics.moveTo(3+index*4+shiftX,0);
 //                 holst.graphics.lineTo(3+index*4+shiftX,height);
 //             }
-         }
+//         }
          
      }
 
@@ -155,13 +155,13 @@ public class CrossConnectorView extends BasicView {
         _connectors = value;
     }
 
-    public function get connectorInPath():Vector.<ConnectorInPath> {
-        return _connectorInPath;
-    }
-
-    public function set connectorInPath(value:Vector.<ConnectorInPath>):void {
-        _connectorInPath = value;
-    }
+//    public function get connectorInPath():Vector.<ConnectorInPath> {
+//        return _connectorInPath;
+//    }
+//
+//    public function set connectorInPath(value:Vector.<ConnectorInPath>):void {
+//        _connectorInPath = value;
+//    }
 
     public function get type():ArrowStateType {
         return _type;
