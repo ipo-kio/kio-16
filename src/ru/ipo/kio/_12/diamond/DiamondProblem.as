@@ -6,18 +6,14 @@
  * To change this template use File | Settings | File Templates.
  */
 package ru.ipo.kio._12.diamond {
-import flash.events.MouseEvent;
-import flash.geom.Matrix;
-
-import ru.ipo.kio._12.diamond.model.Spectrum;
-import ru.ipo.kio._12.diamond.view.*;
-
 import flash.display.DisplayObject;
-
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.MouseEvent;
 
 import ru.ipo.kio._12.diamond.model.Diamond;
+import ru.ipo.kio._12.diamond.model.Spectrum;
+import ru.ipo.kio._12.diamond.view.*;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.Settings;
@@ -99,7 +95,7 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
     private function init(e:Event = null):void {
         diamond = new Diamond(level);
-        diamond.addVertex(new Vertex2D(25, 10));
+        diamond.addVertex(new Vertex2D(35, 10));
         diamond.addVertex(new Vertex2D(35, -15));
         diamond.addVertex(new Vertex2D(45, 5));
         diamond.addVertex(new Vertex2D(55, -10));
@@ -111,28 +107,24 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
         eye = new Eye(diamond, _level);
 
-        eye.x = level == 2 ? 130 : 88;
+        eye.x = level == 2 ? 140 : 88;
         eye.y = 25;
+
         addChild(eye);
 
         if (level == 2) {
-            var spectrumView:SpectrumView = new SpectrumView(diamond, eye);
-            var m:Matrix = new Matrix();
-            m.rotate(- Math.PI / 2);
-            m.translate(20, 310);
-            spectrumView.transform.matrix = m;
-//            spectrumView.x = 30;
-//            spectrumView.y = 350;
+            var spectrumView:CircleSpectrumView = new CircleSpectrumView(diamond, eye);
+            spectrumView.x = eye.x + eye.origin.x;
+            spectrumView.y = eye.y + eye.origin.y;
             addChild(spectrumView);
 
             //current ray info
             current_ray_info = new InfoField(
                     'Информация о луче',
-                    ['Средняя яркость', 'Дисперсия цвета'],
-                    2
+                    ['Средняя яркость', 'Дисперсия цвета']
             );
             current_ray_info.x = 58;
-            current_ray_info.y = 524;
+            current_ray_info.y = 504;
             addChild(current_ray_info);
 
             eye.addEventListener(Eye.ANGLE_CHANGED, ray_moved);
@@ -142,45 +134,41 @@ public class DiamondProblem extends Sprite implements KioProblem {
             //current info
             current_info = new InfoField(
                     'Текущий результат',
-                    ['Усредненная яркость', 'Средняя дисперсия'],
-                    2
+                    ['Усредненная яркость', 'Средняя дисперсия']
             );
             current_info.x = 294;
-            current_info.y = 524;
+            current_info.y = 504;
             addChild(current_info);
 
 
             //record info
             record_info = new InfoField(
                     'Рекорд',
-                    ['Усредненная яркость', 'Средняя дисперсия'],
-                    2
+                    ['Усредненная яркость', 'Средняя дисперсия']
             );
             record_info.x = 529;
-            record_info.y = 524;
+            record_info.y = 504;
             addChild(record_info);
 
             diamond.addEventListener(Diamond.UPDATE, update_current_info_2);
-            update_current_info_2();
+            update_current_info_2(null, true);
         } else {
             current_info = new InfoField(
                     'Текущий результат',
-                    ['Количество точек', 'Равномерность точек'],
-                    2
+                    ['Количество точек', 'Равномерность точек']
             );
 
             current_info.x = 66;
-            current_info.y = 520;
+            current_info.y = 500;
             addChild(current_info);
 
             //record info
             record_info = new InfoField(
                     'Рекорд',
-                    ['Количество точек', 'Равномерность точек'],
-                    2
+                    ['Количество точек', 'Равномерность точек']
             );
             record_info.x = 460;
-            record_info.y = 520;
+            record_info.y = 500;
             addChild(record_info);
 
             diamond.addEventListener(Diamond.UPDATE, update_current_info_1);
@@ -194,7 +182,7 @@ public class DiamondProblem extends Sprite implements KioProblem {
                 new BT_1().bitmapData,
                 new BT_2().bitmapData,
                 'KioTahoma',
-                14, 14, 2, 2, 0, -3
+                12, 12, 2, 2, 0, -3
         );
         remove_extra_button.x = 570;
         remove_extra_button.y = 425;
@@ -216,19 +204,21 @@ public class DiamondProblem extends Sprite implements KioProblem {
             record_info.set_values([_record_points, _record_var]);
             if (! no_autosave)
                 api.saveBestSolution();
-            RecordBlinkEffect.blink(this, record_info.x - 2, record_info.y - 2, record_info.width + 4, record_info.height + 4);
+            RecordBlinkEffect.blink(this, record_info.x - 2, record_info.y - 2 + 30, record_info.width + 4, record_info.height + 4 - 30);
         }
     }
 
-    private function update_current_info_2(event:Event = null):void {
+    private function update_current_info_2(event:Event = null, no_autosave:Boolean = false):void {
         current_info.set_values([diamond.spectrum.mean_light, diamond.spectrum.mean_disp]);
-        api.autoSaveSolution();
+        if (! no_autosave)
+            api.autoSaveSolution();
         
         if (diamond.spectrum.mean_light > _record_light) {
              _record_light = diamond.spectrum.mean_light;
             record_info.set_values([diamond.spectrum.mean_light, diamond.spectrum.mean_disp]);
-            api.saveBestSolution();
-            RecordBlinkEffect.blink(this, record_info.x - 2, record_info.y - 2, record_info.width + 4, record_info.height + 4);
+            if (! no_autosave)
+                api.saveBestSolution();
+            RecordBlinkEffect.blink(this, record_info.x - 2, record_info.y - 2 + 30, record_info.width + 4, record_info.height + 4 - 30);
         }
     }
 
