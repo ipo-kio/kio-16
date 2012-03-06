@@ -35,9 +35,6 @@ public class DiamondProblem extends Sprite implements KioProblem {
             )]
     private static var DIAMOND_FONT:Class;
 
-    [Embed(source='resources/face.png', mimeType='image/png')]
-    public static const FACE_IMAGE_CLASS:Class;
-
     [Embed(source="loc/Diamond.ru.json-settings",mimeType="application/octet-stream")]
     public static var DIAMOND_RU:Class;
 
@@ -114,11 +111,6 @@ public class DiamondProblem extends Sprite implements KioProblem {
         eye.y = 25;
 
         addChild(eye);
-
-        var face:DisplayObject = new FACE_IMAGE_CLASS;
-        face.x = 0;
-        face.y = 0;
-        addChild(face);
 
         if (level == 2) {
             var spectrumView:CircleSpectrumView = new CircleSpectrumView(diamond, eye);

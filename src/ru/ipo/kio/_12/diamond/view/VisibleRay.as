@@ -7,7 +7,6 @@
  */
 package ru.ipo.kio._12.diamond.view {
 import flash.display.BlendMode;
-import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.geom.Point;
 
@@ -19,9 +18,6 @@ import ru.ipo.kio._12.diamond.model.Spectrum;
 public class VisibleRay extends Sprite {
     private var _outer_intersection:Vertex2D = null;
 
-//    [Embed(source='../resources/face-mask.png')]
-//    private static const FACE_MASK_CLASS:Class;
-    
     private static function visible_energy(energy:Number):Number {
 //        return Math.pow(energy, 1/3);
         return Math.pow((0.1 + energy) / 1.1, 1/2);
@@ -60,18 +56,6 @@ public class VisibleRay extends Sprite {
         graphics.lineStyle(3, color);
         graphics.moveTo(p1.x, p1.y);
         graphics.lineTo(p2.x, p2.y);
-
-        //add text
-        var number:Number = Math.round((level == 1 ? ray.percent : ray.energy) * 100);
-        if (number == 0)
-            return;
-
-        //add mask
-        /*if (ray.is_internal && ray.r0.length != 0) {
-            var fm:DisplayObject = new FACE_MASK_CLASS;
-            fm.blendMode = BlendMode.MULTIPLY;
-            addChild(fm);
-        }*/
     }
 
     public function get outer_intersection():Vertex2D {
