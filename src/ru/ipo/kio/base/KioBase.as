@@ -118,7 +118,7 @@ public class KioBase {
         //some unnecessary checks
         if (!data.kio_base)
             return;
-        if (!data.kio_base.level)
+        if (!data.kio_base.level && data.kio_base.level !== 0)
             return;
         if (data.kio_base.level != _level)
             return;
