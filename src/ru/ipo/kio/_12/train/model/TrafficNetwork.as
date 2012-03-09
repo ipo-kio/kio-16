@@ -410,6 +410,7 @@ public class TrafficNetwork extends VisibleEntity {
         }
 
         moveToStep();
+        view.update();
         _inner=0;
         additionTick=0;
         _regime = RegimeType.PLAY;
@@ -604,12 +605,12 @@ public class TrafficNetwork extends VisibleEntity {
             tempTrain.reset();
         }
         
-        for(var i:int = 0; i<rails.length; i++){
-            rails[i].restorePassengers();
-            if(rails[i] instanceof TrainStation){
-                ( TrainStation (rails[i])).reset();
-            }
-        }
+//        for(var i:int = 0; i<rails.length; i++){
+//            rails[i].restorePassengers();
+//            if(rails[i] instanceof TrainStation){
+//                ( TrainStation (rails[i])).reset();
+//            }
+//        }
         
         if(level ==2){
             clearRoutes();
