@@ -207,8 +207,8 @@ public class StagelightsProblem implements KioProblem {
 			}
 			trace("LOAD");
 			sp.refreshResult();
-			sp.max0.text = "Лучший результат для I фокуса: исчезновение на " + sp.firstMax + "%";
-			sp.max1.text = "Лучший результат для II фокуса: исчезновение на " + sp.secondMax + "%";
+			sp.max0.text = "Лучший результат для I фокуса: исчезновение на " + sp.round(sp.firstMax) + "%";
+			sp.max1.text = "Лучший результат для II фокуса: исчезновение на " + sp.round(sp.secondMax) + "%";
 			sp.flag = false;
             return true;
         } else
