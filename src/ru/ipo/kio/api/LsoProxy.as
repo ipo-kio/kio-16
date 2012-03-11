@@ -194,9 +194,18 @@ public class LsoProxy {
         user_index = value;
     }
 
-    public function getUserInfo(ind:int, showInstitution:Boolean):String {
+    public function getUserInfo(ind:int, showInstitution:Boolean, shorten_names:Boolean = false):String {
         var anketa:Object = _data.users[ind].kio_base.anketa;
-        var result:String = anketa.surname + ' ' + anketa.name + ' ' + anketa.second_name;
+        
+        var name:String = anketa.name;
+        var s_name:String = anketa.second_name;
+        
+        if (shorten_names) {
+            name = name.charAt().toUpperCase() + '.';
+            s_name = s_name.charAt().toUpperCase() + '.';
+        }
+
+        var result:String = anketa.surname + ' ' + name + ' ' + s_name;
         if (showInstitution)
             result += ' ' + anketa.inst_name + ' ' + anketa.grade;
         return  result;

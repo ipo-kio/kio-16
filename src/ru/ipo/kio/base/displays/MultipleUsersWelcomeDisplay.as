@@ -19,6 +19,8 @@ import ru.ipo.kio.base.GlobalMetrics;
 import ru.ipo.kio.base.KioBase;
 
 public class MultipleUsersWelcomeDisplay extends Sprite {
+    
+    private static const COLUMN_SIZE:int = 8;
 
     //TODO if there are too many participants, the contents doesn't fit the screen
     public function MultipleUsersWelcomeDisplay() {
@@ -49,29 +51,53 @@ public class MultipleUsersWelcomeDisplay extends Sprite {
         //all participants list
 
         var userCount:int = KioBase.instance.lsoProxy.userCount();
+
         var y0:int = chooseMessage.y + chooseMessage.textHeight + 10;
-        for (var user:int = 0; user < userCount; user++) {
-            var go_user_button:SimpleButton = new ShellButton(loc.welcome.button_go, false);
-            go_user_button.x = GlobalMetrics.H_PADDING;
-            go_user_button.y = y0;
-            addChild(go_user_button);
-            go_user_button.addEventListener(MouseEvent.CLICK, function(user:int):Function {
-                return function(event:Event):void {
-                    KioBase.instance.lsoProxy.userIndex = user;
-                    KioBase.instance.currentDisplay = new ProblemsDisplay;
-                };
-            }(user));
 
-            var info:TextField = TextUtils.createCustomTextField(false);
-            info.width = GlobalMetrics.STAGE_WIDTH - 2 * GlobalMetrics.H_PADDING - 10 - go_user_button.width;
-            info.x = 10 + go_user_button.x + go_user_button.width;
-            info.y = y0;
+        if (userCount > COLUMN_SIZE) {
+            for (var user:int = 0; user < userCount; user++) {
+                var go_user_button:SimpleButton = new ShellButton(KioBase.instance.lsoProxy.getUserInfo(user,  false, true), true);
+                
+                var col:int = user / COLUMN_SIZE;
+                var line:int = user % COLUMN_SIZE;
 
-            info.htmlText = "<html><p>" + KioBase.instance.lsoProxy.getUserInfo(user, true) + "</p></html>";
+                go_user_button.x = GlobalMetrics.H_PADDING + col * (go_user_button.width + 7);
+                go_user_button.y = y0 + line * (go_user_button.height + 5);
+                addChild(go_user_button);
 
-            addChild(info);
+                go_user_button.addEventListener(MouseEvent.CLICK, function(user:int):Function { //TODO code duplication
+                    return function(event:Event):void {
+                        KioBase.instance.lsoProxy.userIndex = user;
+                        KioBase.instance.currentDisplay = new ProblemsDisplay;
+                    };
+                }(user));
+            }
+            
+            y0 += COLUMN_SIZE * (go_user_button.height + 5);
+        } else {
+            for (user = 0; user < userCount; user++) {
+                go_user_button = new ShellButton(loc.welcome.button_go, false);
+                go_user_button.x = GlobalMetrics.H_PADDING;
+                go_user_button.y = y0;
+                addChild(go_user_button);
+                go_user_button.addEventListener(MouseEvent.CLICK, function(user:int):Function { //TODO code duplication
+                    return function(event:Event):void {
+                        KioBase.instance.lsoProxy.userIndex = user;
+                        KioBase.instance.currentDisplay = new ProblemsDisplay;
+                    };
+                }(user));
 
-            y0 += go_user_button.height + 5;
+                var info:TextField = TextUtils.createCustomTextField(false);
+                info.width = GlobalMetrics.STAGE_WIDTH - 2 * GlobalMetrics.H_PADDING - 10 - go_user_button.width;
+                info.x = 10 + go_user_button.x + go_user_button.width;
+                info.y = y0;
+
+                info.htmlText = "<html><p>" + KioBase.instance.lsoProxy.getUserInfo(user, true) + "</p></html>";
+
+                addChild(info);
+
+                y0 += go_user_button.height + 5;
+            }
         }
 
         var continuationMessage:TextField = TextUtils.createCustomTextField();
@@ -106,12 +132,12 @@ public class MultipleUsersWelcomeDisplay extends Sprite {
         newParticipantButton.addEventListener(MouseEvent.CLICK, newParticipantButtonClicked);
     }
 
-    private function loadWorkspaceButtonClicked(event:Event):void {
+    private static function loadWorkspaceButtonClicked(event:Event):void {
         KioBase.instance.lsoProxy.createNewParticipant();
         FileUtils.loadAll();
     }
 
-    private function newParticipantButtonClicked(event:Event):void {
+    private static function newParticipantButtonClicked(event:Event):void {
         KioBase.instance.lsoProxy.createNewParticipant();
         KioBase.instance.currentDisplay = new AnketaDisplay(MultipleUsersWelcomeDisplay);
     }
