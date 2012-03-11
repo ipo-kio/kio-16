@@ -20,7 +20,7 @@ public class VisibleRay extends Sprite {
 
     private static function visible_energy(energy:Number):Number {
 //        return Math.pow(energy, 1/3);
-        return Math.pow((0.1 + energy) / 1.1, 1/2);
+        return Math.pow((0.01 + energy) / 1.01, 1/2);
     }
     
     public function VisibleRay(ray:Ray, scaler:Scaler, color:uint, x_min:Number, y_min:Number, x_max:Number, y_max:Number, level:int) {

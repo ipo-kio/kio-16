@@ -98,23 +98,22 @@ public class Ray {
     public function recurse_bild_rays(d:Array, eta:Number, level:int = 0):void {
         _energy = 0;
 
-        if (level > 20 || percent < 0.001)
-            return;
-
         if (d == null)
             return;
 
         reflect_refract(d, eta);
+
+        //обрубить насильно
+        if (level > 42 || percent < 0.00001) {
+            _reflect_refract_rays = [null, null];
+            return;
+        }
 
         var no_children:Boolean = true;
         for (var i:int = 0; i <= 1; i++) {
             var r:Ray = _reflect_refract_rays[i];
             if (r != null) {
                 r.recurse_bild_rays(d, eta, level + 1);
-                /*if (isNaN(r._energy)) {
-                    trace(42);
-                    r.recurse_bild_rays(d, eta, level + 1);
-                }*/
                 _energy += r.percent * r._energy;
                 no_children = false;
             }
@@ -122,9 +121,6 @@ public class Ray {
         
         if (no_children && !_is_internal) {
             _energy = base_energy;
-/*            if (isNaN(_energy)) {
-                trace(42);
-            }*/
         }
     }
 
