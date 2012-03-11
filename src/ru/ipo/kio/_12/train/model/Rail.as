@@ -172,6 +172,23 @@ public class Rail extends VisibleEntity {
         return null;
     }
 
+    public function getSConnector(rail:Rail):RailConnector{
+
+        for (var i:int = 0; i < secondEnd.connectors.length; i++) {
+            if(secondEnd.connectors[i].getAnotherRail(this)==rail){
+                return secondEnd.connectors[i];
+            }
+        }
+        for (var i:int = 0; i < firstEnd.connectors.length; i++) {
+            if(firstEnd.connectors[i].getAnotherRail(this)==rail){
+                return firstEnd.connectors[i];
+            }
+        }
+
+        return null;
+    }
+
+
 
     public function get id():int {
         return _id;

@@ -40,7 +40,7 @@ public class TrainView extends BasicView {
 
         if (TrafficNetwork.instance.level != 2)
             addEventListener(MouseEvent.CLICK, function (event:MouseEvent):void {
-
+//
 //                if (event.altKey) {
 //                    train.view.rotation += 15;
 //                    return;

@@ -265,8 +265,17 @@ public class TrafficNetwork extends VisibleEntity {
                    && !train.ignoreCrossCrash
                    && !train1.ignoreCrossCrash){
 
-                    var c1:RailConnector = train.rail.getConnector(train.getPreRail());
-                    var c2:RailConnector = train1.rail.getConnector(train1.getPreRail());
+                    if(train.isDirect()){
+                        var c1:RailConnector = train.rail.getConnector(train.getPreRail());
+                    }else{
+                        var c1:RailConnector = train.rail.getSConnector(train.getPreRail());
+                    }
+
+                    if(train1.isDirect()){
+                        var c2:RailConnector = train1.rail.getConnector(train1.getPreRail());
+                    }else{
+                        var c2:RailConnector = train1.rail.getSConnector(train1.getPreRail());
+                    }
                     
                     if(c1!=null && c2!=null && c1.view==c2.view)
                         fault = true;
@@ -410,6 +419,7 @@ public class TrafficNetwork extends VisibleEntity {
         }
 
         moveToStep();
+        view.update();
         _inner=0;
         additionTick=0;
         _regime = RegimeType.PLAY;
@@ -522,10 +532,17 @@ public class TrafficNetwork extends VisibleEntity {
         resetToEdit();
         moveToStep();
     }
+    
+    var stepLock:Boolean = false;
 
     public function step():void{
+        if(stepLock){
+            return;
+        }
+        stepLock=true;
         moveToStep();
         doAction();
+        stepLock=false;
     }
 
 
@@ -604,12 +621,12 @@ public class TrafficNetwork extends VisibleEntity {
             tempTrain.reset();
         }
         
-        for(var i:int = 0; i<rails.length; i++){
-            rails[i].restorePassengers();
-            if(rails[i] instanceof TrainStation){
-                ( TrainStation (rails[i])).reset();
-            }
-        }
+//        for(var i:int = 0; i<rails.length; i++){
+//            rails[i].restorePassengers();
+//            if(rails[i] instanceof TrainStation){
+//                ( TrainStation (rails[i])).reset();
+//            }
+//        }
         
         if(level ==2){
             clearRoutes();
