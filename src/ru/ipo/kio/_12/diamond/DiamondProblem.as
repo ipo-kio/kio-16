@@ -25,16 +25,6 @@ import ru.ipo.kio.api.controls.RecordBlinkEffect;
 
 public class DiamondProblem extends Sprite implements KioProblem {
 
-    [Embed(
-            source='resources/Hermes Normal.ttf',
-            embedAsCFF = "false",
-            fontWeight = "bold",
-            fontName="KioDiamond",
-            mimeType="application/x-font-truetype",
-            unicodeRange = "U+0000-U+FFFF"
-            )]
-    private static var DIAMOND_FONT:Class;
-
     [Embed(source="loc/Diamond.ru.json-settings",mimeType="application/octet-stream")]
     public static var DIAMOND_RU:Class;
 
@@ -111,6 +101,8 @@ public class DiamondProblem extends Sprite implements KioProblem {
         eye.y = 25;
 
         addChild(eye);
+        
+        var loc:Object = api.localization;
 
         if (level == 2) {
             var spectrumView:CircleSpectrumView = new CircleSpectrumView(diamond, eye);
@@ -120,8 +112,8 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
             //current ray info
             current_ray_info = new InfoField(
-                    'Информация о луче',
-                    ['Средняя яркость', 'Дисперсия цвета']
+                    loc.ray_info,
+                    [loc.mean_brightness, loc.color_variance]
             );
             current_ray_info.x = 58;
             current_ray_info.y = 504;
@@ -133,8 +125,8 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
             //current info
             current_info = new InfoField(
-                    'Текущий результат',
-                    ['Усредненная яркость', 'Средняя дисперсия']
+                    loc.current_result,
+                    [loc.global_mean_brightness, loc.mean_variance]
             );
             current_info.x = 294;
             current_info.y = 504;
@@ -143,8 +135,8 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
             //record info
             record_info = new InfoField(
-                    'Рекорд',
-                    ['Усредненная яркость', 'Средняя дисперсия']
+                    loc.record,
+                    [loc.global_mean_brightness, loc.mean_variance]
             );
             record_info.x = 529;
             record_info.y = 504;
@@ -154,8 +146,8 @@ public class DiamondProblem extends Sprite implements KioProblem {
             update_current_info_2(null, true);
         } else {
             current_info = new InfoField(
-                    'Текущий результат',
-                    ['Количество точек', 'Равномерность точек']
+                    loc.current_result,
+                    [loc.points_count, loc.points_uniformity]
             );
 
             current_info.x = 66;
@@ -164,8 +156,8 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
             //record info
             record_info = new InfoField(
-                    'Рекорд',
-                    ['Количество точек', 'Равномерность точек']
+                    loc.record,
+                    [loc.points_count, loc.points_uniformity]
             );
             record_info.x = 460;
             record_info.y = 500;
@@ -177,7 +169,7 @@ public class DiamondProblem extends Sprite implements KioProblem {
         }
 
         var remove_extra_button:GraphicsButton = new GraphicsButton(
-                'Удалить лишние точки',
+                loc.button_remove_extra_points,
                 new BT_0().bitmapData,
                 new BT_1().bitmapData,
                 new BT_2().bitmapData,
