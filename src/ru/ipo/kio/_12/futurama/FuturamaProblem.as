@@ -32,11 +32,12 @@ public class FuturamaProblem implements KioProblem {
     public function FuturamaProblem(level:int) {
         _level = level;
         _n = _level == 2 ? 9 : 8;
-        _display = new FuturamaField(_n, level);
 
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(FUTURAMA_RU).data);
         
         KioApi.initialize(this);
+
+        _display = new FuturamaField(_n, level);
     }
 
     public function get n():int {
