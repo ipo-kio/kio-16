@@ -104,7 +104,7 @@ public class TrainStationView extends RailView {
      }
 
 
-    protected function updateStationPassengers(length:int, space:int):void {
+    public function updateStationPassengers(length:int, space:int):void {
         
         var passengers:Vector.<Passenger> = (TrainStation(rail)).passengers;
         

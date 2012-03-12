@@ -21,6 +21,7 @@ import ru.ipo.kio._12.train.view.CrossConnectorView;
 import ru.ipo.kio._12.train.view.RailView;
 
 import ru.ipo.kio._12.train.view.TrafficNetworkView;
+import ru.ipo.kio._12.train.view.TrainStationView;
 import ru.ipo.kio._12.train.view.TrainView;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.controls.RecordBlinkEffect;
@@ -235,20 +236,20 @@ public class TrafficNetwork extends VisibleEntity {
         _connectorViews = value;
     }
 
-    public function calcConnectors():void {
-        for(var i:int = 0; i<trains.length; i++){
-            var tempTrain:Train = trains[i];
-            var tick:int = 0;
-
-            for(var j:int=0; j<tempTrain.route.rails.length-1; j++){
-                var rail:Rail = tempTrain.route.rails[j];
-                var railNext:Rail = tempTrain.route.rails[j+1];
-                var connector:RailConnector = rail.getConnector(railNext);
-                (CrossConnectorView(connector.view)).connectorInPath.push(new ConnectorInPath(connector.type, i, tick, tempTrain.color, activeTrain==tempTrain));
-                tick+=rail.type.length;
-            }
-        }
-    }
+//    public function calcConnectors():void {
+//        for(var i:int = 0; i<trains.length; i++){
+//            var tempTrain:Train = trains[i];
+//            var tick:int = 0;
+//
+//            for(var j:int=0; j<tempTrain.route.rails.length-1; j++){
+//                var rail:Rail = tempTrain.route.rails[j];
+//                var railNext:Rail = tempTrain.route.rails[j+1];
+//                var connector:RailConnector = rail.getConnector(railNext);
+//                (CrossConnectorView(connector.view)).connectorInPath.push(new ConnectorInPath(connector.type, i, tick, tempTrain.color, activeTrain==tempTrain));
+//                tick+=rail.type.length;
+//            }
+//        }
+//    }
 
     private function checkError():void {
         for(var i:int = 0; i<trains.length; i++){
@@ -260,10 +261,21 @@ public class TrafficNetwork extends VisibleEntity {
                 }
                 if(train.tick==0 && train1.tick==0
                    && train.getPreRail()!=null
-                   && train1.getPreRail()!=null){
+                   && train1.getPreRail()!=null
+                   && !train.ignoreCrossCrash
+                   && !train1.ignoreCrossCrash){
 
-                    var c1:RailConnector = train.rail.getConnector(train.getPreRail());
-                    var c2:RailConnector = train1.rail.getConnector(train1.getPreRail());
+                    if(train.isDirect()){
+                        var c1:RailConnector = train.rail.getConnector(train.getPreRail());
+                    }else{
+                        var c1:RailConnector = train.rail.getSConnector(train.getPreRail());
+                    }
+
+                    if(train1.isDirect()){
+                        var c2:RailConnector = train1.rail.getConnector(train1.getPreRail());
+                    }else{
+                        var c2:RailConnector = train1.rail.getSConnector(train1.getPreRail());
+                    }
                     
                     if(c1!=null && c2!=null && c1.view==c2.view)
                         fault = true;
@@ -370,7 +382,7 @@ public class TrafficNetwork extends VisibleEntity {
     private var _inner:int = 0;
 
     public function innerTick():void{
-//        if(additionTick != 2 ){
+//        if(additionTick != 5 ){
 //            additionTick++;
 //            return;
 //        }
@@ -379,8 +391,18 @@ public class TrafficNetwork extends VisibleEntity {
 
         if(_inner == (8*4-1) ){
             _inner = 0;
+            viewUpdateLock=true;
             doAction();
-            view.update();
+            viewUpdateLock=false;
+            for(var i:int = 0; i<rails.length; i++){
+                if(rails[i].view is TrainStationView){
+                    (TrainStationView(rails[i].view)).updateStationPassengers(railLength, railSpace);
+                }
+            }
+            for(var i:int = 0; i<trains.length; i++){
+                trains[i].view.update();
+            }
+            //view.update();
         }else{
             _inner++;
             for(var i:int = 0; i<trains.length; i++){
@@ -397,6 +419,7 @@ public class TrafficNetwork extends VisibleEntity {
         }
 
         moveToStep();
+        view.update();
         _inner=0;
         additionTick=0;
         _regime = RegimeType.PLAY;
@@ -412,6 +435,11 @@ public class TrafficNetwork extends VisibleEntity {
         
         for (var i:int = 0; i < trains.length; i++) {
             var train:Train = trains[i];
+            
+            if(train.isFinish()){
+                train.ignoreCrossCrash=true;
+            }
+            
             train.action();
 
             if(!train.isFinish()){
@@ -504,10 +532,17 @@ public class TrafficNetwork extends VisibleEntity {
         resetToEdit();
         moveToStep();
     }
+    
+    var stepLock:Boolean = false;
 
     public function step():void{
+        if(stepLock){
+            return;
+        }
+        stepLock=true;
         moveToStep();
         doAction();
+        stepLock=false;
     }
 
 
@@ -586,12 +621,12 @@ public class TrafficNetwork extends VisibleEntity {
             tempTrain.reset();
         }
         
-        for(var i:int = 0; i<rails.length; i++){
-            rails[i].restorePassengers();
-            if(rails[i] instanceof TrainStation){
-                ( TrainStation (rails[i])).reset();
-            }
-        }
+//        for(var i:int = 0; i<rails.length; i++){
+//            rails[i].restorePassengers();
+//            if(rails[i] instanceof TrainStation){
+//                ( TrainStation (rails[i])).reset();
+//            }
+//        }
         
         if(level ==2){
             clearRoutes();

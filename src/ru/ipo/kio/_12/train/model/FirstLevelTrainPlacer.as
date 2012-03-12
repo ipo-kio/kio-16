@@ -201,14 +201,14 @@ public class FirstLevelTrainPlacer{
             {x:22, y:55, r:90}
         ];
         next[RailType.VERTICAL.name + "0" + "true" + RailType.SEMI_ROUND_BOTTOM.name + "true"] = [
-            {x:17, y:21, r:-180},
             {x:21, y:37, r:90},
-            {x:22, y:55, r:90}
+            {x:21, y:53, r:90},
+            {x:21, y:74, r:75}
         ];
         next[RailType.VERTICAL.name + "0" + "true" + RailType.SEMI_ROUND_BOTTOM.name + "false"] = [
-            {x:17, y:21, r:-180},
-            {x:21, y:37, r:90},
-            {x:22, y:55, r:90}
+            {x:22, y:43, r:90},
+            {x:22, y:58, r:90},
+            {x:22, y:73, r:105}
         ];
         next[RailType.VERTICAL.name + "0" + "true" + RailType.ROUND_BOTTOM_RIGHT.name + "true"] = [
             {x:17, y:21, r:-180},
@@ -313,14 +313,14 @@ public class FirstLevelTrainPlacer{
         //Top
         //----------------------
         next[RailType.SEMI_ROUND_TOP.name + "0" + "true" + RailType.SEMI_ROUND_TOP.name + "true"] = [
-            {x:38, y:17, r:-30},
-            {x:60, y:9, r:0},
-            {x:86, y:22, r:30}
+            {x:42, y:12, r:-30},
+            {x:57, y:9, r:0},
+            {x:71, y:11, r:15}
         ];
         next[RailType.SEMI_ROUND_TOP.name + "0" + "false" + RailType.SEMI_ROUND_TOP.name + "false"] = [
-            {x:86, y:21, r:-135},
-            {x:60, y:9, r:-180},
-            {x:29, y:23, r:120}
+            {x:72, y:12, r:-150},
+            {x:58, y:9, r:-180},
+            {x:44, y:12, r:150}
         ];
         next[RailType.SEMI_ROUND_TOP.name + "1" + "true" + RailType.VERTICAL.name + "true"] = [
             {x:96, y:38, r:90},
@@ -356,9 +356,9 @@ public class FirstLevelTrainPlacer{
         //Bottom
         //----------------------
         next[RailType.SEMI_ROUND_BOTTOM.name + "0" + "true" + RailType.SEMI_ROUND_BOTTOM.name + "true"] = [
-            {x:32, y:25, r:45},
-            {x:60, y:37, r:0},
-            {x:88, y:21, r:-45}
+            {x:51, y:36, r:15},
+            {x:58, y:37, r:0},
+            {x:67, y:35, r:-30}
         ];
         next[RailType.SEMI_ROUND_BOTTOM.name + "0" + "false" + RailType.SEMI_ROUND_BOTTOM.name + "false"] = [
             {x:87, y:24, r:135},
@@ -371,9 +371,9 @@ public class FirstLevelTrainPlacer{
             {x:97, y:-40, r:-90}
         ];
         next[RailType.SEMI_ROUND_BOTTOM.name + "1" + "false" + RailType.VERTICAL.name + "false"] = [
-            {x:21, y:5, r:-90},
-            {x:21, y:-14, r:-90},
-            {x:21, y:-30, r:-90}
+            {x:23, y:8, r:-105},
+            {x:22, y:-14, r:-90},
+            {x:22, y:-41, r:-90}
         ];
         next[RailType.SEMI_ROUND_BOTTOM.name + "1" + "true" + RailType.HORIZONTAL.name + "true"] = [
             {x:97, y:5, r:-90},
@@ -399,14 +399,14 @@ public class FirstLevelTrainPlacer{
         //Left
         //----------------------
         next[RailType.SEMI_ROUND_LEFT.name + "0" + "true" + RailType.SEMI_ROUND_LEFT.name + "true"] = [
-            {x:13, y:42, r:120},
-            {x:9, y:58, r:90},
-             {x:25, y:86, r:45}
+            {x:11, y:46, r:105},
+            {x:9, y:54, r:90},
+            {x:10, y:69, r:75}
         ];
         next[RailType.SEMI_ROUND_LEFT.name + "0" + "false" + RailType.SEMI_ROUND_LEFT.name + "false"] = [
-            {x:25, y:89, r:-150},
-            {x:10, y:59, r:-90},
-             {x:25, y:27, r:-45}
+            {x:11, y:74, r:-120},
+            {x:8, y:62, r:-90},
+            {x:9, y:52, r:-75}
         ];
         next[RailType.SEMI_ROUND_LEFT.name + "1" + "true" + RailType.HORIZONTAL.name + "true"] = [
             {x:45, y:95, r:0},
@@ -442,9 +442,9 @@ public class FirstLevelTrainPlacer{
         //Right
         //----------------------
         next[RailType.SEMI_ROUND_RIGHT.name + "0" + "true" + RailType.SEMI_ROUND_RIGHT.name + "true"] = [
-            {x:30, y:39, r:60},
-            {x:37, y:58, r:90},
-            {x:24, y:86, r:135}
+            {x:35, y:49, r:75},
+            {x:36, y:56, r:90},
+            {x:34, y:73, r:120}
         ];
         next[RailType.SEMI_ROUND_RIGHT.name + "0" + "false" + RailType.SEMI_ROUND_RIGHT.name + "false"] = [
             {x:25, y:86, r:-45},
@@ -462,24 +462,24 @@ public class FirstLevelTrainPlacer{
             {x:-34, y:20, r:-180}
         ];
         next[RailType.SEMI_ROUND_RIGHT.name + "1" + "true" + RailType.VERTICAL.name + "true"] = [
-            {x:-1, y:21, r:-180},
-            {x:-15, y:28, r:135},
-            {x:-19, y:36, r:90}
+            {x:6, y:94, r:165},
+            {x:-14, y:103, r:135},
+            {x:-19, y:118, r:105}
         ];
         next[RailType.SEMI_ROUND_RIGHT.name + "1" + "false" + RailType.VERTICAL.name + "true"] = [
-            {x:3, y:93, r:180},
-            {x:-15, y:103, r:135},
-            {x:-20, y:116, r:90}
+            {x:4, y:22, r:-165},
+            {x:-14, y:29, r:135},
+            {x:-20, y:43, r:105}
         ];
         next[RailType.SEMI_ROUND_RIGHT.name + "1" + "true" + RailType.VERTICAL.name + "false"] = [
-            {x:-5, y:22, r:180},
-            {x:-16, y:14, r:-135},
-            {x:-21, y:1, r:-90}
+            {x:9, y:93, r:180},
+            {x:-12, y:91, r:-135},
+            {x:-18, y:76, r:-105}
         ];
         next[RailType.SEMI_ROUND_RIGHT.name + "1" + "false" + RailType.VERTICAL.name + "false"] = [
-            {x:5, y:95, r:-180},
-            {x:-14, y:92, r:-135},
-            {x:-20, y:78, r:-90}
+            {x:6, y:24, r:-165},
+            {x:-15, y:14, r:-135},
+            {x:-19, y:-5, r:-105}
         ];
 
 
@@ -494,9 +494,9 @@ public class FirstLevelTrainPlacer{
             {x:83, y:37, r:60}
         ];
         next[RailType.ROUND_TOP_RIGHT.name + "2" + "true" + RailType.ROUND_TOP_RIGHT.name + "true"] = [
-            {x:82, y:62, r:105},
-            {x:74, y:74, r:135},
-            {x:61, y:81, r:165}
+            {x:81, y:61, r:105},
+            {x:77, y:68, r:135},
+            {x:71, y:75, r:150}
         ];
         next[RailType.ROUND_TOP_RIGHT.name + "3" + "true" + RailType.VERTICAL.name + "true"] = [
             {x:31, y:84, r:180},
@@ -521,9 +521,9 @@ public class FirstLevelTrainPlacer{
             {x:27, y:76, r:45}
         ];
         next[RailType.ROUND_BOTTOM_LEFT.name + "2" + "true" + RailType.ROUND_BOTTOM_LEFT.name + "true"] = [
-            {x:57, y:82, r:-15},
-            {x:73, y:71, r:-30},
-            {x:81, y:63, r:-60}
+            {x:57, y:83, r:-15},
+            {x:62, y:80, r:-30},
+            {x:71, y:75, r:-45}
         ];
         next[RailType.ROUND_BOTTOM_LEFT.name + "3" + "true" + RailType.VERTICAL.name + "false"] = [
             {x:84, y:42, r:-90},
@@ -577,9 +577,9 @@ public class FirstLevelTrainPlacer{
             {x:19, y:24, r:-45}
         ];
         next[RailType.ROUND_TOP_LEFT.name + "2" + "true" + RailType.ROUND_TOP_LEFT.name + "true"] = [
-            {x:78, y:30, r:60},
-            {x:81, y:37, r:75},
-            {x:84, y:43, r:90}
+            {x:38, y:11, r:-15},
+            {x:46, y:10, r:0},
+            {x:54, y:11, r:15}
         ];
         next[RailType.ROUND_TOP_LEFT.name + "3" + "true" + RailType.VERTICAL.name + "true"] = [
             {x:84, y:65, r:90},

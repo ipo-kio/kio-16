@@ -33,8 +33,8 @@ import ru.ipo.kio.api.*;
 		public var max1: Label;
 		public var result0: Label;
 		public var result1: Label;
-		public var firstMax: int;
-		public var secondMax: int;
+		public var firstMax: Number;
+		public var secondMax: Number
 		public var firstResult: Array = [];
 		public var secondResult: Array = [];
 		public var bandages: int;
@@ -199,15 +199,15 @@ import ru.ipo.kio.api.*;
 			result0.x = 20;
 			result0.y = 576;
 			result0.textField.autoSize = TextFieldAutoSize.LEFT;
-			result0.text = "Ваш результат для I фокуса: исчезновение на " + results(1) + "%";
+			result0.text = "Ваш результат для I фокуса: исчезновение на " + round(results(1)) + "%";
 			result0.setStyle("textFormat", format);
 			addChild(result0);
 			
 			max0 = new Label();
 			max0.textField.autoSize = TextFieldAutoSize.LEFT;
 			max0.setStyle("textFormat", format);
-			max0.text = "Лучший результат для I фокуса: исчезновение на " + firstMax + "%";
-			max0.x = 705 - max0.textField.textWidth;
+			max0.text = "Лучший результат для I фокуса: исчезновение на " + round(firstMax) + "%";
+			max0.x = 700 - max0.textField.textWidth;
 			max0.y = 576;
 			addChild(max0);
 			
@@ -216,16 +216,16 @@ import ru.ipo.kio.api.*;
 			result1.y = 576;
 			result1.textField.autoSize = TextFieldAutoSize.LEFT;
 			result1.setStyle("textFormat", format);
-			result1.text = "Ваш результат для II фокуса: исчезновение на " + results(0) + "%";
+			result1.text = "Ваш результат для II фокуса: исчезновение на " + round(results(0)) + "%";
 			result1.visible = false;
 			addChild(result1);
 			
 			max1 = new Label();
 			max1.textField.autoSize = TextFieldAutoSize.LEFT;
 			max1.setStyle("textFormat", format);
-			max1.text = "Лучший результат для II фокуса: исчезновение на " + secondMax + "%";
+			max1.text = "Лучший результат для II фокуса: исчезновение на " + round(secondMax) + "%";
 			max1.visible = false;
-			max1.x = 705 - max1.textField.textWidth;
+			max1.x = 700 - max1.textField.textWidth;
 			max1.y = 576;
 			addChild(max1);
 			
@@ -386,17 +386,17 @@ import ru.ipo.kio.api.*;
 				//secondMax = results(0);
 				//_api.saveBestSolution();
 			//}
-			result0.text = "Ваш результат для I фокуса: исчезновение на " + results(1) + "%";
-			max0.text = "Лучший результат для I фокуса: исчезновение на " + firstMax + "%";
-			result1.text = "Ваш результат для II фокуса: исчезновение на " + results(0) + "%";
-			max1.text = "Лучший результат для II фокуса: исчезновение на " + secondMax + "%";
+			result0.text = "Ваш результат для I фокуса: исчезновение на " + round(results(1)) + "%";
+			max0.text = "Лучший результат для I фокуса: исчезновение на " + round(firstMax) + "%";
+			result1.text = "Ваш результат для II фокуса: исчезновение на " + round(results(0)) + "%";
+			max1.text = "Лучший результат для II фокуса: исчезновение на " + round(secondMax) + "%";
 		}
 		
 		private function updt(e:Event =  null): void {
-			result0.text = "Ваш результат для I фокуса: исчезновение на " + results(1) + "%";
-			max0.text = "Лучший результат для I фокуса: исчезновение на " + firstMax + "%";
-			result1.text = "Ваш результат для II фокуса: исчезновение на " + results(0) + "%";
-			max1.text = "Лучший результат для II фокуса: исчезновение на " + secondMax + "%";
+			result0.text = "Ваш результат для I фокуса: исчезновение на " + round(results(1)) + "%";
+			max0.text = "Лучший результат для I фокуса: исчезновение на " + round(firstMax) + "%";
+			result1.text = "Ваш результат для II фокуса: исчезновение на " + round(results(0)) + "%";
+			max1.text = "Лучший результат для II фокуса: исчезновение на " + round(secondMax) + "%";
 		}
 		
 		
@@ -443,7 +443,7 @@ import ru.ipo.kio.api.*;
 			}
 		}
 		
-		public function results(ccn: int): int {
+		public function results(ccn: int): Number {
 			if (ccn == 0) {
 				var r: int = stagelight[1].spotlights[0].spotlight.intensity;
 				var g: int = stagelight[1].spotlights[1].spotlight.intensity;
@@ -451,7 +451,7 @@ import ru.ipo.kio.api.*;
 				var r1: int = stagelight[1].bodies[0].body.red;
 				var g1: int = stagelight[1].bodies[0].body.green;
 				var b1: int = stagelight[1].bodies[0].body.blue;
-				return (1 - calc(r, g, b, r1, g1, b1) / calc(0, 0, 0, r1, g1, b1)) * 100;
+				return (1 - calc(r, g, b, r1, g1, b1) / calc(0, 0, 0, 255, 255, 255)) * 100;
 			} else {
 				var r: int = stagelight[0].bodies[0].body.red;
 				var g: int = stagelight[0].bodies[1].body.green;
@@ -459,12 +459,16 @@ import ru.ipo.kio.api.*;
 				var r1: int = stagelight[0].bodies[4].body.red;
 				var g1: int = stagelight[0].bodies[6].body.green;
 				var b1: int = stagelight[0].bodies[5].body.blue;
-				return (1 - calc(r, g, b, r1, g1, b1) / calc(0, 0, 0, r1, g1, b1)) * 100;
+				return (1 - calc(r, g, b, r1, g1, b1) / calc(0, 0, 0, 255, 255, 255)) * 100;
 			}
 		}
 		
 		private function calc(r1: int, g1: int, b1: int, r2: int, g2: int, b2: int): Number {
 			return Math.pow(r1 - r2, 2) + Math.pow(g1 - g2, 2) + Math.pow(b1 - b2, 2);
+		}
+		
+		public function round(a: Number): Number {
+			return Math.round(a * 100) / 100;
 		}
 	}
 
