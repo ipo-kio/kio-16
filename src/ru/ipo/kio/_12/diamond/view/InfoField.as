@@ -16,8 +16,7 @@ public class InfoField extends Sprite {
     private var  title_field:TextField;
     private var data_values_fields:Array/*TextField*/;
 
-    public function InfoField(title:String, data_titles:Array/*String*/, skip:int) {
-        skip = 0;
+    public function InfoField(title:String, data_titles:Array/*String*/) {
         title_field = TextUtils.createTextFieldWithFont('KioTahoma', 13, false);
 
         title_field.text = title;
@@ -31,9 +30,11 @@ public class InfoField extends Sprite {
         var max_width:int = 0;
 
         for each (var data_title:String in data_titles) {
-            var new_field:TextField = TextUtils.createTextFieldWithFont('KioTahoma', 13, false);
+            var new_field:TextField = TextUtils.createTextFieldWithFont('KioTahoma', 12, false);
             new_field.textColor = 0x0000;
-            new_field.y = previous_field.y + previous_field.textHeight + skip;
+            new_field.y = previous_field.y + previous_field.textHeight;
+            if (previous_field == title_field)
+                new_field.y += 13;
             data_fields.push(new_field);
             addChild(new_field);
 

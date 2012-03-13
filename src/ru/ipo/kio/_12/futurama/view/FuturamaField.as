@@ -79,8 +79,10 @@ public class FuturamaField extends Sprite {
         addChild(list_view_base);
         addChild(list_view_values);
 
-        var backButton:ShellButton = new ShellButton('Назад');
-        var forwardButton:ShellButton = new ShellButton('Вперед');
+        var loc:Object = KioApi.instance(FuturamaProblem.ID).localization;
+
+        var backButton:ShellButton = new ShellButton(loc.back);
+        var forwardButton:ShellButton = new ShellButton(loc.forward);
         
         backButton.x = 495 + 170;
         backButton.y = list_view_values.y;
@@ -109,8 +111,8 @@ public class FuturamaField extends Sprite {
         steps_value.textColor = 0x000000;
         steps_record_value.textColor = 0x000000;
 
-        steps_text.text = 'Обменов:';
-        steps_record_text.text = 'Рекорд:';
+        steps_text.text = loc.exchanges;
+        steps_record_text.text = loc.record;
 
         steps_value.text = '0';
         steps_record_value.text = '0';

@@ -29,25 +29,14 @@ public class TrainProblem implements KioProblem {
     private var _level:int;
 
     [Embed(source="loc/Train.ru.json-settings",mimeType="application/octet-stream")]
-    public static var TRAIN_RU_0:Class;
-
-    [Embed(source="loc/Train1.ru.json-settings",mimeType="application/octet-stream")]
-    public static var TRAIN_RU_1:Class;
-
-    [Embed(source="loc/Train2.ru.json-settings",mimeType="application/octet-stream")]
-    public static var TRAIN_RU_2:Class;
+    public static var TRAIN_RU:Class;
 
     public function TrainProblem(level:int, readonly:Boolean = false) {
         _level = level;
 
         KioApi.initialize(this);
 
-        if(level ==0)
-            KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU_0).data);
-        else if(level ==1)
-            KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU_0).data);
-        else if(level ==2)
-            KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU_2).data);
+        KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU).data);
 
         TrafficNetworkCreator.instance.createTrafficNetwork(level);
         sp = new TrainSprite(level, readonly);
