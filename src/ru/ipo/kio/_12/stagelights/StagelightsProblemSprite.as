@@ -199,15 +199,15 @@ import ru.ipo.kio.api.*;
 			result0.x = 20;
 			result0.y = 576;
 			result0.textField.autoSize = TextFieldAutoSize.LEFT;
-			result0.text = "Ваш результат: исчезновение на " + Math.round(results(1)) + "% (" +round(results(1)) + " б.п)";
+			result0.text = "Ваш результат для I фокуса: исчезновение на " + round(results(1)) + "%";
 			result0.setStyle("textFormat", format);
 			addChild(result0);
 			
 			max0 = new Label();
 			max0.textField.autoSize = TextFieldAutoSize.LEFT;
 			max0.setStyle("textFormat", format);
-			max0.text = "Лучший результат: исчезновение на " + Math.round(firstMax) + "% (" +round(firstMax) + " б.п)";
-			max0.x = 680 - max0.textField.textWidth;
+			max0.text = "Лучший результат для I фокуса: исчезновение на " + round(firstMax) + "%";
+			max0.x = 700 - max0.textField.textWidth;
 			max0.y = 576;
 			addChild(max0);
 			
@@ -216,16 +216,16 @@ import ru.ipo.kio.api.*;
 			result1.y = 576;
 			result1.textField.autoSize = TextFieldAutoSize.LEFT;
 			result1.setStyle("textFormat", format);
-			result1.text = "Ваш результат: исчезновение на " + Math.round(results(0)) + "% (" + round(results(0)) + " б.п)";
+			result1.text = "Ваш результат для II фокуса: исчезновение на " + round(results(0)) + "%";
 			result1.visible = false;
 			addChild(result1);
 			
 			max1 = new Label();
 			max1.textField.autoSize = TextFieldAutoSize.LEFT;
 			max1.setStyle("textFormat", format);
-			max1.text = "Лучший результат: исчезновение на " + Math.round(secondMax) + "% (" + round(secondMax) + " б.п)";
+			max1.text = "Лучший результат для II фокуса: исчезновение на " + round(secondMax) + "%";
 			max1.visible = false;
-			max1.x = 680 - max1.textField.textWidth;
+			max1.x = 700 - max1.textField.textWidth;
 			max1.y = 576;
 			addChild(max1);
 			
@@ -386,17 +386,17 @@ import ru.ipo.kio.api.*;
 				//secondMax = results(0);
 				//_api.saveBestSolution();
 			//}
-			result0.text = "Ваш результат: исчезновение на " + Math.round(results(1)) + "% (" + round(results(1)) + " б.п)";
-			max0.text = "Лучший результат: исчезновение на " + Math.round(firstMax) + "% (" + round(firstMax) + " б.п)";
-			result1.text = "Ваш результат: исчезновение на " + Math.round(results(0)) + "% (" + round(results(0)) + " б.п)";
-			max1.text = "Лучший результат: исчезновение на " + Math.round(secondMax) + "% (" + round(secondMax) + " б.п)";
+			result0.text = "Ваш результат для I фокуса: исчезновение на " + round(results(1)) + "%";
+			max0.text = "Лучший результат для I фокуса: исчезновение на " + round(firstMax) + "%";
+			result1.text = "Ваш результат для II фокуса: исчезновение на " + round(results(0)) + "%";
+			max1.text = "Лучший результат для II фокуса: исчезновение на " + round(secondMax) + "%";
 		}
 		
 		private function updt(e:Event =  null): void {
-			result0.text = "Ваш результат: исчезновение на " + Math.round(results(1)) + "% (" + round(results(1)) + " б.п)";
-			max0.text = "Лучший результат: исчезновение на " + Math.round(firstMax) + "% (" + round(firstMax) + " б.п)";
-			result1.text = "Ваш результат: исчезновение на " + Math.round(results(0)) + "% (" + round(results(0)) + " б.п)";
-			max1.text = "Лучший результат: исчезновение на " + Math.round(secondMax) + "% (" + round(secondMax) + " б.п)";
+			result0.text = "Ваш результат для I фокуса: исчезновение на " + round(results(1)) + "%";
+			max0.text = "Лучший результат для I фокуса: исчезновение на " + round(firstMax) + "%";
+			result1.text = "Ваш результат для II фокуса: исчезновение на " + round(results(0)) + "%";
+			max1.text = "Лучший результат для II фокуса: исчезновение на " + round(secondMax) + "%";
 		}
 		
 		
@@ -468,7 +468,7 @@ import ru.ipo.kio.api.*;
 		}
 		
 		public function round(a: Number): Number {
-			return Math.round(a * 100);
+			return Math.round(a * 100) / 100;
 		}
 	}
 
