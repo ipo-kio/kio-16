@@ -18,9 +18,14 @@ public class FuturamaProblem implements KioProblem {
 
     [Embed(source="loc/Futurama.ru.json-settings",mimeType="application/octet-stream")]
     public static var FUTURAMA_RU:Class;
-
     [Embed(source="loc/Futurama.en.json-settings",mimeType="application/octet-stream")]
     public static var FUTURAMA_EN:Class;
+    [Embed(source="loc/Futurama.es.json-settings",mimeType="application/octet-stream")]
+    public static var FUTURAMA_ES:Class;
+    [Embed(source="loc/Futurama.bg.json-settings",mimeType="application/octet-stream")]
+    public static var FUTURAMA_BG:Class;
+    [Embed(source="loc/Futurama.th.json-settings",mimeType="application/octet-stream")]
+    public static var FUTURAMA_TH:Class;
 
     [Embed(source="resources/f1.jpg")]
     public static var f1:Class;
@@ -38,6 +43,9 @@ public class FuturamaProblem implements KioProblem {
 
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(FUTURAMA_RU).data);
         KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(FUTURAMA_EN).data);
+        KioApi.registerLocalization(ID, KioApi.L_ES, new Settings(FUTURAMA_ES).data);
+        KioApi.registerLocalization(ID, KioApi.L_BG, new Settings(FUTURAMA_BG).data);
+        KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(FUTURAMA_TH).data);
 
         KioApi.initialize(this);
 

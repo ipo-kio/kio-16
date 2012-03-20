@@ -22,6 +22,7 @@ public class KioApi {
     public static const L_ES:String = 'es';
     public static const L_BG:String = 'bg';
     public static const L_EN:String = 'en';
+    public static const L_TH:String = 'th';
 
     private static var _isChecker:Boolean = false;
 

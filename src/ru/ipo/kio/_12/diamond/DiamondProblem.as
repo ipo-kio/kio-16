@@ -27,9 +27,14 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
     [Embed(source="loc/Diamond.ru.json-settings",mimeType="application/octet-stream")]
     public static var DIAMOND_RU:Class;
-
     [Embed(source="loc/Diamond.en.json-settings",mimeType="application/octet-stream")]
     public static var DIAMOND_EN:Class;
+    [Embed(source="loc/Diamond.es.json-settings",mimeType="application/octet-stream")]
+    public static var DIAMOND_ES:Class;
+    [Embed(source="loc/Diamond.bg.json-settings",mimeType="application/octet-stream")]
+    public static var DIAMOND_BG:Class;
+    [Embed(source="loc/Diamond.th.json-settings",mimeType="application/octet-stream")]
+    public static var DIAMOND_TH:Class;
 
     [Embed(source='resources/Button_09a.png', mimeType='image/png')]
     public static const BT_0:Class;
@@ -79,6 +84,9 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(DIAMOND_RU).data);
         KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(DIAMOND_EN).data);
+        KioApi.registerLocalization(ID, KioApi.L_ES, new Settings(DIAMOND_ES).data);
+        KioApi.registerLocalization(ID, KioApi.L_BG, new Settings(DIAMOND_BG).data);
+        KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(DIAMOND_TH).data);
 
         KioApi.initialize(this);
 

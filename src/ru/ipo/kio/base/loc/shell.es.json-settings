@@ -1,124 +1,168 @@
- /*This file contains texts that are common to all problems and that are used in the Shell*/
-{   
-    "contest_header":"Contest CTE-2012",
-    "contest_level":["Level I", "Level II"],
-    "help":{ /*Manual General*/
+﻿/*This file contains texts that are common to all problems and that are used in the Shell*/
+{
+    "contest_header":"CTE contest 2012",
+    "contest_level":["Beginner Level", "I Level", "II Level"],
+    "help":{ /*Common help text*/
 		"all_problems": <<< /*Such quotes <<< >>> mark the text, that spans multiple lines.
 		                    Multiline text is always treated as html, so you can use tags like <p> and <br>.
 							Don't use double quotes in the multiline text*/
-			<p>Cuando usted está resolviendo un problema el programa flash guarda su mejor solución automáticamente usando memoria proporcionada por un manejador de flash. 
-			La cantidad de esta memoria es asignada en la primera ejecución del programa de la tarea. 
-			Algunos programas en su computador, los que limpian la memoria del computador, pueden borrar sus soluciones temporales. 
-			Por eso  cada vez que usted termine de trabjar en un problema, debe guardar su solución haciendo click en el botón “Guardar mejor solución”. 
-			Después de eso el programa le ofrecerá elegir una carpeta para guardar y darle un nombre al archivo. 
-			Este es el archivo que usted necesita enviarle al comité organizador de la CTE a través de la página de la CTE. 
-			Si quiere seguir resolviendo los problemas usando otro computador usted necesita llevar este archivo con usted y toda la información necesaria no se perderá.
+			<p>While you are solving a problem the flash-program saves your best solution automatically 
+			using memory provided by a flash-player. Amount of this memory is corrected during the first 
+			launch of the task program. Some other programs on your computer, the ones that clean the 
+			computer’s memory, can remove your temporary solutions. That’s why every time you finish 
+			working on a problem you should save your solution by clicking on button Save Best 
+			Solutions (and a questioner). After that the program will offer you to choose a folder 
+			to store the file and to give a name to the file. This is the file that you need to send 
+			to the CTE Organizing Committee  at the end of the competition via CTE site. 
+			If you want to continue to solve the problems using another computer you need to 
+			take this file with you and all necessary information won’t be lost. 
 
-            Cuando esté resolviendo los problemas puede necesitar guardar una solución intermedia y abrirla después para mejorarla. 
-			Puede hacer esto usando los botones para guardar y abrir una de las soluciones intermedias. 
-			Los botones de limpieza pueden ayudarle a borrar todos los elementos constructivos del campo de trabajo.
+            CuandWhile solving the problems you may need to save an interim solution 
+			and open it later for improving. You can make it by clicking on buttons
+			that save and open one of the interim solutions. Clearing buttons can help 
+			you to remove all the constructing elements from the work field. 
+
 </p>
 		>>>
 	},
 	"buttons":{
-		"load_workspace": "Cargar mejor solución y cuestionario",
-		"save_workspace": "Guardar mejores resultados y cuestionario"
+		"load_workspace": "Load best results and questionnaire",
+		"save_workspace": "Save best results and questionnaire"
 	},
 	"contest_panel":{
-	    "problem_header":"Problema", 
-		"current_solution_caption" : "Solución",
-		"help_header" : "Ayuda",
-		"records_and_anketa_header" : "Mejores resultados y cuestionario",
-		"record_header" : "Puntaje más alto",
+	    "problem_header":"Problem",
+		"current_solution_caption" : "Solution",
+		"help_header" : "Help",
+		"records_and_anketa_header" : "Best results and questionnaire",
+		"record_header" : "Record",
 		"buttons":{
-			"help" : "Ayuda",
-			"statement": "Enunciado",
-			"load" : "Cargar",
-			"save" : "Salvar",
-			"clear" : "Limpiar",
-			"back" : "Cerrar"
+			"help" : "Help",
+			"statement": "Statement",
+			"load" : "Load",
+			"save" : "Save",
+			"clear" : "Clear",
+			"back" : "Close"
 		}
     },
     "files":{
-        "all_files": "Todos los archivos",
-        "results": "Resultados y cuestionario",
-        "solutions": "Solucines de los problemas"
+        "all_files": "All files",
+        "results": "Results and questionnaire",
+        "solutions": "Problem solutions"
     },
     "screen":{
 		"buttons":{
-			"continue_": "Continuar",
-            "loadWorkspace" : "Cargar"
+			"continue_": "Continue",
+            "loadWorkspace" : "Load",
+            "back" : "Back"
         },
         "welcome":{
-			"mainMessage": <<<
-				<p class='h1'>¡Bienvenido a la competencia CTE-2012!</p>
-				<p>Nos encanta ofrecerle 3 problemas para resolver y darle un saludo de bienvenida.</p>
-				<p>Antes de comenzar a resolver los problemas usted necesita:</p>
-				<li>Permitir que el programa guarde información en el disco duro</li>
-				<li>Llenar el cuestionario</li>
-				<p>Para continuar haga click en el boton \"Continuar\".</p>
+			"greeting": <<<
+				Welcome to competition CTE-2012!
+	        >>>,
+    		"mainMessage_0": <<<
+    		    <p>We would like to offer you to solve 3 problems and get acquainted with welcome address.</p>
+				<p>Before you begin to solve the problems you need to:</p>
+				<li>Let the program save data on hard drive</li>
+				<li>Fill in the questionnaire</li>
+				<p>In order to continue click on button \"Continue\".</p>
 			>>>,
-            "loadWorkspace": "Si usted ha salvado soluciones usted puede cargarlas:"
+            "mainMessage_1": <<<
+                Hello {name}! In order to start solving problems click on button \"Continue\".
+            >>>,
+            "mainMessage_1_continuation": <<<
+                If you are not {name}, but you want to solve problems on this computer then:
+            >>>,
+            "mainMessage_many": <<<
+            In order to start solving problems choose your name in a list of participants:
+            >>>,
+            "mainMessage_many_continuation": "If you are not in the list",
+            "message_new_participant": <<<
+                If you hadn't solved the tasks before click on button \"New prticipant\"
+            >>>,
+            "message_old_participant": <<<
+                If you had started solving problems on another computer save your
+				best results and the questionnaire on the previous computer and load them on this one
+				by clicking on \"Load\". If you start solving problems on this computer without
+				loading your old ones you will have to find a file of a particular task and move it by hand.
+                
+            >>>,
+            "button_go": "Continue",
+            "button_new_participant": "New participant"
         },
         "settings":{
 			"mainMessage": <<<
-				<p class='h1'>Cambio de las especificaciones de la competencia</p>
-				<p>Para trabajar con el programa usted necesita permitirle que almacene datos en su disco duro.
-				Haga click sobre 'Configuración' y adecue las especificaciones como se muestra en la figura</p>
+				<p class='h1'>Correct your settings</p>
+				<p>In order to work with the program you need to let it store data on your hard drive.
+				Click on 'Settings' and customize settings like it is shown in the picture</p>
 			>>>,
             "mainMessageContinuation": <<<
-				<p>Asegurese que </p>
-				<li>el chulo 'not to ask' no esté activo</li>
-				<li>El slider sea de al menos  1 megabyte</li>
-				<p class='warning'>¡Advertencia! Si usted pone mal las especificaciones el programa le pedirá ponerlas correctamente y no continuará hasta que usted lo haga.</p>
+				<p>Make shure that</p>
+				<li>the 'not to ask'chek mark is not active</li>
+				<li>The slider is set at least on 1 megabyte</li>
+				<p class='warning'>Warning! If you customize settings wrong the program will
+				demand you to customize them correct and won't continue to work untill you do it.</p>
 			>>>,
-			"configure_button": "Configuración"
+			"configure_button": "Settings"
         },
         "form": {
-            "field_must_be_filled": "Se requiere el campo",
-            "header": "Llene el cuestionario",
-            "participant_name": "Nombre y apellido del participante (En mayúsculas)",
-			"name": "Nombre",
-			"surname": "Apellido",
-			"second_name": "Segundo apellido",
-			"connection": "Contactos",
+            "field_must_be_filled": "The field is required",
+            "header": "Fill in the questionnaire",
+            "participant_name": "Name and Surname of the participant (In capital letters)",
+			"name": "Name",
+			"surname": "Surname",
+			"second_name": "Second surname",  /*Patronym, Middle name*/
+			"connection": "Contacts",
 			"e_mail": "e-mail",
-			"institution": "Institución Educativa",
-			"institution_name": "Nombre",
-			"grade": "Grado",
-			"address": "Dirección",
-			"name_restriction": "A-ZÑÇÁÉÍÓÚÜ" /*You can write down a range of recognizable symbols here, ñç¿¡áéíóúü*/
+			"institution": "Educational institution",
+			"institution_name": "Name",
+
+			"grade": "Grade",
+			"address": "Address",
+			"name_restriction": "A-Za-z\-" /*You can write down a range of recognizable symbols here*/
         },
         "problems": {
-            "fill_form": "Llene el cuestionario",
-			"header": "Seleccione un problema",
-            "about":"Acerca del progrma"
+            "fill_form": "Fill in the questionnaire",
+            "header": "Choose the task",
+            "about":"About the program"
         },
         "problem": {
-            "screen_header":"Problema"
-			},
+            "screen_header":"Problem"
+        },
         "about": {
-            "header": "Acerca de la competencia CTE", /*About authors and copy right*/
+            "header": <<<About CTE competition>>>, /*About authors and copy right*/
             "text" : <<<
-                <p class='h1'>Instituto de aprendizaje productivo de la Academia Rusa de Educación</p>
-                <p class='h1'>Revista Herramientas Computacionales en Educación</p>
-				<p><br></p>
-                <p><b>Comité Organizativo Internacional:</b> Sergey Pozdnyakov (Russia),Maria Losada (Colombia), Emiliya Velikova (Bulgaria), Anastasia Dementeva (Russia)</p>
-                <p><b>Idea del proyecto y autores de los problemas:</b> Sergey Pozdnyakov, Ilya Posov, Denis stepulenok, M.Udovin</p>
-                <p><b>Organizadores y Metodistas:</b>  Sergey Pozdnyakov, Ilya Posov, Sophie Entina, Anastasia Dementeva</p>
-                <p><b>Programadores:</b> Ilya Posov, A. Anikina, A. Baldichev, A. Karasavov, D. Kostigov, V. Manukyan, K. Ferticov</p>
-                <p><b>Diseño:</b> Anna Vasilkova</p>
-                <p><b>Webmaster:</b> Nikolai Yasnov</p>
-                <p><b>Secretaria:</b> Tatyana Myand</p>
-                <p><b>Traducción a español:</b> Mario Cruz</p>
-                <p class='h2'> <br>© Center of information technologies in education «CTE»</br></p>
+                <p class='h1c'>Institute of productive learning of the Russian Academy of Education</p>
+                <p class='h1c'>Comuter Tools in Education Journal</p>
+                <p><br></p>
+                <p><b>International Organizing Committee:</b> Maria Losada and Mario Cruz (Colombia),Emiliya Velikova (Bulgaria),
+                                                    Anastasia Dementeva and Sergey Pozdnyakov (Russia), Atit Maitarattanakon
+                                                    (Thailand).</p>
+                /*<p><br></p>*/
+                <p><b>Organizers and methodologists:</b>Sophie Entina, Sergey Pozdnyakov, Ilya Posov</p>
+                <p><b>Volunteers:</b> Akudzhuoby Uchenna, Bihalova Julia, Davidovich Ilona,
+                                                  Ivanov Pavel, Podolskaya Alexandra, Shakshin Dmitry</p>
+                /*<p><br></p>*/
+                <p><b>Web programmer:</b> Nikolai Yasnov</p>
+                <p><b>Secretary:</b> Tatyana Myand</p>
+                <p><b>Designer:</b> Anna Vasilkova</p>
+
+                /*<p><br></p>*/
+                <p><b>Problems creation:</b></p>
+                <p><b>Tasks authors:</b> Ilya Posov («Diamand and Laser», «Brilliant Cutting», «Body Swap»),
+                                        Butikov E. («Invisible Man»), Sergey Pozdnyakov («Trams», «Tram Routs»).</p>
+                <p><b>Flash pragrammers:</b> Akimushkin V., Posov I., Osipov V.</p>
+                <p><b>Designer:</b> Anna Vasilkova</p>
+                <p><br></p>
+                <p><b>E-mail:</b> <a href='mailto:kio.org@gmail.com'>kio.org@gmail.com</a></p>
+                <p><b>Contest web-site:</b> <a href='www.kio.spb.ru/kio'>www.kio.spb.ru/kio</a></p>
+
+                <p class='h2'><br>© Center of information technologies in education «CTE»</p>
             >>>
 		},
-		    "space_settings":{
-            "warning":"¡Atención!",
-            "action":"Para poder trabajar con el programa CTE usted necesita almacenar información en el disco duro.\nAbrfa la ventana de configuración y permita que el programa use al menos un megabyte. Para hacer que las configuraciones estén iguales al gráfico:",
-            "after":"Unicamente después de hacer esto usted podrá cerrar la venana"
+		"space_settings":{
+            "warning":"warning!",
+            "action":"In order to work with the program you need to let it store data on your hard drive.\nClick on 'Settings' and customize settings like it is shown in the picture",
+            "after":"You will be able to close the window after that"
 		}
-        }
     }
-
+}

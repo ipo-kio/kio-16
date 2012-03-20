@@ -161,8 +161,7 @@
 		},
 		"space_settings":{
             "warning":"warning!",
-            "action":"In order to work with the program you need to let it store data on your hard drive.
-			\nClick on 'Settings' and customize settings like it is shown in the picture",
+            "action":"In order to work with the program you need to let it store data on your hard drive.\nClick on 'Settings' and customize settings like it is shown in the picture",
             "after":"You will be able to close the window after that"
 		}
     }

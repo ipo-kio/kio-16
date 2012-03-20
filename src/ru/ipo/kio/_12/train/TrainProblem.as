@@ -30,9 +30,14 @@ public class TrainProblem implements KioProblem {
 
     [Embed(source="loc/Train.ru.json-settings",mimeType="application/octet-stream")]
     public static var TRAIN_RU:Class;
-
     [Embed(source="loc/Train.en.json-settings",mimeType="application/octet-stream")]
     public static var TRAIN_EN:Class;
+    [Embed(source="loc/Train.bg.json-settings",mimeType="application/octet-stream")]
+    public static var TRAIN_BG:Class;
+    [Embed(source="loc/Train.es.json-settings",mimeType="application/octet-stream")]
+    public static var TRAIN_ES:Class;
+    [Embed(source="loc/Train.th.json-settings",mimeType="application/octet-stream")]
+    public static var TRAIN_TH:Class;
 
     public function TrainProblem(level:int, readonly:Boolean = false) {
         _level = level;
@@ -41,6 +46,9 @@ public class TrainProblem implements KioProblem {
 
         KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU).data);
         KioApi.registerLocalization(ID, KioApi.L_EN,  new Settings(TRAIN_EN).data);
+        KioApi.registerLocalization(ID, KioApi.L_BG,  new Settings(TRAIN_BG).data);
+        KioApi.registerLocalization(ID, KioApi.L_ES,  new Settings(TRAIN_ES).data);
+        KioApi.registerLocalization(ID, KioApi.L_TH,  new Settings(TRAIN_TH).data);
 
         TrafficNetworkCreator.instance.createTrafficNetwork(level);
         sp = new TrainSprite(level, readonly);
