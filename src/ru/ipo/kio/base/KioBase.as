@@ -43,11 +43,14 @@ public class KioBase {
     public static var SHELL_ES:Class;
     [Embed(source="loc/shell.bg.json-settings",mimeType="application/octet-stream")]
     public static var SHELL_BG:Class;
+    [Embed(source="loc/shell.en.json-settings",mimeType="application/octet-stream")]
+    public static var SHELL_EN:Class;
 
     public function KioBase() {
         KioApi.registerLocalization(BASE_API_ID, KioApi.L_RU, new Settings(SHELL_RU).data);
         KioApi.registerLocalization(BASE_API_ID, KioApi.L_ES, new Settings(SHELL_ES).data);
         KioApi.registerLocalization(BASE_API_ID, KioApi.L_BG, new Settings(SHELL_BG).data);
+        KioApi.registerLocalization(BASE_API_ID, KioApi.L_EN, new Settings(SHELL_EN).data);
     }
 
     private function basicInitialization(level:int, year:int, stage:DisplayObjectContainer, problems:Array):void {

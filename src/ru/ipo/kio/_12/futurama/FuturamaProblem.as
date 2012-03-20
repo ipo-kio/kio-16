@@ -19,6 +19,9 @@ public class FuturamaProblem implements KioProblem {
     [Embed(source="loc/Futurama.ru.json-settings",mimeType="application/octet-stream")]
     public static var FUTURAMA_RU:Class;
 
+    [Embed(source="loc/Futurama.en.json-settings",mimeType="application/octet-stream")]
+    public static var FUTURAMA_EN:Class;
+
     [Embed(source="resources/f1.jpg")]
     public static var f1:Class;
     [Embed(source="resources/f2.jpg")]
@@ -34,7 +37,8 @@ public class FuturamaProblem implements KioProblem {
         _n = _level == 2 ? 9 : 8;
 
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(FUTURAMA_RU).data);
-        
+        KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(FUTURAMA_EN).data);
+
         KioApi.initialize(this);
 
         _display = new FuturamaField(_n, level);

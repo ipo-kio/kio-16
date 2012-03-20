@@ -31,12 +31,16 @@ public class TrainProblem implements KioProblem {
     [Embed(source="loc/Train.ru.json-settings",mimeType="application/octet-stream")]
     public static var TRAIN_RU:Class;
 
+    [Embed(source="loc/Train.en.json-settings",mimeType="application/octet-stream")]
+    public static var TRAIN_EN:Class;
+
     public function TrainProblem(level:int, readonly:Boolean = false) {
         _level = level;
 
         KioApi.initialize(this);
 
         KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU).data);
+        KioApi.registerLocalization(ID, KioApi.L_EN,  new Settings(TRAIN_EN).data);
 
         TrafficNetworkCreator.instance.createTrafficNetwork(level);
         sp = new TrainSprite(level, readonly);

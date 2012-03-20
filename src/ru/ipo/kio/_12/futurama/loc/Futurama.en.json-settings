@@ -1,0 +1,52 @@
+{
+    "title": "Body swap",
+    "statement": <<<
+		<p>
+		Toy robots swap their information systems – “souls” - 
+		in this task (it is represented as head swap). 
+</p><p>
+        Your task is to make as much swaps as possible considering these two rules:
+</p><p>
+        <b>First rule</b>
+</p><p>
+        Every couple of robots can make only one “soul” swap.
+</p><p>
+        <b>Second rule</b>
+</p><p>
+        Every couple of soles can be swapped just once.
+        </p><p>
+        Best solutions, or records, are saved automatically. 
+		At any point of time it is possible to load your best solution by pressing the record load button.
+        </p><p>
+        <b>Comment to thr illustration</b>
+        </p><p>
+        There is a notion of transmigration of souls in several religions including Judaism. 
+		Probably everybody took a thought how it would feel to become a different person 
+		for a while. This idea was used in many comedy movies where two 
+		people swapped their bodies due to some cataclysm and for all the people 
+		them it looked like an unexpected behavior change. 
+</p>
+	>>>,
+	"help":<<<
+<p>
+In order to swap two bodies you should drag “soul” of one robot to 
+the body of the other one on the main work field. The swap will happen 
+and you will see a restriction on further swap between these two robots 
+in the pictures on the left.
+</p><p>
+You can save your intermediate solutions at any time while working with the tasks. 
+You can open these solutions later and continue your work. 
+</p><p>
+<b>Comment to the illustration</b>
+</p><p>
+Not long ago Swedish neuroscientists carried out an interesting experiment. They placed cameras on heads 
+of two people and therefore created an effect of body swap to research peoples’ perception of their own bodies. 
+
+</p>
+	>>>,
+
+           "back" : "Back",
+           "forward" : "Forward",
+           "exchanges" : "NUmber of swaps:",
+           "record" : "Record:"
+}

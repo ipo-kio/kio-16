@@ -14,6 +14,9 @@ public class StagelightsProblem implements KioProblem {
 	
 	[Embed(source="loc/stagelights.ru.json-settings",mimeType="application/octet-stream")]
     public static var STAGELIGHTS_RU:Class;
+
+    [Embed(source="loc/stagelights.en.json-settings",mimeType="application/octet-stream")]
+    public static var STAGELIGHTS_EN:Class;
 	
     public static const ID:String = "stagelights";
 
@@ -41,6 +44,7 @@ public class StagelightsProblem implements KioProblem {
             //message: "Hello World"
         //});
 		KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(STAGELIGHTS_RU).data);
+		KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(STAGELIGHTS_EN).data);
 
         //теперь можно писать код конструктора, в частности, создавать объекты, которые используют API:
         //В конструкторе MainSpirte есть вызов API (KioApi.instance(...).localization)
