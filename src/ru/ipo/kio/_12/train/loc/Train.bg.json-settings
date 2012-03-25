@@ -1,179 +1,199 @@
 {
-    "title0": "Trams",
+    "title0": "Трамваи",
     "statement0": <<<
 		<p>
-		Your task is to create tram routes in order 
-		to transport passengers to certain railway stations as soon as possible. 
+		Вашата задача е да се построят маршрути на трамвая така, че да пътниците да бъдат 
+		превозени до нужните гари възможно най-бързо. 
         </p>
         <p>
-        Passengers travelling to a particular 
-		railway station are represented by points colored the same as the railway station. 
+        Пътниците, които отиват към дадена гара, са представени чрез точки със същия
+		цвят като гарата. 
         </p>
         <p>
-        Each passenger takes the first train which route passes by his desired railway station.
+        Пътникът се качва в първия трамвай, чийто маршрут преминава край нужната гара.
         </p>
         <p>
-        For the purpose of comparing different routes to each other, 
-		a route that transports more passengers is considered better. 
+        Маршрутите, по които се превозват повече пътници, се смятат за по-добри. 
         </p>
         <p>
-        If two or more different routes happen to implement a delivery of equal 
-		number of passengers, the one for which its last passenger is delivered earlier is considered better. 
+        Ако построените маршрути осигуряват превозването на всички пътници, то за по-добри
+		се смятат маршрути, в които последният пътник е превозен възможно най-рано.
         </p>
         <p>
-        Best solutions, or records, are saved automatically. At any point of time it is possible 
-		to load your best solution by clicking on the record load button. 
+        Най-добрите решения – рекорди – се запомнят автоматично. Във всеки момент от 
+		решаването на задачата участникът може да се върне към най-доброто решение чрез 
+		натискане на бутон за натоварване на рекорд. 
         </p>
-        <p><b>Comment to the illustration</b></p>
+        <p><b>Коментар към илюстрациите.</b></p>
         <p>
-        Saint-Petersburg is the world tram capital as the total length of all its tram 
-		routes is the maximum across the world. As early as in 1880 
-		inventor F.A. Pirotsky developed and tested a wagon with pendant traction 
-		electric motor of a direct current. 
+        Санкт-Петербург е световна трамвайна столица - по дължина на трамвайните линии 
+		той заема първо място в света. Още през 1880 г. в Санкт-Петербург изобретателят 
+		Ф. А. Пироцкий построил и изпитал вагон с висящ постояннотоков електродвигател. 
 </p>
 	>>>,
 	"help0":<<<
 <p>
-In order to create a rout you should click on a tram and the rout created 
-will be highlighted in white. For further rout creation you should click 
-successively on the rout sections that the tram will pass. 
+За построяване на маршрут на трамвая е необходимо да се кликне върху трамвая, след 
+което прекарваният път ще бъде осветен с бял цвят. След това за постояване на маршрута 
+се щраква с мишката върху тези участъци от пътя, през които трамваят трябва да 
+преминава.
 </p>
 <p>
-The tram can pass the same rout section several times but it can’t go back. 
-The solution is not counted if the trams collide while moving.</p>
-<p>
-If a rout is highlighted you can remove its sections starting from the last one 
-by clicking on the corresponding button. You can also remove all the routs created 
-by clicking on another button.  
-</p>
-<p>You can launch trams by clicking on the corresponding buttons in step-by-step, 
-animated or immediate mode. It is possible to change the mode during the trams movement.  
+Трамваят може многократно да преминава по един и същ участък от пътя, но не може да се 
+движи назад. Ако в процеса на придвижване трамваите се сблъскват, постигнатият резултат 
+не се взема под внимание.
 </p>
 <p>
-You can save your intermediate solutions at any time while working with the tasks 
-and open these solutions later and continue your work. </p>
+Когато маршрутът е определен, могат да се премахват участъци от него, започвайки от 
+последния, чрез последователни натискания на съответния бутон. Чрез друг бутон може 
+да се премахнат всички построени маршрути.
+</p>
+<p>
+Пускането на трамваите в движение (постъпково, анимационно или мигновено) се 
+осъществява чрез натискане на съответни бутони. В процеса на движението може да се 
+променя видът на анимацията, чрез натискане на бутон.
+</p>
+<p>
+В процеса на работата по задачата всяко междинно решение може да бъде съхранено на 
+подходящо място, като по-късно то може да бъде отново натоврено, за да се продължи 
+работата с него.
+</p>
 	>>>,
-"title1": "Trams",
+"title1": "Трамваи",
     "statement1": <<<
     <p>
-		Your task is to create tram routes in order 
-		to transport passengers to certain railway stations as soon as possible. 
+		Вашата задача е да се построят маршрути на трамвая така, че да пътниците
+		да бъдат превозени до нужните гари възможно най-бързо. 
         </p>
         <p>
-        Passengers travelling to a particular 
-		railway station are represented by points colored the same as the railway station. 
+
+        Пътниците, които отиват към дадена гара, са представени 
+		чрез точки със същия цвят като гарата. 
         </p>
         <p>
-        Each passenger takes the first train which route passes by his desired railway station.
+        Пътникът се качва в първия трамвай, чийто маршрут преминава край нужната гара.
         </p>
         <p>
-        For the purpose of comparing different routes to each other, 
-		a route that transports more passengers is considered better. 
-        </p>
+        Маршрутите, по които се превозват повече пътници, се смятат за по-добри.
+		</p>
         <p>
-        If two or more different routes happen to implement a delivery of equal 
-		number of passengers, the one for which its last passenger is delivered earlier is considered better. 
-        </p>
+        Ако построените маршрути осигуряват превозването на всички пътници, то 
+		за по-добри се смятат маршрути, в които последният пътник е превозен 
+		възможно най-рано.
+		</p>
         <p>
-        Best solutions, or records, are saved automatically. At any point of time it is possible 
-		to load your best solution by clicking on the record load button. 
+        Най-добрите решения – рекорди – се запомнят автоматично. Във всеки момент 
+		от решаването на задачата участникът може да се върне към най-доброто решение 
+		чрез натискане на бутон за натоварване на рекорд. 
+
         </p>
-        <p><b>Comment to the illustration</b></p>
-        <p>
-        Saint-Petersburg is the world tram capital as the total length of all its tram 
-		routes is the maximum across the world. 
-</p>
+        <p><b>Коментаръм к илюстрациите.</b></p>
+        <p>Санкт-Петербург е световна трамвайна столица – по дължина на 
+		трамвайните линии той заема първо място в света.</p>
 	>>>,
 	"help1":<<<
 <p>
-In order to create a rout you should click on a tram and the rout created 
-will be highlighted in white. For further rout creation you should click 
-successively on the rout sections that the tram will pass. 
+За построяване на маршрут на трамвая е необходимо да се кликне върху трамвая, 
+след което прекарваният път ще бъде осветен с бял цвят. След това за постояване 
+на маршрута се щраква с мишката върху тези участъци от пътя, през които 
+трамваят трябва да преминава. 
 </p>
-<p>
-The tram can pass the same rout section several times but it can’t go back. 
-The solution is not counted if the trams collide while moving.</p>
-<p>
-If a rout is highlighted you can remove its sections starting from the last one 
-by clicking on the corresponding button. You can also remove all the routs created 
-by clicking on another button.  
+ <p>
+Трамваят може многократно да преминава по един и същ участък от пътя, но не може 
+да се движи назад. Ако в процеса на придвижване трамваите се сблъскват, 
+постигнатият резултат не се взема под внимание.
 </p>
-<p>You can launch trams by clicking on the corresponding buttons in step-by-step, 
-animated or immediate mode. It is possible to change the mode during the trams movement.  
+ <p>
+Когато маршрутът е определен, могат да се премахват участъци от него, 
+започвайки от последния, чрез последователни натискания на съответния бутон. 
+Чрез друг бутон може да се премахнат всички построени маршрути.
 </p>
-<p>
-You can save your intermediate solutions at any time while working with the tasks 
-and open these solutions later and continue your work.</p>
+ <p>
+Пускането на трамваите в движение (постъпково, анимационно или мигновено) се 
+осъществява чрез натискане на съответни бутони. В процеса на движението може да се 
+променя видът на анимацията, чрез натискане на бутон.
+</p>
+ <p>
+В процеса на работата по задачата всяко междинно решение може да бъде съхранено на 
+подходящо място, като по-късно то може да бъде отново натоврено, за да се продължи 
+работата с него.
+</p>
 	>>>
 ,
-"title2": "Tram routs",
+"title2": "Трамвайни маршрути",
     "statement2": <<<
         <p>
-		Your task is to create tram routes 
-		in order to transport passengers 
-		to certain railway stations as soon as possible. 
+		Вашата задача е да се построят маршрути на 
+		трамвая така, че да пътниците да бъдат 
+		превозени до нужните гари възможно най-бързо. 
         </p><p>
-        Passengers travelling to a particular 
-		railway station are represented by points 
-		colored the same as the railway station.
+        Пътниците, които отиват към дадена гара, са 
+		представени чрез точки със същия цвят като гарата. 
         </p><p>
-        Each passenger takes the first train which 
-		route passes by his desired railway station.
+        Пътникът се качва в първия трамвай, чийто маршрут 
+		преминава край нужната гара.
         </p><p>
-        For the purpose of comparing different routes 
-		to each other, a route that transports more passengers is considered better. 
+        Маршрутите, по които се превозват повече пътници, се смятат за по-добри.
         </p><p>
-        If two or more different routes happen to implement a delivery of equal 
-		number of passengers, the one for which its “average” passenger is delivered earlier is considered better.
+        Ако построените маршрути осигуряват превозването на всички пътници, то за 
+		по-добри се смятат маршрути, в които времето за превозване на „средния” пътник 
+		е възможно най-малко. 
         </p><p>
-        The “average” passenger is the one who reached the station before one half of all passengers 
-        and after the other half (from the math point of view it’s called a median).         
-		</p><p>
-        Best solutions, or records, are saved automatically. 
-        At any point of time it is possible to load your best solution by clicking on the record load button.        
+        За „среден” се смята пътник със следното свойство: половината от пътниците 
+		са се придвижвали до гарата не по-дълго от него, а половината – не по кратко 
+		(в математиката такова средно се нарича медиана).
+        </p><p>
+        Най-добрите решения – рекорди – се запомнят автоматично. Във всеки момент 
+		от решаването на задачата участникът може да се върне към най-доброто решение 
+		чрез натискане на бутон за натоварване на рекорд. 
         </p>
         <p><br></p>
-        <p><b>Comment to the illustration</b> Saint-Petersburg is the world 
-		tram capital as the total length of all its tram routes is the maximum across the world. </p>
+        <p><b>Коментар към илюстрациите.</b> Санкт-Петербург е световна трамвайна столица 
+		– по дължина на трамвайните линии той заема първо място в света.</p>
  	>>>,
 	"help2":<<<
 <p>
-In order to create a rout you should click on a tram and the rout created will be highlighted in white. 
-For further rout creation you should click 
-successively on the rout sections that the tram will pass. 
+За построяване на маршрут на трамвая е необходимо да се кликне върху трамвая, след което
+прекарваният път ще бъде осветен с бял цвят. След това за постояване на маршрута 
+ се щраква с мишката върху тези участъци от пътя, през които трамваят трябва да преминава. 
 </p><p>
-The tram can pass the same rout section several times but it can’t go back. 
-The solution is not counted if the trams collide while moving.
+Трамваят може многократно да преминава по един и същ участък от пътя, но не може да се 
+движи назад. Ако в процеса на придвижване трамваите се сблъскват, постигнатият резултат не 
+се взема по внимание.
 </p><p>
-If a rout is highlighted you can remove its sections starting from the last one by clicking 
-on the corresponding button. You can also remove all the routs created by clicking on another button.
-</p><p>You can launch trams by clicking on the corresponding buttons in step-by-step or immediate mode. 
-It is possible to change the mode during the trams movement.
+Когато маршрутът е определен, могат да се премахват участъци от него, 
+започвайки от последния, чрез последователни натискания на съответния 
+бутон. Чрез друг бутон може да се премахнат всички построени маршрути.
 </p><p>
-You can save your intermediate solutions at any time while working with 
-the tasks and open these solutions later and continue your work.
+Пускането на трамваите в движение (постъпково или мигновено) се осъществява 
+чрез натискане на съответни бутони. В процеса на  движението може да се 
+променя видът на анимацията, чрез натискане на бутон.
+</p><p>
+В процеса на работата по задачата всяко междинно решение може да бъде съхранено 
+на подходящо място, като по-късно то може да бъде отново натоврено, за да се 
+продължи работата с него.
 </p>
 	>>>,
 	"buttons":{
-    		"clear_routes": "Clear \nall routs",
-    		"remove_last": "Remove \nrout part",
-    		"play": "Launch \ntrams",
-    		"step": "Take \na step",
-    		"result": "Immediate \nresult",
-    		"init": "initial \nstate",
-    		"expand": "Expand",
-    		"collapse": "Minimize",
-    		"add": "Add",
-    		"remove": "Remove"
+    		"clear_routes": "премахване\n на всички пътища",
+    		"remove_last": "премахване\n на участък",
+    		"play": "Пускане\n на трамваите",
+    		"step": "направи\nкрачка",
+    		"result": "мигновен\nрезултат",
+    		"init": "изходно\n състояние",
+    		"expand": "разгъни",
+    		"collapse": "събери",
+    		"add": "добави",
+    		"remove": "премахни"
     	},
 
     	"headers":{
-            		"edit": "Edit",
-            		"animation": "Animation",
-            		"result": "Result",
-            		"record": "Record",
-            		"amounts": "Passengers",
-            		"time": "Time"
+            		"edit": "Редактиране",
+            		"animation": "Анимация",
+            		"result": "Резултати",
+            		"record": "Рекорд",
+            		"amounts": "пътници",
+            		"time": "време"
 
             	}
 }
