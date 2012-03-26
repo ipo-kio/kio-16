@@ -1,92 +1,99 @@
 {
-    "title1": "Diamond and laser ",
-    "title2": "Brilliant cutting",
+    "title1": "Диамант и лазер",
+    "title2": "Шлифоване на диамант",
     "statement1": <<<
 		<p>
-Laser emits the wave frequencies that correspond to red, green and blue colors. 
-From the point of a human eye it looks like one bright white beam that falls 
-on pane of a diamond and reflects and refracts repeatedly inside of it. 
-Angle of refraction is different for different colors and because of that the white beam 
-dissolves into three basic colors. </p><p>
-You can change two parameters: form of the diamond and the beam direction. 
-Your aim is to get the most beautiful light effect. Its beauty is judged by two criteria: 
-first is the number of spots of light that the diamond produces, 
-the other one – the evenness of these spots.</p><p></p><p>
-From the math point of view the first (and the main) criterion is the number of points 
-on the diamond line of sight that can be seen.</p><p></p><p>
-If several participants have the same number of points on the diamond line then 
-the solution with the most even placement of light spots will be considered the best. 
-The evenness of the light spots is the average deviation from the average distance 
-between two near-by dots (light spots) on the diamond circle. </p><p></p><p>
-Best solutions, or records, are saved automatically. 
-At any point of time it is possible to load your best solution by pressing the record load button.
+Лазерът излъчва три основни честоти, съответстващи на червен, зелен и син цвят. 
+За човешкото око те се сливат в един ярък бял лъч, който попада на стена на 
+диаманта и многократно се отразява и пречупва в него. Тъй като за различните 
+цветове ъгълът на пречупване е различен, при пречупването белият лъч се разлага 
+на три основни цвята.</p><p>
+Вие можете да управлявате два параметъра: формата на диаманта и посоката на лъча. 
+Цел – да получите възможно най-красив светлинен ефект. 
+Красотата се  оценява с два параметъра, единият от които съответства на броя на 
+«слънчевите зайчета», с които засиява диамантът. Другият параметър определя колко 
+равномерно тези светлини се насочват в различни посоки.</p><p></p><p>
+Изчислително първия параметър, който се явява главен, се определя от броя на точките 
+на окръжността на обзора на диаманта, които са видими за окото.</p><p></p><p>
+Ако броят на точките на окръжността на обзора при две решения е еднакъв, 
+то по-добро е решението с по-равномерно разпределение. Равномерността се определя 
+от средното отклонение от усредненото рзсстояние между съседни точки, излъчващи 
+светлина на окръжността на обзора.</p><p></p><p>
+Най-добрите решения – рекорди – се запомнят автоматично. Във всеки момент от 
+решаването на задачата участникът може да се върне към най-доброто решение чрез 
+натискане на клавиш за натоварване на рекорд. 
 	>>>,
 	"help1":<<<
 <p>
-You can manage the laser by mouse. To build a diamond you can drag dots that are already 
-on the diamond and add new ones by double click. There are maximum 20 dots that you can add. 
-Consider the diamond as a minimal convex polygon that contains all dots built. 
-So if you put a dot inside the polygon that is already built its form won’t change 
-(and you will have to move this dot to the external part of the polygon). 
-All the dots that you don’t need any more can be removed by the corresponding button. 
+Управлението на лазерния лъч се осъществява с мишката. Построяването на диаманта 
+се осъществява чрез преместване с мишката на вече построени точки и добавяне на 
+нови чрез двоен клик.  Можете да добавите не повече от 20 точки. Диамантът се 
+построява като минимален изпъкнал многоъгълник, съдържащ всички построени точки 
+(в математиката той се нарича изпъкнала обвивка на множество от точки). По този начин, 
+ако поставим точка вътре във вече построения многоъгълник, формата му няма да се промени 
+(и тази точка ще трябва да бъде преместена във външната част на многоъгълника). 
+Всички «излишни» точки могат да бъдат отстранени чрез съответен бутон.
 </p><p></p><p>
-You can save your intermediate solutions at any time while working with the tasks. 
-You can open these solutions later and continue your work.  
+В процеса на работата по задачата всяко междинно решение може да бъде съхранено на 
+подходящо място, като по-късно то може да бъде отново натоврено, за да се продължи 
+работата с него. 
 </p>
 	>>>,
 
 	"statement2": <<<
     		<p>
-    Cutting a brilliant is a tricky business. Your task is a bit 
-	easier – brilliant is replaced by a convex polygon and you need to shape it. 
-	Laws of light refraction and retraction in this polygon are exactly the same as in a real diamond.
-
-    Beams of white light fall on your cut diamond from above and from below. 
-	We will consider that the white light consists only of three pure basic 
-	colors (Red, Green and Blue). Let’s consider that our screen plane is 
-	parallel to the ground then from the physics point of view it means that 
-	the diamond is being demonstrated in a big room with windows that are situated 
-	opposite to each other.    
+    Шлифоването на диамант е цяла наука. В предлаганата задача проблемът е улеснен
+	като диамантът е заменен с изпъкнал многоъгълник, формата на който предстои да бъде
+	конструирана. Но пречупването и отразяването на лъчите от стените на диаманта точно
+	съответства на тяхната физическа природа.
 	
-	ПоAfter beams retract on the diamond panes they go to our eye retina and 
-	it seem to us that the diamond is sparkling in different colors
-	(the colors are different because beams of different colors have different refraction indexes). 
+    На шлифования от вас диамант отгоре и отдолу пада бяла светлина, който, за простота,
+	смятаме,че се състои само от чисти цветове (R-червен, G-зелен и B-син). Ако си
+	представим, че равнината на екрана е разположена успоредно на земята, физически такова
+	осветяване означава	показване на диаманта в просторно помещение, в което прозорците се
+	намират на двете противоположни страни.
+  
+    След пречупвнето на лъч в стената на диаманта, той попада в човешкото око и на нас ни 
+	се струва, че диамантът свети в различни цветове (различни защото лъчите с различен 
+	цвят имат различни коефициенти на пречупване.
 
-    If we show all the beams that go to the retina altogether we won’t be able to figure 
-	out their directions. That is why there is only one beam demonstrated – 
-	the one that comes to the particular dot on the eye retina. 
+    Ако изобразим всички лъчи наведнъж, то няма да можем да проследим хода на лъчите. 
+	Затова се демонстрира само този лъч, който ще попадне в избрана точка от ретината на 
+	окото.
 
-    We will estimate a brilliant cutting quality by one criterion – light brightness 
-	of a beam that reaches the eye retina after retraction.
-    Another criterion that is mentioned in the task (but not in the record) 
-	is color dispersion that corresponds to the number of different colors in the diamond. 
-	The more colors the better.   
-
+    Критерият, по който се оценява качеството на шлифоване на диаманта е сумарната яркост 
+	на светлината, пречупена от диаманта и дистигнала ретината. Още един параметър се 
+	използва в програмата (без да се отчита при резултатите) е дисперсията на светлинния 
+	сноп от диаманта, т.е.колко разноцветен виждаме диаманта. Колкото по-разноцветен, 
+	толкова по-добре.
     	>>>,
     	"help2":<<<
     <p>
- You can manage the laser by mouse. To build a diamond you can drag dots that are already 
-on the diamond and add new ones by double click. There are maximum 20 dots that you can add. 
-Consider the diamond as a minimal convex polygon that contains all dots built. 
-So if you put a dot inside the polygon that is already built its form won’t change 
-(and you will have to move this dot to the external part of the polygon). 
-All the dots that you don’t need any more can be removed by the corresponding button. 
-</p><p></p><p>
-You can save your intermediate solutions at any time while working with the tasks. 
-You can open these solutions later and continue your work. 
+    Управлението на лазерния лъч се осъществява с мишката. Построяването на диаманта се 
+	осъществява чрез преместване с мишката на вече построени точки и добавяне на нови
+	чрез двоен клик. Можете да добавите не повече от 20 точки. Диамантът се построява като
+	минимален изпъкнал многоъгълник, съдържащ всички построени точки (в математиката той
+	се нарича изпъкнала обвивка на множество от точки). По този начин, ако поставим точка
+	вътре във вече построения многоъгълник, формата му няма да се промени (и тази точка ще
+	трябва да бъде преместена във външната част на многоъгълника). Всички «излишни» точки
+	могат да бъдат отстранени чрез съответен бутон.
+	</p><p></p><p>
+    В процеса на работата по задачата всяко междинно решение може да бъде съхранено на 
+    подходящо място, като по-късно то може да бъде отново натоврено, за да се продължи 
+    работата с него. 
     	>>>,
 
-    /*Work field content*/
-    "button_remove_extra_points" : "Remove extra dots",
+    /*Текст на поле*/
+    "button_remove_extra_points" : "Премахване на излишните точки",
 
-    "ray_info" : "Beam information",
-    "mean_brightness" : "Mean brightness",
-    "color_variance" : "Color dispersion",
+    "ray_info" : "Информация за лъча",
+    "mean_brightness" : "Средна яркост",
+    "color_variance" : "Дисперсия на цвета",
 
-    "current_result" : "Current result",
-    "record" : "Record",
-    "global_mean_brightness" : "Mean brightness",
-    "mean_variance" : "Average dispersion",
-    "points_count" : "Number of dots",
-    "points_uniformity" : "Evenness of dots"
+    "current_result" : "Текущ резултат",
+    "record" : "Рекорд",
+    "global_mean_brightness" : "Усреднена яркост",
+    "mean_variance" : "Средна дисперсия",
+    "points_count" : "Брой точки",
+    "points_uniformity" : "Равномерност на точките"
 }

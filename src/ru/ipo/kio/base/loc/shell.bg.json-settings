@@ -1,168 +1,166 @@
-﻿/*This file contains texts that are common to all problems and that are used in the Shell*/
+ /*This file contains texts that are common to all problems and that are used in the Shell*/
 {
-    "contest_header":"CTE contest 2012",
-    "contest_level":["Beginner Level", "I Level", "II Level"],
+    "contest_header":"Конкурс КИО 2012",
+    "contest_level":["Начално ниво", "ниво I", "ниво II"],
     "help":{ /*Common help text*/
 		"all_problems": <<< /*Such quotes <<< >>> mark the text, that spans multiple lines.
 		                    Multiline text is always treated as html, so you can use tags like <p> and <br>.
 							Don't use double quotes in the multiline text*/
-			<p>While you are solving a problem the flash-program saves your best solution automatically 
-			using memory provided by a flash-player. Amount of this memory is corrected during the first 
-			launch of the task program. Some other programs on your computer, the ones that clean the 
-			computer’s memory, can remove your temporary solutions. That’s why every time you finish 
-			working on a problem you should save your solution by clicking on button Save Best 
-			Solutions (and a questioner). After that the program will offer you to choose a folder 
-			to store the file and to give a name to the file. This is the file that you need to send 
-			to the CTE Organizing Committee  at the end of the competition via CTE site. 
-			If you want to continue to solve the problems using another computer you need to 
-			take this file with you and all necessary information won’t be lost. 
-
-            CuandWhile solving the problems you may need to save an interim solution 
-			and open it later for improving. You can make it by clicking on buttons
-			that save and open one of the interim solutions. Clearing buttons can help 
-			you to remove all the constructing elements from the work field. 
-
+			<p>В процеса на решаване на задачата рекордът автоматично се запазва в паметта, заделена от 
+flash-програмата. Именно размера на тази памет вие коригирате при първото стартиране на програмата. За съжаление,
+други програми, в частност програми за освобождаване на паметта на компютъра, могат да доведат до загуба на тези данни.
+Затова, след приключване на работата с програмата, непременно натискайте бутон “Запазване на най-добрите резултати
+(и анкетата)”. Програмата ще ви предложи да изберете удобно място за съхраняване и задаване на име на файла, който ще 
+запазите. Именно този файл трябва да предадете на жюрито на Конкурса за оформяне на резултатите
+(можете да го поставите на своята страница на сайта на Конкурса или, в краен случай, да го изпратите по електронна 
+поща на адреса Конкурса). Така, при переход от един компютър на друг, е необходимо да пренесете този
+файл, в който винаги ще се съхранява пълна информация за участника в Конкурса (анкетата и всички най-добри резултати).
+В процеса на решаване на задачата участникът може да пожелае да съхрани междинни решения, а след тов да 
+продължи работата с тях. Тези действия се изпълняват чрез бутоните за съхраняване на текущо решение на задачата и
+отваряне на едно от междинните решения на задачата. Чрез бутон за опразване на работната област се изтриват 
+всички построени елемен.
 </p>
 		>>>
 	},
 	"buttons":{
-		"load_workspace": "Load best results and questionnaire",
-		"save_workspace": "Save best results and questionnaire"
+		"load_workspace": "Натовари най-добрите резултати и анкетата",
+		"save_workspace": "Запази най-добрите резултати и анкетата"
 	},
 	"contest_panel":{
-	    "problem_header":"Problem",
-		"current_solution_caption" : "Solution",
-		"help_header" : "Help",
-		"records_and_anketa_header" : "Best results and questionnaire",
-		"record_header" : "Record",
+	    "problem_header":"Задача",
+		"current_solution_caption" : "Решение",
+		"help_header" : "Помощ",
+		"records_and_anketa_header" : "Най-добри резултати и анкета",
+		"record_header" : "Рекорд",
 		"buttons":{
-			"help" : "Help",
-			"statement": "Statement",
-			"load" : "Load",
-			"save" : "Save",
-			"clear" : "Clear",
-			"back" : "Close"
+			"help" : "Управление",
+			"statement": "Условие",
+			"load" : "Натовари",
+			"save" : "Запази",
+			"clear" : "Опразни",
+			"back" : "Затвори"
 		}
     },
     "files":{
-        "all_files": "All files",
-        "results": "Results and questionnaire",
-        "solutions": "Problem solutions"
+        "all_files": "Всички файлове",
+        "results": "Резултати и Анкета",
+        "solutions": "Решение на задачата"
     },
     "screen":{
 		"buttons":{
-			"continue_": "Continue",
-            "loadWorkspace" : "Load",
-            "back" : "Back"
+			"continue_": "Продължи",
+            "loadWorkspace" : "Натовари",
+            "back" : "Назад"
         },
         "welcome":{
 			"greeting": <<<
-				Welcome to competition CTE-2012!
+				Приветства ви конкурсът КИО 2012!
 	        >>>,
     		"mainMessage_0": <<<
-    		    <p>We would like to offer you to solve 3 problems and get acquainted with welcome address.</p>
-				<p>Before you begin to solve the problems you need to:</p>
-				<li>Let the program save data on hard drive</li>
-				<li>Fill in the questionnaire</li>
-				<p>In order to continue click on button \"Continue\".</p>
+    		    <p>Предстои ви да решите три задачи и да прочетете още малко приветствен текст.</p>
+				<p>Преди да пристъпите към решение на задачите, трябва:</p>
+				<li>Да позволите на програмата да съхранява данни на диск</li>
+				<li>Да запълните анкетата</li>
+				<p>За продължение натиснете \"Продължи\".</p>
 			>>>,
             "mainMessage_1": <<<
-                Hello {name}! In order to start solving problems click on button \"Continue\".
+                Здравейте, {name}! За да пристъпите към решаване на задачите, натиснете \"Продължи\".
             >>>,
             "mainMessage_1_continuation": <<<
-                If you are not {name}, but you want to solve problems on this computer then:
+                Ако вие не сте {name}, но имате намерение да решавате задачите на този компютър, то:
             >>>,
             "mainMessage_many": <<<
-            In order to start solving problems choose your name in a list of participants:
+            За да пристъпите към решаване на задачите, изберете участник, от чието име ще решавате задачите:
             >>>,
-            "mainMessage_many_continuation": "If you are not in the list",
+            "mainMessage_many_continuation": "Ако ви няма в списъка на участниците, то",
             "message_new_participant": <<<
-                If you hadn't solved the tasks before click on button \"New prticipant\"
+                Ако по-рано не сте решавали задачи от конкурса, натиснете бутон \"Нов участник\"
             >>>,
             "message_old_participant": <<<
-                If you had started solving problems on another computer save your
-				best results and the questionnaire on the previous computer and load them on this one
-				by clicking on \"Load\". If you start solving problems on this computer without
-				loading your old ones you will have to find a file of a particular task and move it by hand.
-                
+                Ако вече сте решавали задачи на друг компютър, съхранете на него нахй-добрите си
+                резултати и анкетата и ги натоварете на този компютър, като натиснете
+                бутон \"Натовари\". Ако започнете да решавате задачите на този
+                компютър, без да натоварите старите си решения и анкетата, ще ви се наложи
+                ръчно да пренасяте решенията на всяка задача.
             >>>,
-            "button_go": "Continue",
-            "button_new_participant": "New participant"
+            "button_go": "Започни",
+            "button_new_participant": "Нов участник"
         },
         "settings":{
 			"mainMessage": <<<
-				<p class='h1'>Correct your settings</p>
-				<p>In order to work with the program you need to let it store data on your hard drive.
-				Click on 'Settings' and customize settings like it is shown in the picture</p>
+				<p class='h1'>Поправете настройките на конкурса</p>
+				<p>За работа с програмата ви е необходимо да позволите съхраняване на данни на вашия диск.
+				Натиснете 'Настройка' и установете настройките така, както е показано на рисунката:</p>
 			>>>,
             "mainMessageContinuation": <<<
-				<p>Make shure that</p>
-				<li>the 'not to ask'chek mark is not active</li>
-				<li>The slider is set at least on 1 megabyte</li>
-				<p class='warning'>Warning! If you customize settings wrong the program will
-				demand you to customize them correct and won't continue to work untill you do it.</p>
+				<p>Убедитесь, что</p>
+				<li>Знак 'не питай' не е избран</li>
+				<li>Плъзгачът е установен на поне 1 мегабайт</li>
+				<p class='warning'>Внимание! Если настройките са установени неправилно, програмата ще
+				иска да ги установите правилно и няма да продължи работудокато не направите това.</p>
 			>>>,
-			"configure_button": "Settings"
+			"configure_button": "Настройка"
         },
         "form": {
-            "field_must_be_filled": "The field is required",
-            "header": "Fill in the questionnaire",
-            "participant_name": "Name and Surname of the participant (In capital letters)",
-			"name": "Name",
-			"surname": "Surname",
-			"second_name": "Second surname",  /*Patronym, Middle name*/
-			"connection": "Contacts",
-			"e_mail": "e-mail",
-			"institution": "Educational institution",
-			"institution_name": "Name",
+            "field_must_be_filled": "Полето трябва да е попълнено",
+            "header": "Попълнете Анкетата",
+            "participant_name": "Име участника (С главни букви)",
+			"name": "Име",
+			"surname": "Фамилия",
+			"second_name": "Бащино",
+			"connection": "Връзка",
+			"e_mail": "e-mail за връзка с участника",
+			"institution": "Образователно учреждение",
+			"institution_name": "Название",
 
-			"grade": "Grade",
-			"address": "Address",
-			"name_restriction": "A-Za-z\-" /*You can write down a range of recognizable symbols here*/
+			"grade": "Клас",
+			"address": "Пълен адрес с пощенски код",
+			"name_restriction": "А-Яа-я\-" /*Здесь можно писать диапазоны распознаваемых символов*/
         },
         "problems": {
-            "fill_form": "Fill in the questionnaire",
-            "header": "Choose the task",
-            "about":"About the program"
+            "fill_form": "Попълнете анкетата",
+            "header": "Изберете задача",
+            "about":"За програмата"
         },
         "problem": {
-            "screen_header":"Problem"
+            "screen_header":"Задача"
         },
         "about": {
-            "header": <<<About CTE competition>>>, /*About authors and copy right*/
+            "header": <<<За Конкурсе КИО-2012>>>, /*About authors and copy right*/
             "text" : <<<
-                <p class='h1c'>Institute of productive learning of the Russian Academy of Education</p>
-                <p class='h1c'>Comuter Tools in Education Journal</p>
+                <p class='h1c'>Институт за продуктивно обучение на Руската академия за образование</p>
+                <p class='h1c'>Журнал «Компютърни инструменти в училище»</p>
                 <p><br></p>
-                <p><b>International Organizing Committee:</b> Maria Losada and Mario Cruz (Colombia),Emiliya Velikova (Bulgaria),
-                                                    Anastasia Dementeva and Sergey Pozdnyakov (Russia), Atit Maitarattanakon
-                                                    (Thailand).</p>
+                <p><b>Международен оргкомитет:</b> Мария де Лосада и Марио Круз (Колумбия), Эмилия Великова
+                                                    (Болгария), Анастасия Дементьева и Сергей Поздняков (Россия), Атит Майтараттанакон
+                                                    (Таиланд).</p>
                 /*<p><br></p>*/
-                <p><b>Organizers and methodologists:</b>Sophie Entina, Sergey Pozdnyakov, Ilya Posov</p>
-                <p><b>Volunteers:</b> Akudzhuoby Uchenna, Bihalova Julia, Davidovich Ilona,
-                                                  Ivanov Pavel, Podolskaya Alexandra, Shakshin Dmitry</p>
+                <p><b>Организатори и методисти:</b> Энтина С.Б., Поздняков С.Н., Посов И.А.</p>
+                <p><b>Инициативни помощници:</b> Акуджуоби Ученна, Быхалова Юлия, Давидович Илона,
+                                                  Иванов Павел, Подольская Александра, Шакшин Дмитрий</p>
                 /*<p><br></p>*/
-                <p><b>Web programmer:</b> Nikolai Yasnov</p>
-                <p><b>Secretary:</b> Tatyana Myand</p>
-                <p><b>Designer:</b> Anna Vasilkova</p>
+                <p><b>Уеб-мастер:</b> Яснов Н.</p>
+                <p><b>Секретар:</b> Мянд Т.Г.</p>
+                <p><b>Дизайнер:</b> Василькова А.В.</p>
 
                 /*<p><br></p>*/
-                <p><b>Problems creation:</b></p>
-                <p><b>Tasks authors:</b> Ilya Posov («Diamand and Laser», «Brilliant Cutting», «Body Swap»),
-                                        Butikov E. («Invisible Man»), Sergey Pozdnyakov («Trams», «Tram Routs»).</p>
-                <p><b>Flash pragrammers:</b> Akimushkin V., Posov I., Osipov V.</p>
-                <p><b>Designer:</b> Anna Vasilkova</p>
+                <p><b>Над задачите работиха:</b></p>
+                <p><b>Авторы задач:</b> Посов И.А. («Диамант и лазер», «Шлифоване на диамант», «Обмен на тела»),
+                                        Бутиков Е.И. («Невидимият»), Поздняков С.Н. («Трамвай», «Трамвайни
+                                        маршрути»).</p>
+                <p><b>Программисти:</b> Акимушкин В.А., Посов И.А., Осипов В.</p>
+                <p><b>Художник:</b> Василькова А.В.</p>
                 <p><br></p>
-                <p><b>E-mail:</b> <a href='mailto:kio.org@gmail.com'>kio.org@gmail.com</a></p>
-                <p><b>Contest web-site:</b> <a href='www.kio.spb.ru/kio'>www.kio.spb.ru/kio</a></p>
+                <p><b>Електронен адрес:</b> <a href='mailto:kio.org@gmail.com'>kio.org@gmail.com</a></p>
+                <p><b>Сайт на Конкурса:</b> <a href='www.kio.spb.ru/kio'>www.kio.spb.ru/kio</a></p>
 
-                <p class='h2'><br>© Center of information technologies in education «CTE»</p>
+                <p class='h2'><br>© «АНО Центр информатизации образования КИО»</p>
             >>>
 		},
 		"space_settings":{
-            "warning":"warning!",
-            "action":"In order to work with the program you need to let it store data on your hard drive.\nClick on 'Settings' and customize settings like it is shown in the picture",
-            "after":"You will be able to close the window after that"
+            "warning":"ВНИМАНИЕ!",
+            "action":"За работа на програмата на конкурса КИО е необходимо да разрешите съхраняване на данни на диск.\nОткройте окно настроек и позвольте программе пользоваться как минимум одним мегабайтом. Для этого установите настройки как на картинке:",
+            "after":"Само тогава ще можете да затворите този прозорец"
 		}
     }
 }
