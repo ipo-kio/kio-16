@@ -6,6 +6,7 @@
 
     path.variable.flex_ant_home=/opt/flex/ant
     FLEX_HOME=/opt/flex
+    compilation.language=en
     -->
     <property file="kio-12.properties"/>
 
@@ -121,47 +122,20 @@
 
     <target name="compile.module.kio-12.production" description="Compile module kio-12; production classes">
         <mkdir dir="${kio-12.output.dir}"/>
-        <!-- Russian -->
-        <!--
-        <antcall target="compile.module.kio-12.production.level-language">
-            <param name="level" value="1"/>
-            <param name="language" value="ru"/>
-        </antcall>
-
-        <antcall target="compile.module.kio-12.production.level-language">
-            <param name="level" value="2"/>
-            <param name="language" value="ru"/>
-        </antcall>
-        -->
-
-        <!-- Spanish -->
-
-        <!--
-        <antcall target="compile.module.kio-12.production.level-language">
-            <param name="level" value="1"/>
-            <param name="language" value="es"/>
-        </antcall>
-
-        <antcall target="compile.module.kio-12.production.level-language">
-            <param name="level" value="2"/>
-            <param name="language" value="es"/>
-        </antcall>
-        -->
-        <!-- Bulgarian -->
 
         <antcall target="compile.module.kio-12.production.level-language">
             <param name="level" value="0"/>
-            <param name="language" value="ru"/>
+            <param name="language" value="${compilation.language}"/>
         </antcall>
 
         <antcall target="compile.module.kio-12.production.level-language">
             <param name="level" value="1"/>
-            <param name="language" value="ru"/>
+            <param name="language" value="${compilation.language}"/>
         </antcall>
 
         <antcall target="compile.module.kio-12.production.level-language">
             <param name="level" value="2"/>
-            <param name="language" value="ru"/>
+            <param name="language" value="${compilation.language}"/>
         </antcall>
 
         <!--<copy todir="${kio-12.output.dir}">
@@ -180,7 +154,7 @@
         <mkdir dir="${level_lang.output.dir}"/>
 
         <mxmlc
-                file="${module.kio-12.basedir}/src/ru/ipo/kio/_12/KIOShell_${level}.as"
+                file="${module.kio-12.basedir}/src/ru/ipo/kio/_12/KIOShell_cond.as"
                 output="${level_lang.output.dir}/KIO.files/${level_lang.output.file_name}.swf"
                 keep-generated-actionscript="false"
                 actionscript-file-encoding="UTF-8"

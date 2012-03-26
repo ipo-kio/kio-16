@@ -160,7 +160,7 @@ the tasks and open these solutions later and continue your work.
     		"play": "Launch \ntrams",
     		"step": "Take \na step",
     		"result": "Immediate \nresult",
-    		"init": "initial \nstate",
+    		"init": "Initial \nstate",
     		"expand": "Expand",
     		"collapse": "Minimize",
     		"add": "Add",
