@@ -1,13 +1,13 @@
 {
-    "title": "Body swap",
-    "statement": <<<
+    "title": "สลับร่าง",
+    "ข้อความ": <<<
 		<p>
-		Toy robots swap their information systems – “souls” - 
-		in this task (it is represented as head swap). 
+		หุ่นยนต์สลับเปลี่ยนระบบข้อมูลของตัวเอง "วิญญาณ"
+		 ในงานนี้จะแสดงการเปลี่ยนหัวของมันด้วย
 </p><p>
-        Your task is to make as much swaps as possible considering these two rules:
+     งานของคุณก็คือทำการสลับเปลี่ยนให้ได้มากที่สุดเท่าที่จะทำได้ภายใต้กฏสองข้อคือ
 </p><p>
-        <b>First rule</b>
+        <b>กฏข้อที่หนึ่ง</b>
 </p><p>
         Every couple of robots can make only one “soul” swap.
 </p><p>
