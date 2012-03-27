@@ -6,8 +6,8 @@
 		เพื่อที่จะบรรทุกผู้โดยสารไปยังสถานีได้อย่างเร็วที่สุดเท่าที่จะทำได้ 
         </p>
         <p>
-        Passengers travelling to a particular 
-		railway station are represented by points colored the same as the railway station. 
+        ผู้โดยสารที่จะเดินทางไปกับรถราง 
+		จะถูกแสดงด้วยจุดซึ่งจะเป็นสีเดียวกับสถานีที่เป็นจุดมุ่งหมายของผู้โดยสารคนนั้น 
         </p>
         <p>
         Each passenger takes the first train which route passes by his desired railway station.
