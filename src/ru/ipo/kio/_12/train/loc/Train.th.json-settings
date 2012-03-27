@@ -42,16 +42,16 @@
 รถรางสามารถวิ่งผ่านในเส้นเดิมได้หลายครั้งแต่ไม่สามารถวิ่งถอยกลับได้
 การแก้ปัญหาจะไม่ถูกนำมานับถ้าเกิดการชนกันของรถรางในขณะที่รถรางเคลื่อนที่</p>
 <p>
-If a rout is highlighted you can remove its sections starting from the last one 
-by clicking on the corresponding button. You can also remove all the routs created 
-by clicking on another button.  
+ขณะที่กำลังเลือกเส้นทาง(จะเส้นทางนั้นจะเป็นสีขาว)คุณสามารถที่จะเปลี่ยนเส้นทางจากเส้นสุดท้ายIf a rout is highlighted you can remove its sections starting from the last one 
+โดยการคลิกไปที่เม้าท์และคุณยังสามารถออกแบบเส้นทางby clicking on the corresponding button. You can also remove all the routs created 
+โดยการคลิกไปที่เม้าท์by clicking on another button.  
 </p>
-<p>You can launch trams by clicking on the corresponding buttons in step-by-step, 
-animated or immediate mode. It is possible to change the mode during the trams movement.  
+<p>คุณสามารถปล่อยรถรางให้วิ่งโดยกดปุ่ม โหมดเคลื่อนไหวทีละขั้นตอนYou can launch trams by clicking on the corresponding buttons in step-by-step, 
+โหมดเคลื่อนไหวทั้งหมด และสามารถที่จะเปลี่ยนโหมดในขณะที่รถเคลื่อนไหวหรือ animated or immediate mode. It is possible to change the mode during the trams movement.  
 </p>
 <p>
-You can save your intermediate solutions at any time while working with the tasks 
-and open these solutions later and continue your work. </p>
+คุณสามารถที่จะบันทึกผลการแก้ปัญหาอย่างทันทีทันใดในขณะที่คุณทำการแก้โจทย์You can save your intermediate solutions at any time while working with the tasks 
+และยังสามารถเปิดวิธีการแก้โจทย์ภายหลัง และสามารถดำเนินการแก้โจทย์ต่อไปได้and open these solutions later and continue your work. </p>
 	>>>,
 "title1": "Trams",
     "statement1": <<<
