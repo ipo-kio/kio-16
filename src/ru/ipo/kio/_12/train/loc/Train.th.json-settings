@@ -17,12 +17,12 @@
 	  เส้นทางที่ดีควรจะสามารถบรรทุกผู้โดยสารได้เป็นจำนวนมาก
         </p>
         <p>
-        If two or more different routes happen to implement a delivery of equal 
-		number of passengers, the one for which its last passenger is delivered earlier is considered better. 
+        รถรางสองเส้นทางหรือมากกว่าสองเส้นทางที่บรรทุกผู้โดยสารต่างๆกัน
+		ขบวนใดที่สามารถส่งผู้โดยสารคนสุดท้ายได้เร็วที่สุดจะคือว่าดีที่สุด 
         </p>
         <p>
-        Best solutions, or records, are saved automatically. At any point of time it is possible 
-		to load your best solution by clicking on the record load button. 
+       ผลการแก้ที่ดีที่สุด หรือ คะแนนที่ดีที่สุดจะถูกบันทึกอัตโนมัติ ทุกๆจุดของเวลาที่จะเป็นไปได้ 
+		และสามารถคลิกไปที่ปุ่ม บันทึกคะแนน ขณะที่คุณต้องการบันทึกดังกล่าว
         </p>
         <p><b>Comment to the illustration</b></p>
         <p>
