@@ -27,20 +27,20 @@
 		และพฤติกรรมที่เปลี่ยนแปลงไปอย่างไม่คาดคิด
 </p>
 	>>>,
-	"help":<<<
+	"help ช่วยเหลือ":<<<
 <p>
-In order to swap two bodies you should drag “soul” of one robot to 
-the body of the other one on the main work field. The swap will happen 
-and you will see a restriction on further swap between these two robots 
-in the pictures on the left.
+In order to swap two bodies you should drag “soul” of one robot to ในการที่จะสลับเปลี่ยนร่างกายคุณควรที่จะลาก วิญญาณ ของหุ่นยนต์ตัวที่ต้องการ
+the body of the other one on the main work field. The swap will happen ไปยังอีกตัวที่เราต้องการจะเปลี่ยน  การสลับจะเกิดขึ้น
+and you will see a restriction on further swap between these two robots และคุณจะเห็นการเปลี่ยนแปลงระหว่างหุ่นยนต์สองตัว
+in the pictures on the left.ในรูปภาพทางด้านซ้าย
 </p><p>
-You can save your intermediate solutions at any time while working with the tasks. 
-You can open these solutions later and continue your work. 
+You can save your intermediate solutions at any time while working with the tasks. คุณสามารถบันทึกผลได้ทันทีหรือในขณะที่คุณกำลังทำงาน
+You can open these solutions later and continue your work. คุณสามารถเปิดดูผลการแก้ปัญหาได้ในภายหลัง และสามารถเริ่มการทำงานของคุณได้เสมอ
 </p><p>
-<b>Comment to the illustration</b>
+<b>Comment to the illustration คำอธิบายตามรูปภาพ</b>
 </p><p>
-Not long ago Swedish neuroscientists carried out an interesting experiment. They placed cameras on heads 
-of two people and therefore created an effect of body swap to research peoples’ perception of their own bodies. 
+เมื่อไม่นานมานี้นักประสาทวิทยาชาวสวีเดนได้ทำการทดลองที่น่าสนใจ  พวกเขาได้ติดตั้งกล้องบนหัว
+ของสองคน และหลังจากนั้นได้ออกแบบผลกระทบของการสลับร่างเพื่อวิจัยถึงการรับรู้ของร่างกายตนเอง
 
 </p>
 	>>>,
