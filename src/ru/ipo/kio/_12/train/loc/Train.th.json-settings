@@ -34,13 +34,13 @@
 	>>>,
 	"help0":<<<
 <p>
-In order to create a rout you should click on a tram and the rout created 
-will be highlighted in white. For further rout creation you should click 
-successively on the rout sections that the tram will pass. 
+ในการที่จะสร้างทางรถราง  คุณควรจะคลิกที่ขบวนรถรางคลิกไปยังเส้นทางที่คุณ
+ต้องการให้รถรางวิ่งไป  โดยเส้นทางที่ถูกเลือกจะแสดงเป็นสีขาว
+และควรจะคลิกวางแผนเส้นทางอย่างต่อเนื่องจนสิ้นสุด
 </p>
 <p>
-The tram can pass the same rout section several times but it can’t go back. 
-The solution is not counted if the trams collide while moving.</p>
+รถรางสามารถวิ่งผ่านในเส้นเดิมได้หลายครั้งแต่ไม่สามารถวิ่งถอยกลับได้
+การแก้ปัญหาจะไม่ถูกนำมานับถ้าเกิดการชนกันของรถรางในขณะที่รถรางเคลื่อนที่</p>
 <p>
 If a rout is highlighted you can remove its sections starting from the last one 
 by clicking on the corresponding button. You can also remove all the routs created 
