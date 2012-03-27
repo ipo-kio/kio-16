@@ -10,11 +10,11 @@
 		จะถูกแสดงด้วยจุดซึ่งจะเป็นสีเดียวกับสถานีที่เป็นจุดมุ่งหมายของผู้โดยสารคนนั้น 
         </p>
         <p>
-        Each passenger takes the first train which route passes by his desired railway station.
+         ผู้โดยสารแต่ละคนจะโดยสารไปกับรถรางขบวนแรกที่วิ่งผ่านไปยังสถานที่เขาต้องการ
         </p>
         <p>
-        For the purpose of comparing different routes to each other, 
-		a route that transports more passengers is considered better. 
+       เพื่อความมุ่งหวังที่จะเปรียบเที่ยบเส้นทางที่แตกต่างกันในแต่ละสาย  
+	  เส้นทางที่ดีควรจะสามารถบรรทุกผู้โดยสารได้เป็นจำนวนมาก
         </p>
         <p>
         If two or more different routes happen to implement a delivery of equal 
