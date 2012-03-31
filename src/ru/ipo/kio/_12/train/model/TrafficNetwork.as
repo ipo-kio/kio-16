@@ -421,13 +421,7 @@ public class TrafficNetwork extends VisibleEntity {
         checkError();
         TrafficNetworkCreator.instance.resultAmount.htmlText = "<p align='center'>"+amountOfHappyPassengers + " из " + amountOfPassengers+"</p>";
         if(level == 0){
-            var maxTime:int = 0;
-            for(var i:int = 0; i<trains.length; i++){
-                var tempTrain:Train = trains[i];
-                maxTime =  Math.max(tempTrain.toPasTime, maxTime);
-            }
-            
-            
+            var maxTime:int = getMaxTime();
             TrafficNetworkCreator.instance.resultTime.htmlText = "<p align='center'>"+ maxTime+"</p>";
         }
         else {
@@ -463,7 +457,16 @@ public class TrafficNetwork extends VisibleEntity {
         }
     }
 
-    private function getMediana():int {
+    public function getMaxTime():int {
+        var maxTime:int = 0;
+        for (var i:int = 0; i < trains.length; i++) {
+            var tempTrain:Train = trains[i];
+            maxTime = Math.max(tempTrain.toPasTime, maxTime);
+        }
+        return maxTime;
+    }
+
+    public function getMediana():int {
         _times = _times.sort(Array.NUMERIC);
         if(_times.length==0)
             return 0;

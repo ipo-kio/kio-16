@@ -124,13 +124,34 @@ public class TrainProblem implements KioProblem {
     }
 
     public function check(solution:Object):Object {
-        //todo
-        return new Object();
+        return null;
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        //todo
-        return 1;
+        if (!solution1){
+            return solution2 ? -1 : 0;
+        } else if (!solution2){
+            return 1;
+        }
+
+        loadSolution(solution1);
+        var hasCrash1:Boolean = TrafficNetwork.instance.fault;
+        var happyPassengers1:int = TrafficNetwork.instance.amountOfHappyPassengers;
+        var time1:int = TrafficNetwork.instance.level==0?TrafficNetwork.instance.getMaxTime():TrafficNetwork.instance.getMediana();
+
+        loadSolution(solution2);
+        if(hasCrash1){
+            return TrafficNetwork.instance.fault? 0:-1;
+        }else if(happyPassengers1!=TrafficNetwork.instance.amountOfHappyPassengers){
+            return getSign(happyPassengers1-TrafficNetwork.instance.amountOfHappyPassengers);
+        }else{
+            var time2:int = TrafficNetwork.instance.level==0?TrafficNetwork.instance.getMaxTime():TrafficNetwork.instance.getMediana();
+            return getSign(time1-time2);
+        }
+    }
+
+    private function getSign(i:int):int {
+       return i>0?1:i<0?-1:0;
     }
 
     [Embed(source='_resources/intro.png')]
