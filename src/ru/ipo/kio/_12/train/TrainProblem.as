@@ -134,19 +134,12 @@ public class TrainProblem implements KioProblem {
             return 1;
         }
 
-        loadSolution(solution1);
-        var hasCrash1:Boolean = TrafficNetwork.instance.fault;
-        var happyPassengers1:int = TrafficNetwork.instance.amountOfHappyPassengers;
-        var time1:int = TrafficNetwork.instance.level==0?TrafficNetwork.instance.getMaxTime():TrafficNetwork.instance.getMediana();
-
-        loadSolution(solution2);
-        if(hasCrash1){
-            return TrafficNetwork.instance.fault? 0:-1;
-        }else if(happyPassengers1!=TrafficNetwork.instance.amountOfHappyPassengers){
-            return getSign(happyPassengers1-TrafficNetwork.instance.amountOfHappyPassengers);
+        if(solution1.hasCrash){
+            return solution2.hasCrash? 0:-1;
+        }else if(solution1.happyPassengers!=solution2.happyPassengers){
+            return getSign(solution1.happyPassengers-solution2.happyPassengers);
         }else{
-            var time2:int = TrafficNetwork.instance.level==0?TrafficNetwork.instance.getMaxTime():TrafficNetwork.instance.getMediana();
-            return getSign(time1-time2);
+            return getSign(solution1.time-solution2.time);
         }
     }
 
@@ -179,7 +172,13 @@ public class TrainProblem implements KioProblem {
     }
 
     public function get best():Object {
-        return null;
+        //просто возвращаем оценку текущего решения
+        //ожидается, что был сделан load
+        return {
+            hasCrash: TrafficNetwork.instance.fault,
+            happyPassengers: TrafficNetwork.instance.amountOfHappyPassengers,
+            time: TrafficNetwork.instance.level==0?TrafficNetwork.instance.getMaxTime():TrafficNetwork.instance.getMediana()
+        };
     }
 
     public function get icon_statement():Class {
