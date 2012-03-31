@@ -243,7 +243,7 @@ public class TrainSprite extends Sprite {
         tfCrash.width = 100;
         tfCrash.height = 20;
         addChild(tfCrash);
-        tfCrash.htmlText = "<p align='center' bgcolor='0xff0000'>Авария</p>";
+        tfCrash.htmlText = "<p align='center' bgcolor='0xff0000'>"+ loc.headers.crash+"</p>";
         TrafficNetworkCreator.instance.resultCrash = tfCrash;
         tfCrash.visible = false;
     }
@@ -354,7 +354,7 @@ public class TrainSprite extends Sprite {
         tfCrash.width = 100;
         tfCrash.height = 20;
         addChild(tfCrash);
-        tfCrash.htmlText = "<p align='center' bgcolor='0xff0000'>Авария</p>";
+        tfCrash.htmlText = "<p align='center' bgcolor='0xff0000'>"+ loc.headers.crash+"</p>";
         TrafficNetworkCreator.instance.resultCrash = tfCrash;
         tfCrash.visible = false;
 
