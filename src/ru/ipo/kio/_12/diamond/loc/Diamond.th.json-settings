@@ -1,11 +1,11 @@
 {
-    "title1": "Diamond and laser ",
-    "title2": "Brilliant cutting",
+    "title1": "เพชรและแสงเลเซอร์ ",
+    "title2": "เจียระไนเพชร",
     "statement1": <<<
 		<p>
-Laser emits the wave frequencies that correspond to red, green and blue colors. 
-From the point of a human eye it looks like one bright white beam that falls 
-on pane of a diamond and reflects and refracts repeatedly inside of it. 
+เลเซอร์จะปล่อยคลื่นความถี่ที่ตรงกับสีแดง สีเขียว และ สีฟ้า
+จากจุดในระดับสายตาของคน ดูเสมือนว่ามีลำแสงสีขาวสดใส
+ตกลงบนเพชร และส่งแสงสะท้อนมาจากข้างใน
 Angle of refraction is different for different colors and because of that the white beam 
 dissolves into three basic colors. </p><p>
 You can change two parameters: form of the diamond and the beam direction. 
