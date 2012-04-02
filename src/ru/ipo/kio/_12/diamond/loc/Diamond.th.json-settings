@@ -11,17 +11,17 @@
 คุณสามารถเปลี่ยนสองปัจจัยคือ รูปแบบของเพชร และ ทิศทางของแสงสว่าง 
 จุดมุ่งหมายของคุณคือ ได้ประกายเพชรที่สวยที่สุด 2 กฏเกณฑ์ที่จะตัดสินความงามของเพชร: 
 ข้อที่หนึ่งคือจำนวนของแสงที่ได้มาจากเพชร, 
-the other one – the evenness of these spots.</p><p></p><p>
-From the math point of view the first (and the main) criterion is the number of points 
-on the diamond line of sight that can be seen.</p><p></p><p>
-If several participants have the same number of points on the diamond line then 
-the solution with the most even placement of light spots will be considered the best. 
-The evenness of the light spots is the average deviation from the average distance 
-between two near-by dots (light spots) on the diamond circle. </p><p></p><p>
-Best solutions, or records, are saved automatically. 
-At any point of time it is possible to load your best solution by pressing the record load button.
+ส่วนอีกข้อนึงคือความสมดุลของจุดเหล่านั้น</p><p></p><p>
+จากจุดที่เหมาะสมกันของการมองในครั้งแรก(และถือเป็นหลัก) 
+เกณฑ์คือจำนวนของจุดที่อยู่บนระนาบของเพชรที่สามารถมองเห็นได้</p><p></p><p>
+ถ้าผู้เข้าแข่งขันได้จำนวนของจุดเท่ากัน  
+จะตัดสินโดยดูจากการจัดเรียงที่ดีที่สุด
+ความสมดุลของจุดแสงเป็นค่าเบี่ยงเบนเฉลี่ยจากระยะทางเฉลี่ย
+ระหว่างจุดสองสุดที่อยู่ใกล้(จุดสว่าง)บนวงกลมเพชร </p><p></p><p>
+ผลคะแนนที่ดีที่สุดจะถูกบันทึกอัตโนมัติ
+คุณสามารถกดบันทึกผลที่ดีที่สุดได้ทุกช่วงเวลาโดยการกดไปที่ปุ่มบันทึกผล
 	>>>,
-	"help1":<<<
+	"ช่วยเหลือ1":<<<
 <p>
 You can manage the laser by mouse. To build a diamond you can drag dots that are already 
 on the diamond and add new ones by double click. There are maximum 20 dots that you can add. 
