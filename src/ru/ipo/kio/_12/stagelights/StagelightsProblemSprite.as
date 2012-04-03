@@ -41,6 +41,7 @@ import ru.ipo.kio.api.*;
 		public var bandage: Array = [];
 		public var flag: Boolean = true;
 		public var crnt: int = 0;
+		public var max: Object;
 		private var _api: KioApi;
 		
 		//конструктор спрайта, инициализация всех объектов
@@ -275,6 +276,10 @@ import ru.ipo.kio.api.*;
 		}
 		
 		public function refreshResult(e: Event = null): void {
+			if (firstMax < results(1) && secondMax <= results(0)) {
+				trace("SAVE MAX");
+				max = solution;
+			}
 			if (firstMax < results(1)) {	
 				var time: Timer = new Timer(251, 4);
 				time.start();	
@@ -378,14 +383,6 @@ import ru.ipo.kio.api.*;
 					bandage[k].visible = false;
 				}
 			}
-			//trace(firstMax + " A " + secondMax);
-			//trace(results(1) + " B " + results(0));
-			//if ((firstMax < results(1) && secondMax <= results(0)) || (firstMax <= results(1) && secondMax < results(0))) {
-				//trace("SAVE MAX");
-				//firstMax = results(1);
-				//secondMax = results(0);
-				//_api.saveBestSolution();
-			//}
 			result0.text = "Ваш результат для I фокуса: исчезновение на " + round(results(1)) + "%";
 			max0.text = "Лучший результат для I фокуса: исчезновение на " + round(firstMax) + "%";
 			result1.text = "Ваш результат для II фокуса: исчезновение на " + round(results(0)) + "%";
@@ -469,6 +466,51 @@ import ru.ipo.kio.api.*;
 		
 		public function round(a: Number): Number {
 			return Math.round(a * 100) / 100;
+		}
+		
+		public function get solution():Object {
+			var first: Array = [];
+			var fmax: int = firstMax;
+			var smax: int = secondMax;
+			if (stagelights[0].visible) {
+				first[0] = stagelights[0].spotlights[0].spotlight.intensity;
+				first[1] = stagelights[0].spotlights[1].spotlight.intensity;
+				first[2] = stagelights[0].spotlights[2].spotlight.intensity;
+				first[3] = stagelights[0].bodies[4].body.red;
+				first[5] = stagelights[0].bodies[5].body.blue;
+				first[4] = stagelights[0].bodies[6].body.green;
+			} else {
+				first[0] = firstResult[0];
+				first[1] = firstResult[1];
+				first[2] = firstResult[2];
+				first[3] = firstResult[3];
+				first[5] = firstResult[5];
+				first[4] = firstResult[4];	
+			}
+			var second: Array = [];
+			if (stagelights[0].visible) {
+				second[0] = secondResult[0];
+				second[1] = secondResult[1];
+				second[2] = secondResult[2];
+				second[3] = secondResult[3];
+				second[5] = secondResult[5];
+				second[4] = secondResult[4];	
+			} else {
+				second[0] = stagelights[1].spotlights[0].spotlight.intensity;
+				second[1] = stagelights[1].spotlights[1].spotlight.intensity;
+				second[2] = stagelights[1].spotlights[2].spotlight.intensity;
+				second[3] = stagelights[1].bodies[0].body.red;
+				second[4] = stagelights[1].bodies[0].body.green;
+				second[5] = stagelights[1].bodies[0].body.blue;	
+			}
+			return {
+				first : first,
+				second : second,
+				firstMax: fmax,
+				secondMax: smax,
+				visible: stagelights[0].visible,
+				bandages: bandages
+			};
 		}
 	}
 

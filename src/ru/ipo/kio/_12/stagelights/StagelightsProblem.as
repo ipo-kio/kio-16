@@ -233,9 +233,7 @@ public class StagelightsProblem implements KioProblem {
      * @return результат проверки
      */
     public function check(solution:Object):Object {
-        return {
-            result : sp.results(0) + sp.results(1)
-        };
+        return null;
     }
 
     /**
@@ -245,10 +243,13 @@ public class StagelightsProblem implements KioProblem {
      * @return результат сравнения
      */
     public function compare(solution1:Object, solution2:Object):int {
-		if (solution1.result > solution2.result) {
+		if (solution1.firstMax + solution1.secondMax > solution2.firstMax + solution2.secondMax) {
 			return 1;
-		} else {
+		} else if (solution1.firstMax + solution1.secondMax == solution2.firstMax + solution2.secondMax) {
 			return 0;
+		}
+		else {
+			return -1;
 		}
     }
 
@@ -281,9 +282,7 @@ public class StagelightsProblem implements KioProblem {
      * Возвращаем оценку для лучшего решения
      */
     public function get best():Object {
-        return {
-            result : 200
-        };
+        return sp.max;
     }
 }
 
