@@ -72,21 +72,21 @@
 (และคุณจะต้องเคลื่อนย้ายจุดนี้ออกไปภายนอกของรูปหลายเหลี่ยม)
 ทุกจุดที่คุณไม่ต้องการ สามารถลบออกได้โดยคลิกปุ่มที่เกี่ยวข้อง. 
 </p><p></p><p>
-You can save your intermediate solutions at any time while working with the tasks. 
-You can open these solutions later and continue your work. 
+คุณสามารถบันทึกการแก้ปัญหาได้ทุกเวลาแม้กระทั่งในขณะที่คุณกำลังแก้ปัญหา
+คุณสามารถเปิดดูวิธีการแก้ปัญหาและดำเนินการแก้ปัญหา
     	>>>,
 
     /*Work field content*/
-    "button_remove_extra_points" : "Remove extra dots",
+    "button_remove_extra_points" : "ย้ายจุดพิเศษ",
 
-    "ray_info" : "Beam information",
-    "mean_brightness" : "Mean brightness",
-    "color_variance" : "Color dispersion",
-
-    "current_result" : "Current result",
-    "record" : "Record",
-    "global_mean_brightness" : "Mean brightness",
-    "mean_variance" : "Average dispersion",
-    "points_count" : "Number of dots",
-    "points_uniformity" : "Evenness of dots"
+   "ray_info" : "ข้อมูลลำแสง",
+    "mean_brightness" : "ค่าเฉลี่ยความสว่าง",
+    "color_variance" : "การกระจายของสี",
+    
+    "current_result" : "ผลที่เกิดขึ้น",
+    "record" : "บันทึก",
+    "global_mean_brightness" : "ความสว่างเฉลี่ย",
+    "mean_variance" : "ค่าเบี่ยงเบนเฉลี่ย",
+    "points_count" : "จำนวนของจุด",
+    "points_uniformity" : "ความสมดุลของจุด"
 }
