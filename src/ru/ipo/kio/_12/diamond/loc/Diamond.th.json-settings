@@ -26,20 +26,20 @@
 คุณสามารถจัดการกับเลเซอร์โดยใช้เม้าท์ การสร้างเพชรคุณสามารถลากจุดที่ซึ่งอยู่บนเพชร
 และสามารถเพิ่มจุดโดยกดที่เม้าท์สองครั้ง ซี่งมีมากถึง 20 จุดที่คุณสามารถเพิ่มเติม 
 พิจารณาเพชรที่มีหลายเหลี่ยม มีสูงมีต่ำที่สร้างจากจุดทั้งหมด
-So if you put a dot inside the polygon that is already built its form won’t change 
-(and you will have to move this dot to the external part of the polygon). 
-All the dots that you don’t need any more can be removed by the corresponding button. 
+ดังนั้นถ้าคุณวางจุดภายในรูปหลายเหลี่ยมซึ่งถูกสร้างรูปแบบมาแล้วจะไม่สามารถเปลี่ยนได้
+(และคุณจะต้องเคลื่อนย้ายจุดนี้ออกไปภายนอกของรูปหลายเหลี่ยม)
+ทุกจุดที่คุณไม่ต้องการ สามารถลบออกได้โดยคลิกปุ่มที่เกี่ยวข้อง
 </p><p></p><p>
-You can save your intermediate solutions at any time while working with the tasks. 
-You can open these solutions later and continue your work.  
+คุณสามารถบันทึกการแก้ปัญหาได้ทุกเวลาแม้กระทั่งในขณะที่คุณกำลังแก้ปัญหา
+คุณสามารถเปิดดูวิธีการแก้ปัญหาและดำเนินการแก้ปัญหา
 </p>
 	>>>,
 
-	"statement2": <<<
+  "ข้อความที่ 2": <<<
     		<p>
-    Cutting a brilliant is a tricky business. Your task is a bit 
-	easier – brilliant is replaced by a convex polygon and you need to shape it. 
-	Laws of light refraction and retraction in this polygon are exactly the same as in a real diamond.
+การเจียระไนเป็นการทำที่ยาก งานของคุณ
+จะง่ายกว่า  ความงดงามจะปรากฏโดยการทำให้รูปทรงนูนและคุณต้องจัดรูปร่างให้มัน
+กฏการหักเหของแสงหรือรูปทรางหลายเหลี่มจะต้องดูเหมือนเพชรจริงๆ
 
     Beams of white light fall on your cut diamond from above and from below. 
 	We will consider that the white light consists only of three pure basic 
