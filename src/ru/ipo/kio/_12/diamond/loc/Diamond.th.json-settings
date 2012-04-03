@@ -23,9 +23,9 @@
 	>>>,
 	"ช่วยเหลือ1":<<<
 <p>
-You can manage the laser by mouse. To build a diamond you can drag dots that are already 
-on the diamond and add new ones by double click. There are maximum 20 dots that you can add. 
-Consider the diamond as a minimal convex polygon that contains all dots built. 
+คุณสามารถจัดการกับเลเซอร์โดยใช้เม้าท์ การสร้างเพชรคุณสามารถลากจุดที่ซึ่งอยู่บนเพชร
+และสามารถเพิ่มจุดโดยกดที่เม้าท์สองครั้ง ซี่งมีมากถึง 20 จุดที่คุณสามารถเพิ่มเติม 
+พิจารณาเพชรที่มีหลายเหลี่ยม มีสูงมีต่ำที่สร้างจากจุดทั้งหมด
 So if you put a dot inside the polygon that is already built its form won’t change 
 (and you will have to move this dot to the external part of the polygon). 
 All the dots that you don’t need any more can be removed by the corresponding button. 
