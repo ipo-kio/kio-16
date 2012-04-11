@@ -7,13 +7,11 @@ package ru.ipo.kio._12.train {
 import flash.display.DisplayObject;
 import flash.events.Event;
 
-import ru.ipo.kio._12.train.model.Automation;
 import ru.ipo.kio._12.train.model.Passenger;
 
 import ru.ipo.kio._12.train.model.TrafficNetwork;
 import ru.ipo.kio._12.train.model.Train;
 import ru.ipo.kio._12.train.model.types.RegimeType;
-import ru.ipo.kio._12.train.model.types.StationType;
 import ru.ipo.kio._12.train.util.TrafficNetworkCreator;
 
 import ru.ipo.kio.api.KioApi;
@@ -38,6 +36,8 @@ public class TrainProblem implements KioProblem {
 
         KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU).data);
 
+        TrafficNetwork.reset_singleton();
+        TrafficNetworkCreator.reset_singleton();
         TrafficNetworkCreator.instance.createTrafficNetwork(level);
         sp = new TrainSprite(level, readonly);
 

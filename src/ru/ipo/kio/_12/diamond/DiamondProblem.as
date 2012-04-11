@@ -246,7 +246,20 @@ public class DiamondProblem extends Sprite implements KioProblem {
     }
 
     public function get best():Object {
-        return {}; //TODO implement
+        if (_level == 1) {
+
+            return {
+                points: _record_points,
+                disp: _record_var
+            };
+
+        } else /*if (_level == 2)*/ {
+
+            return {
+                light: _record_light
+            }
+
+        }
     }
 
     public function loadSolution(solution:Object):Boolean {
@@ -265,11 +278,35 @@ public class DiamondProblem extends Sprite implements KioProblem {
     }
 
     public function check(solution:Object):Object {
-        return {}; //TODO implement
+        return {}; //no need to implement
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        return 0; //TODO implement
+        if (_level == 1) {
+
+            var points:int = solution1.points - solution2.points;
+
+            if (points != 0)
+                return points;
+            else {
+                if (solution1.disp < solution2.disp)
+                    return 1;
+                else if (solution1.disp > solution2.disp)
+                    return -1;
+                else
+                    return 0;
+            }
+
+        } else /*if (_level == 2)*/ {
+
+            if (solution1.light < solution2.light)
+                return -1;
+            else if (solution1.light > solution2.light)
+                return 1;
+            else
+                return 0;
+
+        }
     }
 
     [Embed(source='resources/intro.png')]

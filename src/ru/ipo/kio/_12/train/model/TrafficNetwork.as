@@ -79,6 +79,10 @@ public class TrafficNetwork extends VisibleEntity {
         return _instance;
     }
 
+    public static function reset_singleton():void {
+        _instance = null;
+    }
+
     public function TrafficNetwork(privateClass:PrivateClass) {
         view=new TrafficNetworkView(this);
     }

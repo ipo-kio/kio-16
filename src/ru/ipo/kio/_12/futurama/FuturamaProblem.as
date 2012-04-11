@@ -13,6 +13,7 @@ import ru.ipo.kio.api.KioApi;
 
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.Settings;
+import ru.ipo.kio.base.KioBase;
 
 public class FuturamaProblem implements KioProblem {
 
@@ -67,24 +68,26 @@ public class FuturamaProblem implements KioProblem {
     }
 
     public function get best():Object {
-        return {}; //TODO implement
+        return _display.best;
     }
 
     public function loadSolution(solution:Object):Boolean {
         if (solution == 0)
             return false;
 
-        _display.perm.unseriazlize(solution.perm);
+        _display.perm.unserialize(solution.perm, ! KioApi.isChecker);
         
         return true;
     }
 
     public function check(solution:Object):Object {
-        return null; //TODO implement
+        return null; //no need to implement
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        return 0; //TODO implement
+        var len1:int = solution1.length;
+        var len2:int = solution2.length;
+        return len1 - len2;
     }
 
     [Embed(source='resources/intro_1.png')]

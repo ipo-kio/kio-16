@@ -71,6 +71,10 @@ public class TrafficNetworkCreator {
     public function TrafficNetworkCreator(privateClass:PrivateClass) {
     }
 
+    public static function reset_singleton():void {
+        _instance = null;
+    }
+
     public static function get instance():TrafficNetworkCreator {
         if(TrafficNetworkCreator._instance == null)
             TrafficNetworkCreator._instance=new TrafficNetworkCreator(new PrivateClass( ));
