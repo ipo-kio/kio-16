@@ -288,31 +288,25 @@ public class KioChecker extends UIComponent {
             ]
         ];
 
-        //level 0
-        for each (var problem_0:KioProblem in levelProblems[0])
-            sortCertificatesAndFillScores(problem_0, certificates[0]);
-        //level 1
-        for each (var problem_1:KioProblem in levelProblems[1])
-            sortCertificatesAndFillScores(problem_1, certificates[1]);
-        //level 2
-        for each (var problem_2:KioProblem in levelProblems[2])
-            sortCertificatesAndFillScores(problem_2, certificates[2]);
+        for each (var l:int in [0, 1, 2])
+            for each (var problem_l:KioProblem in levelProblems[l])
+                sortCertificatesAndFillScores(problem_l, certificates[l]);
 
         //sum scores in all certificates
         for each (var level:int in [0, 1,2]) {
             for each (var cert:Object in certificates[level])
                 cert._scores = int(
                         cert[levelProblems[level][0].id + '_scores'] +
-                                cert[levelProblems[level][1].id + '_scores'] +
-                                cert[levelProblems[level][2].id + '_scores']
-                        );
+                        cert[levelProblems[level][1].id + '_scores'] +
+                        cert[levelProblems[level][2].id + '_scores']
+                );
         }
 
         sortCertificatesAndFillRank(certificates[0]);
         sortCertificatesAndFillRank(certificates[1]);
         sortCertificatesAndFillRank(certificates[2]);
 
-        for each (var l:int in [0, 1, 2])
+        for each (l in [0, 1, 2])
             for each (var c:Object in certificates[l])
                 if (!OUTPUT_ONLY_NEW_CERTS || new_checked_logins.indexOf(c._login) != -1)
                     write(c._login + '.kio-certificate', JSON_k.encode(sign(c)));
