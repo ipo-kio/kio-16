@@ -1,179 +1,199 @@
 {
-    "title0": "Trams",
+    "title0": "Tranvias",
     "statement0": <<<
 		<p>
-		Your task is to create tram routes in order 
-		to transport passengers to certain railway stations as soon as possible. 
+		Su tarea es crear rutas de tranvía con el propósito de transportar
+		pasajeros a algunas estaciones de tranvía tan pronto como sea posible.
         </p>
         <p>
-        Passengers travelling to a particular 
-		railway station are represented by points colored the same as the railway station. 
+        Los pasajeros que viajan a una estación de tranvía en particular
+        están representados por puntos del mismo color de la estación a la
+        cual quieren llegar.
         </p>
         <p>
-        Each passenger takes the first train which route passes by his desired railway station.
+        Cada pasajero toma el primer tren cuya ruta pasa por la estación de
+        tranvía a la cual él quiere llegar.
         </p>
         <p>
-        For the purpose of comparing different routes to each other, 
-		a route that transports more passengers is considered better. 
+        Para el propósito de comparar rutas diferentes, se considera mejor
+        una ruta que transporte más pasajeros.
         </p>
         <p>
-        If two or more different routes happen to implement a delivery of equal 
-		number of passengers, the one for which its last passenger is delivered earlier is considered better. 
+        Si dos o más rutas diferentes transportan el mismo número de pasajeros,
+        la cuál que haga que el último pasajero llegue antes se considera
+        la mejor.
         </p>
         <p>
-        Best solutions, or records, are saved automatically. At any point of time it is possible 
-		to load your best solution by clicking on the record load button. 
+        Las mejores soluciones, o records, son guardadas automáticamente. En
+        cualquier momento usted puede cargar su mejor solución haciendo click
+        en el botón cargar record.
         </p>
-        <p><b>Comment to the illustration</b></p>
+        <p><b>Comentario a la ilustriación</b></p>
         <p>
-        Saint-Petersburg is the world tram capital as the total length of all its tram 
-		routes is the maximum across the world. As early as in 1880 
-		inventor F.A. Pirotsky developed and tested a wagon with pendant traction 
-		electric motor of a direct current. 
+        San Petesburgo es la capital mundial del tranvía pues la longitud total
+        de sus rutas de tranvías es la más grande a nivel mundial. Tan temprano
+        como en 1880, el inventor F.A: Pirotsky desarrolló y probó un vagón con
+        un motor eléctrico movido con corriente continúa.
+
 </p>
 	>>>,
 	"help0":<<<
 <p>
-In order to create a rout you should click on a tram and the rout created 
-will be highlighted in white. For further rout creation you should click 
-successively on the rout sections that the tram will pass. 
+Para crear una ruta Usted debe hacer click en un tranvía y la ruta será creada
+iluminada de blanco. Para extender la ruta usted debe hacer click sucesivamente
+en las secciones de la ruta por las que pasará el tranvía.
 </p>
 <p>
-The tram can pass the same rout section several times but it can’t go back. 
-The solution is not counted if the trams collide while moving.</p>
+El tranvía puede pasar por la misma sección de ruta varias veces, pero no puede
+devolverse. No se cuenta la solución si los tranvías se chocan cuando estén
+en movimiento.</p>
 <p>
-If a rout is highlighted you can remove its sections starting from the last one 
-by clicking on the corresponding button. You can also remove all the routs created 
-by clicking on another button.  
+Si una ruta está iluminada, usted puede remover sus secciones comenzando desde
+la última haciendo click en el botón correspondiente. Usted también puede remover
+todas las rutas creadas haciendo click en otro botón.
 </p>
-<p>You can launch trams by clicking on the corresponding buttons in step-by-step, 
-animated or immediate mode. It is possible to change the mode during the trams movement.  
+<p>Usted puede hacer que los tranvías comiencen a moverse haciendo click en los
+botones correspondientes en modo paso-a-paso, animado o inmediato. Es posible cambiar
+el modo durante el movimiento de los tranvías.
 </p>
 <p>
-You can save your intermediate solutions at any time while working with the tasks 
-and open these solutions later and continue your work. </p>
+Usted puede guardar sus soluciones intermedias en cualquier momento cuando esté
+trabajando en las tareas y abrir estas soluciones más tarde y continuar con su trabajo. </p>
 	>>>,
-"title1": "Trams",
+"title1": "Tranvias",
     "statement1": <<<
     <p>
-		Your task is to create tram routes in order 
-		to transport passengers to certain railway stations as soon as possible. 
+		Su tarea es crear rutas de tranvía con el propósito de transportar
+		pasajeros a algunas estaciones de tranvía tan pronto como sea posible.
         </p>
         <p>
-        Passengers travelling to a particular 
-		railway station are represented by points colored the same as the railway station. 
+        Los pasajeros que viajan a una estación de tranvía en particular
+        están representados por puntos del mismo color de la estación a la
+        cual quieren llegar.
         </p>
         <p>
-        Each passenger takes the first train which route passes by his desired railway station.
+        Cada pasajero toma el primer tren cuya ruta pasa por la estación de
+        tranvía a la cual él quiere llegar.
         </p>
         <p>
-        For the purpose of comparing different routes to each other, 
-		a route that transports more passengers is considered better. 
+        Para el propósito de comparar rutas diferentes, se considera mejor
+        una ruta que transporte más pasajeros.
         </p>
         <p>
-        If two or more different routes happen to implement a delivery of equal 
-		number of passengers, the one for which its last passenger is delivered earlier is considered better. 
+        Si dos o más rutas diferentes desplazan el mismo número de
+        pasajeros, la que haga que el último pasajero llegue antes, se considera
+        la mejor.
         </p>
         <p>
-        Best solutions, or records, are saved automatically. At any point of time it is possible 
-		to load your best solution by clicking on the record load button. 
+        Las mejores soluciones, o records, son guardadas automáticamente. En cualquier
+        momento usted puede cargar su mejor solución haciendo click en el botón de cargar
+        record.
         </p>
-        <p><b>Comment to the illustration</b></p>
+        <p><b>Comentario a la ilustración</b></p>
         <p>
-        Saint-Petersburg is the world tram capital as the total length of all its tram 
-		routes is the maximum across the world. 
+        San Petesburgo es la capital mundial del tranvía pues la longitud total de
+        sus rutas de tranvías es la más grande a nivel mundial
 </p>
 	>>>,
 	"help1":<<<
 <p>
-In order to create a rout you should click on a tram and the rout created 
-will be highlighted in white. For further rout creation you should click 
-successively on the rout sections that the tram will pass. 
+Para crear una ruta usted debe hacer click en un tranvía y la ruta será creada iluminada de  blanco.
+Para extender la ruta usted debe hacer click sucesivamente en las secciones de la ruta por las que
+pasará el tranvía.
+</p><p>
+El tranvia puede pasar por la misma sección de ruta varias veces, pero no puede devolverse. No se cuenta
+la solución si los tranvías se chocan cuando estén en movimiento.
+</p><p>
+Si una ruta está iluminada, usted puede remover sus secciones comenzando desde la última haciendo click
+en el botón correspondiente. Usted también puede remover todas las rutas creadas haciendo click en otro
+botón.
+</p><p>Usted puede hacer que los tranvías comiencen a moverse haciendo click en los botones
+correspondientes en modo paso-a-paso, animado o inmediato. Es posible cambiar el modo durante el movimiento
+de los tranvías.
+</p><p>
+Usted puede guardar sus soluciones intermedias en cualquier momento cuando esté trabajando en las tareas y
+abrir estas soluciones más tarde y continuar con su trabajo..
 </p>
-<p>
-The tram can pass the same rout section several times but it can’t go back. 
-The solution is not counted if the trams collide while moving.</p>
-<p>
-If a rout is highlighted you can remove its sections starting from the last one 
-by clicking on the corresponding button. You can also remove all the routs created 
-by clicking on another button.  
-</p>
-<p>You can launch trams by clicking on the corresponding buttons in step-by-step, 
-animated or immediate mode. It is possible to change the mode during the trams movement.  
-</p>
-<p>
-You can save your intermediate solutions at any time while working with the tasks 
-and open these solutions later and continue your work.</p>
 	>>>
 ,
-"title2": "Tram routs",
+"title2": "Rutas de Tranvia",
     "statement2": <<<
-        <p>
-		Your task is to create tram routes 
-		in order to transport passengers 
-		to certain railway stations as soon as possible. 
-        </p><p>
-        Passengers travelling to a particular 
-		railway station are represented by points 
-		colored the same as the railway station.
-        </p><p>
-        Each passenger takes the first train which 
-		route passes by his desired railway station.
-        </p><p>
-        For the purpose of comparing different routes 
-		to each other, a route that transports more passengers is considered better. 
-        </p><p>
-        If two or more different routes happen to implement a delivery of equal 
-		number of passengers, the one for which its “average” passenger is delivered earlier is considered better.
-        </p><p>
-        The “average” passenger is the one who reached the station before one half of all passengers 
-        and after the other half (from the math point of view it’s called a median).         
-		</p><p>
-        Best solutions, or records, are saved automatically. 
-        At any point of time it is possible to load your best solution by clicking on the record load button.        
+        <<p>
+		Su tarea es crear rutas de tranvía con el propósito de transportar
+		pasajeros a algunas estaciones de tranvía tan pronto como sea posible.
         </p>
-        <p><br></p>
-        <p><b>Comment to the illustration</b> Saint-Petersburg is the world 
-		tram capital as the total length of all its tram routes is the maximum across the world. </p>
+        <p>
+        Los pasajeros que viajan a una estación de tranvía en particular
+        están representados por puntos del mismo color de la estación a la
+        cual quieren llegar.
+        </p>
+        <p>
+        Cada pasajero toma el primer tren cuya ruta pasa por la estación de
+        tranvía a la cual él quiere llegar.
+        </p>
+        <p>
+        Para el propósito de comparar rutas diferentes, se considera mejor
+        una ruta que transporte más pasajeros.
+        </p>
+        <p>
+        Si dos o más rutas diferentes transportan el mismo número de pasajeros,
+        la ruta para la cual su pasajero “promedio” llegue más rápido es considerada mejor.
+        </p><p>
+        El pasajero “promedio” es el que llegue a la estación antes de la segunda mitad
+        de todos los pasajeros y después que la otra mitad (desde el punto de vista
+        matemático este promedio se llama la  mediana).
+		</p>
+	     <p>
+        Las mejores soluciones, o records, son guardadas automáticamente. En cualquier
+        momento usted puede cargar su mejor solución haciendo click en el botón de cargar
+        record.
+        </p>
+        <p><b>Comentario a la ilustración</b></p>
+        <p>
+        San Petesburgo es la capital mundial del tranvía pues la longitud total de
+        sus rutas de tranvías es la más grande a nivel mundial
+        </p>
  	>>>,
 	"help2":<<<
 <p>
-In order to create a rout you should click on a tram and the rout created will be highlighted in white. 
-For further rout creation you should click 
-successively on the rout sections that the tram will pass. 
+Para crear una ruta usted debe hacer click en un tranvía y la ruta será creada iluminada de blanco.
+Para extender la ruta usted debe hacer click sucesivamente en las secciones de la ruta por las que
+pasará el tranvía.
 </p><p>
-The tram can pass the same rout section several times but it can’t go back. 
-The solution is not counted if the trams collide while moving.
+El tranvia puede pasar por la misma sección de ruta varias veces, pero no puede devolverse. No se cuenta
+la solución si los tranvías se chocan cuando estén en movimiento.
 </p><p>
-If a rout is highlighted you can remove its sections starting from the last one by clicking 
-on the corresponding button. You can also remove all the routs created by clicking on another button.
-</p><p>You can launch trams by clicking on the corresponding buttons in step-by-step or immediate mode. 
-It is possible to change the mode during the trams movement.
+Si una ruta está iluminada, Usted puede remover sus secciones comenzando desde la última haciendo click
+en el botón correspondiente. Usted también puede remover todas las rutas creadas haciendo click en otro
+botón.
+</p><p>Usted puede hacer que los tranvías comiencen a moverse haciendo click en los botones
+correspondientes en modo paso-a-paso, animado o inmediato. Es posible cambiar el modo durante el movimiento
+de los tranvías.
 </p><p>
-You can save your intermediate solutions at any time while working with 
-the tasks and open these solutions later and continue your work.
+Usted puede guardar sus soluciones intermedias en cualquier momento cuando esté trabajando en las tareas y
+abrir estas soluciones más tarde y continuar con su trabajo.
 </p>
 	>>>,
 	"buttons":{
-    		"clear_routes": "Clear \nall routs",
-    		"remove_last": "Remove \nrout part",
-    		"play": "Launch \ntrams",
-    		"step": "Take \na step",
-    		"result": "Immediate \nresult",
-    		"init": "initial \nstate",
-    		"expand": "Expand",
-    		"collapse": "Minimize",
-    		"add": "Add",
-    		"remove": "Remove"
+    		"clear_routes": "Borrar \ntodas las rutas",
+    		"remove_last": "Borrar última \nruta",
+    		"play": "Poner en movimiento los \ntranvias",
+    		"step": "Paso  \na paso",
+    		"result": "\nResultado inmediato",
+    		"init": "\nestado inicial",
+    		"expand": "Expandir",
+    		"collapse": "Minimizar",
+    		"add": "Añadir",
+    		"remove": "Remover"
     	},
 
     	"headers":{
-            		"edit": "Edit",
-            		"animation": "Animation",
-            		"result": "Result",
+            		"edit": "Editar",
+            		"animation": "Animación",
+            		"result": "Resultado",
             		"record": "Record",
-            		"amounts": "Passengers",
-            		"time": "Time"
+            		"amounts": "Pasajeros",
+            		"time": "Tiempo"
 
             	}
 }
