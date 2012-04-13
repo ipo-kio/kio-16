@@ -9,6 +9,7 @@ package ru.ipo.kio._12.stagelights
 	import flash.text.TextFormat;
 	import fl.events.SliderEvent;
 	import flash.events.MouseEvent;
+	import flash.text.TextFieldAutoSize;
 	
 	/**
 	 * ...
@@ -36,6 +37,7 @@ package ru.ipo.kio._12.stagelights
 			_input = new Label();
 			_input.x = -85;
 			_input.y = -7;
+			_input.autoSize = TextFieldAutoSize.CENTER;
 			_input.width = 26;
 			_input.height = 18;
 			_input.textField.height = 18;

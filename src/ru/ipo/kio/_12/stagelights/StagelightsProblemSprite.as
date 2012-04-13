@@ -1,6 +1,7 @@
 package ru.ipo.kio._12.stagelights{
 import fl.controls.Button;
 import fl.controls.Label;
+import fl.controls.LabelButton;
 import flash.display.MovieClip;
 import flash.display.Sprite;
 import flash.events.Event;
@@ -11,6 +12,7 @@ import flash.events.TimerEvent;
 import flash.display.Shape;
 import mx.core.BitmapAsset;
 import flash.text.*;
+import ru.ipo.kio.base.KioBase;
 
 import ru.ipo.kio.api.*;
 
@@ -27,8 +29,8 @@ import ru.ipo.kio.api.*;
 		
 		//текстовое поле - единственный видимый объект задачи
 		private var stagelight: Array = [];
-		public var two: MovieClip;
-		public var one: MovieClip;
+		public var two: Label;
+		public var one: Label;
 		public var max0: Label;
 		public var max1: Label;
 		public var result0: Label;
@@ -42,6 +44,7 @@ import ru.ipo.kio.api.*;
 		public var flag: Boolean = true;
 		public var crnt: int = 0;
 		public var max: Object;
+		public var loc:Object = KioApi.getLocalization(StagelightsProblem.ID);
 		private var _api: KioApi;
 		
 		//конструктор спрайта, инициализация всех объектов
@@ -177,16 +180,28 @@ import ru.ipo.kio.api.*;
 			secondResult[4] = stagelights[1].bodies[0].body.green;
 			secondResult[5] = stagelights[1].bodies[0].body.blue;
 			
-			two = new Two();
-			two.x = 690;
-			two.y = 510; 
+			var format: TextFormat = new TextFormat();
+            format.color = 0x000000;
+			format.font = "Tahoma";
+			format.bold = true;
+            format.size = 11;
+			
+			two = new Label();
+			two.text = loc.next;
+			two.autoSize = TextFieldAutoSize.CENTER;
+			two.x = 685 - two.width / 2;
+			two.y = 504 - two.height / 2;
+			two.setStyle("textFormat", format);
 			two.addEventListener(MouseEvent.CLICK, change);
 			addChild(two);
 			
-			one = new One();
-			one.x = 690;
-			one.y = 510; 
+			one = new Label();
+			one.text = loc.previous;
+			one.autoSize = TextFieldAutoSize.CENTER;
+			one.x = 685 - one.width / 2;
+			one.y = 504 - one.height / 2;
 			one.visible = false;
+			one.setStyle("textFormat", format);
 			one.addEventListener(MouseEvent.CLICK, change);
 			addChild(one);
 				
@@ -200,14 +215,14 @@ import ru.ipo.kio.api.*;
 			result0.x = 20;
 			result0.y = 576;
 			result0.textField.autoSize = TextFieldAutoSize.LEFT;
-			result0.text = "Ваш результат для I фокуса: исчезновение на " + round(results(1)) + "%";
+			result0.text = loc.firstResult + round(results(1)) + "%";
 			result0.setStyle("textFormat", format);
 			addChild(result0);
 			
 			max0 = new Label();
 			max0.textField.autoSize = TextFieldAutoSize.LEFT;
 			max0.setStyle("textFormat", format);
-			max0.text = "Лучший результат для I фокуса: исчезновение на " + round(firstMax) + "%";
+			max0.text = loc.firstMaxResult + round(firstMax) + "%";
 			max0.x = 700 - max0.textField.textWidth;
 			max0.y = 576;
 			addChild(max0);
@@ -217,14 +232,14 @@ import ru.ipo.kio.api.*;
 			result1.y = 576;
 			result1.textField.autoSize = TextFieldAutoSize.LEFT;
 			result1.setStyle("textFormat", format);
-			result1.text = "Ваш результат для II фокуса: исчезновение на " + round(results(0)) + "%";
+			result1.text = loc.secondResult + round(results(0)) + "%";
 			result1.visible = false;
 			addChild(result1);
 			
 			max1 = new Label();
 			max1.textField.autoSize = TextFieldAutoSize.LEFT;
 			max1.setStyle("textFormat", format);
-			max1.text = "Лучший результат для II фокуса: исчезновение на " + round(secondMax) + "%";
+			max1.text = loc.secondMaxResult + round(secondMax) + "%";
 			max1.visible = false;
 			max1.x = 700 - max1.textField.textWidth;
 			max1.y = 576;
@@ -383,17 +398,17 @@ import ru.ipo.kio.api.*;
 					bandage[k].visible = false;
 				}
 			}
-			result0.text = "Ваш результат для I фокуса: исчезновение на " + round(results(1)) + "%";
-			max0.text = "Лучший результат для I фокуса: исчезновение на " + round(firstMax) + "%";
-			result1.text = "Ваш результат для II фокуса: исчезновение на " + round(results(0)) + "%";
-			max1.text = "Лучший результат для II фокуса: исчезновение на " + round(secondMax) + "%";
+			result0.text = loc.firstResult + round(results(1)) + "%";
+			max0.text = loc.firstMaxResult + round(firstMax) + "%";
+			result1.text = loc.secondResult + round(results(0)) + "%";
+			max1.text = loc.secondMaxResult + round(secondMax) + "%";
 		}
 		
 		private function updt(e:Event =  null): void {
-			result0.text = "Ваш результат для I фокуса: исчезновение на " + round(results(1)) + "%";
-			max0.text = "Лучший результат для I фокуса: исчезновение на " + round(firstMax) + "%";
-			result1.text = "Ваш результат для II фокуса: исчезновение на " + round(results(0)) + "%";
-			max1.text = "Лучший результат для II фокуса: исчезновение на " + round(secondMax) + "%";
+			result0.text = loc.firstResult + round(results(1)) + "%";
+			max0.text = loc.firstMaxResult + round(firstMax) + "%";
+			result1.text = loc.secondResult + round(results(0)) + "%";
+			max1.text = loc.secondMaxResult + round(secondMax) + "%";
 		}
 		
 		
