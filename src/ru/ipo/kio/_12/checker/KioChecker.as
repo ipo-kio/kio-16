@@ -48,8 +48,8 @@ public class KioChecker extends UIComponent {
     ]; //levels 0, 1, 2
     private var logText:TextField;
 
-    private static const FROM_ENTRY:int = 101;
-    private static const TO_ENTRY:int = 200;
+    private static var FROM_ENTRY:int = 0;
+    private static var TO_ENTRY:int = 50;
     private static const NEED_RESULTS:Boolean = true; //need create csv files with results
     private static const OUTPUT_ONLY_NEW_CERTS:Boolean = false;
 
@@ -79,6 +79,12 @@ public class KioChecker extends UIComponent {
             fr.load();
         });
         fr.addEventListener(Event.COMPLETE, function(e:Event):void {
+            var nums_in_name:Array = fr.name.match(/\d+/g);
+            if (nums_in_name.length < 2)
+                throw 'Input file should have numbers: ' + fr.name;
+            FROM_ENTRY = nums_in_name[nums_in_name.length - 2];
+            TO_ENTRY = nums_in_name[nums_in_name.length - 1];
+
             //open file with previous certs
             //open file with zip of solutions
             var frC:FileReference = new FileReference();
@@ -137,7 +143,7 @@ public class KioChecker extends UIComponent {
         trace(traceMessage);
 
         if (logText.text.length > 10000)
-            logText.text = logText.text.substr(0, 100) + "\n ... cleared";
+            logText.text = logText.text.substr(0, 500) + "\n ... cleared";
 
         logText.text = traceMessage + "\n" + logText.text;
     }
@@ -145,7 +151,7 @@ public class KioChecker extends UIComponent {
     private function write(fileName:String, data:*):void {
         var entry:ZipEntry = new ZipEntry(fileName);
         var fileData:ByteArray = new ByteArray();
-        fileData.writeUTFBytes(data);
+        fileData.writeMultiByte(data, 'x-cp1251');
         output.putNextEntry(entry);
         output.write(fileData);
         output.closeEntry();
@@ -164,7 +170,7 @@ public class KioChecker extends UIComponent {
             return;
         }
 
-        log("ENTRY # " + index);
+        log("ENTRY # " + index + " of (" + FROM_ENTRY + "-" + TO_ENTRY + ")");
 
         var entry:ZipEntry = zip_entries[index];
 
@@ -184,9 +190,9 @@ public class KioChecker extends UIComponent {
                 login = login.substring(last_slash + 1);
 
             //noinspection JSMismatchedCollectionQueryUpdate
-            var ma:Array = login.match(/\(\d\)$/);
+            /*var ma:Array = login.match(/\(\d\)$/);
             if (ma && ma.length > 0)
-                break;
+                break;*/
 
             //what if there are files with the same name but different extensions
             login += '@' + entry.name.substring(last_point + 1);
@@ -273,7 +279,7 @@ public class KioChecker extends UIComponent {
         var levelProblemHeaders:Array = [
             [
                 ['length'],
-                [],
+                ['firstMax', '_scores_1', 'secondMax', '_scores_2'],
                 ['hasCrash', 'happyPassengers', 'time']
             ],
             [
@@ -302,9 +308,8 @@ public class KioChecker extends UIComponent {
                 );
         }
 
-        sortCertificatesAndFillRank(certificates[0]);
-        sortCertificatesAndFillRank(certificates[1]);
-        sortCertificatesAndFillRank(certificates[2]);
+        for each (l in [0, 1, 2])
+            sortCertificatesAndFillRank(certificates[l]);
 
         for each (l in [0, 1, 2])
             for each (var c:Object in certificates[l])
@@ -368,8 +373,16 @@ public class KioChecker extends UIComponent {
                 for each (header in headers)
                     if (!problem_result)
                         addText('', table);
-                    else
+                    else {
+                        if (problem_result[header] == null) { //"bas-0005-003-1@kio-1" (level 1)
+                            trace('Error! problem_result[header] == null');
+                            trace('login = ' + certificate._login);
+                            trace('problem_result = ' + JSON_k.encode(problem_result));
+                            trace('header = ' + header);
+                            problem_result[header] = '(!)null(!)';
+                        }
                         addText(problem_result[header], table);
+                    }
 
                 addText(certificate[p.id + '_scores'], table);
                 addText('', table);
@@ -398,9 +411,31 @@ public class KioChecker extends UIComponent {
         }
     }
 
-    private function sortCertificatesAndFillScores(problem:KioProblem, certificates:Array):void {
-        //bubble sort
+    private function sortCertificatesAndFillScores(problem:KioProblem, certificates:Array, scores_in_problem:String = null):void {
         var N:int = certificates.length;
+        var scores_ind:String = problem.id + '_scores';
+
+        if (problem instanceof StagelightsProblem) { // 2012 year only
+            sortCertificatesAndFillScores(
+                    new SubstitutedComparatorKioProblem(problem, 1),
+                    certificates,
+                    '_scores_1'
+            );
+            sortCertificatesAndFillScores(
+                    new SubstitutedComparatorKioProblem(problem, 2),
+                    certificates,
+                    '_scores_2'
+            );
+
+            for (i = 0; i < N; ++i)
+                certificates[i][scores_ind] =
+                        certificates[i][problem.id]._scores_1 +
+                        certificates[i][problem.id]._scores_2 ;
+
+            return;
+        }
+
+        //bubble sort
 
         var comparator:Function = function(i:int, j:int):int {
             var res1:Object = certificates[i][problem.id];
@@ -429,25 +464,17 @@ public class KioChecker extends UIComponent {
 
         //make null solutions {}
 
-        //fill scores normal
-        /*var scores_ind:String = problem.id + '_scores';
+        //fill scores
         var scores:int = 0;
-        certificates[0][scores_ind] = scores;
-        for (i = 1; i < N; ++i) {
-            if (comparator(i - 1, i) < 0)
+
+        for (i = 0; i < N; ++i) {
+            if (i > 0 && comparator(i - 1, i) < 0)
                 scores = i;
-            certificates[i][scores_ind] = scores;
-        }*/
 
-        //fill scores wrong
-        var scores:int = 0;
-
-        var scores_ind:String = problem.id + '_scores';
-        certificates[0][scores_ind] = scores;
-        for (i = 1; i < N; ++i) {
-            if (comparator(i - 1, i) < 0)
-                ++scores;
-            certificates[i][scores_ind] = scores;
+            if (scores_in_problem)
+                certificates[i][problem.id][scores_in_problem] = scores;
+            else
+                certificates[i][scores_ind] = scores;
         }
     }
 
@@ -556,3 +583,16 @@ public class KioChecker extends UIComponent {
     }
 }
 }
+
+/*
+ [trace] 11:09:43 PM: ENTRY # 2661 of (0-3000)
+ [trace] 11:09:43 PM: solution found for login АНТОНОВА-255@kio-1
+ [Fault] exception, information=Error: dynamic block code description: code lengths codes incomplete
+ at nochump.util.zip::Inflater/constructDynamicTables()[/home/ilya/programming/kio-12/src/nochump/util/zip/Inflater.as:228]
+ at nochump.util.zip::Inflater/inflate()[/home/ilya/programming/kio-12/src/nochump/util/zip/Inflater.as:97]
+ at nochump.util.zip::ZipFile/getInput()[/home/ilya/programming/kio-12/src/nochump/util/zip/ZipFile.as:113]
+ at ru.ipo.kio._12.checker::KioChecker/processZipEntry()[/home/ilya/programming/kio-12/src/ru/ipo/kio/_12/checker/KioChecker.as:209]
+ at Function/<anonymous>()[/home/ilya/programming/kio-12/src/ru/ipo/kio/_12/checker/KioChecker.as:237]
+ at flash.utils::Timer/_timerDispatch()
+ at flash.utils::Timer/tick()
+*/
