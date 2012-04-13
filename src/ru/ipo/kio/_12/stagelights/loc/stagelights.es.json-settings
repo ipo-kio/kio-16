@@ -1,50 +1,52 @@
-﻿{
-    
-    "title": "The Invisible Man",
+{
+
+    "title": "El Hombre Invisible",
     "statement": <<<
-		 <p><b>Introduction</b></p>
+		 <p><b>Introducción</b></p>
 
-        <p>You probably heard about scientific novel The Invisible Man by H.G. Wells. 
-		The first movie on this book was shot when there were neither cameras nor special effects. 
-		Viewers of that time were amazed when an actor who played the Invisible Man 
-		took off the bandages and it turned out that under them there was…nothing. 
-		The trick is that the actor wore black velvet clothes and stood in front of black background.</p>
+        <p>Usted probablemente ha oído de la novela científica El Hombre Invisible de H.G. Wells.
+        La primera película basada en este libro fue hecha cuando no habían cámaras sofisticadas
+        ni efectos especiales. Los espectadores de ese tiempo se sorprendían cuando el actor que
+        interpretaba al Hombre Invisible se quitaba los vendajes y resultaba que debajo no
+        había nada. El truco es que el actor llevaba ropa de terciopelo negro y estaba delante
+        de un fondo negro.</p>
 
-        <p><b>Task 2</b></p>
+        <p><b>Tarea 2</b></p>
 
-        <p>While solving this task you will become a magician too. You will make a man disappear.  
-		In order to fulfill this task you should change the brightness of the three spotlights
-		and find the color that will coincide with the Invisible Man costume color and he will disappear. 
-		The record is the level of invisibility that you can provide. The best solution is 100%.</b></p>
+        <p>Mientras esté resolviendo esta tarea, Usted también se convertirá en un mago. Usted
+        hará desaparecer a un hombre. Para completar esta tarea Usted debe cambiar el brillo de
+        tres reflectores y encontrar el color que coincida con el color del vestido del Hombre
+        Invisible y él desaparecerá. El record es el nivel de invisibilidad que Usted pueda
+        proporcionar. La mejor solución es  100%.</b></p>
 
-        <p>It turns out that if human brain sees three dots of the basic colors RGB (Red Green Blue) 
-		next to each other and they have different brightness it feels for a man like a new color. 
-		This is how all color displays work. </p>
-        <p><b>Task 1</b></p>
+        <p>Resulta que si la mente humana ve tres puntos de los colores básicos RVA (Rojo, Verde,
+        Azul) juntos uno al otro y ellos tienen brillos distintos siente que ve un color nuevo.
+        Esto es como funcionan todas las pantallas.</p>
 
-        <p>Before you perform the trick try to make the easier 
-		one based on using colored shades. There are shades from 
-		the magician that fall on the backcloth. These shades are colored but they are unusual. 
-		Why does it happen? If a shade comes from a blue spotlight 
-		it is illuminated only by red and green spotlights. 
-		They mix and make the yellow color. That’s why the shadow is yellow!
-        If you manage to find right spotlight colors then things of different 
-		colors that are hanging in front of this backcloth will disappear.  </p>
-        <p>Best solutions, or records, are saved automatically. At any point of 
-		time it is possible to load your best solution by clicking on the record load button.</p>
+        <p><b>Tarea 1</b></p>
+
+        <p>Antes de ejecutar el truco intente hacer uno más fácil basado en usar sombras
+        coloreadas. Hay sombras que surgen del mago que caen en el telón de fondo.
+        Estas sombras son de colores poco esperados. ¿Porqué pasa esto? Si la sombra viene
+        de un reflector azul puede ser iluminada únicamente por los reflectores rojo y verde.
+        Ellos se mezclan y hacen el color amarillo. ¡Por esto el color es amarillo!
+        Si Usted logra encontrar los colores adecuados de los reflectores entonces las cosas
+        que estén colgando en frente de este telón de fondo desaparecerán  </p>
+        <p>Las mejores soluciones, o registros, son cargados automáticamente. En cualquier
+        momento Usted puede cargar su mejor solución haciendo click en el botón de
+        cargar record..</p>
 	>>>,
 	"help":<<<
 <p>
-You can change the brightness by moving the slider and make it more accurate by +/- buttons. 
-When you reach a new record you will see a special  effect.  
+Usted puede cambiar el brillo moviendo un deslizador y hacerlo más preciso usando los
+botones +/- Cuando Usted alcance un nuevo record verá un efecto especial.
 </p><p>
-As for the task about disappearing things the spotlights are fixed meanwhile solving 
-the Invisible Man task you can turn them by moving their light spots by mouse. 
+Para resolver la tarea de desaparecer cosas los reflectores están fijas, en cambio
+ para resolver la tarea del Hombre Invisible usted puede mover sus haces de luz con el ratón.
 </p><p>
-To switch to another task click on the corresponding button. </p>
+Para cambiar a otra tarea haga click en el botón correspondiente. </p>
 <p>
-You can save your intermediate solutions at any time while 
-working with the tasks and open these solutions later and continue your work. 
-</p>
+Usted puede guardar sus soluciones intermedias en cualquier momento cuando esté trabajando
+en las tareas y abrir estas soluciones después para continuar con su tarea.</p>
 	>>>
 }

@@ -1,52 +1,59 @@
 {
-    "title": "Body swap",
+    "title": "Intercambio de cuerpos",
     "statement": <<<
 		<p>
-		Toy robots swap their information systems – “souls” - 
-		in this task (it is represented as head swap). 
+		Los robots de juguete  intrecambian sus sistemas de
+		información – “almas” –en esta tarea (se representa como
+		intercambio de cabezas).
+
 </p><p>
-        Your task is to make as much swaps as possible considering these two rules:
+        Su tarea es hace tantos cambios como sea posible teniendo en cuenta estas dos reglas:
 </p><p>
-        <b>First rule</b>
+        <b>Primera regla</b>
 </p><p>
-        Every couple of robots can make only one “soul” swap.
+        Cada pareja de robots puede hacer únicamente un intercambio de  “almas”.
 </p><p>
-        <b>Second rule</b>
+        <b>Segunda regla</b>
 </p><p>
-        Every couple of soles can be swapped just once.
+        Cada pareja de almas puede intercambiarse solamente una  vez..
         </p><p>
-        Best solutions, or records, are saved automatically. 
-		At any point of time it is possible to load your best solution by pressing the record load button.
+        Las mejores soluciones, o records, son guardados automáticamente.
+        En cualquier momento es posible cargar su mejor solución
+        presionando el botón de cargar record.
         </p><p>
-        <b>Comment to thr illustration</b>
+        <b>Comentario a la ilustración</b>
         </p><p>
-        There is a notion of transmigration of souls in several religions including Judaism. 
-		Probably everybody took a thought how it would feel to become a different person 
-		for a while. This idea was used in many comedy movies where two 
-		people swapped their bodies due to some cataclysm and for all the people 
-		them it looked like an unexpected behavior change. 
+        Existe la noción de transmigración de almas en varias religiones
+        incluyendo al Judaismo. Probablemente todo el mundo ha pensado
+        en algún momento como sería convertirse en una persona diferente
+        por algún tiempo. Esta idea fue usada en muchas comedias donde
+        dos personas cambian sus cuerpos debido a algún cataclismo y
+        toda la gente alrededor de ellos sentían un cambio de comportamiento.
 </p>
 	>>>,
 	"help":<<<
 <p>
-In order to swap two bodies you should drag “soul” of one robot to 
-the body of the other one on the main work field. The swap will happen 
-and you will see a restriction on further swap between these two robots 
-in the pictures on the left.
+Para intercambiar dos cuerpos Usted debe arrastrar el “alma” de un robot
+al cuerpo de otro en la pantalla principal. El intercambio ocurrirá y
+usted verá una restricción de más intercambios entre esos dos robots en
+las figuras de la izquierda.
 </p><p>
-You can save your intermediate solutions at any time while working with the tasks. 
-You can open these solutions later and continue your work. 
+Usted puede guardar sus soluciones intermedias en cualquier momento cuando
+esté trabajando en las tareas. Usted puede abrir estas soluciones
+posteriormente y continuar su trabajo
 </p><p>
-<b>Comment to the illustration</b>
+<b>Comentario a la ilustración</b>
 </p><p>
-Not long ago Swedish neuroscientists carried out an interesting experiment. They placed cameras on heads 
-of two people and therefore created an effect of body swap to research peoples’ perception of their own bodies. 
+No hace mucho tiempo neurocientíficos Suecos llevaron a cabo un experimento
+interesante. Ellos colocaron cámaras sobre  las cabezas de dos personas y por
+lo tanto crearon el efecto de intercambio de cuerpos en la percepción de
+sus cuerpos propios de los investigadores
 
 </p>
 	>>>,
 
-           "back" : "Back",
-           "forward" : "Forward",
-           "exchanges" : "NUmber of swaps:",
+           "back" : "Atrás",
+           "forward" : "Adelante",
+           "exchanges" : "Número de intercambios:",
            "record" : "Record:"
 }

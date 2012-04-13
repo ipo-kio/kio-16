@@ -1,92 +1,100 @@
 {
-    "title1": "Diamond and laser ",
-    "title2": "Brilliant cutting",
+    "title1": "Diamante y laser ",
+    "title2": "Corte Brillante",
     "statement1": <<<
 		<p>
-Laser emits the wave frequencies that correspond to red, green and blue colors. 
-From the point of a human eye it looks like one bright white beam that falls 
-on pane of a diamond and reflects and refracts repeatedly inside of it. 
-Angle of refraction is different for different colors and because of that the white beam 
-dissolves into three basic colors. </p><p>
-You can change two parameters: form of the diamond and the beam direction. 
-Your aim is to get the most beautiful light effect. Its beauty is judged by two criteria: 
-first is the number of spots of light that the diamond produces, 
-the other one – the evenness of these spots.</p><p></p><p>
-From the math point of view the first (and the main) criterion is the number of points 
-on the diamond line of sight that can be seen.</p><p></p><p>
-If several participants have the same number of points on the diamond line then 
-the solution with the most even placement of light spots will be considered the best. 
-The evenness of the light spots is the average deviation from the average distance 
-between two near-by dots (light spots) on the diamond circle. </p><p></p><p>
-Best solutions, or records, are saved automatically. 
-At any point of time it is possible to load your best solution by pressing the record load button.
+Un láser emite tres frecuencias primarias correspondientes a los colores rojo, verde y
+azul. La fusión de las tres frecuencias en un solo haz, que para el ojo humano es un haz
+de color blanco brillante, incide en una cara de un diamante y repetidamente se refleja y
+refracta dentro del mismo. Por cuanto el ángulo de refracción es diferente para los
+diferentes colores, el rayo de luz blanca se disocia de nuevo en los tres colores primarios
+</p><p>
+Usted puede controlar dos parámetros: la forma del diamante y el ángulo de incidencia del
+haz. El objetivo es lograr el efecto luminoso más bello. La belleza se evalúa con ayuda de
+dos parámetros, uno de ellos corresponde al número de reflejos que se generan en el diamante.
+El otro parámetro determina con que uniformidad estas reflexiones van de un lado a otro
+</p><p></p><p>
+Desde el punto de vista matemático el primer (y principal) criterio es el el número de puntos
+de reflexión desde el diamante que se consideran visibles para el ojo.
+</p><p></p><p>
+Si el número de puntos de reflexión en el recorrido de los haces es igual en dos soluciones,
+entonces se considera mejor la que tenga una distribución más uniforme. La uniformidad de
+los reflejos se determina por la desviación media de las distancias entre dos reflexiones  en
+términos del promedio de las distancias entre dos puntos de reflexión consecutivos.
+</p><p></p><p>
+Las mejores soluciones (o records) se graban automáticamente. En cualquier momento el
+participante puede retornar a la mejor solución haciendo click en cargar record.
 	>>>,
 	"help1":<<<
 <p>
-You can manage the laser by mouse. To build a diamond you can drag dots that are already 
-on the diamond and add new ones by double click. There are maximum 20 dots that you can add. 
-Consider the diamond as a minimal convex polygon that contains all dots built. 
-So if you put a dot inside the polygon that is already built its form won’t change 
-(and you will have to move this dot to the external part of the polygon). 
-All the dots that you don’t need any more can be removed by the corresponding button. 
+La dirección del haz se controla con el ratón. El diseño del diamante se efectúa moviendo con el
+ratón los puntos existentes y agregando nuevos con un doble clic. El máximo número de puntos que
+se pueden agregar es de 20. El diamante se construye como un polígono convexo minimal que contiene todos
+los puntos (en matemáticas se llama envolvente convexa de puntos). De esta manera si se coloca
+un punto dentro del polígono ya construido su forma no cambia (para esto es necesario arrastrar este punto
+al exterior del polígono). Todos los puntos sobrantes se pueden eliminar con el botón correspondiente.
 </p><p></p><p>
-You can save your intermediate solutions at any time while working with the tasks. 
-You can open these solutions later and continue your work.  
+Usted puede guardar sus soluciones intermedias en cualquier momento cuando esté trabajando con las
+tareas. Usted puede abrir estas soluciones después y continuar con su trabajo.
 </p>
 	>>>,
 
 	"statement2": <<<
     		<p>
-    Cutting a brilliant is a tricky business. Your task is a bit 
-	easier – brilliant is replaced by a convex polygon and you need to shape it. 
-	Laws of light refraction and retraction in this polygon are exactly the same as in a real diamond.
+    Cortar un brillante es una tarea que tiene sus complicaciones. Su tarea es
+    un poco más fácil - el brillante se reemplaza por un polígono convexo y usted necesita
+    darle forma. Las leyes de refracción y retracción de laluz en este polígono son
+    exactamente las mismas que en un diamante real.
 
-    Beams of white light fall on your cut diamond from above and from below. 
-	We will consider that the white light consists only of three pure basic 
-	colors (Red, Green and Blue). Let’s consider that our screen plane is 
-	parallel to the ground then from the physics point of view it means that 
-	the diamond is being demonstrated in a big room with windows that are situated 
-	opposite to each other.    
-	
-	ПоAfter beams retract on the diamond panes they go to our eye retina and 
-	it seem to us that the diamond is sparkling in different colors
-	(the colors are different because beams of different colors have different refraction indexes). 
+	Haces de luz blanca entran en su diamante cortado desde arriba y desde abajo.
+	Consideraremos que la luz blanca consiste únicamente de tres colores puros básicos
+	(Rojo, Verde y Azul). Consideremos que el plano de nuestra pantalla es paralelo al piso,
+	entonces desde el punto de vista físico se interpreta como si el diamante estuviera
+	ubicado en un gran salón con ventanas que están situadas opuestas entre sí.
 
-    If we show all the beams that go to the retina altogether we won’t be able to figure 
-	out their directions. That is why there is only one beam demonstrated – 
-	the one that comes to the particular dot on the eye retina. 
+    Después que los haces retraen en las paredes del diamante, pasan por nuestra retina y
+    nos parece  como si el diamante produjera destellos de colores diferentes
+    (los colores son diferentes debido a  que los haces de colores diferentes tienen distintos índices
+    de refracción).
 
-    We will estimate a brilliant cutting quality by one criterion – light brightness 
-	of a beam that reaches the eye retina after retraction.
-    Another criterion that is mentioned in the task (but not in the record) 
-	is color dispersion that corresponds to the number of different colors in the diamond. 
-	The more colors the better.   
+    Si mostraramos todos los haces que van juntos a la retina no podríamos encontrar sus
+    direcciones. Es por eso que únicamente se muestra un haz-
+    el que viene al punto particular en la retina.
+
+    Estimaremos la calidad de corte de un brillante por un criterio - el brillo de la luz
+    de un haz que llegue a la retina después de la retracción.
+    Otro criterio que es mencionado en la tarea (pero no en el record)
+    es la dispersión que corresponde al número de colores diferentes en el diamante.
+    Cuánto más colores, mejor.
+
+
+
 
     	>>>,
     	"help2":<<<
     <p>
- You can manage the laser by mouse. To build a diamond you can drag dots that are already 
-on the diamond and add new ones by double click. There are maximum 20 dots that you can add. 
-Consider the diamond as a minimal convex polygon that contains all dots built. 
-So if you put a dot inside the polygon that is already built its form won’t change 
-(and you will have to move this dot to the external part of the polygon). 
-All the dots that you don’t need any more can be removed by the corresponding button. 
+ La dirección del haz se controla con el ratón. El diseño del diamante se efectúa moviendo con el
+ratón los puntos existentes y agregando nuevos con un doble clic. El máximo número de puntos que
+se pueden agregar es 20. El diamante se construye como un polígono convexo que contiene todos
+los puntos (en matemáticas se llama envolvente convexa de puntos). De esta manera si se coloca
+un punto dentro del polígono ya construido su forma no cambia (para ello es necesario arrastrar este punto
+al exterior del polígono). Todos los puntos sobrantes se pueden eliminar con el botón correspondiente.
 </p><p></p><p>
-You can save your intermediate solutions at any time while working with the tasks. 
-You can open these solutions later and continue your work. 
+Usted puede guardar sus soluciones intermedias en cualquier momento mientras está trabajando las tareas.
+Usted puede abrir estas soluciones después y continuar con su trabajo.
     	>>>,
 
     /*Work field content*/
-    "button_remove_extra_points" : "Remove extra dots",
+    "button_remove_extra_points" : "Eliminar puntos extras",
 
-    "ray_info" : "Beam information",
-    "mean_brightness" : "Mean brightness",
-    "color_variance" : "Color dispersion",
+    "ray_info" : "Información del haz",
+    "mean_brightness" : "Brillo promedio",
+    "color_variance" : "Dispersión del color",
 
-    "current_result" : "Current result",
+    "current_result" : "Resultado actual",
     "record" : "Record",
-    "global_mean_brightness" : "Mean brightness",
-    "mean_variance" : "Average dispersion",
-    "points_count" : "Number of dots",
-    "points_uniformity" : "Evenness of dots"
+    "global_mean_brightness" : "Brillo promedio",
+    "mean_variance" : "Dispersión media",
+    "points_count" : "Número de puntos",
+    "points_uniformity" : "Uniformidad de puntos"
 }

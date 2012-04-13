@@ -1,92 +1,92 @@
 {
-    "title1": "Diamond and laser ",
-    "title2": "Brilliant cutting",
+    "title1": "เพชรและแสงเลเซอร์ ",
+    "title2": "เจียระไนเพชร",
     "statement1": <<<
 		<p>
-Laser emits the wave frequencies that correspond to red, green and blue colors. 
-From the point of a human eye it looks like one bright white beam that falls 
-on pane of a diamond and reflects and refracts repeatedly inside of it. 
-Angle of refraction is different for different colors and because of that the white beam 
-dissolves into three basic colors. </p><p>
-You can change two parameters: form of the diamond and the beam direction. 
-Your aim is to get the most beautiful light effect. Its beauty is judged by two criteria: 
-first is the number of spots of light that the diamond produces, 
-the other one – the evenness of these spots.</p><p></p><p>
-From the math point of view the first (and the main) criterion is the number of points 
-on the diamond line of sight that can be seen.</p><p></p><p>
-If several participants have the same number of points on the diamond line then 
-the solution with the most even placement of light spots will be considered the best. 
-The evenness of the light spots is the average deviation from the average distance 
-between two near-by dots (light spots) on the diamond circle. </p><p></p><p>
-Best solutions, or records, are saved automatically. 
-At any point of time it is possible to load your best solution by pressing the record load button.
+เลเซอร์จะปล่อยคลื่นความถี่ที่ตรงกับสีแดง สีเขียว และ สีฟ้า
+จากจุดในระดับสายตาของคน ดูเสมือนว่ามีลำแสงสีขาวสดใส
+ตกลงบนเพชร และส่งแสงสะท้อนมาจากข้างใน
+มุมของการหักเหจะแตกต่งกันในแต่ละสีที่แตกต่างกันและเนื่องจากแสงสว่าง
+ได้เจือจางไปเป็นสีพื้นฐานของสีทั้งสาม. </p><p>
+คุณสามารถเปลี่ยนสองปัจจัยคือ รูปแบบของเพชร และ ทิศทางของแสงสว่าง 
+จุดมุ่งหมายของคุณคือ ได้ประกายเพชรที่สวยที่สุด 2 กฏเกณฑ์ที่จะตัดสินความงามของเพชร: 
+ข้อที่หนึ่งคือจำนวนของแสงที่ได้มาจากเพชร, 
+ส่วนอีกข้อนึงคือความสมดุลของจุดเหล่านั้น</p><p></p><p>
+จากจุดที่เหมาะสมกันของการมองในครั้งแรก(และถือเป็นหลัก) 
+เกณฑ์คือจำนวนของจุดที่อยู่บนระนาบของเพชรที่สามารถมองเห็นได้</p><p></p><p>
+ถ้าผู้เข้าแข่งขันได้จำนวนของจุดเท่ากัน  
+จะตัดสินโดยดูจากการจัดเรียงที่ดีที่สุด
+ความสมดุลของจุดแสงเป็นค่าเบี่ยงเบนเฉลี่ยจากระยะทางเฉลี่ย
+ระหว่างจุดสองสุดที่อยู่ใกล้(จุดสว่าง)บนวงกลมเพชร </p><p></p><p>
+ผลคะแนนที่ดีที่สุดจะถูกบันทึกอัตโนมัติ
+คุณสามารถกดบันทึกผลที่ดีที่สุดได้ทุกช่วงเวลาโดยการกดไปที่ปุ่มบันทึกผล
 	>>>,
-	"help1":<<<
+	"ช่วยเหลือ1":<<<
 <p>
-You can manage the laser by mouse. To build a diamond you can drag dots that are already 
-on the diamond and add new ones by double click. There are maximum 20 dots that you can add. 
-Consider the diamond as a minimal convex polygon that contains all dots built. 
-So if you put a dot inside the polygon that is already built its form won’t change 
-(and you will have to move this dot to the external part of the polygon). 
-All the dots that you don’t need any more can be removed by the corresponding button. 
+คุณสามารถจัดการกับเลเซอร์โดยใช้เม้าท์ การสร้างเพชรคุณสามารถลากจุดที่ซึ่งอยู่บนเพชร
+และสามารถเพิ่มจุดโดยกดที่เม้าท์สองครั้ง ซี่งมีมากถึง 20 จุดที่คุณสามารถเพิ่มเติม 
+พิจารณาเพชรที่มีหลายเหลี่ยม มีสูงมีต่ำที่สร้างจากจุดทั้งหมด
+ดังนั้นถ้าคุณวางจุดภายในรูปหลายเหลี่ยมซึ่งถูกสร้างรูปแบบมาแล้วจะไม่สามารถเปลี่ยนได้
+(และคุณจะต้องเคลื่อนย้ายจุดนี้ออกไปภายนอกของรูปหลายเหลี่ยม)
+ทุกจุดที่คุณไม่ต้องการ สามารถลบออกได้โดยคลิกปุ่มที่เกี่ยวข้อง
 </p><p></p><p>
-You can save your intermediate solutions at any time while working with the tasks. 
-You can open these solutions later and continue your work.  
+คุณสามารถบันทึกการแก้ปัญหาได้ทุกเวลาแม้กระทั่งในขณะที่คุณกำลังแก้ปัญหา
+คุณสามารถเปิดดูวิธีการแก้ปัญหาและดำเนินการแก้ปัญหา
 </p>
 	>>>,
 
-	"statement2": <<<
+  "ข้อความที่ 2": <<<
     		<p>
-    Cutting a brilliant is a tricky business. Your task is a bit 
-	easier – brilliant is replaced by a convex polygon and you need to shape it. 
-	Laws of light refraction and retraction in this polygon are exactly the same as in a real diamond.
+การเจียระไนเป็นการทำที่ยาก งานของคุณ
+จะง่ายกว่า  ความงดงามจะปรากฏโดยการทำให้รูปทรงนูนและคุณต้องจัดรูปร่างให้มัน
+กฏการหักเหของแสงหรือรูปทรางหลายเหลี่มจะต้องดูเหมือนเพชรจริงๆ
 
-    Beams of white light fall on your cut diamond from above and from below. 
-	We will consider that the white light consists only of three pure basic 
-	colors (Red, Green and Blue). Let’s consider that our screen plane is 
-	parallel to the ground then from the physics point of view it means that 
-	the diamond is being demonstrated in a big room with windows that are situated 
-	opposite to each other.    
+  ลำแสงสีขาวตกลงบนเพชรที่คุณตัดจากด้านบนและด้านล่าง
+เราจะพิจารณาแสงนั้นที่ประกอบจากสีพื้นฐาน
+ ได้แก่ แดง เขียว และ ฟ้า   ถ้าพิจารณาว่าเครื่องบิน
+บินคู่กับพื้นดิน  เราก็สามารถให้มุมมองทางฟิสิกสได้ว่า
+  เพชรจะถูกจัดแสดงในห้องที่ใหญ่ที่มีหน้าต่าง
+  ตั้งอยู่ตรงข้ามกัน    
 	
-	ПоAfter beams retract on the diamond panes they go to our eye retina and 
-	it seem to us that the diamond is sparkling in different colors
-	(the colors are different because beams of different colors have different refraction indexes). 
+หลังจากลำแสงได้กระทบลงบนเพชรแล้วส่งลำแสงไปยังเรตินา
+และมันดูเหมือนว่าเพชรจะฉายแสงในสีต่างๆกัน
+ สีทั้งหลายจะแตกต่างกันเพราะสำแสงของสีที่ต่างกันย่อมมีการสะท้อนที่ต่างกัน
 
-    If we show all the beams that go to the retina altogether we won’t be able to figure 
-	out their directions. That is why there is only one beam demonstrated – 
-	the one that comes to the particular dot on the eye retina. 
+ถ้าเราแสดงว่าทุกลำแสงที่พุ่งตรงไปยังเรติน่า เราต้องบ่งบอกถึงทิศทางได้ 
+นั่นคือเหตุผลที่ว่าทำไมจึงมีลำแสงเดียว
+ที่สามารถพุ่งตรงไปยังจุดบนเรตินาของตาได้ 
 
-    We will estimate a brilliant cutting quality by one criterion – light brightness 
-	of a beam that reaches the eye retina after retraction.
-    Another criterion that is mentioned in the task (but not in the record) 
-	is color dispersion that corresponds to the number of different colors in the diamond. 
-	The more colors the better.   
+เราจะตัดสินคุณภาพของการเจียระไนจาก แสงสว่าง
+ของลำแสงที่ส่องมาถึงเรตินาของดวงตาหลังจากหดตัว
+และกฎเกณฑ์การพิจารณาอื่นๆในงาน(แต่ไม่ได้บันทึก) 
+คือการกระจายตัวของสีที่สอดคล้องกับจำนวนสีที่แตกต่างกันในเพชร
+ยิ่งมีสีมากยิ่งดี 
 
     	>>>,
-    	"help2":<<<
+    	"ช่วยเหลือ 2":<<<
     <p>
- You can manage the laser by mouse. To build a diamond you can drag dots that are already 
-on the diamond and add new ones by double click. There are maximum 20 dots that you can add. 
-Consider the diamond as a minimal convex polygon that contains all dots built. 
-So if you put a dot inside the polygon that is already built its form won’t change 
-(and you will have to move this dot to the external part of the polygon). 
-All the dots that you don’t need any more can be removed by the corresponding button. 
+คุณสามารถจัดการกับเลเซอร์โดยใช้เม้าท์ การสร้างเพชรคุณสามารถลากจุดที่ซึ่งอยู่บนเพชร
+และสามารถเพิ่มจุดโดยกดที่เม้าท์สองครั้ง ซี่งมีมากถึง 20 จุดที่คุณสามารถเพิ่มเติม 
+พิจารณาเพชรที่มีหลายเหลี่ยม มีสูงมีต่ำที่สร้างจากจุดทั้งหมด
+ดังนั้นถ้าคุณวางจุดภายในรูปหลายเหลี่ยมซึ่งถูกสร้างรูปแบบมาแล้วจะไม่สามารถเปลี่ยนได้
+(และคุณจะต้องเคลื่อนย้ายจุดนี้ออกไปภายนอกของรูปหลายเหลี่ยม)
+ทุกจุดที่คุณไม่ต้องการ สามารถลบออกได้โดยคลิกปุ่มที่เกี่ยวข้อง. 
 </p><p></p><p>
-You can save your intermediate solutions at any time while working with the tasks. 
-You can open these solutions later and continue your work. 
+คุณสามารถบันทึกการแก้ปัญหาได้ทุกเวลาแม้กระทั่งในขณะที่คุณกำลังแก้ปัญหา
+คุณสามารถเปิดดูวิธีการแก้ปัญหาและดำเนินการแก้ปัญหา
     	>>>,
 
     /*Work field content*/
-    "button_remove_extra_points" : "Remove extra dots",
+    "button_remove_extra_points" : "ย้ายจุดพิเศษ",
 
-    "ray_info" : "Beam information",
-    "mean_brightness" : "Mean brightness",
-    "color_variance" : "Color dispersion",
-
-    "current_result" : "Current result",
-    "record" : "Record",
-    "global_mean_brightness" : "Mean brightness",
-    "mean_variance" : "Average dispersion",
-    "points_count" : "Number of dots",
-    "points_uniformity" : "Evenness of dots"
+   "ray_info" : "ข้อมูลลำแสง",
+    "mean_brightness" : "ค่าเฉลี่ยความสว่าง",
+    "color_variance" : "การกระจายของสี",
+    
+    "current_result" : "ผลที่เกิดขึ้น",
+    "record" : "บันทึก",
+    "global_mean_brightness" : "ความสว่างเฉลี่ย",
+    "mean_variance" : "ค่าเบี่ยงเบนเฉลี่ย",
+    "points_count" : "จำนวนของจุด",
+    "points_uniformity" : "ความสมดุลของจุด"
 }
