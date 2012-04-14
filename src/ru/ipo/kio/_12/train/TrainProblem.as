@@ -139,11 +139,11 @@ public class TrainProblem implements KioProblem {
         }else if(solution1.happyPassengers!=solution2.happyPassengers){
             return getSign(solution1.happyPassengers-solution2.happyPassengers);
         }else{
-            return getSign(solution1.time-solution2.time);
+            return getSign(solution2.time-solution1.time);
         }
     }
 
-    private function getSign(i:int):int {
+    private static function getSign(i:int):int {
        return i>0?1:i<0?-1:0;
     }
 
