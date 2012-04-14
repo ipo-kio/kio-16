@@ -173,7 +173,7 @@ the tasks and open these solutions later and continue your work.
             		"result": "Result",
             		"record": "Record",
             		"amounts": "Passengers",
-            		"time": "Time"
-
+            		"time": "Time",
+                    "crash": "crash"
             	}
 }

@@ -193,7 +193,7 @@
             		"result": "Резултати",
             		"record": "Рекорд",
             		"amounts": "пътници",
-            		"time": "време"
-
+            		"time": "време",
+                    "crash": "crash (TRANSLATE ME PLZ)"
             	}
 }
