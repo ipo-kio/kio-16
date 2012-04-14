@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="Flex" version="4">
-  <component name="Flex.Build.Configuration">
-    <option name="DO_BUILD" value="true" />
-    <option name="USE_CUSTOM_CONFIG_FILE" value="true" />
-    <option name="CUSTOM_CONFIG_FILE" value="$MODULE_DIR$/compiler-config.xml" />
-    <option name="OUTPUT_FILE_NAME" value="kio_11.swf" />
-    <option name="TARGET_PLAYER_VERSION" value="11.1" />
-    <option name="VERSION" value="3" />
-  </component>
-  <component name="FlexBuildConfigurationManager" active="KIO starter">
+  <component name="FlexBuildConfigurationManager" active="kio-12">
     <configurations>
-      <configuration name="KIO starter" main-class="ru.ipo.kio._12.KIOShell_cond" output-file="KIO level 0.swf" output-folder="$MODULE_DIR$/out/production/kio-12">
+      <configuration name="kio-12" main-class="ru.ipo.kio._12.checker.Kio_Checker" output-file="kio_12.swf" output-folder="$MODULE_DIR$/out/production/kio-12">
         <dependencies target-player="11.1">
           <entries>
-            <entry library-id="bc1f76b7-e8dd-42a6-8ea4-4642ff4320e7">
+            <entry library-id="3d82f0b1-9cc7-40ab-86dd-07b80cd09576">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="a1206149-22c9-4ff9-9d60-a18518d89623">
+            <entry library-id="43edb1d8-7378-4b93-9865-61eeb0d8e306">
               <dependency linkage="Merged" />
             </entry>
           </entries>
           <sdk name="flex_sdk_4.6.0.23201B" />
         </dependencies>
-        <compiler-options />
+        <compiler-options>
+          <option name="additionalConfigFilePath" value="$MODULE_DIR$/compiler-config.xml" />
+        </compiler-options>
         <packaging-air-desktop />
         <packaging-android />
         <packaging-ios />
@@ -35,29 +29,10 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="flex_sdk_4.6.0.23201B" jdkType="__CompositeFlexSdk__" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/ru/ipo/kio/_12/train/_resources/components.swc!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/ru/ipo/kio/_12/stagelights/_resources/projector.swc!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
       <library type="flex">
-        <properties id="bc1f76b7-e8dd-42a6-8ea4-4642ff4320e7" />
+        <properties id="3d82f0b1-9cc7-40ab-86dd-07b80cd09576" />
         <CLASSES>
           <root url="jar://$MODULE_DIR$/src/ru/ipo/kio/_12/train/_resources/components.swc!/" />
         </CLASSES>
@@ -67,7 +42,7 @@
     </orderEntry>
     <orderEntry type="module-library">
       <library type="flex">
-        <properties id="a1206149-22c9-4ff9-9d60-a18518d89623" />
+        <properties id="43edb1d8-7378-4b93-9865-61eeb0d8e306" />
         <CLASSES>
           <root url="jar://$MODULE_DIR$/src/ru/ipo/kio/_12/stagelights/_resources/projector.swc!/" />
         </CLASSES>
@@ -75,6 +50,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="jdk" jdkName="flex_sdk_4.6.0.23201B" jdkType="__CompositeFlexSdk__" />
   </component>
 </module>
 
