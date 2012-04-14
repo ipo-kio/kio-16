@@ -1,6 +1,13 @@
 {
 
     "title": "El Hombre Invisible",
+    "next":"Перейти ко II фокусу",
+    "previous":"Перейти к I фокусу",
+    "firstResult":"Ваш результат для I фокуса: исчезновение на ",
+    "firstMaxResult":"Лучший результат для I фокуса: исчезновение на ",
+    "secondResult":"Ваш результат для II фокуса: исчезновение на ",
+    "secondMaxResult":"Лучший результат для II фокуса: исчезновение на ",
+    "message":"do not translate this line",
     "statement": <<<
 		 <p><b>Introducción</b></p>
 
