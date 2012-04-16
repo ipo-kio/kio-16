@@ -85,18 +85,24 @@ public class Permutation extends EventDispatcher {
         return o;
     }
     
-    public function unserialize(o:Object, dispatch_change_event:Boolean = true) : void {
+    public function unserialize(o:Object, dispatch_change_event:Boolean = true) : int {
         _base_transpositions = [];
         _value_transpositions = [];
         _base_transpositions_redo_history = [];
         _value_transpositions_redo_history = [];
         init_permutation();
-        
+
         for (var i:int = 0; i < o.length; i++)
-            permute(o[i].a, o[i].b, false, dispatch_change_event);
+            {
+                var res:int = permute(o[i].a, o[i].b, false, dispatch_change_event);
+                if (res != STATUS_OK)
+                    return res;
+            }
 
         if (dispatch_change_event)
             dispatchEvent(PERMUTATION_CHANGED_EVENT);
+
+        return STATUS_OK;
     }
     
     public function canUndo():Boolean {

@@ -8,6 +8,8 @@
 package ru.ipo.kio._12.futurama {
 import flash.display.DisplayObject;
 
+import ru.ipo.kio._12.futurama.model.Permutation;
+
 import ru.ipo.kio._12.futurama.view.FuturamaField;
 import ru.ipo.kio.api.KioApi;
 
@@ -75,9 +77,9 @@ public class FuturamaProblem implements KioProblem {
         if (solution == 0)
             return false;
 
-        _display.perm.unserialize(solution.perm, ! KioApi.isChecker);
+        var res:int = _display.perm.unserialize(solution.perm, ! KioApi.isChecker);
         
-        return true;
+        return res == Permutation.STATUS_OK;
     }
 
     public function check(solution:Object):Object {

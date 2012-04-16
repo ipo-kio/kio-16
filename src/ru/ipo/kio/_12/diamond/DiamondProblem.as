@@ -189,7 +189,7 @@ public class DiamondProblem extends Sprite implements KioProblem {
         current_info.set_values([o.points, o.variance]);
         if (! no_autosave)
             api.autoSaveSolution();
-        
+
         if (o.points > _record_points || o.points == _record_points && o.variance < _record_var) {
             _record_points = o.points;
             _record_var =  o.variance;
@@ -265,9 +265,11 @@ public class DiamondProblem extends Sprite implements KioProblem {
     public function loadSolution(solution:Object):Boolean {
         if (solution == null)
             return false;
-        
+
         diamond.unserialize(solution.diamond);
         eye.angle = solution.angle;
+
+        eye.update(); //not really needed
 
         if (level == 1)
             update_current_info_1();

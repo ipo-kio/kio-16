@@ -41,7 +41,8 @@ public class Eye extends Sprite {
     //                | v      w       |
     //                |<-------------->|
 
-    private static var field_d0:Number = 25;
+    private static var field_d0:Number;
+    private static var field_d0_:Number = 25;
     private static const field_w:Number = 30;
     private static const field_h:Number = 30;
     private static const field_scale:Number = 10;
@@ -74,9 +75,9 @@ public class Eye extends Sprite {
         _level = level;
 
         if (level == 2) {
-            field_d0 += 3;
+            field_d0 = field_d0_ + 3;
         } else {
-            field_d0 += 5;
+            field_d0 = field_d0_ + 5;
             level_1_x_min = field_d0;
         }
 
@@ -210,7 +211,7 @@ public class Eye extends Sprite {
         return _angle;
     }
 
-    private function update():void {
+    public function update():void {
         if (rays_layer != null) {
             removeChild(rays_layer);
             rays_layer = null;

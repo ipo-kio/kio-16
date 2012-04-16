@@ -130,5 +130,9 @@ public class Diamond extends EventDispatcher {
         update_convex_hull();
         dispatchEvent(UPDATE_EVENT);
     }
+
+    public function format():String {
+        return "I'm a dimond: verts = " + _vertices + " hull = " + _hull;
+    }
 }
 }
