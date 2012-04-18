@@ -1,12 +1,12 @@
 {
 
     "title": "El Hombre Invisible",
-    "next":"Перейти ко II фокусу",
-    "previous":"Перейти к I фокусу",
-    "firstResult":"Ваш результат для I фокуса: исчезновение на ",
-    "firstMaxResult":"Лучший результат для I фокуса: исчезновение на ",
-    "secondResult":"Ваш результат для II фокуса: исчезновение на ",
-    "secondMaxResult":"Лучший результат для II фокуса: исчезновение на ",
+    "next":"Go to trick II",
+    "previous":"Go to trick I",
+    "firstResult":"Your result for trick I: disappeared on ",
+    "firstMaxResult":"Your record for trick I: disappeared on ",
+    "secondResult":"Your result for trick II: disappeared on ",
+    "secondMaxResult":"Your record for trick II: disappeared on ",
     "message":"do not translate this line",
     "statement": <<<
 		 <p><b>Introducción</b></p>
