@@ -1,12 +1,12 @@
 {
 
     "title": "El Hombre Invisible",
-    "next":"Go to trick II",
-    "previous":"Go to trick I",
-    "firstResult":"Your result for trick I: disappeared on ",
-    "firstMaxResult":"Your record for trick I: disappeared on ",
-    "secondResult":"Your result for trick II: disappeared on ",
-    "secondMaxResult":"Your record for trick II: disappeared on ",
+    "next":"Ir al truco II",
+    "previous":"Ir al truco I",
+    "firstResult":"Su resultado para el truco I: desapareció en ",
+    "firstMaxResult":"Su record para el truco I: desapareció en ",
+    "secondResult":"Su resultado para el truco II: despareció en ",
+    "secondMaxResult":"Su record paa el truco II: despareció en ",
     "message":"do not translate this line",
     "statement": <<<
 		 <p><b>Introducción</b></p>
