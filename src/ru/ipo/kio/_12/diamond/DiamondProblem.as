@@ -250,7 +250,8 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
             return {
                 points: _record_points,
-                disp: _record_var
+                disp: _record_var,
+                points_on_c_hull: diamond.hullVertexCount
             };
 
         } else /*if (_level == 2)*/ {
@@ -268,8 +269,6 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
         diamond.unserialize(solution.diamond);
         eye.angle = solution.angle;
-
-        eye.update(); //not really needed
 
         if (level == 1)
             update_current_info_1();
@@ -297,6 +296,23 @@ public class DiamondProblem extends Sprite implements KioProblem {
                     return -1;
                 else
                     return 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             }
 
         } else /*if (_level == 2)*/ {

@@ -284,7 +284,7 @@ public class KioChecker extends UIComponent {
             ],
             [
                 ['length'],
-                ['points', 'disp'],
+                ['points', 'disp', 'points_on_c_hull'],
                 ['hasCrash', 'happyPassengers', 'time']
             ],
             [
@@ -501,6 +501,12 @@ public class KioChecker extends UIComponent {
                 anketa.name + " " +
                 anketa.second_name + " ");
 
+        //retest only 1st level diamond
+        if (level != 1)
+            return null;
+        data[FuturamaProblem.ID] = null;
+        data[TrainProblem.ID] = null;
+
         var problems:Array;
         if (level == 0)
             problems = [new FuturamaProblem(0), new StagelightsProblem(0, false), new TrainProblem(0)];
@@ -583,16 +589,3 @@ public class KioChecker extends UIComponent {
     }
 }
 }
-
-/*
- [trace] 11:09:43 PM: ENTRY # 2661 of (0-3000)
- [trace] 11:09:43 PM: solution found for login АНТОНОВА-255@kio-1
- [Fault] exception, information=Error: dynamic block code description: code lengths codes incomplete
- at nochump.util.zip::Inflater/constructDynamicTables()[/home/ilya/programming/kio-12/src/nochump/util/zip/Inflater.as:228]
- at nochump.util.zip::Inflater/inflate()[/home/ilya/programming/kio-12/src/nochump/util/zip/Inflater.as:97]
- at nochump.util.zip::ZipFile/getInput()[/home/ilya/programming/kio-12/src/nochump/util/zip/ZipFile.as:113]
- at ru.ipo.kio._12.checker::KioChecker/processZipEntry()[/home/ilya/programming/kio-12/src/ru/ipo/kio/_12/checker/KioChecker.as:209]
- at Function/<anonymous>()[/home/ilya/programming/kio-12/src/ru/ipo/kio/_12/checker/KioChecker.as:237]
- at flash.utils::Timer/_timerDispatch()
- at flash.utils::Timer/tick()
-*/
