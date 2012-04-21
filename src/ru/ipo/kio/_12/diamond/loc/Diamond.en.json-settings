@@ -78,6 +78,7 @@ You can open these solutions later and continue your work.
 
     /*Work field content*/
     "button_remove_extra_points" : "Remove extra dots",
+    "button_illustration" : "illustration",
 
     "ray_info" : "Beam information",
     "mean_brightness" : "Mean brightness",

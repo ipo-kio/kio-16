@@ -85,6 +85,7 @@
 
     /*Текст на поле*/
     "button_remove_extra_points" : "Премахване на излишните точки",
+    "button_illustration" : "?",
 
     "ray_info" : "Информация за лъча",
     "mean_brightness" : "Средна яркост",

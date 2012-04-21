@@ -38,12 +38,17 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
     [Embed(source='resources/Button_09a.png', mimeType='image/png')]
     public static const BT_0:Class;
-
     [Embed(source='resources/Button_09b.png', mimeType='image/png')]
     public static const BT_1:Class;
-
     [Embed(source='resources/Button_09c.png', mimeType='image/png')]
     public static const BT_2:Class;
+
+    [Embed(source='resources/Button_10a.png', mimeType='image/png')]
+    public static const BT_I0:Class;
+    [Embed(source='resources/Button_10b.png', mimeType='image/png')]
+    public static const BT_I1:Class;
+    [Embed(source='resources/Button_10c.png', mimeType='image/png')]
+    public static const BT_I2:Class;
 
     [Embed(source='resources/b1.jpg')]
     public static const b1:Class;
@@ -56,10 +61,14 @@ public class DiamondProblem extends Sprite implements KioProblem {
     [Embed(source='resources/b5.jpg')]
     public static const b5:Class;
 
-    [Embed(source='resources/016.png')]
+    [Embed(source='resources/034.png')]
     public static const LV_1_BG:Class;
     [Embed(source='resources/024.png')]
     public static const LV_2_BG:Class;
+    [Embed(source='resources/Pic_04.png')]
+    public static const LV_1_ILLUSTRATION:Class;
+    [Embed(source='resources/Pic_01.png')]
+    public static const LV_2_ILLUSTRATION:Class;
 
     public static const ID:String = 'diamond';
 
@@ -71,6 +80,8 @@ public class DiamondProblem extends Sprite implements KioProblem {
     private var current_ray_info:InfoField;
     private var current_info:InfoField;
     private var record_info:InfoField;
+
+    private var illustration_image:DisplayObject;
 
     //level 1 record
     private var _record_points:int = 0;
@@ -93,6 +104,14 @@ public class DiamondProblem extends Sprite implements KioProblem {
         api = KioApi.instance(ID);
 
         init();
+
+        //stage mouse listener
+        addEventListener(Event.ADDED_TO_STAGE, function(e:Event):void {
+            stage.addEventListener(MouseEvent.MOUSE_UP, stage_mouse_up);
+        });
+        addEventListener(Event.REMOVED_FROM_STAGE, function(e:Event):void {
+            stage.removeEventListener(MouseEvent.MOUSE_UP, stage_mouse_up);
+        });
     }
 
     private function init(e:Event = null):void {
@@ -180,6 +199,28 @@ public class DiamondProblem extends Sprite implements KioProblem {
             update_current_info_1(null, true);
         }
 
+        //1 - 72 461
+        //2 - 78 459
+        var illustration_button:GraphicsButton = new GraphicsButton(
+                loc.button_illustration,
+                new BT_I0().bitmapData,
+                new BT_I1().bitmapData,
+                new BT_I2().bitmapData,
+                'KioTahoma',
+                12, 12, 2, 2, -7, -5
+        );
+        illustration_button.x = level == 1 ? 72 : 78;
+        illustration_button.y = level == 1 ? 431 : 439;
+        illustration_button.addEventListener(MouseEvent.MOUSE_DOWN, function (event:Event):void {
+            if (illustration_image == null) {
+                illustration_image = new (level == 1 ? LV_1_ILLUSTRATION : LV_2_ILLUSTRATION);
+                illustration_image.x = 6;
+                illustration_image.y = 7;
+                addChild(illustration_image);
+            }
+        });
+        addChild(illustration_button);
+
         var remove_extra_button:GraphicsButton = new GraphicsButton(
                 loc.button_remove_extra_points,
                 new BT_0().bitmapData,
@@ -194,6 +235,13 @@ public class DiamondProblem extends Sprite implements KioProblem {
         remove_extra_button.addEventListener(MouseEvent.CLICK, function (event:Event):void {
             diamond.only_hullize();
         });
+    }
+
+    private function stage_mouse_up(e:MouseEvent):void {
+        if (illustration_image != null) {
+            removeChild(illustration_image);
+            illustration_image = null;
+        }
     }
 
     private function update_current_info_1(event:Event = null, no_autosave:Boolean = false):void {

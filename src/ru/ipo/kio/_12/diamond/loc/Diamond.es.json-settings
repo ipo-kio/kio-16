@@ -86,6 +86,7 @@ Usted puede abrir estas soluciones después y continuar con su trabajo.
 
     /*Work field content*/
     "button_remove_extra_points" : "Eliminar puntos extras",
+    "button_illustration" : "Ilustración",
 
     "ray_info" : "Información del haz",
     "mean_brightness" : "Brillo promedio",

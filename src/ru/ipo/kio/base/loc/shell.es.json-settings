@@ -141,10 +141,10 @@
                 <p class='h1c'>Revista de Herramientas Computacionales en Educación</p>
                 <p><br></p>
                 <p><b>Comité organizador internacional:</b> Maria Losada y Mario Cruz (Colombia),Emiliya Velikova (Bulgaria),
-                                                    Anastasia Dementeva y Sergey Pozdnyakov (Rusia), Atit Maitarattanakon
+                                                    Anastasia Dementeva y Sergey Pozdniakov (Rusia), Atit Maitarattanakon
                                                     (Tailandia).</p>
                 /*<p><br></p>*/
-                <p><b>Organizadores:</b>Sophie Entina, Sergey Pozdnyakov, Ilya Posov</p>
+                <p><b>Organizadores:</b>Sophie Entina, Sergey Pozdniakov, Ilya Posov</p>
                 <p><b>Voluntarios:</b> Akudzhuoby Uchenna, Bihalova Julia, Davidovich Ilona,
                                                   Ivanov Pavel, Podolskaya Alexandra, Shakshin Dmitry</p>
                 /*<p><br></p>*/
@@ -155,7 +155,7 @@
                 /*<p><br></p>*/
                 <p><b>Creación de problemas:</b></p>
                 <p><b>Autores de las tareas:</b> Ilya Posov («Diamante y Laser», «Corte Brillante», «Intercambio de Cuerpos»),
-                                        Butikov E. («Hombre Invisible»), Sergey Pozdnyakov («Tranvias», «Rutas de Tranvia»).</p>
+                                        Butikov E. («Hombre Invisible»), Sergey Pozdniakov («Tranvias», «Rutas de Tranvia»).</p>
                 <p><b>Programadores Flash:</b> Akimushkin V., Posov I., Osipov V.</p>
                 <p><b>Diseñadora:</b> Anna Vasilkova</p>
                 <p><br></p>
@@ -167,8 +167,8 @@
 		},
 		"space_settings":{
             "warning":"¡advertencia!",
-            "action":"Para trabajar con el programa usted necesita que él grabe información en su disco duro.
-			Haga \nclick en 'Configuración' y ajuste la configuración como está mostrado en la figura",
+            "action":<<<Para trabajar con el programa usted necesita que él grabe información en su disco duro.
+			Haga \nclick en 'Configuración' y ajuste la configuración como está mostrado en la figura>>>,
             "after":"Usted podrá cerrar la ventana después de eso"
 		}
     }

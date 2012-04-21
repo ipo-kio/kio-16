@@ -5,6 +5,8 @@
  * Time: 23:41
  */
 package ru.ipo.kio._12.diamond.model {
+import avmplus.implementsXml;
+
 import flash.events.Event;
 import flash.events.EventDispatcher;
 
@@ -129,6 +131,21 @@ public class Diamond extends EventDispatcher {
         unserialize(_hull, true);
         update_convex_hull();
         dispatchEvent(UPDATE_EVENT);
+    }
+
+    public function get area():Number {
+        if (_hull == null || _hull.length == 0)
+            return 0;
+
+        var sum:Number = 0;
+        for (var i:int = 0; i < _hull.length; i++) {
+            var j:int = i - 1;
+            if (j < 0)
+                j = _hull.length - 1;
+
+            sum += (_hull[i].x - _hull[j].x) * (_hull[i].y + _hull[j].y) / 2;
+        }
+        return Math.abs(sum);
     }
 }
 }

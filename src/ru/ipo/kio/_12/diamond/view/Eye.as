@@ -69,6 +69,7 @@ public class Eye extends Sprite {
     private var _all_out_points:Array;
     
     private var laser_sprite:Sprite;
+    private const MIN_DIAMOND_AREA:Number = 10;
 
     public function Eye(diamond:Diamond, level:int) {
         _level = level;
@@ -226,9 +227,13 @@ public class Eye extends Sprite {
                 1
         );
 
+        _all_out_points = [];
+
+        if (diamond.area < MIN_DIAMOND_AREA && _level == 1)
+            return; //TODO display a message that the diamond has very small area
+
         rays_layer = new Sprite();
 
-        _all_out_points = [];
         for (var col:int = 0; col <= 2; col ++) {
             ray.recurse_bild_rays(diamond.hull, 1/(Diamond.ETA + 0.01 * col));
 
@@ -282,7 +287,9 @@ public class Eye extends Sprite {
 
     public function evaluate_outer_intersections():Object {
         if (_all_out_points.length == 0)
-            return {points:0, variance:1};
+            return {points:0, variance:0};
+        if (_all_out_points.length == 1)
+            return {points:1, variance:0};
         
         var x_min:Number = level_1_x_min;
         var x_max:Number = field_d0 + field_h + rays_extra_width;
@@ -301,17 +308,34 @@ public class Eye extends Sprite {
             else
                 p[i] = x_max - x_min + y_max - y_min + x_max - v.x;
         }
-        
+
+        p.sort(Array.NUMERIC);
+        //evaluate distances
+        var inter_dist:Array = new Array(_all_out_points.length - 1);
+        for (i = 0; i < inter_dist.length; i++)
+            inter_dist[i] = p[i + 1] - p[i];
+
         var sum:Number = 0;
         var sum2:Number = 0;
-        for (i = 0; i < p.length; i++) {
-            sum += p[i];
-            sum2 += p[i] * p[i];
+        for (i = 0; i < inter_dist.length; i++) {
+            sum += inter_dist[i];
+            sum2 += inter_dist[i] * inter_dist[i];
         }
-        
+
+        var variance:Number = sum2 / inter_dist.length - sum * sum / (inter_dist.length * inter_dist.length);
+        if (variance < 0)
+            variance = 0;
+        variance = Math.sqrt(variance);
+
+        if (sum <= 0) {
+            var cv:Number = 0; //coefficient of variation
+        } else {
+            cv = variance / sum * inter_dist.length;
+        }
+
         return {
             points: p.length,
-            variance: Math.sqrt(sum2 / p.length - sum * sum / (p.length * p.length))
+            variance: cv
         };
     }
     

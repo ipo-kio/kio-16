@@ -78,6 +78,7 @@
 
     /*Work field content*/
     "button_remove_extra_points" : "ย้ายจุดพิเศษ",
+    "button_illustration" : "?",
 
    "ray_info" : "ข้อมูลลำแสง",
     "mean_brightness" : "ค่าเฉลี่ยความสว่าง",

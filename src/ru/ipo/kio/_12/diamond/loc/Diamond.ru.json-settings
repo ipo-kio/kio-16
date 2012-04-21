@@ -92,6 +92,7 @@
 
     /*Текст на поле*/
     "button_remove_extra_points" : "Удалить лишние точки",
+    "button_illustration" : "Иллюстрация",
 
     "ray_info" : "Информация о луче",
     "mean_brightness" : "Средняя яркость",
