@@ -54,6 +54,6 @@ sus cuerpos propios de los investigadores
 
            "back" : "Atrás",
            "forward" : "Adelante",
-           "exchanges" : "Número de intercambios:",
+           "exchanges" : "Intercambios:", /*Número de intercambios*/
            "record" : "Record:"
 }

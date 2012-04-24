@@ -29,6 +29,11 @@ public class GraphicsButton extends SimpleButton {
      * @param down_size font size in down state
      */
     public function GraphicsButton(title:String, up:BitmapData, over:BitmapData, down:BitmapData, fontName:String, up_size:int, down_size:int, move_x:int = 0, move_y:int = 0, dx:int = 0, dy:int = 0) {
+        var size_inc_res:Array = getSizeInc(title);
+        title = size_inc_res[0];
+        up_size += size_inc_res[1];
+        down_size += size_inc_res[1];
+
         var up_sprite:Sprite = createSprite(title, up, fontName, up_size, dx + (move_x < 0 ? move_x : 0), dy + (move_y < 0 ? move_y : 0));
         super(
                 up_sprite,
@@ -38,7 +43,18 @@ public class GraphicsButton extends SimpleButton {
                 );
     }
 
-    private function createSprite(title:String, bmp:BitmapData, fontName:String, size:int, dx:int = 0, dy:int = 0):Sprite {
+    private static function getSizeInc(title:String):Array { //[new title, inc]
+        if (title == null)
+            return [title, 0];
+        var at_pos:int = title.lastIndexOf('@@');
+        if (at_pos < 0)
+            return [title, 0];
+        var res:int = int(title.substr(at_pos + 2));
+        title = title.substr(0, at_pos);
+        return [title, res];
+    }
+
+    private static function createSprite(title:String, bmp:BitmapData, fontName:String, size:int, dx:int = 0, dy:int = 0):Sprite {
         var sprite:Sprite = new Sprite;
 
         sprite.graphics.beginBitmapFill(bmp);
