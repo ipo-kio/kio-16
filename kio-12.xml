@@ -249,6 +249,12 @@
                 >
             <source-path path-element="${module.kio-12.basedir}/src"/>
             <default-size width="900" height="625"/>
+            <compiler.library-path dir="${module.kio-12.basedir}/src/ru/ipo/kio/_12/train/_resources/" append="true">
+                <include name="components.swc" />
+            </compiler.library-path>
+            <compiler.library-path dir="${module.kio-12.basedir}/src/ru/ipo/kio/_12/stagelights/_resources/" append="true">
+                <include name="projector.swc" />
+            </compiler.library-path>
         </mxmlc>
 
         <html-wrapper
@@ -266,12 +272,12 @@
                 output="${cert_view.output.dir}/KIO.files"
                 swf="${cert_view.output.file_name}"
                 title="KIO Certificates"
-                />
+        />
         <copy
                 file="${module.kio-12.basedir}/src/KIO.html"
                 tofile="${cert_view.output.dir}/KIO_certs.html"
                 description="copy index (main) html file to start contest"
-                />
+        />
 
         <zip destfile="${kio-12.output.dir}/KIO_certs.zip" description="zip for russian certificates">
             <fileset dir="${cert_view.output.dir}">
