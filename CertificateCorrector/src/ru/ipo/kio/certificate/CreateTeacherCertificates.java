@@ -6,8 +6,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -22,21 +21,21 @@ public class CreateTeacherCertificates {
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         VINTAGE = "sdf";
-        String TEACHER_CERTS_OUTPUT = "/home/ilya/Рабочий стол/teacher certs";
-        String TEACHERS_TABLE = "/home/ilya/programming/kio-11/results/teachers.xml";
+        String TEACHER_CERTS_OUTPUT = "/home/ilya/programming/kio-12/solutions/teachers/teacher certs";
+        String TEACHERS_TABLE = "/home/ilya/programming/kio-12/solutions/teachers/teachers_clean.xml";
 
         new File(TEACHER_CERTS_OUTPUT).mkdir();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Document document = builder.parse(new File(TEACHERS_TABLE));
 
-        NodeList k11_reg_users = document.getDocumentElement().getElementsByTagName("k11_reg_users");
+        NodeList k11_reg_users = document.getDocumentElement().getElementsByTagName("k12_reg_users");
         for (int i = 0; i < k11_reg_users.getLength(); i++) {
             Element teacher = (Element) k11_reg_users.item(i);
             String login = getContents(teacher.getElementsByTagName("login").item(0));
             String surname = getContents(teacher.getElementsByTagName("surname").item(0));
             String name = getContents(teacher.getElementsByTagName("_name").item(0));
-            String furname = getContents(teacher.getElementsByTagName("furname").item(0));
+            String furname = getContents(teacher.getElementsByTagName("patronymic").item(0));
 
             System.out.println("processing " + login);
 
@@ -47,8 +46,8 @@ public class CreateTeacherCertificates {
                     surname,
                     name,
                     furname,
-                    position
-            );
+                    position,
+                    "windows-1251");
             certificate.save();
         }
     }
@@ -74,7 +73,7 @@ public class CreateTeacherCertificates {
         ArrayList<String> data = new ArrayList<String>();
 
         //try add school name
-        NodeList school_names = teacher.getElementsByTagName("school_name");
+        NodeList school_names = teacher.getElementsByTagName("sc_name");
         if (school_names.getLength() == 0) {
             String schoolDescription = getSchoolDescription(teacher);
             if (schoolDescription != null)
@@ -124,7 +123,7 @@ public class CreateTeacherCertificates {
 
     private static String getSchoolDescription(Element teacher) {
         //get school type + number
-        NodeList schoolType = teacher.getElementsByTagName("school_type");
+        NodeList schoolType = teacher.getElementsByTagName("sc_type");
         if (schoolType.getLength() == 0)
             return null;
         String type = getContents(schoolType.item(0));
@@ -141,7 +140,7 @@ public class CreateTeacherCertificates {
             return null;
         result += " №";
 
-        NodeList schoolNumber = teacher.getElementsByTagName("school_num");
+        NodeList schoolNumber = teacher.getElementsByTagName("number");
         if (schoolNumber.getLength() == 0)
             return null;
 

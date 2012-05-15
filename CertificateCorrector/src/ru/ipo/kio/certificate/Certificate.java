@@ -19,22 +19,26 @@ public class Certificate {
     private final String CERT_FIELD = "json_certificate";
 
     private String certificateAsString;
+    private String encoding;
 
-    public Certificate(File cert) {
+    public Certificate(File cert, String encoding) {
         this.file = cert;
+        this.encoding = encoding;
         load();
     }
 
-    public Certificate(File cert, boolean createNew) {
+    public Certificate(File cert, boolean createNew, String encoding) {
         this.file = cert;
+        this.encoding = encoding;
         if (!createNew)
             load();
         else
             createNew("ФАМИЛИЯ", "ИМЯ", "ОТЧЕСТВО", "Должность");
     }
 
-    public Certificate(File file, String surname, String name, String furname, String position) {
+    public Certificate(File file, String surname, String name, String furname, String position, String encoding) {
         this.file = file;
+        this.encoding = encoding;
         createNew(surname, name, furname, position);
     }
 
@@ -56,7 +60,7 @@ public class Certificate {
 
     private void load() {
         try {
-            JSONObject obj = (JSONObject) JSONValue.parseWithException(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+            JSONObject obj = (JSONObject) JSONValue.parseWithException(new InputStreamReader(new FileInputStream(file), encoding));
             certificateAsString = (String) obj.get(CERT_FIELD);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Не удалось прочитать файл " + file);
@@ -110,7 +114,7 @@ public class Certificate {
 
         //save data to file
         FileOutputStream out = new FileOutputStream(file);
-        out.write(cert.toJSONString().getBytes("UTF-8"));
+        out.write(cert.toJSONString().getBytes(encoding));
         out.close();
     }
 

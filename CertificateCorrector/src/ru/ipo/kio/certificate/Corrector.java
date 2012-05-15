@@ -26,6 +26,7 @@ public class Corrector extends JFrame implements ListSelectionListener, ActionLi
     private JList files = new JList();
     private JButton save = new JButton("Сохранить");
     private JButton create = new JButton("Создать");
+    private JButton selectDir = new JButton("Выбрать директорию");
     private JTextArea input = new JTextArea();
     private File[] certs;
     private Certificate currentCertificate = null;
@@ -37,7 +38,7 @@ public class Corrector extends JFrame implements ListSelectionListener, ActionLi
         //find certificate
         for (File cert : certs)
             if (cert.getName().equals(selectedValue + EXTENSION)) {
-                currentCertificate = new Certificate(cert);
+                currentCertificate = new Certificate(cert, "windows-1251");
                 input.setText(currentCertificate.getCertificateAsString(true));
                 save.setEnabled(false);
                 return;
@@ -59,6 +60,17 @@ public class Corrector extends JFrame implements ListSelectionListener, ActionLi
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(this, "Не удалось сохранить файл.");
                 }
+        } else if (e.getSource() == selectDir) {
+            JFileChooser fc = new JFileChooser();
+            if (fc.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
+                return;
+
+            certs = fc.getCurrentDirectory().listFiles(new FilenameFilter() {
+                public boolean accept(File dir, String name) {
+                    return name.endsWith(EXTENSION);
+                }
+            });
+            updateCertsDir();
         } else if (e.getSource() == create) {
             String login = JOptionPane.showInputDialog(this, "Введите логин учителя");
             if (login == null)
@@ -72,9 +84,9 @@ public class Corrector extends JFrame implements ListSelectionListener, ActionLi
             }
 
             File cert = new File(login + EXTENSION);
-            Certificate certificate = new Certificate(cert, true);
+            Certificate certificate = new Certificate(cert, true, "windows-1251");
             try {
-                    certificate.save(certificate.getCertificateAsString(true));
+                certificate.save(certificate.getCertificateAsString(true));
             } catch (ParseException ex) {
                 //do nothing impossible
             } catch (IOException ex) {
@@ -84,12 +96,16 @@ public class Corrector extends JFrame implements ListSelectionListener, ActionLi
 
             certs = Arrays.copyOf(certs, certs.length + 1);
             certs[certs.length - 1] = cert;
-            sortCerts();
-            ListModel theModel = files.getModel();
-            files.setModel(new DefaultListModel()); //TODO remove the hack. Need to redraw elements in list
-            files.setModel(theModel);
+            updateCertsDir();
             files.setSelectedValue(login, true);
         }
+    }
+
+    private void updateCertsDir() {
+        sortCerts();
+        ListModel theModel = files.getModel();
+        files.setModel(new DefaultListModel()); //TODO remove the hack. Need to redraw elements in list
+        files.setModel(theModel);
     }
 
     public static void main(String[] args) {
@@ -113,7 +129,7 @@ public class Corrector extends JFrame implements ListSelectionListener, ActionLi
 
         setSize(800, 600);
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
 
@@ -130,11 +146,12 @@ public class Corrector extends JFrame implements ListSelectionListener, ActionLi
         add(new JScrollPane(files), BorderLayout.WEST);
         add(new JScrollPane(input), BorderLayout.CENTER);
 
-        JPanel bottom = new JPanel(new GridLayout(1, 2));
+        JPanel bottom = new JPanel(new GridLayout(1, 3));
         add(bottom, BorderLayout.SOUTH);
 
         bottom.add(create);
         bottom.add(save);
+        bottom.add(selectDir);
 
         save.setEnabled(false);
         save.addActionListener(this);
@@ -180,5 +197,6 @@ public class Corrector extends JFrame implements ListSelectionListener, ActionLi
         });
 
         create.addActionListener(this);
+        selectDir.addActionListener(this);
     }
 }

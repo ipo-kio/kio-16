@@ -31,7 +31,7 @@ public class AutomaticCorrector {
             String name = input.getName();
             String login = name.substring(0, name.indexOf("."));
             File oldCertificate = new File(ALL_CERTIFICATES_PATH + "/" + login + ".kio-certificate");
-            Certificate certificate = new Certificate(oldCertificate);
+            Certificate certificate = new Certificate(oldCertificate, "UTF-8");
             certificate.setAnketa(loadAnketaFrom(input));
             certificate.save(new File(CORRECTED_CERTIFICATES_PATH + '/' + login + ".kio-certificate"));
         }
