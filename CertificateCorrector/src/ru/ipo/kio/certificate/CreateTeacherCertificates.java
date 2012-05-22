@@ -123,7 +123,7 @@ public class CreateTeacherCertificates {
 
     private static String getSchoolDescription(Element teacher) {
         //get school type + number
-        NodeList schoolType = teacher.getElementsByTagName("sc_type");
+        NodeList schoolType = teacher.getElementsByTagName("type");
         if (schoolType.getLength() == 0)
             return null;
         String type = getContents(schoolType.item(0));
@@ -134,7 +134,7 @@ public class CreateTeacherCertificates {
             result = "Гимназия";
         else if (type.equals("3"))
             result = "Лицей";
-        else if (type.equals("3"))
+        else if (type.equals("4"))
             result = "Колледж";
         else
             return null;
@@ -150,7 +150,7 @@ public class CreateTeacherCertificates {
     }
 
     private static String getContents(Node node) {
-        if (node == null)
+        if (node == null || node.getFirstChild() == null)
             return null;
         return ((CharacterData) node.getFirstChild()).getData();
     }
