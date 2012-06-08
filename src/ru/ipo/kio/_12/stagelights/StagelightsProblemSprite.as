@@ -223,14 +223,14 @@ import ru.ipo.kio.api.*;
 			max0.textField.autoSize = TextFieldAutoSize.LEFT;
 			max0.setStyle("textFormat", format);
 			max0.text = loc.firstMaxResult + round(firstMax) + "%";
-			max0.x = 700 - max0.textField.textWidth;
+			max0.x = 680 - max0.textField.textWidth;
 			max0.y = 576;
 			addChild(max0);
 			
 			result1 = new Label();
-			result1.x = 20;
-			result1.y = 576;
-			result1.textField.autoSize = TextFieldAutoSize.LEFT;
+            result1.x = 20;
+            result1.y = 576;
+            result1.textField.autoSize = TextFieldAutoSize.LEFT;
 			result1.setStyle("textFormat", format);
 			result1.text = loc.secondResult + round(results(0)) + "%";
 			result1.visible = false;
@@ -241,7 +241,7 @@ import ru.ipo.kio.api.*;
 			max1.setStyle("textFormat", format);
 			max1.text = loc.secondMaxResult + round(secondMax) + "%";
 			max1.visible = false;
-			max1.x = 700 - max1.textField.textWidth;
+			max1.x = 680 - max1.textField.textWidth;
 			max1.y = 576;
 			addChild(max1);
 			
