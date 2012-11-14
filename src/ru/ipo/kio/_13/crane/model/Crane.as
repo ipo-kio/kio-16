@@ -7,9 +7,10 @@
  */
 package ru.ipo.kio._13.crane.model {
 public class Crane {
-
+    private var _pos: Position;
     private var _hasCube: Boolean = false;
-    public function Crane(hasCube: Boolean) {
+    public function Crane(i: int, j: int, hasCube: Boolean) {
+        _pos = new Position(i, j);
         _hasCube = hasCube;
     }
 
@@ -24,6 +25,14 @@ public class Crane {
 
     public function toString():String {
         return "Crane{_hasCube=" + String(_hasCube) + "}";
+    }
+
+    public function get pos():Position {
+        return _pos;
+    }
+
+    public function set pos(value:Position):void {
+        _pos = value;
     }
 }
 }

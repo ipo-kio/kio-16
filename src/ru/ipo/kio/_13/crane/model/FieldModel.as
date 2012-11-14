@@ -12,8 +12,8 @@ public class FieldModel {
     private var fieldLength: int = 5;
     private var fieldHeight: int = 2;
     private var field: Array = new Array();
-    private var posCrane: Position;
     private var cubeOnCrane: Cube = new Cube(-1);
+    private var _crane: Crane;
     public function FieldModel() {
         for (var i = 0; i < fieldHeight; i++){
             field[i] = new Array(fieldLength);
@@ -24,18 +24,15 @@ public class FieldModel {
         field[i][j] = 5;
     }
     public function addCrane(i: int, j: int): void{
-        field[i][j] = new Crane(false);
-        posCrane = new Position(i, j);
+        _crane = new Crane(i,  j,  false);
     }
     public function addCube(i: int, j: int, color: int): void{
         field[i][j] = new Cube(color);
     }
 
     public function craneMoveRight(): Boolean{
-       if (((posCrane.j + 1) < fieldLength) && (field[posCrane.i][posCrane.j + 1] == null)){
-           field[posCrane.i][posCrane.j + 1] = new Crane(field[posCrane.i][posCrane.j].hasCube);
-           field[posCrane.i][posCrane.j] = null;
-           posCrane.j++;
+       if (((_crane.pos.j + 1) < fieldLength) && (field[_crane.pos.i][_crane.pos.j + 1] == null)){
+           _crane.pos.j++;
            return true;
        } else{
            return false;
@@ -44,10 +41,8 @@ public class FieldModel {
     }
 
     public function craneMoveLeft(): Boolean{
-        if (((posCrane.j - 1) >= 0) && (field[posCrane.i][posCrane.j - 1] == null)){
-            field[posCrane.i][posCrane.j - 1] = new Crane(field[posCrane.i][posCrane.j].hasCube);
-            field[posCrane.i][posCrane.j] = null;
-            posCrane.j--;
+        if (((_crane.pos.j - 1) >= 0) && (field[_crane.pos.i][_crane.pos.j - 1] == null)){
+            _crane.pos.j--;
             return true;
         } else{
             return false;
@@ -56,11 +51,9 @@ public class FieldModel {
     }
 
     public function craneMoveDown(): Boolean{
-        if (((posCrane.i + 1) < fieldHeight) && (field[posCrane.i + 1][posCrane.j] == null
-                 || (field[posCrane.i + 1][posCrane.j] != null && field[posCrane.i][posCrane.j].hasCube == false)) ){
-            field[posCrane.i + 1][posCrane.j] =  new Crane(field[posCrane.i][posCrane.j].hasCube);
-            field[posCrane.i][posCrane.j] = null;
-            posCrane.i++;
+        if (((_crane.pos.i + 1) < fieldHeight) && (field[_crane.pos.i + 1][_crane.pos.j] == null
+                 || (field[_crane.pos.i + 1][_crane.pos.j] != null && field[_crane.pos.i][_crane.pos.j].hasCube == false)) ){
+            _crane.pos.i++;
             return true
         } else{
             return false;
@@ -69,10 +62,8 @@ public class FieldModel {
 //      ДУМАТЬ ПРО КУБИК
     }
     public function craneMoveUp(): Boolean{
-        if ((posCrane.i - 1) >= 0) {
-            field[posCrane.i -1][posCrane.j] =  new Crane(field[posCrane.i][posCrane.j].hasCube);
-            field[posCrane.i][posCrane.j] = null;
-            posCrane.i--;
+        if ((_crane.pos.i - 1) >= 0) {
+            _crane.pos.i--;
             return true
         } else{
             return false;
@@ -82,15 +73,16 @@ public class FieldModel {
     }
 
     public function craneTakeCube(): Boolean{
-        if (field[posCrane.i + 1][posCrane.j] != null){
-            field[posCrane.i][posCrane.j].hasCube = true;
-            cubeOnCrane.color = field[posCrane.i + 1][posCrane.j].color;
-            field[posCrane.i + 1][posCrane.j] = null;
+        if (field[_crane.pos.i + 1][_crane.pos.j] != null){
+            _crane.hasCube = true;
+            cubeOnCrane.color = field[_crane.pos.i + 1][_crane.pos.j].color;
+            field[_crane.pos.i + 1][_crane.pos.j] = null;
             return true;
         } else {
             return false;
         }
     }
+
 
     public function toString():String {
         var temp: String = '';
@@ -98,7 +90,7 @@ public class FieldModel {
             temp += field[i].toString() + "\n";
         }
 
-        return "Scene{field= \n" + temp +"cubeOnCrane=" + String(cubeOnCrane) + "posCrane=" + String(posCrane) + "}\n\n";
+        return "Scene{field= \n" + temp +"cubeOnCrane=" + String(cubeOnCrane) + "posCrane=" + String(_crane.pos) + "}\n\n";
     }
 }
 }
