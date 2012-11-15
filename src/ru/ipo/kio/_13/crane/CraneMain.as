@@ -29,6 +29,7 @@ public class CraneMain extends Sprite {
 */
         trace(scene.craneTakeCube());
         trace(scene);
+        trace(scene.craneMoveUp());
 
     }
 }
