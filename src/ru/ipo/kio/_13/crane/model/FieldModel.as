@@ -8,12 +8,15 @@
 package ru.ipo.kio._13.crane.model {
 import flash.media.Camera;
 
+import ru.ipo.kio._13.crane.view.WorkspaceView;
+
 public class FieldModel {
-    private var fieldLength: int = 5;
-    private var fieldHeight: int = 2;
+    public static var fieldLength: int = 5;
+    public static var fieldHeight: int = 3;
     private var field: Array = new Array();
     private var cubeOnCrane: Cube = new Cube(-1);
     private var _crane: Crane;
+
     public function FieldModel() {
         for (var i = 0; i < fieldHeight; i++){
             field[i] = new Array(fieldLength);
@@ -92,5 +95,7 @@ public class FieldModel {
 
         return "Scene{field= \n" + temp +"cubeOnCrane=" + String(cubeOnCrane) + "posCrane=" + String(_crane.pos) + "}\n\n";
     }
+
+
 }
 }
