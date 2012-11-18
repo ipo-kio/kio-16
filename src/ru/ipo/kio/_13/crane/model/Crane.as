@@ -9,6 +9,7 @@ package ru.ipo.kio._13.crane.model {
 public class Crane {
     private var _pos: Position;
     private var _hasCube: Boolean = false;
+
     public function Crane(i: int, j: int, hasCube: Boolean) {
         _pos = new Position(i, j);
         _hasCube = hasCube;

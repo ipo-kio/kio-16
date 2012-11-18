@@ -6,20 +6,32 @@ import flash.text.TextField;
 import ru.ipo.kio._13.crane.model.Cube;
 
 import ru.ipo.kio._13.crane.model.FieldModel;
+import ru.ipo.kio._13.crane.view.CraneView;
+import ru.ipo.kio._13.crane.view.CubeView;
+import ru.ipo.kio._13.crane.view.WorkspaceView;
 
 public class CraneMain extends Sprite {
     public function CraneMain() {
-        var textField:TextField = new TextField();
+    /*    var textField:TextField = new TextField();
         textField.text = "Hello, World";
-        addChild(textField);
+        addChild(textField);*/
 
 
-        var scene:FieldModel = new FieldModel();
+        var model:FieldModel = new FieldModel();
+        var view: WorkspaceView = new WorkspaceView();
+        addChild(view);
 
-//        scene.test(1,2);
-        scene.addCrane(0, 1);
-        scene.addCube(1, 1, Cube.GREEN);
-        trace(scene);
+
+        model.addCrane(0, 1);
+        view.addCrane(1, 1);
+
+        model.addCube(1, 1, Cube.GREEN);
+        view.addCube(1,1, "yellow");
+     //   trace(view.cubeArray);
+
+
+
+        trace(model);
 /*
         trace(scene.craneMoveDown());
         trace(scene);
@@ -27,8 +39,10 @@ public class CraneMain extends Sprite {
         trace(scene);
         trace(scene.craneMoveUp());
 */
-        trace(scene.craneTakeCube());
-        trace(scene);
+
+        trace(model);
+        trace(model.craneMoveUp());
+        trace(model);
 
     }
 }

@@ -12,6 +12,8 @@ public class Cube {
     public static const GREEN = 0x003300;
     public static const YELLOW = 0xFFFF00;
 
+
+
     public function Cube(color:int) {
         _color = color;
 
