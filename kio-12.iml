@@ -2,7 +2,7 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="kio-12">
     <configurations>
-      <configuration name="kio-12" main-class="ru.ipo.kio._12.checker.Kio_Checker" output-file="kio_12.swf" output-folder="$MODULE_DIR$/out/production/kio-12">
+      <configuration name="kio-12" pure-as="true" main-class="ru.ipo.kio._13.crane.CraneMain" output-file="kio_12.swf" output-folder="$MODULE_DIR$/out/production/kio-12">
         <dependencies target-player="11.1">
           <entries>
             <entry library-id="3d82f0b1-9cc7-40ab-86dd-07b80cd09576">
@@ -12,7 +12,7 @@
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="flex_sdk_4.6.0.23201B" />
+          <sdk name="flex_sdk_4.6" />
         </dependencies>
         <compiler-options>
           <option name="additionalConfigFilePath" value="$MODULE_DIR$/compiler-config.xml" />
@@ -50,7 +50,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="jdk" jdkName="flex_sdk_4.6.0.23201B" jdkType="__CompositeFlexSdk__" />
+    <orderEntry type="jdk" jdkName="flex_sdk_4.6" jdkType="Flex SDK Type (new)" />
   </component>
 </module>
 

@@ -8,14 +8,14 @@
 package ru.ipo.kio._13.crane.model {
 import flash.media.Camera;
 
+import ru.ipo.kio._13.crane.model.Crane;
+
 import ru.ipo.kio._13.crane.view.WorkspaceView;
 
 public class FieldModel {
     public static var fieldLength: int = 5;
     public static var fieldHeight: int = 3;
-    private var field: Array = new Array();
-    private var cubeOnCrane: Cube = new Cube(-1);
-    private var _crane: Crane;
+    public static var field: Array = new Array();
 
     public function FieldModel() {
         for (var i = 0; i < fieldHeight; i++){
@@ -26,75 +26,94 @@ public class FieldModel {
     public function test(i, j): void{
         field[i][j] = 5;
     }
-    public function addCrane(i: int, j: int): void{
-        _crane = new Crane(i,  j,  false);
+    public function addCrane( i: int, j: int): Crane{
+        return new Crane(i,  j,  false);
     }
     public function addCube(i: int, j: int, color: int): void{
         field[i][j] = new Cube(color);
     }
 
-    public function craneMoveRight(): Boolean{
-       if (((_crane.pos.j + 1) < fieldLength) && (field[_crane.pos.i][_crane.pos.j + 1] == null)){
-           _crane.pos.j++;
+    public static function craneMoveRight(crane: Crane): Boolean{
+       if (((crane.pos.j + 1) < fieldLength) && (field[crane.pos.i][crane.pos.j + 1] == null)){
+           if (crane.hasCube){
+               field[crane.pos.i][crane.pos.j + 1] = new Cube(field[crane.pos.i][crane.pos.j].color);
+               field[crane.pos.i][crane.pos.j] = null;
+           }
+           crane.pos.j++;
            return true;
        } else{
            return false;
        }
-//        ДОБАВИТЬ ПРОВЕРКУ ПРО ТО ЕСЛИ ЕСТЬ КУБИК И ЧТО ДВИГАТЬ С НИМ
     }
 
-    public function craneMoveLeft(): Boolean{
-        if (((_crane.pos.j - 1) >= 0) && (field[_crane.pos.i][_crane.pos.j - 1] == null)){
-            _crane.pos.j--;
+    public static function craneMoveLeft(crane: Crane): Boolean{
+        if (((crane.pos.j - 1) >= 0) && (field[crane.pos.i][crane.pos.j - 1] == null)){
+            if (crane.hasCube){
+                field[crane.pos.i][crane.pos.j - 1] = new Cube(field[crane.pos.i][crane.pos.j].color);
+                field[crane.pos.i][crane.pos.j] = null;
+            }
+            crane.pos.j--;
             return true;
         } else{
             return false;
         }
-//        ДОБАВИТЬ ПРОВЕРКУ ПРО ТО ЕСЛИ ЕСТЬ КУБИК И ЧТО ДВИГАТЬ С НИМ
     }
 
-    public function craneMoveDown(): Boolean{
-        if (((_crane.pos.i + 1) < fieldHeight) && (field[_crane.pos.i + 1][_crane.pos.j] == null
-                 || (field[_crane.pos.i + 1][_crane.pos.j] != null && field[_crane.pos.i][_crane.pos.j].hasCube == false)) ){
-            _crane.pos.i++;
+    public static function craneMoveDown(crane: Crane): Boolean{
+        if (((crane.pos.i + 1) < fieldHeight) &&
+                ((crane.hasCube == true && field[crane.pos.i + 1][crane.pos.j] == null) || crane.hasCube == false)){
+            //если внизу есть клетка И  ЛИБО когда у крана есть кубик и под ним нет кубика, ЛИБО когда кубика нет
+            if (crane.hasCube){
+                field[crane.pos.i + 1][crane.pos.j] = new Cube(field[crane.pos.i][crane.pos.j].color);
+                field[crane.pos.i][crane.pos.j] = null;
+            }
+            crane.pos.i++;
+            return true;
+        } else{
+            return false;
+        }
+    }
+    public static function craneMoveUp(crane: Crane): Boolean{
+        if ((crane.pos.i - 1) >= 0) {
+            if (crane.hasCube){
+                field[crane.pos.i - 1][crane.pos.j] = new Cube(field[crane.pos.i][crane.pos.j].color);
+                field[crane.pos.i][crane.pos.j] = null;
+            }
+            crane.pos.i--;
             return true
         } else{
             return false;
         }
-                       // тестировать когда есть кубики на поле
-//      ДУМАТЬ ПРО КУБИК
-    }
-    public function craneMoveUp(): Boolean{
-        if ((_crane.pos.i - 1) >= 0) {
-            _crane.pos.i--;
-            return true
-        } else{
-            return false;
-        }
 
-//      ДУМАТЬ ПРО КУБИК
     }
 
-    public function craneTakeCube(): Boolean{
-        if (field[_crane.pos.i + 1][_crane.pos.j] != null){
-            _crane.hasCube = true;
-            cubeOnCrane.color = field[_crane.pos.i + 1][_crane.pos.j].color;
-            field[_crane.pos.i + 1][_crane.pos.j] = null;
+    public static function craneTakeCube(crane: Crane): Boolean{
+        if (field[crane.pos.i][crane.pos.j] != null){
+            crane.hasCube = true;
             return true;
         } else {
             return false;
         }
     }
 
+    public static function cranePutCube(crane: Crane): Boolean{
+        if (crane.hasCube == true){
+            crane.hasCube = false;
+            return true;
+        } else{
+            return false;
+        }
+    }
 
-    public function toString():String {
+    public function toString(crane: Crane):String {
         var temp: String = '';
         for (var i = 0; i < fieldHeight; i++){
             temp += field[i].toString() + "\n";
         }
 
-        return "Scene{field= \n" + temp +"cubeOnCrane=" + String(cubeOnCrane) + "posCrane=" + String(_crane.pos) + "}\n\n";
+        return "Scene{field= \n" + temp +"hasCube= " + String(crane.hasCube) + "  posCrane=" + String(crane.pos) + "}\n\n";
     }
+
 
 
 }

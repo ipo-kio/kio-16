@@ -3,6 +3,9 @@ package ru.ipo.kio._13.crane {
 import flash.display.Sprite;
 import flash.text.TextField;
 
+import ru.ipo.kio._13.crane.controller.MovingModel;
+import ru.ipo.kio._13.crane.model.Crane;
+
 import ru.ipo.kio._13.crane.model.Cube;
 
 import ru.ipo.kio._13.crane.model.FieldModel;
@@ -19,30 +22,61 @@ public class CraneMain extends Sprite {
 
         var model:FieldModel = new FieldModel();
         var view: WorkspaceView = new WorkspaceView();
+        var crane: Crane;
         addChild(view);
+        var controller: MovingModel = new MovingModel();
 
+        crane = model.addCrane(0, 0);
+        view.addCrane(0, 0);
 
-        model.addCrane(0, 1);
-        view.addCrane(1, 1);
+        model.addCube(1, 0, Cube.GREEN);
+        view.addCube(1,0, Cube.GREEN);
+        model.addCube(2, 3, Cube.YELLOW);
+        view.addCube(2,3, Cube.YELLOW);
 
-        model.addCube(1, 1, Cube.GREEN);
-        view.addCube(1,1, "yellow");
-     //   trace(view.cubeArray);
+//        trace(model);
+        trace('.....................................');
+        controller.CraneDown(crane,view);
+        trace('.....................................');
+//        trace(model);
+        controller.CraneTakeCube(crane,view);
+        trace('.....................................');
+//        trace(model);
+        trace('.....................................');
+        trace(view.cubeArray);
+        controller.CraneRight(crane, view);
+        trace('.....................................');
+        trace(view.cubeArray);
+        controller.CraneLeft(crane,view);
+        trace(view.cubeArray);
+        controller.CraneDown(crane, view);
+        trace(view.cubeArray);
+        controller.CraneUp(crane, view);
+        trace(view.cubeArray);
+        controller.CraneUp(crane, view);
+        trace(view.cubeArray);
+        controller.CranePutCube(crane, view);
+        trace(crane);
+/*        controller.CraneRight(crane, view);
+        trace('.....................................');
+        controller.CraneRight(crane, view);
+        trace(crane);
+        trace('.....................................');*/
 
+//        trace(model);
 
-
+       /* controller.CraneRight();
         trace(model);
-/*
-        trace(scene.craneMoveDown());
-        trace(scene);
-        trace(scene.craneMoveDown());
-        trace(scene);
-        trace(scene.craneMoveUp());
+        trace('.....................................');
+        controller.CraneDown();
+        trace(model);
+        trace('.....................................');
+        controller.CraneTakeCube();
 */
 
-        trace(model);
-        trace(model.craneMoveUp());
-        trace(model);
+
+
+
 
     }
 }

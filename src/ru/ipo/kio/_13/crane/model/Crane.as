@@ -25,7 +25,7 @@ public class Crane {
 
 
     public function toString():String {
-        return "Crane{_hasCube=" + String(_hasCube) + "}";
+        return "Crane{_pos=" + String(_pos) + ",_hasCube=" + String(_hasCube) + "}";
     }
 
     public function get pos():Position {
