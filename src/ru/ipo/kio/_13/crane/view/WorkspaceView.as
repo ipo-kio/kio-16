@@ -19,8 +19,8 @@ public class WorkspaceView extends Sprite{
         public static const BORDER_Y = 20;
         public static const SpaceBetweenRows = 10;
         public static const SpaceBetweenCubes = 20;
-        public static const StartX = 100;
-        public static const StartY = 100;
+        public static const StartX = 30;
+        public static const StartY = 30;
         public static var x: int = 10;
 
         public function WorkspaceView() {

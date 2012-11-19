@@ -13,13 +13,16 @@ import ru.ipo.kio._13.crane.model.Crane;
 import ru.ipo.kio._13.crane.view.WorkspaceView;
 
 public class FieldModel {
-    public static var fieldLength: int = 5;
-    public static var fieldHeight: int = 3;
+    public static var fieldLength: int = 6;
+    public static var fieldHeight: int = 4;
     public static var field: Array = new Array();
 
     public function FieldModel() {
-        for (var i = 0; i < fieldHeight; i++){
+        for (var i = -1; i < fieldHeight + 1; i++){
             field[i] = new Array(fieldLength);
+        }
+        for (var j = 0; j < fieldLength; j++){
+            field[fieldHeight][j] = new Cube(-1);
         }
 
     }
@@ -34,7 +37,9 @@ public class FieldModel {
     }
 
     public static function craneMoveRight(crane: Crane): Boolean{
-       if (((crane.pos.j + 1) < fieldLength) && (field[crane.pos.i][crane.pos.j + 1] == null)){
+       if (((crane.pos.j + 1) < fieldLength)
+             && ((crane.hasCube == false && field[crane.pos.i - 1][crane.pos.j + 1] == null
+                    || crane.hasCube == true && field[crane.pos.i][crane.pos.j + 1] == null))){
            if (crane.hasCube){
                field[crane.pos.i][crane.pos.j + 1] = new Cube(field[crane.pos.i][crane.pos.j].color);
                field[crane.pos.i][crane.pos.j] = null;
@@ -47,7 +52,9 @@ public class FieldModel {
     }
 
     public static function craneMoveLeft(crane: Crane): Boolean{
-        if (((crane.pos.j - 1) >= 0) && (field[crane.pos.i][crane.pos.j - 1] == null)){
+        if (((crane.pos.j - 1) >= 0)
+            && ((crane.hasCube == false && field[crane.pos.i - 1][crane.pos.j - 1] == null
+                || crane.hasCube == true && field[crane.pos.i][crane.pos.j - 1] == null))){
             if (crane.hasCube){
                 field[crane.pos.i][crane.pos.j - 1] = new Cube(field[crane.pos.i][crane.pos.j].color);
                 field[crane.pos.i][crane.pos.j] = null;
@@ -60,8 +67,9 @@ public class FieldModel {
     }
 
     public static function craneMoveDown(crane: Crane): Boolean{
-        if (((crane.pos.i + 1) < fieldHeight) &&
-                ((crane.hasCube == true && field[crane.pos.i + 1][crane.pos.j] == null) || crane.hasCube == false)){
+        if (((crane.pos.i + 1) < fieldHeight)
+               && ((crane.hasCube == true && field[crane.pos.i + 1][crane.pos.j] == null)
+                    || (crane.hasCube == false && field[crane.pos.i][crane.pos.j] == null) )){
             //если внизу есть клетка И  ЛИБО когда у крана есть кубик и под ним нет кубика, ЛИБО когда кубика нет
             if (crane.hasCube){
                 field[crane.pos.i + 1][crane.pos.j] = new Cube(field[crane.pos.i][crane.pos.j].color);
@@ -97,7 +105,7 @@ public class FieldModel {
     }
 
     public static function cranePutCube(crane: Crane): Boolean{
-        if (crane.hasCube == true){
+        if ((crane.hasCube == true) && (field[crane.pos.i + 1][crane.pos.j] != null)){
             crane.hasCube = false;
             return true;
         } else{
