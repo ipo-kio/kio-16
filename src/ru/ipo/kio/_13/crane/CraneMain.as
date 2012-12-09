@@ -7,6 +7,7 @@ import flash.events.MouseEvent;
 import flash.text.TextField;
 
 import ru.ipo.kio._13.crane.controller.MovingModel;
+import ru.ipo.kio._13.crane.controller.langModel;
 import ru.ipo.kio._13.crane.model.Crane;
 
 import ru.ipo.kio._13.crane.model.Cube;
@@ -111,6 +112,28 @@ public class CraneMain extends Sprite {
         addChild(view);
         init();
 
+
+        var s,p: String;
+        s = "sdf";
+        p = s.charAt(0);
+        trace(p);
+        var test: langModel = new langModel();
+        test.input = 'DRYT5678(LR6965(T)RL)T5(RLT)';
+
+        try {
+            //читаем выражение
+            test.read_beginning();
+
+            //проверяем, что чтение дошло до конца
+            if (test.read() != '$')
+                test.errorFunc();
+
+            //если не произошло ошибок, сообщаем, что строка корректна
+            trace("строка корректна");
+        } catch (error: Error) {
+            //если функцией error() было брошено исключение, сообщаем об ошибке и позиции.
+            trace("ошибка в позиции ", (test.pos + 1)); // + 1, чтобы считать позиции с 1, а не с 0
+        }
 
 
     }

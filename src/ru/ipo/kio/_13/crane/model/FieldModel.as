@@ -26,12 +26,15 @@ public class FieldModel {
         }
 
     }
+
     public function test(i, j): void{
         field[i][j] = 5;
     }
+
     public function addCrane( i: int, j: int): Crane{
         return new Crane(i,  j,  false);
     }
+
     public function addCube(i: int, j: int, color: int): void{
         field[i][j] = new Cube(color);
     }
