@@ -11,11 +11,11 @@ import org.osmf.layout.PaddingLayoutMetadata;
 import ru.ipo.kio._13.crane.model.Crane;
 import ru.ipo.kio._13.crane.view.WorkspaceView;
 
-public class langModel {
+public class LangModel {
 
     private var _pos:int = 0;
     private var _input:String;
-
+    var _main: Programm;
     public function read(): String {
         if (_pos >= _input.length){
             return "$";
@@ -39,11 +39,27 @@ public class langModel {
     public function read_rule(): void {
         switch (read()){
             case 'L':
+                _main.push(new Action('L'));
+                next();
+                break;
             case 'R':
+                _main.push(new Action('R'));
+                next();
+                break;
             case 'U':
+                _main.push(new Action('U'));
+                next();
+                break;
             case 'D':
+                _main.push(new Action('D'));
+                next();
+                break;
             case 'T':
+                _main.push(new Action('T'));
+                next();
+                break;
             case 'P':
+                _main.push(new Action('P'));
                 next();
                 break;
             case '0':
@@ -186,7 +202,6 @@ public class langModel {
             case 'D':
             case 'T':
             case 'P':
-
             case '0':
             case '1':
             case '2':
@@ -213,7 +228,8 @@ public class langModel {
     }
 
 
-    public function langModel():void {
+    public function LangModel(main: Programm):void {
+        _main = main;
 
 
     }

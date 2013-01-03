@@ -9,8 +9,11 @@ import flash.text.TextFieldAutoSize;
 import flash.text.TextFieldType;
 import flash.text.TextFormat;
 
+import ru.ipo.kio._13.crane.controller.Action;
+
 import ru.ipo.kio._13.crane.controller.MovingModel;
-import ru.ipo.kio._13.crane.controller.langModel;
+import ru.ipo.kio._13.crane.controller.Programm;
+import ru.ipo.kio._13.crane.controller.LangModel;
 import ru.ipo.kio._13.crane.model.Crane;
 
 import ru.ipo.kio._13.crane.model.Cube;
@@ -23,10 +26,13 @@ import ru.ipo.kio._13.crane.view.WorkspaceView;
 public class CraneMain extends Sprite {
     var model:FieldModel = new FieldModel();
     var view: WorkspaceView = new WorkspaceView();
-    var controller: MovingModel = new MovingModel();
     var crane: Crane;
+
+    var controller: MovingModel;
+
     var btTest: Button = new Button();
     var inputQueue: TextField = new TextField();
+    var main: Programm = new Programm();
     public function CraneMain() {
 
         function init(): void{
@@ -49,7 +55,7 @@ public class CraneMain extends Sprite {
             model.addCube(2, 5, Cube.RED);
             view.addCube(2, 5, Cube.RED);
 
-
+            controller = new MovingModel(crane,  view, 1000);
 
 
 
@@ -142,15 +148,20 @@ public class CraneMain extends Sprite {
         init();
 
 
+     //   main.push(new Action('R'));
+     //   main.push(new Action('R'));
+      //  controller.exec();
+
+//        main.push(new Action('P'));
 
 
 
     }
 
     private function testClick(event:MouseEvent):void {
-        var test: langModel = new langModel();
+        var test: LangModel = new LangModel(main);
         test.input = inputQueue.text;
-
+         trace(test.input);
         try {
             //читаем выражение
             test.read_beginning();
@@ -161,35 +172,38 @@ public class CraneMain extends Sprite {
 
             //если не произошло ошибок, сообщаем, что строка корректна
             trace("строка корректна");
+            main.exec(controller);
+            trace(crane.toString());
         } catch (error: Error) {
             //если функцией error() было брошено исключение, сообщаем об ошибке и позиции.
             trace("ошибка в позиции ", (test.pos + 1)); // + 1, чтобы считать позиции с 1, а не с 0
         }
+
     }
 
 
     private function upClick(event:MouseEvent):void {
-        controller.CraneUp(crane,view);
+        controller.CraneUp()//crane,view);
     }
 
     private function leftClick(event:MouseEvent):void {
-        controller.CraneLeft(crane, view);
+        controller.CraneLeft()//crane, view);
     }
 
     private function rigthClick(event:MouseEvent):void {
-        controller.CraneRight(crane, view);
+        controller.CraneRight()//crane, view);
     }
 
     private function downCLick(event:MouseEvent):void {
-        controller.CraneDown(crane, view);
+        controller.CraneDown()//crane, view);
     }
 
     private function takeCLick(event:MouseEvent):void {
-        controller.CraneTakeCube(crane, view);
+        controller.CraneTakeCube()//crane, view);
     }
 
     private function putClick(event:MouseEvent):void {
-        controller.CranePutCube(crane, view);
+        controller.CranePutCube()//crane, view);
     }
 }
 }
