@@ -5,6 +5,9 @@ import fl.controls.Button;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
+import flash.text.TextFieldType;
+import flash.text.TextFormat;
 
 import ru.ipo.kio._13.crane.controller.MovingModel;
 import ru.ipo.kio._13.crane.controller.langModel;
@@ -22,6 +25,8 @@ public class CraneMain extends Sprite {
     var view: WorkspaceView = new WorkspaceView();
     var controller: MovingModel = new MovingModel();
     var crane: Crane;
+    var btTest: Button = new Button();
+    var inputQueue: TextField = new TextField();
     public function CraneMain() {
 
         function init(): void{
@@ -106,19 +111,45 @@ public class CraneMain extends Sprite {
         btPut.width = (btLeft.width + btRight.width + btDown.width) / 2;
         btPut.x = view.x + view.width /2 - btUp.width /2 - btLeft.width + btTake.width ;
         btPut.y = view.y + view.height + btUp.height + btLeft.height;
-        btPut.addEventListener(MouseEvent.CLICK, putClick)
+        btPut.addEventListener(MouseEvent.CLICK, putClick);
 
+        var format:TextFormat = new TextFormat();
+        format.font = "Times New Roman";
+        format.color = 0x000000;
+        format.size = 12;
+        format.underline = false;
+
+
+        addChild(inputQueue);
+        inputQueue.background = true;
+        inputQueue.border = true;
+        inputQueue.defaultTextFormat = format;
+        inputQueue.x = view.x + view.width /2 - btUp.width /2 + 2 * btRight.width + btTake.width;
+        inputQueue.y = view.y + view.height + btUp.height + btRight.height;
+        inputQueue.type = TextFieldType.INPUT;
+        inputQueue.width = 200;
+        inputQueue.height = 20;
+
+
+        btTest.label = "test queue";
+        btTest.width = 100;
+        btTest.x = inputQueue.width + inputQueue.x + 10;
+        btTest.y = inputQueue.y;
+        addChild(btTest);
+        btTest.addEventListener(MouseEvent.CLICK, testClick);
 
         addChild(view);
         init();
 
 
-        var s,p: String;
-        s = "sdf";
-        p = s.charAt(0);
-        trace(p);
+
+
+
+    }
+
+    private function testClick(event:MouseEvent):void {
         var test: langModel = new langModel();
-        test.input = 'DRYT5678(LR6965(T)RL)T5(RLT)';
+        test.input = inputQueue.text;
 
         try {
             //читаем выражение
@@ -134,8 +165,6 @@ public class CraneMain extends Sprite {
             //если функцией error() было брошено исключение, сообщаем об ошибке и позиции.
             trace("ошибка в позиции ", (test.pos + 1)); // + 1, чтобы считать позиции с 1, а не с 0
         }
-
-
     }
 
 
