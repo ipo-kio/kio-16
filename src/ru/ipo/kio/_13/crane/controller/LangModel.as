@@ -16,18 +16,21 @@ public class LangModel {
     private var _pos:int = 0;
     private var _input:String;
     var _main: Programm;
-    public function read(): String {
-        if (_pos >= _input.length){
+    private var loopNum:String = "";
+    public var loopProg: Programm;
+    public var inLoop: Boolean = false;
+    public function read():String {
+        if (_pos >= _input.length) {
             return "$";
-        }  else{
+        } else {
             return _input.charAt(_pos);
         }
         /*
-        var ch: String = _input[_pos];
-        if (!ch)
-            return "$";
-        else
-            return ch;*/
+         var ch: String = _input[_pos];
+         if (!ch)
+         return "$";
+         else
+         return ch;*/
     }
 
     private var _error:Error = new Error("ошибка");
@@ -36,30 +39,19 @@ public class LangModel {
         throw _error;
     }
 
-    public function read_rule(): void {
-        switch (read()){
+    public function read_rule():void {
+        switch (read()) {
             case 'L':
-                _main.push(new Action('L'));
-                next();
-                break;
             case 'R':
-                _main.push(new Action('R'));
-                next();
-                break;
             case 'U':
-                _main.push(new Action('U'));
-                next();
-                break;
             case 'D':
-                _main.push(new Action('D'));
-                next();
-                break;
             case 'T':
-                _main.push(new Action('T'));
-                next();
-                break;
             case 'P':
-                _main.push(new Action('P'));
+                if (inLoop){
+                    loopProg.push(new Action(read()));
+                }  else {
+                    _main.push(new Action(read()));
+                }
                 next();
                 break;
             case '0':
@@ -75,18 +67,25 @@ public class LangModel {
 
                 read_loop_number();
                 trace(read(), "много цифер");
-                if (read() != '('){
+                if (read() != '(') {
                     errorFunc();
                 }
-                    trace(read()) ;
+                trace(read());
+
+                loopProg = new Programm();
+                inLoop = true;
+
                 next();
                 trace(read());
                 read_beginning();
-                //next();
                 trace(read());
-                if (read() != ')'){
+                if (read() != ')') {
                     errorFunc();
-                } else{
+                } else {
+                    _main.push(new Loop(int(loopNum), loopProg));
+                    loopNum = "";
+                    loopProg = null;
+                    inLoop = false;
                     next();
                     trace(read());
                 }
@@ -98,8 +97,8 @@ public class LangModel {
 
     }
 
-    public  function read_other_rule(): void {
-        switch (read()){
+    public function read_other_rule():void {
+        switch (read()) {
             case 'L':
             case 'R':
             case 'U':
@@ -116,13 +115,13 @@ public class LangModel {
             case '7':
             case '8':
             case '9':
-                        read_beginning();
-                    break;
-/*
+                read_beginning();
+                break;
+            /*
 
-                read_loop_number();
+             read_loop_number();
 
-                break;*/
+             break;*/
             case '$':
                 break;
             case ')':
@@ -132,8 +131,8 @@ public class LangModel {
         }
     }
 
-    public function read_loop_number(): void{
-        switch (read()){
+    public function read_loop_number():void {
+        switch (read()) {
             case '0':
             case '1':
             case '2':
@@ -153,8 +152,8 @@ public class LangModel {
 
     }
 
-    public function read_numeric(): void{
-        switch (read()){
+    public function read_numeric():void {
+        switch (read()) {
             case '0':
             case '1':
             case '2':
@@ -165,6 +164,7 @@ public class LangModel {
             case '7':
             case '8':
             case '9':
+                loopNum = loopNum + read();
                 next();
                 break;
             default:
@@ -173,8 +173,8 @@ public class LangModel {
 
     }
 
-    public function read_other_num(): void{
-        switch (read()){
+    public function read_other_num():void {
+        switch (read()) {
             case '0':
             case '1':
             case '2':
@@ -194,6 +194,7 @@ public class LangModel {
         }
 
     }
+
     public function read_beginning():void {
         switch (read()) {
             case 'L':
@@ -228,7 +229,7 @@ public class LangModel {
     }
 
 
-    public function LangModel(main: Programm):void {
+    public function LangModel(main:Programm):void {
         _main = main;
 
 

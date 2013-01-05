@@ -1,6 +1,9 @@
 package ru.ipo.kio._13.crane {
 
 import fl.controls.Button;
+import fl.controls.DataGrid;
+import fl.controls.dataGridClasses.DataGridColumn;
+import fl.data.DataProvider;
 
 import flash.display.Sprite;
 import flash.events.MouseEvent;
@@ -23,6 +26,7 @@ import ru.ipo.kio._13.crane.view.CraneView;
 import ru.ipo.kio._13.crane.view.CubeView;
 import ru.ipo.kio._13.crane.view.WorkspaceView;
 
+//[SWF(width = 800,height = 600)]
 public class CraneMain extends Sprite {
     var model:FieldModel = new FieldModel();
     var view: WorkspaceView = new WorkspaceView();
@@ -33,43 +37,31 @@ public class CraneMain extends Sprite {
     var btTest: Button = new Button();
     var inputQueue: TextField = new TextField();
     var main: Programm = new Programm();
-    public function CraneMain() {
 
-        function init(): void{
-            crane = model.addCrane(0, 0);
-            view.addCrane(0, 0);
+    function init(): void{
+        view = new WorkspaceView();
+        model = new FieldModel();
 
-
-            for (var i = 0; i < FieldModel.fieldLength; i++){
-                model.addCube(FieldModel.fieldHeight - 1, i, Cube.YELLOW);
-                view.addCube(FieldModel.fieldHeight - 1, i, Cube.YELLOW);
-            }
-            model.addCube(2, 1, Cube.GREEN);
-            view.addCube(2, 1, Cube.GREEN);
-            model.addCube(1, 3, Cube.GREY);
-            view.addCube(1, 3, Cube.GREY);
-            model.addCube(2, 3, Cube.RED);
-            view.addCube(2, 3, Cube.RED);
-            model.addCube(2, 4, Cube.GREEN);
-            view.addCube(2, 4, Cube.GREEN);
-            model.addCube(2, 5, Cube.RED);
-            view.addCube(2, 5, Cube.RED);
-
-            controller = new MovingModel(crane,  view, 1000);
+        crane = model.addCrane(0, 0);
+        view.addCrane(0, 0);
 
 
-
+        for (var i = 0; i < FieldModel.fieldLength; i++){
+            model.addCube(FieldModel.fieldHeight - 1, i, Cube.YELLOW);
+            view.addCube(FieldModel.fieldHeight - 1, i, Cube.YELLOW);
         }
+        model.addCube(2, 1, Cube.GREEN);
+        view.addCube(2, 1, Cube.GREEN);
+        model.addCube(1, 3, Cube.GREY);
+        view.addCube(1, 3, Cube.GREY);
+        model.addCube(2, 3, Cube.RED);
+        view.addCube(2, 3, Cube.RED);
+        model.addCube(2, 4, Cube.GREEN);
+        view.addCube(2, 4, Cube.GREEN);
+        model.addCube(2, 5, Cube.RED);
+        view.addCube(2, 5, Cube.RED);
 
-    /*    var textField:TextField = new TextField();
-        textField.text = "Hello, World";
-        addChild(textField);*/
-
-
-
-
-
-
+        controller = new MovingModel(crane,  view, 1000);
 
         var btUp: Button = new Button();
         btUp.label = '/\\';
@@ -145,7 +137,50 @@ public class CraneMain extends Sprite {
         btTest.addEventListener(MouseEvent.CLICK, testClick);
 
         addChild(view);
-        init();
+
+
+    }
+    public function CraneMain() {
+
+
+
+    /*    var textField:TextField = new TextField();
+        textField.text = "Hello, World";
+        addChild(textField);*/
+
+
+
+
+
+       // init();
+//        var da: DataGridExample = new DataGridExample();
+
+        var i:uint;
+        var totalRows:uint = 3;
+
+        var dp:DataProvider = new DataProvider();
+       for (i = 0; i < totalRows; i++) {
+            dp.addItem({0:1, 1:getRandomNumber(), 2:getRandomNumber()});
+        }
+
+        var dg:DataGrid = new DataGrid();
+        dg.setSize(200, 300);
+        dg.columns = ["0", "1", "2"];
+        dg.dataProvider = dp;
+        addChild(dg);
+        var bo: Array = new Array();
+        bo = dp.toArray();
+        dp = new DataProvider();
+        bo[0][0] = 15;
+        dp.merge(bo);
+        dg.dataProvider = dp;
+
+
+
+
+        function getRandomNumber():uint {
+            return Math.round(Math.random() * 100);
+        }
 
 
      //   main.push(new Action('R'));
@@ -159,9 +194,12 @@ public class CraneMain extends Sprite {
     }
 
     private function testClick(event:MouseEvent):void {
+        init();
+        main = new Programm();
         var test: LangModel = new LangModel(main);
         test.input = inputQueue.text;
          trace(test.input);
+
         try {
             //читаем выражение
             test.read_beginning();
@@ -172,7 +210,7 @@ public class CraneMain extends Sprite {
 
             //если не произошло ошибок, сообщаем, что строка корректна
             trace("строка корректна");
-            main.exec(controller);
+            main.exec(controller);     //запуск цепочки на выполнение!
             trace(crane.toString());
         } catch (error: Error) {
             //если функцией error() было брошено исключение, сообщаем об ошибке и позиции.

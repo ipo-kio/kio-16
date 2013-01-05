@@ -24,11 +24,11 @@ public class Programm{
             c.exec(controller);
 
         //    trace(controller._crane.toString());
-        }
+        }   /*
         while (commands.length > 0){
             commands.shift();
         }
-
+              */
     }
 
 
