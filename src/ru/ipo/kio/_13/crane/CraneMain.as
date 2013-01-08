@@ -9,11 +9,14 @@ import fl.events.DataGridEvent;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
+import flash.net.FileReference;
 import flash.text.GridFitType;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFieldType;
 import flash.text.TextFormat;
+
+import ru.ipo.kio._11_students.CrossedCountry.button;
 
 import ru.ipo.kio._13.crane.controller.Action;
 
@@ -140,9 +143,31 @@ public class CraneMain extends Sprite {
         btTest.x = inputQueue.width + inputQueue.x + 10;
         btTest.y = inputQueue.y;
         addChild(btTest);
+
+
+        dg.x = btRight.x - 100;
+        dg.y = btTest.y + btTest.height + 10;
         btTest.addEventListener(MouseEvent.CLICK, testClick);
+        var btSaveProblem: Button = new Button();
+        btSaveProblem.x = dg.x - 200;
+        btSaveProblem.y = dg.y;
+        btSaveProblem.width = 180;
+        btSaveProblem.label = "сохранить расположение";
+        addChild(btSaveProblem);
+        btSaveProblem.addEventListener(MouseEvent.CLICK, saveProblem)
+        var btLoadProblem: Button = new Button();
+        btLoadProblem.x = btSaveProblem.x;
+        btLoadProblem.y = btSaveProblem.y + btSaveProblem.height;
+        btLoadProblem.width = 180;
+        btLoadProblem.label = "открыть расположение";
+        addChild(btLoadProblem);
+        btLoadProblem.addEventListener(MouseEvent.CLICK, loaderProblem)
+
+
+
 
         addChild(view);
+
 
 
 
@@ -190,8 +215,7 @@ public class CraneMain extends Sprite {
         }
 
 
-        dg.x = btRight.x - 100;
-        dg.y = btTest.y + btTest.height + 10;
+
 
         dg.editable = true;
         dg.enabled = true;
@@ -255,23 +279,6 @@ public class CraneMain extends Sprite {
         }
     }
 
-    private function setDefaults():void {
-        crane.setDefault();
-        view.setCraneDefault();
-        model.setCubesDefault(dataArrayForDefault);
-
-        for (var i: int = 0; i < FieldModel.fieldHeight; i++)
-            for (var j: int = 0; j < FieldModel.fieldLength; j++){
-
-                if ((view.cubeArray[i][j] as CubeView) || (dataArrayForDefault[i][j] as Cube))
-                    view.setCubesDefault(dataArrayForDefault[i][j], i, j);
-            }
-
-        trace(dataArrayForDefault);
-        //dg.dataProvider = dp;
-
-        trace(model.getArray());
-    }
 
 
     private function upClick(event:MouseEvent):void {
@@ -411,8 +418,117 @@ public class CraneMain extends Sprite {
                   dataArrayForDefault[i] = new Array();
               }
               dataArrayForDefault[i][j] = dataArray[i][j];
-              cubeViewArrayDefault[i][j] = view.cubeArray[i][j];
           }
     }
+
+    private function saveProblem(event:MouseEvent):void {
+        var fileT: FileReference = new FileReference();
+        setDefaults();
+        fileT.save(dataArrayForDefault, "problem");
+    }
+
+    private function setDefaults():void {
+        crane.setDefault();
+        view.setCraneDefault();
+        model.setCubesDefault(dataArrayForDefault);
+
+        for (var i: int = 0; i < FieldModel.fieldHeight; i++)
+            for (var j: int = 0; j < FieldModel.fieldLength; j++){
+
+                if ((view.cubeArray[i][j] as CubeView) || (dataArrayForDefault[i][j] as Cube))
+                    view.setCubesDefault(dataArrayForDefault[i][j], i, j);
+            }
+
+        trace(dataArrayForDefault);
+        //dg.dataProvider = dp;
+
+        trace(model.getArray());
+    }
+
+    private function loaderProblem(event:MouseEvent):void {
+        var fileReferenceLoad:FileReference = new FileReference();
+        fileReferenceLoad.addEventListener(Event.SELECT, onFileSelect);
+         fileReferenceLoad.browse();
+        function onFileSelect(event:Event):void
+        {
+            fileReferenceLoad.addEventListener(Event.COMPLETE, onComplete);
+            fileReferenceLoad.load();
+        }
+        function onComplete(event:Event):void
+        {
+            var loaded: String = String(fileReferenceLoad.data);
+            trace(loaded);
+            var  col: int = 0;
+            var row: int =0;
+            trace(model.getArray().toString());
+
+            for (var i: int = 0; i < FieldModel.fieldHeight; i++)
+                for (var j: int = 0; j < FieldModel.fieldLength; j++){
+                            if (view.cubeArray[i][j] != null){
+                                model.deleteCube(i, j);
+                                view.delCube(i, j);
+                            }
+                }
+
+
+
+
+            for (var i: int = 0; i < loaded.length - 1; i++){
+                //trace(model.getArray().toString());
+//                trace(loaded.)
+                if (row != 4)
+                switch (loaded.charAt(i)){
+                    case ",":
+                        if (col < FieldModel.fieldLength - 1){
+                            col++;
+                        } else{
+                            row++;
+                            col = 0;
+                        }
+                        break;
+                    case "ж":
+                        model.addCube(row, col, Cube.YELLOW);
+                        view.addCube(row, col, Cube.YELLOW);
+                        break;
+                    case "к":
+                        model.addCube(row, col, Cube.RED);
+                        view.addCube(row, col, Cube.RED);
+                        break;
+                    case "г":
+                        model.addCube(row, col, Cube.BLUE);
+                        view.addCube(row, col, Cube.BLUE);
+                        break;
+                    case "з":
+                        model.addCube(row, col, Cube.GREEN);
+                        view.addCube(row, col, Cube.GREEN);
+                        break;
+                }
+
+            }
+            /*for (var i: int = 0; i < FieldModel.fieldHeight; i++)
+                for( var j: int = 0; i < FieldModel.fieldLength; j++){
+
+                }
+*/          trace(model.getArray().toString());
+            dataArray = model.getArray();
+            for (var i: int = 0; i < dataArray.length; i++)
+                for (var j: int = 0; j < dataArray[0].length; j++){
+                    if (j == 0) {
+                        dataArrayForDefault[i] = new Array();
+                    }
+                    dataArrayForDefault[i][j] = dataArray[i][j];
+                }
+            trace(dataArrayForDefault.toString());
+           // setDefaults();
+
+
+
+
+
+        }
+
+    }
+
+
 }
 }
