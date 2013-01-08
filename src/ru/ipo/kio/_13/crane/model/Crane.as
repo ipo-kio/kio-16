@@ -14,6 +14,10 @@ public class Crane {
         _pos = new Position(i, j);
         _hasCube = hasCube;
     }
+    public function setDefault(){
+        _pos = new Position(0,0);
+        _hasCube = false;
+    }
 
     public function get hasCube():Boolean {
         return _hasCube;

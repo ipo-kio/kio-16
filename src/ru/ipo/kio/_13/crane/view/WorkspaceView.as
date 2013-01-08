@@ -9,23 +9,28 @@ package ru.ipo.kio._13.crane.view {
 import flash.display.Sprite;
 
 import ru.ipo.kio._13.crane.model.Crane;
+import ru.ipo.kio._13.crane.model.Cube;
 
 import ru.ipo.kio._13.crane.model.FieldModel;
 
 public class WorkspaceView extends Sprite{
         public static var craneView: CraneView = new CraneView();
         public var cubeArray: Array = new Array();
-        public static const BORDER_X: int = 20;
-        public static const BORDER_Y = 20;
+        public static const BORDER_X: int = 10;
+        public static const BORDER_Y = 10;
         public static const SpaceBetweenRows = 10;
-        public static const SpaceBetweenCubes = 20;
-        public static const StartX = 30;
-        public static const StartY = 30;
+        public static const SpaceBetweenCubes = 10;
+        public static const StartX = 10;
+        public static const StartY = 10;
         public static var x: int = 10;
 
         public function WorkspaceView() {
             for (var i = 0; i < FieldModel.fieldHeight; i++){
                 cubeArray[i] = new Array(FieldModel.fieldLength);
+            }
+            for (var i = 0; i < FieldModel.fieldHeight; i++){
+                for (var j = 0; j < FieldModel.fieldHeight; j++)
+                cubeArray[i][j] = null;
             }
             graphics.beginFill(0xDDDDDD);
             graphics.drawRect(0, 0, BORDER_X + FieldModel.fieldLength * (CubeView.WIDTH + SpaceBetweenCubes), FieldModel.fieldHeight * CubeView.HEIGHT);
@@ -51,7 +56,14 @@ public class WorkspaceView extends Sprite{
         craneView.y = row * CubeView.HEIGHT - CraneView.DY;
         craneView.x = col * (CubeView.WIDTH + SpaceBetweenCubes) + SpaceBetweenCubes / 2 - CraneView.DX;
     }
-
+    public function delCube(i, j: int): void{
+        removeChild(cubeArray[i][j]);
+        cubeArray[i][j] = null;
+    }
+    public function setCraneDefault(){
+        craneView.y = 0 * CubeView.HEIGHT - CraneView.DY;
+        craneView.x = 0 * (CubeView.WIDTH + SpaceBetweenCubes) + SpaceBetweenCubes / 2 - CraneView.DX;
+    }
     public function addCube(row: int,  col: int, color: int): void{
         cubeArray[row][col] = new CubeView(color);
         addChild(cubeArray[row][col]);
@@ -124,6 +136,19 @@ public class WorkspaceView extends Sprite{
 // NOTHING to do here by now
     }
 
+
+    public function setCubesDefault(data: Cube, i, j: int):void {
+
+            if (cubeArray[i][j] != null) {
+                removeChild(cubeArray[i][j]);
+                cubeArray[i][j] = null;
+            }
+            if (data != null){
+                addCube(i, j, data.color);
+            }
+
+
+    }
 
 }
 }

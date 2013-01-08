@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package ru.ipo.kio._13.crane.view {
+import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
 
 import ru.ipo.kio._13.crane.model.Cube;
@@ -14,14 +15,14 @@ public class CubeView extends  Sprite{
     [Embed(source="../resources/cubes/cube_GREEN.png")]
     private static var _cube_GREEN:Class;
     [Embed(source="../resources/cubes/cube_GREY.png")]
-    private static var _cube_GREY:Class;
+    private static var _cube_BLUE:Class;
     [Embed(source="../resources/cubes/cube_RED.png")]
     private static var _cube_RED:Class;
     [Embed(source="../resources/cubes/cube_YELLOW.png")]
     private static var _cube_Yellow:Class;
     private var color: int;            //нужен для перерисовки кубиков при движении
-    public static const WIDTH: int = 113;
-    public static const HEIGHT: int = 65;
+    public static const WIDTH: int = 60;
+    public static const HEIGHT: int = 30;
 
 
 
@@ -37,11 +38,15 @@ public class CubeView extends  Sprite{
             case Cube.YELLOW:
                 var cube =  new _cube_Yellow;
                 break;
-            case Cube.GREY:
-                var cube =  new _cube_GREY;
+            case Cube.BLUE:
+                var cube =  new _cube_BLUE;
                 break;
         }
         addChild(cube);
+
+    }
+    public function del(){
+        removeChild(this);
     }
 
    public function getColor(): int{

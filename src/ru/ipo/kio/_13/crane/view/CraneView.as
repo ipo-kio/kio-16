@@ -16,10 +16,10 @@ public class CraneView extends Sprite{
 
     [Embed(source="../resources/crane.png")]
     private static var CranePic:Class;
-    public static const WIDTH = 120;
-    public static const HEIGHT = 87;
+    public static const WIDTH = 67;
+    public static const HEIGHT = 49;
     public static const DX = Math.round((WIDTH - CubeView.WIDTH) / 2);
-    public static const DY = (HEIGHT - CubeView.HEIGHT) + 42;         //   WATCH OUT
+    public static const DY = (HEIGHT - CubeView.HEIGHT) + 17;         //   WATCH OUT
     public function CraneView() {
        var _crane =  new CranePic;
        addChild(_crane);

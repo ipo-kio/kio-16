@@ -4,9 +4,12 @@ import fl.controls.Button;
 import fl.controls.DataGrid;
 import fl.controls.dataGridClasses.DataGridColumn;
 import fl.data.DataProvider;
+import fl.events.DataGridEvent;
 
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.events.MouseEvent;
+import flash.text.GridFitType;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFieldType;
@@ -26,7 +29,7 @@ import ru.ipo.kio._13.crane.view.CraneView;
 import ru.ipo.kio._13.crane.view.CubeView;
 import ru.ipo.kio._13.crane.view.WorkspaceView;
 
-//[SWF(width = 800,height = 600)]
+[SWF(width = 800,height = 600)]
 public class CraneMain extends Sprite {
     var model:FieldModel = new FieldModel();
     var view: WorkspaceView = new WorkspaceView();
@@ -35,25 +38,33 @@ public class CraneMain extends Sprite {
     var controller: MovingModel;
 
     var btTest: Button = new Button();
+    var btRight: Button = new Button();
+    var btUpdate: Button = new Button();
+    var btPut: Button = new Button();
+    var btTake: Button = new Button();
+    var btDown: Button = new Button();
+    var btLeft: Button = new Button();
+    var btUp: Button = new Button();
+
+
     var inputQueue: TextField = new TextField();
     var main: Programm = new Programm();
 
+
+    var dp:DataProvider = new DataProvider();
+    var dg:DataGrid = new DataGrid();
+    var dataArray: Array = new Array();
+    var dataArrayForDefault: Array = new Array();
+    var cubeViewArrayDefault: Array = new Array();
+    private var event:MouseEvent = new MouseEvent(String(btUpdate));
     function init(): void{
-        view = new WorkspaceView();
-        model = new FieldModel();
-
-        crane = model.addCrane(0, 0);
-        view.addCrane(0, 0);
-
-
-        for (var i = 0; i < FieldModel.fieldLength; i++){
-            model.addCube(FieldModel.fieldHeight - 1, i, Cube.YELLOW);
-            view.addCube(FieldModel.fieldHeight - 1, i, Cube.YELLOW);
+        for (var i = 0; i < FieldModel.fieldHeight; i++){
+            cubeViewArrayDefault[i] = new Array(FieldModel.fieldLength);
         }
         model.addCube(2, 1, Cube.GREEN);
         view.addCube(2, 1, Cube.GREEN);
-        model.addCube(1, 3, Cube.GREY);
-        view.addCube(1, 3, Cube.GREY);
+        model.addCube(1, 3, Cube.BLUE);
+        view.addCube(1, 3, Cube.BLUE);
         model.addCube(2, 3, Cube.RED);
         view.addCube(2, 3, Cube.RED);
         model.addCube(2, 4, Cube.GREEN);
@@ -63,7 +74,6 @@ public class CraneMain extends Sprite {
 
         controller = new MovingModel(crane,  view, 1000);
 
-        var btUp: Button = new Button();
         btUp.label = '/\\';
         addChild(btUp);
         btUp.width = 30;
@@ -71,7 +81,6 @@ public class CraneMain extends Sprite {
         btUp.y = view.y + view.height;
         btUp.addEventListener(MouseEvent.CLICK, upClick);
 
-        var btLeft: Button = new Button();
         btLeft.label = '<';
         addChild(btLeft);
         btLeft.width = 30;
@@ -79,7 +88,7 @@ public class CraneMain extends Sprite {
         btLeft.y = view.y + view.height + btUp.height;
         btLeft.addEventListener(MouseEvent.CLICK, leftClick)
 
-        var btRight: Button = new Button();
+
         btRight.label = '>';
         addChild(btRight);
         btRight.width = 30;
@@ -87,7 +96,6 @@ public class CraneMain extends Sprite {
         btRight.y = view.y + view.height + btUp.height;
         btRight.addEventListener(MouseEvent.CLICK, rigthClick)
 
-        var btDown: Button = new Button();
         btDown.label = '\\/';
         addChild(btDown);
         btDown.width = 30;
@@ -95,7 +103,6 @@ public class CraneMain extends Sprite {
         btDown.y = view.y + view.height + btUp.height;
         btDown.addEventListener(MouseEvent.CLICK, downCLick);
 
-        var btTake: Button = new Button();
         btTake.label = 'take';
         addChild(btTake);
         btTake.width = (btLeft.width + btRight.width + btDown.width) / 2;
@@ -103,7 +110,6 @@ public class CraneMain extends Sprite {
         btTake.y = view.y + view.height + btUp.height + btLeft.height;
         btTake.addEventListener(MouseEvent.CLICK, takeCLick);
 
-        var btPut: Button = new Button();
         btPut.label = 'put';
         addChild(btPut);
         btPut.width = (btLeft.width + btRight.width + btDown.width) / 2;
@@ -139,9 +145,33 @@ public class CraneMain extends Sprite {
         addChild(view);
 
 
+
+
+    }
+
+  /*  public function insertArray(): DataProvider{
+        var temp, field: Array = new Array();
+        var i,  j: int;
+        field = model.getArray();
+        for (i = 1; i < field. )
+
+    }*/
+
+    public function initModel(){
+        view = new WorkspaceView();
+        model = new FieldModel();
+
+        crane = model.addCrane(0, 0);
+        view.addCrane(0, 0);
+
+
+        for (var i = 1; i < 6; i++){
+            model.addCube(FieldModel.fieldHeight - 1, i, Cube.YELLOW);
+            view.addCube(FieldModel.fieldHeight - 1, i, Cube.YELLOW);
+        }
     }
     public function CraneMain() {
-
+            trace("поехали");
 
 
     /*    var textField:TextField = new TextField();
@@ -150,37 +180,41 @@ public class CraneMain extends Sprite {
 
 
 
+        initModel();
 
 
-       // init();
-//        var da: DataGridExample = new DataGridExample();
-
-        var i:uint;
-        var totalRows:uint = 3;
-
-        var dp:DataProvider = new DataProvider();
-       for (i = 0; i < totalRows; i++) {
-            dp.addItem({0:1, 1:getRandomNumber(), 2:getRandomNumber()});
+        init();
+        dg.setSize(300, 300);
+        for (var i: int = 0; i < FieldModel.fieldLength; i++){
+            dg.addColumn(String(i));
         }
 
-        var dg:DataGrid = new DataGrid();
-        dg.setSize(200, 300);
-        dg.columns = ["0", "1", "2"];
-        dg.dataProvider = dp;
+
+        dg.x = btRight.x - 100;
+        dg.y = btTest.y + btTest.height + 10;
+
+        dg.editable = true;
+        dg.enabled = true;
+
+
+
+        btUpdate.label = "Оправить данные";
+        btUpdate.width = 150;
+        btUpdate.x = dg.x + dg.width + 10;
+        btUpdate.y = dg.y;
+        addChild(btUpdate);
+        btUpdate.addEventListener(MouseEvent.CLICK, updateModel);
         addChild(dg);
-        var bo: Array = new Array();
-        bo = dp.toArray();
-        dp = new DataProvider();
-        bo[0][0] = 15;
-        dp.merge(bo);
-        dg.dataProvider = dp;
+//        dg.addEventListener(DataGridEvent.ITEM_EDIT_BEGIN, test)
+  //      dg.addEventListener(DataGridEvent.ITEM_EDIT_END, changingModel)
+
+
+        updateData();
+        updateModel(event)
 
 
 
 
-        function getRandomNumber():uint {
-            return Math.round(Math.random() * 100);
-        }
 
 
      //   main.push(new Action('R'));
@@ -193,8 +227,10 @@ public class CraneMain extends Sprite {
 
     }
 
+
     private function testClick(event:MouseEvent):void {
-        init();
+        setDefaults();
+
         main = new Programm();
         var test: LangModel = new LangModel(main);
         test.input = inputQueue.text;
@@ -213,10 +249,28 @@ public class CraneMain extends Sprite {
             main.exec(controller);     //запуск цепочки на выполнение!
             trace(crane.toString());
         } catch (error: Error) {
+            trace(error.errorID);
             //если функцией error() было брошено исключение, сообщаем об ошибке и позиции.
             trace("ошибка в позиции ", (test.pos + 1)); // + 1, чтобы считать позиции с 1, а не с 0
         }
+    }
 
+    private function setDefaults():void {
+        crane.setDefault();
+        view.setCraneDefault();
+        model.setCubesDefault(dataArrayForDefault);
+
+        for (var i: int = 0; i < FieldModel.fieldHeight; i++)
+            for (var j: int = 0; j < FieldModel.fieldLength; j++){
+
+                if ((view.cubeArray[i][j] as CubeView) || (dataArrayForDefault[i][j] as Cube))
+                    view.setCubesDefault(dataArrayForDefault[i][j], i, j);
+            }
+
+        trace(dataArrayForDefault);
+        //dg.dataProvider = dp;
+
+        trace(model.getArray());
     }
 
 
@@ -242,6 +296,123 @@ public class CraneMain extends Sprite {
 
     private function putClick(event:MouseEvent):void {
         controller.CranePutCube()//crane, view);
+    }
+    public function updateData(): void{
+        dp.merge(model.getArray());
+        dp.removeItemAt(FieldModel.fieldHeight);
+        dg.dataProvider = dp;
+    }
+
+    /*
+    private function updateDP(event:MouseEvent):void {
+        trace(model.getArray());
+        var cubesTemp: Array = new Array();
+        cubesTemp = dp.toArray();
+        var numRows: int = cubesTemp.length;
+        var numCol: int = cubesTemp[0].length;
+*//*        for (var i: int = 0; i < view.cubeArray.length; i++)
+        for each (var cube: CubeView in view.cubeArray[i]){
+            if (cube != null)
+                view.delCube(cube);
+        }*//*
+//        trace(cubesTemp[0][0]);
+
+        cubesTemp.toString();
+        for (var i: int = 0; i < numRows; i++)
+            for (var j: int = 0; j < numCol; j++){
+                //model.deleteCube(i,  j);
+                //trace(typeof(cubesTemp[i][j]));
+                if typeof(cubesTemp[i][j] == String(String))
+                switch (cubesTemp[i][j]){
+                    case "ж":
+                        trace(cubesTemp[i][j]);
+                        model.addCube(i, j, Cube.YELLOW);
+                        view.addCube(i, j, Cube.YELLOW);
+                        break;
+                    case "к":
+                        trace(cubesTemp[i][j]);
+                        model.addCube(i, j, Cube.RED);
+                        view.addCube(i, j, Cube.RED);
+                        break;
+                    case "г":
+                        trace(cubesTemp[i][j]);
+                        model.addCube(i, j, Cube.BLUE);
+                        view.addCube(i, j, Cube.BLUE);
+                        break;
+                    case "з":
+                        trace(cubesTemp[i][j]);
+                        model.addCube(i, j, Cube.GREEN);
+                        view.addCube(i, j, Cube.GREEN);
+                        break;
+                }
+            }
+        trace(typeof(cubesTemp[2][0]));
+        trace(cubesTemp[2][0]);
+        trace(model.getArray());
+        //updateData();
+    }*/
+/*    private function changingModel(event: DataGridEvent):void {
+        var cubesTemp: Array = new Array();
+        cubesTemp = model.getArray();
+        trace(event.dataField)
+        trace(dp.toArray());
+        trace(cubesTemp[event.rowIndex][event.columnIndex]);
+        //model.forTests(event.rowIndex, event.columnIndex);
+        //trace(event.columnIndex);
+//        trace(dg.getCellRendererAt(dg));
+    }*/
+
+    private function test(e:DataGridEvent):void {
+        trace(e);
+    }
+
+    override public function toString():String {
+        return super.toString();
+    }
+
+    private function updateModel(event:MouseEvent):void {
+//     trace(model.getArray());
+        var cubesTemp: Array = new Array();
+        cubesTemp = model.getArray();
+        var numRows: int = cubesTemp.length;
+        var numCol: int = cubesTemp[0].length;
+
+        for (var i: int = 0; i < numRows; i++)
+            for (var j: int = 0; j < numCol; j++){
+                switch (cubesTemp[i][j]){
+                    case "ж":
+                        model.addCube(i, j, Cube.YELLOW);
+                        view.addCube(i, j, Cube.YELLOW);
+                        break;
+                    case "к":
+                        model.addCube(i, j, Cube.RED);
+                        view.addCube(i, j, Cube.RED);
+                        break;
+                    case "г":
+                        model.addCube(i, j, Cube.BLUE);
+                        view.addCube(i, j, Cube.BLUE);
+                        break;
+                    case "з":
+                        model.addCube(i, j, Cube.GREEN);
+                        view.addCube(i, j, Cube.GREEN);
+                        break;
+                    case "":
+                        if (view.cubeArray[i][j] != null){
+                            model.deleteCube(i, j);
+                            view.delCube(i, j);
+                        }
+                }
+            }
+        trace(model.getArray());
+        dataArray = dp.toArray();
+        for (var i: int = 0; i < dataArray.length; i++)
+          for (var j: int = 0; j < dataArray[0].length; j++){
+              if (j == 0) {
+                  dataArrayForDefault[i] = new Array();
+              }
+              dataArrayForDefault[i][j] = dataArray[i][j];
+              cubeViewArrayDefault[i][j] = view.cubeArray[i][j];
+          }
     }
 }
 }
