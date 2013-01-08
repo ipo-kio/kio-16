@@ -8,6 +8,12 @@
 package ru.ipo.kio._13.crane.controller {
 import fl.controls.listClasses.CellRenderer;
 
+import flash.system.ApplicationDomain;
+
+import flash.utils.Timer;
+
+import mx.core.ApplicationDomainTarget;
+
 import ru.ipo.kio._11.digit.Workspace;
 
 import ru.ipo.kio._13.crane.model.Crane;
@@ -18,8 +24,8 @@ import ru.ipo.kio._13.crane.view.WorkspaceView;
 public class MovingModel extends Commands{
     var _crane: Crane;
     var _view: WorkspaceView;
-    var delay: DelayForActions = new DelayForActions();
     var _delayTime: int;
+
     public function MovingModel(crane: Crane, view: WorkspaceView, delayTime: int) {
         _crane = crane;
         _view = view;
@@ -28,6 +34,7 @@ public class MovingModel extends Commands{
 
     public function CraneRight(){//crane: Crane, view: WorkspaceView){
         if (FieldModel.craneMoveRight(_crane)){
+
             _view.craneMoveRight(_crane);
         }
     }

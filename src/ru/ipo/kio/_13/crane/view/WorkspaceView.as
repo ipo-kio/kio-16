@@ -7,6 +7,12 @@
  */
 package ru.ipo.kio._13.crane.view {
 import flash.display.Sprite;
+import flash.events.Event;
+import flash.utils.SetIntervalTimer;
+import flash.utils.clearInterval;
+import flash.utils.clearTimeout;
+import flash.utils.setInterval;
+import flash.utils.setTimeout;
 
 import ru.ipo.kio._13.crane.model.Crane;
 import ru.ipo.kio._13.crane.model.Cube;
@@ -23,6 +29,15 @@ public class WorkspaceView extends Sprite{
         public static const StartX = 10;
         public static const StartY = 10;
         public static var x: int = 10;
+        public var craneForHandle: Crane;
+        public var bound: int;
+        private static var _busy: Boolean = false;
+        public var s: Array = new Array();
+       public var event: Event = new Event(Event.ENTER_FRAME);
+
+       public function isBusy(): Boolean{
+           return _busy;
+       }
 
         public function WorkspaceView() {
             for (var i = 0; i < FieldModel.fieldHeight; i++){
@@ -71,25 +86,55 @@ public class WorkspaceView extends Sprite{
         cubeArray[row][col].x = col * (CubeView.WIDTH + SpaceBetweenCubes) + SpaceBetweenCubes / 2;
     }
 
-    //--------------------------------
+//    --------------------------------
 //    в перемещении кубиков смотрим где был кран до переещения (там и кубик)
 //    -----------------------------------
 
     public function craneMoveRight(crane: Crane): void{
-        craneView.x += CubeView.WIDTH + SpaceBetweenCubes;
-        if (crane.hasCube){
-            cubeArray[crane.pos.i][crane.pos.j - 1].x += CubeView.WIDTH + SpaceBetweenCubes;
-            cubeArray[crane.pos.i][crane.pos.j] = new CubeView(cubeArray[crane.pos.i][crane.pos.j - 1].getColor());
-            addChild(cubeArray[crane.pos.i][crane.pos.j]);
-            cubeArray[crane.pos.i][crane.pos.j].x = cubeArray[crane.pos.i][crane.pos.j - 1].x;
-            cubeArray[crane.pos.i][crane.pos.j].y = cubeArray[crane.pos.i][crane.pos.j - 1].y;
-            removeChild(cubeArray[crane.pos.i][crane.pos.j - 1]);
-            cubeArray[crane.pos.i][crane.pos.j - 1] = null;
-
-        }          //tested
+           craneForHandle = crane;
+          if (craneView.hasEventListener(Event.ENTER_FRAME)){
+              s.push((setInterval(funcRight, 20, s.length)));
+          }
+        else
+          {
+           craneView.addEventListener(Event.ENTER_FRAME, moveRight);
+              bound = craneView.x + CubeView.WIDTH + SpaceBetweenCubes;
+              moveRight(event);
+          }
     }
+    public function funcRight():void{
+           trace(arguments[0]);
+            if (!craneView.hasEventListener(Event.ENTER_FRAME))  {
+                craneView.addEventListener(Event.ENTER_FRAME, moveRight);
+                bound = craneView.x + CubeView.WIDTH + SpaceBetweenCubes;
+                moveRight(event);
+                clearInterval(s[arguments[0]]);
 
+            }
+        }
 
+    private function moveRight(event:Event):void {
+        _busy = true;
+          craneView.x += 8;
+
+        if (craneForHandle.hasCube){
+            cubeArray[craneForHandle.pos.i][craneForHandle.pos.j - 1].x += CubeView.WIDTH + SpaceBetweenCubes;
+            cubeArray[craneForHandle.pos.i][craneForHandle.pos.j] = new CubeView(cubeArray[craneForHandle.pos.i][craneForHandle.pos.j - 1].getColor());
+            addChild(cubeArray[craneForHandle.pos.i][craneForHandle.pos.j]);
+            cubeArray[craneForHandle.pos.i][craneForHandle.pos.j].x = cubeArray[craneForHandle.pos.i][craneForHandle.pos.j - 1].x;
+            cubeArray[craneForHandle.pos.i][craneForHandle.pos.j].y = cubeArray[craneForHandle.pos.i][craneForHandle.pos.j - 1].y;
+            removeChild(cubeArray[craneForHandle.pos.i][craneForHandle.pos.j - 1]);
+            cubeArray[craneForHandle.pos.i][craneForHandle.pos.j - 1] = null;
+
+        }
+        if (craneView.x > bound){
+                           _busy = false;
+            craneView.removeEventListener(Event.ENTER_FRAME, moveRight);
+            craneView.x = bound;
+
+        }
+               //tested
+    }
 
 
     public function craneMoveLeft(crane: Crane): void{
@@ -150,5 +195,12 @@ public class WorkspaceView extends Sprite{
 
     }
 
+    public function get busy():Boolean {
+        return _busy;
+    }
+
+    public function set busy(value:Boolean):void {
+        _busy = value;
+    }
 }
 }

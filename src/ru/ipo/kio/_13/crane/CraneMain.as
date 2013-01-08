@@ -260,7 +260,7 @@ public class CraneMain extends Sprite {
         test.input = inputQueue.text;
          trace(test.input);
 
-        try {
+//        try {
             //читаем выражение
             test.read_beginning();
 
@@ -272,11 +272,13 @@ public class CraneMain extends Sprite {
             trace("строка корректна");
             main.exec(controller);     //запуск цепочки на выполнение!
             trace(crane.toString());
+/*
         } catch (error: Error) {
             trace(error.errorID);
             //если функцией error() было брошено исключение, сообщаем об ошибке и позиции.
             trace("ошибка в позиции ", (test.pos + 1)); // + 1, чтобы считать позиции с 1, а не с 0
         }
+*/
     }
 
 
