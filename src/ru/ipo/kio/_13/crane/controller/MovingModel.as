@@ -33,44 +33,44 @@ public class MovingModel extends Commands{
     }
 
     public function CraneRight(){//crane: Crane, view: WorkspaceView){
-        if (FieldModel.craneMoveRight(_crane)){
+//        if (FieldModel.craneMoveRight(_crane)){
 
             _view.craneMoveRight(_crane);
-        }
+//        }
     }
     public function CraneLeft(){//crane: Crane, view: WorkspaceView){
-        if (FieldModel.craneMoveLeft(_crane)){
+//        if (FieldModel.craneMoveLeft(_crane)){
             _view.craneMoveLeft(_crane);
 
-        }
+//        }
     }
 
     public function CraneDown(){//crane: Crane, view: WorkspaceView){
-        if (FieldModel.craneMoveDown(_crane)){
+//        if (FieldModel.craneMoveDown(_crane)){
             _view.craneMoveDown(_crane);
 
-        }
+//        }
     }
 
     public function CraneUp(){//crane: Crane, view: WorkspaceView){
-        if (FieldModel.craneMoveUp(_crane)){
+//        if (FieldModel.craneMoveUp(_crane)){
             _view.craneMoveUp(_crane);
 
-        }
+//        }
     }
 
     public function CraneTakeCube(){//crane: Crane, view: WorkspaceView){
-        if (FieldModel.craneTakeCube(_crane)){
+//        if (FieldModel.craneTakeCube(_crane)){
             _view.craneTakeCube(_crane);
 
-        }
+//        }
     }
 
     public function CranePutCube(){//crane: Crane, view: WorkspaceView){
-        if (FieldModel.cranePutCube(_crane)){
+//        if (FieldModel.cranePutCube(_crane)){
             _view.cranePutCube(_crane);
 
-        }
+//        }
     }
 }
 }

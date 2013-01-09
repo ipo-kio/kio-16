@@ -15,6 +15,7 @@ import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFieldType;
 import flash.text.TextFormat;
+import flash.utils.clearInterval;
 
 import ru.ipo.kio._11_students.CrossedCountry.button;
 
@@ -444,6 +445,10 @@ public class CraneMain extends Sprite {
         trace(dataArrayForDefault);
         //dg.dataProvider = dp;
 
+        //сброс всех ожиданий для действия, если они были невозможны
+        for each( var u: uint in view.s){
+            clearInterval(u);
+        }
         trace(model.getArray());
     }
 
