@@ -5,16 +5,18 @@
  * Time: 15:48
  */
 package ru.ipo.kio.api {
+import flash.events.Event;
+import flash.events.EventDispatcher;
 import flash.utils.Dictionary;
 
-public class KioApi {
+public class KioApi extends EventDispatcher {
 
     private var _problem:KioProblem;
 
     private static var apis:Dictionary = new Dictionary();
     private static var locs:Dictionary = new Dictionary();
 
-    private var lso : LsoProxy;
+    private var lso:LsoProxy;
 
     private static var _language:String = null;
 
@@ -23,6 +25,11 @@ public class KioApi {
     public static const L_BG:String = 'bg';
     public static const L_EN:String = 'en';
     public static const L_TH:String = 'th';
+
+    public static const RECORD_EVENT:String = 'record';
+    public static const KIO_FONT:String = TextUtils.FONT_MESSAGES;
+
+    private var _record_result:Object = null;
 
     private static var _isChecker:Boolean = false;
 
@@ -57,6 +64,7 @@ public class KioApi {
      * Этот объект будет выдаваться при вызове localization()
      * @param id
      * @param localization_object
+     * @param lang
      */
     public static function registerLocalization(id:String, lang:String, localization_object:Object):void {
         if (!locs[lang])
@@ -80,7 +88,7 @@ public class KioApi {
      * выбрал пользователь. Например, набор цветов, шрифт и т.п.
      */
     public function get settings():Object {
-        if (! problemData.settings)
+        if (!problemData.settings)
             problemData.settings = {};
 
         return problemData.settings;
@@ -122,6 +130,29 @@ public class KioApi {
      */
     public function get problem():KioProblem {
         return _problem;
+    }
+
+    /**
+     * Отсылает решение на сохранение.
+     * @param result
+     */
+    public function submitResult(result:Object = null):void {
+        if (result == null)
+            result = _problem.check(_problem.solution);
+
+        if (_record_result == null || _problem.compare(result, _record_result) > 0) {
+            _record_result = result;
+            saveBestSolution();
+            dispatchEvent(new Event(RECORD_EVENT));
+        }
+    }
+
+
+    /**
+     * Возвращает рекордный результат при условии, что для проверки рекорда используется метод submitResult()
+     */
+    public function get record_result():Object {
+        return _record_result;
     }
 
     private function get problemData():Object {

@@ -5,7 +5,7 @@ import flash.display.Sprite;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.Settings;
-import ru.ipo.kio.api_example.ExampleProblemSprite;
+import ru.ipo.kio.api_example.StubProblemSprite;
 
 /**
  * Пример задачи
@@ -33,7 +33,7 @@ public class CrossedCountry implements KioProblem {
         //теперь можно писать код конструктора, в частности, создавать объекты, которые используют API:
 //        В конструкторе MainSpirte есть вызов API (KioApi.instance(...).localization)
 //        sp = new Main;
-        sp = new ExampleProblemSprite(true, ID);
+        sp = new StubProblemSprite(true, ID);
         // получить рекорд
     }
 

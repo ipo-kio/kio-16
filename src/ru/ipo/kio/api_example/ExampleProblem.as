@@ -1,17 +1,22 @@
 package ru.ipo.kio.api_example {
 import flash.display.DisplayObject;
 
-import ru.ipo.kio._12.train.TrainProblem;
-
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
+import ru.ipo.kio.api.Settings;
 
 /**
- * Пример задачи
+ * Пример задачи. Этот файл описывает задачу, он практически не содержит логики работы с задачей, а только выдает информацию по ней для системы.
  * @author Ilya
  */
 public class ExampleProblem implements KioProblem {
 
+    //Ссылка на файл с локализацией, в данном случае только русский язык. Если языков больше, необходимо добавить несколько ссылок
+    [Embed(source="loc/example.ru.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_RU:Class;
+
+    //Идентификатор задачи. Строка, используется для ссылки на задачу, необходимо выбрать ее так, чтобы она была короткой, содержала
+    //только буквы, цифры и знак дефиса, не совпадала с ID других задач.
     public static const ID:String = "test";
 
     //Это спрайт, на котором рисуется задача
@@ -19,33 +24,28 @@ public class ExampleProblem implements KioProblem {
 
     private var _level:int;
 
-    //конструктор задачи. Будем указывать в конструкторе уровень, чтобы задачу можно было использовать и в
+    //Конструктор задачи. Мы можем сделать его произвольным, API не накладывает на него требований.
+    //Будем указывать в конструкторе уровень, чтобы задачу можно было использовать и в
     //конкурсе первого уровня и второго. Если бы она была, например, только для первого уровня, параметр бы
     //был не нужен.
-    //Параметр readonly = true означает, что текст нельзя изменять.
-    public function ExampleProblem(level:int, readonly:Boolean = false) {
+    public function ExampleProblem(level:int) {
         _level = level;
 
         //в первой строке конструктора задачи требуется вызвать инициализацию api:
         KioApi.initialize(this);
 
         //Регистрация локализации. Программа должна иметь локализацию для каждого из языков,
-        //на котором ее предлагается использовать. Чтобы не вписывать данные в код, их можно
-        //загружать с помощью класса Settings. См. задачи 2011 года. Класс Settings читает
-        //данные из расширенного json-файла (допустимы комментарии и многострочные строки)
-        KioApi.registerLocalization(ID, KioApi.L_RU, {
-            title: "Трамваи", //Этот заголовок отображается сверху в окне задачи
-            message: "Эта задача будет доступна в обновленной версии программы конкурса в самое ближайшее время"
-        });
+        //на котором ее предлагается использовать.
+        KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
 
         //теперь можно писать код конструктора, в частности, создавать объекты, которые используют API:
         //В конструкторе MainSpirte есть вызов API (KioApi.instance(...).localization)
-        sp = new ExampleProblemSprite(readonly);
+        sp = new ExampleProblemSprite();
     }
 
     /**
      * Произвольный идентификатор задачи, который необходимо выбрать и далее использовать при обращении к api:
-     * KioApi.instance(ID). Хорошей практикой является создание статической константы с этим id
+     * KioApi.instance(ID).
      */
     public function get id():String {
         return ID;
@@ -55,7 +55,7 @@ public class ExampleProblem implements KioProblem {
      * Год задачи
      */
     public function get year():int {
-        return 2011;
+        return 2013;
     }
 
     /**
@@ -67,7 +67,7 @@ public class ExampleProblem implements KioProblem {
 
     /**
      * Основной объект для отображения, чаще всего это спрайт (Sprite), на котором лежат все элементы
-     * задачи
+     * задачи. В примере мы его храним в поле объекта
      */
     public function get display():DisplayObject {
         return sp;
@@ -82,11 +82,6 @@ public class ExampleProblem implements KioProblem {
         return {
             txt : sp.text
         };
-
-        //Другой способ сделать тоже самое:
-        // var o:Object = new Object();
-        // o.txt = sp.text;
-        // return o;
     }
 
     /**
@@ -95,56 +90,76 @@ public class ExampleProblem implements KioProblem {
      * обратно в метод loadSolution(). Запрос может быть дан в произвольный момент, программа всегда должна быть
      * готова загрузить новое решение.
      * @param    solution решение для загрузки
-     * @return удалось ли загрузить решение
+     * @return   удалось ли загрузить решение
      */
     public function loadSolution(solution:Object):Boolean {
         //для загрузки решения нужно взять поле txt и записать его в текстовое поле
         if (solution.txt) {
             sp.text = solution.txt;
+
+            //не забыть сохранить решение, как обычно после того как оно изменилось
+            KioApi.instance(ID).autoSaveSolution();
+            //не забыть как обычно после изменения решения пересчитать текущий результат
+            KioApi.instance(ID).submitResult(sp.currentResult());
+            //Если текущий результат еще и показывается где-то на экране, его тоже надо пересчитать
+            //TODO это все должно происходить автоматически
+
             return true;
         } else
             return false;
     }
 
     /**
-     * Проверка решения, понадобится позже, комментарий будет позже
+     * Проверка решения.
+     * Этот метод вызывается только во время проверки, поэтому первоначально его можно не реализовывать. При проверке
+     * можно полностью изменять состояние программы.
      * @param    solution решение для проверки
      * @return результат проверки
      */
     public function check(solution:Object):Object {
-        return new Object();
+        loadSolution(solution);
+        return sp.currentResult();
     }
 
     /**
-     * Сравнение двух решений, понадобится позже, комментарий будет позже
+     * Сравнение двух решений. Будем сравнивать так, что чем длинне строка, тем лучше
      * @param    solution1 результат проверки первого решения
      * @param    solution2 результат проверки второго решения
-     * @return результат сравнения
+     * @return результат сравнения. Возвращает положительное число, если первое решение лучше, отрицательное, если хуже, и 0, если совпадают
      */
     public function compare(solution1:Object, solution2:Object):int {
-        return 1;
+        return solution1.length - solution2.length;
     }
 
     /**
-     * Возвращает класс изображения с иконкой. Отображается для выбора задачи
-     * Пример в задаче semiramida
+     * Возвращает класс изображения с иконкой. Отображается на экране выбора задачи. При отладке задачи эта картинка все равно не видна,
+     * поэтому неважно, что возвращать.
      */
     public function get icon():Class {
-        return TrainProblem.INTRO;
+        return null;
     }
 
+    /**
+     * Возвращает класс изображения с иконкой для экрана помощи по задаче.
+     * Отображается на экране с помощью по задаче.
+     */
     public function get icon_help():Class {
         return null;
     }
 
     /**
-     * Возвращаем оценку для лучшего решения
+     * Возвращает класс изображения с иконкой для экрана с условием задачи задаче.
+     * Отображается на экране с условием задачи.
      */
-    public function get best():Object {
+    public function get icon_statement():Class {
         return null;
     }
 
-    public function get icon_statement():Class {
+    /**
+     * Возвращаем оценку для лучшего решения. Это используется только при проверке, кроме того,
+     * скорее всего она будет не нужна в этом году. Поэтому пока реализовывать не нужно.
+     */
+    public function get best():Object {
         return null;
     }
 }

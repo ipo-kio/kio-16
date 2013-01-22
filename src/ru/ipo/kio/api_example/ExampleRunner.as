@@ -6,8 +6,7 @@ import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.base.KioBase;
 
 /**
- * Этот класс основной, с него начинается программа. Чтобы указать это FlashDevelop,
- * надо найти этот файл в списке файлов проекта, нажать на нем правой кнопкой, выбрать Always Compile.
+ * Этот класс используется для запуска примера. При создании своей задачи для отладки необходимо создать такой же файл.
  * @author Ilya
  */
 public class ExampleRunner extends Sprite {
@@ -33,7 +32,7 @@ public class ExampleRunner extends Sprite {
 
         KioApi.language = KioApi.L_RU; //устанавливаем язык, используемый в программе
 
-        //Запускаем задачу. Метод initOneProblem() рекомендуется использовать программистам для отладки одной задачи.
+        //Запускаем задачу. Метод initOneProblem() специально сделан для отладки одной задачи.
         //Первый параметр - текущий спрайт, второй параметр - задача
         KioBase.instance.initOneProblem(this, new ExampleProblem(1));
     }

@@ -6,11 +6,10 @@ import flash.text.*;
 import ru.ipo.kio.api.*;
 
 /**
-	 * Это спрайт с задачей, на нем рисуются все видимые объекты. В нашем случае единственный видимый объект - 
-	 * это слово текстовое поле со сторокой текста
+	 * Это заглушка для задач, которые не готовы. Она находится в пакете с примером случайно. Читать не нужно
 	 * @author Ilya
 	 */
-	public class ExampleProblemSprite extends Sprite
+	public class StubProblemSprite extends Sprite
 	{
 		
 		//текстовое поле - единственный видимый объект задачи
@@ -19,7 +18,7 @@ import ru.ipo.kio.api.*;
 		//конструктор спрайта, инициализация всех объектов
 		//!!!! Важно. Параметры readonly и id необходимы для работы заглушек конкурса, в котором были выданы не все задачи
         //при разборе примера можно считать, что readonly = false, id = null
-		public function ExampleProblemSprite(readonly:Boolean, id:String = null)
+		public function StubProblemSprite(readonly:Boolean, id:String = null)
 		{
 			//получаем доступ к API, для этого передаем в качестве параметра id нашей задачи
 			var api:KioApi = KioApi.instance(id ? id : ExampleProblem.ID);

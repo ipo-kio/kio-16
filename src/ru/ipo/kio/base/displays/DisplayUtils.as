@@ -90,10 +90,10 @@ public class DisplayUtils {
     }
 
     public static function getKeyByLevel(o:Object, key:String, level:int):Object {
-        if (o[key])
-            return o[key];
-        else if (o[key + level])
+        if (o[key + level])
             return o[key + level];
+        else if (o[key])
+            return o[key];
         else
             return "no key";
     }
