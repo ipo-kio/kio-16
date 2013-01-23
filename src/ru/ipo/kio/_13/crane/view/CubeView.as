@@ -20,11 +20,10 @@ public class CubeView extends  Sprite{
     private static var _cube_RED:Class;
     [Embed(source="../resources/cubes/cube_YELLOW.png")]
     private static var _cube_Yellow:Class;
+
     private var color: int;            //нужен для перерисовки кубиков при движении
     public static const WIDTH: int = 60;
     public static const HEIGHT: int = 30;
-
-
 
     public function CubeView(Cubes_color: int) {
         color = Cubes_color;

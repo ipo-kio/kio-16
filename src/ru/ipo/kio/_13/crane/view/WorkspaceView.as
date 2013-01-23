@@ -8,11 +8,8 @@
 package ru.ipo.kio._13.crane.view {
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.utils.SetIntervalTimer;
 import flash.utils.clearInterval;
-import flash.utils.clearTimeout;
 import flash.utils.setInterval;
-import flash.utils.setTimeout;
 
 import ru.ipo.kio._13.crane.model.Crane;
 import ru.ipo.kio._13.crane.model.Cube;
@@ -98,12 +95,13 @@ public class WorkspaceView extends Sprite {
 
     public function craneMoveRight(crane:Crane):void {
         craneForHandle = crane;
-        s.push(setInterval(func, DELAY, "right"));
+      //  s.push(setInterval(func, DELAY, "right"));
+        func("right");
     }
 
-    public function func():void {
+    public function func(arguments: String):void {
         if (!craneView.hasEventListener(Event.ENTER_FRAME)) {
-            switch (arguments[0]){
+            switch (arguments){
                 case "right":
                     if (FieldModel.craneMoveRight(craneForHandle)){
                         craneView.addEventListener(Event.ENTER_FRAME, moveRight);
@@ -145,9 +143,9 @@ public class WorkspaceView extends Sprite {
                     }
                     break;
             }
-            clearInterval(s[0]);
+/*            clearInterval(s[0]);
             s.shift();
-            trace(s.toString());
+            trace(s.toString());*/
 
         }
     }
