@@ -27,6 +27,10 @@ public class GraphicsButton extends SimpleButton {
      * @param fontName Font name.
      * @param up_size font size in normal and mouse over states
      * @param down_size font size in down state
+     * @param move_x сдвиг текста на кнопке при нажатии по x
+     * @param move_y сдвиг текста на кнопке при нажатии по y
+     * @param dx общий сдвиг текста на кнопке относительно центра по x
+     * @param dy общий сдвиг текста на кнопке относительно центра по y
      */
     public function GraphicsButton(title:String, up:BitmapData, over:BitmapData, down:BitmapData, fontName:String, up_size:int, down_size:int, move_x:int = 0, move_y:int = 0, dx:int = 0, dy:int = 0) {
         var size_inc_res:Array = getSizeInc(title);
@@ -40,7 +44,7 @@ public class GraphicsButton extends SimpleButton {
                 createSprite(title, over, fontName, up_size, dx + (move_x < 0 ? move_x : 0), dy + (move_y < 0 ? move_y : 0)),
                 createSprite(title, down, fontName, down_size, dx + (move_x > 0 ? move_x : 0), dy + (move_y > 0 ? move_y : 0)),
                 up_sprite
-                );
+        );
     }
 
     private static function getSizeInc(title:String):Array { //[new title, inc]

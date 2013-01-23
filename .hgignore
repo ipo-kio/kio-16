@@ -2,3 +2,4 @@
 ^.idea/workspace.xml
 ^bin-debug
 ^solutions/
+^kio-12.properties$

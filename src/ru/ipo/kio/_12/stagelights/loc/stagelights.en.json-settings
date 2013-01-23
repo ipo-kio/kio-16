@@ -1,11 +1,11 @@
 ﻿{
-    "next":"Перейти ко II фокусу",
-    "previous":"Перейти к I фокусу",
-    "firstResult":"Ваш результат для I фокуса: исчезновение на ",
-    "firstMaxResult":"Лучший результат для I фокуса: исчезновение на ",
-    "secondResult":"Ваш результат для II фокуса: исчезновение на ",
-    "secondMaxResult":"Лучший результат для II фокуса: исчезновение на ",
-    "message":"Эта задача будет доступна позже, следите за объявлениями на сайте",
+    "next":"Go to the II-nd trick",
+    "previous":"Go to the I-st trick",
+    "firstResult":"Your result for the I-st trick: ",
+    "firstMaxResult":"Best result for the I-st trick: ",
+    "secondResult":"Your result for the II-st trick: ",
+    "secondMaxResult":"Best result for the II-nd trick: ",
+    "message":"This problem will be available later, watch over messages on the site",
     "title": "The Invisible Man",
     "statement": <<<
 		 <p><b>Introduction</b></p>
