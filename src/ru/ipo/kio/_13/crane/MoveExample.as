@@ -42,6 +42,13 @@ public class MoveExample extends Sprite {
         backButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
             m.x -= 3;
         });
+
+        var stopButton:TextButton = new TextButton("stop");
+        addChild(stopButton);
+        stopButton.y = 400;
+        stopButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
+            v.stop();
+        });
     }
 
 }
@@ -138,9 +145,7 @@ class MyModelView extends Sprite {
 
     private function moveAnimated(event:Event):void {
         if (_itenerary.length == 0) {
-            removeEventListener(Event.ENTER_FRAME, moveAnimated);
-            _moveFrom = -1;
-            _currentFrame = 0;
+            stop();
             return;
         }
 
@@ -163,6 +168,15 @@ class MyModelView extends Sprite {
         }
     }
 
+    public function stop():void {
+        removeEventListener(Event.ENTER_FRAME, moveAnimated);
+        _moveFrom = -1;
+        _currentFrame = 0;
+        _itenerary = [];
+
+        move();
+    }
+
     private function move():void {
         x = _m.x * 50;
     }
@@ -178,4 +192,5 @@ class MyModelView extends Sprite {
     public static function screen2logical(x:Number):int {
         return Math.floor(x / 50);
     }
+
 }
