@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="Flex" version="4">
-  <component name="FlexBuildConfigurationManager" active="kio-12">
+  <component name="FlexBuildConfigurationManager" active="kio-13">
     <configurations>
-      <configuration name="kio-12" pure-as="true" main-class="ru.ipo.kio._13.crane.CraneMain" output-file="kio_12.swf" output-folder="$MODULE_DIR$/..">
+      <configuration name="kio-13" pure-as="true" main-class="ru.ipo.kio._13.crane.CraneMain" output-file="kio_12.swf" output-folder="$MODULE_DIR$/..">
         <dependencies target-player="11.1">
           <entries>
             <entry library-id="3d82f0b1-9cc7-40ab-86dd-07b80cd09576">
               <dependency linkage="Merged" />
             </entry>
             <entry library-id="43edb1d8-7378-4b93-9865-61eeb0d8e306">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="69e01f7b-174b-4cf2-bc8a-74e1d41aaf0a">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -52,6 +55,16 @@
       </library>
     </orderEntry>
     <orderEntry type="jdk" jdkName="flex_sdk_4.6" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="69e01f7b-174b-4cf2-bc8a-74e1d41aaf0a" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/gpcas-lib.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

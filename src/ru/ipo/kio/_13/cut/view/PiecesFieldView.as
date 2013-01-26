@@ -16,8 +16,8 @@ import ru.ipo.kio._13.cut.model.PiecesField;
 
 public class PiecesFieldView extends Sprite {
 
-    private static const CELL_WIDTH:int = 20;
-    private static const CELL_HEIGHT:int = 20;
+    public static const CELL_WIDTH:int = 28;
+    public static const CELL_HEIGHT:int = 28;
 
     private static const GRID_COLOR:uint = 0xAAAAAA;
     private static const GRID_ALPHA:Number = 0.7;
@@ -128,7 +128,6 @@ public class PiecesFieldView extends Sprite {
         _outlineView.drawOutline(g, _field.outline, 2, OUTLINE_COLOR);
     }
 
-    //noinspection JSMethodCanBeStatic
     public function logic2screenX(x:int):Number {
         return CELL_WIDTH * x;
     }

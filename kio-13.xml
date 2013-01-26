@@ -139,7 +139,7 @@
         </antcall>
 
         <!--<copy todir="${kio-12.output.dir}">
-            <fileset dir="${module.kio-12.basedir}/src">
+            <fileset dir="${module.kio-12.basedir}/gpc_ex">
                 <patternset refid="compiler.resources"/>
                 <type type="file"/>
             </fileset>
