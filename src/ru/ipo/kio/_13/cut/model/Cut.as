@@ -7,14 +7,16 @@
  */
 package ru.ipo.kio._13.cut.model {
 
+import flash.events.Event;
+import flash.events.EventDispatcher;
 import flash.geom.Point;
 
 import pl.bmnet.gpcas.geometry.Poly;
 import pl.bmnet.gpcas.geometry.PolyDefault;
-import pl.bmnet.gpcas.geometry.PolySimple;
 
-public class Cut {
+public class Cut extends EventDispatcher {
 
+    public static const CUT_MOVED:String = 'mov';
     private static const R:int = 1000;
 
     private var _1:FieldCords;
@@ -26,6 +28,11 @@ public class Cut {
         _1 = p1;
         _2 = p2;
 
+        updatePolygons();
+    }
+
+    private function updatePolygons():void {
+        trace('updating polygons');
         //evaluate both polys
 
         var isHorizontal:Boolean = Math.abs(_1.x - _2.x) > Math.abs(_1.y - _2.y);
@@ -39,14 +46,14 @@ public class Cut {
 
         if (isHorizontal) {
             var int1_x:Number = R;
-            var int1_y:Number = (- c - a * int1_x) / b;
+            var int1_y:Number = (-c - a * int1_x) / b;
             var int2_x:Number = -R;
-            var int2_y:Number = (- c - a * int2_x) / b;
+            var int2_y:Number = (-c - a * int2_x) / b;
         } else {
             int1_y = R;
-            int1_x = (- c - b * int1_y) / a;
+            int1_x = (-c - b * int1_y) / a;
             int2_y = -R;
-            int2_x = (- c - b * int2_y) / a;
+            int2_x = (-c - b * int2_y) / a;
         }
 
         leftPoly = new PolyDefault();
@@ -76,6 +83,30 @@ public class Cut {
 
     public function get p2():FieldCords {
         return _2;
+    }
+
+    public function set p1(value:FieldCords):void {
+        if (value.equals(new FieldCords(0, 0)))
+            trace('p1 = 0, 0');
+
+        if (_1.equals(value))
+            return;
+        _1 = value;
+        updatePolygons();
+        trace('1st cut point changed', value.x, value.y);
+        dispatchEvent(new Event(CUT_MOVED));
+    }
+
+    public function set p2(value:FieldCords):void {
+        if (value.equals(new FieldCords(0, 0)))
+            trace('p2 = 0, 0');
+
+        if (_2.equals(value))
+            return;
+        _2 = value;
+        updatePolygons();
+        trace('2nd cut point changed', value.x, value.y);
+        dispatchEvent(new Event(CUT_MOVED));
     }
 
     /**
@@ -129,7 +160,7 @@ public class Cut {
         return null;
     }
 
-    private function cmp(a:Number, b:Number):Boolean {
+    private static function cmp(a:Number, b:Number):Boolean {
         return Math.abs(a - b) < 1e-8;
     }
 }

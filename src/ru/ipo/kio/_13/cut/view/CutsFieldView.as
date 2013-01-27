@@ -8,6 +8,7 @@ package ru.ipo.kio._13.cut.view {
 import flash.display.Graphics;
 import flash.display.GraphicsPathCommand;
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.geom.Point;
 
 import pl.bmnet.gpcas.geometry.Poly;
@@ -55,7 +56,11 @@ public class CutsFieldView extends Sprite {
         drawBackground();
         drawGrid();
 
+        putCutPoints();
         update();
+
+        if (_field != null) //TODO code duplication with set field
+            _field.addEventListener(CutsField.CUTS_CHANGED, cutsChanged);
     }
 
     private function drawGrid():void {
@@ -80,14 +85,38 @@ public class CutsFieldView extends Sprite {
         graphics.endFill();
     }
 
+    private function putCutPoints():void {
+        for each (var cut:Cut in _field.cuts) {
+            var point1:CutPoint = new CutPoint(this, cut, 1);
+            var point2:CutPoint = new CutPoint(this, cut, 2);
+            cutsLayer.addChild(point1);
+            cutsLayer.addChild(point2);
+        }
+    }
+
     public function set field(value:CutsField):void {
+        if (_field != null)
+            _field.removeEventListener(CutsField.CUTS_CHANGED, cutsChanged);
+
         _field = value;
+
+        if (_field != null)
+            _field.addEventListener(CutsField.CUTS_CHANGED, cutsChanged);
 
         update();
     }
 
+    private function cutsChanged(event:Event):void {
+        update();
+    }
+
     private function update():void {
+        trace('update cut field view');
         var g:Graphics = cutsLayer.graphics;
+
+//        while (cutsLayer.numChildren > 0) //remove all points
+//            cutsLayer.removeChildAt(0);
+
         g.clear();
         g.lineStyle(1, 0x000000);
         for each (var cut:Cut in _field.cuts)
@@ -143,5 +172,22 @@ public class CutsFieldView extends Sprite {
         return PiecesFieldView.CELL_HEIGHT * (_m * SCALE - y) / SCALE;
     }
 
+    public function screen2logicX(x:Number):int {
+        var lx:int = Math.round(x * SCALE / PiecesFieldView.CELL_WIDTH);
+        if (lx < 0)
+            lx = 0;
+        if (lx > _n * SCALE)
+            lx = _n * SCALE;
+        return lx;
+    }
+
+    public function screen2logicY(y:Number):int {
+        var ly:int = _m * SCALE - Math.round(y * SCALE / PiecesFieldView.CELL_HEIGHT);
+        if (ly < 0)
+            ly = 0;
+        if (ly > _m * SCALE)
+            ly = _m * SCALE;
+        return ly;
+    }
 }
 }

@@ -22,5 +22,11 @@ public class FieldCords {
     public function get y():int {
         return _y;
     }
+
+    public function equals(value:FieldCords):Boolean {
+        if (value == null)
+            return false;
+        return _x == value._x && _y == value._y;
+    }
 }
 }
