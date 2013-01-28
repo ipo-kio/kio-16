@@ -9,6 +9,9 @@ import flash.events.Event;
 import flash.events.EventDispatcher;
 
 import pl.bmnet.gpcas.geometry.Poly;
+import pl.bmnet.gpcas.geometry.PolyDefault;
+
+import ru.ipo.kio._13.cut.view.CutsFieldView;
 
 public class CutsField extends EventDispatcher {
 
@@ -20,9 +23,21 @@ public class CutsField extends EventDispatcher {
 
     private var _resetProcess:Boolean = false;
 
-    public function CutsField(cuts:Array, poly:Poly) {
+
+    /**
+     * @param cuts array of cuts
+     * @param poly either Poly or PicesField
+     */
+    public function CutsField(cuts:Array, poly:*) {
         _cuts = cuts;
-        _poly = poly;
+
+        if (poly is PiecesField) {
+            _poly = new PolyDefault();
+            for each (var fc:FieldCords in PiecesField(poly).outline)
+                _poly.addPointXY(fc.x * CutsFieldView.SCALE, fc.y * CutsFieldView.SCALE);
+
+        } else
+            _poly = poly;
 
         evaluatePolygons();
 
@@ -82,13 +97,21 @@ public class CutsField extends EventDispatcher {
 
         for each (var cp:ColoredPoly in polygons) {
             var intersection:Array = cut.divide(cp.poly);
-            if (intersection[0] != null && intersection[1] != null) {
-                p.push(new ColoredPoly(intersection[0], cp.color));
-                p.push(new ColoredPoly(intersection[1], ! cp.color));
-            } else if (intersection[0] != null)
-                p.push(cp);
-            else
-                p.push(cp.swap());
+
+            for (var a:int = 0; a <= 1; a ++) {
+                var poly:Poly = intersection[a];
+                if (poly == null)
+                    continue;
+                var newColor:Boolean = a == 0 ? cp.color : ! cp.color;
+
+                for (var innerIndex:int = 0; innerIndex < poly.getNumInnerPoly(); innerIndex ++)
+                    {
+                        var innerPoly:Poly = poly.getInnerPoly(innerIndex);
+                        var polygon:Poly = new PolyDefault();
+                        polygon.addPoly(innerPoly);
+                        p.push(new ColoredPoly(polygon, newColor));
+                    }
+            }
         }
 
         return p;

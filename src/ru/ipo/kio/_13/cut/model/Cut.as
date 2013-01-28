@@ -75,6 +75,12 @@ public class Cut extends EventDispatcher {
             rightPoly.addPointXY(R, -R);
             rightPoly.addPointXY(R, R);
         }
+
+        if (isHorizontal && _1.x > _2.x || ! isHorizontal && _1.y > _2.y) {
+            var swap:Poly = leftPoly;
+            leftPoly = rightPoly;
+            rightPoly = swap;
+        }
     }
 
     public function get p1():FieldCords {

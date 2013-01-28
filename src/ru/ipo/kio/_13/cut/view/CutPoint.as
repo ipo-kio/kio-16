@@ -17,10 +17,10 @@ import ru.ipo.kio._13.cut.model.FieldCords;
 public class CutPoint extends Sprite {
 
     private static const POINT_COLOR:uint = 0xFF0000;
-    private static const POINT_RADIUS:int = 2;
+    private static const POINT_RADIUS:int = 4;
 
     private static const POINT_HIT_COLOR:uint = 0xFFFF00;
-    private static const POINT_HIT_RADIUS:int = 4;
+    private static const POINT_HIT_RADIUS:int = 6;
 
     private var _field:CutsFieldView;
     private var _cut:Cut;
@@ -102,10 +102,12 @@ public class CutPoint extends Sprite {
     }
 
     private function rollOut(event:MouseEvent):void {
-        hitArea.visible = false;
+        if (! moving)
+            hitArea.visible = false;
     }
 
     private function draw():void {
+        graphics.lineStyle(1, 0x000000);
         graphics.beginFill(POINT_COLOR);
         graphics.drawCircle(0, 0, POINT_RADIUS);
         graphics.endFill();
@@ -115,6 +117,7 @@ public class CutPoint extends Sprite {
         hitArea = new Sprite();
         var g:Graphics = hitArea.graphics;
 
+        g.lineStyle(1, 0x000000);
         g.beginFill(POINT_HIT_COLOR);
         g.drawCircle(0, 0, POINT_HIT_RADIUS);
         g.endFill();

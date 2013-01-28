@@ -164,11 +164,11 @@ public class CutsFieldView extends Sprite {
         g.lineTo(logic2screenX(segment[1].x), logic2screenY(segment[1].y));
     }
 
-    public function logic2screenX(x:int):Number {
+    public function logic2screenX(x:Number):Number {
         return PiecesFieldView.CELL_WIDTH * x / SCALE;
     }
 
-    public function logic2screenY(y:int):Number {
+    public function logic2screenY(y:Number):Number {
         return PiecesFieldView.CELL_HEIGHT * (_m * SCALE - y) / SCALE;
     }
 
