@@ -61,6 +61,7 @@ public class ContestPanel extends Sprite {
             FileUtils.saveSolution(KioBase.instance.currentProblem);
         });
 
+
         backButton.addEventListener(MouseEvent.CLICK, function(e:Event):void {
             KioBase.instance.currentDisplay = new ProblemsDisplay;
         });

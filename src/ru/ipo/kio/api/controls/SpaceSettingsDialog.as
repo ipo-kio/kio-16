@@ -101,7 +101,7 @@ public class SpaceSettingsDialog extends Sprite {
         stage.focus = this;
     }
 
-    private function closeButtonClicked(event:Event):void {
+    private static function closeButtonClicked(event:Event):void {
         KioBase.instance.LSOConcernResolved();
         KioBase.instance.lsoProxy.flush();
     }

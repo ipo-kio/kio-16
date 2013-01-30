@@ -83,6 +83,10 @@ public class LsoProxy {
         return local;
     }
 
+    public function get usedBytes():uint {
+        return _local.size; //TODO local might not be initialized
+    }
+
     public function flush():void {
         if (_local == null) {
             createLSO();
@@ -110,9 +114,8 @@ public class LsoProxy {
         if (ud == null) //TODO this is a dirty hack
             return {};
 
-        if (!ud[id]) {
+        if (!ud[id])
             ud[id] = {};
-        }
 
         return ud[id];
     }
@@ -218,6 +221,10 @@ public class LsoProxy {
 
     public function setOneProblemDebugRegime():void {
         one_problem_debug_regime = true;
+    }
+
+    public function isOneProblemDebugRegime():Boolean {
+        return one_problem_debug_regime;
     }
 }
 }

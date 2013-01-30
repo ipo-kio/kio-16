@@ -11,8 +11,11 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
 
+import ru.ipo.kio._13.cut.CutProblem;
+
 import ru.ipo.kio._13.cut.model.Cut;
 import ru.ipo.kio._13.cut.model.FieldCords;
+import ru.ipo.kio.api.KioApi;
 
 public class CutPoint extends Sprite {
 
@@ -58,11 +61,14 @@ public class CutPoint extends Sprite {
     }
 
     private function mouseUp(event:MouseEvent):void {
+        if (moving)
+            KioApi.instance(CutProblem.ID).log('cut point mouse up');
         moving = false;
     }
 
     private function mouseDown(event:MouseEvent):void {
         moving = true;
+        KioApi.instance(CutProblem.ID).log('cut point mouse down');
     }
 
     private function mouseMove(event:MouseEvent):void {
