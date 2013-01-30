@@ -112,7 +112,7 @@ public class KioApi extends EventDispatcher {
      * @param msg a message to log
      */
     public function log(msg:String):void {
-        KioBase.instance.log(problem.id + '-' + msg);
+        KioBase.instance.log(problem.id + ': ' + msg);
     }
 
     public function logSize():int {
