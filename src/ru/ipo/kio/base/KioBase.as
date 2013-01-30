@@ -306,7 +306,8 @@ public class KioBase {
             lso.flush();
         }
 
-        global.log.data.position = global.log.data.length;
+        if (global.log.data.position != global.log.data.length)
+            global.log.data.position = global.log.data.length;
     }
 
     public function log(msg:String):void {
