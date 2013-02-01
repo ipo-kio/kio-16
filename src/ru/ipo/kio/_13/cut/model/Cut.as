@@ -24,15 +24,21 @@ public class Cut extends EventDispatcher {
     private var leftPoly:Poly;
     private var rightPoly:Poly;
 
-    public function Cut(p1:FieldCords, p2:FieldCords) {
-        _1 = p1;
-        _2 = p2;
+    public function Cut(p1:FieldCords = null, p2:FieldCords = null) {
+        if (p1 == null)
+            _1 = new FieldCords(0, 0);
+        else
+            _1 = p1;
+
+        if (p2 == null)
+            _2 = new FieldCords(1, 1);
+        else
+            _2 = p2;
 
         updatePolygons();
     }
 
     private function updatePolygons():void {
-        trace('updating polygons');
         //evaluate both polys
 
         var isHorizontal:Boolean = Math.abs(_1.x - _2.x) > Math.abs(_1.y - _2.y);
@@ -92,26 +98,18 @@ public class Cut extends EventDispatcher {
     }
 
     public function set p1(value:FieldCords):void {
-        if (value.equals(new FieldCords(0, 0)))
-            trace('p1 = 0, 0');
-
         if (_1.equals(value))
             return;
         _1 = value;
         updatePolygons();
-        trace('1st cut point changed', value.x, value.y);
         dispatchEvent(new Event(CUT_MOVED));
     }
 
     public function set p2(value:FieldCords):void {
-        if (value.equals(new FieldCords(0, 0)))
-            trace('p2 = 0, 0');
-
         if (_2.equals(value))
             return;
         _2 = value;
         updatePolygons();
-        trace('2nd cut point changed', value.x, value.y);
         dispatchEvent(new Event(CUT_MOVED));
     }
 

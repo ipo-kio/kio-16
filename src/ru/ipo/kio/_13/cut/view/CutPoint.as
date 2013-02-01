@@ -79,8 +79,6 @@ public class CutPoint extends Sprite {
         var localX:Number = event.stageX - fieldOrigin.x;
         var localY:Number = event.stageY - fieldOrigin.y;
 
-        trace('moving', localX, localY);
-
         var x:int = _field.screen2logicX(localX);
         var y:int = _field.screen2logicY(localY);
         var p:FieldCords = _ind == 1 ? _cut.p1 : _cut.p2;

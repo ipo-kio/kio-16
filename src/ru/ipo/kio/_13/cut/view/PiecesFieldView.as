@@ -16,34 +16,36 @@ import ru.ipo.kio._13.cut.model.PiecesField;
 
 public class PiecesFieldView extends Sprite {
 
-    public static const CELL_WIDTH:int = 28;
-    public static const CELL_HEIGHT:int = 28;
+    public static const CELL_WIDTH:int = 56;
+    public static const CELL_HEIGHT:int = 56;
 
     private static const GRID_COLOR:uint = 0xAAAAAA;
     private static const GRID_ALPHA:Number = 0.7;
     private static const BG_COLOR:uint = 0xFFFFFF;
     private static const BLOCK_COLOR_NORMAL:uint = 0x00FF00;
-    private static const BLOCK_COLOR_INSIDE:uint = 0xFF8888;
-    private static const BLOCK_COLOR_OUTSIDE:uint = 0xFFFF88;
-    private static const OUTLINE_COLOR:uint = 0xFF0000;
+    private static const BLOCK_COLOR_INSIDE:uint = 0xFFFFFF;
+    private static const BLOCK_COLOR_OUTSIDE:uint = 0x00FF00;
+    private static const CROSS_COLOR:uint = 0xFF0000;
+    public static const OUTLINE_COLOR:uint = 0xFF0000;
 
     //layers:
-    //
     //           outlinesLayer  - outlines for pieces and for the polygon
     //           gridLayer      - grid
     //           squaresLayer   - squares and triangles
     //    PieceFieldView (this) - background
 
-    private var _field:PiecesField;
+    protected var _field:PiecesField;
     private var _outlineView:OutlineView;
 
     private var gridLayer:Sprite = new Sprite();
     private var outlinesLayer:Sprite = new Sprite();
     private var squaresLayer:Sprite = new Sprite();
 
+    private var _drawPicesOutines:Boolean = false;
+
     public function PiecesFieldView(field:PiecesField) {
         _field = field;
-        _outlineView = new OutlineView(this);
+        _outlineView = new OutlineView(logic2screenX, logic2screenY);
 
         addChild(squaresLayer);
         addChild(gridLayer);
@@ -54,6 +56,14 @@ public class PiecesFieldView extends Sprite {
 
         _field.addEventListener(PiecesField.PIECES_CHANGED, redraw);
         redraw();
+    }
+
+    public function get drawPicesOutines():Boolean {
+        return _drawPicesOutines;
+    }
+
+    public function set drawPicesOutines(value:Boolean):void {
+        _drawPicesOutines = value;
     }
 
     private function drawGrid():void {
@@ -92,6 +102,7 @@ public class PiecesFieldView extends Sprite {
         for (var x:int = 0; x < _field.n; x ++)
             for (var y:int = 0; y < _field.m; y ++) {
                 var type:int = _field.getBlockType(x, y);
+                var needCross:Boolean = false;
                 switch (type) {
                     case PiecesField.BLOCK_EMPTY:
                         continue;
@@ -100,9 +111,11 @@ public class PiecesFieldView extends Sprite {
                         break;
                     case PiecesField.BLOCK_INSIDE:
                         g.beginFill(BLOCK_COLOR_INSIDE);
+                        needCross = true;
                         break;
                     case PiecesField.BLOCK_OUTSIDE:
                         g.beginFill(BLOCK_COLOR_OUTSIDE);
+                        needCross = true;
                         break;
                     default:
                         throw IllegalOperationError("It is impossible to draw a block of unknown type");
@@ -112,6 +125,16 @@ public class PiecesFieldView extends Sprite {
                 var screenY:Number = logic2screenY(y);
                 g.drawRect(screenX, screenY - CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
                 g.endFill();
+
+                if (needCross) {
+                    g.lineStyle(2, CROSS_COLOR);
+                    var cross:int = 4;
+                    g.moveTo(screenX + CELL_WIDTH / 2 - cross, screenY - CELL_HEIGHT / 2 - cross);
+                    g.lineTo(screenX + CELL_WIDTH / 2 + cross, screenY - CELL_HEIGHT / 2 + cross);
+                    g.moveTo(screenX + CELL_WIDTH / 2 - cross, screenY - CELL_HEIGHT / 2 + cross);
+                    g.lineTo(screenX + CELL_WIDTH / 2 + cross, screenY - CELL_HEIGHT / 2 - cross);
+                    g.lineStyle();
+                }
             }
 
         //draw outlines
@@ -122,8 +145,9 @@ public class PiecesFieldView extends Sprite {
 
         //draw pieces outlines
 
-        for each (var piece:Piece in _field.pieces)
-            _outlineView.drawOutline(g, piece.outline, 2, GRID_COLOR, 1, piece.x, piece.y);
+        if (_drawPicesOutines)
+            for each (var piece:Piece in _field.pieces)
+                _outlineView.drawOutline(g, piece.outline, 2, GRID_COLOR, 1, piece.x, piece.y);
 
         _outlineView.drawOutline(g, _field.outline, 2, OUTLINE_COLOR);
     }
@@ -134,6 +158,13 @@ public class PiecesFieldView extends Sprite {
 
     public function logic2screenY(y:int):Number {
         return CELL_HEIGHT * (_field.m - y);
+    }
+
+    public function screen2logicX(x:Number):int {
+        return x / CELL_WIDTH;
+    }
+    public function screen2logicY(y:Number):int {
+        return _field.m - y / CELL_HEIGHT;
     }
 }
 }

@@ -1,19 +1,17 @@
 package ru.ipo.kio._13.cut {
-import pl.bmnet.gpcas.geometry.Poly;
-import pl.bmnet.gpcas.geometry.PolyDefault;
+
+import flash.display.Sprite;
+import flash.events.Event;
+import flash.events.MouseEvent;
 
 import ru.ipo.kio._13.cut.model.Cut;
 import ru.ipo.kio._13.cut.model.CutsField;
-import ru.ipo.kio._13.cut.model.FieldCords;
 import ru.ipo.kio._13.cut.model.Piece;
-import ru.ipo.kio._13.cut.model.PiecesField;
+import ru.ipo.kio._13.cut.view.CutPieceFieldView;
 import ru.ipo.kio._13.cut.view.CutsFieldView;
 import ru.ipo.kio._13.cut.view.PiecesFieldView;
-import ru.ipo.kio.api_example.*;
-
-import flash.display.Sprite;
-
 import ru.ipo.kio.api.*;
+import ru.ipo.kio.api_example.*;
 
 /**
  * Это спрайт для отображения задачи из примера API
@@ -21,61 +19,62 @@ import ru.ipo.kio.api.*;
  */
 public class CutWorkspace extends Sprite {
 
+    private static const CONTROLS_WIDTH:int = 200;
+    private static const CUTS_COUNT:int = 6;
+
+    private static const M:int = 10;
+    private static const N:int = 10;
+
+    private var field:CutPieceFieldView;
+
     public function CutWorkspace() {
         //получаем доступ к API, для этого передаем в качестве параметра id нашей задачи
         var api:KioApi = KioApi.instance(ExampleProblem.ID);
 
-        var piecesField:PiecesField = new PiecesField(20, 20);
+        var controls:CutControls = new CutControls(CONTROLS_WIDTH, M * PiecesFieldView.CELL_HEIGHT);
+        addChild(controls);
 
-        var p1:Piece = new Piece(Piece.PIECE_1);
-        var p2:Piece = new Piece(Piece.PIECE_2);
-        var p3:Piece = new Piece(Piece.PIECE_3);
-        var p4:Piece = new Piece(Piece.PIECE_4);
+//        var p1:Piece = new Piece(Piece.PIECE_1);
+//        var p2:Piece = new Piece(Piece.PIECE_2);
+//        var p3:Piece = new Piece(Piece.PIECE_3);
+//        var p4:Piece = new Piece(Piece.PIECE_4);
 
-        p2.move(2, 2);
-        p1.move(2, 4);
-        p3.move(4, 3);
-        p4.move(4, 6);
-        piecesField.addPiece(p1);
-        piecesField.addPiece(p2);
-        piecesField.addPiece(p3);
-        piecesField.addPiece(p4);
+//        p2.move(2, 2);
+//        p1.move(2, 4);
+//        p3.move(4, 3);
+//        p4.move(4, 6);
 
-//        addChild(new PiecesFieldView(piecesField));
+        var cuts:Array = [];
 
-        var cuts:Array = [
-                new Cut(new FieldCords(15, 10), new FieldCords(15, 15)),
-                new Cut(new FieldCords(20, 10), new FieldCords(10, 20)),
-                new Cut(new FieldCords(0, 16), new FieldCords(5, 19)),
-                new Cut(new FieldCords(18, 38), new FieldCords(22, 42)),
-                new Cut(new FieldCords(18, 38), new FieldCords(22, 42)),
-                new Cut(new FieldCords(18, 38), new FieldCords(22, 42)),
-                new Cut(new FieldCords(18, 38), new FieldCords(22, 42)),
-                new Cut(new FieldCords(18, 38), new FieldCords(22, 42))
-        ];
+        for (var i:int = 0; i < CUTS_COUNT; i++)
+            cuts.push(new Cut);
 
-        var poly:Poly = new PolyDefault();
+        field = new CutPieceFieldView(M, N, cuts);
 
-        poly.addPointXY(10, 10);
-        poly.addPointXY(10, 50);
-        poly.addPointXY(30, 50);
-        poly.addPointXY(30, 40);
-        poly.addPointXY(20, 40);
-        poly.addPointXY(20, 10);
+        field.resetCuts(5, M * CutsFieldView.SCALE - 5, 2, 2);
 
-        var cutField:CutsField = new CutsField(cuts, piecesField);
+//        field.piecesField.addPiece(p1);
+//        field.piecesField.addPiece(p2);
+//        field.piecesField.addPiece(p3);
+//        field.piecesField.addPiece(p4);
+//
+        field.x = CONTROLS_WIDTH;
+        addChild(field);
 
-        cutField.resetCuts(5, 20 * CutsFieldView.SCALE - 5, 2, 2);
+        controls.switchFieldsButton.addEventListener(MouseEvent.CLICK, switchFieldsHandler);
 
-        var cutFieldView:CutsFieldView = new CutsFieldView(20, 20, cutField);
-
-        addChild(cutFieldView);
+        field.addEventListener(CutsField.CUTS_CHANGED, function (event:Event):void {
+            controls.numPolys = field.numPolys;
+        });
     }
 
     public function currentResult():Object {
         return {};
     }
 
+    private function switchFieldsHandler(event:MouseEvent):void {
+        field.cutsRegime = ! field.cutsRegime;
+    }
 }
 
 }

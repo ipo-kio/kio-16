@@ -21,9 +21,6 @@ public class CutsField extends EventDispatcher {
     private var _poly:Poly;      //polygon to cut
     private var _polygons:Array; //of ColoredPoly that are cut
 
-    private var _resetProcess:Boolean = false;
-
-
     /**
      * @param cuts array of cuts
      * @param poly either Poly or PicesField
@@ -33,7 +30,7 @@ public class CutsField extends EventDispatcher {
 
         if (poly is PiecesField) {
             _poly = new PolyDefault();
-            for each (var fc:FieldCords in PiecesField(poly).outline)
+            for each (var fc:FieldCords in PiecesField(poly).outline.slice(1))
                 _poly.addPointXY(fc.x * CutsFieldView.SCALE, fc.y * CutsFieldView.SCALE);
 
         } else
@@ -43,23 +40,6 @@ public class CutsField extends EventDispatcher {
 
         for each (var cut:Cut in cuts)
             cut.addEventListener(Cut.CUT_MOVED, cutMoved);
-    }
-
-    public function resetCuts(x1:int, x2:int, y1:int, dy:int):void {
-        try {
-            for each (var cut:Cut in _cuts) {
-                cut.p1 = new FieldCords(x1, y1);
-                cut.p2 = new FieldCords(x2, y1);
-
-                y1 += dy;
-            }
-
-        } finally {
-            //whatever happens, we should make reset back
-            _resetProcess = false;
-        }
-
-        cutMoved();
     }
 
     public function get cuts():Array {
@@ -75,9 +55,6 @@ public class CutsField extends EventDispatcher {
     }
 
     private function cutMoved(event:Event = null):void {
-        if (_resetProcess)
-            return;
-
         evaluatePolygons();
 
         dispatchEvent(new Event(CUTS_CHANGED));
@@ -88,8 +65,6 @@ public class CutsField extends EventDispatcher {
 
         for each (var cut:Cut in _cuts)
             _polygons = doCut(cut, _polygons);
-
-        trace('total polygons after cut:', _polygons.length);
     }
 
     private static function doCut(cut:Cut, polygons:Array):Array {
@@ -115,6 +90,11 @@ public class CutsField extends EventDispatcher {
         }
 
         return p;
+    }
+
+    public function destroy():void {
+        for each (var cut:Cut in cuts)
+            cut.removeEventListener(Cut.CUT_MOVED, cutMoved);
     }
 }
 }

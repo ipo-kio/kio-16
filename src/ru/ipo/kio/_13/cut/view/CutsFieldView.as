@@ -19,7 +19,7 @@ import ru.ipo.kio._13.cut.model.CutsField;
 
 public class CutsFieldView extends Sprite {
 
-    public static const SCALE:int = 4; //how many elements are in the unit of the pieces field
+    public static const SCALE:int = 8; //how many elements are in the unit of the pieces field
 
     private static const GRID_COLOR:uint = 0xAAAAAA;
     private static const GRID_ALPHA:Number = 0.5;
@@ -61,6 +61,12 @@ public class CutsFieldView extends Sprite {
 
         if (_field != null) //TODO code duplication with set field
             _field.addEventListener(CutsField.CUTS_CHANGED, cutsChanged);
+
+        addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
+    }
+
+    private function removedFromStage(event:Event):void {
+        _field.destroy();
     }
 
     private function drawGrid():void {
@@ -77,6 +83,9 @@ public class CutsFieldView extends Sprite {
             g.moveTo(i * PiecesFieldView.CELL_WIDTH / SCALE, 0);
             g.lineTo(i * PiecesFieldView.CELL_HEIGHT / SCALE, PiecesFieldView.CELL_HEIGHT * _m);
         }
+
+        var ov:OutlineView = new OutlineView(logic2screenX, logic2screenY);
+        ov.drawPoly(g, _field.poly, 2, PiecesFieldView.OUTLINE_COLOR);
     }
 
     private function drawBackground():void {
@@ -111,7 +120,6 @@ public class CutsFieldView extends Sprite {
     }
 
     private function update():void {
-        trace('update cut field view');
         var g:Graphics = cutsLayer.graphics;
 
 //        while (cutsLayer.numChildren > 0) //remove all points

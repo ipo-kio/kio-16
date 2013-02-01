@@ -8,6 +8,10 @@ package ru.ipo.kio._13.cut.model {
 
 public class Piece {
 
+    public static const PIECE_0:Array = [
+        new FieldCords(0, 0)
+    ];
+
     public static const PIECE_1:Array = [ //   #
         new FieldCords(0, 0),             //  ###
         new FieldCords(0, 1),

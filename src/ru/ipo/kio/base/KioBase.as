@@ -9,6 +9,8 @@ import flash.text.TextField;
 import flash.utils.ByteArray;
 import flash.utils.Timer;
 
+import org.osmf.layout.ScaleMode;
+
 import ru.ipo.kio.api.*;
 import ru.ipo.kio.api.controls.SpaceSettingsDialog;
 import ru.ipo.kio.base.displays.DisplayUtils;
@@ -77,6 +79,8 @@ public class KioBase {
         flush_timer.addEventListener(TimerEvent.TIMER, function (event:Event):void {
             _lsoProxy.flush();
         });
+
+        stage.stage.scaleMode = 'noScale';
     }
 
     public function init(stage:DisplayObjectContainer, problems:Array, year:int, level:int):void {

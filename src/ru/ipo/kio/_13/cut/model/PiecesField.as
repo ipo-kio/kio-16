@@ -5,8 +5,11 @@
  * Time: 16:13
  */
 package ru.ipo.kio._13.cut.model {
+import avmplus.factoryXml;
+
 import flash.events.Event;
 import flash.events.EventDispatcher;
+import flash.net.sendToURL;
 
 public class PiecesField extends EventDispatcher {
 
@@ -22,6 +25,11 @@ public class PiecesField extends EventDispatcher {
     private var _n:int;
     private var _blocks:Array;
     private var _outline:Array;
+
+    private var _blocksCount:int = 0;
+    private var _hasInnerBlocks:Boolean = false;
+    private var _hasOuterBlocks:Boolean = false;
+    private var _thinPoly:Boolean = false;
 
     public function PiecesField(m:int, n:int) {
         _m = m;
@@ -44,6 +52,22 @@ public class PiecesField extends EventDispatcher {
 
     public function get outline():Array {
         return _outline;
+    }
+
+    public function get hasInnerBlocks():Boolean {
+        return _hasInnerBlocks;
+    }
+
+    public function get hasOuterBlocks():Boolean {
+        return _hasOuterBlocks;
+    }
+
+    public function get blocksCount():int {
+        return _blocksCount;
+    }
+
+    public function get thinPoly():Boolean {
+        return _thinPoly;
     }
 
     private function piecesChanged():void {
@@ -180,19 +204,32 @@ public class PiecesField extends EventDispatcher {
 
         _outline = outlineInfo[0];
 
+        _blocksCount = piecesBlocks.length;
+
         for each (var normalBlock:FieldCords in piecesBlocks)
             blocks[normalBlock.y][normalBlock.x] = BLOCK_NORMAL;
 
+        _hasOuterBlocks = outlineInfo[1].length > 0;
         for each (var externalBlock:FieldCords in outlineInfo[1])
             blocks[externalBlock.y][externalBlock.x] = BLOCK_OUTSIDE;
 
+        _hasInnerBlocks = outlineInfo[2].length > 0;
         for each (var internalBlock:FieldCords in outlineInfo[2])
             blocks[internalBlock.y][internalBlock.x] = BLOCK_INSIDE;
+
+        //test outline has same points
+        _thinPoly = false;
+        for (i = 1; i < outline.length; i++) //don't test the first point
+            for (j = i + 1; j < outline.length; j++)
+                if (outline[i].equals(outline[j]))
+                    _thinPoly = true;
 
         _blocks = blocks;
     }
 
     public function getBlockType(x:int, y:int):int {
+        if (x < 0 || x >= n || y < 0 || y >= m)
+            return BLOCK_EMPTY;
         return _blocks[y][x];
     }
 }
