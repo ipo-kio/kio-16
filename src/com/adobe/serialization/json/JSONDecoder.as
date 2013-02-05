@@ -32,8 +32,11 @@
 
 package com.adobe.serialization.json
 {
-	
-	public class JSONDecoder
+import com.hurlant.util.Base64;
+
+import flash.utils.ByteArray;
+
+public class JSONDecoder
 	{	
 	
 		/** 
@@ -294,7 +297,7 @@ package com.adobe.serialization.json
 			switch ( token.type )
 			{
 				case JSONTokenType.LEFT_BRACE:
-					return parseObject();
+					return byteArrayFilter(parseObject());
 					
 				case JSONTokenType.LEFT_BRACKET:
 					return parseArray();
@@ -323,5 +326,20 @@ package com.adobe.serialization.json
 			
             return null;
 		}
+
+        /**
+         * Tests whether the object is a byte array
+         * @param object an object to test
+         * @return object or ByteArray
+         */
+        private static function byteArrayFilter(object:Object):Object {
+            if (object.hasOwnProperty("__byte__array__") && object.__byte__array__ === true && object.hasOwnProperty("base64"))
+                {
+                    var byteArray:ByteArray = Base64.decodeToByteArray(object.base64);
+                    byteArray.endian = object.endian;
+                    return byteArray;
+                }
+            return object;
+        }
 	}
 }

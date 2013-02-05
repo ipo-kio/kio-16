@@ -180,7 +180,7 @@ public class AnketaDisplay extends Sprite {
         }
     }
 
-    private function trim(s:String):String {
+    private static function trim(s:String):String {
         return s.replace('/ /', '');
     }
 }

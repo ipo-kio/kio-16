@@ -4,6 +4,7 @@ import com.adobe.serialization.json.JSON_k;
 import flash.events.Event;
 import flash.net.FileFilter;
 import flash.net.FileReference;
+import flash.text.GridFitType;
 import flash.utils.ByteArray;
 
 import ru.ipo.kio.base.KioBase;
@@ -29,7 +30,6 @@ public class FileUtils {
         fr.addEventListener(Event.SELECT, function(e:Event):void {
             fr.addEventListener(Event.COMPLETE, function(e:Event):void {
                 var data:ByteArray = fr.data;
-//					var o : Object = data.readObject();
                 var solUTF:String = data.readUTFBytes(data.length);
                 try {
                     var sol:Object = JSON_k.decode(solUTF);
@@ -44,10 +44,7 @@ public class FileUtils {
 
     public static function saveSolution(problem:KioProblem):void {
         var fr:FileReference = new FileReference();
-//        var data:ByteArray = new ByteArray();
         var sol:Object = problem.solution;
-        //data.writeObject(sol);
-        //fr.save(data);
 
         fr.save(JSON_k.encode(sol), SOLUTION_FILE_NAME + inventDate() + ".kio-" + problem.id + "-" + KioBase.instance.level);
     }
@@ -56,6 +53,17 @@ public class FileUtils {
         var fr:FileReference = new FileReference();
         var sol:Object = KioBase.instance.lsoProxy.userData;
         fr.save(JSON_k.encode(sol), RESULTS_FILE_NAME + inventDate() + ".kio-" + KioBase.instance.level);
+    }
+
+    public static function saveLog():void {
+        var fr:FileReference = new FileReference();
+        var log:String = 'total memory ' + KioBase.instance.lsoProxy.usedBytes + "\n";
+        KioBase.instance.outputLog(function(time:Number, cmd:String):void {
+            var d:Date = new Date();
+            d.setTime(time);
+            log += time + ' | ' + d + ' | ' + cmd + "\n"
+        });
+        fr.save(log, "kio" + inventDate() + ".log");
     }
 
     private static function inventDate():String {

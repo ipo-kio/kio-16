@@ -32,6 +32,9 @@
 
 package com.adobe.serialization.json 
 {
+import com.hurlant.util.Base64;
+
+import flash.utils.ByteArray;
 import flash.utils.describeType;
 
 public class JSONEncoder {
@@ -94,7 +97,12 @@ public class JSONEncoder {
 				// call the helper method to convert an array
 				return arrayToString( value as Array );
 			
-			} else if ( value is Object && value != null ) {
+			} else if ( value is ByteArray ) {
+
+                // call the helper method to convert a byte array
+                return byteArrayToString( value as ByteArray );
+
+            } else if ( value is Object && value != null ) {
 			
 				// call the helper method to convert an object
 				return objectToString( value );
@@ -225,6 +233,24 @@ public class JSONEncoder {
 			// close the array and return it's string value
 			return "[" + s + "]";
 		}
+
+        /**
+         * Converts a byte array to a JSON object with the three fields:
+         * __byte__array__:true
+         * endian:String //as in Endian
+         * base64: string in base64 encoding
+         *
+         * @param a The byte array to convert
+         * @return The JSON string representation of <code>a</code>
+         */
+        private function byteArrayToString( a:ByteArray ):String {
+            // create a string to store the byte array's jsonobject value
+            var s:String = Base64.encodeByteArray(a);
+
+            // compose the object and insert a base64 result
+            //no need to
+            return "{\"__byte__array__\":true,\"endian\":\"" + a.endian + "\",\"base64\":\"" + s + "\"}";
+        }
 		
 		/**
 		 * Converts an object to it's JSON string equivalent

@@ -9,6 +9,8 @@ import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.utils.Dictionary;
 
+import ru.ipo.kio.base.KioBase;
+
 public class KioApi extends EventDispatcher {
 
     private var _problem:KioProblem;
@@ -28,6 +30,8 @@ public class KioApi extends EventDispatcher {
 
     public static const RECORD_EVENT:String = 'record';
     public static const KIO_FONT:String = TextUtils.FONT_MESSAGES;
+
+    private static const MAX_LOG_SIZE:int = 900 * 1024; //900 k
 
     private var _record_result:Object = null;
 
@@ -88,14 +92,31 @@ public class KioApi extends EventDispatcher {
      * выбрал пользователь. Например, набор цветов, шрифт и т.п.
      */
     public function get settings():Object {
-        if (!problemData.settings)
-            problemData.settings = {};
+        if (! problemData.settings)
+            problemData.settings = {
+                __problem_log__ : ''
+            };
 
         return problemData.settings;
     }
 
-    public function flushSettings():void {
+    /**
+     * Flushes all unsaved data to disk such as settings, current record, current solution and so on
+     */
+    public function flush():void {
         lso.flush();
+    }
+
+    /**
+     * Logs a message
+     * @param msg a message to log
+     */
+    public function log(msg:String):void {
+        KioBase.instance.log(problem.id + ': ' + msg);
+    }
+
+    public function logSize():int {
+        return settings.__problem_log__.length;
     }
 
     /**
@@ -115,14 +136,6 @@ public class KioApi extends EventDispatcher {
     public function saveBestSolution():void {
         problemData.best = _problem.solution;
         lso.flush();
-    }
-
-    /**
-     * Получить решение с рекордом. Следует вызвать в начале программы, чтобы указать пользователю
-     * текущий рекорд.
-     */
-    public function get bestSolution():Object {
-        return problemData.best;
     }
 
     /**
@@ -146,7 +159,6 @@ public class KioApi extends EventDispatcher {
             dispatchEvent(new Event(RECORD_EVENT));
         }
     }
-
 
     /**
      * Возвращает рекордный результат при условии, что для проверки рекорда используется метод submitResult()

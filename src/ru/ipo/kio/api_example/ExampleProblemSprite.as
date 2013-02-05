@@ -2,6 +2,7 @@ package ru.ipo.kio.api_example {
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.MouseEvent;
 import flash.text.*;
 
 import ru.ipo.kio.api.*;
@@ -76,6 +77,15 @@ public class ExampleProblemSprite extends Sprite {
         gButton.x = 300;
         gButton.y = 400;
         addChild(gButton);
+
+        //вешаем на кнопки события, чтобы логгировать нажатия на кнопки
+        textButton.addEventListener(MouseEvent.CLICK, function(event:MouseEvent):void {
+            api.log('button 1 pressed');
+        });
+
+        gButton.addEventListener(MouseEvent.CLICK, function(event:MouseEvent):void {
+            api.log('button 2 pressed');
+        });
     }
 
     public function currentResult():Object {
