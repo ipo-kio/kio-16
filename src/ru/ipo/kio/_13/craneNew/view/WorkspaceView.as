@@ -99,7 +99,14 @@ public class WorkspaceView extends Sprite {
                       temp = i;
                   }
                }
-               _cubeArray.splice(temp, temp);
+               if (temp == "0") {
+                   _cubeArray.shift();
+               }
+               else{
+                   _cubeArray.splice(temp, temp);
+
+               }
+
                 break;
         }
     }

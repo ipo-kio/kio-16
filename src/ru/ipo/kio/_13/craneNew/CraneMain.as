@@ -8,6 +8,9 @@
 package ru.ipo.kio._13.craneNew {
 import flash.display.Sprite;
 
+import ru.ipo.kio._13.craneNew.model.Cube;
+import ru.ipo.kio._13.craneNew.view.CubeView;
+
 
 import ru.ipo.kio._13.craneNew.view.WorkspaceView;
 
@@ -19,12 +22,17 @@ public class CraneMain extends Sprite{
 
 
     public function CraneMain() {
+
         CraneProblem();
 
 
     }
     public function CraneProblem():void {
         addChild(workView);
+        cubeArray.push(new Cube(1, 1));
+        vCubeArray.push(new CubeView(cubeArray[cubeArray.length - 1]));
+        workView.addChild(vCubeArray[vCubeArray.length - 1]);
+        trace(cubeArray.toString());
 
     }
 
