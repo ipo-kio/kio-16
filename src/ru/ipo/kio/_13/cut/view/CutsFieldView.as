@@ -9,6 +9,7 @@ import flash.display.Graphics;
 import flash.display.GraphicsPathCommand;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.MouseEvent;
 import flash.geom.Point;
 
 import pl.bmnet.gpcas.geometry.Poly;
@@ -26,6 +27,7 @@ public class CutsFieldView extends Sprite {
     private static const BACKGROUND_COLOR:uint = 0xFFFFFF;
     private static const COLOR_TRUE:uint = 0xFFCC33;
     private static const COLOR_FALSE:uint = 0x3399FF;
+    private static const COLOR_NON_NORMAL:uint = 0xFF0000;
 
     private var _field: CutsField;
     private var _m: int;
@@ -63,6 +65,27 @@ public class CutsFieldView extends Sprite {
             _field.addEventListener(CutsField.CUTS_CHANGED, cutsChanged);
 
         addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
+        addEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
+    }
+
+    private var prevHighlightPoly:ColoredPoly = null;
+    private function mouseMoveHandler(event:MouseEvent):void {
+        var x:Number = screen2logicX(event.localX, false);
+        var y:Number = screen2logicY(event.localY, false);
+        var g:Graphics = highlightLayer.graphics;
+
+        for each (var poly:ColoredPoly in _field.polygons)
+            if (poly.poly.isPointInside(new Point(x, y))) {
+                if (poly == prevHighlightPoly)
+                    return;
+                g.clear();
+                drawPoly(g, poly.poly, 0x00FF00, 0.3);
+                prevHighlightPoly = poly;
+                return;
+            }
+
+        prevHighlightPoly = null;
+        g.clear();
     }
 
     private function removedFromStage(event:Event):void {
@@ -132,11 +155,15 @@ public class CutsFieldView extends Sprite {
 
         g = polygonsLayer.graphics;
         g.clear();
-        for each (var poly:ColoredPoly in _field.polygons)
-            drawPoly(g, poly.poly, poly.color ? COLOR_TRUE : COLOR_FALSE)
+        for each (var poly:ColoredPoly in _field.polygons) {
+            var color:uint = poly.color ? COLOR_TRUE : COLOR_FALSE;
+            if (! poly.isNormal /*|| poly.poly.getNumPoints() <= 3*/)
+                color = COLOR_NON_NORMAL;
+            drawPoly(g, poly.poly, color);
+        }
     }
 
-    private function drawPoly(g:Graphics, poly:Poly, color:uint):void {
+    private function drawPoly(g:Graphics, poly:Poly, color:uint, alpha:Number = 1):void {
         var commands:Vector.<int> = new Vector.<int>();
         var cords:Vector.<Number> = new Vector.<Number>();
         var n:int = poly.getNumPoints();
@@ -153,7 +180,7 @@ public class CutsFieldView extends Sprite {
             cords.push(logic2screenY(p.y));
         }
 
-        g.beginFill(color);
+        g.beginFill(color, alpha);
         g.drawPath(commands, cords);
         g.endFill();
     }
@@ -180,8 +207,11 @@ public class CutsFieldView extends Sprite {
         return PiecesFieldView.CELL_HEIGHT * (_m * SCALE - y) / SCALE;
     }
 
-    public function screen2logicX(x:Number):int {
-        var lx:int = Math.round(x * SCALE / PiecesFieldView.CELL_WIDTH);
+    public function screen2logicX(x:Number, round:Boolean = true):Number {
+        var lx:Number = x * SCALE / PiecesFieldView.CELL_WIDTH;
+        if (round)
+            lx = Math.round(lx);
+
         if (lx < 0)
             lx = 0;
         if (lx > _n * SCALE)
@@ -189,8 +219,11 @@ public class CutsFieldView extends Sprite {
         return lx;
     }
 
-    public function screen2logicY(y:Number):int {
-        var ly:int = _m * SCALE - Math.round(y * SCALE / PiecesFieldView.CELL_HEIGHT);
+    public function screen2logicY(y:Number, round:Boolean = true):Number {
+        var ly:int = _m * SCALE - y * SCALE / PiecesFieldView.CELL_HEIGHT;
+        if (round)
+            ly = Math.round(ly);
+
         if (ly < 0)
             ly = 0;
         if (ly > _m * SCALE)

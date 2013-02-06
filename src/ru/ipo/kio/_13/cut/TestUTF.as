@@ -13,17 +13,26 @@ import flash.debugger.enterDebugger;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.NetStatusEvent;
+import flash.events.TimerEvent;
+import flash.geom.Point;
 import flash.net.SharedObject;
+import flash.system.System;
+import flash.text.TextField;
 import flash.utils.ByteArray;
+import flash.utils.Timer;
 
 public class TestUTF extends Sprite {
     public function TestUTF() {
+
+        testMemLeak();
+
+        return;
 
         testByteArrayInLSO();
 
         return;
 
-        var s:String = '';
+        var s:String = ''; //TODO report two unreachable codes
         for (var i:int = 128; i<=2047; i++)
             s += String.fromCharCode(i);
         trace('s.len =', s.length);
@@ -43,6 +52,31 @@ public class TestUTF extends Sprite {
 
         var x:int = 19/10;
         trace(x);
+    }
+
+    var t:TextField = new TextField();
+
+    private function testMemLeak():void {
+        t.x = 100;
+        t.x = 100;
+        t.text = 'Alles!';
+        addChild(t);
+        trace('memory', System.totalMemory);
+
+        var tt:Timer = new Timer(1000);
+        tt.addEventListener(TimerEvent.TIMER, t_timerHandler); //TODO report create event handler - does not test existance
+        tt.start();
+    }
+
+    private function t_timerHandler(event:TimerEvent):void {
+        for (var i:int = 0; i < 100000; i++) {
+            var p:Point = new Point(i, i);
+            if (i == 42)
+                trace(p.x, p.y);
+        }
+
+        trace('memory', System.totalMemory);
+        t.text = 'mem: ' + System.totalMemory;
     }
 
     private function testByteArrayInLSO():void {
@@ -89,5 +123,6 @@ public class TestUTF extends Sprite {
 
         trace(new Date());
     }
+
 }
 }

@@ -5,11 +5,9 @@
  * Time: 16:13
  */
 package ru.ipo.kio._13.cut.model {
-import avmplus.factoryXml;
 
 import flash.events.Event;
 import flash.events.EventDispatcher;
-import flash.net.sendToURL;
 
 public class PiecesField extends EventDispatcher {
 
@@ -131,10 +129,14 @@ public class PiecesField extends EventDispatcher {
             else
                 next = new FieldCords(prev1.x - dy, prev1.y + dx);
 
+            //push new or substitute the last if the points are on one line
+            if ((prev1.x - next.x) * (prev2.y - next.y) == (prev2.x - next.x) * (prev1.y - next.y))
+                outline[outline.length - 1] = next;
+            else
+                outline.push(next);
+
             prev2 = prev1;
             prev1 = next;
-
-            outline.push(next);
 
         } while (next.x != start.x || next.y != start.y);
 
@@ -173,7 +175,7 @@ public class PiecesField extends EventDispatcher {
     private static function blockInsideOutline(x:int, y:int, outline:Array):Boolean {
         var cnt:int = 0;
         for (var i:int = 0; i < outline.length - 1; i++)
-            if (x < outline[i].x && outline[i].y + outline[i + 1].y == 2 * y + 1)
+            if (x < outline[i].x && (2 * outline[i].y - 2 * y - 1) * (2 * outline[i+1].y - 2 * y - 1) < 0)
                 cnt ++;
 
         return cnt % 2 == 1;

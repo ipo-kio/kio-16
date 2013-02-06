@@ -8,9 +8,12 @@ package ru.ipo.kio._13.cut {
 import flash.display.DisplayObject;
 import flash.display.SimpleButton;
 import flash.display.Sprite;
+import flash.events.TimerEvent;
+import flash.system.System;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
+import flash.utils.Timer;
 
 import ru.ipo.kio.api.controls.TextButton;
 
@@ -20,6 +23,8 @@ public class CutControls extends Sprite {
     private var _h:int;
     private var _switchFieldsButton:SimpleButton;
     private var _numTextField:TextField = new TextField();
+    private var _numTextField2:TextField = new TextField();
+    private var _numTextFieldMem:TextField = new TextField();
 
     public function CutControls(w:int, h:int) {
         _w = w;
@@ -34,6 +39,22 @@ public class CutControls extends Sprite {
         _numTextField.defaultTextFormat = new TextFormat('Times new Roman', 18);
         _numTextField.autoSize = TextFieldAutoSize.CENTER;
         putSprite(_numTextField, 40);
+
+        _numTextField2.defaultTextFormat = new TextFormat('Times new Roman', 18);
+        _numTextField2.autoSize = TextFieldAutoSize.CENTER;
+        putSprite(_numTextField2, 60);
+
+        _numTextFieldMem.defaultTextFormat = new TextFormat('Times new Roman', 18);
+        _numTextFieldMem.autoSize = TextFieldAutoSize.CENTER;
+        putSprite(_numTextFieldMem, 80);
+
+        var memTimer:Timer = new Timer(1000);
+        memTimer.addEventListener(TimerEvent.TIMER, memTimer_timerHandler);
+        memTimer.start();
+    }
+
+    private function memTimer_timerHandler(event:TimerEvent):void {
+        _numTextFieldMem.text = System.totalMemory / 1000 + '/' + System.freeMemory / 1000;
     }
 
     private function putSprite(s:DisplayObject, y:int):void {
@@ -52,8 +73,12 @@ public class CutControls extends Sprite {
         return _switchFieldsButton;
     }
 
-    public function set numPolys(polys:int):void {
+    public function set numPolys(polys:String):void {
         _numTextField.text = "Многоугольников: " + polys;
+    }
+
+    public function set numNontriangles(value:String):void {
+        _numTextField2.text = "Нетреугольников: " + value;
     }
 }
 }

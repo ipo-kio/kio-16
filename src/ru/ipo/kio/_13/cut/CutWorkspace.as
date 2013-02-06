@@ -4,9 +4,10 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 
+import ru.ipo.kio._13.cut.model.ColoredPoly;
+
 import ru.ipo.kio._13.cut.model.Cut;
 import ru.ipo.kio._13.cut.model.CutsField;
-import ru.ipo.kio._13.cut.model.Piece;
 import ru.ipo.kio._13.cut.view.CutPieceFieldView;
 import ru.ipo.kio._13.cut.view.CutsFieldView;
 import ru.ipo.kio._13.cut.view.PiecesFieldView;
@@ -64,7 +65,29 @@ public class CutWorkspace extends Sprite {
         controls.switchFieldsButton.addEventListener(MouseEvent.CLICK, switchFieldsHandler);
 
         field.addEventListener(CutsField.CUTS_CHANGED, function (event:Event):void {
-            controls.numPolys = field.numPolys;
+            var cutField:CutsField = field.cutsField;
+            if (cutField == null) {
+                controls.numPolys = '-';
+                return;
+            }
+
+            var nontriangles:int = 0;
+            var normNontriangles:int = 0;
+
+            //count normal and small polygons
+            var normal:int = 0;
+            for each (var coloredPoly:ColoredPoly in cutField.polygons) {
+                if (coloredPoly.isNormal)
+                    normal ++;
+                if (coloredPoly.poly.getNumPoints() > 3) {
+                    nontriangles ++;
+                    if (coloredPoly.isNormal)
+                        normNontriangles ++;
+                }
+            }
+
+            controls.numPolys = normal + '+' + (cutField.polygons.length - normal) + '=' + cutField.polygons.length;
+            controls.numNontriangles = normNontriangles + '+' + (nontriangles - normNontriangles ) + '=' + nontriangles;
         });
     }
 

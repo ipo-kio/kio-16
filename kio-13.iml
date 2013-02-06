@@ -11,9 +11,6 @@
             <entry library-id="43edb1d8-7378-4b93-9865-61eeb0d8e306">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="69e01f7b-174b-4cf2-bc8a-74e1d41aaf0a">
-              <dependency linkage="Merged" />
-            </entry>
           </entries>
           <sdk name="flex_sdk_4.6" />
         </dependencies>
@@ -55,16 +52,6 @@
       </library>
     </orderEntry>
     <orderEntry type="jdk" jdkName="flex_sdk_4.6" jdkType="Flex SDK Type (new)" />
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="69e01f7b-174b-4cf2-bc8a-74e1d41aaf0a" />
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/gpcas-lib.swc!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
   </component>
 </module>
 

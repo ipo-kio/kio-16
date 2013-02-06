@@ -21,7 +21,7 @@ import ru.ipo.kio._13.cut.model.PiecesField;
 
 public class PiecesFieldViewSinglePieces extends PiecesFieldView {
 
-    public static const MAX_PIECES:int = 24;
+    public static const MAX_PIECES:int = 100500; //as many as wanted
 
     private var highlightsLayer:Sprite = new Sprite();
     private var _previousX:int = -1;
