@@ -11,7 +11,6 @@ import flash.events.MouseEvent;
 
 import ru.ipo.kio._13.craneNew.model.Cube;
 import ru.ipo.kio._13.craneNew.model.FieldModel;
-import ru.ipo.kio._13.craneNew.view.CubeView;
 
 public class WorkspaceView extends Sprite {
 
@@ -91,7 +90,7 @@ public class WorkspaceView extends Sprite {
                 cube.color = Cube.BLUE;
                 break;
             case Cube.BLUE:
-                cube.color = null;
+                cube.color = 0;
                 var temp: String;
                 trace(_cubeArray.toString());
                for (var i: String in _cubeArray){
