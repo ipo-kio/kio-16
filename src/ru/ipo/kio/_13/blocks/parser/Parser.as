@@ -15,22 +15,26 @@ public class Parser {
 
     private var loc:Object = KioApi.getLocalization(BlocksProblem.ID);
 
+    private var _simple:Boolean;
+
     private var pos:int;
     private var code:String;
-
     private var tokenType:int;
     private var token:String;
 
-    private const EOS:int = 0;
-    private const LEFT:int = 1;
-    private const RIGHT:int = 2;
-    private const PUT:int = 3;
-    private const TAKE:int = 4;
-    private const OPEN_BRACKET:int = 5;
-    private const CLOSE_BRACKET:int = 6;
-    private const DIGIT:int = 7;
+    private static const EOS:String = null;
 
-    public function Parser(code:String) {
+    public static const TOKEN_COMMAND:int = 0;
+    public static const TOKEN_DIGIT:int = 1;
+    public static const TOKEN_PUNCTUATION:int = 2;
+    private var _tokensCallback:Function;
+
+    public function Parser(simple:Boolean, tokensCallback:Function = null) {
+        _simple = simple;
+        _tokensCallback = tokensCallback;
+    }
+
+    public function parse(code:String):void {
         pos = -1;
         this.code = code;
 
@@ -38,7 +42,7 @@ public class Parser {
 
         _program = readSequence();
 
-        if (tokenType != EOS)
+        if (token != EOS)
             throw new ParseError(pos, loc.parse_errors.unexpected_symbol + " " + token);
     }
 
@@ -47,11 +51,22 @@ public class Parser {
     }
 
     private function next():void {
+        shiftHead();
+
+        if (_simple && token != EOS && tokenType != TOKEN_COMMAND)
+            new ParseError(pos, loc.parse_errors.unexpected_symbol + " " + token);
+
+        if (_tokensCallback != null)
+            _tokensCallback(token, tokenType, pos, 1); //all tokens are of length 1 by now
+    }
+
+    private function shiftHead():void {
         while (true) {
             pos ++;
 
             if (pos >= code.length) {
-                tokenType = EOS;
+                token = EOS;
+                tokenType = TOKEN_PUNCTUATION;
                 return;
             }
 
@@ -59,24 +74,19 @@ public class Parser {
 
             switch (token) {
                 case 'L':
-                    tokenType = LEFT;
-                    return;
                 case 'R':
-                    tokenType = RIGHT;
-                    return;
                 case 'P':
-                    tokenType = PUT;
-                    return;
                 case 'T':
-                    tokenType = TAKE;
+                    tokenType = TOKEN_COMMAND;
                     return;
                 case '(':
-                    tokenType = OPEN_BRACKET;
-                    return;
                 case ')':
-                    tokenType = CLOSE_BRACKET;
+                    tokenType = TOKEN_PUNCTUATION;
                     return;
                 case ' ':
+                case "\n":
+                case "\r":
+                case "\t":
                     continue;
             }
 
@@ -84,7 +94,7 @@ public class Parser {
         }
 
         if (token >= '0' && token <= '9') {
-            tokenType = DIGIT;
+            tokenType = TOKEN_DIGIT;
             return;
         }
 
@@ -94,7 +104,7 @@ public class Parser {
     private function readSequence():Program {
         var p:SequenceProgram = new SequenceProgram();
 
-        while (tokenType != EOS && tokenType != CLOSE_BRACKET)
+        while (token != EOS && token != ')')
             p.add(readItem());
 
         return p;
@@ -102,7 +112,7 @@ public class Parser {
 
     private function readLoop():Program {
         var n:int = 0;
-        while (tokenType == DIGIT) {
+        while (tokenType == TOKEN_DIGIT) {
             n = n * 10 + token.charCodeAt() - '0'.charCodeAt();
             next();
         }
@@ -111,31 +121,32 @@ public class Parser {
     }
 
     private function readItem():Program {
-        switch (tokenType) {
-            case LEFT:
+        switch (token) {
+            case 'L':
                 next();
                 return new Command(Command.LEFT, pos);
-            case RIGHT:
+            case 'R':
                 next();
                 return new Command(Command.RIGHT, pos);
-            case PUT:
+            case 'P':
                 next();
                 return new Command(Command.PUT, pos);
-            case TAKE:
+            case 'T':
                 next();
                 return new Command(Command.TAKE, pos);
-            case OPEN_BRACKET: //just a brackets
+            case '(': //just a brackets
                 next();
                 var seq:Program = readSequence();
-                if (tokenType != CLOSE_BRACKET)
+                if (token != ')')
                     throw new ParseError(pos, loc.parse_errors.close_bracket_expected + " " + token);
                 next();
                 return seq;
-            case DIGIT:
-                return readLoop();
-            default:
-                throw new ParseError(pos, loc.parse_errors.unexpected_token + " " + token);
         }
+
+        if (tokenType == TOKEN_DIGIT)
+            return readLoop();
+
+        throw new ParseError(pos, loc.parse_errors.unexpected_token + " " + token);
     }
 }
 }
