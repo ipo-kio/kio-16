@@ -2,7 +2,7 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="kio-13">
     <configurations>
-      <configuration name="kio-13" pure-as="true" main-class="ru.ipo.kio._13.crane.CraneMain" output-file="kio_12.swf" output-folder="$MODULE_DIR$/..">
+      <configuration name="kio-13" pure-as="true" main-class="ru.ipo.kio._13.craneNew.CraneMain" output-file="kio_12.swf" output-folder="$MODULE_DIR$/..">
         <dependencies target-player="11.1">
           <entries>
             <entry library-id="3d82f0b1-9cc7-40ab-86dd-07b80cd09576">
