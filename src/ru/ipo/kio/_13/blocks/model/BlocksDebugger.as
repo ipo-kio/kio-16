@@ -17,8 +17,6 @@ public class BlocksDebugger {
     public static const STATE_FINISH:int = 1;
     public static const STATE_ERROR:int = 2;
 
-    public static const MAX_PROGRAM_LENGTH:int = 1000;
-
     private var _initialField:BlocksField; //TODO report if class is self referenced it is not considered as non-used
     private var _currentFiled:BlocksField;
 

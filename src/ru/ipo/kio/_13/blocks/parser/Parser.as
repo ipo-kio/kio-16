@@ -18,11 +18,12 @@ public class Parser {
     private var loc:Object = KioApi.getLocalization(BlocksProblem.ID);
 
     private var _simple:Boolean;
-
-    private var pos:int; //this is the position of the last symbol of the last read token
     private var code:String;
     private var tokenType:int;
     private var token:String;
+
+    private var tokenPos:int; //this is the position of the first symbol of the next token to read
+    private var pos:int; //this is the position of the first symbol of the last read token  //TODO report Ctrl+Shift+Up moves a lot here
 
     private static const EOS:String = null;
 
@@ -37,7 +38,8 @@ public class Parser {
     }
 
     public function parse(code:String):void {
-        pos = 0;
+        pos = -1;
+        tokenPos = 0;
         this.code = code;
 
         next();
@@ -45,7 +47,7 @@ public class Parser {
         _program = readSequence();
 
         if (token != EOS)
-            throw new ParseError(pos, loc.parse_errors.unexpected_symbol + " " + token);
+            throw new ParseError(pos, token.length, loc.parse_errors.unexpected_symbol + " " + token);
     }
 
     public function get program():Program {
@@ -56,23 +58,25 @@ public class Parser {
         shiftHead();
 
         if (_simple && token != EOS && tokenType != TOKEN_COMMAND)
-            new ParseError(pos, loc.parse_errors.unexpected_symbol + " " + token);
+            new ParseError(pos, token.length, loc.parse_errors.unexpected_symbol + " " + token);
 
         if (_tokensCallback != null)
-            _tokensCallback(token, tokenType, pos, 1); //all tokens are of length 1 by now
+            _tokensCallback(token, tokenType, pos, token == null ? 0 : token.length);
     }
 
     private function shiftHead():void {
+        pos = tokenPos;
+
         while (true) {
-            if (pos >= code.length) {
+            if (tokenPos >= code.length) {
                 token = EOS;
                 tokenType = TOKEN_PUNCTUATION;
                 return;
             }
 
-            token = code.charAt(pos);
+            token = code.charAt(tokenPos);
 
-            pos ++;
+            tokenPos ++;
 
             switch (token) {
                 case 'L':
@@ -89,6 +93,7 @@ public class Parser {
                 case '\n':
                 case '\r':
                 case '\t':
+                    pos ++;
                     continue;
             }
 
@@ -99,16 +104,16 @@ public class Parser {
             tokenType = TOKEN_NUMBER;
 
             //read all other digits
-            while (pos < code.length) {
-                var digit:String = code.charAt(pos);
+            while (tokenPos < code.length) {
+                var digit:String = code.charAt(tokenPos);
                 if (digit >= '0' && digit <= '9') {
                     token += digit;
 
                     var number:Number = parseFloat(token);
                     if (number > MAX_NUMBER)
-                        throw new ParseError(pos, loc.parse_errors.number_too_big);
+                        throw new ParseError(pos, token.length, loc.parse_errors.number_too_big);
 
-                    pos ++;
+                    tokenPos ++;
                 } else
                     break;
             }
@@ -116,7 +121,7 @@ public class Parser {
             return;
         }
 
-        throw new ParseError(pos, loc.parse_errors.unexpected_symbol + " " + token);
+        throw new ParseError(pos, token.length, loc.parse_errors.unexpected_symbol + " " + token);
     }
 
     private function readSequence():Program {
@@ -130,8 +135,10 @@ public class Parser {
 
     private function readLoop():Program {
         if (tokenType != TOKEN_NUMBER)
-            throw new ParseError(pos, loc.parse_errors.unexpected_token + " " + token);
+            throw new ParseError(pos, token.length, loc.parse_errors.unexpected_token + " " + token);
         var n:int = parseInt(token);
+
+        next();
 
         return new LoopProgram(readItem(), n);
     }
@@ -154,7 +161,7 @@ public class Parser {
                 next();
                 var seq:Program = readSequence();
                 if (token != ')')
-                    throw new ParseError(pos, loc.parse_errors.close_bracket_expected + " " + token);
+                    throw new ParseError(pos, token == null ? 0 : token.length, loc.parse_errors.close_bracket_expected + " " + token);
                 next();
                 return seq;
         }
@@ -162,7 +169,7 @@ public class Parser {
         if (tokenType == TOKEN_NUMBER)
             return readLoop();
 
-        throw new ParseError(pos, loc.parse_errors.unexpected_token + " " + token);
+        throw new ParseError(pos, token == null ? 0 : token.length, loc.parse_errors.unexpected_token + " " + token);
     }
 }
 }

@@ -98,7 +98,7 @@ public class EditorField extends TextField {
 
     override public function setTextFormat(format:TextFormat, beginIndex:int = -1, endIndex:int = -1):void {
         var length:int = text.length;
-        if (beginIndex >= 0 && endIndex <= length && length != 0)
+        if (beginIndex >= 0 && beginIndex <= length - 1 && endIndex <= length && length != 0)
             super.setTextFormat(format, beginIndex, endIndex);
     }
 
