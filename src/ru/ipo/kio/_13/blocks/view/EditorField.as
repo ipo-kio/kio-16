@@ -72,7 +72,7 @@ public class EditorField extends TextField {
             case Parser.TOKEN_COMMAND:
                 tf = TF_COMMAND;
                 break;
-            case Parser.TOKEN_DIGIT:
+            case Parser.TOKEN_NUMBER:
                 tf = TF_NUMBER;
                 break;
             case Parser.TOKEN_PUNCTUATION:
@@ -126,5 +126,7 @@ public class EditorField extends TextField {
         setSelection(newCaretPosition, newCaretPosition);
         dispatchEvent(new Event(Event.CHANGE));
     }
+
+    //TODO report fails to HG push if there is an extra head: writes that nothing to push
 }
 }

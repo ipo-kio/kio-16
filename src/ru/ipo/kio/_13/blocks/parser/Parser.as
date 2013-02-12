@@ -11,13 +11,15 @@ import ru.ipo.kio.api.KioApi;
 
 public class Parser {
 
+    public static const MAX_NUMBER:int = 1000;
+
     private var _program:Program;
 
     private var loc:Object = KioApi.getLocalization(BlocksProblem.ID);
 
     private var _simple:Boolean;
 
-    private var pos:int;
+    private var pos:int; //this is the position of the last symbol of the last read token
     private var code:String;
     private var tokenType:int;
     private var token:String;
@@ -25,7 +27,7 @@ public class Parser {
     private static const EOS:String = null;
 
     public static const TOKEN_COMMAND:int = 0;
-    public static const TOKEN_DIGIT:int = 1;
+    public static const TOKEN_NUMBER:int = 1;
     public static const TOKEN_PUNCTUATION:int = 2;
     private var _tokensCallback:Function;
 
@@ -35,7 +37,7 @@ public class Parser {
     }
 
     public function parse(code:String):void {
-        pos = -1;
+        pos = 0;
         this.code = code;
 
         next();
@@ -62,8 +64,6 @@ public class Parser {
 
     private function shiftHead():void {
         while (true) {
-            pos ++;
-
             if (pos >= code.length) {
                 token = EOS;
                 tokenType = TOKEN_PUNCTUATION;
@@ -71,6 +71,8 @@ public class Parser {
             }
 
             token = code.charAt(pos);
+
+            pos ++;
 
             switch (token) {
                 case 'L':
@@ -84,17 +86,33 @@ public class Parser {
                     tokenType = TOKEN_PUNCTUATION;
                     return;
                 case ' ':
-                case "\n":
-                case "\r":
-                case "\t":
+                case '\n':
+                case '\r':
+                case '\t':
                     continue;
             }
 
             break;
         }
 
-        if (token >= '0' && token <= '9') {
-            tokenType = TOKEN_DIGIT;
+        if (token >= '1' && token <= '9') { //a number can not be 0 or start with 0
+            tokenType = TOKEN_NUMBER;
+
+            //read all other digits
+            while (pos < code.length) {
+                var digit:String = code.charAt(pos);
+                if (digit >= '0' && digit <= '9') {
+                    token += digit;
+
+                    var number:Number = parseFloat(token);
+                    if (number > MAX_NUMBER)
+                        throw new ParseError(pos, loc.parse_errors.number_too_big);
+
+                    pos ++;
+                } else
+                    break;
+            }
+
             return;
         }
 
@@ -111,11 +129,9 @@ public class Parser {
     }
 
     private function readLoop():Program {
-        var n:int = 0;
-        while (tokenType == TOKEN_DIGIT) {
-            n = n * 10 + token.charCodeAt() - '0'.charCodeAt();
-            next();
-        }
+        if (tokenType != TOKEN_NUMBER)
+            throw new ParseError(pos, loc.parse_errors.unexpected_token + " " + token);
+        var n:int = parseInt(token);
 
         return new LoopProgram(readItem(), n);
     }
@@ -143,7 +159,7 @@ public class Parser {
                 return seq;
         }
 
-        if (tokenType == TOKEN_DIGIT)
+        if (tokenType == TOKEN_NUMBER)
             return readLoop();
 
         throw new ParseError(pos, loc.parse_errors.unexpected_token + " " + token);

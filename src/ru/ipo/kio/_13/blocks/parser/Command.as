@@ -21,25 +21,61 @@ public class Command implements Program {
         _position = position;
     }
 
-    public function execute(executor:Executor):void {
+    public function execute(executor:Executor, backwards:Boolean = false):void {
         var message:String = null;
         switch (_command) {
             case LEFT:
-                message = executor.left();
+                message = backwards ? executor.right() : executor.left();
                 break;
             case RIGHT:
-                message = executor.right();
+                message = backwards ? executor.left() : executor.right();
                 break;
             case PUT:
-                message = executor.put();
+                message = backwards ? executor.take() : executor.put();
                 break;
             case TAKE:
-                message = executor.take();
+                message = backwards ? executor.put() : executor.take();
                 break;
         }
 
         if (message != null)
             throw new ExecutionError(_position, message);
     }
+
+    public function getProgramIterator(from_end:Boolean = false):ProgramIterator {
+        return new MyIterator(this, from_end);
+    }
 }
+}
+
+import ru.ipo.kio._13.blocks.parser.Command;
+import ru.ipo.kio._13.blocks.parser.ProgramIterator;
+
+class MyIterator implements ProgramIterator {
+
+    private var prg:Command;
+    private var ind:int; //current ind, 0 or 1
+
+    public function MyIterator(prg:Command, from_end:Boolean) {
+        this.prg = prg;
+        ind = from_end ? 1 : 0;
+    }
+
+    public function hasNext():Boolean {
+        return ind == 0;
+    }
+
+    public function hasPrev():Boolean {
+        return ind == 1;
+    }
+
+    public function next():Command {
+        ind ++;
+        return prg;
+    }
+
+    public function prev():Command {
+        ind --;
+        return prg;
+    }
 }

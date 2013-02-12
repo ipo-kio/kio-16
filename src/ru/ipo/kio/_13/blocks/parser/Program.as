@@ -7,6 +7,6 @@
 package ru.ipo.kio._13.blocks.parser {
 
 public interface Program {
-    function execute(executor:Executor):void;
+    function getProgramIterator(from_end:Boolean = false):ProgramIterator;
 }
 }

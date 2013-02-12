@@ -12,6 +12,7 @@
 	    "unexpected_symbol": "Неожиданный символ",
 	    "unexpected_token": "Неожиданное",
 	    "digit_expected": "Ожидается цифра",
-	    "close_bracket_expected": "Ожидается закрывающая скобка"
+	    "close_bracket_expected": "Ожидается закрывающая скобка",
+	    "number_too_big": "Слишком больше число"
 	}
 }
