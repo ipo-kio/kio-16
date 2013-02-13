@@ -20,14 +20,13 @@ import ru.ipo.kio._13.blocks.parser.SequenceProgram;
 public class BlocksDebugger extends EventDispatcher {
 
     public static const MAX_STEPS:int = 1000;
-    public static const STEP_CHANGED_EVENT:String = 'step changed';
 
     public static const STATE_NORMAL:int = 0;
     public static const STATE_FINISH:int = 1;
     public static const STATE_ERROR:int = 2;
 
     private var _initialField:BlocksField; //TODO report if class is self referenced it is not considered as non-used
-    private var _currentFiled:BlocksField;
+    private var _currentField:BlocksField;
 
     private var _step:int = 0;
     private var _state:int = STATE_NORMAL;
@@ -46,6 +45,10 @@ public class BlocksDebugger extends EventDispatcher {
 
     public function get initialField():BlocksField {
         return _initialField;
+    }
+
+    public function get currentField():BlocksField {
+        return _currentField;
     }
 
     public function set initialField(value:BlocksField):void {
@@ -89,12 +92,15 @@ public class BlocksDebugger extends EventDispatcher {
         return _errorMessage;
     }
 
-    public function stepForward():void {
+    public function stepForward(animation:Boolean = false):void {
         if (! mayMoveForward())
             return;
 
         try {
-            _currentCommand.execute(_currentFiled);
+            if (animation)
+                dispatchEvent(new FieldChangeEvent(true, _currentCommand));
+
+            _currentCommand.execute(_currentField);
 
             if (! _iterator.hasNext()) {
                 _state = STATE_FINISH;
@@ -108,10 +114,11 @@ public class BlocksDebugger extends EventDispatcher {
 
         _step ++;
 
-        dispatchEvent(new Event(STEP_CHANGED_EVENT));
+        if (! animation)
+            dispatchEvent(new FieldChangeEvent());
     }
 
-    public function stepBack():void {
+    public function stepBack(animation:Boolean = false):void {
         if (! mayMoveBack())
             return;
 
@@ -119,7 +126,12 @@ public class BlocksDebugger extends EventDispatcher {
             case STATE_FINISH:
                 _iterator.prev();
                 _currentCommand = _iterator.next();
-                _currentCommand.execute(_currentFiled, true);
+
+                if (animation)
+                    dispatchEvent(new FieldChangeEvent(true, _currentCommand));
+
+                _currentCommand.execute(_currentField, true);
+
                 break;
             case STATE_ERROR:
                 break;
@@ -127,18 +139,28 @@ public class BlocksDebugger extends EventDispatcher {
                 _iterator.prev(); //should return the same as _currentCommand
                 _iterator.prev();
                 _currentCommand = _iterator.next();
-                _currentCommand.execute(_currentFiled, true);
+
+                if (animation)
+                    dispatchEvent(new FieldChangeEvent(true, _currentCommand));
+
+                _currentCommand.execute(_currentField, true);
+
                 break;
         }
 
         _step --;
         _state = STATE_NORMAL;
 
-        dispatchEvent(new Event(STEP_CHANGED_EVENT));
+        if (! animation)
+            dispatchEvent(new FieldChangeEvent());
+    }
+
+    public function animationFinished():void {
+        dispatchEvent(new FieldChangeEvent());
     }
 
     public function moveToStep(step:int):void {
-        _currentFiled = _initialField.clone();
+        _currentField = _initialField.clone();
         _iterator = _program.getProgramIterator();
 
         if (! _iterator.hasNext()) {
@@ -146,7 +168,7 @@ public class BlocksDebugger extends EventDispatcher {
             _state = STATE_FINISH;
             _currentCommand = null;
 
-            dispatchEvent(new Event(STEP_CHANGED_EVENT));
+            dispatchEvent(new FieldChangeEvent());
 
             return;
         }
@@ -160,14 +182,14 @@ public class BlocksDebugger extends EventDispatcher {
             if (mayMoveForward())
                 stepForward();
 
-        dispatchEvent(new Event(STEP_CHANGED_EVENT));
+        dispatchEvent(new FieldChangeEvent());
     }
 
     public function toEnd():void {
         while (mayMoveForward() && _step < MAX_STEPS)
             stepForward();
 
-        dispatchEvent(new Event(STEP_CHANGED_EVENT));
+        dispatchEvent(new FieldChangeEvent());
     }
 
     private function changeHandler(event:Event):void {

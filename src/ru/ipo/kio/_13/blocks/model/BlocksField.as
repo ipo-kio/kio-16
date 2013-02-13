@@ -61,12 +61,11 @@ public class BlocksField extends EventDispatcher implements Executor {
         return _takenBlock;
     }
 
-    private function getColumn(col:int):Array { //array of blocks from top to bottom
+    public function getColumn(col:int):Array { //array of blocks from top to bottom
         return _blocks[col];
     }
 
     public function left():String {
-        trace('go left');
         if (_craneX == 0)
             return MOVE_FAILED;
         _craneX --;
@@ -77,7 +76,6 @@ public class BlocksField extends EventDispatcher implements Executor {
     }
 
     public function right():String {
-        trace('go right');
         if (_craneX == _cols - 1)
             return MOVE_FAILED;
         _craneX ++;

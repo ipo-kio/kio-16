@@ -13,6 +13,7 @@ import ru.ipo.kio._13.blocks.model.BlocksDebugger;
 import ru.ipo.kio._13.blocks.model.BlocksField;
 
 import ru.ipo.kio._13.blocks.view.DebuggerControls;
+import ru.ipo.kio._13.blocks.view.DebuggerView;
 
 import ru.ipo.kio._13.blocks.view.Editor;
 import ru.ipo.kio.base.GlobalMetrics;
@@ -34,12 +35,14 @@ public class BlocksWorkspace extends Sprite {
         graphics.endFill();
 
         _editor = new Editor(500, 90);
-        _editor.x = 20;
-        _editor.y = 0;
         addChild(_editor);
 
-        var field:BlocksField = new BlocksField(4, 6, [
+        var field:BlocksField = new BlocksField(4, 10, [
+            [new Block(1), new Block(2), new Block(3), new Block(4)],
+            [new Block(3), new Block(4)],
             [new Block(1), new Block(2)],
+            [new Block(3), new Block(4)],
+            [new Block(1), new Block(2), new Block(3), new Block(4)],
             [new Block(3), new Block(4)],
             [new Block(1), new Block(2)],
             [new Block(3), new Block(4)],
@@ -48,14 +51,16 @@ public class BlocksWorkspace extends Sprite {
         ], 3, 0);
         var blocksDebugger:BlocksDebugger = new BlocksDebugger(field);
         _debuggerControls = new DebuggerControls(blocksDebugger);
-        _debuggerControls.x = 0;
-        _debuggerControls.y = 0;
         addChild(_debuggerControls);
 
-        _editor.y = _debuggerControls.x + _debuggerControls.height;
+        var dbgView:DebuggerView = new DebuggerView(blocksDebugger);
+        addChild(dbgView);
 
-        graphics.lineStyle(1, 0xFFFFFF);
-        graphics.drawRect(0, 0, width, height);
+        _debuggerControls.x = 0;
+        _debuggerControls.y = dbgView.y + dbgView.height;
+
+        _editor.x = 20;
+        _editor.y = _debuggerControls.y + _debuggerControls.height;
     }
 
     public static function get instance():BlocksWorkspace {

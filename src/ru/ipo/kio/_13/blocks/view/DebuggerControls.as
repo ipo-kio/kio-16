@@ -16,6 +16,7 @@ import flash.text.TextFormat;
 import ru.ipo.kio._13.blocks.BlocksProblem;
 import ru.ipo.kio._13.blocks.BlocksWorkspace;
 import ru.ipo.kio._13.blocks.model.BlocksDebugger;
+import ru.ipo.kio._13.blocks.model.FieldChangeEvent;
 import ru.ipo.kio._13.blocks.parser.Command;
 
 import ru.ipo.kio.api.KioApi;
@@ -49,9 +50,9 @@ public class DebuggerControls extends Sprite {
         addButton(loc.buttons.go, "go", WIDTH - BUTTON_WIDTH, BUTTON_Y0);
         addMessageField(BUTTON_X0, BUTTON_Y0 + BUTTON_HEIGHT + BUTTON_V_SKIP);
 
-        _dbg.addEventListener(BlocksDebugger.STEP_CHANGED_EVENT, dbg_step_changedHandler);
+        _dbg.addEventListener(FieldChangeEvent.FIELD_CHANGED, fieldChangedHandler);
 
-        dbg_step_changedHandler();
+        fieldChangedHandler();
     }
 
     private function set step(value:int):void {
@@ -106,11 +107,11 @@ public class DebuggerControls extends Sprite {
                 _dbg.moveToStep(0);
                 break;
             case "+1":
-                _dbg.stepForward();
+                _dbg.stepForward(true);
                 //do animation
                 break;
             case "-1":
-                _dbg.stepBack();
+                _dbg.stepBack(true);
                 //do animation
                 break;
             case "end":
@@ -122,7 +123,12 @@ public class DebuggerControls extends Sprite {
         }
     }
 
-    private function dbg_step_changedHandler(event:Event = null):void {
+    private function fieldChangedHandler(event:FieldChangeEvent = null):void {
+        //this method just modifies a view, no internal state is changed, so this method may be called after a while
+
+        if (event != null && event.animationPhase)
+            return;
+
         step = _dbg.step;
 
         var cmd:Command = _dbg.currentCommand;
