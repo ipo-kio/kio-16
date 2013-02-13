@@ -6,12 +6,21 @@
  */
 package ru.ipo.kio._13.blocks.model {
 
+import flash.events.Event;
+import flash.events.EventDispatcher;
+
+import ru.ipo.kio._13.blocks.BlocksWorkspace;
+
 import ru.ipo.kio._13.blocks.parser.Command;
+import ru.ipo.kio._13.blocks.parser.ExecutionError;
 import ru.ipo.kio._13.blocks.parser.Program;
 import ru.ipo.kio._13.blocks.parser.ProgramIterator;
 import ru.ipo.kio._13.blocks.parser.SequenceProgram;
 
-public class BlocksDebugger {
+public class BlocksDebugger extends EventDispatcher {
+
+    public static const MAX_STEPS:int = 1000;
+    public static const STEP_CHANGED_EVENT:String = 'step changed';
 
     public static const STATE_NORMAL:int = 0;
     public static const STATE_FINISH:int = 1;
@@ -20,8 +29,9 @@ public class BlocksDebugger {
     private var _initialField:BlocksField; //TODO report if class is self referenced it is not considered as non-used
     private var _currentFiled:BlocksField;
 
-    private var step:int = 0;
-    private var state:int = STATE_NORMAL;
+    private var _step:int = 0;
+    private var _state:int = STATE_NORMAL;
+    private var _errorMessage:String = null;
 
     private var _currentCommand:Command; //command that will be executed if the forward button is pressed
 
@@ -29,11 +39,28 @@ public class BlocksDebugger {
     private var _iterator:ProgramIterator = _program.getProgramIterator();
 
     public function BlocksDebugger(initialField:BlocksField) {
-        _initialField = initialField;
+        this.initialField = initialField;
+
+        BlocksWorkspace.instance.editor.editorField.addEventListener(Event.CHANGE, changeHandler);
+    }
+
+    public function get initialField():BlocksField {
+        return _initialField;
+    }
+
+    public function set initialField(value:BlocksField):void {
+        _initialField = value;
+
+        moveToStep(0);
     }
 
     public function set program(value:Program):void {
         _program = value;
+
+        if (_program == null)
+            _program = SequenceProgram.EMPTY_PROGRAM;
+
+        _iterator = _program.getProgramIterator();
 
         moveToStep(0);
     }
@@ -43,11 +70,23 @@ public class BlocksDebugger {
     }
 
     public function mayMoveForward():Boolean {
-        return state == STATE_NORMAL;
+        return _state == STATE_NORMAL;
     }
 
     public function mayMoveBack():Boolean {
-        return step > 0;
+        return _step > 0;
+    }
+
+    public function get step():int {
+        return _step;
+    }
+
+    public function get state():int {
+        return _state;
+    }
+
+    public function get errorMessage():String {
+        return _errorMessage;
     }
 
     public function stepForward():void {
@@ -60,12 +99,15 @@ public class BlocksDebugger {
             _currentCommand = _iterator.next();
 
             if (! _iterator.hasNext())
-                state = STATE_FINISH;
-        } catch (e:Error) {
-            state = STATE_ERROR;
+                _state = STATE_FINISH;
+        } catch (e:ExecutionError) {
+            _state = STATE_ERROR;
+            _errorMessage = e.message;
         }
 
-        step ++;
+        _step ++;
+
+        dispatchEvent(new Event(STEP_CHANGED_EVENT));
     }
 
     public function stepBack():void {
@@ -74,8 +116,10 @@ public class BlocksDebugger {
 
         _currentCommand.execute(_currentFiled, true);
 
-        step --;
-        state = STATE_NORMAL;
+        _step --;
+        _state = STATE_NORMAL;
+
+        dispatchEvent(new Event(STEP_CHANGED_EVENT));
     }
 
     public function moveToStep(step:int):void {
@@ -83,13 +127,16 @@ public class BlocksDebugger {
         _iterator = _program.getProgramIterator();
 
         if (! _iterator.hasNext()) {
-            this.step = -1; //does not really matters
-            state = STATE_FINISH;
+            this._step = -1; //does not really matters
+            _state = STATE_FINISH;
             _currentCommand = null;
+
+            dispatchEvent(new Event(STEP_CHANGED_EVENT));
+
             return;
         }
 
-        state = STATE_NORMAL;
+        _state = STATE_NORMAL;
         _currentCommand = _iterator.next();
 
         step = 0;
@@ -97,7 +144,19 @@ public class BlocksDebugger {
         for (var i:int = 0; i < step; i++)
             if (mayMoveForward())
                 stepForward();
+
+        dispatchEvent(new Event(STEP_CHANGED_EVENT));
     }
 
+    public function toEnd():void {
+        while (mayMoveForward() && _step < MAX_STEPS)
+            stepForward();
+
+        dispatchEvent(new Event(STEP_CHANGED_EVENT));
+    }
+
+    private function changeHandler(event:Event):void {
+        program = BlocksWorkspace.instance.editor.editorField.program;
+    }
 }
 }

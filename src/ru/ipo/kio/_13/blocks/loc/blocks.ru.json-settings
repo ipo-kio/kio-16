@@ -9,10 +9,25 @@
 	    <p>Здесь пишется помощь по задаче.</p>
 	>>>,
 	"parse_errors": {
-	    "unexpected_symbol": "Неожиданный символ",
-	    "unexpected_token": "Неожиданное",
-	    "digit_expected": "Ожидается цифра",
-	    "close_bracket_expected": "Ожидается закрывающая скобка",
-	    "number_too_big": "Слишком больше число"
+	    "unexpected_symbol": "неожиданный символ",
+	    "unexpected_token": "неожиданное",
+	    "unexpected_end": "неожиданный конец",
+	    "digit_expected": "ожидается цифра",
+	    "close_bracket_expected": "ожидается закрывающая скобка",
+	    "number_too_big": "слишком больше число"
+	},
+	"buttons": {
+	    "to_start": "В начало",
+	    "step_forward": "Шаг +",
+	    "step_back": "Шаг -",
+	    "to_end": "Мгновенно",
+	    "go": "Запустить"
+	},
+	"step": "Шаг:",
+	"msg": {
+	    "no_errors": "В программе нет ошибок",
+	    "finish": "Программа завершилась",
+	    "execution_error": "Ошибка при выполнении программы:",
+	    "parse_error": "Ошибка в программе:"
 	}
 }

@@ -45,6 +45,10 @@ public class Command implements Program {
     public function getProgramIterator(from_end:Boolean = false):ProgramIterator {
         return new MyIterator(this, from_end);
     }
+
+    public function get position():int {
+        return _position;
+    }
 }
 }
 

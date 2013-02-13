@@ -35,10 +35,10 @@ public class SoftKeyboard extends Sprite {
     [Embed(source="../resources/undo.png")]
     public static const UNDO_CLS:Class;
 
-    public static const X0:int = 2;
-    public static const Y0:int = 2;
-    public static const DX:int = 42;
-    public static const DY:int = 42;
+    public static const X0:int = 4;
+    public static const Y0:int = 4;
+    public static const DX:int = 44;
+    public static const DY:int = 44;
 
     private var _editor:Editor;
 
@@ -61,7 +61,11 @@ public class SoftKeyboard extends Sprite {
     }
 
     private function addButton(value:*, action:String, x:int, y:int):void {
-        var button:Button = new Button(value, action);
+        if (value is String)
+            var button:Button2 = new Button2(value, action, 40, 40, 20);
+        else
+            button = new Button2(value, action);
+
         button.x = x;
         button.y = y;
         addChild(button);
@@ -69,7 +73,7 @@ public class SoftKeyboard extends Sprite {
     }
 
     private function button_clickHandler(event:MouseEvent):void {
-        var action:String = Button(event.target).action;
+        var action:String = Button2(event.target).action;
         switch (action) {
             case 'left':
                 _editor.appendAtCaret('L');

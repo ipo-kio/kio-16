@@ -13,9 +13,11 @@ import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 
+import ru.ipo.kio._13.blocks.parser.Program;
+
 public class Editor extends Sprite {
 
-    private var _editor:EditorField;
+    private var _editorField:EditorField;
     private var _scroll:UIScrollBar;
     private var _keyboard:SoftKeyboard;
     private var leftBracket:SymbolSelector;
@@ -26,28 +28,28 @@ public class Editor extends Sprite {
     private const MAX_ACTIONS_COUNT:int = 20;
 
     public function Editor(width:int, height:int, simple:Boolean = false) {
-        _editor = new EditorField(width, height, simple);
-        addChild(_editor);
+        _editorField = new EditorField(width, height, simple);
+        addChild(_editorField);
         _scroll = new UIScrollBar();
         _scroll.height = height;
         addChild(_scroll);
-        _scroll.scrollTarget = _editor;
+        _scroll.scrollTarget = _editorField;
         _scroll.direction = "vertical";
         _scroll.move(width, 0);
 
-        leftBracket = new SymbolSelector(_editor, -1, 1, 0x888888);
-        rightBracket = new SymbolSelector(_editor, -1, 1, 0x888888);
-        highlight = new SymbolSelector(_editor, -1, 2, 0x000088);
+        leftBracket = new SymbolSelector(_editorField, -1, 1, 0x888888);
+        rightBracket = new SymbolSelector(_editorField, -1, 1, 0x888888);
+        highlight = new SymbolSelector(_editorField, -1, 2, 0x000088);
 
         addChild(leftBracket);
         addChild(rightBracket);
 
-        _editor.addEventListener(Event.CHANGE, editor_changeHandler);
+        _editorField.addEventListener(Event.CHANGE, editor_changeHandler);
 
-        _editor.addEventListener(MouseEvent.MOUSE_DOWN, caretMovedHandler);
-        _editor.addEventListener(KeyboardEvent.KEY_UP, caretMovedHandler);
-        _editor.addEventListener(Event.SCROLL, caretMovedHandler);
-        _editor.addEventListener(Event.CHANGE, caretMovedHandler);
+        _editorField.addEventListener(MouseEvent.MOUSE_DOWN, caretMovedHandler);
+        _editorField.addEventListener(KeyboardEvent.KEY_UP, caretMovedHandler);
+        _editorField.addEventListener(Event.SCROLL, caretMovedHandler);
+        _editorField.addEventListener(Event.CHANGE, caretMovedHandler);
 
         _keyboard = new SoftKeyboard(this, simple);
         _keyboard.x = 0;
@@ -56,9 +58,9 @@ public class Editor extends Sprite {
     }
 
     private function caretMovedHandler(event:Event):void {
-        var caretIndex:int = _editor.caretIndex - 1;
+        var caretIndex:int = _editorField.caretIndex - 1;
 
-        var text:String = _editor.text;
+        var text:String = _editorField.text;
         var length:int = text.length;
         if (caretIndex < 0 || caretIndex >= length) {
             leftBracket.index = -1;
@@ -69,7 +71,7 @@ public class Editor extends Sprite {
         //test it to be a bracket
         var left_bracket_ind:int = -1;
         var right_bracket_ind:int = -1;
-        if (_editor.text.charAt(caretIndex) == '(') {
+        if (_editorField.text.charAt(caretIndex) == '(') {
             left_bracket_ind = caretIndex;
             right_bracket_ind = -1;
             var ind:int = caretIndex + 1;
@@ -86,7 +88,7 @@ public class Editor extends Sprite {
                 }
                 ind ++;
             }
-        } else if (_editor.text.charAt(caretIndex) == ')') {
+        } else if (_editorField.text.charAt(caretIndex) == ')') {
             left_bracket_ind = -1;
             right_bracket_ind = caretIndex;
             ind = caretIndex - 1;
@@ -113,15 +115,17 @@ public class Editor extends Sprite {
         highlight.index = -1;
     }
 
-    public function setHighlight(index:int):void {
+    public function setHighlight(index:int, scrollVisible:Boolean = false):void {
         highlight.index = index;
+        if (scrollVisible)
+            highlight.scrollVisible();
     }
 
     private function editor_changeHandler(event:Event):void {
-        removeHighlight();
+        removeHighlight(); //TODO this is probably not necessary
 
-        actionsQueue.push(_editor.text);
-        actionsQueue.push(_editor.caretIndex);
+        actionsQueue.push(_editorField.text);
+        actionsQueue.push(_editorField.caretIndex);
         if (actionsQueue.length > 2 * MAX_ACTIONS_COUNT) {
             actionsQueue.shift();
             actionsQueue.shift();
@@ -138,16 +142,20 @@ public class Editor extends Sprite {
         actionsQueue.pop(); //the last value is always the same as current
         actionsQueue.pop();
         /*var caret:int = */actionsQueue.pop();
-        _editor.text = actionsQueue.pop();
+        _editorField.text = actionsQueue.pop();
 //        _editor.setSelection(caret, caret);
     }
 
     public function appendAtCaret(s:String):void {
-        _editor.appendAtCaret(s);
+        _editorField.appendAtCaret(s);
     }
 
     public function requestFocus():void {
-        stage.focus = _editor;
+        stage.focus = _editorField;
+    }
+
+    public function get editorField():EditorField {
+        return _editorField;
     }
 }
 }

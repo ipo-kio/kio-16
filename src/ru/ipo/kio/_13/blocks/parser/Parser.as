@@ -135,12 +135,19 @@ public class Parser {
 
     private function readLoop():Program {
         if (tokenType != TOKEN_NUMBER)
-            throw new ParseError(pos, token.length, loc.parse_errors.unexpected_token + " " + token);
+            throw new ParseError(pos, token.length, unexpectedTokenMessage());
         var n:int = parseInt(token);
 
         next();
 
         return new LoopProgram(readItem(), n);
+    }
+
+    private function unexpectedTokenMessage():String {
+        if (token == EOS)
+            return loc.parse_errors.unexpected_end;
+        else
+            return loc.parse_errors.unexpected_token + " " + token;
     }
 
     private function readItem():Program {
@@ -161,7 +168,7 @@ public class Parser {
                 next();
                 var seq:Program = readSequence();
                 if (token != ')')
-                    throw new ParseError(pos, token == null ? 0 : token.length, loc.parse_errors.close_bracket_expected + " " + token);
+                    throw new ParseError(pos, token == null ? 0 : token.length, loc.parse_errors.close_bracket_expected);
                 next();
                 return seq;
         }
@@ -169,7 +176,7 @@ public class Parser {
         if (tokenType == TOKEN_NUMBER)
             return readLoop();
 
-        throw new ParseError(pos, token == null ? 0 : token.length, loc.parse_errors.unexpected_token + " " + token);
+        throw new ParseError(pos, token == null ? 0 : token.length, unexpectedTokenMessage());
     }
 }
 }

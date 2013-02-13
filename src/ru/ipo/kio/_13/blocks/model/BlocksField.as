@@ -24,11 +24,12 @@ public class BlocksField extends EventDispatcher implements Executor {
     private var _takenBlock:Block;
     private var _boundary:int;
 
-    public function BlocksField(lines:int, cols:int, blocks:Array, boundary:int) {
+    public function BlocksField(lines:int, cols:int, blocks:Array, boundary:int, craneX:int) {
         _lines = lines;
         _cols = cols;
         _blocks = blocks;
         _boundary = boundary;
+        _craneX = craneX;
     }
 
     public function clone():BlocksField {
@@ -41,7 +42,7 @@ public class BlocksField extends EventDispatcher implements Executor {
             blocks.push(a);
         }
 
-        return new BlocksField(_lines, _cols, blocks, _boundary);
+        return new BlocksField(_lines, _cols, blocks, _boundary, _craneX);
     }
 
     public function get lines():int {
