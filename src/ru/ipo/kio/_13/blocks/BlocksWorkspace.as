@@ -34,7 +34,7 @@ public class BlocksWorkspace extends Sprite {
         graphics.endFill();
 
         _editor = new Editor(500, 90);
-        _editor.x = 0;
+        _editor.x = 20;
         _editor.y = 0;
         addChild(_editor);
 

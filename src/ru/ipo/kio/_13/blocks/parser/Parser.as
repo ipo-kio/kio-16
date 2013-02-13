@@ -153,17 +153,21 @@ public class Parser {
     private function readItem():Program {
         switch (token) {
             case 'L':
+                var cmd:Command = new Command(Command.LEFT, pos);
                 next();
-                return new Command(Command.LEFT, pos);
+                return cmd;
             case 'R':
+                cmd = new Command(Command.RIGHT, pos);
                 next();
-                return new Command(Command.RIGHT, pos);
+                return cmd;
             case 'P':
+                cmd = new Command(Command.PUT, pos);
                 next();
-                return new Command(Command.PUT, pos);
+                return cmd;
             case 'T':
+                cmd = new Command(Command.TAKE, pos);
                 next();
-                return new Command(Command.TAKE, pos);
+                return cmd;
             case '(': //just a brackets
                 next();
                 var seq:Program = readSequence();

@@ -66,6 +66,7 @@ public class BlocksField extends EventDispatcher implements Executor {
     }
 
     public function left():String {
+        trace('go left');
         if (_craneX == 0)
             return MOVE_FAILED;
         _craneX --;
@@ -76,6 +77,7 @@ public class BlocksField extends EventDispatcher implements Executor {
     }
 
     public function right():String {
+        trace('go right');
         if (_craneX == _cols - 1)
             return MOVE_FAILED;
         _craneX ++;
@@ -90,7 +92,7 @@ public class BlocksField extends EventDispatcher implements Executor {
             return MOVE_FAILED;
 
         var col:Array = getColumn(_craneX);
-        if (col.length >= 0)
+        if (col.length == 0)
             return MOVE_FAILED;
 
         _takenBlock = col.pop();

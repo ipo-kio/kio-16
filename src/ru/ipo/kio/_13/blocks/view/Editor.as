@@ -39,10 +39,11 @@ public class Editor extends Sprite {
 
         leftBracket = new SymbolSelector(_editorField, -1, 1, 0x888888);
         rightBracket = new SymbolSelector(_editorField, -1, 1, 0x888888);
-        highlight = new SymbolSelector(_editorField, -1, 2, 0x000088);
+        highlight = new SymbolSelector(_editorField, -1, 2, 0x000088, 0.3);
 
         addChild(leftBracket);
         addChild(rightBracket);
+        addChild(highlight);
 
         _editorField.addEventListener(Event.CHANGE, editor_changeHandler);
 

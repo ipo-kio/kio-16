@@ -96,10 +96,11 @@ public class BlocksDebugger extends EventDispatcher {
         try {
             _currentCommand.execute(_currentFiled);
 
-            _currentCommand = _iterator.next();
-
-            if (! _iterator.hasNext())
+            if (! _iterator.hasNext()) {
                 _state = STATE_FINISH;
+                _currentCommand = null; //not necessary but helpful for debugging
+            } else
+                _currentCommand = _iterator.next();
         } catch (e:ExecutionError) {
             _state = STATE_ERROR;
             _errorMessage = e.message;
@@ -114,7 +115,21 @@ public class BlocksDebugger extends EventDispatcher {
         if (! mayMoveBack())
             return;
 
-        _currentCommand.execute(_currentFiled, true);
+        switch (_state) {
+            case STATE_FINISH:
+                _iterator.prev();
+                _currentCommand = _iterator.next();
+                _currentCommand.execute(_currentFiled, true);
+                break;
+            case STATE_ERROR:
+                break;
+            case STATE_NORMAL:
+                _iterator.prev(); //should return the same as _currentCommand
+                _iterator.prev();
+                _currentCommand = _iterator.next();
+                _currentCommand.execute(_currentFiled, true);
+                break;
+        }
 
         _step --;
         _state = STATE_NORMAL;
@@ -139,7 +154,7 @@ public class BlocksDebugger extends EventDispatcher {
         _state = STATE_NORMAL;
         _currentCommand = _iterator.next();
 
-        step = 0;
+        this._step = 0;
 
         for (var i:int = 0; i < step; i++)
             if (mayMoveForward())

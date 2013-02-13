@@ -15,12 +15,14 @@ public class SymbolSelector extends Shape {
     private var _index:int;
     private var _thickness:Number;
     private var _color:uint;
+    private var _alpha:Number;
 
-    public function SymbolSelector(editor:EditorField, index:int, thickness:Number, color:uint) {
+    public function SymbolSelector(editor:EditorField, index:int, thickness:Number, color:uint, alpha:Number = 1) {
         _editor = editor;
         _index = index;
         _thickness = thickness;
         _color = color;
+        _alpha = alpha;
 
         _editor.addEventListener(Event.SCROLL, editor_scrollHandler);
 
@@ -89,8 +91,14 @@ public class SymbolSelector extends Shape {
         if (boundaries.y < 0 || boundaries.bottom > _editor.height)
             return;
 
-        graphics.lineStyle(_thickness, _color);
-        graphics.drawRect(boundaries.x - 2, boundaries.y, boundaries.width, boundaries.height);
+        if (_alpha == 1) {
+            graphics.lineStyle(_thickness, _color);
+            graphics.drawRect(boundaries.x - 2, boundaries.y, boundaries.width, boundaries.height);
+        } else {
+            graphics.beginFill(_color, _alpha);
+            graphics.drawRect(boundaries.x - 2, boundaries.y, boundaries.width + 2, boundaries.height);
+            graphics.endFill();
+        }
     }
 }
 }

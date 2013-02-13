@@ -44,7 +44,7 @@ class MyIterator implements ProgramIterator {
         this.prg = prg;
 
         ind = from_end ? prg.count - 1 : 0;
-        it = prg.getProgramIterator(from_end)
+        it = prg.program.getProgramIterator(from_end)
     }
 
     public function hasNext():Boolean {
