@@ -25,7 +25,7 @@ public class DebuggerView extends Sprite {
     private static const BLOCK_WIDTH:int = 70;
     private static const BLOCK_HEIGHT:int = 34;
 
-    private static const ANIMATION_STEPS:int = 30;
+    private static const ANIMATION_STEPS:int = 30; //must be even
 
     [Embed(source="../resources/field.png")]
     public static const FIELD_CLS:Class;
@@ -56,6 +56,7 @@ public class DebuggerView extends Sprite {
     private var animationAction:int;
     private var animationBlock:Block;
     private var animationX:int;
+    private var animationColHeight:int;
 
     public function DebuggerView(dbg:BlocksDebugger) {
         _dbg = dbg;
@@ -88,6 +89,7 @@ public class DebuggerView extends Sprite {
         animationAction = event.command;
         animationBlock = _dbg.currentField.takenBlock;
         animationX = _dbg.currentField.craneX;
+        animationColHeight = _dbg.currentField.getColumn(animationX).length;
 
         addEventListener(Event.ENTER_FRAME, enterFrameHandler);
     }
@@ -132,7 +134,7 @@ public class DebuggerView extends Sprite {
         g.endFill();
         g.lineStyle(3, 0);
         g.moveTo((x + 0.5) * BLOCK_WIDTH, 25);
-        var h:Number = 36 + len * 30; //74
+        var h:Number = 36 + len;
         g.lineTo((x + 0.5) * BLOCK_WIDTH, h);
 
         //horizontal
@@ -192,6 +194,26 @@ public class DebuggerView extends Sprite {
                 break;
             case Command.RIGHT:
                 drawCrane(animationX + animationStep / ANIMATION_STEPS, 0, animationBlock);
+                break;
+            case Command.TAKE:
+                var fld:BlocksField = _dbg.currentField;
+                var height:Number = 40 + BLOCK_HEIGHT * (fld.lines - animationColHeight);
+                if (animationStep < ANIMATION_STEPS / 2)
+                    drawCrane(animationX, animationStep * 2 * height / ANIMATION_STEPS, null);
+                else
+                    drawCrane(animationX, (ANIMATION_STEPS - animationStep) * 2 * height / ANIMATION_STEPS, fld.takenBlock);
+                if (animationStep == ANIMATION_STEPS / 2)
+                    redrawField();
+                break;
+            case Command.PUT:
+                fld = _dbg.currentField;
+                height = 40 + BLOCK_HEIGHT * (fld.lines - animationColHeight - 1);
+                if (animationStep < ANIMATION_STEPS / 2)
+                    drawCrane(animationX, animationStep * 2 * height / ANIMATION_STEPS, animationBlock);
+                else
+                    drawCrane(animationX, (ANIMATION_STEPS - animationStep) * 2 * height / ANIMATION_STEPS, null);
+                if (animationStep == ANIMATION_STEPS / 2)
+                    redrawField();
                 break;
         }
 
