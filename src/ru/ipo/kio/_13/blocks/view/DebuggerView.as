@@ -8,15 +8,15 @@ package ru.ipo.kio._13.blocks.view {
 import flash.display.BitmapData;
 import flash.display.Graphics;
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.geom.Matrix;
-import flash.utils.setInterval;
-import flash.utils.setTimeout;
 
 import ru.ipo.kio._13.blocks.model.Block;
 
 import ru.ipo.kio._13.blocks.model.BlocksDebugger;
 import ru.ipo.kio._13.blocks.model.BlocksField;
 import ru.ipo.kio._13.blocks.model.FieldChangeEvent;
+import ru.ipo.kio._13.blocks.parser.Command;
 
 public class DebuggerView extends Sprite {
 
@@ -24,6 +24,8 @@ public class DebuggerView extends Sprite {
     private static const BLOCKS_TOP:int = 80;
     private static const BLOCK_WIDTH:int = 70;
     private static const BLOCK_HEIGHT:int = 34;
+
+    private static const ANIMATION_STEPS:int = 30;
 
     [Embed(source="../resources/field.png")]
     public static const FIELD_CLS:Class;
@@ -49,6 +51,12 @@ public class DebuggerView extends Sprite {
     private var blocksLayer:Sprite = new Sprite();
     private var movingLayer:Sprite = new Sprite();
 
+    private var animating:Boolean = false;
+    private var animationStep:int = 0;
+    private var animationAction:int;
+    private var animationBlock:Block;
+    private var animationX:int;
+
     public function DebuggerView(dbg:BlocksDebugger) {
         _dbg = dbg;
 
@@ -66,17 +74,28 @@ public class DebuggerView extends Sprite {
     }
 
     private function startAnimation(event:FieldChangeEvent):void {
+        if (animating)
+            stopAnimation();
+
         if (! event.animationPhase) {
             redrawField();
             redrawCrane();
             return;
         }
 
-        trace('do animation');
+        animating = true;
+        animationStep = 0;
+        animationAction = event.command;
+        animationBlock = _dbg.currentField.takenBlock;
+        animationX = _dbg.currentField.craneX;
 
-        setTimeout(function ():void {
-            _dbg.animationFinished();
-        }, 1000);
+        addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+    }
+
+    private function stopAnimation():void {
+        removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+        animating = false;
+        _dbg.animationFinished();
     }
 
     private function drawBackground():void {
@@ -164,6 +183,22 @@ public class DebuggerView extends Sprite {
         g.beginBitmapFill(bmp, m);
         g.drawRect(x, y, bmp.width, bmp.height);
         g.endFill();
+    }
+
+    private function enterFrameHandler(event:Event):void {
+        switch (animationAction) {
+            case Command.LEFT:
+                drawCrane(animationX - animationStep / ANIMATION_STEPS, 0, animationBlock);
+                break;
+            case Command.RIGHT:
+                drawCrane(animationX + animationStep / ANIMATION_STEPS, 0, animationBlock);
+                break;
+        }
+
+        animationStep ++;
+
+        if (animationStep > ANIMATION_STEPS)
+            stopAnimation();
     }
 }
 }

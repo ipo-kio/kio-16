@@ -14,9 +14,9 @@ public class FieldChangeEvent extends Event {
 
     public static const FIELD_CHANGED:String = 'field changed';
     private var _animationPhase:Boolean;
-    private var _command:Command;
+    private var _command:int;
 
-    public function FieldChangeEvent(animationPhase:Boolean = false, command:Command = null) {
+    public function FieldChangeEvent(animationPhase:Boolean = false, command:int = -1) {
         super(FIELD_CHANGED);
         _animationPhase = animationPhase;
         _command = command;
@@ -27,7 +27,7 @@ public class FieldChangeEvent extends Event {
         return _animationPhase;
     }
 
-    public function get command():Command {
+    public function get command():int {
         return _command;
     }
 }

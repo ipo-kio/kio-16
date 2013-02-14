@@ -10,10 +10,15 @@ public interface Executor {
 
     //all function return null if there are no errors, or an error message
 
-    function left():String;
-    function right():String;
-    function take():String;
-    function put():String;
+    function mayLeft():String;
+    function mayRight():String;
+    function mayTake():String;
+    function mayPut():String;
+
+    function left():void;
+    function right():void;
+    function take():void;
+    function put():void;
 
 }
 }

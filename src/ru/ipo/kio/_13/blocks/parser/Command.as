@@ -5,6 +5,7 @@
  * Time: 22:57
  */
 package ru.ipo.kio._13.blocks.parser {
+import flash.errors.IllegalOperationError;
 
 public class Command implements Program {
 
@@ -21,25 +22,58 @@ public class Command implements Program {
         _position = position;
     }
 
-    public function execute(executor:Executor, backwards:Boolean = false):void {
-        var message:String = null;
+    public function mayExecute(executor:Executor, backwards:Boolean = false):String {
         switch (_command) {
             case LEFT:
-                message = backwards ? executor.right() : executor.left();
+                return backwards ? executor.mayRight() : executor.mayLeft();
                 break;
             case RIGHT:
-                message = backwards ? executor.left() : executor.right();
+                return backwards ? executor.mayLeft() : executor.mayRight();
                 break;
             case PUT:
-                message = backwards ? executor.take() : executor.put();
+                return backwards ? executor.mayTake() : executor.mayPut();
                 break;
             case TAKE:
-                message = backwards ? executor.put() : executor.take();
+                return backwards ? executor.mayPut() : executor.mayTake();
                 break;
         }
 
+        return null;
+    }
+
+    public function execute(executor:Executor, backwards:Boolean = false):void {
+        var message:String = mayExecute(executor, backwards);
+
         if (message != null)
             throw new ExecutionError(_position, message);
+
+        switch (_command) {
+            case LEFT:
+                if (backwards)
+                    executor.right();
+                else
+                    executor.left();
+                break;
+            case RIGHT:
+                if (backwards)
+                    executor.left();
+                else
+                    executor.right();
+                break;
+            case PUT:
+                if (backwards)
+                    executor.take();
+                else
+                    executor.put();
+                break;
+            case TAKE:
+                if (backwards)
+                    executor.put();
+                else
+                    executor.take();
+                break;
+        }
+
     }
 
     public function getProgramIterator(from_end:Boolean = false):ProgramIterator {
@@ -48,6 +82,24 @@ public class Command implements Program {
 
     public function get position():int {
         return _position;
+    }
+
+    public function get command():int {
+        return _command;
+    }
+
+    public function get invertedCommand():int {
+        switch (_command) {
+            case LEFT:
+                return RIGHT;
+            case RIGHT:
+                return LEFT;
+            case TAKE:
+                return PUT;
+            case PUT:
+                return TAKE;
+        }
+        throw IllegalOperationError('Can not invert unknown command');
     }
 }
 }

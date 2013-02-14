@@ -37,6 +37,8 @@ public class BlocksDebugger extends EventDispatcher {
     private var _program:Program = SequenceProgram.EMPTY_PROGRAM;
     private var _iterator:ProgramIterator = _program.getProgramIterator();
 
+    private var programIsRunning:Boolean = false;
+
     public function BlocksDebugger(initialField:BlocksField) {
         this.initialField = initialField;
 
@@ -92,17 +94,29 @@ public class BlocksDebugger extends EventDispatcher {
         return _errorMessage;
     }
 
+    public function ensureNotAnimated():void {
+        if (programIsRunning) {
+            programIsRunning = false;
+            animationFinished();
+        }
+    }
+
     public function stepForward(animation:Boolean = false):void {
-        if (! mayMoveForward())
+        if (!mayMoveForward())
             return;
 
+        var animationStarted:Boolean = false;
+
         try {
-            if (animation)
-                dispatchEvent(new FieldChangeEvent(true, _currentCommand));
+
+            if (animation && _currentCommand.mayExecute(_currentField) == null) {
+                dispatchEvent(new FieldChangeEvent(true, _currentCommand.command));
+                animationStarted = true;
+            }
 
             _currentCommand.execute(_currentField);
 
-            if (! _iterator.hasNext()) {
+            if (!_iterator.hasNext()) {
                 _state = STATE_FINISH;
                 _currentCommand = null; //not necessary but helpful for debugging
             } else
@@ -112,15 +126,19 @@ public class BlocksDebugger extends EventDispatcher {
             _errorMessage = e.message;
         }
 
-        _step ++;
+        _step++;
 
-        if (! animation)
+        if (! animationStarted)
             dispatchEvent(new FieldChangeEvent());
     }
 
     public function stepBack(animation:Boolean = false):void {
-        if (! mayMoveBack())
+        ensureNotAnimated();
+
+        if (!mayMoveBack())
             return;
+
+        var dispatchedAnimationEvent:Boolean = animation;
 
         switch (_state) {
             case STATE_FINISH:
@@ -128,12 +146,13 @@ public class BlocksDebugger extends EventDispatcher {
                 _currentCommand = _iterator.next();
 
                 if (animation)
-                    dispatchEvent(new FieldChangeEvent(true, _currentCommand));
+                    dispatchEvent(new FieldChangeEvent(true, _currentCommand.invertedCommand));
 
                 _currentCommand.execute(_currentField, true);
 
                 break;
             case STATE_ERROR:
+                dispatchedAnimationEvent = false;
                 break;
             case STATE_NORMAL:
                 _iterator.prev(); //should return the same as _currentCommand
@@ -141,29 +160,40 @@ public class BlocksDebugger extends EventDispatcher {
                 _currentCommand = _iterator.next();
 
                 if (animation)
-                    dispatchEvent(new FieldChangeEvent(true, _currentCommand));
+                    dispatchEvent(new FieldChangeEvent(true, _currentCommand.invertedCommand));
 
                 _currentCommand.execute(_currentField, true);
 
                 break;
         }
 
-        _step --;
+        _step--;
         _state = STATE_NORMAL;
 
-        if (! animation)
+        if (!dispatchedAnimationEvent)
             dispatchEvent(new FieldChangeEvent());
     }
 
     public function animationFinished():void {
-        dispatchEvent(new FieldChangeEvent());
+        if (programIsRunning) {
+            if (mayMoveForward()) {
+                dispatchEvent(new FieldChangeEvent());
+                stepForward(true);
+            } else {
+                programIsRunning = false;
+                dispatchEvent(new FieldChangeEvent());
+            }
+        } else
+            dispatchEvent(new FieldChangeEvent());
     }
 
     public function moveToStep(step:int):void {
+        ensureNotAnimated();
+
         _currentField = _initialField.clone();
         _iterator = _program.getProgramIterator();
 
-        if (! _iterator.hasNext()) {
+        if (!_iterator.hasNext()) {
             this._step = -1; //does not really matters
             _state = STATE_FINISH;
             _currentCommand = null;
@@ -186,6 +216,8 @@ public class BlocksDebugger extends EventDispatcher {
     }
 
     public function toEnd():void {
+        ensureNotAnimated();
+
         while (mayMoveForward() && _step < MAX_STEPS)
             stepForward();
 
@@ -194,6 +226,16 @@ public class BlocksDebugger extends EventDispatcher {
 
     private function changeHandler(event:Event):void {
         program = BlocksWorkspace.instance.editor.editorField.program;
+    }
+
+    public function go():void {
+        if (programIsRunning) {
+            programIsRunning = false;
+            animationFinished();
+        } else {
+            programIsRunning = true;
+            stepForward(true);
+        }
     }
 }
 }

@@ -7,7 +7,6 @@
  */
 package ru.ipo.kio._13.blocks.view {
 import flash.display.Sprite;
-import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
@@ -107,6 +106,7 @@ public class DebuggerControls extends Sprite {
                 _dbg.moveToStep(0);
                 break;
             case "+1":
+                _dbg.ensureNotAnimated();
                 _dbg.stepForward(true);
                 //do animation
                 break;
@@ -118,7 +118,7 @@ public class DebuggerControls extends Sprite {
                 _dbg.toEnd();
                 break;
             case "go":
-                //do animation
+                _dbg.go();
                 break;
         }
     }
