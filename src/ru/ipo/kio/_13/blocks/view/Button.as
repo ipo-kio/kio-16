@@ -6,6 +6,7 @@
  */
 package ru.ipo.kio._13.blocks.view {
 import flash.display.DisplayObject;
+import flash.display.Shape;
 import flash.display.SimpleButton;
 import flash.display.Sprite;
 import flash.text.TextField;
@@ -27,6 +28,8 @@ public class Button extends SimpleButton {
     private var _action:String;
     private static const TEXT_SIZE:int = 20;
 
+    private var grayer:Shape;
+
     public function Button(value:*, action:String) {
         //TODO report two super are not reported
         _action = action;
@@ -44,6 +47,14 @@ public class Button extends SimpleButton {
         super(up, over, down, up);
 
         useHandCursor = true;
+
+        //TODO warning, this is a copy paste
+        grayer = new Shape();
+        grayer.graphics.beginFill(0x888888, 0.75);
+        grayer.graphics.drawRect(0, 0, width + 1, height + 1);
+        grayer.graphics.endFill();
+        up.addChild(grayer);
+        grayer.visible = false;
     }
 
     public static function doSprite(do1:DisplayObject, do2:DisplayObject, dx:int = 0, dy:int = 0):Sprite {
@@ -75,6 +86,12 @@ public class Button extends SimpleButton {
 
     public function get action():String {
         return _action;
+    }
+
+    //TODO warning, this is a copy paste
+    override public function set enabled(value:Boolean):void {
+        super.enabled = value;
+        grayer.visible = ! enabled;
     }
 }
 }

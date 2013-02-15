@@ -11,7 +11,6 @@ import flash.display.Sprite;
 import flash.events.MouseEvent;
 
 import ru.ipo.kio._13.blocks.BlocksWorkspace;
-import ru.ipo.kio._13.blocks.model.BlocksDebugger;
 
 public class SoftKeyboard extends Sprite {
 
@@ -53,8 +52,8 @@ public class SoftKeyboard extends Sprite {
 
     public function SoftKeyboard(editor:Editor, simple:Boolean) {
         _editor = editor;
-        actionButtons.push(addButton(LEFT_CLS, 'left', X0, Y0));
-        actionButtons.push(addButton(RIGHT_CLS, 'right', X0 + DX, Y0));
+        actionButtons.push(addButton(LEFT_CLS, 'left', X0, Y0, true));
+        actionButtons.push(addButton(RIGHT_CLS, 'right', X0 + DX, Y0, true));
         actionButtons.push(addButton(TAKE_CLS, 'take', X0 + 2 * DX, Y0));
         actionButtons.push(addButton(PUT_CLS, 'put', X0 + 3 * DX, Y0));
 
@@ -63,18 +62,18 @@ public class SoftKeyboard extends Sprite {
             otherButtons.push(addButton(BR_LEFT_CLS, 'br left', X0 + 6 * DX, Y0));
             otherButtons.push(addButton(BR_RIGHT_CLS, 'br right', X0 + 7 * DX, Y0));
         }
-        otherButtons.push(addButton(UNDO_CLS, 'undo', X0 + 9 * DX, Y0));
+        otherButtons.push(addButton(UNDO_CLS, 'undo', X0 + 9 * DX, Y0, true));
 
         if (! simple)
             for (var i:int = 0; i < 10; i++)
                 otherButtons.push(addButton("" + i, "num" + i, X0 + i * DX, Y0 + DY));
     }
 
-    private function addButton(value:*, action:String, x:int, y:int):SimpleButton {
+    private function addButton(value:*, action:String, x:int, y:int, otherType:Boolean = false):SimpleButton {
         if (value is String)
-            var button:Button2 = new Button2(value, action, 40, 40, 20);
+            var button:SimpleButton = otherType ? new Button(value, action) : new Button2(value, action, 40, 40, 20);
         else
-            button = new Button2(value, action);
+            button = otherType ? new Button(value, action) : new Button2(value, action);
 
         button.x = x;
         button.y = y;
@@ -85,7 +84,7 @@ public class SoftKeyboard extends Sprite {
     }
 
     private function button_clickHandler(event:MouseEvent):void {
-        var action:String = Button2(event.target).action;
+        var action:String = event.target.action;
         var manual:Boolean = BlocksWorkspace.instance.manualRegime;
         switch (action) {
             case 'left':

@@ -114,7 +114,7 @@ public class DebuggerControls extends Sprite {
     }
 
     private function addButton(value:String, action:String, x:int, y:int):SimpleButton {
-        var button:Button2 = new Button2(value, action, BUTTON_WIDTH, BUTTON_HEIGHT, TEXT_SIZE);
+        var button:SimpleButton = new Button2(value, action, BUTTON_WIDTH, BUTTON_HEIGHT, TEXT_SIZE);
 
         button.x = x;
         button.y = y;
