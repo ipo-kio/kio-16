@@ -68,6 +68,10 @@ public class BlocksField extends EventDispatcher implements Executor {
         return _blocks[col];
     }
 
+    public function get boundary():int {
+        return _boundary;
+    }
+
     public function mayLeft():String {
         if (_craneX == 0)
             return loc.exec_errors.no_left;

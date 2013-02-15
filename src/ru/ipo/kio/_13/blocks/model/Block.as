@@ -19,6 +19,10 @@ public class Block {
         return _color;
     }
 
+    public function set color(value:int):void {
+        _color = value;
+    }
+
     public static function registerForbiddenPair(x:int, y:int):void {
         FORBIDDEN_ORDER.push([x, y]);
     }

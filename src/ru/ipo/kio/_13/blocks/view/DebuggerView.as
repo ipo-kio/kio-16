@@ -105,6 +105,16 @@ public class DebuggerView extends Sprite {
         graphics.beginBitmapFill(bmp);
         graphics.drawRect(0, 0, bmp.width, bmp.height);
         graphics.endFill();
+
+        graphics.lineStyle(1, 0x888888, 0.5);
+        for (var j:int = 0; j <= _dbg.currentField.cols; j++) {
+            graphics.moveTo(BLOCKS_LEFT + j * BLOCK_WIDTH, BLOCKS_TOP);
+            graphics.lineTo(BLOCKS_LEFT + j * BLOCK_WIDTH, BLOCKS_TOP + _dbg.currentField.lines * BLOCK_HEIGHT);
+        }
+        for (var i:int = 0; i <= _dbg.currentField.lines; i++) {
+            graphics.moveTo(BLOCKS_LEFT, BLOCKS_TOP + i * BLOCK_HEIGHT);
+            graphics.lineTo(BLOCKS_LEFT + _dbg.currentField.cols * BLOCK_WIDTH, BLOCKS_TOP + i * BLOCK_HEIGHT);
+        }
     }
 
     private function redrawField():void {

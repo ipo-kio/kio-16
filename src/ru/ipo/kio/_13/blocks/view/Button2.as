@@ -61,7 +61,7 @@ public class Button2 extends SimpleButton {
         grayer.graphics.beginFill(0x888888, 0.75);
         grayer.graphics.drawRect(0, 0, width + 1, height + 1);
         grayer.graphics.endFill();
-        addChild(grayer);
+        up.addChild(grayer);
         grayer.visible = false;
     }
 

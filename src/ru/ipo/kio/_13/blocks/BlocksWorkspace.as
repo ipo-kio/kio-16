@@ -6,11 +6,13 @@
  */
 package ru.ipo.kio._13.blocks {
 import flash.display.Sprite;
+import flash.events.Event;
 
 import ru.ipo.kio._13.blocks.model.Block;
 
 import ru.ipo.kio._13.blocks.model.BlocksDebugger;
 import ru.ipo.kio._13.blocks.model.BlocksField;
+import ru.ipo.kio._13.blocks.view.BlocksSelector;
 
 import ru.ipo.kio._13.blocks.view.DebuggerControls;
 import ru.ipo.kio._13.blocks.view.DebuggerView;
@@ -63,6 +65,17 @@ public class BlocksWorkspace extends Sprite {
 
         _editor.x = 2;
         _editor.y = _debuggerControls.y + _debuggerControls.height;
+
+        var blocksSelector:BlocksSelector = new BlocksSelector(field.lines, field.cols, field.boundary, 4);
+        blocksSelector.field = field;
+        blocksSelector.x = _editor.x + 780 - 320;
+        blocksSelector.y = 98 + _editor.y;
+
+        addChild(blocksSelector);
+
+        blocksSelector.addEventListener(Event.CHANGE, function(event:Event):void {
+            blocksDebugger.initialField = blocksSelector.field.clone();
+        })
     }
 
     public static function get instance():BlocksWorkspace {

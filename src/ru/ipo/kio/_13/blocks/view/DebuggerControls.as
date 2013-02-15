@@ -23,7 +23,7 @@ import ru.ipo.kio.api.KioApi;
 public class DebuggerControls extends Sprite {
 
     private static const BUTTON_WIDTH:int = 90;
-    private static const BUTTON_HEIGHT:int = 20;
+    private static const BUTTON_HEIGHT:int = 24;
     private static const TEXT_SIZE:int = 14;
     private static const BUTTON_H_SKIP:int = 4;
     private static const BUTTON_V_SKIP:int = 4;
@@ -55,7 +55,7 @@ public class DebuggerControls extends Sprite {
         addButton(loc.buttons.step_back, "-1", BUTTON_X0 + skip, BUTTON_Y0);
         addButton(loc.buttons.step_forward, "+1", BUTTON_X0 + 2 * skip, BUTTON_Y0);
         addButton(loc.buttons.to_end, "end", BUTTON_X0 + 3 * skip, BUTTON_Y0);
-        addStepsField(BUTTON_X0 + 4 * skip, BUTTON_Y0);
+        addStepsField(BUTTON_X0 + 4 * skip, BUTTON_Y0 + 4);
 
         goButton = addButton(loc.buttons.go, "go", BUTTON_X0 + 5 * skip, BUTTON_Y0);
         stopButton = addButton(loc.buttons.stop, "stop", BUTTON_X0 + 5 * skip, BUTTON_Y0);
