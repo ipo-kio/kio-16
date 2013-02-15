@@ -8,6 +8,7 @@ package ru.ipo.kio._13.blocks.view {
 import flash.display.DisplayObject;
 import flash.display.GradientType;
 import flash.display.Graphics;
+import flash.display.Shape;
 import flash.display.SimpleButton;
 import flash.display.Sprite;
 import flash.geom.Matrix;
@@ -29,6 +30,8 @@ public class Button2 extends SimpleButton {
 
     private static const BORDER_COLOR:uint = 0x444444;
     private static const INNER_BORDER_COLOR:uint = 0x888888;
+
+    private var grayer:Shape;
 
     public function Button2(value:*, action:String, width:int = 0, height:int = 0, textSize:int = 0) {
         //TODO report two super are not reported
@@ -53,6 +56,13 @@ public class Button2 extends SimpleButton {
         super(up, over, down, up);
 
         useHandCursor = true;
+
+        grayer = new Shape();
+        grayer.graphics.beginFill(0x888888, 0.75);
+        grayer.graphics.drawRect(0, 0, width + 1, height + 1);
+        grayer.graphics.endFill();
+        addChild(grayer);
+        grayer.visible = false;
     }
 
     private static function twoColoredButton(width:int, height:int, colorUp:uint, colorDown:uint):Sprite {
@@ -122,6 +132,11 @@ public class Button2 extends SimpleButton {
 
     public function get action():String {
         return _action;
+    }
+
+    override public function set enabled(value:Boolean):void {
+        super.enabled = value;
+        grayer.visible = ! enabled;
     }
 }
 }

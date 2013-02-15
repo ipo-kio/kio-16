@@ -37,7 +37,7 @@ public class BlocksDebugger extends EventDispatcher {
     private var _program:Program = SequenceProgram.EMPTY_PROGRAM;
     private var _iterator:ProgramIterator = _program.getProgramIterator();
 
-    private var programIsRunning:Boolean = false;
+    private var _programIsRunning:Boolean = false;
 
     public function BlocksDebugger(initialField:BlocksField) {
         this.initialField = initialField;
@@ -95,15 +95,17 @@ public class BlocksDebugger extends EventDispatcher {
     }
 
     public function ensureNotAnimated():void {
-        if (programIsRunning) {
-            programIsRunning = false;
+        if (_programIsRunning) {
+            _programIsRunning = false;
             animationFinished();
         }
     }
 
     public function stepForward(animation:Boolean = false):void {
-        if (!mayMoveForward())
+        if (!mayMoveForward()) {
+            ensureNotAnimated();
             return;
+        }
 
         var animationStarted:Boolean = false;
 
@@ -175,12 +177,12 @@ public class BlocksDebugger extends EventDispatcher {
     }
 
     public function animationFinished():void {
-        if (programIsRunning) {
+        if (_programIsRunning) {
             if (mayMoveForward()) {
                 dispatchEvent(new FieldChangeEvent());
                 stepForward(true);
             } else {
-                programIsRunning = false;
+                _programIsRunning = false;
                 dispatchEvent(new FieldChangeEvent());
             }
         } else
@@ -229,13 +231,17 @@ public class BlocksDebugger extends EventDispatcher {
     }
 
     public function go():void {
-        if (programIsRunning) {
-            programIsRunning = false;
-            animationFinished();
-        } else {
-            programIsRunning = true;
-            stepForward(true);
-        }
+        _programIsRunning = true;
+        stepForward(true);
+    }
+
+    public function stop():void {
+        _programIsRunning = false;
+        animationFinished();
+    }
+
+    public function get programIsRunning():Boolean {
+        return _programIsRunning;
     }
 }
 }

@@ -12,8 +12,8 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
-
-import ru.ipo.kio._13.blocks.parser.Program;
+import flash.text.TextField;
+import flash.text.TextFieldType;
 
 public class Editor extends Sprite {
 
@@ -27,6 +27,8 @@ public class Editor extends Sprite {
     private var actionsQueue:Array = ["", 0]; //Array of String
     private const MAX_ACTIONS_COUNT:int = 20;
 
+    private var _enabled:Boolean = true;
+
     public function Editor(width:int, height:int, simple:Boolean = false) {
         _editorField = new EditorField(width, height, simple);
         addChild(_editorField);
@@ -36,6 +38,10 @@ public class Editor extends Sprite {
         _scroll.scrollTarget = _editorField;
         _scroll.direction = "vertical";
         _scroll.move(width, 0);
+
+//        var d:* = this;
+//        d.graphics.lineStyle(2, 0xFF0000);
+//        d.graphics.drawRect(0, 0, d.width, d.height);
 
         leftBracket = new SymbolSelector(_editorField, -1, 1, 0x888888);
         rightBracket = new SymbolSelector(_editorField, -1, 1, 0x888888);
@@ -87,7 +93,7 @@ public class Editor extends Sprite {
                     right_bracket_ind = ind;
                     break;
                 }
-                ind ++;
+                ind++;
             }
         } else if (_editorField.text.charAt(caretIndex) == ')') {
             left_bracket_ind = -1;
@@ -104,7 +110,7 @@ public class Editor extends Sprite {
                     left_bracket_ind = ind;
                     break;
                 }
-                ind --;
+                ind--;
             }
         }
 
@@ -142,7 +148,8 @@ public class Editor extends Sprite {
             return;
         actionsQueue.pop(); //the last value is always the same as current
         actionsQueue.pop();
-        /*var caret:int = */actionsQueue.pop();
+        /*var caret:int = */
+        actionsQueue.pop();
         _editorField.text = actionsQueue.pop();
 //        _editor.setSelection(caret, caret);
     }
@@ -157,6 +164,17 @@ public class Editor extends Sprite {
 
     public function get editorField():EditorField {
         return _editorField;
+    }
+
+    public function get enabled():Boolean {
+        return _enabled;
+    }
+
+    public function set enabled(enabled:Boolean):void {
+        _enabled = enabled;
+
+        _keyboard.controlsRegime = !enabled;
+        _editorField.type = enabled ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
     }
 }
 }

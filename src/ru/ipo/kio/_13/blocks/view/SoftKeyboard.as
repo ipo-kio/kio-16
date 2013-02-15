@@ -6,8 +6,12 @@
  */
 package ru.ipo.kio._13.blocks.view {
 
+import flash.display.SimpleButton;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
+
+import ru.ipo.kio._13.blocks.BlocksWorkspace;
+import ru.ipo.kio._13.blocks.model.BlocksDebugger;
 
 public class SoftKeyboard extends Sprite {
 
@@ -35,32 +39,38 @@ public class SoftKeyboard extends Sprite {
     [Embed(source="../resources/undo.png")]
     public static const UNDO_CLS:Class;
 
-    public static const X0:int = 4;
+    public static const X0:int = 0;
     public static const Y0:int = 4;
     public static const DX:int = 44;
     public static const DY:int = 44;
 
+    private var actionButtons:Array = []; //of buttons
+    private var otherButtons:Array = []; //of buttons
+
     private var _editor:Editor;
+
+    private var _controlsRegime:Boolean = false;
 
     public function SoftKeyboard(editor:Editor, simple:Boolean) {
         _editor = editor;
-        addButton(LEFT_CLS, 'left', X0, Y0);
-        addButton(RIGHT_CLS, 'right', X0 + DX, Y0);
-        addButton(TAKE_CLS, 'take', X0 + 2 * DX, Y0);
-        addButton(PUT_CLS, 'put', X0 + 3 * DX, Y0);
-        addButton(SPACE_CLS, 'space', X0 + 5 * DX, Y0);
+        actionButtons.push(addButton(LEFT_CLS, 'left', X0, Y0));
+        actionButtons.push(addButton(RIGHT_CLS, 'right', X0 + DX, Y0));
+        actionButtons.push(addButton(TAKE_CLS, 'take', X0 + 2 * DX, Y0));
+        actionButtons.push(addButton(PUT_CLS, 'put', X0 + 3 * DX, Y0));
+
+        otherButtons.push(addButton(SPACE_CLS, 'space', X0 + 5 * DX, Y0));
         if (! simple) {
-            addButton(BR_LEFT_CLS, 'br left', X0 + 6 * DX, Y0);
-            addButton(BR_RIGHT_CLS, 'br right', X0 + 7 * DX, Y0);
+            otherButtons.push(addButton(BR_LEFT_CLS, 'br left', X0 + 6 * DX, Y0));
+            otherButtons.push(addButton(BR_RIGHT_CLS, 'br right', X0 + 7 * DX, Y0));
         }
-        addButton(UNDO_CLS, 'undo', X0 + 9 * DX, Y0);
+        otherButtons.push(addButton(UNDO_CLS, 'undo', X0 + 9 * DX, Y0));
 
         if (! simple)
             for (var i:int = 0; i < 10; i++)
-                addButton("" + i, "num" + i, X0 + i * DX, Y0 + DY);
+                otherButtons.push(addButton("" + i, "num" + i, X0 + i * DX, Y0 + DY));
     }
 
-    private function addButton(value:*, action:String, x:int, y:int):void {
+    private function addButton(value:*, action:String, x:int, y:int):SimpleButton {
         if (value is String)
             var button:Button2 = new Button2(value, action, 40, 40, 20);
         else
@@ -70,21 +80,32 @@ public class SoftKeyboard extends Sprite {
         button.y = y;
         addChild(button);
         button.addEventListener(MouseEvent.CLICK, button_clickHandler);
+
+        return button;
     }
 
     private function button_clickHandler(event:MouseEvent):void {
         var action:String = Button2(event.target).action;
+        var manual:Boolean = BlocksWorkspace.instance.manualRegime;
         switch (action) {
             case 'left':
+                 if (manual)
+                 {} else
                 _editor.appendAtCaret('L');
                 break;
             case 'right':
+                if (manual)
+                {} else
                 _editor.appendAtCaret('R');
                 break;
             case 'take':
+                if (manual)
+                {} else
                 _editor.appendAtCaret('T');
                 break;
             case 'put':
+                if (manual)
+                {} else
                 _editor.appendAtCaret('P');
                 break;
             case 'br left':
@@ -105,6 +126,19 @@ public class SoftKeyboard extends Sprite {
             _editor.appendAtCaret(action.substr(3)); //3 = num.length
 
         _editor.requestFocus();
+    }
+
+    public function get controlsRegime():Boolean {
+        return _controlsRegime;
+    }
+
+    public function set controlsRegime(value:Boolean):void {
+        _controlsRegime = value;
+
+        for each (var button:SimpleButton in otherButtons) {
+            button.enabled = ! _controlsRegime;
+            button.mouseEnabled = ! _controlsRegime;
+        }
     }
 }
 }

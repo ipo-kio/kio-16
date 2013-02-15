@@ -3,9 +3,9 @@
  * User: ilya
  * Date: 12.02.13
  * Time: 20:53
- * To change this template use File | Settings | File Templates.
  */
 package ru.ipo.kio._13.blocks.view {
+import flash.display.SimpleButton;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 import flash.text.TextField;
@@ -22,20 +22,30 @@ import ru.ipo.kio.api.KioApi;
 
 public class DebuggerControls extends Sprite {
 
-    private static const BUTTON_WIDTH:int = 80;
+    private static const BUTTON_WIDTH:int = 90;
     private static const BUTTON_HEIGHT:int = 20;
     private static const TEXT_SIZE:int = 14;
     private static const BUTTON_H_SKIP:int = 4;
     private static const BUTTON_V_SKIP:int = 4;
     private static const BUTTON_X0:int = 4;
     private static const BUTTON_Y0:int = 4;
-    private static const WIDTH:int = 500;
+    private static const WIDTH:int = 680 - 4;
 
     private var loc:Object = KioApi.getLocalization(BlocksProblem.ID);
 
     private var stepsField:TextField = new TextField();
     private var messageField:TextField = new TextField();
     private var _dbg:BlocksDebugger;
+
+    private var buttons:Array = [];
+
+    private var goButton:SimpleButton;
+    private var stopButton:SimpleButton;
+
+    private var manualButton:SimpleButton;
+    private var stopManualButton:SimpleButton;
+
+    private var _enabled:Boolean = true;
 
     function DebuggerControls(dbg:BlocksDebugger) {
         _dbg = dbg;
@@ -46,8 +56,21 @@ public class DebuggerControls extends Sprite {
         addButton(loc.buttons.step_forward, "+1", BUTTON_X0 + 2 * skip, BUTTON_Y0);
         addButton(loc.buttons.to_end, "end", BUTTON_X0 + 3 * skip, BUTTON_Y0);
         addStepsField(BUTTON_X0 + 4 * skip, BUTTON_Y0);
-        addButton(loc.buttons.go, "go", WIDTH - BUTTON_WIDTH, BUTTON_Y0);
+
+        goButton = addButton(loc.buttons.go, "go", BUTTON_X0 + 5 * skip, BUTTON_Y0);
+        stopButton = addButton(loc.buttons.stop, "stop", BUTTON_X0 + 5 * skip, BUTTON_Y0);
+
+        manualButton = addButton(loc.buttons.manual, "man", BUTTON_X0 + 6 * skip, BUTTON_Y0);
+        stopManualButton = addButton(loc.buttons.stop_manual, "stop man", BUTTON_X0 + 6 * skip, BUTTON_Y0);
+
+        //remove the two last buttons
+        buttons.pop();
+        buttons.pop();
+
         addMessageField(BUTTON_X0, BUTTON_Y0 + BUTTON_HEIGHT + BUTTON_V_SKIP);
+
+        stopButton.visible = false;
+        stopManualButton.visible = false;
 
         _dbg.addEventListener(FieldChangeEvent.FIELD_CHANGED, fieldChangedHandler);
 
@@ -90,13 +113,17 @@ public class DebuggerControls extends Sprite {
         addChild(messageField);
     }
 
-    private function addButton(value:String, action:String, x:int, y:int):void {
+    private function addButton(value:String, action:String, x:int, y:int):SimpleButton {
         var button:Button2 = new Button2(value, action, BUTTON_WIDTH, BUTTON_HEIGHT, TEXT_SIZE);
 
         button.x = x;
         button.y = y;
         addChild(button);
         button.addEventListener(MouseEvent.CLICK, button_clickHandler);
+
+        buttons.push(button);
+
+        return button;
     }
 
     private function button_clickHandler(event:MouseEvent):void {
@@ -118,7 +145,26 @@ public class DebuggerControls extends Sprite {
                 _dbg.toEnd();
                 break;
             case "go":
+                stopButton.visible = true;
+                goButton.visible = false;
                 _dbg.go();
+                break;
+            case "stop":
+                stopButton.visible = false;
+                goButton.visible = true;
+                _dbg.stop();
+                break;
+            case "man":
+                manualButton.visible = false;
+                stopManualButton.visible = true;
+
+                BlocksWorkspace.instance.manualRegime = true;
+                break;
+            case "stop man":
+                manualButton.visible = true;
+                stopManualButton.visible = false;
+
+                BlocksWorkspace.instance.manualRegime = false;
                 break;
         }
     }
@@ -152,6 +198,24 @@ public class DebuggerControls extends Sprite {
                 break;
             case BlocksDebugger.STATE_NORMAL:
                 setMessage(loc.msg.no_errors, false);
+        }
+
+        if (! _dbg.programIsRunning) {
+            stopButton.visible = false;
+            goButton.visible = true;
+        }
+    }
+
+    public function get enabled():Boolean {
+        return _enabled;
+    }
+
+    public function set enabled(value:Boolean):void {
+        _enabled = value;
+
+        for each (var button:SimpleButton in buttons) {
+            button.enabled = _enabled;
+            button.mouseEnabled = _enabled;
         }
     }
 }

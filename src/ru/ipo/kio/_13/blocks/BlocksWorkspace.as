@@ -24,6 +24,8 @@ public class BlocksWorkspace extends Sprite {
     private var _editor:Editor;
     private var _debuggerControls:DebuggerControls;
 
+    private var _manualRegime:Boolean = false;
+
     public function BlocksWorkspace() {
         if (_instance == null)
             _instance = this;
@@ -34,7 +36,7 @@ public class BlocksWorkspace extends Sprite {
         graphics.drawRect(0, 0, GlobalMetrics.WORKSPACE_WIDTH, GlobalMetrics.WORKSPACE_HEIGHT);
         graphics.endFill();
 
-        _editor = new Editor(500, 90);
+        _editor = new Editor(780 - 120, 90);
         addChild(_editor);
 
         var field:BlocksField = new BlocksField(4, 10, [
@@ -59,7 +61,7 @@ public class BlocksWorkspace extends Sprite {
         _debuggerControls.x = 0;
         _debuggerControls.y = dbgView.y + dbgView.height;
 
-        _editor.x = 20;
+        _editor.x = 2;
         _editor.y = _debuggerControls.y + _debuggerControls.height;
     }
 
@@ -74,6 +76,17 @@ public class BlocksWorkspace extends Sprite {
     public function currentResult():Object {  //TODO report does no error is reported if there is no return
         //TODO implement
         return null;
+    }
+
+    public function get manualRegime():Boolean {
+        return _manualRegime;
+    }
+
+    public function set manualRegime(manualRegime:Boolean):void {
+        _manualRegime = manualRegime;
+
+        _debuggerControls.enabled = !_manualRegime;
+        _editor.enabled = !_manualRegime;
     }
 }
 }
