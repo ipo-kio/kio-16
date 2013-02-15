@@ -29,7 +29,6 @@ public class DebuggerControls extends Sprite {
     private static const BUTTON_V_SKIP:int = 4;
     private static const BUTTON_X0:int = 4;
     private static const BUTTON_Y0:int = 4;
-    private static const WIDTH:int = 680 - 4;
 
     private var loc:Object = KioApi.getLocalization(BlocksProblem.ID);
 
@@ -45,7 +44,9 @@ public class DebuggerControls extends Sprite {
     private var manualButton:SimpleButton;
     private var stopManualButton:SimpleButton;
 
-    private var _enabled:Boolean = true;
+    private var _manualRegime:Boolean = true;
+
+    private static const api:KioApi = KioApi.instance(BlocksProblem.ID);
 
     function DebuggerControls(dbg:BlocksDebugger) {
         _dbg = dbg;
@@ -128,6 +129,9 @@ public class DebuggerControls extends Sprite {
 
     private function button_clickHandler(event:MouseEvent):void {
         var action:String = Button2(event.target).action;
+
+        api.log('debug controls ' + action);
+
         switch (action) {
             case "start":
                 _dbg.moveToStep(0);
@@ -155,6 +159,8 @@ public class DebuggerControls extends Sprite {
                 _dbg.stop();
                 break;
             case "man":
+                _dbg.ensureNotAnimated();
+
                 manualButton.visible = false;
                 stopManualButton.visible = true;
 
@@ -206,16 +212,16 @@ public class DebuggerControls extends Sprite {
         }
     }
 
-    public function get enabled():Boolean {
-        return _enabled;
+    public function get manualRegime():Boolean {
+        return _manualRegime;
     }
 
-    public function set enabled(value:Boolean):void {
-        _enabled = value;
+    public function set manualRegime(value:Boolean):void {
+        _manualRegime = value;
 
         for each (var button:SimpleButton in buttons) {
-            button.enabled = _enabled;
-            button.mouseEnabled = _enabled;
+            button.enabled = _manualRegime;
+            button.mouseEnabled = _manualRegime;
         }
     }
 }

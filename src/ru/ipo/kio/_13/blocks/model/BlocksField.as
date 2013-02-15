@@ -41,7 +41,7 @@ public class BlocksField extends EventDispatcher implements Executor {
         for each (var col:Array in _blocks) {
             var a:Array = [];
             for each (var block:Block in col)
-                a.push(block);
+                a.push(new Block(block.color));
             blocks.push(a);
         }
 

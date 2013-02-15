@@ -22,6 +22,8 @@ import ru.ipo.kio.base.GlobalMetrics;
 
 public class BlocksWorkspace extends Sprite {
 
+    public static const MANUAL_REGIME_EVENT:String = 'manual regime';
+
     private static var _instance:BlocksWorkspace = null;
     private var _editor:Editor;
     private var _debuggerControls:DebuggerControls;
@@ -98,8 +100,10 @@ public class BlocksWorkspace extends Sprite {
     public function set manualRegime(manualRegime:Boolean):void {
         _manualRegime = manualRegime;
 
-        _debuggerControls.enabled = !_manualRegime;
+        _debuggerControls.manualRegime = !_manualRegime;
         _editor.enabled = !_manualRegime;
+
+        dispatchEvent(new Event(MANUAL_REGIME_EVENT));
     }
 }
 }

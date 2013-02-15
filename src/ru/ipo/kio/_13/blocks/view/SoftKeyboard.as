@@ -10,7 +10,12 @@ import flash.display.SimpleButton;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 
+import ru.ipo.kio._13.blocks.BlocksProblem;
+
 import ru.ipo.kio._13.blocks.BlocksWorkspace;
+import ru.ipo.kio._13.blocks.model.FieldChangeEvent;
+import ru.ipo.kio._13.blocks.parser.Command;
+import ru.ipo.kio.api.KioApi;
 
 public class SoftKeyboard extends Sprite {
 
@@ -50,6 +55,8 @@ public class SoftKeyboard extends Sprite {
 
     private var _controlsRegime:Boolean = false;
 
+    private static const api:KioApi = KioApi.instance(BlocksProblem.ID);
+
     public function SoftKeyboard(editor:Editor, simple:Boolean) {
         _editor = editor;
         actionButtons.push(addButton(LEFT_CLS, 'left', X0, Y0, true));
@@ -86,26 +93,33 @@ public class SoftKeyboard extends Sprite {
     private function button_clickHandler(event:MouseEvent):void {
         var action:String = event.target.action;
         var manual:Boolean = BlocksWorkspace.instance.manualRegime;
+
+        api.log('button ' + action + (manual ? ' manual' : ''));
+
         switch (action) {
             case 'left':
                  if (manual)
-                 {} else
-                _editor.appendAtCaret('L');
+                    _editor.dispatchEvent(new FieldChangeEvent(true, Command.LEFT));
+                 else
+                     _editor.appendAtCaret('L');
                 break;
             case 'right':
                 if (manual)
-                {} else
-                _editor.appendAtCaret('R');
+                    _editor.dispatchEvent(new FieldChangeEvent(true, Command.RIGHT));
+                else
+                    _editor.appendAtCaret('R');
                 break;
             case 'take':
                 if (manual)
-                {} else
-                _editor.appendAtCaret('T');
+                    _editor.dispatchEvent(new FieldChangeEvent(true, Command.TAKE));
+                else
+                    _editor.appendAtCaret('T');
                 break;
             case 'put':
                 if (manual)
-                {} else
-                _editor.appendAtCaret('P');
+                    _editor.dispatchEvent(new FieldChangeEvent(true, Command.PUT));
+                else
+                    _editor.appendAtCaret('P');
                 break;
             case 'br left':
                 _editor.appendAtCaret('(');

@@ -11,6 +11,10 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Matrix;
 
+import mx.core.BitmapAsset;
+
+import ru.ipo.kio._13.blocks.BlocksWorkspace;
+
 import ru.ipo.kio._13.blocks.model.Block;
 
 import ru.ipo.kio._13.blocks.model.BlocksDebugger;
@@ -32,19 +36,19 @@ public class DebuggerView extends Sprite {
 
     [Embed(source="../resources/block1.png")]
     public static const BLOCK_1_CLS:Class;
-    public static const BLOCK_1_IMG:BitmapData = (new BLOCK_1_CLS).bitmapData;
+    public static const BLOCK_1_IMG:BitmapData = (new BLOCK_1_CLS as BitmapAsset).bitmapData;
 
     [Embed(source="../resources/block2.png")]
     public static const BLOCK_2_CLS:Class;
-    public static const BLOCK_2_IMG:BitmapData = (new BLOCK_2_CLS).bitmapData;
+    public static const BLOCK_2_IMG:BitmapData = (new BLOCK_2_CLS as BitmapAsset).bitmapData;
 
     [Embed(source="../resources/block3.png")]
     public static const BLOCK_3_CLS:Class;
-    public static const BLOCK_3_IMG:BitmapData = (new BLOCK_3_CLS).bitmapData;
+    public static const BLOCK_3_IMG:BitmapData = (new BLOCK_3_CLS as BitmapAsset).bitmapData;
 
     [Embed(source="../resources/block4.png")]
     public static const BLOCK_4_CLS:Class;
-    public static const BLOCK_4_IMG:BitmapData = (new BLOCK_4_CLS).bitmapData;
+    public static const BLOCK_4_IMG:BitmapData = (new BLOCK_4_CLS as BitmapAsset).bitmapData;
 
     private var _dbg:BlocksDebugger;
 
@@ -57,6 +61,9 @@ public class DebuggerView extends Sprite {
     private var animationBlock:Block;
     private var animationX:int;
     private var animationColHeight:int;
+
+    private var manualRegime:Boolean = false;
+    private var manualField:BlocksField;
 
     public function DebuggerView(dbg:BlocksDebugger) {
         _dbg = dbg;
@@ -72,13 +79,20 @@ public class DebuggerView extends Sprite {
         addChild(movingLayer);
 
         _dbg.addEventListener(FieldChangeEvent.FIELD_CHANGED, startAnimation);
+        var workspace:BlocksWorkspace = BlocksWorkspace.instance;
+        workspace.addEventListener(BlocksWorkspace.MANUAL_REGIME_EVENT, manualRegimeChangeHandler);
+        workspace.editor.addEventListener(FieldChangeEvent.FIELD_CHANGED, startAnimation); //fired in manual regime
+    }
+
+    private function getField():BlocksField {
+        return manualRegime ? manualField : _dbg.currentField;
     }
 
     private function startAnimation(event:FieldChangeEvent):void {
         if (animating)
             stopAnimation();
 
-        if (! event.animationPhase) {
+        if (!event.animationPhase) {
             redrawField();
             redrawCrane();
             return;
@@ -87,9 +101,18 @@ public class DebuggerView extends Sprite {
         animating = true;
         animationStep = 0;
         animationAction = event.command;
-        animationBlock = _dbg.currentField.takenBlock;
-        animationX = _dbg.currentField.craneX;
-        animationColHeight = _dbg.currentField.getColumn(animationX).length;
+        animationBlock = getField().takenBlock;
+        animationX = getField().craneX;
+        animationColHeight = getField().getColumn(animationX).length;
+
+        if (manualRegime)
+            try {
+                var manualCommand:Command = new Command(event.command, -1);
+                manualCommand.execute(getField());
+            } catch (e:Error) {
+                stopAnimation();
+                return;
+            }
 
         addEventListener(Event.ENTER_FRAME, enterFrameHandler);
     }
@@ -107,22 +130,22 @@ public class DebuggerView extends Sprite {
         graphics.endFill();
 
         graphics.lineStyle(1, 0x888888, 0.5);
-        for (var j:int = 0; j <= _dbg.currentField.cols; j++) {
+        for (var j:int = 0; j <= getField().cols; j++) {
             graphics.moveTo(BLOCKS_LEFT + j * BLOCK_WIDTH, BLOCKS_TOP);
-            graphics.lineTo(BLOCKS_LEFT + j * BLOCK_WIDTH, BLOCKS_TOP + _dbg.currentField.lines * BLOCK_HEIGHT);
+            graphics.lineTo(BLOCKS_LEFT + j * BLOCK_WIDTH, BLOCKS_TOP + getField().lines * BLOCK_HEIGHT);
         }
-        for (var i:int = 0; i <= _dbg.currentField.lines; i++) {
+        for (var i:int = 0; i <= getField().lines; i++) {
             graphics.moveTo(BLOCKS_LEFT, BLOCKS_TOP + i * BLOCK_HEIGHT);
-            graphics.lineTo(BLOCKS_LEFT + _dbg.currentField.cols * BLOCK_WIDTH, BLOCKS_TOP + i * BLOCK_HEIGHT);
+            graphics.lineTo(BLOCKS_LEFT + getField().cols * BLOCK_WIDTH, BLOCKS_TOP + i * BLOCK_HEIGHT);
         }
     }
 
     private function redrawField():void {
         var g:Graphics = blocksLayer.graphics;
         g.clear();
-        var fld:BlocksField = _dbg.currentField;
+        var fld:BlocksField = getField();
 
-        for (var col:int = 0; col < fld.cols; col ++) {
+        for (var col:int = 0; col < fld.cols; col++) {
             var c:Array = fld.getColumn(col);
             for (var line:int = 0; line < c.length; line++) {
                 var block:Block = c[line];
@@ -132,7 +155,7 @@ public class DebuggerView extends Sprite {
     }
 
     private function redrawCrane():void {
-        var fld:BlocksField = _dbg.currentField;
+        var fld:BlocksField = getField();
         drawCrane(fld.craneX, 0, fld.takenBlock);
     }
 
@@ -206,7 +229,7 @@ public class DebuggerView extends Sprite {
                 drawCrane(animationX + animationStep / ANIMATION_STEPS, 0, animationBlock);
                 break;
             case Command.TAKE:
-                var fld:BlocksField = _dbg.currentField;
+                var fld:BlocksField = getField();
                 var height:Number = 40 + BLOCK_HEIGHT * (fld.lines - animationColHeight);
                 if (animationStep < ANIMATION_STEPS / 2)
                     drawCrane(animationX, animationStep * 2 * height / ANIMATION_STEPS, null);
@@ -216,7 +239,7 @@ public class DebuggerView extends Sprite {
                     redrawField();
                 break;
             case Command.PUT:
-                fld = _dbg.currentField;
+                fld = getField();
                 height = 40 + BLOCK_HEIGHT * (fld.lines - animationColHeight - 1);
                 if (animationStep < ANIMATION_STEPS / 2)
                     drawCrane(animationX, animationStep * 2 * height / ANIMATION_STEPS, animationBlock);
@@ -227,10 +250,32 @@ public class DebuggerView extends Sprite {
                 break;
         }
 
-        animationStep ++;
+        animationStep++;
 
         if (animationStep > ANIMATION_STEPS)
             stopAnimation();
+    }
+
+    private function startManualRegime(field:BlocksField):void {
+        manualField = field;
+        manualRegime = true;
+
+        redrawField();
+        redrawCrane();
+    }
+
+    private function stopManualRegime():void {
+        manualRegime = false;
+
+        stopAnimation();
+    }
+
+    private function manualRegimeChangeHandler(event:Event):void {
+        var workspace:BlocksWorkspace = BlocksWorkspace.instance;
+        if (workspace.manualRegime)
+            startManualRegime(_dbg.currentField.clone());
+        else
+            stopManualRegime();
     }
 }
 }

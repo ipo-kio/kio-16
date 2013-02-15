@@ -12,8 +12,11 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
-import flash.text.TextField;
 import flash.text.TextFieldType;
+
+import ru.ipo.kio._13.blocks.BlocksProblem;
+
+import ru.ipo.kio.api.KioApi;
 
 public class Editor extends Sprite {
 
@@ -25,9 +28,11 @@ public class Editor extends Sprite {
     private var highlight:SymbolSelector = null;
 
     private var actionsQueue:Array = ["", 0]; //Array of String
-    private const MAX_ACTIONS_COUNT:int = 20;
+    private const MAX_ACTIONS_COUNT:int = 100;
 
     private var _enabled:Boolean = true;
+
+    private static const api:KioApi = KioApi.instance(BlocksProblem.ID);
 
     public function Editor(width:int, height:int, simple:Boolean = false) {
         _editorField = new EditorField(width, height, simple);
@@ -65,6 +70,9 @@ public class Editor extends Sprite {
     }
 
     private function caretMovedHandler(event:Event):void {
+        if (event instanceof KeyboardEvent)
+            api.log('key in editor pressed');
+
         var caretIndex:int = _editorField.caretIndex - 1;
 
         var text:String = _editorField.text;
