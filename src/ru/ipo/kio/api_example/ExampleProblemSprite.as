@@ -80,11 +80,12 @@ public class ExampleProblemSprite extends Sprite {
 
         //вешаем на кнопки события, чтобы логгировать нажатия на кнопки
         textButton.addEventListener(MouseEvent.CLICK, function(event:MouseEvent):void {
-            api.log('button 1 pressed');
+            api.log('button 1 pressed @iIbBt', -123, 3000000000, 200, 200, 'aфывафыва');
+            api.log('button 1 pressed extra log');
         });
 
         gButton.addEventListener(MouseEvent.CLICK, function(event:MouseEvent):void {
-            api.log('button 2 pressed');
+            api.log('button 2 pressed @sSsS', -10000, 40000, 40000, -10000);
         });
     }
 
