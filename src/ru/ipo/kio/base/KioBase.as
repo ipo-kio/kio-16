@@ -346,10 +346,14 @@ public class KioBase {
 
         //log extra arguments if any
         var spec:String = getLogSpecification(msg);
+        var specFail:String = null;
         if (spec != null)
-            writeSpec(log, spec, extraArguments);
+            specFail = writeSpec(log, spec, extraArguments);
 
         logger.last_log_time = passed;
+
+        if (specFail != null)
+            throw new IllegalOperationError(specFail);
     }
 
     private static function getLogSpecification(msg:String):String {
@@ -360,13 +364,20 @@ public class KioBase {
             return null;
     }
 
-    private static function writeSpec(log:ByteArray, spec:String, arguments:Array):void {
+    private static function writeSpec(log:ByteArray, spec:String, arguments:Array):String {
+        var fail:String = null;
+
         if (spec.length != arguments.length)
-            throw new IllegalOperationError("Can not write to log, spec and arguments sizes do not match");
+            fail = "Spec and arguments sizes do not match";
 
         for (var i:int = 0; i < spec.length; i++) {
             var sp:String = spec.charAt(i);
-            var arg:* = arguments[i];
+            var arg:*;
+            if (i >= arguments.length)
+                arg = sp == 't' ? '' : 0;
+            else
+                arg = arguments[i];
+
             switch (sp) {
                 case 'i':
                     log.writeInt(arg);
@@ -386,9 +397,11 @@ public class KioBase {
                     log.writeUTF(arg);
                     break;
                 default:
-                    throw new IllegalOperationError("Unknown specifier " + sp + " in the log specification");
+                    fail = "Unknown specifier " + sp + " in the log specification";
             }
         }
+
+        return fail;
     }
 
     private function writeCommandToLog(msg:String):void {
@@ -501,8 +514,6 @@ public class KioBase {
                 case 't':
                     result.push(data.readUTF());
                     break;
-                default:
-                    throw new IllegalOperationError("Unknown specifier " + spec.charAt(i) + " in the log specification");
             }
 
         return result;
