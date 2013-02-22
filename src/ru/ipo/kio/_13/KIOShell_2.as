@@ -19,7 +19,7 @@ public class KIOShell_2 extends Sprite {
 
     private var _level:int;
 
-    public function KIOShell_0() {
+    public function KIOShell_2() {
         KioApi.language = KioApi.L_RU;
         _level = 2;
 
