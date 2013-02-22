@@ -9,6 +9,8 @@ import ru.ipo.kio._13.cut.model.ColoredPoly;
 
 import ru.ipo.kio._13.cut.model.Cut;
 import ru.ipo.kio._13.cut.model.CutsField;
+import ru.ipo.kio._13.cut.model.FieldCords;
+import ru.ipo.kio._13.cut.model.Piece;
 import ru.ipo.kio._13.cut.model.PiecesField;
 import ru.ipo.kio._13.cut.view.CutPieceFieldView;
 import ru.ipo.kio._13.cut.view.InfoPanel;
@@ -40,6 +42,8 @@ public class CutWorkspace extends Sprite {
 
     private var field:CutPieceFieldView;
     private var cutControls:CutControls;
+
+    private var loadingProcess:Boolean = false;
 
     private static const api:KioApi = KioApi.instance(CutProblem.ID);
 
@@ -85,8 +89,11 @@ public class CutWorkspace extends Sprite {
         infoPanel.setValue(CutControls.POLYS_IND, result.polys);
         infoPanel.setValue(CutControls.PIECES_IND, result.pieces);
 
-        if (!isRecord)
+        if (!isRecord) {
             api.submitResult(result);
+            if (! loadingProcess)
+                api.autoSaveSolution();
+        }
     }
 
     public function currentResult():Object {
@@ -124,7 +131,42 @@ public class CutWorkspace extends Sprite {
     }
 
     public function get solution():Object {
-        return {};
+        //get pieces
+        var pieces:Array = []; //TODO report it thinks contents of this array is never read
+        for each (var piece:Piece in field.piecesField.pieces) {
+            var block:FieldCords = piece.blocks[0];
+            pieces.push([block.x, block.y]);
+        }
+
+        //get cuts
+        var cuts:Array = [];
+        for each (var cut:Cut in field.cuts)
+            cuts.push([cut.p1.x, cut.p1.y, cut.p2.x, cut.p2.y]);
+
+        return {
+            pieces: pieces,
+            cuts: cuts
+        };
+    }
+
+    public function load(solution:Object):Boolean {
+        if (solution == null)
+            return true;
+
+        try {
+            loadingProcess = true; //don't save while loading
+
+            field.cutsRegime = false;
+            field.piecesField.loadPieces(solution.pieces);
+            field.loadCuts(solution.cuts);
+            field.cutsRegime = true;
+        } catch (e:Error) {
+            return false;
+        } finally {
+            loadingProcess = false;
+        }
+
+        return true;
     }
 }
 

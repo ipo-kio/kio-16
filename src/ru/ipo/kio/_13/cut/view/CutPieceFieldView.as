@@ -55,6 +55,10 @@ public class CutPieceFieldView extends Sprite {
         return _cutsField;
     }
 
+    public function get cuts():Array {
+        return _cuts;
+    }
+
     /**
      * returns array of error messages with the empty array if there are no errors
      */
@@ -131,6 +135,15 @@ public class CutPieceFieldView extends Sprite {
 
     public function get numPolys():int {
         return _cutsField == null ? 0 : _cutsField.polygons.length;
+    }
+
+    public function loadCuts(cuts:Array):void {
+        for (var i:int = 0; i < cuts.length; i++) {
+            var cutCords:Array = cuts[i];
+            var cut:Cut = _cuts[i];
+            cut.p1 = new FieldCords(cutCords[0], cutCords[1]);
+            cut.p2 = new FieldCords(cutCords[2], cutCords[3]);
+        }
     }
 }
 }

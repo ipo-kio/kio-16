@@ -52,15 +52,13 @@ public class CutProblem implements KioProblem {
     }
 
     public function loadSolution(solution:Object):Boolean {
-        if (solution.txt) {
-            //TODO load
-
-            KioApi.instance(ID).autoSaveSolution();
-            _workspace.updateCurrentResult();
-
-            return true;
-        } else
+        if (! _workspace.load(solution))
             return false;
+
+        KioApi.instance(ID).autoSaveSolution();
+        _workspace.updateCurrentResult();
+
+        return true;
     }
 
     public function check(solution:Object):Object {
