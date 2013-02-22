@@ -42,7 +42,7 @@ public class TransferGearViewSide extends BasicView {
     
     private var _addSprite:Sprite = new Sprite();
 
-    public function TransferGearViewSide(transferGear:TransferGear, second=false) {
+    public function TransferGearViewSide(transferGear:TransferGear, second:Boolean=false) {
         _transferGear=transferGear;
         _second = second;
 
@@ -63,17 +63,17 @@ public class TransferGearViewSide extends BasicView {
             
             addChild(_addSprite);
 
-            _addSprite.addEventListener(MouseEvent.ROLL_OVER, function(e:Event){
+            _addSprite.addEventListener(MouseEvent.ROLL_OVER, function(e:Event):void{
                 _activeSprite = true;
                 redrawSprite();
             });
 
-            _addSprite.addEventListener(MouseEvent.ROLL_OUT, function(e:Event){
+            _addSprite.addEventListener(MouseEvent.ROLL_OUT, function(e:Event):void{
                 _activeSprite = false;
                 redrawSprite();
             });
 
-            _addSprite.addEventListener(MouseEvent.MOUSE_DOWN, function(e:Event){
+            _addSprite.addEventListener(MouseEvent.MOUSE_DOWN, function(e:Event):void{
                 TransmissionMechanism.instance.addTransferGearAfter(transferGear);
             });
         }
@@ -243,7 +243,7 @@ public class TransferGearViewSide extends BasicView {
         if(_activeSprite){
             _addSprite.graphics.lineStyle(2, 0x768ea1, 1);
         }else{
-            _addSprite.graphics.lineStyle(2, 0x768ea1, 0,2);
+            _addSprite.graphics.lineStyle(2, 0x768ea1, 0);
         }
 
         _addSprite.graphics.moveTo(-10, startY+2);

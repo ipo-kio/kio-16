@@ -1,9 +1,14 @@
 /**
+ * Бин для хранения настроек приложения
+ *
+ * Содержит настройки для отладки, специфицеские настройки для уровней хранятся в _levelImpl
  *
  * @author: Vasiliy
  * @date: 08.01.13
  */
 package ru.ipo.kio._13.clock.model {
+import ru.ipo.kio._13.clock.model.level.ITaskLevel;
+
 public class SettingsHolder {
     
     public static const DOWN_TO_UP:int = 0;
@@ -21,6 +26,8 @@ public class SettingsHolder {
     private var _maxDiv:Number=3;
 
     private var _direction:int = UP_TO_DOWN;
+    
+    private var _levelImpl:ITaskLevel;
     
     public static function get instance():SettingsHolder {
         if(SettingsHolder._instance == null)
@@ -72,6 +79,21 @@ public class SettingsHolder {
     public function set maxDiv(value:Number):void {
         _maxDiv = value;
     }
+
+    public function get levelImpl():ITaskLevel {
+        if(_levelImpl==null){
+            throw new Error("level implementation isn't registered");
+        }
+        return _levelImpl;
+    }
+    
+    public function registerLevelImpl(levelImpl:ITaskLevel):void{
+        if(_levelImpl!=null){
+            throw new Error("level implementation is already registered");
+        }
+        _levelImpl = levelImpl;
+    }
+    
 }
 }
 

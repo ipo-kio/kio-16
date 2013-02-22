@@ -8,9 +8,9 @@ import flash.geom.Point;
 
 public class MathUtils {
 
-    public static var SIMPLE_NUMBERS = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
+    public static const SIMPLE_NUMBERS:Array = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
 
-    public function MathUtils() {
+    public function MathUtils(pvt:PrivateClass) {
     }
 
     public static function rotate(point:Point, alpha:Number):Point{
@@ -21,4 +21,9 @@ public class MathUtils {
         return Math.pow(Math.pow(x-x2,2)+Math.pow(y-y2,2),0.5);
     }
 }
+}
+
+internal class PrivateClass{
+    public function PrivateClass(){
+    }
 }

@@ -93,7 +93,8 @@ public class TransferGearView extends BasicView {
             _shiftX= e.localX;
             _shiftY= e.localY;
             //if(!transferGear.isFirst()){
-                startDrag(false, new Rectangle(50,30,600,360));
+                startDrag(false, new Rectangle(transferGear.getRadius()+5,transferGear.getRadius(),
+                        675-transferGear.getRadius()*2,400-transferGear.getRadius()*2));
             //}
 
         });
@@ -105,6 +106,19 @@ public class TransferGearView extends BasicView {
             var center:Point = new Point(e.stageX-parent.x-parent.parent.x,  e.stageY-parent.parent.y);
             transferGear.x = center.x-_shiftX;
             transferGear.y = center.y-_shiftY;
+            if(transferGear.x<transferGear.getRadius()+5){
+                transferGear.x = transferGear.getRadius()+5;
+            }
+            if(transferGear.y<transferGear.getRadius()){
+                transferGear.y = transferGear.getRadius();
+            }
+            if(transferGear.x>transferGear.getRadius()+5+675-transferGear.getRadius()*2){
+                transferGear.x = transferGear.getRadius()+5+675-transferGear.getRadius()*2;
+            }
+            if(transferGear.y>transferGear.getRadius()+400-transferGear.getRadius()*2){
+                transferGear.y = transferGear.getRadius()+400-transferGear.getRadius()*2;
+            }
+
             transferGear.isMove=false;
             //if(!transferGear.isFirst()){
                 stopDrag();

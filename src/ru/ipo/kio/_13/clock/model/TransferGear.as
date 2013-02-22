@@ -181,7 +181,7 @@ public class TransferGear {
     }
     
     public function updateConflict():void{
-        for(var i=0; i<transmissionMechanism.transferGearList.length; i++){
+        for(var i:int=0; i<transmissionMechanism.transferGearList.length; i++){
             var tg:TransferGear = transmissionMechanism.transferGearList[i];
             if(tg == this){
                 continue;

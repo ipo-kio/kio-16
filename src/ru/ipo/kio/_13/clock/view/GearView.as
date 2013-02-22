@@ -55,18 +55,19 @@ public class GearView extends BasicView {
         }
         if(_gear.transferGear==TransmissionMechanism.instance.firstGear){
             graphics.lineStyle(1,0x000000);
-            graphics.moveTo(0,0);
-            var endPoint:Point = new Point(0,gear.innerRadius);
-            endPoint = MathUtils.rotate(endPoint, gear.alpha);
-             graphics.lineTo(endPoint.x,endPoint.y);
+            drawArrow();
         }
         if(_gear.transferGear==TransmissionMechanism.instance.getLastInChain() && _gear.part == SimpleGear.LOWER_PART){
             graphics.lineStyle(1,0x555555);
-            graphics.moveTo(0,0);
-            var endPoint:Point = new Point(0,gear.innerRadius);
-            endPoint = MathUtils.rotate(endPoint, gear.alpha);
-            graphics.lineTo(endPoint.x,endPoint.y);
+            drawArrow();
         }
+    }
+
+    private function drawArrow():void {
+        graphics.moveTo(0, 0);
+        var endPoint:Point = new Point(0, gear.innerRadius);
+        endPoint = MathUtils.rotate(endPoint, gear.alpha);
+        graphics.lineTo(endPoint.x, endPoint.y);
     }
 
     private function drawCogs(startPoint:Point, alpha:Number, startOuterPoint:Point):void {

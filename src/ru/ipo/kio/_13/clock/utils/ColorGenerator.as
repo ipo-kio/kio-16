@@ -1,4 +1,5 @@
 /**
+ * Генератор цветов для шестеренок
  *
  * @author: Vasiliy
  * @date: 01.01.13
@@ -12,20 +13,25 @@ public class ColorGenerator {
     
     public static var COLORS:Array = [0,30,60,120,180,240,270,300];
     
-    public function ColorGenerator() {
+    public function ColorGenerator(pvt:PrivateClass) {
     }
 
+    private static const HUE_SHIFT:int = 5;
+
+    private static const MAX_ITERATION_THROUGH_COLORS:int = 6;
+
     public static function nextHueOfColor(hueList:Vector.<TransferGear>):int{
-       for(var i:int = 0; i<6; i++){
+       for(var i:int = 0; i<MAX_ITERATION_THROUGH_COLORS; i++){
         for(var j:int=0; j<COLORS.length; j++){
            var hue:int = COLORS[j];
-           if(!contains(hue+i*5, hueList)){
-               return hue+i*5;
+           if(!contains(hue+i*HUE_SHIFT, hueList)){
+               return hue+i*HUE_SHIFT;
            }
         }
        }
-       throw new Error("Too mush colors"); 
-       return 0; 
+       //слишком жестко, просто генерим рандом 
+       //throw new Error("Too mush colors");
+       return COLORS[Math.floor(Math.random()*COLORS.length)];
     }
 
     private static function contains(hue:int, hueList:Vector.<TransferGear>):Boolean {
@@ -40,4 +46,9 @@ public class ColorGenerator {
     
    
 }
+}
+
+internal class PrivateClass{
+    public function PrivateClass(){
+    }
 }

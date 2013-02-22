@@ -5,15 +5,10 @@
  */
 package ru.ipo.kio._13.clock.model {
 import ru.ipo.kio._13.clock.ClockProblem;
-import ru.ipo.kio._13.clock.ClockRunner;
 
 import ru.ipo.kio._13.clock.ClockSprite;
 import ru.ipo.kio._13.clock.utils.ColorGenerator;
 
-import ru.ipo.kio._13.clock.utils.MathUtils;
-import ru.ipo.kio._13.clock.utils.printf;
-
-import ru.ipo.kio._13.clock.view.ResultSprite;
 import ru.ipo.kio._13.clock.view.TransmissionMechanismView;
 import ru.ipo.kio._13.clock.view.TransmissionMechanismViewSide;
 import ru.ipo.kio.api.KioApi;
@@ -158,7 +153,7 @@ public class TransmissionMechanism {
     }
 
     public function get diffWithEtalon():Number{
-        return Math.abs(getEtalonDiv()-number);
+        return Math.abs(number-SettingsHolder.instance.levelImpl.correctRatio);
     }
     
     public function get number():Number{
@@ -178,50 +173,13 @@ public class TransmissionMechanism {
           }
             temp = temp.other;
         }
-        var obj:Object = shrink(10, up,down);
-        
-        for(var j:int=0; j<MathUtils.SIMPLE_NUMBERS.length; j++){
-            obj = shrink(MathUtils.SIMPLE_NUMBERS[j], obj.up, obj.down);
-        }
-
-        up = obj.up;
-        down = obj.down;
         return up/down;
     }
 
     public function get formattedNumber():String{
-        trace(number);
-        var value:Number = 100-Math.abs(number-getEtalonDiv())/getEtalonDiv()*100;
-        if(value<0){
-            value = 0;
-        }
-        if(ClockSprite.instanse.level==0){
-            if(value>99.5){
-                return "100%";
-            }
-            if(value>99){
-                return "более 99%";
-            }
-            return  printf("%.0f",value)+"%";
-        }
-        return  printf("%.1f",value)+"%";
-    }
-
-    private function getEtalonDiv():Number{
-        if(ClockSprite.instanse.level==0){
-            return 24/1;
-        }else if(ClockSprite.instanse.level==1){
-           return 60/1;
-        }else{
-            return 60/1;
-        }
-    }
-    private function shrink(num:int, up:Number, down:Number):Object {
-       while(up>=num && down>=num && up%num ==0 && down%num ==0){
-           up = up/num;
-           down = down/num;
-       }
-        return {up:up,  down:down};
+        var value:Number = 100-100*(diffWithEtalon/SettingsHolder.instance.levelImpl.correctRatio);
+        value = Math.max(0,value);
+        return SettingsHolder.instance.levelImpl.getFormattedPrecision(value);
     }
 
     public function getMaxY():int{
@@ -286,23 +244,23 @@ public class TransmissionMechanism {
                 return {x:0,y:0};
         }else{
             if(first.x<second.x){
-                var temp = first;
+                var temp:TransferGear = first;
                 first = second;
                 second = temp;
             }
 
-            var fbigY=true;
+            var fbigY:Boolean=true;
             if(first.y<second.y){
               fbigY=false;
             }
             
-            var alpha = Math.atan((first.y-second.y)/(first.x-second.x));
+            var alpha:Number = Math.atan((first.y-second.y)/(first.x-second.x));
 
-            var y = (first.y+first.getRadius()*Math.sin(alpha)+second.y-second.getRadius()*Math.sin(alpha))/2;
+            var y :Number= (first.y+first.getRadius()*Math.sin(alpha)+second.y-second.getRadius()*Math.sin(alpha))/2;
 
 
             if(!fbigY){
-                var y = (first.y-first.getRadius()*Math.sin(alpha)+second.y+second.getRadius()*Math.sin(alpha))/2;
+                y = (first.y-first.getRadius()*Math.sin(alpha)+second.y+second.getRadius()*Math.sin(alpha))/2;
             }
 
             return {x:(first.x+first.getRadius()*Math.cos(alpha)+second.x-second.getRadius()*Math.cos(alpha))/2,
@@ -346,10 +304,10 @@ public class TransmissionMechanism {
         if(ClockSprite.instanse.level==0){
             return (getMaxX()-getMinX())*(getMaxY()-getMinY());
         }else if(ClockSprite.instanse.level==1){
-            var radius = getR();
+            var radius:Number = getR();
             return Math.PI*(radius)*(radius);
         }else{
-            var radius1 = getR1();
+            var radius1:Number = getR1();
             return Math.PI*(radius1)*(radius1);
         }
     }
@@ -480,7 +438,7 @@ public class TransmissionMechanism {
 
         view.update();
         viewSide.update();
-        ResultSprite.instance.update();
+        SettingsHolder.instance.levelImpl.updateProductSprite();
     }
 
     public function resetAlpha():void {
@@ -490,7 +448,7 @@ public class TransmissionMechanism {
           _transferGearList[i].lowerGear.alpha=Math.PI+Math.pow(10,-10);
 
         }
-        ResultSprite.instance.update();
+        SettingsHolder.instance.levelImpl.updateProductSprite();
         }
     
     private var play:Boolean = false;

@@ -7,9 +7,13 @@ package ru.ipo.kio._13.clock {
 import flash.display.DisplayObject;
 import flash.events.Event;
 
+import ru.ipo.kio._13.clock.model.SettingsHolder;
+
 import ru.ipo.kio._13.clock.model.TransferGear;
 
 import ru.ipo.kio._13.clock.model.TransmissionMechanism;
+import ru.ipo.kio._13.clock.model.level.ITaskLevel;
+import ru.ipo.kio._13.clock.model.level.LevelCreator;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
@@ -17,27 +21,27 @@ import ru.ipo.kio.api.Settings;
 
 public class ClockProblem  implements KioProblem{
 
+    [Embed(source='_resources/intro.png')]
+    public static var INTRO:Class;
+
     public static const ID:String = "CLOCK";
 
     private var clockSprite:ClockSprite;
 
-    private var _level:int;
+    private var levelImpl:ITaskLevel;
 
     [Embed(source="loc/Clock.ru.json-settings",mimeType="application/octet-stream")]
     public static var CLOCK_RU:Class;
 
-    public function ClockProblem(level:int, readonly:Boolean = false) {
-        _level = level;
+    public function ClockProblem(level:int) {
+        levelImpl = LevelCreator.createLevelImpl(level);
+        SettingsHolder.instance.registerLevelImpl(levelImpl);
         KioApi.initialize(this);
-
         KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(CLOCK_RU).data);
-
-        clockSprite = new ClockSprite(level);
-
+        clockSprite = new ClockSprite(levelImpl);
         clockSprite.addEventListener(Event.ENTER_FRAME, function(e:Event):void{
                 TransmissionMechanism.instance.innerTick();
         });
-
         clockSprite.update();
         TransmissionMechanism.instance.view.update();
     }
@@ -52,7 +56,7 @@ public class ClockProblem  implements KioProblem{
     }
 
     public function get level():int {
-        return 0;
+        return levelImpl.level;
     }
 
     public function get display():DisplayObject {
@@ -116,35 +120,16 @@ public class ClockProblem  implements KioProblem{
         return i>0?1:i<0?-1:0;
     }
 
-    [Embed(source='_resources/intro.png')]
-    public static var INTRO:Class;
-
-    [Embed(source='_resources/icon_statement.jpg')]
-    private static var ICON_STATEMENT_01:Class;
-    [Embed(source='_resources/icon_help.jpg')]
-    private static var ICON_HELP_01:Class;
-
-    [Embed(source='_resources/icon_statement_2.jpg')]
-    private static var ICON_STATEMENT_02:Class;
-    [Embed(source='_resources/icon_help_2.jpg')]
-    private static var ICON_HELP_02:Class;
-
     public function get icon():Class {
         return INTRO;
     }
 
     public function get icon_help():Class {
-        if (_level <= 1)
-            return ICON_HELP_01;
-        else
-            return ICON_HELP_02;
+       return levelImpl.icon_help;
     }
 
     public function get icon_statement():Class {
-        if (_level <= 1)
-            return ICON_STATEMENT_01;
-        else
-            return ICON_STATEMENT_02;
+        return levelImpl.icon_statement;
     }
 }
 }

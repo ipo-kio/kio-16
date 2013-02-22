@@ -33,7 +33,7 @@ public class TransmissionMechanismViewSide extends BasicView {
         graphics.clear();
         graphics.lineStyle(1, 0x000000);
      graphics.beginFill(0xffffff);
-     graphics.drawRect(0,0,785,200);
+     graphics.drawRect(0,0,680,200);
      graphics.endFill();
       for(var i:int=0; i<transmissionMechanism.transferGearList.length; i++){
         transmissionMechanism.transferGearList[i].viewSide.update();
@@ -95,7 +95,7 @@ public class TransmissionMechanismViewSide extends BasicView {
             }
         }
 
-        _koeffX = 700/distance;
+        _koeffX = 590/distance;
         update();
     }
     
