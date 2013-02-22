@@ -58,7 +58,7 @@ public class CutPieceFieldView extends Sprite {
     /**
      * returns array of error messages with the empty array if there are no errors
      */
-    public function get validatePiecesConfiguration():Array {
+    public function validatePiecesConfiguration():Array {
         var messages:Array = [];
         var api:KioApi = KioApi.instance(CutProblem.ID);
         if (_piecesField.hasInnerBlocks)
@@ -72,14 +72,16 @@ public class CutPieceFieldView extends Sprite {
         return messages;
     }
 
+    public function piecesConfigurationIsValid():Boolean {
+        return validatePiecesConfiguration().length == 0;
+    }
+
     public function set cutsRegime(value:Boolean):void {
         if (value == _cutsRegime)
             return;
 
-        if (value) { //if we set cuts regime
-            if (validatePiecesConfiguration.length != 0)
-                return;
-        }
+        if (value && ! piecesConfigurationIsValid()) //if we set cuts regime
+            return;
 
         _cutsRegime = value;
 
@@ -87,17 +89,31 @@ public class CutPieceFieldView extends Sprite {
             removeChild(field);
 
         if (_cutsRegime) {
+            if (_piecesField != null)
+                _piecesField.removeEventListener(PiecesField.PIECES_CHANGED, piecesChanged);
             _cutsField = new CutsField(_cuts, _piecesField);
+
             _cutsField.addEventListener(CutsField.CUTS_CHANGED, cutsChanged);
             field = new CutsFieldView(m, n, cutsField);
         } else {
             if (_cutsField != null)
                 _cutsField.removeEventListener(CutsField.CUTS_CHANGED, cutsChanged);
             _cutsField = null;
+
+            _piecesField.addEventListener(PiecesField.PIECES_CHANGED, piecesChanged);
             field = new PiecesFieldViewSinglePieces(_piecesField);
         }
 
         addChild(field);
+
+        if (_cutsRegime)
+            dispatchEvent(new Event(CutsField.CUTS_CHANGED));
+        else
+            dispatchEvent(new Event(PiecesField.PIECES_CHANGED));
+    }
+
+    private function piecesChanged(event:Event):void {
+        dispatchEvent(new Event(PiecesField.PIECES_CHANGED));
     }
 
     private function cutsChanged(event:Event):void { //TODO report create event handler fails to devise event type

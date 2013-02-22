@@ -234,5 +234,9 @@ public class PiecesField extends EventDispatcher {
             return BLOCK_EMPTY;
         return _blocks[y][x];
     }
+
+    public function get piecesCount():int {
+        return _pieces.length;
+    }
 }
 }

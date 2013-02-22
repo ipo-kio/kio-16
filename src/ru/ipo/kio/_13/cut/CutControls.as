@@ -5,62 +5,95 @@
  * Time: 13:30
  */
 package ru.ipo.kio._13.cut {
-import flash.display.DisplayObject;
 import flash.display.SimpleButton;
 import flash.display.Sprite;
-import flash.events.TimerEvent;
-import flash.system.System;
+import flash.events.Event;
+import flash.events.MouseEvent;
 import flash.text.TextField;
-import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
-import flash.utils.Timer;
 
-import ru.ipo.kio.api.controls.TextButton;
+import ru.ipo.kio._13.blocks.view.Button2;
+import ru.ipo.kio._13.cut.model.PiecesField;
+import ru.ipo.kio._13.cut.view.CutPieceFieldView;
+import ru.ipo.kio._13.cut.view.CutsFieldView;
+import ru.ipo.kio._13.cut.view.InfoPanel;
+import ru.ipo.kio.api.KioApi;
 
 public class CutControls extends Sprite {
 
     private var _w:int;
     private var _h:int;
     private var _switchFieldsButton:SimpleButton;
-    private var _numTextField:TextField = new TextField();
-    private var _numTextField2:TextField = new TextField();
-    private var _numTextFieldMem:TextField = new TextField();
 
-    public function CutControls(w:int, h:int) {
+    private var _currentResultsInfo:InfoPanel;
+    private var _recordsInfo:InfoPanel;
+
+    private const loc:Object = KioApi.getLocalization(CutProblem.ID);
+    public static const POLYS_IND:int = 0;
+    public static const PIECES_IND:int = 1;
+    private var _field:CutPieceFieldView;
+    private var _errors:TextField;
+
+    public function CutControls(w:int, h:int, field:CutPieceFieldView) {
         _w = w;
         _h = h;
+        _field = field;
 
         drawBackground();
 
-        _switchFieldsButton = new TextButton("переключить");
+        var innerW:Number = _w * 0.9;
+        var x0:Number = (_w - innerW) / 2;
+        var y0:Number = 20;
 
-        putSprite(_switchFieldsButton, 10);
+        _switchFieldsButton = new Button2(loc.labels.switch_to_cuts, "to cuts", innerW, 44, 14, "KioArial", true, true);
+        _switchFieldsButton.x = x0;
+        _switchFieldsButton.y = y0;
+        addChild(_switchFieldsButton);
 
-        _numTextField.defaultTextFormat = new TextFormat('Times new Roman', 18);
-        _numTextField.autoSize = TextFieldAutoSize.CENTER;
-        putSprite(_numTextField, 40);
+        _currentResultsInfo = new InfoPanel(
+                'KioArial', true, 16,
+                0xDDFFDD, 0xFFFFFF, 0xFFFFFF, 1.5,
+                loc.labels.results,
+                [loc.labels.polys, loc.labels.area],
+                w * 0.9
+        );
+        _recordsInfo = new InfoPanel(
+                'KioArial', true, 16,
+                0xDDFFDD, 0xFFFFFF, 0xFFFFFF, 1.5,
+                loc.labels.record,
+                [loc.labels.polys, loc.labels.area],
+                w * 0.9
+        );
 
-        _numTextField2.defaultTextFormat = new TextFormat('Times new Roman', 18);
-        _numTextField2.autoSize = TextFieldAutoSize.CENTER;
-        putSprite(_numTextField2, 60);
+        _currentResultsInfo.x = 0.05 * _w;
+        _currentResultsInfo.y = 200;
+        _recordsInfo.x = 0.05 * _w;
+        _recordsInfo.y = 300;
 
-        _numTextFieldMem.defaultTextFormat = new TextFormat('Times new Roman', 18);
-        _numTextFieldMem.autoSize = TextFieldAutoSize.CENTER;
-        putSprite(_numTextFieldMem, 80);
+        addChild(_currentResultsInfo);
+        addChild(_recordsInfo);
 
-        var memTimer:Timer = new Timer(1000);
-        memTimer.addEventListener(TimerEvent.TIMER, memTimer_timerHandler);
-        memTimer.start();
-    }
+        _errors = new TextField();
+        _errors.x = 0.05 * _w;
+        _errors.y = 100;
+        _errors.width = innerW;
+        _errors.multiline = true;
+        _errors.wordWrap = true;
+        _errors.defaultTextFormat = new TextFormat('KioArial', 12, 0xFFFFFF);
+//        _errors.autoSize = TextFieldAutoSize.LEFT;
+        _errors.text = "";
+        addChild(_errors);
 
-    private function memTimer_timerHandler(event:TimerEvent):void {
-        _numTextFieldMem.text = System.totalMemory / 1000 + '/' + System.freeMemory / 1000;
-    }
+        var _clearButton:SimpleButton = new Button2(loc.labels.clear, "to cuts", _w * 0.5, 30, 14, "KioArial", true, true);
+        _clearButton.x = x0;
+        _clearButton.y = _h - 44;
+        addChild(_clearButton);
+        _clearButton.addEventListener(MouseEvent.CLICK, clearButtonHandler);
 
-    private function putSprite(s:DisplayObject, y:int):void {
-        s.x = (_w - s.width) / 2;
-        s.y = y;
-        addChild(s);
+        _switchFieldsButton.addEventListener(MouseEvent.CLICK, switchButtonClickHandler);
+        _field.addEventListener(PiecesField.PIECES_CHANGED, piecesChangedHandler);
+
+        piecesChangedHandler();
     }
 
     private function drawBackground():void {
@@ -69,16 +102,45 @@ public class CutControls extends Sprite {
         graphics.endFill();
     }
 
-    public function get switchFieldsButton():SimpleButton {
-        return _switchFieldsButton;
+    public function get currentResultsInfo():InfoPanel {
+        return _currentResultsInfo;
     }
 
-    public function set numPolys(polys:String):void {
-        _numTextField.text = "Многоугольников: " + polys;
+    public function get recordsInfo():InfoPanel {
+        return _recordsInfo;
     }
 
-    public function set numNontriangles(value:String):void {
-        _numTextField2.text = "Нетреугольников: " + value;
+    private function piecesChangedHandler(event:Event = null):void {
+        if (_field.piecesConfigurationIsValid()) {
+            _errors.text = "";
+            _switchFieldsButton.enabled = true;
+        } else {
+            var errorMessages:Array = _field.validatePiecesConfiguration();
+            _errors.text = errorMessages.join('\n');
+            _switchFieldsButton.enabled = false;
+        }
+    }
+
+    private function switchButtonClickHandler(event:MouseEvent):void {
+        _field.cutsRegime = !_field.cutsRegime;
+    }
+
+    public function clickClearButton():void {
+        clearButtonHandler();
+    }
+
+    private function clearButtonHandler(event:MouseEvent = null):void {
+        _field.cutsRegime = false;
+        _field.piecesField.clearPieces();
+
+        resetCuts();
+    }
+
+    public function resetCuts():void {
+        if (KioApi.instance(CutProblem.ID).problem.level == 0)
+            _field.resetCuts(0, _field.piecesField.m * CutsFieldView.SCALE, 2, 2);
+        else
+            _field.resetCuts(5, _field.piecesField.m * CutsFieldView.SCALE - 5, 2, 2);
     }
 }
 }

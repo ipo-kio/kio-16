@@ -163,5 +163,9 @@ public class TextUtils {
         return tf;
     }
 
+    public static function embedFonts():void {
+        //do nothing
+    }
+
 }
 }
