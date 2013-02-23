@@ -262,19 +262,19 @@ public class ClockSprite extends Sprite {
                                string = string.substring(0,string.length-2);
                            }else{
                                item = string.substring(string.length-1);
-                               string = string.substring(0,string.length-2);
+                               string = string.substring(0,string.length-1);
                            }
 
-
+                           if(item.charAt(0)=='0'){
+                               item=item.substring(1);
+                           }
 
                            if(i ==0){
-                               result=item+""+loc.headers["mm"]+" "+result;
+                               result=item+" "+loc.headers["cm"]+" "+result;
                            }else if(i ==1){
-                               result=item+""+loc.headers["cm"]+"\n "+result;
+                               result=item+" "+loc.headers["dm"]+"\n "+result;
                            }else if(i ==2){
-                               result=item+""+loc.headers["dm"]+"\n "+result;
-                           }else if(i ==3){
-                               result=item+""+loc.headers["m"]+"\n "+result;
+                               result=item+" "+loc.headers["m"]+"\n "+result;
                            }
                        }
                        _squareField.text = result;

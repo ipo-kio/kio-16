@@ -33,6 +33,8 @@ public interface ITaskLevel {
     function getProductSprite():Sprite;
 
     function updateProductSprite():void;
+
+    function get direction():int
     
 
 }

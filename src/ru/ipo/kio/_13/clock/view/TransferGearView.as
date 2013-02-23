@@ -50,7 +50,7 @@ public class TransferGearView extends BasicView {
 
         if(transferGear.transmissionMechanism.transferGearList.length==0){
             if(SettingsHolder.instance.isDownToUp()){
-                addChild(transferGear.lowerGear.view);
+                addChild(transferGear.upperGear.view);
             }else{
                 addChild(transferGear.upperGear.view);
             }
@@ -151,6 +151,9 @@ public class TransferGearView extends BasicView {
         field.addEventListener(MouseEvent.MOUSE_DOWN, function(e:Event):void{
            // if(field.border==true){
             transferGear.transmissionMechanism.deactivateAll();
+            if(transferGear.transmissionMechanism.isPlay()){
+                transferGear.transmissionMechanism.playStop();
+            }
             _locked=true;
             transferGear.isActive=true;
                 update();
@@ -168,7 +171,7 @@ public class TransferGearView extends BasicView {
                     ClockSprite.instanse.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooSmall);
                     return;
                 }
-                if(newValue>99){
+                if(newValue>40){
                     ClockSprite.instanse.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooBig);
                     return;
                 }

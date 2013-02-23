@@ -6,6 +6,8 @@
 package ru.ipo.kio._13.clock.model.level {
 import flash.display.Sprite;
 
+import ru.ipo.kio._13.clock.model.SettingsHolder;
+
 import ru.ipo.kio._13.clock.model.TransmissionMechanism;
 import ru.ipo.kio._13.clock.utils.printf;
 
@@ -108,22 +110,10 @@ public class ZeroLevel extends BasicProductDrawer implements ITaskLevel {
 
     public function updateProductSprite():void{
         clearProductSprite();
-        var alpha:Number = TransmissionMechanism.instance.firstGear.upperGear.alpha;
+        var alpha:Number = TransmissionMechanism.instance.leadingSimpleGear.alpha;
         calculateIteration(alpha);
-        var alpha1:Number = alpha+iteration*Math.PI*2;
-        for(var i:int=0; i<ANGLES_TO_IMAGES.length; i++){
-            if(alpha1<ANGLES_TO_IMAGES[i][0]&&
-               alpha1>ANGLES_TO_IMAGES[i][0]-ANGLES_TO_IMAGES[i][2]){
-               var diff:Number = (alpha1-(ANGLES_TO_IMAGES[i][0]-ANGLES_TO_IMAGES[i][2]))/(ANGLES_TO_IMAGES[i][2]);
-                var firstImage:Sprite=ANGLES_TO_IMAGES[i][1];
-                var secondImage:Sprite=(i == ANGLES_TO_IMAGES.length-1)?ANGLES_TO_IMAGES[0][1]:ANGLES_TO_IMAGES[i+1][1];
-                secondImage.alpha=1-diff;
-                productSprite.addChild(firstImage);
-                productSprite.addChild(secondImage);
-                break;
-            }
-        }
-        drawArrows();
+        drawTwoImageFromArray(alpha+iteration*Math.PI*2, ANGLES_TO_IMAGES);
+        drawArrows(340,170,590,180);
     }
 
 
@@ -142,5 +132,8 @@ public class ZeroLevel extends BasicProductDrawer implements ITaskLevel {
         }
     }
 
+    public function get direction():int {
+        return SettingsHolder.UP_TO_DOWN;
+    }
 }
 }

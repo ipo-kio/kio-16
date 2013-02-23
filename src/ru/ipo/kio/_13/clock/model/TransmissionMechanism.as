@@ -45,6 +45,27 @@ public class TransmissionMechanism {
         _viewSide = new TransmissionMechanismViewSide(this);
 
     }
+                       
+    public function get leadingSimpleGear():SimpleGear{
+        if(SettingsHolder.instance.isDownToUp()){
+           return firstGear.lowerGear; 
+        }else{
+            return firstGear.upperGear;
+        }
+    }
+    
+    public function get lastDrivenSimpleGear():SimpleGear{
+        var transferGear:TransferGear = getLastInChain();
+        if(transferGear==null){
+            return null;
+        }
+        if(SettingsHolder.instance.isDownToUp()){
+            return transferGear.upperGear;
+        }else{
+            return transferGear.lowerGear;
+        }
+    }
+
     
     internal function getPrevious(transferGear:TransferGear):TransferGear{
         var index:int = getIndex(transferGear);
@@ -86,7 +107,7 @@ public class TransmissionMechanism {
 
     public function addTransferGearAfter(transferGear:TransferGear):void {
 
-        var newTG:TransferGear = new TransferGear(this, transferGear.x+50, transferGear.y+50, 10, 10, ColorGenerator.nextHueOfColor(transferGearList));
+        var newTG:TransferGear = new TransferGear(this, Math.min(transferGear.x+10,630), Math.min(transferGear.y+10,350), 10, 10, ColorGenerator.nextHueOfColor(transferGearList));
         _transferGearList.splice(getIndex(transferGear)+1,0,newTG);
         view.transferGearAdded(newTG, transferGear);
         viewSide.transferGearAdded(newTG);
@@ -291,7 +312,7 @@ public class TransmissionMechanism {
                 var gear:TransferGear = firstGear;
                 var gear1:TransferGear = _transferGearList[i];
                 distance = Math.max(
-                        Math.pow(Math.pow(gear1.x-gear.x,2)+Math.pow(gear1.y-gear1.y,2), 1/2)
+                        Math.pow(Math.pow(gear1.x-gear.x,2)+Math.pow(gear1.y-gear.y,2), 1/2)
                                 +gear1.getRadius(),
                         distance);
             
@@ -336,7 +357,7 @@ public class TransmissionMechanism {
         return null;
     }
     
-    public function getLastInChain():TransferGear{
+    private function getLastInChain():TransferGear{
         var step:Number = 1;
         var last:TransferGear = firstGear;
         for(var i:int = 1; i<_transferGearList.length; i++){
@@ -361,7 +382,7 @@ public class TransmissionMechanism {
     }
     
     public function isFinished():Boolean{
-        return getLastInChain()==firstGear && firstGear.upperGear.isCrossedWithDriven();
+        return getLastInChain()==firstGear && leadingSimpleGear.isCrossedWithDriven();
     }
 
     private function getFastestMultiple():Number {

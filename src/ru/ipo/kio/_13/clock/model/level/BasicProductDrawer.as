@@ -53,28 +53,48 @@ public class BasicProductDrawer {
         productSprite.graphics.endFill();
     }
 
-    protected function drawArrows():void {
+    private static const SMALL_MINUTE_ARROW_LENGTH:int = 30;
+
+    private static const SMALL_HOUR_ARROW_LENGTH:int = 20;
+
+    protected function drawArrows(bigCenterX:int,bigCenterY:int,smallCenterX:int,smallCenterY:int):void {
         var holst:Sprite = new Sprite();
         productSprite.addChild(holst);
         holst.graphics.lineStyle(1, 0x000000);
 
         var hourArrow:Sprite = new HourArrow();
         productSprite.addChild(hourArrow);
-        hourArrow.x = 340;
-        hourArrow.y = 170;
-        rotateAroundCenter(hourArrow, TransmissionMechanism.instance.firstGear.upperGear.alpha);
+        hourArrow.x = bigCenterX;
+        hourArrow.y = bigCenterY;
+        rotateAroundCenter(hourArrow, TransmissionMechanism.instance.leadingSimpleGear.alpha);
 
         if (TransmissionMechanism.instance.isFinished()) {
             var minuteArrow:Sprite = new MinuteArrow();
             productSprite.addChild(minuteArrow);
-            minuteArrow.x = 340;
-            minuteArrow.y = 170;
-            rotateAroundCenter(minuteArrow, TransmissionMechanism.instance.firstGear.lowerGear.alpha);
+            minuteArrow.x = bigCenterX;
+            minuteArrow.y = bigCenterY;
+            rotateAroundCenter(minuteArrow, TransmissionMechanism.instance.leadingSimpleGear.other.alpha);
 
-            drawArrow(590, 180, 30, TransmissionMechanism.instance.firstGear.lowerGear.alpha, holst);
-            drawArrow(590, 180, 20, TransmissionMechanism.instance.firstGear.upperGear.alpha, holst);
+            drawArrow(smallCenterX, smallCenterY, SMALL_MINUTE_ARROW_LENGTH, TransmissionMechanism.instance.leadingSimpleGear.other.alpha, holst);
+            drawArrow(smallCenterX, smallCenterY, SMALL_HOUR_ARROW_LENGTH, TransmissionMechanism.instance.leadingSimpleGear.alpha, holst);
         } else {
-            drawArrow(590, 180, 30, TransmissionMechanism.instance.getLastInChain().alpha, holst);
+            drawArrow(smallCenterX, smallCenterY, SMALL_MINUTE_ARROW_LENGTH, TransmissionMechanism.instance.lastDrivenSimpleGear.alpha, holst);
+        }
+    }
+
+    protected function drawTwoImageFromArray(alpha:Number, angleToImages:Array):void {
+        for (var i:int = 0; i < angleToImages.length; i++) {
+            if (alpha < angleToImages[i][0] &&
+                    alpha > angleToImages[i][0] - angleToImages[i][2]) {
+                var diff:Number = (alpha - (angleToImages[i][0] - angleToImages[i][2])) / (angleToImages[i][2]);
+                var firstImage:Sprite = angleToImages[i][1];
+                var secondImage:Sprite = (i == angleToImages.length - 1) ? angleToImages[0][1] : angleToImages[i + 1][1];
+                secondImage.alpha = 1 - diff;
+                firstImage.alpha = 1;
+                productSprite.addChild(firstImage);
+                productSprite.addChild(secondImage);
+                break;
+            }
         }
     }
 }

@@ -6,11 +6,10 @@
 package ru.ipo.kio._13.clock.model.level {
 import flash.display.Sprite;
 
+import ru.ipo.kio._13.clock.model.SettingsHolder;
 import ru.ipo.kio._13.clock.model.TransmissionMechanism;
-
 import ru.ipo.kio._13.clock.utils.printf;
-import ru.ipo.kio._13.clock.view.gui.HourArrow;
-import ru.ipo.kio._13.clock.view.gui.MinuteArrow;
+
 
 public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
 
@@ -49,6 +48,7 @@ public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
         [Math.PI*3/2, _fall, Math.PI/2]];
 
     public function SecondLevel() {
+        SettingsHolder.instance.sizeOfCog=10;
         _fall.addChild(new FALL);
         _summer.addChild(new SUMMER);
         _winter.addChild(new WINTER);
@@ -90,47 +90,12 @@ public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
 
     public function updateProductSprite():void {
         clearProductSprite();
-        var alpha:Number = TransmissionMechanism.instance.getLastInChain().lowerGear.alpha;
-        for(var i:int=0; i<ANGLES_TO_IMAGES.length; i++){
-            if(alpha<ANGLES_TO_IMAGES[i][0]&&
-                    alpha>ANGLES_TO_IMAGES[i][0]-ANGLES_TO_IMAGES[i][2]){
-                var diff:Number = (alpha-(ANGLES_TO_IMAGES[i][0]-ANGLES_TO_IMAGES[i][2]))/(ANGLES_TO_IMAGES[i][2]);
-                var firstImage:Sprite=ANGLES_TO_IMAGES[i][1];
-                var secondImage:Sprite=(i == ANGLES_TO_IMAGES.length-1)?ANGLES_TO_IMAGES[0][1]:ANGLES_TO_IMAGES[i+1][1];
-                secondImage.alpha=1-diff;
-                firstImage.alpha=1;
-                productSprite.addChild(firstImage);
-                productSprite.addChild(secondImage);
-                break;
-            }
-        }
-
-        drawArrows();
+        drawTwoImageFromArray(TransmissionMechanism.instance.lastDrivenSimpleGear.alpha, ANGLES_TO_IMAGES);
+        drawArrows(340,170,546,259);
     }
 
-    protected override function drawArrows():void {
-        var holst:Sprite = new Sprite();
-        productSprite.addChild(holst);
-        holst.graphics.lineStyle(1, 0x000000);
-
-        var hourArrow:Sprite = new HourArrow();
-        productSprite.addChild(hourArrow);
-        hourArrow.x = 340;
-        hourArrow.y = 170;
-        rotateAroundCenter(hourArrow, TransmissionMechanism.instance.firstGear.upperGear.alpha);
-
-        if (TransmissionMechanism.instance.isFinished()) {
-            var minuteArrow:Sprite = new MinuteArrow();
-            productSprite.addChild(minuteArrow);
-            minuteArrow.x = 340;
-            minuteArrow.y = 170;
-            rotateAroundCenter(minuteArrow, TransmissionMechanism.instance.firstGear.lowerGear.alpha);
-
-            drawArrow(546, 259, 30, TransmissionMechanism.instance.firstGear.lowerGear.alpha, holst);
-            drawArrow(546, 259, 20, TransmissionMechanism.instance.firstGear.upperGear.alpha, holst);
-        } else {
-            drawArrow(546, 259, 30, TransmissionMechanism.instance.getLastInChain().alpha, holst);
-        }
+    public function get direction():int {
+        return SettingsHolder.DOWN_TO_UP;
     }
 }
 }

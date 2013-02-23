@@ -6,6 +6,8 @@
 package ru.ipo.kio._13.clock.model.level {
 import flash.display.Sprite;
 
+import ru.ipo.kio._13.clock.model.SettingsHolder;
+
 import ru.ipo.kio._13.clock.model.TransmissionMechanism;
 
 import ru.ipo.kio._13.clock.utils.printf;
@@ -60,6 +62,7 @@ public class FirstLevel extends BasicProductDrawer implements ITaskLevel {
 
 
     public function FirstLevel() {
+        SettingsHolder.instance.sizeOfCog=13;
         fillImageArrayForBigClock();
         _day.addChild(new DAY);
         _evening.addChild(new EVENING);
@@ -129,24 +132,12 @@ public class FirstLevel extends BasicProductDrawer implements ITaskLevel {
 
     public function updateProductSprite():void {
         clearProductSprite();
-        var alpha:Number = TransmissionMechanism.instance.firstGear.upperGear.alpha;
-        for(var i:int=0; i<ANGLES_TO_IMAGES.length; i++){
-            if(alpha<ANGLES_TO_IMAGES[i][0]&&
-                    alpha>ANGLES_TO_IMAGES[i][0]-ANGLES_TO_IMAGES[i][2]){
-                var diff:Number = (alpha-(ANGLES_TO_IMAGES[i][0]-ANGLES_TO_IMAGES[i][2]))/(ANGLES_TO_IMAGES[i][2]);
-                var firstImage:Sprite=ANGLES_TO_IMAGES[i][1];
-                var secondImage:Sprite=(i == ANGLES_TO_IMAGES.length-1)?ANGLES_TO_IMAGES[0][1]:ANGLES_TO_IMAGES[i+1][1];
-                secondImage.alpha=1-diff;
-                productSprite.addChild(firstImage);
-                productSprite.addChild(secondImage);
-                break;
-            }
-        }
+        drawTwoImageFromArray(TransmissionMechanism.instance.leadingSimpleGear.alpha, ANGLES_TO_IMAGES);
+        drawArrows(340,170,590,180);
+    }
 
-        productSprite.addChild(firstImage);
-        productSprite.addChild(secondImage);
-        secondImage.alpha=1-diff;
-        drawArrows();
+    public function get direction():int {
+        return SettingsHolder.UP_TO_DOWN;
     }
 }
 }

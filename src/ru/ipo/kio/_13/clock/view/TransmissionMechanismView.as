@@ -64,16 +64,16 @@ public class TransmissionMechanismView extends BasicView {
     public function transferGearAdded(transferGear:TransferGear, transferGear2:TransferGear=null):void {
       if(SettingsHolder.instance.direction==SettingsHolder.DOWN_TO_UP){
         if(transferGear.isFirst()){
-            view = transferGear.upperGear.view;
+            view = transferGear.lowerGear.view;
             (TransferGearView(transferGear.view)).childView= GearView(view);
-            addChild(transferGear.upperGear.view);
-        }
-         if(view!=null){
-             removeChild(view);
-         }
-        addChild(transferGear.view);
-          if(view!=null){
-              addChild(view);
+            addChild(transferGear.lowerGear.view);
+            addChild(transferGear.view);
+        }else{
+          if(transferGear2!=null){
+              addChildAt(transferGear.view,getChildIndex(transferGear2.view)+1);
+          }else{
+              addChildAt(transferGear.view, numChildren-1);
+          }
           }
       }else{
         if(transferGear.isFirst()){
