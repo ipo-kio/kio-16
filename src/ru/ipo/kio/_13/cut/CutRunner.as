@@ -8,7 +8,7 @@ import flash.utils.Timer;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.base.KioBase;
-
+[SWF(width="900", height="625")]
 public class CutRunner extends Sprite {
 
     public function CutRunner() {

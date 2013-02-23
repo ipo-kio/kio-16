@@ -36,11 +36,11 @@ public class TransmissionMechanismView extends BasicView {
      graphics.endFill();
         
         if(transmissionMechanism.transferGearList.length>0 && transmissionMechanism.isFinished()){
-            if(ClockSprite.instanse.level==0){
+            if(SettingsHolder.instance.levelImpl.level==0){
                 graphics.drawRect(transmissionMechanism.getMinX(),transmissionMechanism.getMinY(),
                         transmissionMechanism.getMaxX()-transmissionMechanism.getMinX(),
                         transmissionMechanism.getMaxY()-transmissionMechanism.getMinY());
-            }else if (ClockSprite.instanse.level==1){
+            }else if (SettingsHolder.instance.levelImpl.level==1){
                 graphics.drawCircle(transmissionMechanism.getCenter().x,transmissionMechanism.getCenter().y,
                         transmissionMechanism.getR());
             }else{

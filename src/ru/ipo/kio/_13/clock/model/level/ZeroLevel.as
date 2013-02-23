@@ -4,6 +4,8 @@
  * @date: 21.02.13
  */
 package ru.ipo.kio._13.clock.model.level {
+import Untitled_fla.MainTimeline;
+
 import flash.display.Sprite;
 
 import ru.ipo.kio._13.clock.model.SettingsHolder;
@@ -106,6 +108,23 @@ public class ZeroLevel extends BasicProductDrawer implements ITaskLevel {
         return  printf("%.0f",precision)+"%";
     }
 
+    public function getFormattedError(error:Number):String {
+        if(error<0.5){
+            return "0%";
+        }
+        if(error<1){
+            return "< 1%";
+        }
+        return  printf("%.0f",error)+"%";
+    }
+
+    public function truncate(relTransmissionError:Number):Number {
+        return Math.round(relTransmissionError*10);
+    }
+
+    public function undoTruncate(relTransmissionError:Number):Number {
+        return relTransmissionError/10;
+    }
 
 
     public function updateProductSprite():void{
@@ -135,5 +154,8 @@ public class ZeroLevel extends BasicProductDrawer implements ITaskLevel {
     public function get direction():int {
         return SettingsHolder.UP_TO_DOWN;
     }
+
+
+
 }
 }

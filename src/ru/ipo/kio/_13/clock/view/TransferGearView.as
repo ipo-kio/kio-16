@@ -93,7 +93,8 @@ public class TransferGearView extends BasicView {
             _shiftX= e.localX;
             _shiftY= e.localY;
             //if(!transferGear.isFirst()){
-                startDrag(false, new Rectangle(transferGear.getRadius()+5,transferGear.getRadius(),
+            KioApi.instance(ClockProblem.ID).log("START DRAG", transferGear.id, transferGear.x, transferGear.y);
+            startDrag(false, new Rectangle(transferGear.getRadius()+5,transferGear.getRadius(),
                         675-transferGear.getRadius()*2,400-transferGear.getRadius()*2));
             //}
 
@@ -121,6 +122,7 @@ public class TransferGearView extends BasicView {
 
             transferGear.isMove=false;
             //if(!transferGear.isFirst()){
+            KioApi.instance(ClockProblem.ID).log("STOP DRAG", transferGear.id, transferGear.x, transferGear.y);
                 stopDrag();
             //}
             updateNextAndPrevious();
@@ -167,6 +169,7 @@ public class TransferGearView extends BasicView {
         field.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void{
             if(e.charCode==13){
                 var newValue:int = new Number(field.text);
+                KioApi.instance(ClockProblem.ID).log("VIEW1 INPUT "+upper?"UP":"DOWN", transferGear.id, newValue);
                 if(newValue<8){
                     ClockSprite.instanse.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooSmall);
                     return;

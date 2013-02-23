@@ -151,7 +151,7 @@ package ru.ipo.kio._13.clock.utils {
                                 match.replacement =  (replacementValue["hours"]  >= 12 ? "p.m" : "a.m");
                                 break;
                             case DATE_TOLOCALE_FORMATTER:
-                                match.replacement = Date(replacementValue).toLocaleString();
+                                match.replacement = (replacementValue as Date).toLocaleString();
                                 break;
                             case DATE_MINUTES_FORMATTER:
                                 match.replacement = replacementValue["minutes"];

@@ -129,6 +129,24 @@ public class FirstLevel extends BasicProductDrawer implements ITaskLevel {
         return  printf("%.2f",precision)+"%";
     }
 
+    public function getFormattedError(error:Number):String {
+        if(error<0.005){
+            return "0%";
+        }
+        if(error<0.001){
+            return "< 0,01%";
+        }
+        return  printf("%.2f",error)+"%";
+    }
+
+    public function truncate(relTransmissionError:Number):Number {
+        return Math.round(relTransmissionError*1000);
+    }
+
+    public function undoTruncate(relTransmissionError:Number):Number {
+        return relTransmissionError/1000;
+    }
+
 
     public function updateProductSprite():void {
         clearProductSprite();

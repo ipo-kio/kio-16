@@ -109,6 +109,7 @@ public class TransferGearViewSide extends BasicView {
         field.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void{
             if(e.charCode==13){
                 var newValue:int = new Number(field.text);
+                KioApi.instance(ClockProblem.ID).log("VIEW1 INPUT "+upper?"UP":"DOWN", transferGear.id, newValue);
                 if(newValue<8){
                     ClockSprite.instanse.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooSmall);
                     return;

@@ -121,8 +121,10 @@ public class TransmissionMechanismViewSide extends BasicView {
     public function removeAdditional():void {
 
         if(transmissionMechanism.firstGear.secondViewSide!=null){
+            if(contains(transmissionMechanism.firstGear.secondViewSide)){
             removeChild(transmissionMechanism.firstGear.secondViewSide);
-        }
+            }
+            }
     }
 }
 }

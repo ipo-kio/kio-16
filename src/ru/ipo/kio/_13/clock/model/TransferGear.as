@@ -34,8 +34,13 @@ public class TransferGear {
     private var _secondViewSide:BasicView;
     
     private var _conflict:Boolean = false;
+    
+    private var _id:int;
+    
+    private static var idCounter:int=0;
 
     public function TransferGear(transmissionMechanism:TransmissionMechanism, x:int, y:int, upperAmountOfCogs:int, lowerAmountOfCogs:int, hue:int) {
+        _id = idCounter++;
         _transmissionMechanism=transmissionMechanism;
         _hue = hue;
         _upperGear = new SimpleGear(this, lowerAmountOfCogs, SimpleGear.UPPER_PART, HSBColor.convertHSBtoRGB(hue, 1, 1));
@@ -197,6 +202,10 @@ public class TransferGear {
 
     public function get conflict():Boolean {
         return _conflict;
+    }
+
+    public function id():int {
+        return _id;
     }
 }
 }

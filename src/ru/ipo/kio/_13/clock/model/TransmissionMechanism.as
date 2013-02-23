@@ -173,14 +173,18 @@ public class TransmissionMechanism {
         return null;
     }
 
-    public function get diffWithEtalon():Number{
-        return Math.abs(number-SettingsHolder.instance.levelImpl.correctRatio);
+    public function get absTransmissionError():Number{
+        return Math.abs(transmissionNumber-SettingsHolder.instance.levelImpl.correctRatio);
+    }
+
+    public function get relTransmissionError():Number{
+        return 100*(TransmissionMechanism.instance.absTransmissionError/SettingsHolder.instance.levelImpl.correctRatio);
     }
     
-    public function get number():Number{
+    private function get transmissionNumber():Number{
         var up:Number=1;
         var down:Number = 1;
-        var temp:SimpleGear = firstGear.upperGear;
+        var temp:SimpleGear = leadingSimpleGear;
         while(temp!=null){
             if(temp.getDrivenGear()!=null && temp.isCrossedWithDriven()){
                 up *= temp.amountOfCogs;
@@ -195,12 +199,6 @@ public class TransmissionMechanism {
             temp = temp.other;
         }
         return up/down;
-    }
-
-    public function get formattedNumber():String{
-        var value:Number = 100-100*(diffWithEtalon/SettingsHolder.instance.levelImpl.correctRatio);
-        value = Math.max(0,value);
-        return SettingsHolder.instance.levelImpl.getFormattedPrecision(value);
     }
 
     public function getMaxY():int{
@@ -322,9 +320,9 @@ public class TransmissionMechanism {
     
     public function get square():Number{
 
-        if(ClockSprite.instanse.level==0){
+        if(SettingsHolder.instance.levelImpl.level==0){
             return (getMaxX()-getMinX())*(getMaxY()-getMinY());
-        }else if(ClockSprite.instanse.level==1){
+        }else if(SettingsHolder.instance.levelImpl.level==1){
             var radius:Number = getR();
             return Math.PI*(radius)*(radius);
         }else{
@@ -477,7 +475,7 @@ public class TransmissionMechanism {
     public function playStop():void {
         play = !play;
         deactivateAll();
-      ClockSprite.instanse.update();
+      ClockSprite.instanse.updateAnimateButtons();
     }
 
     public function innerTick():void {
@@ -494,8 +492,17 @@ public class TransmissionMechanism {
     return play;
   }
 
-
-
+   public function isCorrectDirection():Boolean {
+       var amountInChain:int;
+       var lastInChain:TransferGear = getLastInChain();
+       if(lastInChain==firstGear){
+           amountInChain=_transferGearList.length;
+       }else{
+          amountInChain = getIndex(lastInChain)+1;
+       }
+        return (isFinished() && amountInChain%2==0) ||
+                (!isFinished() && amountInChain%2==1);
+    }
 }
 }
 

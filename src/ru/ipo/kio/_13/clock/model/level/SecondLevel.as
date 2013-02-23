@@ -77,7 +77,7 @@ public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
     public function getFormattedPrecision(precision:Number):String {
         var string:String = printf("%.10f",precision);
         var resultString:String = string.substr(0, string.indexOf(".")+1);
-        for(var i:int=string.indexOf(",")+1; i<string.length; i++){
+        for(var i:int=string.indexOf(".")+1; i<string.length; i++){
             if(string.charAt(i)=='9'){
                 resultString+="9";
             }else{
@@ -85,6 +85,28 @@ public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
             }
         }
         return resultString+"%";
+    }
+
+    public function getFormattedError(error:Number):String {
+        var string:String = printf("%.10f",error);
+        var resultString:String = string.substr(0, string.indexOf(".")+3);
+        for(var i:int=string.indexOf(".")+3; i<string.length; i++){
+            if(string.charAt(i)=='0'){
+                resultString+="0";
+            }else{
+                return resultString+"%";
+            }
+        }
+        return resultString+"%";
+    }
+
+    public function truncate(relTransmissionError:Number):Number {
+        return relTransmissionError;
+    }
+
+
+    public function undoTruncate(relTransmissionError:Number):Number {
+        return relTransmissionError;
     }
 
 

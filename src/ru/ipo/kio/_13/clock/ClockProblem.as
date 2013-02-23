@@ -9,6 +9,8 @@ import flash.events.Event;
 
 import ru.ipo.kio._13.clock.model.SettingsHolder;
 
+import ru.ipo.kio._13.clock.model.SettingsHolder;
+
 import ru.ipo.kio._13.clock.model.TransferGear;
 
 import ru.ipo.kio._13.clock.model.TransmissionMechanism;
@@ -38,7 +40,7 @@ public class ClockProblem  implements KioProblem{
         SettingsHolder.instance.registerLevelImpl(levelImpl);
         KioApi.initialize(this);
         KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(CLOCK_RU).data);
-        clockSprite = new ClockSprite(levelImpl);
+        clockSprite = new ClockSprite();
         clockSprite.addEventListener(Event.ENTER_FRAME, function(e:Event):void{
                 TransmissionMechanism.instance.innerTick();
         });
@@ -95,9 +97,12 @@ public class ClockProblem  implements KioProblem{
         //просто возвращаем оценку текущего решения
         //ожидается, что был сделан load
         return {
-            diffWithEtalon: TransmissionMechanism.instance.diffWithEtalon,
+            absTransmissionError: SettingsHolder.instance.levelImpl.truncate(TransmissionMechanism.instance.relTransmissionError),
             square: TransmissionMechanism.instance.square,
-            conflict:TransmissionMechanism.instance.isConflict()
+            conflict:TransmissionMechanism.instance.isConflict(),
+            rightDirection:TransmissionMechanism.instance.isCorrectDirection(),
+            finished:TransmissionMechanism.instance.isFinished()&&
+                    !TransmissionMechanism.instance.isConflict()
         };
     }
 
@@ -109,8 +114,12 @@ public class ClockProblem  implements KioProblem{
         }
         if(solution1.conflict!=solution2.conflict){
             return solution2.conflict?1:-1;
-        }else if(Math.abs(solution1.diffWithEtalon-solution2.diffWithEtalon)<0.0001){
-            return getSign(solution2.diffWithEtalon-solution1.diffWithEtalon);
+        }else if(Math.abs(solution2.absTransmissionError-solution1.absTransmissionError)>0.0000000001){
+            return getSign(solution2.absTransmissionError-solution1.absTransmissionError);
+        }else if (solution1.rightDirection!=solution2.rightDirection){
+            return solution1.rightDirection?1:-1;
+        }else if (solution1.finished!=solution2.finished){
+            return solution1.finished?1:-1;
         }else{
             return getSign(solution2.square-solution1.square);
         }
