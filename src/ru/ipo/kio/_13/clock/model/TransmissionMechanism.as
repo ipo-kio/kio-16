@@ -45,6 +45,27 @@ public class TransmissionMechanism {
         _viewSide = new TransmissionMechanismViewSide(this);
 
     }
+                       
+    public function get leadingSimpleGear():SimpleGear{
+        if(SettingsHolder.instance.isDownToUp()){
+           return firstGear.lowerGear; 
+        }else{
+            return firstGear.upperGear;
+        }
+    }
+    
+    public function get lastDrivenSimpleGear():SimpleGear{
+        var transferGear:TransferGear = getLastInChain();
+        if(transferGear==null){
+            return null;
+        }
+        if(SettingsHolder.instance.isDownToUp()){
+            return transferGear.upperGear;
+        }else{
+            return transferGear.lowerGear;
+        }
+    }
+
     
     internal function getPrevious(transferGear:TransferGear):TransferGear{
         var index:int = getIndex(transferGear);
@@ -86,7 +107,7 @@ public class TransmissionMechanism {
 
     public function addTransferGearAfter(transferGear:TransferGear):void {
 
-        var newTG:TransferGear = new TransferGear(this, transferGear.x+50, transferGear.y+50, 10, 10, ColorGenerator.nextHueOfColor(transferGearList));
+        var newTG:TransferGear = new TransferGear(this, Math.min(transferGear.x+10,630), Math.min(transferGear.y+10,350), 10, 10, ColorGenerator.nextHueOfColor(transferGearList));
         _transferGearList.splice(getIndex(transferGear)+1,0,newTG);
         view.transferGearAdded(newTG, transferGear);
         viewSide.transferGearAdded(newTG);
@@ -152,14 +173,18 @@ public class TransmissionMechanism {
         return null;
     }
 
-    public function get diffWithEtalon():Number{
-        return Math.abs(number-SettingsHolder.instance.levelImpl.correctRatio);
+    public function get absTransmissionError():Number{
+        return Math.abs(transmissionNumber-SettingsHolder.instance.levelImpl.correctRatio);
+    }
+
+    public function get relTransmissionError():Number{
+        return 100*(TransmissionMechanism.instance.absTransmissionError/SettingsHolder.instance.levelImpl.correctRatio);
     }
     
-    public function get number():Number{
+    private function get transmissionNumber():Number{
         var up:Number=1;
         var down:Number = 1;
-        var temp:SimpleGear = firstGear.upperGear;
+        var temp:SimpleGear = leadingSimpleGear;
         while(temp!=null){
             if(temp.getDrivenGear()!=null && temp.isCrossedWithDriven()){
                 up *= temp.amountOfCogs;
@@ -174,12 +199,6 @@ public class TransmissionMechanism {
             temp = temp.other;
         }
         return up/down;
-    }
-
-    public function get formattedNumber():String{
-        var value:Number = 100-100*(diffWithEtalon/SettingsHolder.instance.levelImpl.correctRatio);
-        value = Math.max(0,value);
-        return SettingsHolder.instance.levelImpl.getFormattedPrecision(value);
     }
 
     public function getMaxY():int{
@@ -291,7 +310,7 @@ public class TransmissionMechanism {
                 var gear:TransferGear = firstGear;
                 var gear1:TransferGear = _transferGearList[i];
                 distance = Math.max(
-                        Math.pow(Math.pow(gear1.x-gear.x,2)+Math.pow(gear1.y-gear1.y,2), 1/2)
+                        Math.pow(Math.pow(gear1.x-gear.x,2)+Math.pow(gear1.y-gear.y,2), 1/2)
                                 +gear1.getRadius(),
                         distance);
             
@@ -301,9 +320,9 @@ public class TransmissionMechanism {
     
     public function get square():Number{
 
-        if(ClockSprite.instanse.level==0){
+        if(SettingsHolder.instance.levelImpl.level==0){
             return (getMaxX()-getMinX())*(getMaxY()-getMinY());
-        }else if(ClockSprite.instanse.level==1){
+        }else if(SettingsHolder.instance.levelImpl.level==1){
             var radius:Number = getR();
             return Math.PI*(radius)*(radius);
         }else{
@@ -336,7 +355,7 @@ public class TransmissionMechanism {
         return null;
     }
     
-    public function getLastInChain():TransferGear{
+    private function getLastInChain():TransferGear{
         var step:Number = 1;
         var last:TransferGear = firstGear;
         for(var i:int = 1; i<_transferGearList.length; i++){
@@ -361,7 +380,7 @@ public class TransmissionMechanism {
     }
     
     public function isFinished():Boolean{
-        return getLastInChain()==firstGear && firstGear.upperGear.isCrossedWithDriven();
+        return getLastInChain()==firstGear && leadingSimpleGear.isCrossedWithDriven();
     }
 
     private function getFastestMultiple():Number {
@@ -456,7 +475,7 @@ public class TransmissionMechanism {
     public function playStop():void {
         play = !play;
         deactivateAll();
-      ClockSprite.instanse.update();
+      ClockSprite.instanse.updateAnimateButtons();
     }
 
     public function innerTick():void {
@@ -473,8 +492,17 @@ public class TransmissionMechanism {
     return play;
   }
 
-
-
+   public function isCorrectDirection():Boolean {
+       var amountInChain:int;
+       var lastInChain:TransferGear = getLastInChain();
+       if(lastInChain==firstGear){
+           amountInChain=_transferGearList.length;
+       }else{
+          amountInChain = getIndex(lastInChain)+1;
+       }
+        return (isFinished() && amountInChain%2==0) ||
+                (!isFinished() && amountInChain%2==1);
+    }
 }
 }
 

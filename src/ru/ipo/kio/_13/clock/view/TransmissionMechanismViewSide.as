@@ -82,7 +82,11 @@ public class TransmissionMechanismViewSide extends BasicView {
         }while(first.transferGear.getNextTransferGear()!=first1.transferGear)
         if(transmissionMechanism.firstGear.secondViewSide!=null){
             if(transmissionMechanism.isFinished()){
-                distance+=first1.transferGear.lowerGear.outerRadius;
+                if(SettingsHolder.instance.isDownToUp()){
+                    distance+=first1.transferGear.upperGear.outerRadius;
+                }else{
+                    distance+=first1.transferGear.lowerGear.outerRadius;
+                }
             }
             transmissionMechanism.firstGear.secondViewSide.viewX2=distance;
             addChild(transmissionMechanism.firstGear.secondViewSide);
@@ -117,8 +121,10 @@ public class TransmissionMechanismViewSide extends BasicView {
     public function removeAdditional():void {
 
         if(transmissionMechanism.firstGear.secondViewSide!=null){
+            if(contains(transmissionMechanism.firstGear.secondViewSide)){
             removeChild(transmissionMechanism.firstGear.secondViewSide);
-        }
+            }
+            }
     }
 }
 }

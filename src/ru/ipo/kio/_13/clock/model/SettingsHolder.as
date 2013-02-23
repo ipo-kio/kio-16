@@ -10,9 +10,9 @@ package ru.ipo.kio._13.clock.model {
 import ru.ipo.kio._13.clock.model.level.ITaskLevel;
 
 public class SettingsHolder {
-    
+
     public static const DOWN_TO_UP:int = 0;
-    
+
     public static const UP_TO_DOWN:int = 1;
 
     private static var _instance:SettingsHolder;
@@ -25,8 +25,6 @@ public class SettingsHolder {
 
     private var _maxDiv:Number=3;
 
-    private var _direction:int = UP_TO_DOWN;
-    
     private var _levelImpl:ITaskLevel;
     
     public static function get instance():SettingsHolder {
@@ -63,22 +61,18 @@ public class SettingsHolder {
         return _stepRotate*Math.PI/180;
     }
 
-    public function get direction():int {
-        return _direction;
-    }
-
-    public function set direction(value:int):void {
-        _direction = value;
-    }
-
-
-    public function get maxDiv():Number {
+     public function get maxDiv():Number {
         return _maxDiv;
     }
 
     public function set maxDiv(value:Number):void {
         _maxDiv = value;
     }
+
+    public function get direction():int {
+        return _levelImpl.direction;
+    }
+
 
     public function get levelImpl():ITaskLevel {
         if(_levelImpl==null){

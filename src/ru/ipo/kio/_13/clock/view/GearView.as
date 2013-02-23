@@ -57,7 +57,7 @@ public class GearView extends BasicView {
             graphics.lineStyle(1,0x000000);
             drawArrow();
         }
-        if(_gear.transferGear==TransmissionMechanism.instance.getLastInChain() && _gear.part == SimpleGear.LOWER_PART){
+        if(_gear==TransmissionMechanism.instance.lastDrivenSimpleGear){
             graphics.lineStyle(1,0x555555);
             drawArrow();
         }

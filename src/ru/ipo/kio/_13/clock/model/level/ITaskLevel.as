@@ -25,6 +25,8 @@ public interface ITaskLevel {
      * @return
      */
     function getFormattedPrecision(precision:Number):String;
+
+    function getFormattedError(error:Number):String;
     
     function get icon_help():Class;
     
@@ -33,7 +35,12 @@ public interface ITaskLevel {
     function getProductSprite():Sprite;
 
     function updateProductSprite():void;
-    
 
+    function get direction():int
+
+    function truncate(absTransmissionError:Number):Number;
+
+
+    function undoTruncate(relTransmissionError:Number):Number;
 }
 }

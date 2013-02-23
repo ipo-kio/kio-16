@@ -36,11 +36,11 @@ public class TransmissionMechanismView extends BasicView {
      graphics.endFill();
         
         if(transmissionMechanism.transferGearList.length>0 && transmissionMechanism.isFinished()){
-            if(ClockSprite.instanse.level==0){
+            if(SettingsHolder.instance.levelImpl.level==0){
                 graphics.drawRect(transmissionMechanism.getMinX(),transmissionMechanism.getMinY(),
                         transmissionMechanism.getMaxX()-transmissionMechanism.getMinX(),
                         transmissionMechanism.getMaxY()-transmissionMechanism.getMinY());
-            }else if (ClockSprite.instanse.level==1){
+            }else if (SettingsHolder.instance.levelImpl.level==1){
                 graphics.drawCircle(transmissionMechanism.getCenter().x,transmissionMechanism.getCenter().y,
                         transmissionMechanism.getR());
             }else{
@@ -64,16 +64,16 @@ public class TransmissionMechanismView extends BasicView {
     public function transferGearAdded(transferGear:TransferGear, transferGear2:TransferGear=null):void {
       if(SettingsHolder.instance.direction==SettingsHolder.DOWN_TO_UP){
         if(transferGear.isFirst()){
-            view = transferGear.upperGear.view;
+            view = transferGear.lowerGear.view;
             (TransferGearView(transferGear.view)).childView= GearView(view);
-            addChild(transferGear.upperGear.view);
-        }
-         if(view!=null){
-             removeChild(view);
-         }
-        addChild(transferGear.view);
-          if(view!=null){
-              addChild(view);
+            addChild(transferGear.lowerGear.view);
+            addChild(transferGear.view);
+        }else{
+          if(transferGear2!=null){
+              addChildAt(transferGear.view,getChildIndex(transferGear2.view)+1);
+          }else{
+              addChildAt(transferGear.view, numChildren-1);
+          }
           }
       }else{
         if(transferGear.isFirst()){

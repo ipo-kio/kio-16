@@ -23,6 +23,7 @@ import ru.ipo.kio._13.clock.model.SettingsHolder;
 import ru.ipo.kio._13.clock.model.TransferGear;
 import ru.ipo.kio._13.clock.model.TransmissionMechanism;
 import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.base.displays.SettingsDisplay;
 
 public class TransferGearViewSide extends BasicView {
     
@@ -58,6 +59,9 @@ public class TransferGearViewSide extends BasicView {
             transferGear.transmissionMechanism.deactivateAll();
             transferGear.isActive=true;
             (TransferGearView(transferGear.view)).updateNextAndPrevious();
+            if(transferGear.transmissionMechanism.isPlay()){
+                transferGear.transmissionMechanism.playStop();
+            }
             //startDrag(false, new Rectangle(0,0,800,500));
         });
             
@@ -93,6 +97,9 @@ public class TransferGearViewSide extends BasicView {
         }
         field.addEventListener(MouseEvent.MOUSE_DOWN, function(e:Event):void{
             if(field.border==true){
+                if(transferGear.transmissionMechanism.isPlay()){
+                    transferGear.transmissionMechanism.playStop();
+                }
                 update();
             }
         });
@@ -102,11 +109,12 @@ public class TransferGearViewSide extends BasicView {
         field.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void{
             if(e.charCode==13){
                 var newValue:int = new Number(field.text);
+                KioApi.instance(ClockProblem.ID).log("VIEW1 INPUT "+upper?"UP":"DOWN", transferGear.id, newValue);
                 if(newValue<8){
                     ClockSprite.instanse.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooSmall);
                     return;
                 }
-                if(newValue>99){
+                if(newValue>40){
                     ClockSprite.instanse.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooBig);
                     return;
                 }
@@ -191,6 +199,13 @@ public class TransferGearViewSide extends BasicView {
         if(transferGear.isFirst()){
             y=10+10;
         }
+        if(SettingsHolder.instance.isDownToUp()){
+            y = 170-h*(transferGear.transmissionMechanism.getIndex(transferGear)+1);
+            if(transferGear.isFirst()){
+                y=10+10;
+            }
+        }
+        
         redrawSprite();
         _firstField.y = -20;
         _firstField.x = -FIELD_WIDTH;
@@ -228,7 +243,13 @@ public class TransferGearViewSide extends BasicView {
         _addSprite.graphics.moveTo(1, -y+10);
         _addSprite.graphics.lineTo(1, 180 - y);
         var drawUp:Boolean = y+h>100;
+
         var startY:int = drawUp?-y+20:160-y;
+        
+        if(transferGear.isFirst() && SettingsHolder.instance.isDownToUp()){
+            startY = 0;
+        }
+
         if(_activeSprite){
             _addSprite.graphics.beginFill(0xf754e1, 0.7);
         }else{
