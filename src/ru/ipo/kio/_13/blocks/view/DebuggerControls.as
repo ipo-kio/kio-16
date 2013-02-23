@@ -47,6 +47,7 @@ public class DebuggerControls extends Sprite {
     private var stopManualButton:SimpleButton;
 
     private var _manualRegime:Boolean = true;
+    private var _enabled:Boolean = true;
 
     private static const api:KioApi = KioApi.instance(BlocksProblem.ID);
 
@@ -243,10 +244,29 @@ public class DebuggerControls extends Sprite {
     public function set manualRegime(value:Boolean):void {
         _manualRegime = value;
 
+        setEnabled();
+    }
+
+    public function get enabled():Boolean {
+        return _enabled;
+    }
+
+    public function set enabled(value:Boolean):void {
+        _enabled = value;
+
+        setEnabled();
+    }
+
+    private function setEnabled():void {
         for each (var button:SimpleButton in buttons) {
-            button.enabled = _manualRegime;
-            button.mouseEnabled = _manualRegime;
+            button.enabled = _enabled && !_manualRegime;
+            button.mouseEnabled = _enabled && !_manualRegime;
         }
+
+        manualButton.enabled = _enabled;
+        manualButton.mouseEnabled = _enabled;
+        stopManualButton.enabled = _enabled || _manualRegime;
+        stopManualButton.mouseEnabled = _enabled || _manualRegime;
     }
 }
 }

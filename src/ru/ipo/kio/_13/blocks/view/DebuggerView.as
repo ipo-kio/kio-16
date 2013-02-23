@@ -10,6 +10,9 @@ import flash.display.Graphics;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Matrix;
+import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
+import flash.text.TextFormat;
 
 import mx.core.BitmapAsset;
 
@@ -66,6 +69,8 @@ public class DebuggerView extends Sprite {
     private var manualRegime:Boolean = false;
     private var manualField:BlocksField;
 
+    private var blocksCountFailField:TextField;
+
     public function DebuggerView(dbg:BlocksDebugger) {
         _dbg = dbg;
 
@@ -83,6 +88,8 @@ public class DebuggerView extends Sprite {
         var workspace:BlocksWorkspace = BlocksWorkspace.instance;
         workspace.addEventListener(BlocksWorkspace.MANUAL_REGIME_EVENT, manualRegimeChangeHandler);
         workspace.editor.addEventListener(FieldChangeEvent.FIELD_CHANGED, startAnimation); //fired in manual regime
+
+        createBlocksCountFailField();
     }
 
     private function getField():BlocksField {
@@ -92,6 +99,14 @@ public class DebuggerView extends Sprite {
     private function startAnimation(event:FieldChangeEvent):void {
         if (animating)
             stopAnimation();
+
+        var blocksCountFail:String = _dbg.validateFieldBlocks();
+        if (blocksCountFail == null) {
+            blocksCountFailField.visible = false;
+        } else {
+            blocksCountFailField.text = blocksCountFail;
+            blocksCountFailField.visible = true;
+        }
 
         if (!event.animationPhase) {
             redrawField();
@@ -271,6 +286,23 @@ public class DebuggerView extends Sprite {
             startManualRegime(_dbg.currentField.clone());
         else
             stopManualRegime();
+    }
+
+    private function createBlocksCountFailField():void {
+        blocksCountFailField = new TextField();
+        blocksCountFailField.selectable = false;
+        blocksCountFailField.embedFonts = true;
+        blocksCountFailField.defaultTextFormat = new TextFormat('KioArial', 20, 0xFF0000, true);
+        blocksCountFailField.autoSize = TextFieldAutoSize.CENTER;
+        blocksCountFailField.x = 780 / 2;
+        blocksCountFailField.y = 40;
+        blocksCountFailField.background = true;
+        blocksCountFailField.backgroundColor = 0xFFFFFF;
+        blocksCountFailField.border = true;
+        blocksCountFailField.borderColor = 0x000000;
+        blocksCountFailField.visible = false;
+
+        addChild(blocksCountFailField);
     }
 }
 }

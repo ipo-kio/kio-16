@@ -45,7 +45,8 @@ public class BlocksSelector extends Sprite {
 
         redraw();
 
-        addEventListener(MouseEvent.CLICK, clickHandler);
+        if (api.problem.level == 2) //allow click only for the second level
+            addEventListener(MouseEvent.CLICK, clickHandler);
     }
 
     private function redraw():void {
@@ -95,8 +96,6 @@ public class BlocksSelector extends Sprite {
 
 
     private function clickHandler(event:MouseEvent):void {
-        api.log('change block');
-
         var line:int = _field.lines - int(event.localY / BLOCK_HEIGHT) - 1;
 
         if (line < 0 || line >= _field.lines)
@@ -110,9 +109,18 @@ public class BlocksSelector extends Sprite {
         var column:Array = _field.getColumn(col);
 
         var b:Block;
-        if (line < column.length) {
-            b = column[line];
 
+        if (line < column.length)
+            b = column[line];
+        else if (line == column.length) {
+            b = new Block(0);
+            column.push(b);
+        } else
+            return;
+
+        api.log('change block @bb', col, line);
+
+        do {
             b.color += 1;
             if (b.color > _maxCols)
                 b.color = 0;
@@ -120,12 +128,11 @@ public class BlocksSelector extends Sprite {
             if (b.color == 0)
                 if (line < column.length - 1)
                     b.color = 1;
-                else
+                else {
                     column.pop();
-        } else if (line == column.length) {
-            b = new Block(1);
-            column.push(b);
-        }
+                    break;
+                }
+        } while (b.isFromLeftToRight != col < _field.boundary);
 
         dispatchEvent(new Event(Event.CHANGE));
         redraw();
