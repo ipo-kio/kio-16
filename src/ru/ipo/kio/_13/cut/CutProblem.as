@@ -70,6 +70,8 @@ public class CutProblem implements KioProblem {
         var res:int = solution1.polys - solution2.polys;
         if (res == 0)
             res = solution2.pieces - solution1.pieces;
+        if (res == 0)
+            res = solution2.offcuts - solution1.offcuts;
         return  res;
     }
 

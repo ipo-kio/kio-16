@@ -27,6 +27,8 @@ public class CutPieceFieldView extends Sprite {
 
     private var field:Sprite = null;
 
+    public static const REGIME_CHANGE:String = 'regime';
+
     public function CutPieceFieldView(m:int, n:int, cuts:Array) {
         _piecesField = new PiecesField(m, n);
         _cuts = cuts;
@@ -114,6 +116,8 @@ public class CutPieceFieldView extends Sprite {
             dispatchEvent(new Event(CutsField.CUTS_CHANGED));
         else
             dispatchEvent(new Event(PiecesField.PIECES_CHANGED));
+
+        dispatchEvent(new Event(REGIME_CHANGE));
     }
 
     private function piecesChanged(event:Event):void {

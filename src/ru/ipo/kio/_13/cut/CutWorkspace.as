@@ -88,6 +88,7 @@ public class CutWorkspace extends Sprite {
 
         infoPanel.setValue(CutControls.POLYS_IND, result.polys);
         infoPanel.setValue(CutControls.PIECES_IND, result.pieces);
+        infoPanel.setValue(CutControls.OFFCUTS_IND, result.offcuts);
 
         if (!isRecord) {
             api.submitResult(result);
@@ -122,6 +123,8 @@ public class CutWorkspace extends Sprite {
             result.polys = normNontriangles;
         else
             result.polys = normal;
+
+        result.offcuts = cutField.polygons.length - normal;
 
         return result;
     }

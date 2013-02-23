@@ -41,10 +41,13 @@ public class PiecesFieldViewSinglePieces extends PiecesFieldView {
         addEventListener(MouseEvent.CLICK, clickHandler);
     }
 
-
     private function mouseMoveHandler(event:MouseEvent):void {
         var x:int = screen2logicX(event.localX);
         var y:int = screen2logicY(event.localY);
+
+        var normCords:Object = normalizeCords(x, y);
+        x = normCords.x;
+        y = normCords.y;
 
         if (x == _previousX && y == _previousY)
             return;
@@ -71,6 +74,18 @@ public class PiecesFieldViewSinglePieces extends PiecesFieldView {
         g.endFill();
     }
 
+    private function normalizeCords(x:int, y:int):Object {
+        if (x >= _field.n)
+            x = _field.n - 1;
+        if (y >= _field.m)
+            y = _field.m - 1;
+        if (x < 0)
+            x = 0;
+        if (y < 0)
+            y = 0;
+        return {x: x, y: y};
+    }
+
     private function isEmpty(x:int, y:int):Boolean {
         var blockType:int = _field.getBlockType(x, y);
         return blockType == PiecesField.BLOCK_EMPTY || blockType == PiecesField.BLOCK_INSIDE;
@@ -79,6 +94,10 @@ public class PiecesFieldViewSinglePieces extends PiecesFieldView {
     private function clickHandler(event:MouseEvent):void {
         var x:int = screen2logicX(event.localX);
         var y:int = screen2logicY(event.localY);
+
+        var normCords:Object = normalizeCords(x, y);
+        x = normCords.x;
+        y = normCords.y;
 
         var piece:Piece;
 

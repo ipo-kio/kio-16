@@ -31,6 +31,8 @@ public class CutPoint extends Sprite {
 
     private var moving:Boolean = false;
 
+    private const level:int = KioApi.instance(CutProblem.ID).problem.level;
+
     public function CutPoint(field:CutsFieldView, cut:Cut, ind:int) {
         _field = field;
         _cut = cut;
@@ -52,17 +54,22 @@ public class CutPoint extends Sprite {
 
     private function addedToStage(event:Event):void {
         stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
-        _field.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+        stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
     }
 
     private function removedFromStage(event:Event):void {
         stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
-        _field.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+        stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
     }
 
     private function mouseUp(event:MouseEvent):void {
-        if (moving)
-            KioApi.instance(CutProblem.ID).log('cut point mouse up');
+        if (!moving)
+            return;
+
+        if (!hitTestPoint(event.stageX, event.stageY))
+            hitArea.visible = false;
+
+        KioApi.instance(CutProblem.ID).log('cut point mouse up');
         moving = false;
     }
 
@@ -81,6 +88,19 @@ public class CutPoint extends Sprite {
 
         var x:int = _field.screen2logicX(localX);
         var y:int = _field.screen2logicY(localY);
+
+        if (level == 0) {
+            var otherP:FieldCords = _ind == 1 ? _cut.p2 : _cut.p1;
+            var otherSideNum:int = sideNum(otherP.x, otherP.y);
+            var thisSideNum:int = sideNum(x, y, otherSideNum);
+            switch (thisSideNum) {
+                case 1: x = 0; break;
+                case 2: y = _field.maxY; break;
+                case 3: x = _field.maxX; break;
+                case 4: y = 0; break;
+            }
+        }
+
         var p:FieldCords = _ind == 1 ? _cut.p1 : _cut.p2;
         var newP:FieldCords = new FieldCords(x, y);
 
@@ -93,6 +113,36 @@ public class CutPoint extends Sprite {
             _cut.p2 = newP;
 
         place();
+    }
+
+    private function sideNum(x:int, y:int, excludeSide:int = -1):int {
+        //1 - left, 2 - top, 3 - right, 4 - bottom
+        var xMax:int = _field.maxX;
+        var yMax:int = _field.maxY;
+
+        var dx:int = x < xMax / 2 ? x : xMax - x;
+        var dy:int = y < yMax / 2 ? y : yMax - y;
+        var _1st:int;
+        var _2nd:int;
+        if (x < xMax / 2) {
+            if (y < yMax / 2) { //1 4
+                _1st = dx < dy ? 1 : 4;
+                _2nd = dx < dy ? 4 : 1;
+            } else { //1 2
+                _1st = dx < dy ? 1 : 2;
+                _2nd = dx < dy ? 2 : 1;
+            }
+        } else {
+            if (y < yMax / 2) { //3 4
+                _1st = dx < dy ? 3 : 4;
+                _2nd = dx < dy ? 4 : 3;
+            } else { //3 2
+                _1st = dx < dy ? 3 : 2;
+                _2nd = dx < dy ? 2 : 3;
+            }
+        }
+
+        return excludeSide != _1st ? _1st : _2nd;
     }
 
     private function place():void {

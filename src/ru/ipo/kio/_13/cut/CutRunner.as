@@ -24,7 +24,7 @@ public class CutRunner extends Sprite {
 
         KioApi.language = KioApi.L_RU; //устанавливаем язык, используемый в программе
 
-        KioBase.instance.initOneProblem(this, new CutProblem(1));
+        KioBase.instance.initOneProblem(this, new CutProblem(0));
     }
 
 }
