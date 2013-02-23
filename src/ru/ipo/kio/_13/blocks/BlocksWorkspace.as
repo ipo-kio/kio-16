@@ -18,15 +18,21 @@ import ru.ipo.kio._13.blocks.view.DebuggerControls;
 import ru.ipo.kio._13.blocks.view.DebuggerView;
 
 import ru.ipo.kio._13.blocks.view.Editor;
-import ru.ipo.kio.base.GlobalMetrics;
+import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.api.TextUtils;
 
 public class BlocksWorkspace extends Sprite {
+
+    [Embed(source="resources/bg.png")]
+    public static const BG_CLS:Class;
 
     public static const MANUAL_REGIME_EVENT:String = 'manual regime';
 
     private static var _instance:BlocksWorkspace = null;
     private var _editor:Editor;
     private var _debuggerControls:DebuggerControls;
+
+    private const api:KioApi = KioApi.instance(BlocksProblem.ID);
 
     private var _manualRegime:Boolean = false;
 
@@ -36,25 +42,58 @@ public class BlocksWorkspace extends Sprite {
         else
             throw new Error('Could not create the second instance of the Blocks Field');
 
-        graphics.beginFill(0xFFFFFF);
-        graphics.drawRect(0, 0, GlobalMetrics.WORKSPACE_WIDTH, GlobalMetrics.WORKSPACE_HEIGHT);
-        graphics.endFill();
+        TextUtils.embedFonts();
 
-        _editor = new Editor(780 - 120, 90);
+        addChild(new BG_CLS);
+
+        _editor = new Editor(552, 100);
         addChild(_editor);
 
-        var field:BlocksField = new BlocksField(4, 10, [
-            [new Block(1), new Block(2), new Block(3), new Block(4)],
-            [new Block(3), new Block(4)],
-            [new Block(1), new Block(2)],
-            [new Block(3), new Block(4)],
-            [new Block(1), new Block(2), new Block(3), new Block(4)],
-            [new Block(3), new Block(4)],
-            [new Block(1), new Block(2)],
-            [new Block(3), new Block(4)],
-            [new Block(1), new Block(2)],
-            [new Block(3), new Block(4)]
-        ], 3, 0);
+        switch(api.problem.level) {
+            case 0:
+                var field:BlocksField = new BlocksField(4, 10, [
+                    [new Block(1), new Block(2), new Block(3), new Block(4)],
+                    [new Block(3), new Block(4)],
+                    [new Block(1), new Block(2)],
+                    [new Block(3), new Block(4)],
+                    [new Block(1), new Block(2), new Block(3), new Block(4)],
+                    [new Block(3), new Block(4)],
+                    [new Block(1), new Block(2)],
+                    [new Block(3), new Block(4)],
+                    [new Block(1), new Block(2)],
+                    [new Block(3), new Block(4)]
+                ], 5, 0);
+                break;
+            case 1:
+                field = new BlocksField(4, 10, [
+                    [new Block(1), new Block(2), new Block(3), new Block(4)],
+                    [new Block(3), new Block(4)],
+                    [new Block(1), new Block(2)],
+                    [new Block(3), new Block(4)],
+                    [new Block(1), new Block(2), new Block(3), new Block(4)],
+                    [new Block(3), new Block(4)],
+                    [new Block(1), new Block(2)],
+                    [new Block(3), new Block(4)],
+                    [new Block(1), new Block(2)],
+                    [new Block(3), new Block(4)]
+                ], 5, 0);
+                break;
+            case 2:
+                field = new BlocksField(4, 10, [
+                    [new Block(1), new Block(2), new Block(3), new Block(4)],
+                    [new Block(3), new Block(4)],
+                    [new Block(1), new Block(2)],
+                    [new Block(3), new Block(4)],
+                    [new Block(1), new Block(2), new Block(3), new Block(4)],
+                    [new Block(3), new Block(4)],
+                    [new Block(1), new Block(2)],
+                    [new Block(3), new Block(4)],
+                    [new Block(1), new Block(2)],
+                    [new Block(3), new Block(4)]
+                ], 5, 0);
+                break;
+        }
+
         var blocksDebugger:BlocksDebugger = new BlocksDebugger(field);
         _debuggerControls = new DebuggerControls(blocksDebugger);
         addChild(_debuggerControls);
@@ -63,15 +102,15 @@ public class BlocksWorkspace extends Sprite {
         addChild(dbgView);
 
         _debuggerControls.x = 0;
-        _debuggerControls.y = dbgView.y + dbgView.height;
+        _debuggerControls.y = 254;
 
-        _editor.x = 2;
-        _editor.y = _debuggerControls.y + _debuggerControls.height;
+        _editor.x = 4;
+        _editor.y = _debuggerControls.y + _debuggerControls.height + 6;
 
         var blocksSelector:BlocksSelector = new BlocksSelector(field.lines, field.cols, field.boundary, 4);
         blocksSelector.field = field;
-        blocksSelector.x = _editor.x + 780 - 320;
-        blocksSelector.y = 98 + _editor.y;
+        blocksSelector.x = 4;
+        blocksSelector.y = 104 + _editor.y;
 
         addChild(blocksSelector);
 

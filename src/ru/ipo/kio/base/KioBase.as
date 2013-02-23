@@ -97,6 +97,8 @@ public class KioBase {
                 currentDisplay = new MultipleUsersWelcomeDisplay;
                 break;
         }
+
+        initLogOutputListener();
     }
 
     public function initOneProblem(stage:DisplayObjectContainer, problem:KioProblem):void {
@@ -106,7 +108,11 @@ public class KioBase {
         _lsoProxy.setOneProblemDebugRegime();
         currentProblem = problem;
 
-        stage.stage.addEventListener(KeyboardEvent.KEY_DOWN, function(event:KeyboardEvent):void {
+        initLogOutputListener();
+    }
+
+    private function initLogOutputListener():void {
+        stage.addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void {
             if (event.altKey && event.ctrlKey && event.keyCode == 'L'.charCodeAt())
                 FileUtils.saveLog();
         });

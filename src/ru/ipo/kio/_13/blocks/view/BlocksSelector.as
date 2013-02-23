@@ -21,14 +21,14 @@ public class BlocksSelector extends Sprite {
 
     private const COLORS:Array = [
         0,
-        0x00FF00,
-        0xFF0000,
-        0x0000FF,
-        0xFFFF22
+        0x2ebe0c,//0x00a859,
+        0xf80d25,
+        0x0d4eba,
+        0xffb628
     ];
 
     private const BLOCK_WIDTH:int = 30;
-    private const BLOCK_HEIGHT:int = 20;
+    private const BLOCK_HEIGHT:int = 21;
 
     private var _field:BlocksField;
     private var _maxCols:int;
@@ -51,12 +51,15 @@ public class BlocksSelector extends Sprite {
     private function redraw():void {
         graphics.clear();
         graphics.lineStyle(1, 0);
-        graphics.beginFill(0xFFFFFF);
+        graphics.beginFill(0xFFFFFF, 0.01);
         graphics.drawRect(0, 0, _field.cols * BLOCK_WIDTH, _field.lines * BLOCK_HEIGHT);
         graphics.endFill();
 
-        graphics.lineStyle(1, 0x888888, 0.2);
         for (var j:int = 1; j < _field.cols; j++) {
+            if (j == _field.boundary)
+                graphics.lineStyle(1, 0, 0.5);
+            else
+                graphics.lineStyle(1, 0x888888, 0.4);
             graphics.moveTo(j * BLOCK_WIDTH, 0);
             graphics.lineTo(j * BLOCK_WIDTH, _field.lines * BLOCK_HEIGHT);
         }
@@ -72,7 +75,7 @@ public class BlocksSelector extends Sprite {
             var line:int = 0;
             for each (var block:Block in col) {
                 graphics.beginFill(COLORS[block.color]);
-                graphics.drawRoundRect(c * BLOCK_WIDTH + 2, (_field.lines - line - 1) * BLOCK_HEIGHT + 2, BLOCK_WIDTH - 4, BLOCK_HEIGHT - 4, 4);
+                graphics.drawRect(c * BLOCK_WIDTH + 2, (_field.lines - line - 1) * BLOCK_HEIGHT + 2, BLOCK_WIDTH - 4, BLOCK_HEIGHT - 4);
                 graphics.endFill();
                 line++;
             }

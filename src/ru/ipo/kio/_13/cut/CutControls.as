@@ -12,7 +12,8 @@ import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.text.TextFormat;
 
-import ru.ipo.kio._13.blocks.view.Button2;
+import ru.ipo.kio.api.controls.ButtonBuilder;
+
 import ru.ipo.kio._13.cut.model.PiecesField;
 import ru.ipo.kio._13.cut.view.CutPieceFieldView;
 import ru.ipo.kio._13.cut.view.CutsFieldView;
@@ -47,11 +48,32 @@ public class CutControls extends Sprite {
         var x0:Number = (_w - innerW) / 2;
         var y0:Number = 20;
 
-        _switchFieldsButtonToCuts = new Button2(loc.labels.switch_to_cuts, "to cuts", innerW, 44, 14, "KioArial", true, true);
+        var buttonBuilder:ButtonBuilder = new ButtonBuilder();
+        buttonBuilder.upColor = 0x00EE00;
+        buttonBuilder.downColor = 0x00AA00;
+        buttonBuilder.upHoverColor = 0xEEEE00;
+        buttonBuilder.downHoverColor = 0xAAAA00;
+        buttonBuilder.borderColor = 0x004400;
+        buttonBuilder.innerBorderColor = 0x88AA88;
+        buttonBuilder.font = "KioArial";
+        buttonBuilder.embedFont = true;
+        buttonBuilder.fontSize = 14;
+        buttonBuilder.fontColor = 0x000000;
+        buttonBuilder.bold = true;
+
+        buttonBuilder.width = innerW;
+        buttonBuilder.height = 44;
+
+        buttonBuilder.title = loc.labels.switch_to_cuts;
+
+        _switchFieldsButtonToCuts = buttonBuilder.build();
         _switchFieldsButtonToCuts.x = x0;
         _switchFieldsButtonToCuts.y = y0;
         addChild(_switchFieldsButtonToCuts);
-        _switchFieldsButtonToPieces = new Button2(loc.labels.switch_to_poly, "polys", innerW, 44, 14, "KioArial", true, true);
+
+        buttonBuilder.title = loc.labels.switch_to_poly;
+
+        _switchFieldsButtonToPieces = buttonBuilder.build();
         _switchFieldsButtonToPieces.x = x0;
         _switchFieldsButtonToPieces.y = y0;
         addChild(_switchFieldsButtonToPieces);
@@ -90,7 +112,11 @@ public class CutControls extends Sprite {
         _errors.text = "";
         addChild(_errors);
 
-        var _clearButton:SimpleButton = new Button2(loc.labels.clear, "clear", _w * 0.5, 30, 14, "KioArial", true, true);
+        buttonBuilder.width = _w * 0.5;
+        buttonBuilder.title = loc.labels.clear;
+        buttonBuilder.height = 30;
+
+        var _clearButton:SimpleButton = buttonBuilder.build();
         _clearButton.x = x0;
         _clearButton.y = _h - 44;
         addChild(_clearButton);

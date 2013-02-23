@@ -3,8 +3,6 @@ package ru.ipo.kio._13.cut {
 import flash.display.Sprite;
 import flash.events.Event;
 
-import ru.ipo.kio._13.blocks.view.Button2;
-
 import ru.ipo.kio._13.cut.model.ColoredPoly;
 
 import ru.ipo.kio._13.cut.model.Cut;
@@ -18,21 +16,6 @@ import ru.ipo.kio._13.cut.view.PiecesFieldView;
 import ru.ipo.kio.api.*;
 
 public class CutWorkspace extends Sprite {
-
-    [Embed(source='resources/ARICYR.TTF',
-            embedAsCFF="false",
-            fontName="KioArial",
-            mimeType="application/x-font-truetype",
-            unicodeRange="U+0000-U+FFFF")]
-    private static var ARIAL_FONT:Class;
-
-    [Embed(source='resources/ARICYRB.TTF',
-            embedAsCFF="false",
-            fontName="KioArial",
-            fontWeight="bold",
-            mimeType="application/x-font-truetype",
-            unicodeRange="U+0000-U+FFFF")]
-    private static var ARIAL_FONT_B:Class;
 
     private static const CONTROLS_WIDTH:int = 200;
     private static const CUTS_COUNT:int = 6;
@@ -48,10 +31,7 @@ public class CutWorkspace extends Sprite {
     private static const api:KioApi = KioApi.instance(CutProblem.ID);
 
     public function CutWorkspace() {
-        Button2.UPPER_COLOR = 0x00EE00;
-        Button2.DOWN_COLOR = 0x00AA00;
-        Button2.BORDER_COLOR = 0x004400;
-        Button2.INNER_BORDER_COLOR = 0x88AA88;
+        TextUtils.embedFonts();
 
         var cuts:Array = [];
 
@@ -105,6 +85,7 @@ public class CutWorkspace extends Sprite {
         var cutField:CutsField = field.cutsField;
         if (cutField == null) {
             result.polys = 0;
+            result.offcuts = 0;
             return result;
         }
 
