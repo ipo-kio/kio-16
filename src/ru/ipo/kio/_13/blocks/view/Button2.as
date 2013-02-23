@@ -12,6 +12,7 @@ import flash.display.Shape;
 import flash.display.SimpleButton;
 import flash.display.Sprite;
 import flash.geom.Matrix;
+import flash.text.AntiAliasType;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
@@ -23,25 +24,25 @@ public class Button2 extends SimpleButton {
 
 //    private static const UPPER_COLOR:uint = 0x66ae59;
 //    private static const DOWN_COLOR:uint = 0x4ca13d;
-    private static const UPPER_COLOR:uint = 0xEEEEEE;
-    private static const DOWN_COLOR:uint = 0xAAAAAA;
-    private static const UPPER_COLOR_HOVER:uint = 0xEEEE00;
-    private static const DOWN_COLOR_HOVER:uint = 0xAAAA00;
+    public static var UPPER_COLOR:uint = 0xEEEEEE;
+    public static var DOWN_COLOR:uint = 0xAAAAAA;
+    public static var UPPER_COLOR_HOVER:uint = 0xEEEE00;
+    public static var DOWN_COLOR_HOVER:uint = 0xAAAA00;
 
-    private static const BORDER_COLOR:uint = 0x444444;
-    private static const INNER_BORDER_COLOR:uint = 0x888888;
+    public static var BORDER_COLOR:uint = 0x444444;
+    public static var INNER_BORDER_COLOR:uint = 0x888888;
 
     private var grayer:Shape;
 
-    public function Button2(value:*, action:String, width:int = 0, height:int = 0, textSize:int = 0) {
+    public function Button2(value:*, action:String, width:int = 0, height:int = 0, textSize:int = 0, fontName:String = "MONOSPACE", embed:Boolean = false, isBold:Boolean = false) {
         //TODO report two super are not reported
         _action = action;
 
         if (value is String) {
             var title:String = value as String;
-            up = mergeSpriteAndText(createNormalSprite(width, height), title, textSize);
-            over = mergeSpriteAndText(createHoverSprite(width, height), title, textSize);
-            down = mergeSpriteAndText(createPressedSprite(width, height), title, textSize, 1, 1);
+            up = mergeSpriteAndText(createNormalSprite(width, height), title, textSize, fontName, embed, isBold);
+            over = mergeSpriteAndText(createHoverSprite(width, height), title, textSize, fontName, embed, isBold);
+            down = mergeSpriteAndText(createPressedSprite(width, height), title, textSize, fontName, embed, isBold, 1, 1);
         } else {
             var buttonImage:* = new value;
             if (width == 0)
@@ -112,17 +113,20 @@ public class Button2 extends SimpleButton {
         return s;
     }
 
-    public static function mergeSpriteAndText(do1:DisplayObject, text:String, textSize:int, dx:int = 0, dy:int = 0):Sprite {
+    public static function mergeSpriteAndText(do1:DisplayObject, text:String, textSize:int, fontName:String, embed:Boolean, isBold:Boolean, dx:int = 0, dy:int = 0):Sprite {
         var field:TextField = new TextField();
 
-        field.autoSize = TextFieldAutoSize.NONE;
-        field.defaultTextFormat = new TextFormat('MONOSPACE', textSize, null, null, null, null, null, null, TextFormatAlign.CENTER);
+        field.autoSize = TextFieldAutoSize.CENTER;
+        field.defaultTextFormat = new TextFormat(fontName, textSize, null, isBold, null, null, null, null, TextFormatAlign.CENTER);
         field.selectable = false;
-        field.text = text;
+        field.multiline = true;
+        field.embedFonts = embed;
         field.width = do1.width;
         field.height = field.textHeight;
-        field.x = dx;
-        field.y = (do1.height - field.textHeight - 2) / 2 + dy;
+        field.x = dx + do1.width / 2;
+        field.text = text;
+        field.y = (do1.height - field.textHeight - 4) / 2 + dy;
+        field.antiAliasType = AntiAliasType.ADVANCED;
 
         var s:Sprite = new Sprite();
         s.addChild(do1);

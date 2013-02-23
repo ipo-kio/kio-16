@@ -110,9 +110,10 @@ public class KioApi extends EventDispatcher {
     /**
      * Logs a message
      * @param msg a message to log
+     * @param args extra arguments to log
      */
-    public function log(msg:String):void {
-        KioBase.instance.log(problem.id + ': ' + msg);
+    public function log(msg:String, ...args):void {
+        KioBase.instance.log(problem.id + ': ' + msg, args);
     }
 
     public function logSize():int {
@@ -151,7 +152,7 @@ public class KioApi extends EventDispatcher {
      */
     public function submitResult(result:Object = null):void {
         if (result == null)
-            result = _problem.check(_problem.solution);
+            result = _problem.check(_problem.solution); //TODO change to get current result
 
         if (_record_result == null || _problem.compare(result, _record_result) > 0) {
             _record_result = result;

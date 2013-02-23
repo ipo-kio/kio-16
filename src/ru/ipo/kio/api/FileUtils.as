@@ -58,10 +58,16 @@ public class FileUtils {
     public static function saveLog():void {
         var fr:FileReference = new FileReference();
         var log:String = 'total memory ' + KioBase.instance.lsoProxy.usedBytes + "\n";
-        KioBase.instance.outputLog(function(time:Number, cmd:String):void {
+        KioBase.instance.outputLog(function(time:Number, cmd:String, extraArgs:Array):void {
             var d:Date = new Date();
             d.setTime(time);
-            log += time + ' | ' + d + ' | ' + cmd + "\n"
+            log += time + ' | ' + d + ' | ' + cmd;
+
+            if (extraArgs.length > 0)
+                for each (var arg:* in extraArgs)
+                    log += "|" + arg;
+
+            log += "\n";
         });
         fr.save(log, "kio" + inventDate() + ".log");
     }

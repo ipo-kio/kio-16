@@ -48,7 +48,7 @@ public class CutProblem implements KioProblem {
     }
 
     public function get solution():Object {
-        return {};
+        return _workspace.solution;
     }
 
     public function loadSolution(solution:Object):Boolean {
@@ -56,8 +56,7 @@ public class CutProblem implements KioProblem {
             //TODO load
 
             KioApi.instance(ID).autoSaveSolution();
-            KioApi.instance(ID).submitResult(_workspace.currentResult());
-            //TODO show changed result
+            _workspace.updateCurrentResult();
 
             return true;
         } else
@@ -70,7 +69,10 @@ public class CutProblem implements KioProblem {
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        return solution1.length - solution2.length;
+        var res:int = solution1.polys - solution2.polys;
+        if (res == 0)
+            res = solution2.pieces - solution1.pieces;
+        return  res;
     }
 
     public function get icon():Class {

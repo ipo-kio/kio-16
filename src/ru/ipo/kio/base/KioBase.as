@@ -2,6 +2,7 @@ package ru.ipo.kio.base {
 import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
+import flash.errors.IllegalOperationError;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.events.TimerEvent;
@@ -312,7 +313,7 @@ public class KioBase {
             global.log.data.position = global.log.data.length;
     }
 
-    public function log(msg:String):void {
+    public function log(msg:String, extraArguments:Array):void {
         initLogger(); //TODO init only on start
 
         var lso:LsoProxy = lsoProxy;
@@ -343,7 +344,64 @@ public class KioBase {
         writeCommandToLog(msg);
         log.writeShort(deltaTime);
 
+        //log extra arguments if any
+        var spec:String = getLogSpecification(msg);
+        var specFail:String = null;
+        if (spec != null)
+            specFail = writeSpec(log, spec, extraArguments);
+
         logger.last_log_time = passed;
+
+        if (specFail != null)
+            throw new IllegalOperationError(specFail);
+    }
+
+    private static function getLogSpecification(msg:String):String {
+        var atIndex:int = msg.lastIndexOf('@');
+        if (atIndex >= 0)
+            return msg.substring(atIndex + 1);
+        else
+            return null;
+    }
+
+    private static function writeSpec(log:ByteArray, spec:String, arguments:Array):String {
+        var fail:String = null;
+
+        if (spec.length != arguments.length)
+            fail = "Spec and arguments sizes do not match";
+
+        for (var i:int = 0; i < spec.length; i++) {
+            var sp:String = spec.charAt(i);
+            var arg:*;
+            if (i >= arguments.length)
+                arg = sp == 't' ? '' : 0;
+            else
+                arg = arguments[i];
+
+            switch (sp) {
+                case 'i':
+                    log.writeInt(arg);
+                    break;
+                case 'I':
+                    log.writeUnsignedInt(arg);
+                    break;
+                case 'b':
+                case 'B':
+                    log.writeByte(arg);
+                    break;
+                case 's':
+                case 'S':
+                    log.writeShort(arg);
+                    break;
+                case 't':
+                    log.writeUTF(arg);
+                    break;
+                default:
+                    fail = "Unknown specifier " + sp + " in the log specification";
+            }
+        }
+
+        return fail;
     }
 
     private function writeCommandToLog(msg:String):void {
@@ -400,6 +458,8 @@ public class KioBase {
             }
 
             var command:String = inverseDict[cmd];
+            if (command == null)
+                throw new IllegalOperationError("Unknown command in log");
 
             switch (command) {
                 case LOG_CMD_TIME_BYTE:
@@ -414,11 +474,49 @@ public class KioBase {
                     last_log_time += data.readUnsignedShort() + timeByte * 65536;
                     timeByte = 0;
                     var time:Number = 10 * last_log_time + last_log_start;
-                    callback(time, command);
+
+                    var extraArguments:Array;
+                    var spec:String = getLogSpecification(command);
+                    if (spec != null)
+                        extraArguments = readExtraArguments(spec, data);
+                    else
+                        extraArguments = [];
+
+                    callback(time, command, extraArguments);
             }
         }
 
         data.position = pos;
+    }
+
+    private static function readExtraArguments(spec:String, data:ByteArray):Array {
+        var result:Array = [];
+        for (var i:int = 0; i < spec.length; i++)
+            switch (spec.charAt(i)) {
+                case 'i':
+                    result.push(data.readInt());
+                    break;
+                case 'I':
+                    result.push(data.readUnsignedInt());
+                    break;
+                case 'b':
+                    result.push(data.readByte());
+                    break;
+                case 'B':
+                    result.push(data.readUnsignedByte());
+                    break;
+                case 's':
+                    result.push(data.readShort());
+                    break;
+                case 'S':
+                    result.push(data.readUnsignedShort());
+                    break;
+                case 't':
+                    result.push(data.readUTF());
+                    break;
+            }
+
+        return result;
     }
 
 }
