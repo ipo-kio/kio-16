@@ -84,9 +84,10 @@ public class HelpDisplay extends Sprite {
         tf.autoSize = TextFieldAutoSize.NONE;
         tf.selectable = true;
 
+        const textHeightDelta:int = 6;
         var textMaxHeight:int = GlobalMetrics.STAGE_HEIGHT - main_text_start - 16;
-        var needScroll:Boolean = textMaxHeight < tf.textHeight;
-        tf.height = Math.min(tf.textHeight, textMaxHeight);
+        var needScroll:Boolean = textMaxHeight < tf.textHeight + textHeightDelta;
+        tf.height = Math.min(tf.textHeight + textHeightDelta, textMaxHeight);
 
         if (needScroll) {
             tf.width -= 15; //it seems this is the real width of uiScroll
