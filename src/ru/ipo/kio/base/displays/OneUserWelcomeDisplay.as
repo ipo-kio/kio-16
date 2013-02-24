@@ -96,19 +96,16 @@ public class OneUserWelcomeDisplay extends Sprite {
     }
 
     private function newParticipantButtonClicked(event:Event):void {
-        KioBase.instance.log('BTN new participant in one user welcome', []);
         KioBase.instance.lsoProxy.createNewParticipant();
         KioBase.instance.currentDisplay = new AnketaDisplay(OneUserWelcomeDisplay);
     }
 
     private function continueButtonClicked(event:Event):void {
-        KioBase.instance.log('BTN continue in one user welcome', []);
         KioBase.instance.lsoProxy.userIndex = 0;
         KioBase.instance.currentDisplay = new ProblemsDisplay;
     }
 
     private function loadWorkspaceButtonClicked(event:Event):void {
-        KioBase.instance.log('BTN load workspace in one user welcome', []);
         KioBase.instance.lsoProxy.createNewParticipant();
         FileUtils.loadAll();
     }

@@ -13,11 +13,14 @@ import flash.geom.Matrix;
 
 import mx.core.BitmapAsset;
 
+import ru.ipo.kio._13.cut.CutProblem;
+
 import ru.ipo.kio._13.cut.model.FieldCords;
 
 import ru.ipo.kio._13.cut.model.Piece;
 
 import ru.ipo.kio._13.cut.model.PiecesField;
+import ru.ipo.kio.api.KioApi;
 
 public class PiecesFieldViewSinglePieces extends PiecesFieldView {
 
@@ -102,6 +105,8 @@ public class PiecesFieldViewSinglePieces extends PiecesFieldView {
         var piece:Piece;
 
         if (isEmpty(x, y)) {
+            KioApi.instance(CutProblem.ID).log('click on empty block');
+
             var zeroCords:FieldCords = new FieldCords(0, 0);
             if (_field.blocksCount >= MAX_PIECES)
                 return;
@@ -109,6 +114,8 @@ public class PiecesFieldViewSinglePieces extends PiecesFieldView {
             piece.move(x, y);
             _field.addPiece(piece);
         } else {
+            KioApi.instance(CutProblem.ID).log('click to remove block');
+
             var cords:FieldCords = new FieldCords(x, y);
             //remove the piece
             for each (piece in _field.pieces)

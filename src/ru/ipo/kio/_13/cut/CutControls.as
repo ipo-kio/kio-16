@@ -158,6 +158,8 @@ public class CutControls extends Sprite {
     }
 
     private function switchButtonClickHandler(event:MouseEvent):void {
+        KioApi.instance(CutProblem.ID).log('switch button ' + _field.cutsRegime ? 'to poly' : 'to cuts');
+
         _field.cutsRegime = !_field.cutsRegime;
     }
 
@@ -166,6 +168,8 @@ public class CutControls extends Sprite {
     }
 
     private function clearButtonHandler(event:MouseEvent = null):void {
+        KioApi.instance(CutProblem.ID).log('clear button');
+
         _field.cutsRegime = false;
         _field.piecesField.clearPieces();
 

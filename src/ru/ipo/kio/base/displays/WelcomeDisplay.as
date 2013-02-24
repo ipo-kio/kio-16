@@ -54,13 +54,11 @@ public class WelcomeDisplay extends Sprite {
     }
 
     private function continueButtonClicked(event:Event):void {
-        KioBase.instance.log('BTN continue in welcome', []);
         KioBase.instance.lsoProxy.createNewParticipant();
         KioBase.instance.currentDisplay = new SettingsDisplay;
     }
 
     private function loadWorkspaceButtonClicked(event:Event):void {
-        KioBase.instance.log('BTN load workspace in welcome', []);
         KioBase.instance.lsoProxy.createNewParticipant();
         FileUtils.loadAll();
     }

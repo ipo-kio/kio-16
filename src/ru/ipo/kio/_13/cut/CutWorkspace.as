@@ -111,6 +111,8 @@ public class CutWorkspace extends Sprite {
     }
 
     private function recordChanged(event:Event):void {
+        var result:Object = currentResult();
+        api.log('new record! @BBB', result.polys, result.pieces, result.offcuts);
         updateCurrentResult(true);
     }
 
