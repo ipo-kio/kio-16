@@ -116,7 +116,7 @@ public class ProblemsDisplay extends Sprite {
         KioBase.instance.currentDisplay = new HelpDisplay(null, false);
 
         //TODO DON'T FORGET TO REMOVE
-        FileUtils.saveLog();
+//        FileUtils.saveLog();
     }
 
     private function saveButtonClick(event:Event):void {
