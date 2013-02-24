@@ -1,5 +1,5 @@
 /**
- * Специфицные операции для нулеовго уровня
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
  * @author: Vasiliy
  * @date: 21.02.13
  */
@@ -15,14 +15,14 @@ import ru.ipo.kio._13.clock.utils.printf;
 
 public class ZeroLevel extends BasicProductDrawer implements ITaskLevel {
 
-    [Embed(source='../../_resources/icon_statement_2.jpg')]
+    [Embed(source='../../_resources/Level_0-Statement-1.jpg')]
     private static var ICON_STATEMENT:Class;
 
-    [Embed(source='../../_resources/icon_help_2.jpg')]
+    [Embed(source='../../_resources/Level_0-Help-1.jpg')]
     private static var ICON_HELP:Class;
 
 
-    //картинки города
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
     [Embed(source='../../_resources/level0/1.png')]
     private static const DAY:Class;
@@ -42,7 +42,7 @@ public class ZeroLevel extends BasicProductDrawer implements ITaskLevel {
     [Embed(source='../../_resources/level0/6.png')]
     private static const EARLY_DAY:Class;
 
-    //спрайты для городов
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
     private var _day:Sprite = new Sprite();
 
@@ -56,13 +56,13 @@ public class ZeroLevel extends BasicProductDrawer implements ITaskLevel {
 
     private var _early_day:Sprite = new Sprite();
 
-      //три служебных поля для того, чтобы знать какая половина дня сейчас
+      //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
    private var iteration:int = 0;
    private var first:Boolean=false;
    private var second:Boolean=false;
 
-   //массив содержит углы в порядке обхода их стрелкой, соответствующие им картинки и расстояние до новой картинки
-    //это необходимо для логики обхода за два оборота (день, ночь)
+   //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ)
     
    private const ANGLES_TO_IMAGES:Array = [[Math.PI*7/2,_morning, Math.PI],
                                           [Math.PI*5/2,_early_day, Math.PI/2],
@@ -87,11 +87,11 @@ public class ZeroLevel extends BasicProductDrawer implements ITaskLevel {
     }
 
     public function get icon_help():Class {
-        return new ICON_HELP;
+        return ICON_HELP;
     }
 
     public function get icon_statement():Class {
-        return new ICON_STATEMENT;
+        return ICON_STATEMENT;
     }
 
     public function get correctRatio():Number {

@@ -1,5 +1,5 @@
 /**
- * Специфичные операции для второго уровня
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
  * @author: Vasiliy
  * @date: 21.02.13
  */
@@ -15,10 +15,10 @@ import ru.ipo.kio._13.clock.view.gui.MinuteArrow;
 
 public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
 
-    [Embed(source='../../_resources/icon_statement_2.jpg')]
+    [Embed(source='../../_resources/Level_2-Statement-1.jpg')]
     private static var ICON_STATEMENT:Class;
 
-    [Embed(source='../../_resources/icon_help_2.jpg')]
+    [Embed(source='../../_resources/Level_2-Help-1.jpg')]
     private static var ICON_HELP:Class;
 
     [Embed(source='../../_resources/level2/fall.png')]
@@ -33,7 +33,7 @@ public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
     [Embed(source='../../_resources/level2/winter.png')]
     private static const WINTER:Class;
 
-    //спрайты для времен года
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 
     private var _fall:Sprite = new Sprite();
 
@@ -65,11 +65,11 @@ public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
     }
 
     public function get icon_help():Class {
-        return new ICON_HELP;
+        return ICON_HELP;
     }
 
     public function get icon_statement():Class {
-        return new ICON_STATEMENT;
+        return ICON_STATEMENT;
     }
 
     public function get correctRatio():Number {

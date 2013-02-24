@@ -1,5 +1,5 @@
 /**
- * Специфичные операции для первого уровня
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
  * @author: Vasiliy
  * @date: 21.02.13
  */
@@ -14,14 +14,13 @@ import ru.ipo.kio._13.clock.utils.printf;
 
 public class FirstLevel extends BasicProductDrawer implements ITaskLevel {
 
-    [Embed(source='../../_resources/icon_statement_2.jpg')]
+    [Embed(source='../../_resources/Level_1-Statement-1.jpg')]
     private static var ICON_STATEMENT:Class;
 
-    [Embed(source='../../_resources/icon_help_2.jpg')]
+    [Embed(source='../../_resources/Level_1-Help-1.jpg')]
     private static var ICON_HELP:Class;
 
-
-    //картинки города
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
     [Embed(source='../../_resources/level1/city1.png')]
     private static const DAY:Class;
@@ -41,7 +40,7 @@ public class FirstLevel extends BasicProductDrawer implements ITaskLevel {
     [Embed(source='../../_resources/level1/city6.png')]
     private static const EARLY_DAY:Class;
 
-    //спрайты для городов
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
     private var _day:Sprite = new Sprite();
 
@@ -55,8 +54,8 @@ public class FirstLevel extends BasicProductDrawer implements ITaskLevel {
 
     private var _early_day:Sprite = new Sprite();
 
-    //массив содержит углы в порядке обхода их стрелкой, соответствующие им картинки и расстояние до новой картинки
-    //это необходимо для логики обхода за два оборота (день, ночь)
+    //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ)
 
     private var ANGLES_TO_IMAGES:Array = new Array();
 
@@ -108,11 +107,11 @@ public class FirstLevel extends BasicProductDrawer implements ITaskLevel {
     }
 
     public function get icon_help():Class {
-        return new ICON_HELP;
+        return ICON_HELP;
     }
 
     public function get icon_statement():Class {
-        return new ICON_STATEMENT;
+        return ICON_STATEMENT;
     }
 
     public function get correctRatio():Number {
