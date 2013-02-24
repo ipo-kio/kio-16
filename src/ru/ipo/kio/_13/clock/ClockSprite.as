@@ -51,9 +51,25 @@ public class ClockSprite extends AbstractPanel {
         TransmissionMechanism.instance.viewSide.y = 400;
         TransmissionMechanism.instance.viewSide.x = 110;
         TransmissionMechanism.instance.view.x = 110;
-        TransmissionMechanism.instance.addTransferGear(new TransferGear(TransmissionMechanism.instance, 320, 200, 25, 20, ColorGenerator.nextHueOfColor(TransmissionMechanism.instance.transferGearList)));
-        TransmissionMechanism.instance.addTransferGear(new TransferGear(TransmissionMechanism.instance, 370, 257, 20, 10, ColorGenerator.nextHueOfColor(TransmissionMechanism.instance.transferGearList)));
-        TransmissionMechanism.instance.addTransferGear(new TransferGear(TransmissionMechanism.instance, 435, 210, 20, 10, ColorGenerator.nextHueOfColor(TransmissionMechanism.instance.transferGearList)));
+
+
+
+        if(SettingsHolder.instance.levelImpl.level==0){
+            TransmissionMechanism.instance.addTransferGear(new TransferGear(TransmissionMechanism.instance, 320, 200, 30, 15, ColorGenerator.nextHueOfColor(TransmissionMechanism.instance.transferGearList)));
+            TransmissionMechanism.instance.addTransferGear(new TransferGear(TransmissionMechanism.instance, 380, 260, 20, 15, ColorGenerator.nextHueOfColor(TransmissionMechanism.instance.transferGearList)));
+            TransmissionMechanism.instance.addTransferGear(new TransferGear(TransmissionMechanism.instance, 475, 225, 30, 20, ColorGenerator.nextHueOfColor(TransmissionMechanism.instance.transferGearList)));
+        }else  if(SettingsHolder.instance.levelImpl.level==1){
+            TransmissionMechanism.instance.addTransferGear(new TransferGear(TransmissionMechanism.instance, 320, 200, 30, 15, ColorGenerator.nextHueOfColor(TransmissionMechanism.instance.transferGearList)));
+            TransmissionMechanism.instance.addTransferGear(new TransferGear(TransmissionMechanism.instance, 365, 260, 20, 15, ColorGenerator.nextHueOfColor(TransmissionMechanism.instance.transferGearList)));
+            TransmissionMechanism.instance.addTransferGear(new TransferGear(TransmissionMechanism.instance, 450, 225, 30, 20, ColorGenerator.nextHueOfColor(TransmissionMechanism.instance.transferGearList)));
+        }else  if(SettingsHolder.instance.levelImpl.level==2){
+            TransmissionMechanism.instance.addTransferGear(new TransferGear(TransmissionMechanism.instance, 320, 200, 30, 15, ColorGenerator.nextHueOfColor(TransmissionMechanism.instance.transferGearList)));
+            TransmissionMechanism.instance.addTransferGear(new TransferGear(TransmissionMechanism.instance, 360, 275, 20, 15, ColorGenerator.nextHueOfColor(TransmissionMechanism.instance.transferGearList)));
+            TransmissionMechanism.instance.addTransferGear(new TransferGear(TransmissionMechanism.instance, 385, 200, 30, 20, ColorGenerator.nextHueOfColor(TransmissionMechanism.instance.transferGearList)));
+        }
+
+
+
         /*for(var j:int=1; j<5; j++){
             for(var k:int=1; k<5; k++){
                 var y:int = k*87;

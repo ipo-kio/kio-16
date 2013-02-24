@@ -42,7 +42,7 @@ public class AnimatePanel extends AbstractPanel {
         _cbSpeed.addItem( { label: loc.headers.middle, data:TransmissionMechanism.MIDDLE_SPEED } );
         _cbSpeed.addItem( { label: loc.headers.fast, data:TransmissionMechanism.FAST_SPEED } );
         _cbSpeed.addItem( { label: loc.headers.very_fast, data:TransmissionMechanism.VERY_FAST_SPEED } );
-        _cbSpeed.selectedIndex=2;
+        _cbSpeed.selectedIndex=1;
 
         _cbSpeed.addEventListener(Event.CHANGE, speedSelected);
 

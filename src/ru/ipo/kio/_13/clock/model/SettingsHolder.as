@@ -21,7 +21,7 @@ public class SettingsHolder {
     
     public var crossZone:Number = 20;
     
-    private var _stepRotate:Number=2;
+    private var _stepRotate:Number=TransmissionMechanism.SLOW_SPEED;
 
     private var _maxDiv:Number=3;
 
