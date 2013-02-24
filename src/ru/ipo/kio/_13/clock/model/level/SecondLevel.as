@@ -33,6 +33,10 @@ public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
     [Embed(source='../../_resources/level2/winter.png')]
     private static const WINTER:Class;
 
+    [Embed(source='../../_resources/level2/seasons.png')]
+    private static const SEASONS:Class;
+
+
     //спрайты для времен года
 
     private var _fall:Sprite = new Sprite();
@@ -96,7 +100,7 @@ public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
             if(string.charAt(i)=='0'){
                 resultString+="0";
             }else{
-                return resultString+"%";
+                return resultString+string.charAt(i)+"%";
             }
         }
         return resultString+"%";

@@ -428,13 +428,15 @@ public class TransmissionMechanism {
         var fastest:Number = getFastestMultiple();
         var step:Number = Math.PI/(10*2.1*fastest);
         if(SettingsHolder.instance.stepRotate==FAST_SPEED){
-            step *= 5;
+            step *= 1;
         }else if(SettingsHolder.instance.stepRotate==SLOW_SPEED){
-            step/=5;
-        }else if(SettingsHolder.instance.stepRotate==VERY_FAST_SPEED){
-            step*=10;
-        }else if(SettingsHolder.instance.stepRotate==VERY_SLOW_SPEED){
             step/=10;
+        }else if(SettingsHolder.instance.stepRotate==VERY_FAST_SPEED){
+            step*=5;
+        }else if(SettingsHolder.instance.stepRotate==VERY_SLOW_SPEED){
+            step/=15;
+        }else if (SettingsHolder.instance.stepRotate==MIDDLE_SPEED){
+            step/=5;
         }
         firstGear.alpha-=step;
         for(var i:int = 1; i<_transferGearList.length; i++){
