@@ -148,6 +148,14 @@ public class Editor extends Sprite {
     }
 
     public function undo():void {
+        if (api.problem.level == 0) {
+            var text:String = _editorField.text;
+            var len:int = text.length;
+            if (len > 0)
+                _editorField.text = text.substring(0, len - 1);
+            return;
+        }
+
         if (!canUndo)
             return;
         actionsQueue.pop(); //the last value is always the same as current
@@ -160,6 +168,11 @@ public class Editor extends Sprite {
 
     public function appendAtCaret(s:String):void {
         _editorField.appendAtCaret(s);
+    }
+
+    public function appendText(s:String):void {
+        _editorField.appendText(s);
+        _editorField.dispatchEvent(new Event(Event.CHANGE));
     }
 
     public function requestFocus():void {

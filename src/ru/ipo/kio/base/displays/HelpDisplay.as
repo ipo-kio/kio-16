@@ -6,12 +6,15 @@
  * To change this template use File | Settings | File Templates.
  */
 package ru.ipo.kio.base.displays {
+import fl.controls.UIScrollBar;
+
 import flash.display.DisplayObject;
 import flash.display.SimpleButton;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
@@ -74,6 +77,27 @@ public class HelpDisplay extends Sprite {
         tf.width = text_width;
         tf.x = GlobalMetrics.H_PADDING;
         tf.y = main_text_start;
+        tf.background = true;
+        tf.backgroundColor = 0xabebeb;
+//        tf.border = true;
+//        tf.borderColor = 0x888888;
+        tf.autoSize = TextFieldAutoSize.NONE;
+        tf.selectable = true;
+
+        var textMaxHeight:int = GlobalMetrics.STAGE_HEIGHT - main_text_start - 16;
+        var needScroll:Boolean = textMaxHeight < tf.textHeight;
+        tf.height = Math.min(tf.textHeight, textMaxHeight);
+
+        if (needScroll) {
+            tf.width -= 15; //it seems this is the real width of uiScroll
+            var _scroll:UIScrollBar = new UIScrollBar();
+            _scroll.height = textMaxHeight;
+            _scroll.scrollTarget = tf;
+            _scroll.direction = "vertical";
+            _scroll.move(tf.x + tf.width + 4, tf.y);
+            addChild(_scroll);
+        }
+
         addChild(tf);
 
         var continueButton:SimpleButton = DisplayUtils.placeContinueButton(this);
