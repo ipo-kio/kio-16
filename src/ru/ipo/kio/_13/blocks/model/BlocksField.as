@@ -204,5 +204,17 @@ public class BlocksField extends EventDispatcher implements Executor {
             _blocks.push(col);
         }
     }
+
+    public function get logRepresentation():String {
+        var res:Array = [];
+        for (var col:int = 0; col < cols; col ++) {
+            var str:String = "";
+            for each (var block:Block in getColumn(col))
+                str += block.color;
+            res.push(str);
+        }
+
+        return res.join(',');
+    }
 }
 }

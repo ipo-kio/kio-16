@@ -209,8 +209,16 @@ public class BlocksWorkspace extends Sprite {
         displayResult(result, true); //TODO implement passing this result in API
         if (api.problem.level == 0)
             api.log('new record @BSSt', result.in_place, result.penalty, result.steps, _editor.editorField.text);
-        else
+        else if (api.problem.level == 1)
             api.log('new record @BSSt', result.in_place, result.prg_len, result.steps, _editor.editorField.text);
+        else
+            api.log('new record @BSStt',
+                    result.in_place,
+                    result.prg_len,
+                    result.steps,
+                    _editor.editorField.text,
+                    _blocksDebugger.initialField.logRepresentation
+            );
     }
 
 }
