@@ -52,15 +52,13 @@ public class CutProblem implements KioProblem {
     }
 
     public function loadSolution(solution:Object):Boolean {
-        if (solution.txt) {
-            //TODO load
-
-            KioApi.instance(ID).autoSaveSolution();
-            _workspace.updateCurrentResult();
-
-            return true;
-        } else
+        if (! _workspace.load(solution))
             return false;
+
+        KioApi.instance(ID).autoSaveSolution();
+        _workspace.updateCurrentResult();
+
+        return true;
     }
 
     public function check(solution:Object):Object {
@@ -72,6 +70,8 @@ public class CutProblem implements KioProblem {
         var res:int = solution1.polys - solution2.polys;
         if (res == 0)
             res = solution2.pieces - solution1.pieces;
+        if (res == 0)
+            res = solution2.offcuts - solution1.offcuts;
         return  res;
     }
 

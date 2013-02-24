@@ -3,12 +3,12 @@ package ru.ipo.kio._13.cut {
 import flash.display.Sprite;
 import flash.events.Event;
 
-import ru.ipo.kio._13.blocks.view.Button2;
-
 import ru.ipo.kio._13.cut.model.ColoredPoly;
 
 import ru.ipo.kio._13.cut.model.Cut;
 import ru.ipo.kio._13.cut.model.CutsField;
+import ru.ipo.kio._13.cut.model.FieldCords;
+import ru.ipo.kio._13.cut.model.Piece;
 import ru.ipo.kio._13.cut.model.PiecesField;
 import ru.ipo.kio._13.cut.view.CutPieceFieldView;
 import ru.ipo.kio._13.cut.view.InfoPanel;
@@ -16,21 +16,6 @@ import ru.ipo.kio._13.cut.view.PiecesFieldView;
 import ru.ipo.kio.api.*;
 
 public class CutWorkspace extends Sprite {
-
-    [Embed(source='resources/ARICYR.TTF',
-            embedAsCFF="false",
-            fontName="KioArial",
-            mimeType="application/x-font-truetype",
-            unicodeRange="U+0000-U+FFFF")]
-    private static var ARIAL_FONT:Class;
-
-    [Embed(source='resources/ARICYRB.TTF',
-            embedAsCFF="false",
-            fontName="KioArial",
-            fontWeight="bold",
-            mimeType="application/x-font-truetype",
-            unicodeRange="U+0000-U+FFFF")]
-    private static var ARIAL_FONT_B:Class;
 
     private static const CONTROLS_WIDTH:int = 200;
     private static const CUTS_COUNT:int = 6;
@@ -41,13 +26,12 @@ public class CutWorkspace extends Sprite {
     private var field:CutPieceFieldView;
     private var cutControls:CutControls;
 
+    private var loadingProcess:Boolean = false;
+
     private static const api:KioApi = KioApi.instance(CutProblem.ID);
 
     public function CutWorkspace() {
-        Button2.UPPER_COLOR = 0x00EE00;
-        Button2.DOWN_COLOR = 0x00AA00;
-        Button2.BORDER_COLOR = 0x004400;
-        Button2.INNER_BORDER_COLOR = 0x88AA88;
+        TextUtils.embedFonts();
 
         var cuts:Array = [];
 
@@ -84,9 +68,13 @@ public class CutWorkspace extends Sprite {
 
         infoPanel.setValue(CutControls.POLYS_IND, result.polys);
         infoPanel.setValue(CutControls.PIECES_IND, result.pieces);
+        infoPanel.setValue(CutControls.OFFCUTS_IND, result.offcuts);
 
-        if (!isRecord)
+        if (!isRecord) {
             api.submitResult(result);
+            if (! loadingProcess)
+                api.autoSaveSolution();
+        }
     }
 
     public function currentResult():Object {
@@ -97,6 +85,7 @@ public class CutWorkspace extends Sprite {
         var cutField:CutsField = field.cutsField;
         if (cutField == null) {
             result.polys = 0;
+            result.offcuts = 0;
             return result;
         }
 
@@ -116,6 +105,8 @@ public class CutWorkspace extends Sprite {
         else
             result.polys = normal;
 
+        result.offcuts = cutField.polygons.length - normal;
+
         return result;
     }
 
@@ -124,7 +115,42 @@ public class CutWorkspace extends Sprite {
     }
 
     public function get solution():Object {
-        return {};
+        //get pieces
+        var pieces:Array = []; //TODO report it thinks contents of this array is never read
+        for each (var piece:Piece in field.piecesField.pieces) {
+            var block:FieldCords = piece.blocks[0];
+            pieces.push([block.x, block.y]);
+        }
+
+        //get cuts
+        var cuts:Array = [];
+        for each (var cut:Cut in field.cuts)
+            cuts.push([cut.p1.x, cut.p1.y, cut.p2.x, cut.p2.y]);
+
+        return {
+            pieces: pieces,
+            cuts: cuts
+        };
+    }
+
+    public function load(solution:Object):Boolean {
+        if (solution == null)
+            return true;
+
+        try {
+            loadingProcess = true; //don't save while loading
+
+            field.cutsRegime = false;
+            field.piecesField.loadPieces(solution.pieces);
+            field.loadCuts(solution.cuts);
+            field.cutsRegime = true;
+        } catch (e:Error) {
+            return false;
+        } finally {
+            loadingProcess = false;
+        }
+
+        return true;
     }
 }
 

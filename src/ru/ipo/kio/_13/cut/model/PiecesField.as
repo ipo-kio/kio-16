@@ -18,7 +18,7 @@ public class PiecesField extends EventDispatcher {
     public static const BLOCK_INSIDE:int = 2;
     public static const BLOCK_OUTSIDE:int = 3;
 
-    private var _pieces:Array = [];
+    private var _pieces:Array = []; //of Pieces
     private var _m:int;
     private var _n:int;
     private var _blocks:Array;
@@ -237,6 +237,18 @@ public class PiecesField extends EventDispatcher {
 
     public function get piecesCount():int {
         return _pieces.length;
+    }
+
+    public function loadPieces(pieces:Array):void {
+        _pieces = [];
+        var zeroCords:FieldCords = new FieldCords(0, 0);
+        for each (var piece:Array in pieces) {
+            var p:Piece = new Piece([zeroCords]); //new one element piece
+            p.move(piece[0], piece[1]);
+            _pieces.push(p);
+        }
+
+        piecesChanged();
     }
 }
 }

@@ -33,5 +33,9 @@ public class Block {
                 return false;
         return true;
     }
+
+    public function get isFromLeftToRight():Boolean {
+        return color == 1 || color == 4;
+    }
 }
 }

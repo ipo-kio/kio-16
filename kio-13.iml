@@ -8,7 +8,7 @@
             <entry library-id="3d82f0b1-9cc7-40ab-86dd-07b80cd09576">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="43edb1d8-7378-4b93-9865-61eeb0d8e306">
+            <entry library-id="26a9798f-094a-497c-b39a-781540fa8947">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -41,17 +41,17 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="jdk" jdkName="flex_sdk_4.6" jdkType="Flex SDK Type (new)" />
     <orderEntry type="module-library" exported="">
       <library type="flex">
-        <properties id="43edb1d8-7378-4b93-9865-61eeb0d8e306" />
+        <properties id="26a9798f-094a-497c-b39a-781540fa8947" />
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/ru/ipo/kio/_12/stagelights/_resources/projector.swc!/" />
+          <root url="jar://$USER_HOME$/opt/flex_sdk_4.6/frameworks/libs/framework.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="jdk" jdkName="flex_sdk_4.6" jdkType="Flex SDK Type (new)" />
   </component>
 </module>
 

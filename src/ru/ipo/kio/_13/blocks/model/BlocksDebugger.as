@@ -9,6 +9,8 @@ package ru.ipo.kio._13.blocks.model {
 import flash.events.Event;
 import flash.events.EventDispatcher;
 
+import ru.ipo.kio._13.blocks.BlocksProblem;
+
 import ru.ipo.kio._13.blocks.BlocksWorkspace;
 
 import ru.ipo.kio._13.blocks.parser.Command;
@@ -16,6 +18,7 @@ import ru.ipo.kio._13.blocks.parser.ExecutionError;
 import ru.ipo.kio._13.blocks.parser.Program;
 import ru.ipo.kio._13.blocks.parser.ProgramIterator;
 import ru.ipo.kio._13.blocks.parser.SequenceProgram;
+import ru.ipo.kio.api.KioApi;
 
 public class BlocksDebugger extends EventDispatcher {
 
@@ -38,6 +41,8 @@ public class BlocksDebugger extends EventDispatcher {
     private var _iterator:ProgramIterator = _program.getProgramIterator();
 
     private var _programIsRunning:Boolean = false;
+
+    private static const api:KioApi = KioApi.instance(BlocksProblem.ID);
 
     public function BlocksDebugger(initialField:BlocksField) {
         this.initialField = initialField;
@@ -68,6 +73,27 @@ public class BlocksDebugger extends EventDispatcher {
         _iterator = _program.getProgramIterator();
 
         moveToStep(0);
+    }
+
+    public function validateFieldBlocks():String {
+        if (api.problem.level != 2)
+            return null;
+
+        var blocks:int = 0;
+        for (var col:int = 0; col < _initialField.boundary; col++)
+            blocks += _initialField.getColumn(col).length;
+
+        if (blocks != 8)
+            return api.localization.field_errors.left_blocks_fail;
+
+        blocks = 0;
+        for (col = _initialField.boundary; col < _initialField.cols; col++)
+            blocks += _initialField.getColumn(col).length;
+
+        if (blocks != 8)
+            return api.localization.field_errors.right_blocks_fail;
+
+        return null;
     }
 
     public function get currentCommand():Command {

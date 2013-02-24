@@ -14,9 +14,12 @@ import flash.geom.Point;
 
 import pl.bmnet.gpcas.geometry.Poly;
 
+import ru.ipo.kio._13.cut.CutProblem;
+
 import ru.ipo.kio._13.cut.model.ColoredPoly;
 import ru.ipo.kio._13.cut.model.Cut;
 import ru.ipo.kio._13.cut.model.CutsField;
+import ru.ipo.kio.api.KioApi;
 
 public class CutsFieldView extends Sprite {
 
@@ -229,6 +232,14 @@ public class CutsFieldView extends Sprite {
         if (ly > _m * SCALE)
             ly = _m * SCALE;
         return ly;
+    }
+
+    public function get maxX():int {
+        return SCALE * _n;
+    }
+
+    public function get maxY():int {
+        return SCALE * _m;
     }
 }
 }

@@ -19,12 +19,14 @@ import ru.ipo.kio._13.blocks.model.FieldChangeEvent;
 import ru.ipo.kio._13.blocks.parser.Command;
 
 import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.api.controls.ActionButton;
+import ru.ipo.kio.api.controls.ButtonBuilder;
 
 public class DebuggerControls extends Sprite {
 
-    private static const BUTTON_WIDTH:int = 90;
+    private static const BUTTON_WIDTH:int = 100;
     private static const BUTTON_HEIGHT:int = 24;
-    private static const TEXT_SIZE:int = 14;
+    private static const TEXT_SIZE:int = 16;
     private static const BUTTON_H_SKIP:int = 4;
     private static const BUTTON_V_SKIP:int = 4;
     private static const BUTTON_X0:int = 4;
@@ -45,6 +47,7 @@ public class DebuggerControls extends Sprite {
     private var stopManualButton:SimpleButton;
 
     private var _manualRegime:Boolean = true;
+    private var _enabled:Boolean = true;
 
     private static const api:KioApi = KioApi.instance(BlocksProblem.ID);
 
@@ -56,19 +59,18 @@ public class DebuggerControls extends Sprite {
         addButton(loc.buttons.step_back, "-1", BUTTON_X0 + skip, BUTTON_Y0);
         addButton(loc.buttons.step_forward, "+1", BUTTON_X0 + 2 * skip, BUTTON_Y0);
         addButton(loc.buttons.to_end, "end", BUTTON_X0 + 3 * skip, BUTTON_Y0);
-        addStepsField(BUTTON_X0 + 4 * skip, BUTTON_Y0 + 4);
+        goButton = addButton(loc.buttons.go, "go", BUTTON_X0 + 4 * skip, BUTTON_Y0);
+        stopButton = addButton(loc.buttons.stop, "stop", BUTTON_X0 + 4 * skip, BUTTON_Y0);
+        manualButton = addButton(loc.buttons.manual, "man", BUTTON_X0 + 5 * skip, BUTTON_Y0, true);
+        stopManualButton = addButton(loc.buttons.stop_manual, "stop man", BUTTON_X0 + 5 * skip, BUTTON_Y0, true);
 
-        goButton = addButton(loc.buttons.go, "go", BUTTON_X0 + 5 * skip, BUTTON_Y0);
-        stopButton = addButton(loc.buttons.stop, "stop", BUTTON_X0 + 5 * skip, BUTTON_Y0);
-
-        manualButton = addButton(loc.buttons.manual, "man", BUTTON_X0 + 6 * skip, BUTTON_Y0);
-        stopManualButton = addButton(loc.buttons.stop_manual, "stop man", BUTTON_X0 + 6 * skip, BUTTON_Y0);
+        addStepsField(BUTTON_X0, BUTTON_Y0 + BUTTON_HEIGHT + BUTTON_V_SKIP + 2);
 
         //remove the two last buttons
         buttons.pop();
         buttons.pop();
 
-        addMessageField(BUTTON_X0, BUTTON_Y0 + BUTTON_HEIGHT + BUTTON_V_SKIP);
+        addMessageField(BUTTON_X0 + skip, BUTTON_Y0 + BUTTON_HEIGHT + BUTTON_V_SKIP + 2);
 
         stopButton.visible = false;
         stopManualButton.visible = false;
@@ -97,7 +99,8 @@ public class DebuggerControls extends Sprite {
         stepsField.y = y;
 
         stepsField.autoSize = TextFieldAutoSize.LEFT;
-        stepsField.defaultTextFormat = new TextFormat("Sanserif", TEXT_SIZE, 0x000000);
+        stepsField.defaultTextFormat = new TextFormat("KioArial", TEXT_SIZE, 0x000000);
+        stepsField.embedFonts = true;
         stepsField.text = "";
 
         addChild(stepsField);
@@ -108,14 +111,36 @@ public class DebuggerControls extends Sprite {
         messageField.y = y;
 
         messageField.autoSize = TextFieldAutoSize.LEFT;
-        messageField.defaultTextFormat = new TextFormat("Sanserif", TEXT_SIZE, 0x008800);
+        messageField.defaultTextFormat = new TextFormat("KioArial", TEXT_SIZE, 0x006600, true);
         messageField.text = "";
+        messageField.embedFonts = true;
+        messageField.selectable = false;
 
         addChild(messageField);
     }
 
-    private function addButton(value:String, action:String, x:int, y:int):SimpleButton {
-        var button:SimpleButton = new Button2(value, action, BUTTON_WIDTH, BUTTON_HEIGHT, TEXT_SIZE);
+    private function addButton(value:String, action:String, x:int, y:int, great:Boolean = false):SimpleButton {
+        var buttonBuilder:ButtonBuilder = new ButtonBuilder(action);
+        if (great) {
+            buttonBuilder.upColor = 0x22EE22;
+            buttonBuilder.downColor = 0x22AA22;
+        } else {
+            buttonBuilder.upColor = 0xEEEEEE;
+            buttonBuilder.downColor = 0xAAAAAA;
+        }
+        buttonBuilder.upHoverColor = 0xEEEE00;
+        buttonBuilder.downHoverColor = 0xAAAA00;
+        buttonBuilder.borderColor = 0x444444;
+        buttonBuilder.innerBorderColor = 0x888888;
+        buttonBuilder.font = "KioArial";
+        buttonBuilder.embedFont = true;
+        buttonBuilder.fontSize = TEXT_SIZE;
+        buttonBuilder.fontColor = 0x000000;
+        buttonBuilder.title = value;
+        buttonBuilder.width = BUTTON_WIDTH;
+        buttonBuilder.height = BUTTON_HEIGHT;
+
+        var button:SimpleButton = buttonBuilder.build();
 
         button.x = x;
         button.y = y;
@@ -128,7 +153,7 @@ public class DebuggerControls extends Sprite {
     }
 
     private function button_clickHandler(event:MouseEvent):void {
-        var action:String = Button2(event.target).action;
+        var action:String = ActionButton(event.target).action;
 
         api.log('debug controls ' + action);
 
@@ -219,10 +244,29 @@ public class DebuggerControls extends Sprite {
     public function set manualRegime(value:Boolean):void {
         _manualRegime = value;
 
+        setEnabled();
+    }
+
+    public function get enabled():Boolean {
+        return _enabled;
+    }
+
+    public function set enabled(value:Boolean):void {
+        _enabled = value;
+
+        setEnabled();
+    }
+
+    private function setEnabled():void {
         for each (var button:SimpleButton in buttons) {
-            button.enabled = _manualRegime;
-            button.mouseEnabled = _manualRegime;
+            button.enabled = _enabled && !_manualRegime;
+            button.mouseEnabled = _enabled && !_manualRegime;
         }
+
+        manualButton.enabled = _enabled;
+        manualButton.mouseEnabled = _enabled;
+        stopManualButton.enabled = _enabled || _manualRegime;
+        stopManualButton.mouseEnabled = _enabled || _manualRegime;
     }
 }
 }

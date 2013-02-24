@@ -10,6 +10,9 @@ import flash.display.Graphics;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Matrix;
+import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
+import flash.text.TextFormat;
 
 import mx.core.BitmapAsset;
 
@@ -31,9 +34,6 @@ public class DebuggerView extends Sprite {
 
     private static const ANIMATION_STEPS:int = 30; //must be even
 
-    [Embed(source="../resources/field.png")]
-    public static const FIELD_CLS:Class;
-
     [Embed(source="../resources/block1.png")]
     public static const BLOCK_1_CLS:Class;
     public static const BLOCK_1_IMG:BitmapData = (new BLOCK_1_CLS as BitmapAsset).bitmapData;
@@ -50,6 +50,10 @@ public class DebuggerView extends Sprite {
     public static const BLOCK_4_CLS:Class;
     public static const BLOCK_4_IMG:BitmapData = (new BLOCK_4_CLS as BitmapAsset).bitmapData;
 
+    [Embed(source="../resources/crane.png")]
+    public static const CRANE_CLS:Class;
+    public static const CRANE_IMG:BitmapData = (new CRANE_CLS as BitmapAsset).bitmapData;
+
     private var _dbg:BlocksDebugger;
 
     private var blocksLayer:Sprite = new Sprite();
@@ -64,6 +68,8 @@ public class DebuggerView extends Sprite {
 
     private var manualRegime:Boolean = false;
     private var manualField:BlocksField;
+
+    private var blocksCountFailField:TextField;
 
     public function DebuggerView(dbg:BlocksDebugger) {
         _dbg = dbg;
@@ -82,6 +88,8 @@ public class DebuggerView extends Sprite {
         var workspace:BlocksWorkspace = BlocksWorkspace.instance;
         workspace.addEventListener(BlocksWorkspace.MANUAL_REGIME_EVENT, manualRegimeChangeHandler);
         workspace.editor.addEventListener(FieldChangeEvent.FIELD_CHANGED, startAnimation); //fired in manual regime
+
+        createBlocksCountFailField();
     }
 
     private function getField():BlocksField {
@@ -91,6 +99,14 @@ public class DebuggerView extends Sprite {
     private function startAnimation(event:FieldChangeEvent):void {
         if (animating)
             stopAnimation();
+
+        var blocksCountFail:String = _dbg.validateFieldBlocks();
+        if (blocksCountFail == null) {
+            blocksCountFailField.visible = false;
+        } else {
+            blocksCountFailField.text = blocksCountFail;
+            blocksCountFailField.visible = true;
+        }
 
         if (!event.animationPhase) {
             redrawField();
@@ -124,11 +140,6 @@ public class DebuggerView extends Sprite {
     }
 
     private function drawBackground():void {
-        var bmp:BitmapData = (new FIELD_CLS).bitmapData;
-        graphics.beginBitmapFill(bmp);
-        graphics.drawRect(0, 0, bmp.width, bmp.height);
-        graphics.endFill();
-
         graphics.lineStyle(1, 0x888888, 0.5);
         for (var j:int = 0; j <= getField().cols; j++) {
             graphics.moveTo(BLOCKS_LEFT + j * BLOCK_WIDTH, BLOCKS_TOP);
@@ -162,37 +173,36 @@ public class DebuggerView extends Sprite {
     private function drawCrane(x:Number, len:Number, block:Block = null):void {
         var g:Graphics = movingLayer.graphics;
         g.clear();
-        g.beginFill(0x000000);
-        g.drawRect(x * BLOCK_WIDTH + 10, 9, BLOCK_WIDTH - 20, 20);
-        g.endFill();
-        g.lineStyle(3, 0);
-        g.moveTo((x + 0.5) * BLOCK_WIDTH, 25);
-        var h:Number = 36 + len;
-        g.lineTo((x + 0.5) * BLOCK_WIDTH, h);
 
-        //horizontal
-        g.lineStyle(4, 0);
-        g.moveTo(x * BLOCK_WIDTH + 14, h);
-        g.lineTo((x + 1) * BLOCK_WIDTH - 14, h);
+        var x0:Number = x * BLOCK_WIDTH + (BLOCK_WIDTH - CRANE_IMG.width) / 2;
+        var y0:Number = 9;
+        var m:Matrix = new Matrix();
+        m.translate(x0, y0);
+        g.beginBitmapFill(CRANE_IMG, m);
+        g.drawRect(x0, y0, CRANE_IMG.width, CRANE_IMG.height);
+        g.endFill();
 
         //two down lines
-        g.lineStyle(2, 0);
-        g.moveTo(x * BLOCK_WIDTH + 14, h);
+        var h0:int = 36;
+        var h:int = h0 + len;
+
+        g.lineStyle(2, 0x4b4b4b);
+        g.moveTo(x * BLOCK_WIDTH + 14, h0 - 2);
         g.lineTo(x * BLOCK_WIDTH + 14, h + 12);
 
-        g.moveTo((x + 1) * BLOCK_WIDTH - 14, h);
+        g.moveTo((x + 1) * BLOCK_WIDTH - 14, h0 - 2);
         g.lineTo((x + 1) * BLOCK_WIDTH - 14, h + 12);
 
-        if (block == null)
-            return;
+        var capture:int = block == null ? 1 : 3;
 
-        g.moveTo(x * BLOCK_WIDTH + 14 - 3, h + 12);
-        g.lineTo(x * BLOCK_WIDTH + 14 + 3, h + 12);
+        g.moveTo(x * BLOCK_WIDTH + 14 - capture, h + 12);
+        g.lineTo(x * BLOCK_WIDTH + 14 + capture, h + 12);
 
-        g.moveTo((x + 1) * BLOCK_WIDTH - 14 - 3, h + 12);
-        g.lineTo((x + 1) * BLOCK_WIDTH - 14 + 3, h + 12);
+        g.moveTo((x + 1) * BLOCK_WIDTH - 14 - capture, h + 12);
+        g.lineTo((x + 1) * BLOCK_WIDTH - 14 + capture, h + 12);
 
-        drawBlock(g, x * BLOCK_WIDTH, h + 4, block.color);
+        if (block != null)
+            drawBlock(g, x * BLOCK_WIDTH, h + 4, block.color);
     }
 
     private static function drawBlock(g:Graphics, x:Number, y:Number, col:int):void {
@@ -276,6 +286,23 @@ public class DebuggerView extends Sprite {
             startManualRegime(_dbg.currentField.clone());
         else
             stopManualRegime();
+    }
+
+    private function createBlocksCountFailField():void {
+        blocksCountFailField = new TextField();
+        blocksCountFailField.selectable = false;
+        blocksCountFailField.embedFonts = true;
+        blocksCountFailField.defaultTextFormat = new TextFormat('KioArial', 20, 0xFF0000, true);
+        blocksCountFailField.autoSize = TextFieldAutoSize.CENTER;
+        blocksCountFailField.x = 780 / 2;
+        blocksCountFailField.y = 40;
+        blocksCountFailField.background = true;
+        blocksCountFailField.backgroundColor = 0xFFFFFF;
+        blocksCountFailField.border = true;
+        blocksCountFailField.borderColor = 0x000000;
+        blocksCountFailField.visible = false;
+
+        addChild(blocksCountFailField);
     }
 }
 }

@@ -12,7 +12,8 @@ import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.text.TextFormat;
 
-import ru.ipo.kio._13.blocks.view.Button2;
+import ru.ipo.kio.api.controls.ButtonBuilder;
+
 import ru.ipo.kio._13.cut.model.PiecesField;
 import ru.ipo.kio._13.cut.view.CutPieceFieldView;
 import ru.ipo.kio._13.cut.view.CutsFieldView;
@@ -23,7 +24,8 @@ public class CutControls extends Sprite {
 
     private var _w:int;
     private var _h:int;
-    private var _switchFieldsButton:SimpleButton;
+    private var _switchFieldsButtonToCuts:SimpleButton;
+    private var _switchFieldsButtonToPieces:SimpleButton;
 
     private var _currentResultsInfo:InfoPanel;
     private var _recordsInfo:InfoPanel;
@@ -31,6 +33,7 @@ public class CutControls extends Sprite {
     private const loc:Object = KioApi.getLocalization(CutProblem.ID);
     public static const POLYS_IND:int = 0;
     public static const PIECES_IND:int = 1;
+    public static const OFFCUTS_IND:int = 2;
     private var _field:CutPieceFieldView;
     private var _errors:TextField;
 
@@ -45,30 +48,56 @@ public class CutControls extends Sprite {
         var x0:Number = (_w - innerW) / 2;
         var y0:Number = 20;
 
-        _switchFieldsButton = new Button2(loc.labels.switch_to_cuts, "to cuts", innerW, 44, 14, "KioArial", true, true);
-        _switchFieldsButton.x = x0;
-        _switchFieldsButton.y = y0;
-        addChild(_switchFieldsButton);
+        var buttonBuilder:ButtonBuilder = new ButtonBuilder();
+        buttonBuilder.upColor = 0x00EE00;
+        buttonBuilder.downColor = 0x00AA00;
+        buttonBuilder.upHoverColor = 0xEEEE00;
+        buttonBuilder.downHoverColor = 0xAAAA00;
+        buttonBuilder.borderColor = 0x004400;
+        buttonBuilder.innerBorderColor = 0x88AA88;
+        buttonBuilder.font = "KioArial";
+        buttonBuilder.embedFont = true;
+        buttonBuilder.fontSize = 14;
+        buttonBuilder.fontColor = 0x000000;
+        buttonBuilder.bold = true;
+
+        buttonBuilder.width = innerW;
+        buttonBuilder.height = 44;
+
+        buttonBuilder.title = loc.labels.switch_to_cuts;
+
+        _switchFieldsButtonToCuts = buttonBuilder.build();
+        _switchFieldsButtonToCuts.x = x0;
+        _switchFieldsButtonToCuts.y = y0;
+        addChild(_switchFieldsButtonToCuts);
+
+        buttonBuilder.title = loc.labels.switch_to_poly;
+
+        _switchFieldsButtonToPieces = buttonBuilder.build();
+        _switchFieldsButtonToPieces.x = x0;
+        _switchFieldsButtonToPieces.y = y0;
+        addChild(_switchFieldsButtonToPieces);
+        _switchFieldsButtonToPieces.visible = false;
 
         _currentResultsInfo = new InfoPanel(
                 'KioArial', true, 16,
                 0xDDFFDD, 0xFFFFFF, 0xFFFFFF, 1.5,
                 loc.labels.results,
-                [loc.labels.polys, loc.labels.area],
+                [loc.labels.polys, loc.labels.area, loc.labels.offcuts],
                 w * 0.9
         );
         _recordsInfo = new InfoPanel(
                 'KioArial', true, 16,
                 0xDDFFDD, 0xFFFFFF, 0xFFFFFF, 1.5,
                 loc.labels.record,
-                [loc.labels.polys, loc.labels.area],
+                [loc.labels.polys, loc.labels.area, loc.labels.offcuts],
                 w * 0.9
         );
 
         _currentResultsInfo.x = 0.05 * _w;
-        _currentResultsInfo.y = 200;
+        _currentResultsInfo.y = 180;
         _recordsInfo.x = 0.05 * _w;
-        _recordsInfo.y = 300;
+        _recordsInfo.y = 320;
 
         addChild(_currentResultsInfo);
         addChild(_recordsInfo);
@@ -80,18 +109,23 @@ public class CutControls extends Sprite {
         _errors.multiline = true;
         _errors.wordWrap = true;
         _errors.defaultTextFormat = new TextFormat('KioArial', 12, 0xFFFFFF);
-//        _errors.autoSize = TextFieldAutoSize.LEFT;
         _errors.text = "";
         addChild(_errors);
 
-        var _clearButton:SimpleButton = new Button2(loc.labels.clear, "to cuts", _w * 0.5, 30, 14, "KioArial", true, true);
+        buttonBuilder.width = _w * 0.5;
+        buttonBuilder.title = loc.labels.clear;
+        buttonBuilder.height = 30;
+
+        var _clearButton:SimpleButton = buttonBuilder.build();
         _clearButton.x = x0;
         _clearButton.y = _h - 44;
         addChild(_clearButton);
         _clearButton.addEventListener(MouseEvent.CLICK, clearButtonHandler);
 
-        _switchFieldsButton.addEventListener(MouseEvent.CLICK, switchButtonClickHandler);
+        _switchFieldsButtonToCuts.addEventListener(MouseEvent.CLICK, switchButtonClickHandler);
+        _switchFieldsButtonToPieces.addEventListener(MouseEvent.CLICK, switchButtonClickHandler);
         _field.addEventListener(PiecesField.PIECES_CHANGED, piecesChangedHandler);
+        _field.addEventListener(CutPieceFieldView.REGIME_CHANGE, fieldRegimeHandler);
 
         piecesChangedHandler();
     }
@@ -113,11 +147,11 @@ public class CutControls extends Sprite {
     private function piecesChangedHandler(event:Event = null):void {
         if (_field.piecesConfigurationIsValid()) {
             _errors.text = "";
-            _switchFieldsButton.enabled = true;
+            _switchFieldsButtonToCuts.enabled = true;
         } else {
             var errorMessages:Array = _field.validatePiecesConfiguration();
             _errors.text = errorMessages.join('\n');
-            _switchFieldsButton.enabled = false;
+            _switchFieldsButtonToCuts.enabled = false;
         }
     }
 
@@ -141,6 +175,11 @@ public class CutControls extends Sprite {
             _field.resetCuts(0, _field.piecesField.m * CutsFieldView.SCALE, 2, 2);
         else
             _field.resetCuts(5, _field.piecesField.m * CutsFieldView.SCALE - 5, 2, 2);
+    }
+
+    private function fieldRegimeHandler(event:Event):void {
+        _switchFieldsButtonToCuts.visible = ! _field.cutsRegime;
+        _switchFieldsButtonToPieces.visible = _field.cutsRegime;
     }
 }
 }

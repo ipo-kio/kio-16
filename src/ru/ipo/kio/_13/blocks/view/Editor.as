@@ -44,10 +44,6 @@ public class Editor extends Sprite {
         _scroll.direction = "vertical";
         _scroll.move(width, 0);
 
-//        var d:* = this;
-//        d.graphics.lineStyle(2, 0xFF0000);
-//        d.graphics.drawRect(0, 0, d.width, d.height);
-
         leftBracket = new SymbolSelector(_editorField, -1, 1, 0x888888);
         rightBracket = new SymbolSelector(_editorField, -1, 1, 0x888888);
         highlight = new SymbolSelector(_editorField, -1, 2, 0x000088, 0.3);

@@ -52,6 +52,21 @@ public class TextUtils {
             )]
     private static var TAHOMA_BD_FONT:Class;
 
+    [Embed(source='../base/resources/fonts/ARICYR.TTF',
+            embedAsCFF="false",
+            fontName="KioArial",
+            mimeType="application/x-font-truetype",
+            unicodeRange="U+0000-U+FFFF")]
+    private static var ARIAL_FONT:Class;
+
+    [Embed(source='../base/resources/fonts/ARICYRB.TTF',
+            embedAsCFF="false",
+            fontName="KioArial",
+            fontWeight="bold",
+            mimeType="application/x-font-truetype",
+            unicodeRange="U+0000-U+FFFF")]
+    private static var ARIAL_FONT_B:Class;
+
     public static const SMALL_TEXT_SIZE:int = 14;
     public static const NORMAL_TEXT_SIZE:int = 18;
     public static const LARGE_TEXT_SIZE:int = 24;

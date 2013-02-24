@@ -16,6 +16,7 @@ import ru.ipo.kio._13.blocks.BlocksWorkspace;
 import ru.ipo.kio._13.blocks.model.FieldChangeEvent;
 import ru.ipo.kio._13.blocks.parser.Command;
 import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.api.controls.ButtonBuilder;
 
 public class SoftKeyboard extends Sprite {
 
@@ -43,10 +44,23 @@ public class SoftKeyboard extends Sprite {
     [Embed(source="../resources/undo.png")]
     public static const UNDO_CLS:Class;
 
-    public static const X0:int = 0;
-    public static const Y0:int = 4;
-    public static const DX:int = 44;
-    public static const DY:int = 44;
+    [Embed(source="../resources/diamond_bt_norm.png")]
+    public static const EMPTY_CLS:Class;
+
+    [Embed(source="../resources/diamond_bt_over.png")]
+    public static const HIGHLIGHT_CLS:Class;
+
+    [Embed(source="../resources/diamond_bt_push.png")]
+    public static const PRESSED_CLS:Class;
+
+    private static const X0:int = 306;
+    private static const Y0:int = 4;
+    private static const DX:int = 44;
+    private static const DY:int = 44;
+
+    private static const FOUR_CENTER_X:int = 676;
+    private static const FOUR_CENTER_Y:int = -54;
+    private static const BIG_BUTTON_SIZE:int = 104;
 
     private var actionButtons:Array = []; //of buttons
     private var otherButtons:Array = []; //of buttons
@@ -59,28 +73,52 @@ public class SoftKeyboard extends Sprite {
 
     public function SoftKeyboard(editor:Editor, simple:Boolean) {
         _editor = editor;
-        actionButtons.push(addButton(LEFT_CLS, 'left', X0, Y0, true));
-        actionButtons.push(addButton(RIGHT_CLS, 'right', X0 + DX, Y0, true));
-        actionButtons.push(addButton(TAKE_CLS, 'take', X0 + 2 * DX, Y0));
-        actionButtons.push(addButton(PUT_CLS, 'put', X0 + 3 * DX, Y0));
+        actionButtons.push(addButton(LEFT_CLS, 'left', FOUR_CENTER_X - BIG_BUTTON_SIZE, FOUR_CENTER_Y - BIG_BUTTON_SIZE / 2, true));
+        actionButtons.push(addButton(RIGHT_CLS, 'right', FOUR_CENTER_X, FOUR_CENTER_Y - BIG_BUTTON_SIZE / 2, true));
+        actionButtons.push(addButton(TAKE_CLS, 'take', FOUR_CENTER_X - BIG_BUTTON_SIZE / 2, FOUR_CENTER_Y, true));
+        actionButtons.push(addButton(PUT_CLS, 'put', FOUR_CENTER_X - BIG_BUTTON_SIZE / 2, FOUR_CENTER_Y - BIG_BUTTON_SIZE, true));
 
-        otherButtons.push(addButton(SPACE_CLS, 'space', X0 + 5 * DX, Y0));
+        otherButtons.push(addButton(SPACE_CLS, 'space', X0 + DX, Y0));
         if (! simple) {
-            otherButtons.push(addButton(BR_LEFT_CLS, 'br left', X0 + 6 * DX, Y0));
-            otherButtons.push(addButton(BR_RIGHT_CLS, 'br right', X0 + 7 * DX, Y0));
+            otherButtons.push(addButton(BR_LEFT_CLS, 'br left', X0 + 2 * DX, Y0));
+            otherButtons.push(addButton(BR_RIGHT_CLS, 'br right', X0 + 3 * DX, Y0));
         }
-        otherButtons.push(addButton(UNDO_CLS, 'undo', X0 + 9 * DX, Y0, true));
+        otherButtons.push(addButton(UNDO_CLS, 'undo', X0 + 5 * DX, Y0));
 
         if (! simple)
             for (var i:int = 0; i < 10; i++)
                 otherButtons.push(addButton("" + i, "num" + i, X0 + i * DX, Y0 + DY));
     }
 
-    private function addButton(value:*, action:String, x:int, y:int, otherType:Boolean = false):SimpleButton {
-        if (value is String)
-            var button:SimpleButton = otherType ? new Button(value, action) : new Button2(value, action, 40, 40, 20);
-        else
-            button = otherType ? new Button(value, action) : new Button2(value, action);
+    private function addButton(value:*, action:String, x:int, y:int, diamond:Boolean = false):SimpleButton {
+        var buttonBuilder:ButtonBuilder = new ButtonBuilder(action);
+        buttonBuilder.upColor = 0xEEEEEE;
+        buttonBuilder.downColor = 0xAAAAAA;
+        buttonBuilder.upHoverColor = 0xEEEE00;
+        buttonBuilder.downHoverColor = 0xAAAA00;
+        buttonBuilder.borderColor = 0x444444;
+        buttonBuilder.innerBorderColor = 0x888888;
+        buttonBuilder.font = "MONOSPACE";
+        buttonBuilder.embedFont = false;
+        buttonBuilder.fontSize = 20;
+        buttonBuilder.fontColor = 0x000000;
+
+        if (diamond) {
+            buttonBuilder.bgNormal = EMPTY_CLS;
+            buttonBuilder.bgOver = HIGHLIGHT_CLS;
+            buttonBuilder.bgPush = PRESSED_CLS;
+            buttonBuilder.diamondForm = diamond;
+        }
+
+        if (value is String) {
+            buttonBuilder.title = value;
+            buttonBuilder.width = 40;
+            buttonBuilder.height = 40;
+            var button:SimpleButton = buttonBuilder.build();
+        } else {
+            buttonBuilder.imgClass = value;
+            button = buttonBuilder.build();
+        }
 
         button.x = x;
         button.y = y;

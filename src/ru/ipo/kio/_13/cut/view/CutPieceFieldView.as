@@ -27,6 +27,8 @@ public class CutPieceFieldView extends Sprite {
 
     private var field:Sprite = null;
 
+    public static const REGIME_CHANGE:String = 'regime';
+
     public function CutPieceFieldView(m:int, n:int, cuts:Array) {
         _piecesField = new PiecesField(m, n);
         _cuts = cuts;
@@ -53,6 +55,10 @@ public class CutPieceFieldView extends Sprite {
 
     public function get cutsField():CutsField {
         return _cutsField;
+    }
+
+    public function get cuts():Array {
+        return _cuts;
     }
 
     /**
@@ -110,6 +116,8 @@ public class CutPieceFieldView extends Sprite {
             dispatchEvent(new Event(CutsField.CUTS_CHANGED));
         else
             dispatchEvent(new Event(PiecesField.PIECES_CHANGED));
+
+        dispatchEvent(new Event(REGIME_CHANGE));
     }
 
     private function piecesChanged(event:Event):void {
@@ -131,6 +139,15 @@ public class CutPieceFieldView extends Sprite {
 
     public function get numPolys():int {
         return _cutsField == null ? 0 : _cutsField.polygons.length;
+    }
+
+    public function loadCuts(cuts:Array):void {
+        for (var i:int = 0; i < cuts.length; i++) {
+            var cutCords:Array = cuts[i];
+            var cut:Cut = _cuts[i];
+            cut.p1 = new FieldCords(cutCords[0], cutCords[1]);
+            cut.p2 = new FieldCords(cutCords[2], cutCords[3]);
+        }
     }
 }
 }
