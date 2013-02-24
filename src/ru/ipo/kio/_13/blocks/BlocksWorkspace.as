@@ -63,10 +63,10 @@ public class BlocksWorkspace extends Sprite {
             case 0:
                 var field:BlocksField = new BlocksField(4, 6, [
                     [],
-                    [new Block(4), new Block(1)],
-                    [new Block(4), new Block(1)],
-                    [new Block(2), new Block(3)],
-                    [new Block(2), new Block(3)],
+                    [new Block(4), new Block(1)], //1 - green
+                    [new Block(4), new Block(1)], //2 - red
+                    [new Block(2), new Block(3)], //3 - blue
+                    [new Block(2), new Block(3)], //4 - yellow
                     []
                 ], 3, 0);
 

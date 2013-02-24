@@ -151,6 +151,9 @@ public class KioApi extends EventDispatcher {
      * @param result
      */
     public function submitResult(result:Object = null):void {
+        if (! _problem.display || ! _problem.display.stage)
+            return;
+
         if (result == null)
             result = _problem.check(_problem.solution); //TODO change to get current result
 
