@@ -18,6 +18,7 @@ import ru.ipo.kio._13.blocks.parser.ExecutionError;
 import ru.ipo.kio._13.blocks.parser.Program;
 import ru.ipo.kio._13.blocks.parser.ProgramIterator;
 import ru.ipo.kio._13.blocks.parser.SequenceProgram;
+import ru.ipo.kio._13.blocks.view.Editor;
 import ru.ipo.kio.api.KioApi;
 
 public class BlocksDebugger extends EventDispatcher {
@@ -48,6 +49,7 @@ public class BlocksDebugger extends EventDispatcher {
         this.initialField = initialField;
 
         BlocksWorkspace.instance.editor.editorField.addEventListener(Event.CHANGE, changeHandler);
+        BlocksWorkspace.instance.editor.addEventListener(SoftManualEvent.SOFT_MANUAL_ACTION, softManualHandler);
     }
 
     public function get initialField():BlocksField {
@@ -268,6 +270,45 @@ public class BlocksDebugger extends EventDispatcher {
 
     public function get programIsRunning():Boolean {
         return _programIsRunning;
+    }
+
+    private function softManualHandler(event:SoftManualEvent):void {
+        var editor:Editor = BlocksWorkspace.instance.editor;
+
+        if (event.command < 0) {
+            var text:String = editor.editorField.text;
+            var len:int = text.length;
+            if (len > 0)
+                editor.editorField.text = text.substring(0, len - 1);
+            toEnd();
+            return;
+        }
+
+        try {
+            var manualCommand:Command = new Command(event.command, -1);
+            manualCommand.execute(_currentField);
+        } catch (e:Error) {
+            return;
+        }
+
+        switch (event.command) {
+            case Command.LEFT:
+                editor.appendText('L');
+                break;
+            case Command.RIGHT:
+                editor.appendText('R');
+                break;
+            case Command.TAKE:
+                editor.appendText('T');
+                break;
+            case Command.PUT:
+                editor.appendText('P');
+                break;
+        }
+
+        toEnd();
+        stepBack(false);
+        stepForward(true);
     }
 }
 }

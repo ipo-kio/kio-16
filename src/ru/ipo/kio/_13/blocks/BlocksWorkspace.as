@@ -7,6 +7,7 @@
 package ru.ipo.kio._13.blocks {
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.text.TextFieldType;
 
 import ru.ipo.kio._13.blocks.model.Block;
 
@@ -48,23 +49,20 @@ public class BlocksWorkspace extends Sprite {
 
         addChild(new BG_CLS);
 
-        _editor = new Editor(552, 100);
+        _editor = new Editor(552, 100, api.problem.level == 0);
+
         addChild(_editor);
 
         switch(api.problem.level) {
             case 0:
-                var field:BlocksField = new BlocksField(4, 10, [
-                    [],
-                    [],
+                var field:BlocksField = new BlocksField(4, 6, [
                     [],
                     [new Block(1), new Block(4)],
                     [new Block(1), new Block(4)],
                     [new Block(2), new Block(3)],
                     [new Block(2), new Block(3)],
-                    [],
-                    [],
                     []
-                ], 5, 3);
+                ], 3, 0);
                 break;
             case 1:
                 field = new BlocksField(4, 10, [
@@ -108,6 +106,11 @@ public class BlocksWorkspace extends Sprite {
 
         _editor.x = 4;
         _editor.y = _debuggerControls.y + _debuggerControls.height + 6;
+
+        if (api.problem.level == 0) {
+            _editor.editorField.type = TextFieldType.DYNAMIC;
+            _editor.editorField.selectable = false;
+        }
 
         _blocksSelector = new BlocksSelector(field.lines, field.cols, field.boundary, 4);
         _blocksSelector.field = field;

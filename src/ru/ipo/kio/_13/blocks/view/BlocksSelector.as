@@ -94,7 +94,6 @@ public class BlocksSelector extends Sprite {
         redraw();
     }
 
-
     private function clickHandler(event:MouseEvent):void {
         var line:int = _field.lines - int(event.localY / BLOCK_HEIGHT) - 1;
 

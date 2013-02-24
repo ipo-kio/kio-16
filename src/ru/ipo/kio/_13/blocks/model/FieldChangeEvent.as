@@ -20,7 +20,6 @@ public class FieldChangeEvent extends Event {
         super(FIELD_CHANGED);
         _animationPhase = animationPhase;
         _command = command;
-
     }
 
     public function get animationPhase():Boolean {

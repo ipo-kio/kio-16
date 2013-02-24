@@ -16,6 +16,8 @@ import flash.text.TextFormat;
 
 import mx.core.BitmapAsset;
 
+import ru.ipo.kio._13.blocks.BlocksProblem;
+
 import ru.ipo.kio._13.blocks.BlocksWorkspace;
 
 import ru.ipo.kio._13.blocks.model.Block;
@@ -24,10 +26,11 @@ import ru.ipo.kio._13.blocks.model.BlocksDebugger;
 import ru.ipo.kio._13.blocks.model.BlocksField;
 import ru.ipo.kio._13.blocks.model.FieldChangeEvent;
 import ru.ipo.kio._13.blocks.parser.Command;
+import ru.ipo.kio.api.KioApi;
 
 public class DebuggerView extends Sprite {
 
-    private static const BLOCKS_LEFT:int = 40;
+    private static var BLOCKS_LEFT:int = 40;
     private static const BLOCKS_TOP:int = 80;
     private static const BLOCK_WIDTH:int = 70;
     private static const BLOCK_HEIGHT:int = 34;
@@ -73,6 +76,9 @@ public class DebuggerView extends Sprite {
 
     public function DebuggerView(dbg:BlocksDebugger) {
         _dbg = dbg;
+
+        if (KioApi.instance(BlocksProblem.ID).problem.level == 0)
+            BLOCKS_LEFT += 2 * BLOCK_WIDTH;
 
         drawBackground();
         redrawField();

@@ -10,10 +10,13 @@ import flash.display.SimpleButton;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 
+import mx.filters.BaseDimensionFilter;
+
 import ru.ipo.kio._13.blocks.BlocksProblem;
 
 import ru.ipo.kio._13.blocks.BlocksWorkspace;
 import ru.ipo.kio._13.blocks.model.FieldChangeEvent;
+import ru.ipo.kio._13.blocks.model.SoftManualEvent;
 import ru.ipo.kio._13.blocks.parser.Command;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.controls.ButtonBuilder;
@@ -78,14 +81,14 @@ public class SoftKeyboard extends Sprite {
         actionButtons.push(addButton(TAKE_CLS, 'take', FOUR_CENTER_X - BIG_BUTTON_SIZE / 2, FOUR_CENTER_Y, true));
         actionButtons.push(addButton(PUT_CLS, 'put', FOUR_CENTER_X - BIG_BUTTON_SIZE / 2, FOUR_CENTER_Y - BIG_BUTTON_SIZE, true));
 
-        otherButtons.push(addButton(SPACE_CLS, 'space', X0 + DX, Y0));
-        if (! simple) {
+        if (!simple) {
+            otherButtons.push(addButton(SPACE_CLS, 'space', X0 + DX, Y0));
             otherButtons.push(addButton(BR_LEFT_CLS, 'br left', X0 + 2 * DX, Y0));
             otherButtons.push(addButton(BR_RIGHT_CLS, 'br right', X0 + 3 * DX, Y0));
         }
         otherButtons.push(addButton(UNDO_CLS, 'undo', X0 + 5 * DX, Y0));
 
-        if (! simple)
+        if (!simple)
             for (var i:int = 0; i < 10; i++)
                 otherButtons.push(addButton("" + i, "num" + i, X0 + i * DX, Y0 + DY));
     }
@@ -131,31 +134,40 @@ public class SoftKeyboard extends Sprite {
     private function button_clickHandler(event:MouseEvent):void {
         var action:String = event.target.action;
         var manual:Boolean = BlocksWorkspace.instance.manualRegime;
+        var level0:Boolean = api.problem.level == 0;
 
         api.log('button ' + action + (manual ? ' manual' : ''));
 
         switch (action) {
             case 'left':
-                 if (manual)
+                if (manual)
                     _editor.dispatchEvent(new FieldChangeEvent(true, Command.LEFT));
-                 else
-                     _editor.appendAtCaret('L');
+                else if (level0)
+                    _editor.dispatchEvent(new SoftManualEvent(Command.LEFT));
+                else
+                    _editor.appendAtCaret('L');
                 break;
             case 'right':
                 if (manual)
                     _editor.dispatchEvent(new FieldChangeEvent(true, Command.RIGHT));
+                else if (level0)
+                    _editor.dispatchEvent(new SoftManualEvent(Command.RIGHT));
                 else
                     _editor.appendAtCaret('R');
                 break;
             case 'take':
                 if (manual)
                     _editor.dispatchEvent(new FieldChangeEvent(true, Command.TAKE));
+                else if (level0)
+                    _editor.dispatchEvent(new SoftManualEvent(Command.TAKE));
                 else
                     _editor.appendAtCaret('T');
                 break;
             case 'put':
                 if (manual)
                     _editor.dispatchEvent(new FieldChangeEvent(true, Command.PUT));
+                else if (level0)
+                    _editor.dispatchEvent(new SoftManualEvent(Command.PUT));
                 else
                     _editor.appendAtCaret('P');
                 break;
@@ -169,7 +181,10 @@ public class SoftKeyboard extends Sprite {
                 _editor.appendAtCaret(' ');
                 break;
             case 'undo':
-                _editor.undo(); //TODO make disabled if can not undo
+                if (level0)
+                    _editor.dispatchEvent(new SoftManualEvent());
+                else
+                    _editor.undo(); //TODO make disabled if can not undo
                 break;
         }
 
@@ -187,8 +202,8 @@ public class SoftKeyboard extends Sprite {
         _controlsRegime = value;
 
         for each (var button:SimpleButton in otherButtons) {
-            button.enabled = ! _controlsRegime;
-            button.mouseEnabled = ! _controlsRegime;
+            button.enabled = !_controlsRegime;
+            button.mouseEnabled = !_controlsRegime;
         }
     }
 }

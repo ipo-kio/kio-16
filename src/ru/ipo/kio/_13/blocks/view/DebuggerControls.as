@@ -54,15 +54,24 @@ public class DebuggerControls extends Sprite {
     function DebuggerControls(dbg:BlocksDebugger) {
         _dbg = dbg;
 
+        var level:int = KioApi.instance(BlocksProblem.ID).problem.level;
+
         var skip:int = BUTTON_WIDTH + BUTTON_H_SKIP;
         addButton(loc.buttons.to_start, "start", BUTTON_X0, BUTTON_Y0);
         addButton(loc.buttons.step_back, "-1", BUTTON_X0 + skip, BUTTON_Y0);
         addButton(loc.buttons.step_forward, "+1", BUTTON_X0 + 2 * skip, BUTTON_Y0);
-        addButton(loc.buttons.to_end, "end", BUTTON_X0 + 3 * skip, BUTTON_Y0);
+        var loc_to_end:String = level == 0 ? loc.buttons.to_end_0 : loc.buttons.to_end;
+        addButton(loc_to_end, "end", BUTTON_X0 + 3 * skip, BUTTON_Y0);
         goButton = addButton(loc.buttons.go, "go", BUTTON_X0 + 4 * skip, BUTTON_Y0);
         stopButton = addButton(loc.buttons.stop, "stop", BUTTON_X0 + 4 * skip, BUTTON_Y0);
-        manualButton = addButton(loc.buttons.manual, "man", BUTTON_X0 + 5 * skip, BUTTON_Y0, true);
-        stopManualButton = addButton(loc.buttons.stop_manual, "stop man", BUTTON_X0 + 5 * skip, BUTTON_Y0, true);
+
+        if (level == 0) {
+            addButton(loc.buttons.clear, "clear", BUTTON_X0 + 5 * skip, BUTTON_Y0, true);
+        } else {
+            manualButton = addButton(loc.buttons.manual, "man", BUTTON_X0 + 5 * skip, BUTTON_Y0, true);
+            stopManualButton = addButton(loc.buttons.stop_manual, "stop man", BUTTON_X0 + 5 * skip, BUTTON_Y0, true);
+            stopManualButton.visible = false;
+        }
 
         addStepsField(BUTTON_X0, BUTTON_Y0 + BUTTON_HEIGHT + BUTTON_V_SKIP + 2);
 
@@ -73,7 +82,6 @@ public class DebuggerControls extends Sprite {
         addMessageField(BUTTON_X0 + skip, BUTTON_Y0 + BUTTON_HEIGHT + BUTTON_V_SKIP + 2);
 
         stopButton.visible = false;
-        stopManualButton.visible = false;
 
         _dbg.addEventListener(FieldChangeEvent.FIELD_CHANGED, fieldChangedHandler);
 
@@ -121,12 +129,15 @@ public class DebuggerControls extends Sprite {
 
     private function addButton(value:String, action:String, x:int, y:int, great:Boolean = false):SimpleButton {
         var buttonBuilder:ButtonBuilder = new ButtonBuilder(action);
-        if (great) {
-            buttonBuilder.upColor = 0x22EE22;
-            buttonBuilder.downColor = 0x22AA22;
-        } else {
+        if (! great) {
             buttonBuilder.upColor = 0xEEEEEE;
             buttonBuilder.downColor = 0xAAAAAA;
+        } else if (api.problem.level == 0) {
+            buttonBuilder.upColor = 0xf84d65;
+            buttonBuilder.downColor = 0xf80d25;
+        } else {
+            buttonBuilder.upColor = 0x22EE22;
+            buttonBuilder.downColor = 0x22AA22;
         }
         buttonBuilder.upHoverColor = 0xEEEE00;
         buttonBuilder.downHoverColor = 0xAAAA00;
@@ -196,6 +207,9 @@ public class DebuggerControls extends Sprite {
                 stopManualButton.visible = false;
 
                 BlocksWorkspace.instance.manualRegime = false;
+                break;
+            case "clear":
+                BlocksWorkspace.instance.editor.editorField.text = "";
                 break;
         }
     }
