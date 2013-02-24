@@ -205,7 +205,12 @@ public class BlocksWorkspace extends Sprite {
     }
 
     private function apiRecordHandler(event:Event):void {
-        displayResult(_blocksDebugger.getResult(), true); //TODO implement passing this result in API
+        var result:Object = _blocksDebugger.getResult();
+        displayResult(result, true); //TODO implement passing this result in API
+        if (api.problem.level == 0)
+            api.log('new record @BSSt', result.in_place, result.penalty, result.steps, _editor.editorField.text);
+        else
+            api.log('new record @BSSt', result.in_place, result.prg_len, result.steps, _editor.editorField.text);
     }
 
 }
