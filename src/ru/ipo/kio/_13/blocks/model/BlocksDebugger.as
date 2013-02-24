@@ -9,6 +9,8 @@ package ru.ipo.kio._13.blocks.model {
 import flash.events.Event;
 import flash.events.EventDispatcher;
 
+import ru.ipo.kio._11.ariadne.view.Workspace;
+
 import ru.ipo.kio._13.blocks.BlocksProblem;
 
 import ru.ipo.kio._13.blocks.BlocksWorkspace;
@@ -44,6 +46,8 @@ public class BlocksDebugger extends EventDispatcher {
     private var _programIsRunning:Boolean = false;
 
     private static const api:KioApi = KioApi.instance(BlocksProblem.ID);
+
+    private var _penalty:int = 0;
 
     public function BlocksDebugger(initialField:BlocksField) {
         this.initialField = initialField;
@@ -103,7 +107,7 @@ public class BlocksDebugger extends EventDispatcher {
     }
 
     public function mayMoveForward():Boolean {
-        return _state == STATE_NORMAL;
+        return _state == STATE_NORMAL && _step < MAX_STEPS;
     }
 
     public function mayMoveBack():Boolean {
@@ -144,7 +148,10 @@ public class BlocksDebugger extends EventDispatcher {
                 animationStarted = true;
             }
 
-            _currentCommand.execute(_currentField);
+            _currentCommand.execute(_currentField); //may generate execution error
+
+            if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.PUT)
+                _penalty++;
 
             if (!_iterator.hasNext()) {
                 _state = STATE_FINISH;
@@ -158,7 +165,12 @@ public class BlocksDebugger extends EventDispatcher {
 
         _step++;
 
-        if (! animationStarted)
+        if ((_state == STATE_FINISH || _step == MAX_STEPS) && validateFieldBlocks() == null && BlocksWorkspace.instance.stage)
+            api.submitResult(getResult());
+
+        BlocksWorkspace.instance.displayResult(getResult());
+
+        if (!animationStarted)
             dispatchEvent(new FieldChangeEvent());
     }
 
@@ -179,6 +191,8 @@ public class BlocksDebugger extends EventDispatcher {
                     dispatchEvent(new FieldChangeEvent(true, _currentCommand.invertedCommand));
 
                 _currentCommand.execute(_currentField, true);
+                if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.TAKE)
+                    _penalty--;
 
                 break;
             case STATE_ERROR:
@@ -193,12 +207,16 @@ public class BlocksDebugger extends EventDispatcher {
                     dispatchEvent(new FieldChangeEvent(true, _currentCommand.invertedCommand));
 
                 _currentCommand.execute(_currentField, true);
+                if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.TAKE)
+                    _penalty--;
 
                 break;
         }
 
         _step--;
         _state = STATE_NORMAL;
+
+        BlocksWorkspace.instance.displayResult(getResult());
 
         if (!dispatchedAnimationEvent)
             dispatchEvent(new FieldChangeEvent());
@@ -226,9 +244,13 @@ public class BlocksDebugger extends EventDispatcher {
         if (!_iterator.hasNext()) {
             this._step = -1; //does not really matters
             _state = STATE_FINISH;
+            if (validateFieldBlocks() == null && BlocksWorkspace.instance.stage)
+                api.submitResult(getResult());
             _currentCommand = null;
 
             dispatchEvent(new FieldChangeEvent());
+
+            BlocksWorkspace.instance.displayResult(getResult());
 
             return;
         }
@@ -237,10 +259,13 @@ public class BlocksDebugger extends EventDispatcher {
         _currentCommand = _iterator.next();
 
         this._step = 0;
+        this._penalty = 0;
 
         for (var i:int = 0; i < step; i++)
             if (mayMoveForward())
                 stepForward();
+
+        BlocksWorkspace.instance.displayResult(getResult());
 
         dispatchEvent(new FieldChangeEvent());
     }
@@ -256,6 +281,27 @@ public class BlocksDebugger extends EventDispatcher {
 
     private function changeHandler(event:Event):void {
         program = BlocksWorkspace.instance.editor.editorField.program;
+        if (BlocksWorkspace.instance.stage)
+            api.autoSaveSolution();
+    }
+
+    public function getResult():Object {
+        if (api.problem.level == 0)
+            return {
+                in_place: _currentField.blocksInPlace,
+                penalty: _penalty,
+                steps: Math.max(_step, 0)
+            };
+        else
+            return {
+                in_place: _currentField.blocksInPlace,
+                prg_len: stripSpaces(BlocksWorkspace.instance.editor.editorField.text).length,
+                steps: Math.max(_step, 0)
+            };
+    }
+
+    private static function stripSpaces(text:String):String {
+        return text.replace(/\s/g, "");
     }
 
     public function go():void {
@@ -309,6 +355,14 @@ public class BlocksDebugger extends EventDispatcher {
         toEnd();
         stepBack(false);
         stepForward(true);
+    }
+
+    public function get penalty():int {
+        return _penalty;
+    }
+
+    public function get program():Program {
+        return _program;
     }
 }
 }

@@ -19,6 +19,7 @@ import ru.ipo.kio._13.blocks.view.DebuggerControls;
 import ru.ipo.kio._13.blocks.view.DebuggerView;
 
 import ru.ipo.kio._13.blocks.view.Editor;
+import ru.ipo.kio._13.cut.view.InfoPanel;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.TextUtils;
 
@@ -39,6 +40,9 @@ public class BlocksWorkspace extends Sprite {
 
     private var _manualRegime:Boolean = false;
 
+    private var _resultsInfo:InfoPanel;
+    private var _recordInfo:InfoPanel;
+
     public function BlocksWorkspace() {
         if (_instance == null)
             _instance = this;
@@ -49,6 +53,8 @@ public class BlocksWorkspace extends Sprite {
 
         addChild(new BG_CLS);
 
+        initInfoFields();
+
         _editor = new Editor(552, 100, api.problem.level == 0);
 
         addChild(_editor);
@@ -57,8 +63,8 @@ public class BlocksWorkspace extends Sprite {
             case 0:
                 var field:BlocksField = new BlocksField(4, 6, [
                     [],
-                    [new Block(1), new Block(4)],
-                    [new Block(1), new Block(4)],
+                    [new Block(4), new Block(1)],
+                    [new Block(4), new Block(1)],
                     [new Block(2), new Block(3)],
                     [new Block(2), new Block(3)],
                     []
@@ -66,11 +72,11 @@ public class BlocksWorkspace extends Sprite {
                 break;
             case 1:
                 field = new BlocksField(4, 10, [
-                    [new Block(1), new Block(4)],
-                    [new Block(1), new Block(4)],
-                    [new Block(1), new Block(4)],
-                    [new Block(1), new Block(4)],
-                    [new Block(1), new Block(4)],
+                    [new Block(4), new Block(1)],
+                    [new Block(4), new Block(1)],
+                    [new Block(4), new Block(1)],
+                    [new Block(4), new Block(1)],
+                    [new Block(4), new Block(1)],
                     [new Block(2), new Block(3)],
                     [new Block(2), new Block(3)],
                     [new Block(2), new Block(3)],
@@ -80,11 +86,11 @@ public class BlocksWorkspace extends Sprite {
                 break;
             case 2:
                 field = new BlocksField(4, 10, [
-                    [new Block(1), new Block(4)],
-                    [new Block(1), new Block(4)],
-                    [new Block(1), new Block(4)],
-                    [new Block(1), new Block(4)],
-                    [new Block(1), new Block(4)],
+                    [new Block(4), new Block(1)],
+                    [new Block(4), new Block(1)],
+                    [new Block(4), new Block(1)],
+                    [new Block(4), new Block(1)],
+                    [new Block(4), new Block(1)],
                     [new Block(2), new Block(3)],
                     [new Block(2), new Block(3)],
                     [new Block(2), new Block(3)],
@@ -120,11 +126,31 @@ public class BlocksWorkspace extends Sprite {
         addChild(_blocksSelector);
 
         _blocksSelector.addEventListener(Event.CHANGE, blocksChangeHandler);
+
+        api.addEventListener(KioApi.RECORD_EVENT, apiRecordHandler);
+    }
+
+    private function initInfoFields():void {
+        var loc:Object = api.localization;
+        var labels:Array = api.problem.level == 0 ?
+                [loc.labels.in_place, loc.labels.penalty, loc.labels.steps] :
+                [loc.labels.in_place, loc.labels.prg_len, loc.labels.steps];
+        _resultsInfo = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0x000000, 1.2, loc.labels.result, labels, 300);
+
+        _recordInfo = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0x000000, 1.2, loc.labels.record, labels, 300);
+
+        _resultsInfo.x = 10;
+        _resultsInfo.y = 510;
+        addChild(_resultsInfo);
+
+        _recordInfo.x = 400;
+        _recordInfo.y = 510;
+        addChild(_recordInfo);
     }
 
     private function blocksChangeHandler(event:Event):void {
         _blocksDebugger.initialField = _blocksSelector.field.clone();
-        _debuggerControls.enabled = _blocksDebugger.validateFieldBlocks() == null;
+//        _debuggerControls.enabled = _blocksDebugger.validateFieldBlocks() == null;
     }
 
     public static function get instance():BlocksWorkspace {
@@ -135,10 +161,7 @@ public class BlocksWorkspace extends Sprite {
         return _editor;
     }
 
-    public function currentResult():Object {  //TODO report does no error is reported if there is no return
-        //TODO implement
-        return null;
-    }
+    //public function currentResult():Object {}  //TODO report does no error is reported if there is no return
 
     public function get manualRegime():Boolean {
         return _manualRegime;
@@ -152,5 +175,24 @@ public class BlocksWorkspace extends Sprite {
 
         dispatchEvent(new Event(MANUAL_REGIME_EVENT));
     }
+
+    public function displayResult(result:Object, isRecord:Boolean = false):void {
+        var panel:InfoPanel = isRecord ? _recordInfo : _resultsInfo;
+        panel.setValue(0, result.in_place);
+        if (api.problem.level == 0)
+            panel.setValue(1, result.penalty);
+        else
+            panel.setValue(1, result.prg_len);
+        panel.setValue(2, result.steps);
+    }
+
+    public function get blocksDebugger():BlocksDebugger {
+        return _blocksDebugger;
+    }
+
+    private function apiRecordHandler(event:Event):void {
+        displayResult(_blocksDebugger.getResult(), true); //TODO implement passing this result in API
+    }
+
 }
 }

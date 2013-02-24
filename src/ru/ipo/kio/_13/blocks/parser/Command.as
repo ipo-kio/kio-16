@@ -73,7 +73,6 @@ public class Command implements Program {
                     executor.take();
                 break;
         }
-
     }
 
     public function getProgramIterator(from_end:Boolean = false):ProgramIterator {

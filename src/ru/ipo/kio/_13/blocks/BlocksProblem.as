@@ -41,17 +41,20 @@ public class BlocksProblem implements KioProblem {
     }
 
     public function get solution():Object {
-        //TODO implement
-        return null;
+        return {prg: BlocksWorkspace.instance.editor.editorField.text};
     }
 
     public function loadSolution(solution:Object):Boolean {
         //для загрузки решения нужно взять поле txt и записать его в текстовое поле
-        if (solution.txt) {
+        if ('prg' in solution) {
+            _workspace.editor.editorField.text = solution.prg;
+            if (_workspace.blocksDebugger.program != null) {
+                _workspace.blocksDebugger.toEnd();
+                _workspace.blocksDebugger.moveToStep(0);
+            }
+
             //не забыть сохранить решение, как обычно после того как оно изменилось
             KioApi.instance(ID).autoSaveSolution();
-            //не забыть как обычно после изменения решения пересчитать текущий результат
-            KioApi.instance(ID).submitResult(_workspace.currentResult());
             //Если текущий результат еще и показывается где-то на экране, его тоже надо пересчитать
             //TODO это все должно происходить автоматически
 
@@ -62,11 +65,25 @@ public class BlocksProblem implements KioProblem {
 
     public function check(solution:Object):Object {
         loadSolution(solution);
-        return _workspace.currentResult();
+        return {}; //TODO implement
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        return solution1.length - solution2.length;
+        if (level == 0) {
+            var res:int = solution1.in_place - solution2.in_place;
+            if (res == 0)
+                res = solution2.penalty - solution1.penalty;
+            if (res == 0)
+                res = solution2.steps - solution1.steps;
+            return res;
+        } else {
+            res = solution1.in_place - solution2.in_place;
+            if (res == 0)
+                res = solution2.prg_len - solution1.prg_len;
+            if (res == 0)
+                res = solution2.steps - solution1.steps;
+            return res;
+        }
     }
 
     public function get icon():Class {

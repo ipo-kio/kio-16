@@ -27,6 +27,8 @@ public class BlocksField extends EventDispatcher implements Executor {
     private var _takenBlock:Block;
     private var _boundary:int;
 
+    private var _lastStepHadPenalty:Boolean = false;
+
     public function BlocksField(lines:int, cols:int, blocks:Array, boundary:int, craneX:int) {
         _lines = lines;
         _cols = cols;
@@ -82,7 +84,9 @@ public class BlocksField extends EventDispatcher implements Executor {
         if (mayLeft() != null)
             return;
 
-        _craneX --;
+        _craneX--;
+
+        _lastStepHadPenalty = false;
 
         dispatchEvent(new Event(MOVE_EVENT));
     }
@@ -97,7 +101,9 @@ public class BlocksField extends EventDispatcher implements Executor {
         if (mayRight() != null)
             return;
 
-        _craneX ++;
+        _craneX++;
+
+        _lastStepHadPenalty = false;
 
         dispatchEvent(new Event(MOVE_EVENT));
     }
@@ -121,6 +127,8 @@ public class BlocksField extends EventDispatcher implements Executor {
 
         _takenBlock = col.pop();
 
+        _lastStepHadPenalty = col.length > 0 && !col[col.length - 1].mayBeUnder(_takenBlock);
+
         dispatchEvent(new Event(MOVE_EVENT));
     }
 
@@ -136,7 +144,7 @@ public class BlocksField extends EventDispatcher implements Executor {
         if (numInCol >= _lines)
             return loc.exec_errors.nowhere_to_put;
 
-        if (numInCol > 0 && ! col[numInCol - 1].mayBeUnder(_takenBlock))
+        if (numInCol > 0 && !col[numInCol - 1].mayBeUnder(_takenBlock))
             return loc.exec_errors.forbidden_order;
 
         return null;
@@ -148,10 +156,28 @@ public class BlocksField extends EventDispatcher implements Executor {
 
         var col:Array = getColumn(_craneX);
 
+        _lastStepHadPenalty = col.length > 0 && !col[col.length - 1].mayBeUnder(_takenBlock);
+
         col.push(_takenBlock);
         _takenBlock = null;
 
         dispatchEvent(new Event(MOVE_EVENT));
+    }
+
+    public function get lastStepHadPenalty():Boolean {
+        return _lastStepHadPenalty;
+    }
+
+    public function get blocksInPlace():int {
+        var res:int = 0;
+        var colInd:int = 0;
+        for each (var col:Array in _blocks) {
+            for each (var block:Block in col)
+                if (block.isFromLeftToRight != colInd < boundary)
+                    res++;
+            colInd ++;
+        }
+        return res;
     }
 }
 }
