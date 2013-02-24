@@ -101,17 +101,18 @@ public class TransmissionMechanism {
         _transferGearList.push(transferGear);
         view.transferGearAdded(transferGear);
         viewSide.transferGearAdded(transferGear);
-      ClockSprite.instanse.update();
+      ClockSprite.instance.update();
     }
 
 
     public function addTransferGearAfter(transferGear:TransferGear):void {
 
         var newTG:TransferGear = new TransferGear(this, Math.min(transferGear.x+10,630), Math.min(transferGear.y+10,350), 10, 10, ColorGenerator.nextHueOfColor(transferGearList));
+        KioApi.instance(ClockProblem.ID).log("CREATE AFTER @SS", newTG.id, transferGear.id);
         _transferGearList.splice(getIndex(transferGear)+1,0,newTG);
         view.transferGearAdded(newTG, transferGear);
         viewSide.transferGearAdded(newTG);
-        ClockSprite.instanse.update();
+        ClockSprite.instance.update();
     }
 
 
@@ -136,7 +137,7 @@ public class TransmissionMechanism {
         _transferGearList.splice(index, 1);
         view.transferGearRemoved(transferGear);
         viewSide.transferGearRemoved(transferGear);
-        ClockSprite.instanse.update();
+        ClockSprite.instance.update();
 
     }
 
@@ -418,7 +419,7 @@ public class TransmissionMechanism {
 
     public function rotate(number:Number):void {
         if(isConflict()){
-            ClockSprite.instanse.showError(KioApi.getLocalization(ClockProblem.ID).messages.play_crash);
+            ClockSprite.instance.showError(KioApi.getLocalization(ClockProblem.ID).messages.play_crash);
             if(play){
                 playStop();
             }
@@ -475,7 +476,7 @@ public class TransmissionMechanism {
     public function playStop():void {
         play = !play;
         deactivateAll();
-      ClockSprite.instanse.updateAnimateButtons();
+      ClockSprite.instance.updateAnimateButtons();
     }
 
     public function innerTick():void {

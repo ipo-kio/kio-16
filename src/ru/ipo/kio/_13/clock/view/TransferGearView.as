@@ -93,7 +93,7 @@ public class TransferGearView extends BasicView {
             _shiftX= e.localX;
             _shiftY= e.localY;
             //if(!transferGear.isFirst()){
-            KioApi.instance(ClockProblem.ID).log("START DRAG", transferGear.id, transferGear.x, transferGear.y);
+            KioApi.instance(ClockProblem.ID).log("START DRAG @SSS", transferGear.id, transferGear.x, transferGear.y);
             startDrag(false, new Rectangle(transferGear.getRadius()+5,transferGear.getRadius(),
                         675-transferGear.getRadius()*2,400-transferGear.getRadius()*2));
             //}
@@ -122,12 +122,12 @@ public class TransferGearView extends BasicView {
 
             transferGear.isMove=false;
             //if(!transferGear.isFirst()){
-            KioApi.instance(ClockProblem.ID).log("STOP DRAG", transferGear.id, transferGear.x, transferGear.y);
+            KioApi.instance(ClockProblem.ID).log("STOP DRAG @SSS", transferGear.id, transferGear.x, transferGear.y);
                 stopDrag();
             //}
             updateNextAndPrevious();
             transferGear.transmissionMechanism.view.update();
-            ClockSprite.instanse.update();
+            ClockSprite.instance.update();
             transferGear.transmissionMechanism.viewSide.rebuild();
         });
     }
@@ -169,39 +169,40 @@ public class TransferGearView extends BasicView {
         field.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void{
             if(e.charCode==13){
                 var newValue:int = new Number(field.text);
-                KioApi.instance(ClockProblem.ID).log("VIEW1 INPUT "+upper?"UP":"DOWN", transferGear.id, newValue);
+                var part:String = upper?"UP":"DOWN";
+                KioApi.instance(ClockProblem.ID).log("VIEW1 INPUT "+part+" @St", transferGear.id, newValue);
                 if(newValue<8){
-                    ClockSprite.instanse.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooSmall);
+                    ClockSprite.instance.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooSmall);
                     return;
                 }
                 if(newValue>40){
-                    ClockSprite.instanse.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooBig);
+                    ClockSprite.instance.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooBig);
                     return;
                 }
                 if(upper){
-                    if(Math.max(newValue,transferGear.lowerGear.amountOfCogs)/Math.min(newValue,transferGear.lowerGear.amountOfCogs)>
-                            SettingsHolder.instance.maxDiv){
-                        ClockSprite.instanse.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooBigDiv+""+
-                                SettingsHolder.instance.maxDiv);
-                        return;
-                    }
+//                    if(Math.max(newValue,transferGear.lowerGear.amountOfCogs)/Math.min(newValue,transferGear.lowerGear.amountOfCogs)>
+//                            SettingsHolder.instance.maxDiv){
+//                        ClockSprite.instanse.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooBigDiv+""+
+//                                SettingsHolder.instance.maxDiv);
+//                        return;
+//                    }
                     transferGear.upperGear.amountOfCogs=newValue;
                     transferGear.transmissionMechanism.viewSide.rebuild();
                 }
                 else{
-                    if(Math.max(newValue,transferGear.upperGear.amountOfCogs)/Math.min(newValue,transferGear.upperGear.amountOfCogs)>
-                            SettingsHolder.instance.maxDiv){
-                        ClockSprite.instanse.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooBigDiv+""+
-                                SettingsHolder.instance.maxDiv);
-                        return;
-                    }
+//                    if(Math.max(newValue,transferGear.upperGear.amountOfCogs)/Math.min(newValue,transferGear.upperGear.amountOfCogs)>
+//                            SettingsHolder.instance.maxDiv){
+//                        ClockSprite.instanse.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooBigDiv+""+
+//                                SettingsHolder.instance.maxDiv);
+//                        return;
+//                    }
                     transferGear.lowerGear.amountOfCogs=newValue;
                     transferGear.transmissionMechanism.viewSide.rebuild();
                 }
                 _locked=false;
                 transferGear.updateConflict();
                 update();
-                ClockSprite.instanse.update();
+                ClockSprite.instance.update();
             }else if(e.charCode==27){
                 _locked=false;
                 update();

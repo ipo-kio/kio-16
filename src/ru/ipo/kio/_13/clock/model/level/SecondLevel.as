@@ -9,6 +9,8 @@ import flash.display.Sprite;
 import ru.ipo.kio._13.clock.model.SettingsHolder;
 import ru.ipo.kio._13.clock.model.TransmissionMechanism;
 import ru.ipo.kio._13.clock.utils.printf;
+import ru.ipo.kio._13.clock.view.gui.HourArrow;
+import ru.ipo.kio._13.clock.view.gui.MinuteArrow;
 
 
 public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
@@ -114,6 +116,31 @@ public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
         clearProductSprite();
         drawTwoImageFromArray(TransmissionMechanism.instance.lastDrivenSimpleGear.alpha, ANGLES_TO_IMAGES);
         drawArrows(340,170,546,259);
+    }
+
+    protected override function drawArrows(bigCenterX:int,bigCenterY:int,smallCenterX:int,smallCenterY:int):void {
+        var holst:Sprite = new Sprite();
+        productSprite.addChild(holst);
+        holst.graphics.lineStyle(1, 0x000000);
+
+        var minuteArrow:Sprite = new MinuteArrow();
+        productSprite.addChild(minuteArrow);
+        minuteArrow.x = bigCenterX;
+        minuteArrow.y = bigCenterY;
+        rotateAroundCenter(minuteArrow, TransmissionMechanism.instance.leadingSimpleGear.alpha);
+
+        if (TransmissionMechanism.instance.isFinished()) {
+            var hourArrow:Sprite = new HourArrow();
+            productSprite.addChild(hourArrow);
+            hourArrow.x = bigCenterX;
+            hourArrow.y = bigCenterY;
+            rotateAroundCenter(hourArrow, TransmissionMechanism.instance.leadingSimpleGear.other.alpha);
+
+            drawArrow(smallCenterX, smallCenterY, SMALL_HOUR_ARROW_LENGTH, TransmissionMechanism.instance.leadingSimpleGear.other.alpha, holst);
+            drawArrow(smallCenterX, smallCenterY, SMALL_MINUTE_ARROW_LENGTH, TransmissionMechanism.instance.leadingSimpleGear.alpha, holst);
+        } else {
+            drawArrow(smallCenterX, smallCenterY, SMALL_HOUR_ARROW_LENGTH, TransmissionMechanism.instance.lastDrivenSimpleGear.alpha, holst);
+        }
     }
 
     public function get direction():int {
