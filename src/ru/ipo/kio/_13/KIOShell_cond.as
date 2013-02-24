@@ -36,8 +36,8 @@ public class KIOShell_cond extends Sprite {
 
         KioBase.instance.init(this,
                 [
-                    new BlocksProblem(level),
                     new CutProblem(level),
+                    new BlocksProblem(level),
                     new ClockProblem(level)
                 ],
                 2013,

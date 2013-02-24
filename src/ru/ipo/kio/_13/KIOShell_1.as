@@ -36,8 +36,8 @@ public class KIOShell_1 extends Sprite {
 
         KioBase.instance.init(this,
                 [
-                    new BlocksProblem(_level),
                     new CutProblem(_level),
+                    new BlocksProblem(_level),
                     new ClockProblem(_level)
                 ],
                 2013,
