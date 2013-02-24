@@ -14,12 +14,9 @@ import flash.geom.Point;
 
 import pl.bmnet.gpcas.geometry.Poly;
 
-import ru.ipo.kio._13.cut.CutProblem;
-
 import ru.ipo.kio._13.cut.model.ColoredPoly;
 import ru.ipo.kio._13.cut.model.Cut;
 import ru.ipo.kio._13.cut.model.CutsField;
-import ru.ipo.kio.api.KioApi;
 
 public class CutsFieldView extends Sprite {
 
@@ -27,7 +24,6 @@ public class CutsFieldView extends Sprite {
 
     private static const GRID_COLOR:uint = 0xAAAAAA;
     private static const GRID_ALPHA:Number = 0.5;
-    private static const BACKGROUND_COLOR:uint = 0xFFFFFF;
     private static const COLOR_TRUE:uint = 0xFFCC33;
     private static const COLOR_FALSE:uint = 0x3399FF;
     private static const COLOR_NON_NORMAL:uint = 0xFF0000;
@@ -53,12 +49,13 @@ public class CutsFieldView extends Sprite {
         this._m = m;
         this._n = n;
 
+        drawBackground();
+
         addChild(polygonsLayer);
         addChild(gridLayer);
         addChild(highlightLayer);
         addChild(cutsLayer);
 
-        drawBackground();
         drawGrid();
 
         putCutPoints();
@@ -68,10 +65,11 @@ public class CutsFieldView extends Sprite {
             _field.addEventListener(CutsField.CUTS_CHANGED, cutsChanged);
 
         addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
-        addEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
+//        addEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
     }
 
     private var prevHighlightPoly:ColoredPoly = null;
+
     private function mouseMoveHandler(event:MouseEvent):void {
         var x:Number = screen2logicX(event.localX, false);
         var y:Number = screen2logicY(event.localY, false);
@@ -115,9 +113,7 @@ public class CutsFieldView extends Sprite {
     }
 
     private function drawBackground():void {
-        graphics.beginFill(BACKGROUND_COLOR);
-        graphics.drawRect(0, 0, _n * PiecesFieldView.CELL_WIDTH, _m * PiecesFieldView.CELL_HEIGHT);
-        graphics.endFill();
+        addChild(PiecesFieldView.BG_IMG);
     }
 
     private function putCutPoints():void {
