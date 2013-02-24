@@ -77,6 +77,7 @@ public class AnimatePanel extends AbstractPanel {
 
     private function speedSelected(e:Event):void {
         SettingsHolder.instance.stepRotate = Number(_cbSpeed.selectedItem.data);
+        KioApi.instance(ClockProblem.ID).log("CHANGE SPEED @B", SettingsHolder.instance.stepRotate);
     }
 
     public function updateAnimateButtons():void {

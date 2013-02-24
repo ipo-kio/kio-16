@@ -53,9 +53,9 @@ public class BasicProductDrawer {
         productSprite.graphics.endFill();
     }
 
-    private static const SMALL_MINUTE_ARROW_LENGTH:int = 30;
+    public static const SMALL_MINUTE_ARROW_LENGTH:int = 30;
 
-    private static const SMALL_HOUR_ARROW_LENGTH:int = 20;
+    public static const SMALL_HOUR_ARROW_LENGTH:int = 20;
 
     protected function drawArrows(bigCenterX:int,bigCenterY:int,smallCenterX:int,smallCenterY:int):void {
         var holst:Sprite = new Sprite();

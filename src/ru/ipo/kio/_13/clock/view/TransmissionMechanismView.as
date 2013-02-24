@@ -2,11 +2,14 @@
 package ru.ipo.kio._13.clock.view {
 import flash.events.MouseEvent;
 
+import ru.ipo.kio._13.clock.ClockProblem;
+
 import ru.ipo.kio._13.clock.ClockSprite;
 import ru.ipo.kio._13.clock.model.SettingsHolder;
 import ru.ipo.kio._13.clock.model.TransferGear;
 import ru.ipo.kio._13.clock.model.TransmissionMechanism;
 import ru.ipo.kio._13.clock.utils.ColorGenerator;
+import ru.ipo.kio.api.KioApi;
 
 public class TransmissionMechanismView extends BasicView {
 
@@ -17,7 +20,9 @@ public class TransmissionMechanismView extends BasicView {
 
      addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{
          if(e.ctrlKey){
-            transmissionMechanism.addTransferGear(new TransferGear(transmissionMechanism, e.stageX, e.stageY, 20, 10, ColorGenerator.nextHueOfColor(transmissionMechanism.transferGearList)));
+             var newGear:TransferGear = new TransferGear(transmissionMechanism, e.stageX-110, e.stageY-10, 20, 10, ColorGenerator.nextHueOfColor(transmissionMechanism.transferGearList));
+            transmissionMechanism.addTransferGear(newGear);
+             KioApi.instance(ClockProblem.ID).log("CREATE BY CLICK @SSS", newGear.id, e.stageX, e.stageY);
             transmissionMechanism.transferGearList[transmissionMechanism.transferGearList.length-1].view.update();
          }else{
              if(transmissionMechanism.getByCoord(e.stageX-parent.x-parent.parent.x-100, e.stageY-parent.y-parent.parent.y)==null){
@@ -88,7 +93,7 @@ public class TransmissionMechanismView extends BasicView {
           }
       }
       transferGear.view.update();
-      ClockSprite.instanse.update();
+      ClockSprite.instance.update();
     }
     
     public function removeView():void{

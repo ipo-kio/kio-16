@@ -23,7 +23,8 @@ import ru.ipo.kio.api.KioApi;
 
 public class ClockSprite extends AbstractPanel {
 
-    public static var instanse:ClockSprite;
+    //todo remove and add as listener
+    public static var instance:ClockSprite;
 
     private var settingsPanel:Sprite = new Sprite();
 
@@ -40,7 +41,7 @@ public class ClockSprite extends AbstractPanel {
     private var errorText:TextField = new TextField();
 
     public function ClockSprite() {
-        instanse=this;
+        instance=this;
         errorSprite.addChild(errorText);
         errorSprite.addEventListener(MouseEvent.CLICK, function(e:Event):void{
            removeChild(errorSprite);
