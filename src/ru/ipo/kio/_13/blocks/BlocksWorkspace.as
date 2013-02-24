@@ -100,6 +100,9 @@ public class BlocksWorkspace extends Sprite {
                 break;
         }
 
+        _blocksSelector = new BlocksSelector(field.lines, field.cols, field.boundary, 4);
+        _blocksSelector.field = field;
+
         _blocksDebugger = new BlocksDebugger(field);
         _debuggerControls = new DebuggerControls(_blocksDebugger);
         addChild(_debuggerControls);
@@ -118,8 +121,6 @@ public class BlocksWorkspace extends Sprite {
             _editor.editorField.selectable = false;
         }
 
-        _blocksSelector = new BlocksSelector(field.lines, field.cols, field.boundary, 4);
-        _blocksSelector.field = field;
         _blocksSelector.x = 4;
         _blocksSelector.y = 104 + _editor.y;
 
@@ -188,6 +189,10 @@ public class BlocksWorkspace extends Sprite {
 
     public function get blocksDebugger():BlocksDebugger {
         return _blocksDebugger;
+    }
+
+    public function get blocksSelector():BlocksSelector {
+        return _blocksSelector;
     }
 
     private function apiRecordHandler(event:Event):void {

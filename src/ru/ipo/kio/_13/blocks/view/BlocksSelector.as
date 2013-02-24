@@ -49,7 +49,7 @@ public class BlocksSelector extends Sprite {
             addEventListener(MouseEvent.CLICK, clickHandler);
     }
 
-    private function redraw():void {
+    public function redraw():void {
         graphics.clear();
         graphics.lineStyle(1, 0);
         graphics.beginFill(0xFFFFFF, 0.01);
@@ -134,6 +134,7 @@ public class BlocksSelector extends Sprite {
         } while (b.isFromLeftToRight != col < _field.boundary);
 
         dispatchEvent(new Event(Event.CHANGE));
+        api.autoSaveSolution();
         redraw();
     }
 }

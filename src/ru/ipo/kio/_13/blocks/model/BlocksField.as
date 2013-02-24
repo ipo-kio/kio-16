@@ -179,5 +179,30 @@ public class BlocksField extends EventDispatcher implements Executor {
         }
         return res;
     }
+
+    public function save():Array {
+        var data:Array = [];
+
+        for (var col:int = 0; col < cols; col ++) {
+            var column:Array = [];
+            for each (var block:Block in getColumn(col))
+                column.push(block.color);
+            data.push(column);
+        }
+
+        return data;
+    }
+
+    public function load(data:Array):void {
+        _blocks = [];
+        for each (var column:Array in data) {
+            var col:Array = [];
+
+            for each (var color:int in column)
+                col.push(new Block(color));
+
+            _blocks.push(col);
+        }
+    }
 }
 }

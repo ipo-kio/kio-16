@@ -2,6 +2,10 @@ package ru.ipo.kio._13.blocks {
 
 import flash.display.DisplayObject;
 
+import ru.ipo.kio._13.blocks.model.BlocksField;
+
+import ru.ipo.kio._13.blocks.model.BlocksField;
+
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.Settings;
@@ -41,13 +45,27 @@ public class BlocksProblem implements KioProblem {
     }
 
     public function get solution():Object {
-        return {prg: BlocksWorkspace.instance.editor.editorField.text};
+        var res:Object = {prg: _workspace.editor.editorField.text};
+        if (level == 2) {
+            var field:BlocksField = _workspace.blocksDebugger.initialField;
+            res.field = field.save();
+        }
+
+        return res;
+        //return {prg: BlocksWorkspace.instance.editor.editorField.text}; //TODO report can not introduce variable
     }
 
     public function loadSolution(solution:Object):Boolean {
         //для загрузки решения нужно взять поле txt и записать его в текстовое поле
         if ('prg' in solution) {
             _workspace.editor.editorField.text = solution.prg;
+
+            if (level == 2) {
+                var initialField:BlocksField = _workspace.blocksDebugger.initialField;
+                initialField.load(solution.field);
+                _workspace.blocksDebugger.initialField = initialField;
+            }
+
             if (_workspace.blocksDebugger.program != null) {
                 _workspace.blocksDebugger.toEnd();
                 _workspace.blocksDebugger.moveToStep(0);

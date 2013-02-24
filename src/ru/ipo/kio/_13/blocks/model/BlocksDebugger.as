@@ -67,6 +67,8 @@ public class BlocksDebugger extends EventDispatcher {
     public function set initialField(value:BlocksField):void {
         _initialField = value;
 
+        BlocksWorkspace.instance.blocksSelector.redraw();
+
         moveToStep(0);
     }
 
