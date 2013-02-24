@@ -57,6 +57,8 @@ public class SettingsDisplay extends Sprite {
     }
 
     private function continueButtonClicked(event:Event):void {
+        KioBase.instance.log('BTN continue in settings', []);
+
         KioBase.instance.currentDisplay = new AnketaDisplay;
 
         var lso:LsoProxy = KioBase.instance.lsoProxy;

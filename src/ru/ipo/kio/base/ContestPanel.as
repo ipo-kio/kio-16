@@ -52,21 +52,25 @@ public class ContestPanel extends Sprite {
         var backButton:SimpleButton = placeButton(loc.buttons.back);
 
         loadButton.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            KioBase.instance.log('BTN load in contest', []);
             FileUtils.loadSolution(KioBase.instance.currentProblem);
 //                KioBase.instance.lsoProxy.getGlobalData().push = 239;
 //                KioBase.instance.lsoProxy.flush();             0
         });
 
         saveButton.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            KioBase.instance.log('BTN save in contest', []);
             FileUtils.saveSolution(KioBase.instance.currentProblem);
         });
 
 
         backButton.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            KioBase.instance.log('BTN back in contest', []);
             KioBase.instance.currentDisplay = new ProblemsDisplay;
         });
 
         recordButton.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            KioBase.instance.log('BTN record in contest', []);
             var problem:KioProblem = KioBase.instance.currentProblem;
             var pd:Object = KioBase.instance.lsoProxy.getProblemData(problem.id);
             if (pd.best)
@@ -74,15 +78,18 @@ public class ContestPanel extends Sprite {
         });
 
         saveAllDataButton.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            KioBase.instance.log('BTN saveAll in contest', []);
             FileUtils.saveAll();
         });
 
         helpButton.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            KioBase.instance.log('BTN help in contest', []);
             if (testNonBrokenProblem())
                 KioBase.instance.currentDisplay = new HelpDisplay(KioBase.instance.currentProblem, false);
         });
 
         statementButton.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            KioBase.instance.log('BTN statement in contest', []);
             if (testNonBrokenProblem())
                 KioBase.instance.currentDisplay = new HelpDisplay(KioBase.instance.currentProblem, true);
         });

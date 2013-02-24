@@ -33,9 +33,6 @@ public class PiecesFieldView extends Sprite {
 
     private static const GRID_COLOR:uint = 0xAAAAAA;
     private static const GRID_ALPHA:Number = 0.7;
-    private static const BLOCK_COLOR_NORMAL:uint = 0x00FF00;
-    private static const BLOCK_COLOR_INSIDE:uint = 0xFFFFFF;
-    private static const BLOCK_COLOR_OUTSIDE:uint = 0x00FF00;
     private static const CROSS_COLOR:uint = 0xFF0000;
     public static const OUTLINE_COLOR:uint = 0x880000;
 
@@ -127,7 +124,7 @@ public class PiecesFieldView extends Sprite {
                         g.beginBitmapFill(QUAD_IMG, m, false);
                         break;
                     case PiecesField.BLOCK_INSIDE:
-                        g.beginFill(BLOCK_COLOR_INSIDE);
+                        g.beginFill(0, 0);
                         needCross = true;
                         break;
                     default:

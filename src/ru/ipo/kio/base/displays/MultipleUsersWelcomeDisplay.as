@@ -66,6 +66,7 @@ public class MultipleUsersWelcomeDisplay extends Sprite {
                 addChild(go_user_button);
 
                 go_user_button.addEventListener(MouseEvent.CLICK, function(user:int):Function { //TODO code duplication
+                    KioBase.instance.log('BTN go_user in multiple users welcome', []);
                     return function(event:Event):void {
                         KioBase.instance.lsoProxy.userIndex = user;
                         KioBase.instance.currentDisplay = new ProblemsDisplay;
@@ -81,6 +82,7 @@ public class MultipleUsersWelcomeDisplay extends Sprite {
                 go_user_button.y = y0;
                 addChild(go_user_button);
                 go_user_button.addEventListener(MouseEvent.CLICK, function(user:int):Function { //TODO code duplication
+                    KioBase.instance.log('BTN go_user in multiple users welcome', []);
                     return function(event:Event):void {
                         KioBase.instance.lsoProxy.userIndex = user;
                         KioBase.instance.currentDisplay = new ProblemsDisplay;
@@ -133,11 +135,13 @@ public class MultipleUsersWelcomeDisplay extends Sprite {
     }
 
     private static function loadWorkspaceButtonClicked(event:Event):void {
+        KioBase.instance.log('BTN load workspace in multiple users welcome', []);
         KioBase.instance.lsoProxy.createNewParticipant();
         FileUtils.loadAll();
     }
 
     private static function newParticipantButtonClicked(event:Event):void {
+        KioBase.instance.log('BTN new participant in multiple users welcome', []);
         KioBase.instance.lsoProxy.createNewParticipant();
         KioBase.instance.currentDisplay = new AnketaDisplay(MultipleUsersWelcomeDisplay);
     }

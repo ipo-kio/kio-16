@@ -86,6 +86,7 @@ public class DisplayUtils {
     }
 
     private static function setupClicked(event:Event):void {
+        KioBase.instance.log('BTN setup in security', []);
         Security.showSettings(SecurityPanel.LOCAL_STORAGE);
     }
 

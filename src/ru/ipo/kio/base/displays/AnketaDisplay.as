@@ -143,6 +143,7 @@ public class AnketaDisplay extends Sprite {
             addChild(backButton);
 
             backButton.addEventListener(MouseEvent.CLICK, function(event:Event):void {
+                KioBase.instance.log('BTN back in anketa', []);
                 KioBase.instance.currentDisplay = new previousDisplay;
             });
         }
@@ -170,6 +171,7 @@ public class AnketaDisplay extends Sprite {
     }
 
     private function continueButtonClicked(event:Event):void {
+        KioBase.instance.log('BTN continue in anketa', []);
         if (continueButton.enabled) {
             KioBase.instance.currentDisplay = new ProblemsDisplay;
             var lso:LsoProxy = KioBase.instance.lsoProxy;
