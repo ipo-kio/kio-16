@@ -85,14 +85,14 @@ public class BlocksDebugger extends EventDispatcher {
         for (var col:int = 0; col < _initialField.boundary; col++)
             blocks += _initialField.getColumn(col).length;
 
-        if (blocks != 8)
+        if (blocks != 10)
             return api.localization.field_errors.left_blocks_fail;
 
         blocks = 0;
         for (col = _initialField.boundary; col < _initialField.cols; col++)
             blocks += _initialField.getColumn(col).length;
 
-        if (blocks != 8)
+        if (blocks != 10)
             return api.localization.field_errors.right_blocks_fail;
 
         return null;

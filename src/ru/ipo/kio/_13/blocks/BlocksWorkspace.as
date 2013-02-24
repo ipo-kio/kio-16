@@ -66,7 +66,7 @@ public class BlocksWorkspace extends Sprite {
                 break;
             case 1:
                 field = new BlocksField(4, 10, [
-                    [],
+                    [new Block(1), new Block(4)],
                     [new Block(1), new Block(4)],
                     [new Block(1), new Block(4)],
                     [new Block(1), new Block(4)],
@@ -75,12 +75,12 @@ public class BlocksWorkspace extends Sprite {
                     [new Block(2), new Block(3)],
                     [new Block(2), new Block(3)],
                     [new Block(2), new Block(3)],
-                    []
+                    [new Block(2), new Block(3)]
                 ], 5, 0);
                 break;
             case 2:
                 field = new BlocksField(4, 10, [
-                    [],
+                    [new Block(1), new Block(4)],
                     [new Block(1), new Block(4)],
                     [new Block(1), new Block(4)],
                     [new Block(1), new Block(4)],
@@ -89,7 +89,7 @@ public class BlocksWorkspace extends Sprite {
                     [new Block(2), new Block(3)],
                     [new Block(2), new Block(3)],
                     [new Block(2), new Block(3)],
-                    []
+                    [new Block(2), new Block(3)]
                 ], 5, 0);
                 break;
         }

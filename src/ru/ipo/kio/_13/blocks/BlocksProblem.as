@@ -73,11 +73,40 @@ public class BlocksProblem implements KioProblem {
         return null;
     }
 
+    [Embed(source="resources/help/Level_0-Help-2.jpg")]
+    public static const HELP_0_CLS:Class;
+    [Embed(source="resources/help/Level_1-Help-2.jpg")]
+    public static const HELP_1_CLS:Class;
+    [Embed(source="resources/help/Level_2-Help-2.jpg")]
+    public static const HELP_2_CLS:Class;
+    [Embed(source="resources/help/Level_0-Statement-2.jpg")]
+    public static const STATEMENT_0_CLS:Class;
+    [Embed(source="resources/help/Level_1-Statement-2.jpg")]
+    public static const STATEMENT_1_CLS:Class;
+    [Embed(source="resources/help/Level_2-Statement-2.jpg")]
+    public static const STATEMENT_2_CLS:Class;
+
     public function get icon_help():Class {
+        switch (level) {
+            case 0:
+                return HELP_0_CLS;
+            case 1:
+                return HELP_1_CLS;
+            case 2:
+                return HELP_2_CLS;
+        }
         return null;
     }
 
     public function get icon_statement():Class {
+        switch (level) {
+            case 0:
+                return STATEMENT_0_CLS;
+            case 1:
+                return STATEMENT_1_CLS;
+            case 2:
+                return STATEMENT_2_CLS;
+        }
         return null;
     }
 
