@@ -12,7 +12,7 @@ import ru.ipo.kio._13.clock.model.TransmissionMechanism;
 
 import ru.ipo.kio._13.clock.utils.printf;
 
-public class FirstLevel extends BasicProductDrawer implements ITaskLevel {
+public class FirstLevel extends SilhouettesProductDrawer implements ITaskLevel {
 
     [Embed(source='../../_resources/Level_1-Statement-1.jpg')]
     private static var ICON_STATEMENT:Class;
@@ -151,6 +151,8 @@ public class FirstLevel extends BasicProductDrawer implements ITaskLevel {
         clearProductSprite();
         drawTwoImageFromArray(TransmissionMechanism.instance.leadingSimpleGear.alpha, ANGLES_TO_IMAGES);
         drawArrows(340,170,590,180);
+        var amountOfSilhouettes:int = people.length * (100 - TransmissionMechanism.instance.relTransmissionError)/100;
+        addSilhouettes(amountOfSilhouettes);
     }
 
     public function get direction():int {

@@ -4,22 +4,35 @@
  * @date: 21.02.13
  */
 package ru.ipo.kio._13.clock.model.level {
-import Untitled_fla.MainTimeline;
 
 import flash.display.Sprite;
+import flash.events.Event;
+import flash.events.MouseEvent;
 
 import ru.ipo.kio._13.clock.model.SettingsHolder;
 
 import ru.ipo.kio._13.clock.model.TransmissionMechanism;
 import ru.ipo.kio._13.clock.utils.printf;
 
-public class ZeroLevel extends BasicProductDrawer implements ITaskLevel {
+public class ZeroLevel extends SilhouettesProductDrawer implements ITaskLevel {
 
     [Embed(source='../../_resources/Level_0-Statement-1.jpg')]
     private static var ICON_STATEMENT:Class;
 
     [Embed(source='../../_resources/Level_0-Help-1.jpg')]
     private static var ICON_HELP:Class;
+
+    //картинки птицы
+    [Embed(source='../../_resources/level0/bird/0.png')]
+    private static const BIRD0:Class;
+    [Embed(source='../../_resources/level0/bird/1.png')]
+    private static const BIRD1:Class;
+    [Embed(source='../../_resources/level0/bird/2.png')]
+    private static const BIRD2:Class;
+    private var _bird0:Sprite = new Sprite();
+    private var _bird1:Sprite = new Sprite();
+    private var _bird2:Sprite = new Sprite();
+
 
 
     //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
@@ -80,6 +93,37 @@ public class ZeroLevel extends BasicProductDrawer implements ITaskLevel {
         _early_morning.addChild(new EARLY_MORNING);
         _morning.addChild(new MORNING);
         _early_day.addChild(new EARLY_DAY);
+
+        _bird0.addChild(new BIRD0);
+        _bird1.addChild(new BIRD1);
+        _bird2.addChild(new BIRD2);
+        _bird0.scaleX=0.2;
+        _bird0.scaleY=0.15;
+        _bird1.scaleX=0.2;
+        _bird1.scaleY=0.15;
+        _bird2.scaleX=0.2;
+        _bird2.scaleY=0.15;
+
+        _bird0.x=292;
+        _bird0.y=286;
+        _bird1.x=252;
+        _bird1.y=272;
+        _bird2.x=196;
+        _bird2.y=241;
+        
+    }
+
+
+
+    private function addAction(sp:Sprite, num:int):void {
+        sp.addEventListener(MouseEvent.MOUSE_DOWN, function (e:Event):void {
+            sp.startDrag()
+        })
+        sp.addEventListener(MouseEvent.MOUSE_UP, function (e:Event):void {
+            sp.stopDrag();
+            trace("_people" + num + ".x=" + sp.x + ";");
+            trace("_people" + num + ".y=" + sp.y + ";");
+        })
     }
 
     public function get level():int {
@@ -133,7 +177,24 @@ public class ZeroLevel extends BasicProductDrawer implements ITaskLevel {
         calculateIteration(alpha);
         drawTwoImageFromArray(alpha+iteration*Math.PI*2, ANGLES_TO_IMAGES);
         drawArrows(340,170,590,180);
+        var amountOfSilhouettes:int = people.length * (100 - TransmissionMechanism.instance.relTransmissionError)/100;
+        addSilhouettes(amountOfSilhouettes);
+        if(TransmissionMechanism.instance.isFinished() && alpha>Math.PI-Math.PI/128 && alpha<Math.PI+Math.PI/16){
+            animateBird(alpha);
+        }
     }
+
+    private function animateBird(alpha:Number):void {
+        if(alpha<Math.PI+Math.PI/48){
+            productSprite.addChild(_bird2)
+        }else if(alpha<Math.PI+Math.PI/24){
+            productSprite.addChild(_bird1);
+        }else{
+            productSprite.addChild(_bird0);
+        }
+    }
+
+
 
 
     private function calculateIteration(alpha:Number):void {
@@ -154,6 +215,9 @@ public class ZeroLevel extends BasicProductDrawer implements ITaskLevel {
     public function get direction():int {
         return SettingsHolder.UP_TO_DOWN;
     }
+
+
+
 
 
 
