@@ -144,8 +144,8 @@ public class BlocksField extends EventDispatcher implements Executor {
         if (numInCol >= _lines)
             return loc.exec_errors.nowhere_to_put;
 
-        if (numInCol > 0 && !col[numInCol - 1].mayBeUnder(_takenBlock))
-            return loc.exec_errors.forbidden_order;
+//        if (numInCol > 0 && !col[numInCol - 1].mayBeUnder(_takenBlock))
+//            return loc.exec_errors.forbidden_order;
 
         return null;
     }

@@ -88,8 +88,11 @@ public class CutProblem implements KioProblem {
     [Embed(source="resources/Level_2-Statement-3.jpg")]
     public static const STATEMENT_2_CLS:Class;
 
+    [Embed(source="resources/icon.png")]
+    public static const ICON_CLS:Class;
+
     public function get icon():Class {
-        return null;
+        return ICON_CLS;
     }
 
     public function get icon_help():Class {

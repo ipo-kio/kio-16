@@ -28,7 +28,7 @@ public class LsoProxy {
 
     private static var _instance:Dictionary = new Dictionary(); // year + '-' + level -> LsoProxy
 
-    private static const LSO_SIZE:int = 1000000;
+    private static const LSO_SIZE:int = 2000000;
 
     private var level:int;
     private var year:int;

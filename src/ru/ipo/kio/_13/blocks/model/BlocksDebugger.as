@@ -152,8 +152,10 @@ public class BlocksDebugger extends EventDispatcher {
 
             _currentCommand.execute(_currentField); //may generate execution error
 
-            if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.PUT)
+            if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.PUT) {
+                trace('inc pen 1');
                 _penalty++;
+            }
 
             if (!_iterator.hasNext()) {
                 _state = STATE_FINISH;
@@ -193,8 +195,10 @@ public class BlocksDebugger extends EventDispatcher {
                     dispatchEvent(new FieldChangeEvent(true, _currentCommand.invertedCommand));
 
                 _currentCommand.execute(_currentField, true);
-                if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.TAKE)
+                if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.TAKE) {
+                    trace('dec pen 1');
                     _penalty--;
+                }
 
                 break;
             case STATE_ERROR:
@@ -209,8 +213,10 @@ public class BlocksDebugger extends EventDispatcher {
                     dispatchEvent(new FieldChangeEvent(true, _currentCommand.invertedCommand));
 
                 _currentCommand.execute(_currentField, true);
-                if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.TAKE)
+                if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.TAKE) {
+                    trace('dec pen 2');
                     _penalty--;
+                }
 
                 break;
         }
@@ -245,6 +251,7 @@ public class BlocksDebugger extends EventDispatcher {
 
         if (!_iterator.hasNext()) {
             this._step = -1; //does not really matters
+            this._penalty = 0;
             _state = STATE_FINISH;
             if (validateFieldBlocks() == null && BlocksWorkspace.instance.stage)
                 api.submitResult(getResult());

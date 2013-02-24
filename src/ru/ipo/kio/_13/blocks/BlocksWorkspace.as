@@ -69,6 +69,15 @@ public class BlocksWorkspace extends Sprite {
                     [new Block(2), new Block(3)],
                     []
                 ], 3, 0);
+
+                Block.registerForbiddenPair(3, 1); //nothing on blue
+                Block.registerForbiddenPair(3, 2);
+                Block.registerForbiddenPair(3, 4);
+
+                Block.registerForbiddenPair(4, 2);
+
+                Block.registerForbiddenPair(1, 2);
+                Block.registerForbiddenPair(1, 4);
                 break;
             case 1:
                 field = new BlocksField(4, 10, [

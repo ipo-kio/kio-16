@@ -104,8 +104,11 @@ public class BlocksProblem implements KioProblem {
         }
     }
 
+    [Embed(source="resources/icon.png")]
+    public static const ICON_CLS:Class;
+
     public function get icon():Class {
-        return null;
+        return ICON_CLS;
     }
 
     [Embed(source="resources/help/Level_0-Help-2.jpg")]

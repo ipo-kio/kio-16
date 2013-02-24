@@ -15,6 +15,7 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
+import flash.text.TextFormat;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;

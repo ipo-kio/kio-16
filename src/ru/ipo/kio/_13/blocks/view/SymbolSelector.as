@@ -30,7 +30,9 @@ public class SymbolSelector extends Shape {
     }
 
     public function scrollVisible():void {
-        var line:int = 1 + _editor.getLineIndexOfChar(_index);
+        //TODO debug scrolling
+
+        /*var line:int = 1 + _editor.getLineIndexOfChar(_index);
 
         var scrollV:int = _editor.scrollV;
         var bottomScrollV:int = _editor.bottomScrollV;
@@ -43,7 +45,7 @@ public class SymbolSelector extends Shape {
         var sv:int = lines - linesHalf;
         if (sv < 0)
             sv = 0;
-        _editor.scrollV = sv;
+        _editor.scrollV = sv;*/
     }
 
     public function destroy():void {

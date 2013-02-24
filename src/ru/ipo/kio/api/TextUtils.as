@@ -67,6 +67,14 @@ public class TextUtils {
             unicodeRange="U+0000-U+FFFF")]
     private static var ARIAL_FONT_B:Class;
 
+    [Embed(source='../base/resources/fonts/ARICYRI.TTF',
+            embedAsCFF="false",
+            fontName="KioArial",
+            fontStyle="italic",
+            mimeType="application/x-font-truetype",
+            unicodeRange="U+0000-U+FFFF")]
+    private static var ARIAL_FONT_I:Class;
+
     public static const SMALL_TEXT_SIZE:int = 14;
     public static const NORMAL_TEXT_SIZE:int = 18;
     public static const LARGE_TEXT_SIZE:int = 24;
@@ -76,7 +84,7 @@ public class TextUtils {
     public static const FONT_INPUT:String = "KioTahoma";
 
     public static const CSS:String =
-            " p , li {font-family: " + FONT_MESSAGES + "; font-size: 14; color:#000000; text-align:justify;} " +
+            " p , li {font-family: " + FONT_MESSAGES + "; font-size: 14; color:#000000; text-align:justify} " +
                     ".no_justify {text-align:left;} " +
                     ".h1 { color:#000000; font-size: 16; font-weight:bold;} " +
                     ".h1c { color:#000000; font-size: 16; font-weight:bold; text-align:center;} " +
@@ -85,7 +93,7 @@ public class TextUtils {
                     ".footnote {color:#222266;}" +
                     ".warning {color:#00000; font-weight:bold; font-size: smaller} " +
                     ".warning_anketa {color:#00000; font-size: smaller} " +
-                    ".c {textAlign: center;}";
+                    ".c {textAlign: center;} ";
 
     private static function prepareTextField(text:String, x0:int, y0:int, size:int, align:String, color:uint, alpha:Number):TextField {
         var tf:TextField = new TextField;
