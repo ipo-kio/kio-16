@@ -31,9 +31,6 @@ public class CutControls extends Sprite {
     [Embed(source="resources/bt_p.png")]
     private static const BT_P:Class;
 
-    [Embed(source="resources/LeftPanel.png")]
-    private static const BG_CLS:Class;
-
     private var _w:int;
     private var _h:int;
     private var _switchFieldsButtonToCuts:SimpleButton;
@@ -54,12 +51,6 @@ public class CutControls extends Sprite {
         _h = h;
         _field = field;
 
-        drawBackground();
-
-        var innerW:Number = _w * 0.9;
-        var x0:Number = (_w - innerW) / 2;
-        var y0:Number = 10;
-
         var buttonBuilder:ButtonBuilder = new ButtonBuilder();
         buttonBuilder.bgNormal = BT_N;
         buttonBuilder.bgOver = BT_O;
@@ -69,19 +60,20 @@ public class CutControls extends Sprite {
         buttonBuilder.fontSize = 14;
         buttonBuilder.fontColor = 0x000000;
         buttonBuilder.bold = true;
+        buttonBuilder.text_dy = -3;
 
         buttonBuilder.title = loc.labels.switch_to_cuts;
 
         _switchFieldsButtonToCuts = buttonBuilder.build();
-        _switchFieldsButtonToCuts.x = x0;
-        _switchFieldsButtonToCuts.y = y0;
+        _switchFieldsButtonToCuts.x = 0;
+        _switchFieldsButtonToCuts.y = 0;
         addChild(_switchFieldsButtonToCuts);
 
         buttonBuilder.title = loc.labels.switch_to_poly;
 
         _switchFieldsButtonToPieces = buttonBuilder.build();
-        _switchFieldsButtonToPieces.x = x0;
-        _switchFieldsButtonToPieces.y = y0;
+        _switchFieldsButtonToPieces.x = 0;
+        _switchFieldsButtonToPieces.y = 0;
         addChild(_switchFieldsButtonToPieces);
         _switchFieldsButtonToPieces.visible = false;
 
@@ -90,28 +82,28 @@ public class CutControls extends Sprite {
                 0x000000, 0x000000, 0x000000, 1.5,
                 loc.labels.results,
                 [loc.labels.polys, loc.labels.area, loc.labels.offcuts],
-                w * 0.9
+                _w
         );
         _recordsInfo = new InfoPanel(
                 'KioArial', true, 16,
                 0x000000, 0x000000, 0x000000, 1.5,
                 loc.labels.record,
                 [loc.labels.polys, loc.labels.area, loc.labels.offcuts],
-                w * 0.9
+                _w
         );
 
-        _currentResultsInfo.x = 0.05 * _w;
+        _currentResultsInfo.x = 0;
         _currentResultsInfo.y = 160;
-        _recordsInfo.x = 0.05 * _w;
+        _recordsInfo.x = 0;
         _recordsInfo.y = 300;
 
         addChild(_currentResultsInfo);
         addChild(_recordsInfo);
 
         _errors = new TextField();
-        _errors.x = 0.05 * _w;
-        _errors.y = 100;
-        _errors.width = innerW;
+        _errors.x = 0;
+        _errors.y = 56;
+        _errors.width = _w;
         _errors.multiline = true;
         _errors.wordWrap = true;
         _errors.defaultTextFormat = new TextFormat('KioArial', 12, 0x880000);
@@ -119,10 +111,11 @@ public class CutControls extends Sprite {
         addChild(_errors);
 
         buttonBuilder.title = loc.labels.clear;
+        buttonBuilder.text_dy = -2;
 
         var _clearButton:SimpleButton = buttonBuilder.build();
-        _clearButton.x = x0;
-        _clearButton.y = _h - 54;
+        _clearButton.x = 0;
+        _clearButton.y = _h - 42;
         addChild(_clearButton);
         _clearButton.addEventListener(MouseEvent.CLICK, clearButtonHandler);
 
@@ -132,10 +125,6 @@ public class CutControls extends Sprite {
         _field.addEventListener(CutPieceFieldView.REGIME_CHANGE, fieldRegimeHandler);
 
         piecesChangedHandler();
-    }
-
-    private function drawBackground():void {
-        addChild(new BG_CLS);
     }
 
     public function get currentResultsInfo():InfoPanel {
@@ -161,10 +150,6 @@ public class CutControls extends Sprite {
         KioApi.instance(CutProblem.ID).log('switch button ' + _field.cutsRegime ? 'to poly' : 'to cuts');
 
         _field.cutsRegime = !_field.cutsRegime;
-    }
-
-    public function clickClearButton():void {
-        clearButtonHandler();
     }
 
     private function clearButtonHandler(event:MouseEvent = null):void {

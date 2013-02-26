@@ -17,7 +17,10 @@ import ru.ipo.kio.api.*;
 
 public class CutWorkspace extends Sprite {
 
-    private static const CONTROLS_WIDTH:int = 200;
+    [Embed(source="resources/field.png")]
+    private static const BG_CLS:Class;
+
+    private static const CONTROLS_WIDTH:int = 170;
     private static const CUTS_COUNT:int = 6;
 
     private static const M:int = 10;
@@ -33,6 +36,8 @@ public class CutWorkspace extends Sprite {
     public function CutWorkspace() {
         TextUtils.embedFonts();
 
+        addChild(new BG_CLS);
+
         var cuts:Array = [];
 
         for (var i:int = 0; i < CUTS_COUNT; i++)
@@ -40,10 +45,13 @@ public class CutWorkspace extends Sprite {
 
         field = new CutPieceFieldView(M, N, cuts);
 
-        cutControls = new CutControls(CONTROLS_WIDTH, M * PiecesFieldView.CELL_HEIGHT, field);
+        cutControls = new CutControls(CONTROLS_WIDTH, M * PiecesFieldView.CELL_HEIGHT + 6, field);
+        cutControls.x = 15;
+        cutControls.y = 20 - 3;
         addChild(cutControls);
 
-        field.x = CONTROLS_WIDTH;
+        field.x = 200;
+        field.y = 20;
         addChild(field);
 
         field.addEventListener(CutsField.CUTS_CHANGED, cutsChangeHandler);
