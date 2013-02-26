@@ -106,7 +106,7 @@ public class CutControls extends Sprite {
         _errors.width = _w;
         _errors.multiline = true;
         _errors.wordWrap = true;
-        _errors.defaultTextFormat = new TextFormat('KioArial', 12, 0x880000);
+        _errors.defaultTextFormat = new TextFormat('KioArial', 12, 0xAA0000);
         _errors.text = "";
         addChild(_errors);
 
