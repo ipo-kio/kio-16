@@ -36,6 +36,20 @@ public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
     [Embed(source='../../_resources/level2/seasons.png')]
     private static const SEASONS:Class;
 
+    [Embed(source='../../_resources/level2/small/8.png')]
+    private static const FALL_SMALL:Class;
+
+    [Embed(source='../../_resources/level2/small/6.png')]
+    private static const SUMMER_SMALL:Class;
+
+    [Embed(source='../../_resources/level2/small/2.png')]
+    private static const SPRING_SMALL:Class;
+
+    [Embed(source='../../_resources/level2/small/4.png')]
+    private static const WINTER_SMALL:Class;
+
+
+
 
     //ñïðàéòû äëÿ âðåìåí ãîäà
 
@@ -47,11 +61,25 @@ public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
 
     private var _winter:Sprite = new Sprite();
 
+    private var _fall_small:Sprite = new Sprite();
+
+    private var _spring_small:Sprite = new Sprite();
+
+    private var _summer_small:Sprite = new Sprite();
+
+    private var _winter_small:Sprite = new Sprite();
+
 
     private var ANGLES_TO_IMAGES:Array = [[Math.PI,_winter, Math.PI/2],
         [Math.PI/2,_spring, Math.PI/2],
         [Math.PI*2, _summer, Math.PI/2],
         [Math.PI*3/2, _fall, Math.PI/2]];
+
+
+    private var ANGLES_TO_SMALL_IMAGES:Array = [[Math.PI,_winter_small, Math.PI/2],
+        [Math.PI/2,_spring_small, Math.PI/2],
+        [Math.PI*2, _summer_small, Math.PI/2],
+        [Math.PI*3/2, _fall_small, Math.PI/2]];
 
     public function SecondLevel() {
         SettingsHolder.instance.sizeOfCog=10;
@@ -59,6 +87,17 @@ public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
         _summer.addChild(new SUMMER);
         _winter.addChild(new WINTER);
         _spring.addChild(new SPRING);
+
+        _fall_small.addChild(new FALL_SMALL);
+        _summer_small.addChild(new SUMMER_SMALL);
+        _winter_small.addChild(new WINTER_SMALL);
+        _spring_small.addChild(new SPRING_SMALL);
+
+
+        _fall_small.x=_summer_small.x =_winter_small.x = _spring_small.x = 340-73;
+        _fall_small.y=_summer_small.y =_winter_small.y = _spring_small.y = 325-33;
+
+
     }
 
     public function initSettings():void {
@@ -119,6 +158,9 @@ public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
     public function updateProductSprite():void {
         clearProductSprite();
         drawTwoImageFromArray(TransmissionMechanism.instance.lastDrivenSimpleGear.alpha, ANGLES_TO_IMAGES);
+        if(TransmissionMechanism.instance.isFinished() && TransmissionMechanism.instance.relTransmissionError<1){
+            drawTwoImageFromArray(TransmissionMechanism.instance.lastDrivenSimpleGear.alpha, ANGLES_TO_SMALL_IMAGES);
+        }
         drawArrows(340,170,546,259);
     }
 
@@ -149,6 +191,9 @@ public class SecondLevel extends BasicProductDrawer implements ITaskLevel {
 
     public function get direction():int {
         return SettingsHolder.DOWN_TO_UP;
+    }
+
+    public function resetListener():void {
     }
 }
 }

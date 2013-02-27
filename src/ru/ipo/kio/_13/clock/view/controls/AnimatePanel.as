@@ -71,6 +71,7 @@ public class AnimatePanel extends AbstractPanel {
             KioApi.instance(ClockProblem.ID).log("BTN RESET");
             TransmissionMechanism.instance.resetAlpha();
             TransmissionMechanism.instance.view.update();
+            SettingsHolder.instance.levelImpl.resetListener();
         }, false));
 
     }
