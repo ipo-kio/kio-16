@@ -25,6 +25,8 @@ import ru.ipo.kio.base.resources.Resources;
 public class ProblemsDisplay extends Sprite {
 
     public function ProblemsDisplay() {
+        KioBase.instance.log('Show problems display v2', []);
+
         DisplayUtils.placeBackground(this);
 
         var loc:Object = KioApi.getLocalization(KioBase.BASE_API_ID);
