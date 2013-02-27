@@ -195,7 +195,7 @@ public class BlocksDebugger extends EventDispatcher {
                     dispatchEvent(new FieldChangeEvent(true, _currentCommand.invertedCommand));
 
                 _currentCommand.execute(_currentField, true);
-                if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.TAKE) {
+                if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.PUT) {
                     trace('dec pen 1');
                     _penalty--;
                 }
@@ -213,7 +213,7 @@ public class BlocksDebugger extends EventDispatcher {
                     dispatchEvent(new FieldChangeEvent(true, _currentCommand.invertedCommand));
 
                 _currentCommand.execute(_currentField, true);
-                if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.TAKE) {
+                if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.PUT) {
                     trace('dec pen 2');
                     _penalty--;
                 }
@@ -364,10 +364,6 @@ public class BlocksDebugger extends EventDispatcher {
         toEnd();
         stepBack(false);
         stepForward(true);
-    }
-
-    public function get penalty():int {
-        return _penalty;
     }
 
     public function get program():Program {

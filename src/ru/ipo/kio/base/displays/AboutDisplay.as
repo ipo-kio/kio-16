@@ -46,6 +46,7 @@ public class AboutDisplay extends Sprite {
     }
 
     private function continueButtonClick(event:Event):void {
+        KioBase.instance.log('BTN continue in about', []);
         KioBase.instance.currentDisplay = new ProblemsDisplay;
     }
 }

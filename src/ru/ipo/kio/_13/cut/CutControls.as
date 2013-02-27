@@ -22,6 +22,18 @@ import ru.ipo.kio.api.KioApi;
 
 public class CutControls extends Sprite {
 
+    [Embed(source="resources/bt_n.png")]
+    private static const BT_N:Class;
+
+    [Embed(source="resources/bt_o.png")]
+    private static const BT_O:Class;
+
+    [Embed(source="resources/bt_p.png")]
+    private static const BT_P:Class;
+
+    [Embed(source="resources/LeftPanel.png")]
+    private static const BG_CLS:Class;
+
     private var _w:int;
     private var _h:int;
     private var _switchFieldsButtonToCuts:SimpleButton;
@@ -46,23 +58,17 @@ public class CutControls extends Sprite {
 
         var innerW:Number = _w * 0.9;
         var x0:Number = (_w - innerW) / 2;
-        var y0:Number = 20;
+        var y0:Number = 10;
 
         var buttonBuilder:ButtonBuilder = new ButtonBuilder();
-        buttonBuilder.upColor = 0x00EE00;
-        buttonBuilder.downColor = 0x00AA00;
-        buttonBuilder.upHoverColor = 0xEEEE00;
-        buttonBuilder.downHoverColor = 0xAAAA00;
-        buttonBuilder.borderColor = 0x004400;
-        buttonBuilder.innerBorderColor = 0x88AA88;
+        buttonBuilder.bgNormal = BT_N;
+        buttonBuilder.bgOver = BT_O;
+        buttonBuilder.bgPush = BT_P;
         buttonBuilder.font = "KioArial";
         buttonBuilder.embedFont = true;
         buttonBuilder.fontSize = 14;
         buttonBuilder.fontColor = 0x000000;
         buttonBuilder.bold = true;
-
-        buttonBuilder.width = innerW;
-        buttonBuilder.height = 44;
 
         buttonBuilder.title = loc.labels.switch_to_cuts;
 
@@ -81,23 +87,23 @@ public class CutControls extends Sprite {
 
         _currentResultsInfo = new InfoPanel(
                 'KioArial', true, 16,
-                0xDDFFDD, 0xFFFFFF, 0xFFFFFF, 1.5,
+                0x000000, 0x000000, 0x000000, 1.5,
                 loc.labels.results,
                 [loc.labels.polys, loc.labels.area, loc.labels.offcuts],
                 w * 0.9
         );
         _recordsInfo = new InfoPanel(
                 'KioArial', true, 16,
-                0xDDFFDD, 0xFFFFFF, 0xFFFFFF, 1.5,
+                0x000000, 0x000000, 0x000000, 1.5,
                 loc.labels.record,
                 [loc.labels.polys, loc.labels.area, loc.labels.offcuts],
                 w * 0.9
         );
 
         _currentResultsInfo.x = 0.05 * _w;
-        _currentResultsInfo.y = 180;
+        _currentResultsInfo.y = 160;
         _recordsInfo.x = 0.05 * _w;
-        _recordsInfo.y = 320;
+        _recordsInfo.y = 300;
 
         addChild(_currentResultsInfo);
         addChild(_recordsInfo);
@@ -108,17 +114,15 @@ public class CutControls extends Sprite {
         _errors.width = innerW;
         _errors.multiline = true;
         _errors.wordWrap = true;
-        _errors.defaultTextFormat = new TextFormat('KioArial', 12, 0xFFFFFF);
+        _errors.defaultTextFormat = new TextFormat('KioArial', 12, 0x880000);
         _errors.text = "";
         addChild(_errors);
 
-        buttonBuilder.width = _w * 0.5;
         buttonBuilder.title = loc.labels.clear;
-        buttonBuilder.height = 30;
 
         var _clearButton:SimpleButton = buttonBuilder.build();
         _clearButton.x = x0;
-        _clearButton.y = _h - 44;
+        _clearButton.y = _h - 54;
         addChild(_clearButton);
         _clearButton.addEventListener(MouseEvent.CLICK, clearButtonHandler);
 
@@ -131,9 +135,7 @@ public class CutControls extends Sprite {
     }
 
     private function drawBackground():void {
-        graphics.beginFill(0x008800);
-        graphics.drawRect(0, 0, _w, _h);
-        graphics.endFill();
+        addChild(new BG_CLS);
     }
 
     public function get currentResultsInfo():InfoPanel {
@@ -156,6 +158,8 @@ public class CutControls extends Sprite {
     }
 
     private function switchButtonClickHandler(event:MouseEvent):void {
+        KioApi.instance(CutProblem.ID).log('switch button ' + _field.cutsRegime ? 'to poly' : 'to cuts');
+
         _field.cutsRegime = !_field.cutsRegime;
     }
 
@@ -164,6 +168,8 @@ public class CutControls extends Sprite {
     }
 
     private function clearButtonHandler(event:MouseEvent = null):void {
+        KioApi.instance(CutProblem.ID).log('clear button');
+
         _field.cutsRegime = false;
         _field.piecesField.clearPieces();
 

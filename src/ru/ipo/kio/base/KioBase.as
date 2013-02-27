@@ -327,6 +327,9 @@ public class KioBase {
         var logger:Object = global.log;
         var log:ByteArray = logger.data;
 
+        if (log.length > 2 * 1024 * 1024) //don't log more than 2 mbs
+            return;
+
         var now:Number = new Date().getTime();
 
         //time passed from last log

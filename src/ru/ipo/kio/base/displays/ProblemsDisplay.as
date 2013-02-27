@@ -73,6 +73,7 @@ public class ProblemsDisplay extends Sprite {
 
             prb.addEventListener(MouseEvent.CLICK, function(pind:int):Function {
                 return function(event:Event):void {
+                    KioBase.instance.log('BTN select problem ' + pind, []);
                     KioBase.instance.setProblem(pind);
                 }
             }(i));
@@ -111,22 +112,30 @@ public class ProblemsDisplay extends Sprite {
     }
 
     private function helpButtonClick(event:Event):void {
+        KioBase.instance.log('BTN help in problems', []);
         KioBase.instance.currentDisplay = new HelpDisplay(null, false);
+
+        //TODO DON'T FORGET TO REMOVE
+//        FileUtils.saveLog();
     }
 
     private function saveButtonClick(event:Event):void {
+        KioBase.instance.log('BTN save all in problems', []);
         FileUtils.saveAll();
     }
 
     private function loadButtonClick(event:Event):void {
+        KioBase.instance.log('BTN load in problems', []);
         FileUtils.loadAll();
     }
 
     private function aboutButtonClick(event:Event):void {
+        KioBase.instance.log('BTN about in problems', []);
         KioBase.instance.currentDisplay = new AboutDisplay;
     }
 
     private function formButtonClick(event:Event):void {
+        KioBase.instance.log('BTN anketa in problems', []);
         KioBase.instance.currentDisplay = new AnketaDisplay;
     }
 

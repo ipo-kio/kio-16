@@ -5,10 +5,14 @@
  * Time: 18:40
  */
 package ru.ipo.kio._13.cut.view {
+import flash.display.BitmapData;
 import flash.display.Graphics;
 import flash.display.Sprite;
 import flash.errors.IllegalOperationError;
 import flash.events.Event;
+import flash.geom.Matrix;
+
+import mx.core.BitmapAsset;
 
 import ru.ipo.kio._13.cut.model.Piece;
 
@@ -16,17 +20,21 @@ import ru.ipo.kio._13.cut.model.PiecesField;
 
 public class PiecesFieldView extends Sprite {
 
+    [Embed(source="../resources/quad.png")]
+    public static const QUAD_CLS:Class;
+    public static const QUAD_IMG:BitmapData = (new QUAD_CLS as BitmapAsset).bitmapData;
+
+    [Embed(source="../resources/panel.png")]
+    public static const BG_CLS:Class;
+    public static const BG_IMG:BitmapAsset = new BG_CLS;
+
     public static const CELL_WIDTH:int = 56;
     public static const CELL_HEIGHT:int = 56;
 
     private static const GRID_COLOR:uint = 0xAAAAAA;
     private static const GRID_ALPHA:Number = 0.7;
-    private static const BG_COLOR:uint = 0xFFFFFF;
-    private static const BLOCK_COLOR_NORMAL:uint = 0x00FF00;
-    private static const BLOCK_COLOR_INSIDE:uint = 0xFFFFFF;
-    private static const BLOCK_COLOR_OUTSIDE:uint = 0x00FF00;
     private static const CROSS_COLOR:uint = 0xFF0000;
-    public static const OUTLINE_COLOR:uint = 0xFF0000;
+    public static const OUTLINE_COLOR:uint = 0x880000;
 
     //layers:
     //           outlinesLayer  - outlines for pieces and for the polygon
@@ -47,11 +55,12 @@ public class PiecesFieldView extends Sprite {
         _field = field;
         _outlineView = new OutlineView(logic2screenX, logic2screenY);
 
+        drawBackground();
+
         addChild(squaresLayer);
         addChild(gridLayer);
         addChild(outlinesLayer);
 
-        drawBackground();
         drawGrid();
 
         _field.addEventListener(PiecesField.PIECES_CHANGED, redraw);
@@ -85,9 +94,7 @@ public class PiecesFieldView extends Sprite {
     }
 
     private function drawBackground():void {
-        graphics.beginFill(BG_COLOR);
-        graphics.drawRect(0, 0, _field.n * CELL_WIDTH, _field.m * CELL_HEIGHT);
-        graphics.endFill();
+        addChild(BG_IMG);
     }
 
     private function redraw(event:Event = null):void {
@@ -103,26 +110,27 @@ public class PiecesFieldView extends Sprite {
             for (var y:int = 0; y < _field.m; y ++) {
                 var type:int = _field.getBlockType(x, y);
                 var needCross:Boolean = false;
+
+                var screenX:Number = logic2screenX(x);
+                var screenY:Number = logic2screenY(y);
+
                 switch (type) {
                     case PiecesField.BLOCK_EMPTY:
                         continue;
                     case PiecesField.BLOCK_NORMAL:
-                        g.beginFill(BLOCK_COLOR_NORMAL);
+                    case PiecesField.BLOCK_OUTSIDE:
+                        var m:Matrix = new Matrix();
+                        m.translate(screenX, screenY - CELL_HEIGHT);
+                        g.beginBitmapFill(QUAD_IMG, m, false);
                         break;
                     case PiecesField.BLOCK_INSIDE:
-                        g.beginFill(BLOCK_COLOR_INSIDE);
-                        needCross = true;
-                        break;
-                    case PiecesField.BLOCK_OUTSIDE:
-                        g.beginFill(BLOCK_COLOR_OUTSIDE);
+                        g.beginFill(0, 0);
                         needCross = true;
                         break;
                     default:
                         throw IllegalOperationError("It is impossible to draw a block of unknown type");
                 }
 
-                var screenX:Number = logic2screenX(x);
-                var screenY:Number = logic2screenY(y);
                 g.drawRect(screenX, screenY - CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
                 g.endFill();
 

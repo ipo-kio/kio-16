@@ -29,7 +29,7 @@ public class Block {
 
     public function mayBeUnder(block:Block):Boolean {
         for each (var pair:Array in FORBIDDEN_ORDER)
-            if (pair[0] == block._color && pair[1] == _color)
+            if (pair[0] == _color && pair[1] == block._color)
                 return false;
         return true;
     }

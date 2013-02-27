@@ -63,10 +63,10 @@ public class BlocksWorkspace extends Sprite {
             case 0:
                 var field:BlocksField = new BlocksField(4, 6, [
                     [],
-                    [new Block(4), new Block(1)],
-                    [new Block(4), new Block(1)],
-                    [new Block(2), new Block(3)],
-                    [new Block(2), new Block(3)],
+                    [new Block(4), new Block(1)], //1 - green
+                    [new Block(4), new Block(1)], //2 - red
+                    [new Block(2), new Block(3)], //3 - blue
+                    [new Block(2), new Block(3)], //4 - yellow
                     []
                 ], 3, 0);
 
@@ -205,7 +205,20 @@ public class BlocksWorkspace extends Sprite {
     }
 
     private function apiRecordHandler(event:Event):void {
-        displayResult(_blocksDebugger.getResult(), true); //TODO implement passing this result in API
+        var result:Object = _blocksDebugger.getResult();
+        displayResult(result, true); //TODO implement passing this result in API
+        if (api.problem.level == 0)
+            api.log('new record @BSSt', result.in_place, result.penalty, result.steps, _editor.editorField.text);
+        else if (api.problem.level == 1)
+            api.log('new record @BSSt', result.in_place, result.prg_len, result.steps, _editor.editorField.text);
+        else
+            api.log('new record @BSStt',
+                    result.in_place,
+                    result.prg_len,
+                    result.steps,
+                    _editor.editorField.text,
+                    _blocksDebugger.initialField.logRepresentation
+            );
     }
 
 }

@@ -105,6 +105,7 @@ public class HelpDisplay extends Sprite {
         var continueButton:SimpleButton = DisplayUtils.placeContinueButton(this);
 
         continueButton.addEventListener(MouseEvent.CLICK, function (event:Event):void {
+            KioBase.instance.log('BTN continue in help', []);
             if (problem)
                 KioBase.instance.currentProblem = problem;
             else
