@@ -144,6 +144,7 @@ public class ClockSprite extends AbstractPanel {
             }
             updateAnimateButtons();
             resultPanel.displayCrashMaker(TransmissionMechanism.instance.isConflict());
+            KioApi.instance(ClockProblem.ID).autoSaveSolution();
             KioApi.instance(ClockProblem.ID).submitResult(KioApi.instance(ClockProblem.ID).problem.best);
             updateBest(KioApi.instance(ClockProblem.ID).record_result);
         }
