@@ -64,6 +64,7 @@ public class BlocksProblem implements KioProblem {
                 var initialField:BlocksField = _workspace.blocksDebugger.initialField;
                 initialField.load(solution.field);
                 _workspace.blocksDebugger.initialField = initialField;
+                _workspace.blocksSelector.field = initialField.clone();
             }
 
             if (_workspace.blocksDebugger.program != null) {

@@ -110,7 +110,7 @@ public class BlocksWorkspace extends Sprite {
         }
 
         _blocksSelector = new BlocksSelector(field.lines, field.cols, field.boundary, 4);
-        _blocksSelector.field = field;
+        _blocksSelector.field = field.clone();
 
         _blocksDebugger = new BlocksDebugger(field);
         _debuggerControls = new DebuggerControls(_blocksDebugger);
