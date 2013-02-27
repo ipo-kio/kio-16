@@ -158,5 +158,8 @@ public class FirstLevel extends SilhouettesProductDrawer implements ITaskLevel {
     public function get direction():int {
         return SettingsHolder.UP_TO_DOWN;
     }
+
+    public function resetListener():void {
+    }
 }
 }

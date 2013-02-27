@@ -125,7 +125,7 @@ public class ClockProblem  implements KioProblem{
         }
     }
 
-    private function getSign(i:int):int {
+    private function getSign(i:Number):int {
         return i>0?1:i<0?-1:0;
     }
 

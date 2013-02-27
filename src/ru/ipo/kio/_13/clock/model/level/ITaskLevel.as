@@ -42,5 +42,7 @@ public interface ITaskLevel {
 
 
     function undoTruncate(relTransmissionError:Number):Number;
+
+    function resetListener():void;
 }
 }
