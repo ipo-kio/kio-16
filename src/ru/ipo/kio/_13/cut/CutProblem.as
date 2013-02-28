@@ -14,6 +14,14 @@ public class CutProblem implements KioProblem {
 
     [Embed(source="loc/cut.ru.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
+    [Embed(source="loc/cut.es.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_ES:Class;
+    [Embed(source="loc/cut.en.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_EN:Class;
+    [Embed(source="loc/cut.bg.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_BG:Class;
+    [Embed(source="loc/cut.th.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_TH:Class;
 
     public static const ID:String = "cut";
 
@@ -27,6 +35,10 @@ public class CutProblem implements KioProblem {
         KioApi.initialize(this);
 
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
+        KioApi.registerLocalization(ID, KioApi.L_ES, new Settings(LOCALIZATION_ES).data);
+        KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(LOCALIZATION_EN).data);
+        KioApi.registerLocalization(ID, KioApi.L_BG, new Settings(LOCALIZATION_BG).data);
+        KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(LOCALIZATION_TH).data);
 
         _workspace = new CutWorkspace();
     }

@@ -4,8 +4,6 @@ import flash.display.DisplayObject;
 
 import ru.ipo.kio._13.blocks.model.BlocksField;
 
-import ru.ipo.kio._13.blocks.model.BlocksField;
-
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.Settings;
@@ -14,6 +12,14 @@ public class BlocksProblem implements KioProblem {
 
     [Embed(source="loc/blocks.ru.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
+    [Embed(source="loc/blocks.es.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_ES:Class;
+    [Embed(source="loc/blocks.en.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_EN:Class;
+    [Embed(source="loc/blocks.bg.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_BG:Class;
+    [Embed(source="loc/blocks.th.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_TH:Class;
 
     public static const ID:String = "blocks";
 
@@ -25,6 +31,10 @@ public class BlocksProblem implements KioProblem {
         _level = level;
         KioApi.initialize(this);
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
+        KioApi.registerLocalization(ID, KioApi.L_ES, new Settings(LOCALIZATION_ES).data);
+        KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(LOCALIZATION_EN).data);
+        KioApi.registerLocalization(ID, KioApi.L_BG, new Settings(LOCALIZATION_BG).data);
+        KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(LOCALIZATION_TH).data);
         _workspace = new BlocksWorkspace();
     }
 
