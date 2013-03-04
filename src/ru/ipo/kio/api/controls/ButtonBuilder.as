@@ -47,6 +47,9 @@ public class ButtonBuilder {
 
     private var _diamondForm:Boolean = false;
 
+    private var _text_dx:int = 0;
+    private var _text_dy:int = 0;
+
     private var _action:String;
 
     public function ButtonBuilder(action:String = null) {
@@ -113,9 +116,9 @@ public class ButtonBuilder {
         field.multiline = true;
         field.embedFonts = _embedFont;
         field.width = width;
-        field.x = dx + width / 2 - 1;
+        field.x = dx + width / 2 + _text_dx;
         field.text = _title;
-        field.y = (height - field.textHeight - 4) / 2 + dy + 1;
+        field.y = (height - field.textHeight) / 2 + dy + _text_dy;
         field.antiAliasType = AntiAliasType.ADVANCED;
 
         var s:Sprite = new Sprite();
@@ -332,6 +335,22 @@ public class ButtonBuilder {
 
     public function set innerBorderColor(value:uint):void {
         _innerBorderColor = value;
+    }
+
+    public function get text_dx():int {
+        return _text_dx;
+    }
+
+    public function set text_dx(value:int):void {
+        _text_dx = value;
+    }
+
+    public function get text_dy():int {
+        return _text_dy;
+    }
+
+    public function set text_dy(value:int):void {
+        _text_dy = value;
     }
 }
 }

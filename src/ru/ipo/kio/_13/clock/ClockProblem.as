@@ -9,8 +9,6 @@ import flash.events.Event;
 
 import ru.ipo.kio._13.clock.model.SettingsHolder;
 
-import ru.ipo.kio._13.clock.model.SettingsHolder;
-
 import ru.ipo.kio._13.clock.model.TransferGear;
 
 import ru.ipo.kio._13.clock.model.TransmissionMechanism;
@@ -21,7 +19,7 @@ import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.Settings;
 
-public class ClockProblem  implements KioProblem{
+public class ClockProblem implements KioProblem{
 
     [Embed(source='_resources/intro.png')]
     public static var INTRO:Class;
@@ -34,12 +32,24 @@ public class ClockProblem  implements KioProblem{
 
     [Embed(source="loc/Clock.ru.json-settings",mimeType="application/octet-stream")]
     public static var CLOCK_RU:Class;
+    [Embed(source="loc/Clock.es.json-settings",mimeType="application/octet-stream")]
+    public static var CLOCK_ES:Class;
+    [Embed(source="loc/Clock.en.json-settings",mimeType="application/octet-stream")]
+    public static var CLOCK_EN:Class;
+    [Embed(source="loc/Clock.bg.json-settings",mimeType="application/octet-stream")]
+    public static var CLOCK_BG:Class;
+    [Embed(source="loc/Clock.th.json-settings",mimeType="application/octet-stream")]
+    public static var CLOCK_TH:Class;
 
     public function ClockProblem(level:int) {
         levelImpl = LevelCreator.createLevelImpl(level);
         SettingsHolder.instance.registerLevelImpl(levelImpl);
         KioApi.initialize(this);
-        KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(CLOCK_RU).data);
+        KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(CLOCK_RU).data);
+        KioApi.registerLocalization(ID, KioApi.L_ES, new Settings(CLOCK_ES).data);
+        KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(CLOCK_EN).data);
+        KioApi.registerLocalization(ID, KioApi.L_BG, new Settings(CLOCK_BG).data);
+        KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(CLOCK_TH).data);
         clockSprite = new ClockSprite();
         clockSprite.addEventListener(Event.ENTER_FRAME, function(e:Event):void{
                 TransmissionMechanism.instance.innerTick();

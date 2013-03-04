@@ -24,10 +24,6 @@ public class PiecesFieldView extends Sprite {
     public static const QUAD_CLS:Class;
     public static const QUAD_IMG:BitmapData = (new QUAD_CLS as BitmapAsset).bitmapData;
 
-    [Embed(source="../resources/panel.png")]
-    public static const BG_CLS:Class;
-    public static const BG_IMG:BitmapAsset = new BG_CLS;
-
     public static const CELL_WIDTH:int = 56;
     public static const CELL_HEIGHT:int = 56;
 
@@ -55,7 +51,7 @@ public class PiecesFieldView extends Sprite {
         _field = field;
         _outlineView = new OutlineView(logic2screenX, logic2screenY);
 
-        drawBackground();
+        initHitArea();
 
         addChild(squaresLayer);
         addChild(gridLayer);
@@ -93,8 +89,13 @@ public class PiecesFieldView extends Sprite {
         }
     }
 
-    private function drawBackground():void {
-        addChild(BG_IMG);
+    private function initHitArea():void {
+        hitArea = new Sprite();
+        hitArea.visible = false;
+        hitArea.graphics.beginFill(0);
+        hitArea.graphics.drawRect(0, 0, _field.n * CELL_WIDTH, _field.m * CELL_HEIGHT);
+        hitArea.graphics.endFill();
+        addChild(hitArea);
     }
 
     private function redraw(event:Event = null):void {

@@ -105,6 +105,7 @@ public class SoftKeyboard extends Sprite {
         buttonBuilder.embedFont = false;
         buttonBuilder.fontSize = 20;
         buttonBuilder.fontColor = 0x000000;
+        buttonBuilder.text_dx = -1;
 
         if (diamond) {
             buttonBuilder.bgNormal = EMPTY_CLS;

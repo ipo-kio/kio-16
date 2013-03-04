@@ -126,6 +126,9 @@ public class KioApi extends EventDispatcher {
      * этот метод. Он сохранит текущее решение. При загрузке оно насильно будет загружено в программу.
      */
     public function autoSaveSolution():void {
+        if (! _problem.display || ! _problem.display.stage)
+            return;
+
         problemData.autoSave = _problem.solution;
         lso.flush();
     }

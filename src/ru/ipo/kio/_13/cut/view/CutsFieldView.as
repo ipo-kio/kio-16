@@ -113,7 +113,12 @@ public class CutsFieldView extends Sprite {
     }
 
     private function drawBackground():void {
-        addChild(PiecesFieldView.BG_IMG);
+        hitArea = new Sprite();
+        hitArea.visible = false;
+        hitArea.graphics.beginFill(0);
+        hitArea.graphics.drawRect(0, 0, _n * PiecesFieldView.CELL_WIDTH, _m * PiecesFieldView.CELL_HEIGHT);
+        hitArea.graphics.endFill();
+        addChild(hitArea);
     }
 
     private function putCutPoints():void {
