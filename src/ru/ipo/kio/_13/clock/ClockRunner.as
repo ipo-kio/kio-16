@@ -15,9 +15,10 @@ public class ClockRunner extends Sprite {
     }
 
     private function init(e:Event = null):void {
+
         removeEventListener(Event.ADDED_TO_STAGE, init);
         KioApi.language = KioApi.L_RU;
-        KioBase.instance.initOneProblem(this, new ClockProblem(2));
+        KioBase.instance.initOneProblem(this, new ClockProblem(0));
     }
 }
 }

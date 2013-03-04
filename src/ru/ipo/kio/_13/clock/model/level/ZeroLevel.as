@@ -133,21 +133,24 @@ public class ZeroLevel extends SilhouettesProductDrawer implements ITaskLevel {
     }
 
     public function getFormattedError(error:Number):String {
-        if(error<0.5){
-            return "0%";
-        }
-        if(error<1){
-            return "< 1%";
-        }
-        return  printf("%.0f",error)+"%";
+        return  printf("%.5f",error)+"%";
+//        if(error<0.5){
+//            return "0%";
+//        }
+//        if(error<1){
+//            return "< 1%";
+//        }
+//        return  printf("%.0f",error)+"%";
     }
 
     public function truncate(relTransmissionError:Number):Number {
-        return Math.round(relTransmissionError*10);
+        return relTransmissionError;
+//        return Math.round(relTransmissionError*10);
     }
 
     public function undoTruncate(relTransmissionError:Number):Number {
-        return relTransmissionError/10;
+        return relTransmissionError;
+//        return relTransmissionError/10;
     }
 
 
