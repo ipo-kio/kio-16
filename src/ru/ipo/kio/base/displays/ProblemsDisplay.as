@@ -111,6 +111,8 @@ public class ProblemsDisplay extends Sprite {
         helpButton.y = GlobalMetrics.STAGE_HEIGHT - GlobalMetrics.H_PADDING - helpButton.height;
         addChild(helpButton);
         helpButton.addEventListener(MouseEvent.CLICK, helpButtonClick);
+
+        KioBase.instance.initMouseKeyboardLoggers();
     }
 
     private function helpButtonClick(event:Event):void {
@@ -118,7 +120,7 @@ public class ProblemsDisplay extends Sprite {
         KioBase.instance.currentDisplay = new HelpDisplay(null, false);
 
         //TODO DON'T FORGET TO REMOVE
-//        FileUtils.saveLog();
+        FileUtils.saveLog();
     }
 
     private function saveButtonClick(event:Event):void {

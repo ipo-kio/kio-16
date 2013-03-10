@@ -3,3 +3,4 @@
 ^bin-debug
 ^solutions/
 ^kio-12.properties$
+^kio-\d+\.properties$
