@@ -118,9 +118,6 @@ public class ProblemsDisplay extends Sprite {
     private function helpButtonClick(event:Event):void {
         KioBase.instance.log('BTN help in problems', []);
         KioBase.instance.currentDisplay = new HelpDisplay(null, false);
-
-        //TODO DON'T FORGET TO REMOVE
-        FileUtils.saveLog();
     }
 
     private function saveButtonClick(event:Event):void {

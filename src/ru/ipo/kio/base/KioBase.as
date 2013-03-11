@@ -11,8 +11,6 @@ import flash.text.TextField;
 import flash.utils.ByteArray;
 import flash.utils.Timer;
 
-import ru.ipo.kio._13.clock.utils.printf;
-
 import ru.ipo.kio.api.*;
 import ru.ipo.kio.api.controls.SpaceSettingsDialog;
 import ru.ipo.kio.base.displays.DisplayUtils;
@@ -119,7 +117,7 @@ public class KioBase {
 
     private var _mouseKeyboardLoggersInitialized:Boolean = false;
     public function initMouseKeyboardLoggers():void {
-        if (!_version_config.log_mouse_and_keyboard)
+        if (_version_config.log_mouse_and_keyboard_level == 0)
             return;
 
         if (_mouseKeyboardLoggersInitialized)
@@ -127,7 +125,8 @@ public class KioBase {
         else
             _mouseKeyboardLoggersInitialized = true;
 
-        stage.addEventListener(MouseEvent.MOUSE_MOVE, logMouseEvent, false, 10);
+        if (_version_config.log_mouse_and_keyboard_level == 2)
+            stage.addEventListener(MouseEvent.MOUSE_MOVE, logMouseEvent, false, 10);
         stage.addEventListener(MouseEvent.MOUSE_DOWN, logMouseEvent, false, 10);
         stage.addEventListener(MouseEvent.MOUSE_UP, logMouseEvent, false, 10);
         stage.addEventListener(KeyboardEvent.KEY_DOWN, logKeyboardEvent, false, 10);
@@ -135,11 +134,7 @@ public class KioBase {
     }
 
     private function logMouseEvent(event:MouseEvent):void {
-        var pos:int = event.stageX * 1000 + event.stageY;
-        var b1:int = pos & 0xFF;
-        var b2:int = (pos & 0xFF00) >> 8;
-        var b3:int = (pos & 0xFF0000) >> 16;
-        log('mouse event ' + event.type + '@BBB', [b1, b2, b3]);
+        log('mouse event ' + event.type + '@ii', [event.stageX, event.stageY]);
     }
 
     private function logKeyboardEvent(event:KeyboardEvent):void {
