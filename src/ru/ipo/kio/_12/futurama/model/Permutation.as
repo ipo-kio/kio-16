@@ -44,7 +44,7 @@ public class Permutation extends EventDispatcher {
      * @param just_test true if no permutation needed
      * @return status: STATUS_OK, STATUS_BASE_COLLISION, STATUS_VALUE_COLLISION
      */
-    public function permute(base1:int, base2:int, just_test:Boolean = false):int {
+    public function permute(base1:int, base2:int, just_test:Boolean = false, dispatch_change_event:Boolean = true):int {
         if (base1 == base2)
             return STATUS_INVALID_TRANSPOSITION;
         
@@ -68,7 +68,8 @@ public class Permutation extends EventDispatcher {
             _base_transpositions.push(base_tr);
             _value_transpositions.push(value_tr);
 
-            dispatchEvent(PERMUTATION_CHANGED_EVENT);
+            if (dispatch_change_event)
+                dispatchEvent(PERMUTATION_CHANGED_EVENT);
         }
 
         _base_transpositions_redo_history = [];
@@ -84,17 +85,24 @@ public class Permutation extends EventDispatcher {
         return o;
     }
     
-    public function unseriazlize(o:Object) : void {
+    public function unserialize(o:Object, dispatch_change_event:Boolean = true) : int {
         _base_transpositions = [];
         _value_transpositions = [];
         _base_transpositions_redo_history = [];
         _value_transpositions_redo_history = [];
         init_permutation();
-        
-        for (var i:int = 0; i < o.length; i++)
-            permute(o[i].a, o[i].b);
 
-        dispatchEvent(PERMUTATION_CHANGED_EVENT);
+        for (var i:int = 0; i < o.length; i++)
+            {
+                var res:int = permute(o[i].a, o[i].b, false, dispatch_change_event);
+                if (res != STATUS_OK)
+                    return res;
+            }
+
+        if (dispatch_change_event)
+            dispatchEvent(PERMUTATION_CHANGED_EVENT);
+
+        return STATUS_OK;
     }
     
     public function canUndo():Boolean {

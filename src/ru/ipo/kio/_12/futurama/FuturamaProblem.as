@@ -8,24 +8,19 @@
 package ru.ipo.kio._12.futurama {
 import flash.display.DisplayObject;
 
+import ru.ipo.kio._12.futurama.model.Permutation;
+
 import ru.ipo.kio._12.futurama.view.FuturamaField;
 import ru.ipo.kio.api.KioApi;
 
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.Settings;
+import ru.ipo.kio.base.KioBase;
 
 public class FuturamaProblem implements KioProblem {
 
     [Embed(source="loc/Futurama.ru.json-settings",mimeType="application/octet-stream")]
     public static var FUTURAMA_RU:Class;
-    [Embed(source="loc/Futurama.en.json-settings",mimeType="application/octet-stream")]
-    public static var FUTURAMA_EN:Class;
-    [Embed(source="loc/Futurama.es.json-settings",mimeType="application/octet-stream")]
-    public static var FUTURAMA_ES:Class;
-    [Embed(source="loc/Futurama.bg.json-settings",mimeType="application/octet-stream")]
-    public static var FUTURAMA_BG:Class;
-    [Embed(source="loc/Futurama.th.json-settings",mimeType="application/octet-stream")]
-    public static var FUTURAMA_TH:Class;
 
     [Embed(source="resources/f1.jpg")]
     public static var f1:Class;
@@ -42,11 +37,7 @@ public class FuturamaProblem implements KioProblem {
         _n = _level == 2 ? 9 : 8;
 
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(FUTURAMA_RU).data);
-        KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(FUTURAMA_EN).data);
-        KioApi.registerLocalization(ID, KioApi.L_ES, new Settings(FUTURAMA_ES).data);
-        KioApi.registerLocalization(ID, KioApi.L_BG, new Settings(FUTURAMA_BG).data);
-        KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(FUTURAMA_TH).data);
-
+        
         KioApi.initialize(this);
 
         _display = new FuturamaField(_n, level);
@@ -79,24 +70,26 @@ public class FuturamaProblem implements KioProblem {
     }
 
     public function get best():Object {
-        return {}; //TODO implement
+        return _display.best;
     }
 
     public function loadSolution(solution:Object):Boolean {
         if (solution == 0)
             return false;
 
-        _display.perm.unseriazlize(solution.perm);
+        var res:int = _display.perm.unserialize(solution.perm, ! KioApi.isChecker);
         
-        return true;
+        return res == Permutation.STATUS_OK;
     }
 
     public function check(solution:Object):Object {
-        return null; //TODO implement
+        return null; //no need to implement
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        return 0; //TODO implement
+        var len1:int = solution1.length;
+        var len2:int = solution2.length;
+        return len1 - len2;
     }
 
     [Embed(source='resources/intro_1.png')]

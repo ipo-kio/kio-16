@@ -10,8 +10,6 @@ import flash.sampler.isGetterSetter;
 
 import flash.utils.Dictionary;
 
-import ru.ipo.kio._11_students.CrossedCountry.landscape;
-
 import ru.ipo.kio._12.train.model.types.RailType;
 import ru.ipo.kio._12.train.view.TrainView;
 

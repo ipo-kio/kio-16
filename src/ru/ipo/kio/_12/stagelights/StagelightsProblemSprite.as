@@ -1,7 +1,6 @@
 package ru.ipo.kio._12.stagelights{
 import fl.controls.Button;
 import fl.controls.Label;
-import fl.controls.LabelButton;
 import flash.display.MovieClip;
 import flash.display.Sprite;
 import flash.events.Event;
@@ -12,7 +11,6 @@ import flash.events.TimerEvent;
 import flash.display.Shape;
 import mx.core.BitmapAsset;
 import flash.text.*;
-import ru.ipo.kio.base.KioBase;
 
 import ru.ipo.kio.api.*;
 
@@ -29,22 +27,21 @@ import ru.ipo.kio.api.*;
 		
 		//текстовое поле - единственный видимый объект задачи
 		private var stagelight: Array = [];
-		public var two: Label;
-		public var one: Label;
+		public var two: MovieClip;
+		public var one: MovieClip;
 		public var max0: Label;
 		public var max1: Label;
 		public var result0: Label;
 		public var result1: Label;
-		public var firstMax: Number;
-		public var secondMax: Number
+		public var firstMax: int;
+		public var secondMax: int;
 		public var firstResult: Array = [];
 		public var secondResult: Array = [];
 		public var bandages: int;
 		public var bandage: Array = [];
 		public var flag: Boolean = true;
 		public var crnt: int = 0;
-		public var max: Object;
-		public var loc:Object = KioApi.getLocalization(StagelightsProblem.ID);
+        private var _max: Object;
 		private var _api: KioApi;
 		
 		//конструктор спрайта, инициализация всех объектов
@@ -180,28 +177,16 @@ import ru.ipo.kio.api.*;
 			secondResult[4] = stagelights[1].bodies[0].body.green;
 			secondResult[5] = stagelights[1].bodies[0].body.blue;
 			
-			var format: TextFormat = new TextFormat();
-            format.color = 0x000000;
-			format.font = "Tahoma";
-			format.bold = true;
-            format.size = 11;
-			
-			two = new Label();
-			two.text = loc.next;
-			two.autoSize = TextFieldAutoSize.CENTER;
-			two.x = 685 - two.width / 2;
-			two.y = 504 - two.height / 2;
-			two.setStyle("textFormat", format);
+			two = new Two();
+			two.x = 690;
+			two.y = 510; 
 			two.addEventListener(MouseEvent.CLICK, change);
 			addChild(two);
 			
-			one = new Label();
-			one.text = loc.previous;
-			one.autoSize = TextFieldAutoSize.CENTER;
-			one.x = 685 - one.width / 2;
-			one.y = 504 - one.height / 2;
+			one = new One();
+			one.x = 690;
+			one.y = 510; 
 			one.visible = false;
-			one.setStyle("textFormat", format);
 			one.addEventListener(MouseEvent.CLICK, change);
 			addChild(one);
 				
@@ -215,33 +200,33 @@ import ru.ipo.kio.api.*;
 			result0.x = 20;
 			result0.y = 576;
 			result0.textField.autoSize = TextFieldAutoSize.LEFT;
-			result0.text = loc.firstResult + round(results(1)) + "%";
+			result0.text = "Ваш результат для I фокуса: исчезновение на " + results(1) + "%";
 			result0.setStyle("textFormat", format);
 			addChild(result0);
 			
 			max0 = new Label();
 			max0.textField.autoSize = TextFieldAutoSize.LEFT;
 			max0.setStyle("textFormat", format);
-			max0.text = loc.firstMaxResult + round(firstMax) + "%";
-			max0.x = 680 - max0.textField.textWidth;
+			max0.text = "Лучший результат для I фокуса: исчезновение на " + firstMax + "%";
+			max0.x = 705 - max0.textField.textWidth;
 			max0.y = 576;
 			addChild(max0);
 			
 			result1 = new Label();
-            result1.x = 20;
-            result1.y = 576;
-            result1.textField.autoSize = TextFieldAutoSize.LEFT;
+			result1.x = 20;
+			result1.y = 576;
+			result1.textField.autoSize = TextFieldAutoSize.LEFT;
 			result1.setStyle("textFormat", format);
-			result1.text = loc.secondResult + round(results(0)) + "%";
+			result1.text = "Ваш результат для II фокуса: исчезновение на " + results(0) + "%";
 			result1.visible = false;
 			addChild(result1);
 			
 			max1 = new Label();
 			max1.textField.autoSize = TextFieldAutoSize.LEFT;
 			max1.setStyle("textFormat", format);
-			max1.text = loc.secondMaxResult + round(secondMax) + "%";
+			max1.text = "Лучший результат для II фокуса: исчезновение на " + secondMax + "%";
 			max1.visible = false;
-			max1.x = 680 - max1.textField.textWidth;
+			max1.x = 705 - max1.textField.textWidth;
 			max1.y = 576;
 			addChild(max1);
 			
@@ -291,10 +276,11 @@ import ru.ipo.kio.api.*;
 		}
 		
 		public function refreshResult(e: Event = null): void {
-			if (firstMax < results(1) && secondMax <= results(0)) {
-				trace("SAVE MAX");
-				max = solution;
-			}
+            //does not work
+//            if (firstMax < results(1) && secondMax <= results(0)) {
+//                trace("SAVE MAX");
+//                max = solution;
+//            }
 			if (firstMax < results(1)) {	
 				var time: Timer = new Timer(251, 4);
 				time.start();	
@@ -398,17 +384,17 @@ import ru.ipo.kio.api.*;
 					bandage[k].visible = false;
 				}
 			}
-			result0.text = loc.firstResult + round(results(1)) + "%";
-			max0.text = loc.firstMaxResult + round(firstMax) + "%";
-			result1.text = loc.secondResult + round(results(0)) + "%";
-			max1.text = loc.secondMaxResult + round(secondMax) + "%";
+			result0.text = "Ваш результат для I фокуса: исчезновение на " + results(1) + "%";
+			max0.text = "Лучший результат для I фокуса: исчезновение на " + firstMax + "%";
+			result1.text = "Ваш результат для II фокуса: исчезновение на " + results(0) + "%";
+			max1.text = "Лучший результат для II фокуса: исчезновение на " + secondMax + "%";
 		}
 		
 		private function updt(e:Event =  null): void {
-			result0.text = loc.firstResult + round(results(1)) + "%";
-			max0.text = loc.firstMaxResult + round(firstMax) + "%";
-			result1.text = loc.secondResult + round(results(0)) + "%";
-			max1.text = loc.secondMaxResult + round(secondMax) + "%";
+			result0.text = "Ваш результат для I фокуса: исчезновение на " + results(1) + "%";
+			max0.text = "Лучший результат для I фокуса: исчезновение на " + firstMax + "%";
+			result1.text = "Ваш результат для II фокуса: исчезновение на " + results(0) + "%";
+			max1.text = "Лучший результат для II фокуса: исчезновение на " + secondMax + "%";
 		}
 		
 		
@@ -455,7 +441,7 @@ import ru.ipo.kio.api.*;
 			}
 		}
 		
-		public function results(ccn: int): Number {
+		public function results(ccn: int): int {
 			if (ccn == 0) {
 				var r: int = stagelight[1].spotlights[0].spotlight.intensity;
 				var g: int = stagelight[1].spotlights[1].spotlight.intensity;
@@ -463,7 +449,7 @@ import ru.ipo.kio.api.*;
 				var r1: int = stagelight[1].bodies[0].body.red;
 				var g1: int = stagelight[1].bodies[0].body.green;
 				var b1: int = stagelight[1].bodies[0].body.blue;
-				return (1 - calc(r, g, b, r1, g1, b1) / calc(0, 0, 0, 255, 255, 255)) * 100;
+				return (1 - calc(r, g, b, r1, g1, b1) / calc(0, 0, 0, r1, g1, b1)) * 100;
 			} else {
 				var r: int = stagelight[0].bodies[0].body.red;
 				var g: int = stagelight[0].bodies[1].body.green;
@@ -471,62 +457,62 @@ import ru.ipo.kio.api.*;
 				var r1: int = stagelight[0].bodies[4].body.red;
 				var g1: int = stagelight[0].bodies[6].body.green;
 				var b1: int = stagelight[0].bodies[5].body.blue;
-				return (1 - calc(r, g, b, r1, g1, b1) / calc(0, 0, 0, 255, 255, 255)) * 100;
+				return (1 - calc(r, g, b, r1, g1, b1) / calc(0, 0, 0, r1, g1, b1)) * 100;
 			}
 		}
 		
 		private function calc(r1: int, g1: int, b1: int, r2: int, g2: int, b2: int): Number {
 			return Math.pow(r1 - r2, 2) + Math.pow(g1 - g2, 2) + Math.pow(b1 - b2, 2);
 		}
-		
-		public function round(a: Number): Number {
-			return Math.round(a * 100) / 100;
-		}
-		
-		public function get solution():Object {
-			var first: Array = [];
-			var fmax: int = firstMax;
-			var smax: int = secondMax;
-			if (stagelights[0].visible) {
-				first[0] = stagelights[0].spotlights[0].spotlight.intensity;
-				first[1] = stagelights[0].spotlights[1].spotlight.intensity;
-				first[2] = stagelights[0].spotlights[2].spotlight.intensity;
-				first[3] = stagelights[0].bodies[4].body.red;
-				first[5] = stagelights[0].bodies[5].body.blue;
-				first[4] = stagelights[0].bodies[6].body.green;
-			} else {
-				first[0] = firstResult[0];
-				first[1] = firstResult[1];
-				first[2] = firstResult[2];
-				first[3] = firstResult[3];
-				first[5] = firstResult[5];
-				first[4] = firstResult[4];	
-			}
-			var second: Array = [];
-			if (stagelights[0].visible) {
-				second[0] = secondResult[0];
-				second[1] = secondResult[1];
-				second[2] = secondResult[2];
-				second[3] = secondResult[3];
-				second[5] = secondResult[5];
-				second[4] = secondResult[4];	
-			} else {
-				second[0] = stagelights[1].spotlights[0].spotlight.intensity;
-				second[1] = stagelights[1].spotlights[1].spotlight.intensity;
-				second[2] = stagelights[1].spotlights[2].spotlight.intensity;
-				second[3] = stagelights[1].bodies[0].body.red;
-				second[4] = stagelights[1].bodies[0].body.green;
-				second[5] = stagelights[1].bodies[0].body.blue;	
-			}
-			return {
-				first : first,
-				second : second,
-				firstMax: fmax,
-				secondMax: smax,
-				visible: stagelights[0].visible,
-				bandages: bandages
-			};
-		}
-	}
+
+        public function get solution():Object {
+            var first:Array = [];
+            var fmax:int = firstMax;
+            var smax:int = secondMax;
+            if (stagelights[0].visible) {
+                first[0] = stagelights[0].spotlights[0].spotlight.intensity;
+                first[1] = stagelights[0].spotlights[1].spotlight.intensity;
+                first[2] = stagelights[0].spotlights[2].spotlight.intensity;
+                first[3] = stagelights[0].bodies[4].body.red;
+                first[5] = stagelights[0].bodies[5].body.blue;
+                first[4] = stagelights[0].bodies[6].body.green;
+            } else {
+                first[0] = firstResult[0];
+                first[1] = firstResult[1];
+                first[2] = firstResult[2];
+                first[3] = firstResult[3];
+                first[5] = firstResult[5];
+                first[4] = firstResult[4];
+            }
+            var second:Array = [];
+            if (stagelights[0].visible) {
+                second[0] = secondResult[0];
+                second[1] = secondResult[1];
+                second[2] = secondResult[2];
+                second[3] = secondResult[3];
+                second[5] = secondResult[5];
+                second[4] = secondResult[4];
+            } else {
+                second[0] = stagelights[1].spotlights[0].spotlight.intensity;
+                second[1] = stagelights[1].spotlights[1].spotlight.intensity;
+                second[2] = stagelights[1].spotlights[2].spotlight.intensity;
+                second[3] = stagelights[1].bodies[0].body.red;
+                second[4] = stagelights[1].bodies[0].body.green;
+                second[5] = stagelights[1].bodies[0].body.blue;
+            }
+            return {
+                first:first,
+                second:second,
+                firstMax:fmax,
+                secondMax:smax,
+                visible:stagelights[0].visible,
+                bandages:bandages
+            };
+        }
+
+        public function get max():Object {
+            return solution;
+        }
+}
 
 }

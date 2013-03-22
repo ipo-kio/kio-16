@@ -171,5 +171,11 @@ public class FuturamaField extends Sprite {
     public function get perm():Permutation {
         return _perm;
     }
+
+    public function get best():Object {
+        return {
+            length: _perm.base_transpositions.length
+        };
+    }
 }
 }

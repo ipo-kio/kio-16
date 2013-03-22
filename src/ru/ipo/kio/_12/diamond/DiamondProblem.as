@@ -27,28 +27,15 @@ public class DiamondProblem extends Sprite implements KioProblem {
 
     [Embed(source="loc/Diamond.ru.json-settings",mimeType="application/octet-stream")]
     public static var DIAMOND_RU:Class;
-    [Embed(source="loc/Diamond.en.json-settings",mimeType="application/octet-stream")]
-    public static var DIAMOND_EN:Class;
-    [Embed(source="loc/Diamond.es.json-settings",mimeType="application/octet-stream")]
-    public static var DIAMOND_ES:Class;
-    [Embed(source="loc/Diamond.bg.json-settings",mimeType="application/octet-stream")]
-    public static var DIAMOND_BG:Class;
-    [Embed(source="loc/Diamond.th.json-settings",mimeType="application/octet-stream")]
-    public static var DIAMOND_TH:Class;
 
     [Embed(source='resources/Button_09a.png', mimeType='image/png')]
     public static const BT_0:Class;
+
     [Embed(source='resources/Button_09b.png', mimeType='image/png')]
     public static const BT_1:Class;
+
     [Embed(source='resources/Button_09c.png', mimeType='image/png')]
     public static const BT_2:Class;
-
-    [Embed(source='resources/Button_10a.png', mimeType='image/png')]
-    public static const BT_I0:Class;
-    [Embed(source='resources/Button_10b.png', mimeType='image/png')]
-    public static const BT_I1:Class;
-    [Embed(source='resources/Button_10c.png', mimeType='image/png')]
-    public static const BT_I2:Class;
 
     [Embed(source='resources/b1.jpg')]
     public static const b1:Class;
@@ -61,14 +48,10 @@ public class DiamondProblem extends Sprite implements KioProblem {
     [Embed(source='resources/b5.jpg')]
     public static const b5:Class;
 
-    [Embed(source='resources/034.png')]
+    [Embed(source='resources/016.png')]
     public static const LV_1_BG:Class;
     [Embed(source='resources/024.png')]
     public static const LV_2_BG:Class;
-    [Embed(source='resources/Pic_04.png')]
-    public static const LV_1_ILLUSTRATION:Class;
-    [Embed(source='resources/Pic_01.png')]
-    public static const LV_2_ILLUSTRATION:Class;
 
     public static const ID:String = 'diamond';
 
@@ -81,8 +64,6 @@ public class DiamondProblem extends Sprite implements KioProblem {
     private var current_info:InfoField;
     private var record_info:InfoField;
 
-    private var illustration_image:DisplayObject;
-
     //level 1 record
     private var _record_points:int = 0;
     private var _record_var:Number = 0;
@@ -94,24 +75,12 @@ public class DiamondProblem extends Sprite implements KioProblem {
         _level = level;
 
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(DIAMOND_RU).data);
-        KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(DIAMOND_EN).data);
-        KioApi.registerLocalization(ID, KioApi.L_ES, new Settings(DIAMOND_ES).data);
-        KioApi.registerLocalization(ID, KioApi.L_BG, new Settings(DIAMOND_BG).data);
-        KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(DIAMOND_TH).data);
 
         KioApi.initialize(this);
 
         api = KioApi.instance(ID);
 
         init();
-
-        //stage mouse listener
-        addEventListener(Event.ADDED_TO_STAGE, function(e:Event):void {
-            stage.addEventListener(MouseEvent.MOUSE_UP, stage_mouse_up);
-        });
-        addEventListener(Event.REMOVED_FROM_STAGE, function(e:Event):void {
-            stage.removeEventListener(MouseEvent.MOUSE_UP, stage_mouse_up);
-        });
     }
 
     private function init(e:Event = null):void {
@@ -199,28 +168,6 @@ public class DiamondProblem extends Sprite implements KioProblem {
             update_current_info_1(null, true);
         }
 
-        //1 - 72 461
-        //2 - 78 459
-        var illustration_button:GraphicsButton = new GraphicsButton(
-                loc.button_illustration,
-                new BT_I0().bitmapData,
-                new BT_I1().bitmapData,
-                new BT_I2().bitmapData,
-                'KioTahoma',
-                12, 12, 2, 2, -7, -5
-        );
-        illustration_button.x = level == 1 ? 72 : 78;
-        illustration_button.y = level == 1 ? 431 : 439;
-        illustration_button.addEventListener(MouseEvent.MOUSE_DOWN, function (event:Event):void {
-            if (illustration_image == null) {
-                illustration_image = new (level == 1 ? LV_1_ILLUSTRATION : LV_2_ILLUSTRATION);
-                illustration_image.x = 6;
-                illustration_image.y = 7;
-                addChild(illustration_image);
-            }
-        });
-        addChild(illustration_button);
-
         var remove_extra_button:GraphicsButton = new GraphicsButton(
                 loc.button_remove_extra_points,
                 new BT_0().bitmapData,
@@ -237,19 +184,12 @@ public class DiamondProblem extends Sprite implements KioProblem {
         });
     }
 
-    private function stage_mouse_up(e:MouseEvent):void {
-        if (illustration_image != null) {
-            removeChild(illustration_image);
-            illustration_image = null;
-        }
-    }
-
     private function update_current_info_1(event:Event = null, no_autosave:Boolean = false):void {
         var o:Object = eye.evaluate_outer_intersections();
         current_info.set_values([o.points, o.variance]);
         if (! no_autosave)
             api.autoSaveSolution();
-        
+
         if (o.points > _record_points || o.points == _record_points && o.variance < _record_var) {
             _record_points = o.points;
             _record_var =  o.variance;
@@ -306,13 +246,27 @@ public class DiamondProblem extends Sprite implements KioProblem {
     }
 
     public function get best():Object {
-        return {}; //TODO implement
+        if (_level == 1) {
+
+            return {
+                points: _record_points,
+                disp: _record_var,
+                points_on_c_hull: diamond.hullVertexCount
+            };
+
+        } else /*if (_level == 2)*/ {
+
+            return {
+                light: _record_light
+            }
+
+        }
     }
 
     public function loadSolution(solution:Object):Boolean {
         if (solution == null)
             return false;
-        
+
         diamond.unserialize(solution.diamond);
         eye.angle = solution.angle;
 
@@ -325,11 +279,52 @@ public class DiamondProblem extends Sprite implements KioProblem {
     }
 
     public function check(solution:Object):Object {
-        return {}; //TODO implement
+        return {}; //no need to implement
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        return 0; //TODO implement
+        if (_level == 1) {
+
+            var points:int = solution1.points - solution2.points;
+
+            if (points != 0)
+                return points;
+            else {
+                if (solution1.disp < solution2.disp)
+                    return 1;
+                else if (solution1.disp > solution2.disp)
+                    return -1;
+                else
+                    return 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+
+        } else /*if (_level == 2)*/ {
+
+            if (solution1.light < solution2.light)
+                return -1;
+            else if (solution1.light > solution2.light)
+                return 1;
+            else
+                return 0;
+
+        }
     }
 
     [Embed(source='resources/intro.png')]

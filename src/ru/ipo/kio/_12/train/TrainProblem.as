@@ -7,13 +7,11 @@ package ru.ipo.kio._12.train {
 import flash.display.DisplayObject;
 import flash.events.Event;
 
-import ru.ipo.kio._12.train.model.Automation;
 import ru.ipo.kio._12.train.model.Passenger;
 
 import ru.ipo.kio._12.train.model.TrafficNetwork;
 import ru.ipo.kio._12.train.model.Train;
 import ru.ipo.kio._12.train.model.types.RegimeType;
-import ru.ipo.kio._12.train.model.types.StationType;
 import ru.ipo.kio._12.train.util.TrafficNetworkCreator;
 
 import ru.ipo.kio.api.KioApi;
@@ -30,14 +28,6 @@ public class TrainProblem implements KioProblem {
 
     [Embed(source="loc/Train.ru.json-settings",mimeType="application/octet-stream")]
     public static var TRAIN_RU:Class;
-    [Embed(source="loc/Train.en.json-settings",mimeType="application/octet-stream")]
-    public static var TRAIN_EN:Class;
-    [Embed(source="loc/Train.bg.json-settings",mimeType="application/octet-stream")]
-    public static var TRAIN_BG:Class;
-    [Embed(source="loc/Train.es.json-settings",mimeType="application/octet-stream")]
-    public static var TRAIN_ES:Class;
-    [Embed(source="loc/Train.th.json-settings",mimeType="application/octet-stream")]
-    public static var TRAIN_TH:Class;
 
     public function TrainProblem(level:int, readonly:Boolean = false) {
         _level = level;
@@ -45,11 +35,9 @@ public class TrainProblem implements KioProblem {
         KioApi.initialize(this);
 
         KioApi.registerLocalization(ID, KioApi.L_RU,  new Settings(TRAIN_RU).data);
-        KioApi.registerLocalization(ID, KioApi.L_EN,  new Settings(TRAIN_EN).data);
-        KioApi.registerLocalization(ID, KioApi.L_BG,  new Settings(TRAIN_BG).data);
-        KioApi.registerLocalization(ID, KioApi.L_ES,  new Settings(TRAIN_ES).data);
-        KioApi.registerLocalization(ID, KioApi.L_TH,  new Settings(TRAIN_TH).data);
 
+        TrafficNetwork.reset_singleton();
+        TrafficNetworkCreator.reset_singleton();
         TrafficNetworkCreator.instance.createTrafficNetwork(level);
         sp = new TrainSprite(level, readonly);
 
@@ -136,13 +124,33 @@ public class TrainProblem implements KioProblem {
     }
 
     public function check(solution:Object):Object {
-        //todo
-        return new Object();
+        return null;
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        //todo
-        return 1;
+        if (!solution1){
+            return solution2 ? -1 : 0;
+        } else if (!solution2){
+            return 1;
+        }
+
+        //fix unknown bug
+        if (solution1.happyPassengers == 120)
+            solution1.happyPassengers = 119;
+        if (solution2.happyPassengers == 120)
+            solution2.happyPassengers = 119;
+
+        if(solution1.hasCrash){
+            return solution2.hasCrash? 0:-1;
+        }else if(solution1.happyPassengers!=solution2.happyPassengers){
+            return getSign(solution1.happyPassengers-solution2.happyPassengers);
+        }else{
+            return getSign(solution2.time-solution1.time);
+        }
+    }
+
+    private static function getSign(i:int):int {
+       return i>0?1:i<0?-1:0;
     }
 
     [Embed(source='_resources/intro.png')]
@@ -170,7 +178,13 @@ public class TrainProblem implements KioProblem {
     }
 
     public function get best():Object {
-        return null;
+        //просто возвращаем оценку текущего решения
+        //ожидается, что был сделан load
+        return {
+            hasCrash: TrafficNetwork.instance.fault,
+            happyPassengers: TrafficNetwork.instance.amountOfHappyPassengers,
+            time: TrafficNetwork.instance.level==0?TrafficNetwork.instance.getMaxTime():TrafficNetwork.instance.getMediana()
+        };
     }
 
     public function get icon_statement():Class {

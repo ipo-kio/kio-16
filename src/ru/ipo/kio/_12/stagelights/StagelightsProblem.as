@@ -14,14 +14,6 @@ public class StagelightsProblem implements KioProblem {
 	
 	[Embed(source="loc/stagelights.ru.json-settings",mimeType="application/octet-stream")]
     public static var STAGELIGHTS_RU:Class;
-    [Embed(source="loc/stagelights.en.json-settings",mimeType="application/octet-stream")]
-    public static var STAGELIGHTS_EN:Class;
-    [Embed(source="loc/stagelights.bg.json-settings",mimeType="application/octet-stream")]
-    public static var STAGELIGHTS_BG:Class;
-    [Embed(source="loc/stagelights.es.json-settings",mimeType="application/octet-stream")]
-    public static var STAGELIGHTS_ES:Class;
-    [Embed(source="loc/stagelights.th.json-settings",mimeType="application/octet-stream")]
-    public static var STAGELIGHTS_TH:Class;
 	
     public static const ID:String = "stagelights";
 
@@ -49,10 +41,6 @@ public class StagelightsProblem implements KioProblem {
             //message: "Hello World"
         //});
 		KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(STAGELIGHTS_RU).data);
-		KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(STAGELIGHTS_EN).data);
-		KioApi.registerLocalization(ID, KioApi.L_ES, new Settings(STAGELIGHTS_ES).data);
-		KioApi.registerLocalization(ID, KioApi.L_BG, new Settings(STAGELIGHTS_BG).data);
-		KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(STAGELIGHTS_TH).data);
 
         //теперь можно писать код конструктора, в частности, создавать объекты, которые используют API:
         //В конструкторе MainSpirte есть вызов API (KioApi.instance(...).localization)
@@ -217,11 +205,10 @@ public class StagelightsProblem implements KioProblem {
 				}
 				sp.bandage[solution.bandages].visible = true;
 			}
-			var loc:Object = KioApi.getLocalization(StagelightsProblem.ID);
-			
+			trace("LOAD");
 			sp.refreshResult();
-			sp.max0.text = loc.firstMaxResult + sp.round(sp.firstMax) + "%";
-			sp.max1.text = loc.secondMaxResult + sp.round(sp.secondMax) + "%";
+			sp.max0.text = "Лучший результат для I фокуса: исчезновение на " + sp.firstMax + "%";
+			sp.max1.text = "Лучший результат для II фокуса: исчезновение на " + sp.secondMax + "%";
 			sp.flag = false;
             return true;
         } else
@@ -244,14 +231,15 @@ public class StagelightsProblem implements KioProblem {
      * @return результат сравнения
      */
     public function compare(solution1:Object, solution2:Object):int {
-		if (solution1.firstMax + solution1.secondMax > solution2.firstMax + solution2.secondMax) {
-			return 1;
-		} else if (solution1.firstMax + solution1.secondMax == solution2.firstMax + solution2.secondMax) {
-			return 0;
-		}
-		else {
-			return -1;
-		}
+        throw 'Not implemented';
+    }
+
+    public function compare1(solution1:Object, solution2:Object):int {
+        return solution1.firstMax - solution2.firstMax;
+    }
+
+    public function compare2(solution1:Object, solution2:Object):int {
+        return solution1.secondMax - solution2.secondMax;
     }
 
     /**
