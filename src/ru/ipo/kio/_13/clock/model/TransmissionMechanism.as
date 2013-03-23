@@ -31,8 +31,11 @@ public class TransmissionMechanism {
 
     private var _viewSide:TransmissionMechanismViewSide;
 
-
     private static var _instance:TransmissionMechanism;
+
+    public static function clearInstance():void {
+        _instance = null;
+    }
 
     public static function get instance():TransmissionMechanism {
         if(TransmissionMechanism._instance == null)
@@ -108,7 +111,7 @@ public class TransmissionMechanism {
     public function addTransferGearAfter(transferGear:TransferGear):void {
 
         var newTG:TransferGear = new TransferGear(this, Math.min(transferGear.x+10,630), Math.min(transferGear.y+10,350), 10, 10, ColorGenerator.nextHueOfColor(transferGearList));
-        KioApi.instance(ClockProblem.ID).log("CREATE AFTER @SS", newTG.id, transferGear.id);
+        KioApi.log(ClockProblem.ID, "CREATE AFTER @SS", newTG.id, transferGear.id);
         _transferGearList.splice(getIndex(transferGear)+1,0,newTG);
         view.transferGearAdded(newTG, transferGear);
         viewSide.transferGearAdded(newTG);

@@ -9,10 +9,6 @@ package ru.ipo.kio._13.blocks.model {
 import flash.events.Event;
 import flash.events.EventDispatcher;
 
-import ru.ipo.kio._11.ariadne.view.Workspace;
-
-import ru.ipo.kio._13.blocks.BlocksProblem;
-
 import ru.ipo.kio._13.blocks.BlocksWorkspace;
 
 import ru.ipo.kio._13.blocks.parser.Command;
@@ -45,15 +41,19 @@ public class BlocksDebugger extends EventDispatcher {
 
     private var _programIsRunning:Boolean = false;
 
-    private static const api:KioApi = KioApi.instance(BlocksProblem.ID);
+    private var api:KioApi;
 
     private var _penalty:int = 0;
 
-    public function BlocksDebugger(initialField:BlocksField) {
+    private var _workspace:BlocksWorkspace;
+
+    public function BlocksDebugger(initialField:BlocksField, workspace:BlocksWorkspace) {
+        _workspace = workspace;
+        api = _workspace.api;
         this.initialField = initialField;
 
-        BlocksWorkspace.instance.editor.editorField.addEventListener(Event.CHANGE, changeHandler);
-        BlocksWorkspace.instance.editor.addEventListener(SoftManualEvent.SOFT_MANUAL_ACTION, softManualHandler);
+        _workspace.editor.editorField.addEventListener(Event.CHANGE, changeHandler);
+        _workspace.editor.addEventListener(SoftManualEvent.SOFT_MANUAL_ACTION, softManualHandler);
     }
 
     public function get initialField():BlocksField {
@@ -67,7 +67,7 @@ public class BlocksDebugger extends EventDispatcher {
     public function set initialField(value:BlocksField):void {
         _initialField = value;
 
-        BlocksWorkspace.instance.blocksSelector.redraw();
+        _workspace.blocksSelector.redraw();
 
         moveToStep(0);
     }
@@ -153,7 +153,6 @@ public class BlocksDebugger extends EventDispatcher {
             _currentCommand.execute(_currentField); //may generate execution error
 
             if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.PUT) {
-                trace('inc pen 1');
                 _penalty++;
             }
 
@@ -169,10 +168,10 @@ public class BlocksDebugger extends EventDispatcher {
 
         _step++;
 
-        if ((_state == STATE_FINISH || _step == MAX_STEPS) && validateFieldBlocks() == null && BlocksWorkspace.instance.stage)
+        if ((_state == STATE_FINISH || _step == MAX_STEPS) && validateFieldBlocks() == null && _workspace.stage)
             api.submitResult(getResult());
 
-        BlocksWorkspace.instance.displayResult(getResult());
+        _workspace.displayResult(getResult());
 
         if (!animationStarted)
             dispatchEvent(new FieldChangeEvent());
@@ -195,10 +194,8 @@ public class BlocksDebugger extends EventDispatcher {
                     dispatchEvent(new FieldChangeEvent(true, _currentCommand.invertedCommand));
 
                 _currentCommand.execute(_currentField, true);
-                if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.PUT) {
-                    trace('dec pen 1');
+                if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.PUT)
                     _penalty--;
-                }
 
                 break;
             case STATE_ERROR:
@@ -213,10 +210,8 @@ public class BlocksDebugger extends EventDispatcher {
                     dispatchEvent(new FieldChangeEvent(true, _currentCommand.invertedCommand));
 
                 _currentCommand.execute(_currentField, true);
-                if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.PUT) {
-                    trace('dec pen 2');
+                if (api.problem.level == 0 && _currentField.lastStepHadPenalty && _currentCommand.command == Command.PUT)
                     _penalty--;
-                }
 
                 break;
         }
@@ -224,7 +219,7 @@ public class BlocksDebugger extends EventDispatcher {
         _step--;
         _state = STATE_NORMAL;
 
-        BlocksWorkspace.instance.displayResult(getResult());
+        _workspace.displayResult(getResult());
 
         if (!dispatchedAnimationEvent)
             dispatchEvent(new FieldChangeEvent());
@@ -253,13 +248,13 @@ public class BlocksDebugger extends EventDispatcher {
             this._step = -1; //does not really matters
             this._penalty = 0;
             _state = STATE_FINISH;
-            if (validateFieldBlocks() == null && BlocksWorkspace.instance.stage)
+            if (validateFieldBlocks() == null && _workspace.stage)
                 api.submitResult(getResult());
             _currentCommand = null;
 
             dispatchEvent(new FieldChangeEvent());
 
-            BlocksWorkspace.instance.displayResult(getResult());
+            _workspace.displayResult(getResult());
 
             return;
         }
@@ -274,7 +269,7 @@ public class BlocksDebugger extends EventDispatcher {
             if (mayMoveForward())
                 stepForward();
 
-        BlocksWorkspace.instance.displayResult(getResult());
+        _workspace.displayResult(getResult());
 
         dispatchEvent(new FieldChangeEvent());
     }
@@ -289,8 +284,8 @@ public class BlocksDebugger extends EventDispatcher {
     }
 
     private function changeHandler(event:Event):void {
-        program = BlocksWorkspace.instance.editor.editorField.program;
-        if (BlocksWorkspace.instance.stage)
+        program = _workspace.editor.editorField.program;
+        if (_workspace.stage)
             api.autoSaveSolution();
     }
 
@@ -304,7 +299,7 @@ public class BlocksDebugger extends EventDispatcher {
         else
             return {
                 in_place: _currentField.blocksInPlace,
-                prg_len: stripSpaces(BlocksWorkspace.instance.editor.editorField.text).length,
+                prg_len: stripSpaces(_workspace.editor.editorField.text).length,
                 steps: Math.max(_step, 0)
             };
     }
@@ -328,7 +323,7 @@ public class BlocksDebugger extends EventDispatcher {
     }
 
     private function softManualHandler(event:SoftManualEvent):void {
-        var editor:Editor = BlocksWorkspace.instance.editor;
+        var editor:Editor = _workspace.editor;
 
         if (event.command < 0) {
             var text:String = editor.editorField.text;

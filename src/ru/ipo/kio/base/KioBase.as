@@ -168,6 +168,7 @@ public class KioBase {
 
         var best:Object = problemData.best;
 
+        KioApi.instance(problem).resetRecordResult();
         if (best)
             problem.loadSolution(best);
     }

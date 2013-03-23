@@ -28,8 +28,10 @@ public class CutPieceFieldView extends Sprite {
     private var field:Sprite = null;
 
     public static const REGIME_CHANGE:String = 'regime';
+    private var _level:int;
 
-    public function CutPieceFieldView(m:int, n:int, cuts:Array) {
+    public function CutPieceFieldView(m:int, n:int, cuts:Array, level:int) {
+        _level = level;
         _piecesField = new PiecesField(m, n);
         _cuts = cuts;
 
@@ -66,15 +68,15 @@ public class CutPieceFieldView extends Sprite {
      */
     public function validatePiecesConfiguration():Array {
         var messages:Array = [];
-        var api:KioApi = KioApi.instance(CutProblem.ID);
+        var localization:Object = KioApi.getLocalization(CutProblem.ID);
         if (_piecesField.hasInnerBlocks)
-            messages.push(api.localization.errors.has_inner);
+            messages.push(localization.errors.has_inner);
         if (_piecesField.hasOuterBlocks)
-            messages.push(api.localization.errors.has_outer);
+            messages.push(localization.errors.has_outer);
         if (_piecesField.blocksCount == 0)
-            messages.push(api.localization.errors.no_elements);
+            messages.push(localization.errors.no_elements);
         if (_piecesField.thinPoly)
-            messages.push(api.localization.errors.thin_poly);
+            messages.push(localization.errors.thin_poly);
         return messages;
     }
 
@@ -100,7 +102,7 @@ public class CutPieceFieldView extends Sprite {
             _cutsField = new CutsField(_cuts, _piecesField);
 
             _cutsField.addEventListener(CutsField.CUTS_CHANGED, cutsChanged);
-            field = new CutsFieldView(m, n, cutsField);
+            field = new CutsFieldView(m, n, cutsField, _level);
         } else {
             if (_cutsField != null)
                 _cutsField.removeEventListener(CutsField.CUTS_CHANGED, cutsChanged);

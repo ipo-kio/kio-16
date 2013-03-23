@@ -39,8 +39,10 @@ public class ClockSprite extends AbstractPanel {
     private var errorSprite:Sprite = new Sprite();
 
     private var errorText:TextField = new TextField();
+    private var _problem:ClockProblem;
 
-    public function ClockSprite() {
+    public function ClockSprite(problem:ClockProblem) {
+        _problem = problem;
         instance=this;
         errorSprite.addChild(errorText);
         errorSprite.addEventListener(MouseEvent.CLICK, function(e:Event):void{
@@ -144,9 +146,9 @@ public class ClockSprite extends AbstractPanel {
             }
             updateAnimateButtons();
             resultPanel.displayCrashMaker(TransmissionMechanism.instance.isConflict());
-            KioApi.instance(ClockProblem.ID).autoSaveSolution();
-            KioApi.instance(ClockProblem.ID).submitResult(KioApi.instance(ClockProblem.ID).problem.best);
-            updateBest(KioApi.instance(ClockProblem.ID).record_result);
+            KioApi.instance(_problem).autoSaveSolution();
+            KioApi.instance(_problem).submitResult(KioApi.instance(_problem).problem.best);
+            updateBest(KioApi.instance(_problem).record_result);
         }
     }
 

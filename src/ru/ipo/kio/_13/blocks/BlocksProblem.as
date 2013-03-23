@@ -35,7 +35,7 @@ public class BlocksProblem implements KioProblem {
         KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(LOCALIZATION_EN).data);
         KioApi.registerLocalization(ID, KioApi.L_BG, new Settings(LOCALIZATION_BG).data);
         KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(LOCALIZATION_TH).data);
-        _workspace = new BlocksWorkspace();
+        _workspace = new BlocksWorkspace(this);
     }
 
     public function get id():String {
@@ -83,7 +83,7 @@ public class BlocksProblem implements KioProblem {
             }
 
             //не забыть сохранить решение, как обычно после того как оно изменилось
-            KioApi.instance(ID).autoSaveSolution();
+            KioApi.instance(this).autoSaveSolution();
             //Если текущий результат еще и показывается где-то на экране, его тоже надо пересчитать
             //TODO это все должно происходить автоматически
 

@@ -10,10 +10,6 @@ import flash.display.SimpleButton;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 
-import mx.filters.BaseDimensionFilter;
-
-import ru.ipo.kio._13.blocks.BlocksProblem;
-
 import ru.ipo.kio._13.blocks.BlocksWorkspace;
 import ru.ipo.kio._13.blocks.model.FieldChangeEvent;
 import ru.ipo.kio._13.blocks.model.SoftManualEvent;
@@ -72,9 +68,13 @@ public class SoftKeyboard extends Sprite {
 
     private var _controlsRegime:Boolean = false;
 
-    private static const api:KioApi = KioApi.instance(BlocksProblem.ID);
+    private var _workspace:BlocksWorkspace;
+    private var api:KioApi;
 
-    public function SoftKeyboard(editor:Editor, simple:Boolean) {
+    public function SoftKeyboard(editor:Editor, simple:Boolean, workspace:BlocksWorkspace) {
+        _workspace = workspace;
+        api = workspace.api;
+
         _editor = editor;
         actionButtons.push(addButton(LEFT_CLS, 'left', FOUR_CENTER_X - BIG_BUTTON_SIZE, FOUR_CENTER_Y - BIG_BUTTON_SIZE / 2, true));
         actionButtons.push(addButton(RIGHT_CLS, 'right', FOUR_CENTER_X, FOUR_CENTER_Y - BIG_BUTTON_SIZE / 2, true));
@@ -134,7 +134,7 @@ public class SoftKeyboard extends Sprite {
 
     private function button_clickHandler(event:MouseEvent):void {
         var action:String = event.target.action;
-        var manual:Boolean = BlocksWorkspace.instance.manualRegime;
+        var manual:Boolean = _workspace.manualRegime;
         var level0:Boolean = api.problem.level == 0;
 
         api.log('button ' + action + (manual ? ' manual' : ''));

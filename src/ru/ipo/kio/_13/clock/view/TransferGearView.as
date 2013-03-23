@@ -93,7 +93,7 @@ public class TransferGearView extends BasicView {
             _shiftX= e.localX;
             _shiftY= e.localY;
             //if(!transferGear.isFirst()){
-            KioApi.instance(ClockProblem.ID).log("START DRAG @SSS", transferGear.id, transferGear.x, transferGear.y);
+            KioApi.log(ClockProblem.ID, "START DRAG @SSS", transferGear.id, transferGear.x, transferGear.y);
             startDrag(false, new Rectangle(transferGear.getRadius()+5,transferGear.getRadius(),
                         675-transferGear.getRadius()*2,400-transferGear.getRadius()*2));
             //}
@@ -122,7 +122,7 @@ public class TransferGearView extends BasicView {
 
             transferGear.isMove=false;
             //if(!transferGear.isFirst()){
-            KioApi.instance(ClockProblem.ID).log("STOP DRAG @SSS", transferGear.id, transferGear.x, transferGear.y);
+            KioApi.log(ClockProblem.ID, "STOP DRAG @SSS", transferGear.id, transferGear.x, transferGear.y);
                 stopDrag();
             //}
             updateNextAndPrevious();
@@ -170,7 +170,7 @@ public class TransferGearView extends BasicView {
             if(e.charCode==13){
                 var newValue:int = new Number(field.text);
                 var part:String = upper?"UP":"DOWN";
-                KioApi.instance(ClockProblem.ID).log("VIEW1 INPUT "+part+" @St", transferGear.id, newValue);
+                KioApi.log(ClockProblem.ID, "VIEW1 INPUT "+part+" @St", transferGear.id, newValue);
                 if(newValue<8){
                     ClockSprite.instance.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooSmall);
                     return;

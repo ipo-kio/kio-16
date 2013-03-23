@@ -50,14 +50,13 @@ public class ClockProblem implements KioProblem{
         KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(CLOCK_EN).data);
         KioApi.registerLocalization(ID, KioApi.L_BG, new Settings(CLOCK_BG).data);
         KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(CLOCK_TH).data);
-        clockSprite = new ClockSprite();
+        clockSprite = new ClockSprite(this);
         clockSprite.addEventListener(Event.ENTER_FRAME, function(e:Event):void{
                 TransmissionMechanism.instance.innerTick();
         });
         clockSprite.update();
         TransmissionMechanism.instance.view.update();
     }
-
 
     public function get id():String {
         return ID;

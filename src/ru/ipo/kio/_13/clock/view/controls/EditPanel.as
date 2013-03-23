@@ -38,7 +38,7 @@ public class EditPanel extends AbstractPanel {
 
         addChild(createButton("add", 5, 25, function (event:MouseEvent):void {
             var newGear:TransferGear = new TransferGear(TransmissionMechanism.instance, 350, 200, 20, 10, ColorGenerator.nextHueOfColor(TransmissionMechanism.instance.transferGearList));
-            KioApi.instance(ClockProblem.ID).log("BTN CREATE @S", newGear.id);
+            KioApi.log(ClockProblem.ID, "BTN CREATE @S", newGear.id);
             TransmissionMechanism.instance.addTransferGear(newGear);
             TransmissionMechanism.instance.deactivateAll();
             TransmissionMechanism.instance.transferGearList[TransmissionMechanism.instance.transferGearList.length-1].isActive=true;
@@ -49,13 +49,13 @@ public class EditPanel extends AbstractPanel {
         addChild(createButton("delete", 5, 70, function (event:MouseEvent):void {
             var transferGear:TransferGear = TransmissionMechanism.instance.getActive();
             if(transferGear==null){
-                KioApi.instance(ClockProblem.ID).log("BTN TRY DELETE EMPTY");
+                KioApi.log(ClockProblem.ID, "BTN TRY DELETE EMPTY");
                 ClockSprite.instance.showError(loc.messages.delete_empty);
             }else if (transferGear.isFirst()) {
                 ClockSprite.instance.showError(loc.messages.delete_arrow);
-                KioApi.instance(ClockProblem.ID).log("BTN TRY DELETE FIRST");
+                KioApi.log(ClockProblem.ID, "BTN TRY DELETE FIRST");
             }else{
-                KioApi.instance(ClockProblem.ID).log("BTN DELETE @S", transferGear.id);
+                KioApi.log(ClockProblem.ID, "BTN DELETE @S", transferGear.id);
                 TransmissionMechanism.instance.removeTransferGear(transferGear);
             }
         }));
@@ -65,7 +65,7 @@ public class EditPanel extends AbstractPanel {
             _hideButton.visible=true;
             ClockSprite.instance.addChild(productSprite);
             SettingsHolder.instance.levelImpl.updateProductSprite();
-            KioApi.instance(ClockProblem.ID).log("BTN SHOW PRODUCT");
+            KioApi.log(ClockProblem.ID, "BTN SHOW PRODUCT");
         });
         addChild(_showButton);
 
@@ -74,7 +74,7 @@ public class EditPanel extends AbstractPanel {
             _showButton.visible=true;
             _hideButton.visible=false;
             ClockSprite.instance.removeChild(productSprite);
-            KioApi.instance(ClockProblem.ID).log("BTN HIDE PRODUCT");
+            KioApi.log(ClockProblem.ID, "BTN HIDE PRODUCT");
         });
         addChild(_hideButton);
 
