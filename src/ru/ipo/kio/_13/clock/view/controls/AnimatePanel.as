@@ -48,18 +48,18 @@ public class AnimatePanel extends AbstractPanel {
 
 
         addChild(createButton("step", 5, 55, function (event:MouseEvent):void {
-            KioApi.instance(ClockProblem.ID).log("BTN STEP ROTATE");
+            KioApi.log(ClockProblem.ID, "BTN STEP ROTATE");
             TransmissionMechanism.instance.rotate(SettingsHolder.instance.stepRotateInRadians);
         }, false));
 
         _playButton = createButton("play", 5, 85, function (event:MouseEvent):void {
-            KioApi.instance(ClockProblem.ID).log("BTN PLAY");
+            KioApi.log(ClockProblem.ID, "BTN PLAY");
             TransmissionMechanism.instance.playStop();
         }, false);
         addChild(_playButton);
 
         _stopButton = createButton("stop", 5, 85, function (event:MouseEvent):void {
-            KioApi.instance(ClockProblem.ID).log("BTN STOP");
+            KioApi.log(ClockProblem.ID, "BTN STOP");
             TransmissionMechanism.instance.playStop();
         }, false);
         addChild(_stopButton);
@@ -68,7 +68,7 @@ public class AnimatePanel extends AbstractPanel {
         _playButton.visible=true;
 
         addChild(createButton("reset", 5, 115, function (event:MouseEvent):void {
-            KioApi.instance(ClockProblem.ID).log("BTN RESET");
+            KioApi.log(ClockProblem.ID, "BTN RESET");
             TransmissionMechanism.instance.resetAlpha();
             TransmissionMechanism.instance.view.update();
             SettingsHolder.instance.levelImpl.resetListener();
@@ -78,7 +78,7 @@ public class AnimatePanel extends AbstractPanel {
 
     private function speedSelected(e:Event):void {
         SettingsHolder.instance.stepRotate = Number(_cbSpeed.selectedItem.data);
-        KioApi.instance(ClockProblem.ID).log("CHANGE SPEED @B", SettingsHolder.instance.stepRotate);
+        KioApi.log(ClockProblem.ID, "CHANGE SPEED @B", SettingsHolder.instance.stepRotate);
     }
 
     public function updateAnimateButtons():void {

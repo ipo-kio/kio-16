@@ -45,11 +45,13 @@ public class CutControls extends Sprite {
     public static const OFFCUTS_IND:int = 2;
     private var _field:CutPieceFieldView;
     private var _errors:TextField;
+    private var _level:int;
 
-    public function CutControls(w:int, h:int, field:CutPieceFieldView) {
+    public function CutControls(w:int, h:int, field:CutPieceFieldView, level:int) {
         _w = w;
         _h = h;
         _field = field;
+        _level = level;
 
         var buttonBuilder:ButtonBuilder = new ButtonBuilder();
         buttonBuilder.bgNormal = BT_N;
@@ -147,13 +149,13 @@ public class CutControls extends Sprite {
     }
 
     private function switchButtonClickHandler(event:MouseEvent):void {
-        KioApi.instance(CutProblem.ID).log('switch button ' + _field.cutsRegime ? 'to poly' : 'to cuts');
+        KioApi.log(CutProblem.ID, 'switch button ' + (_field.cutsRegime ? 'to poly' : 'to cuts'));
 
         _field.cutsRegime = !_field.cutsRegime;
     }
 
     private function clearButtonHandler(event:MouseEvent = null):void {
-        KioApi.instance(CutProblem.ID).log('clear button');
+        KioApi.log(CutProblem.ID, 'clear button');
 
         _field.cutsRegime = false;
         _field.piecesField.clearPieces();
@@ -162,7 +164,7 @@ public class CutControls extends Sprite {
     }
 
     public function resetCuts():void {
-        if (KioApi.instance(CutProblem.ID).problem.level == 0)
+        if (_level == 0)
             _field.resetCuts(0, _field.piecesField.m * CutsFieldView.SCALE, 2, 2);
         else
             _field.resetCuts(5, _field.piecesField.m * CutsFieldView.SCALE - 5, 2, 2);

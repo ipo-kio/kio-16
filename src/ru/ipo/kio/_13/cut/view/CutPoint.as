@@ -31,12 +31,13 @@ public class CutPoint extends Sprite {
 
     private var moving:Boolean = false;
 
-    private const level:int = KioApi.instance(CutProblem.ID).problem.level;
+    private var _level:int;
 
-    public function CutPoint(field:CutsFieldView, cut:Cut, ind:int) {
+    public function CutPoint(field:CutsFieldView, cut:Cut, ind:int, level:int) {
         _field = field;
         _cut = cut;
         _ind = ind;
+        _level = level;
 
         draw();
         createHitArea();
@@ -69,13 +70,13 @@ public class CutPoint extends Sprite {
         if (!hitTestPoint(event.stageX, event.stageY))
             hitArea.visible = false;
 
-        KioApi.instance(CutProblem.ID).log('cut point mouse up');
+        KioApi.log(CutProblem.ID, 'cut point mouse up');
         moving = false;
     }
 
     private function mouseDown(event:MouseEvent):void {
         moving = true;
-        KioApi.instance(CutProblem.ID).log('cut point mouse down');
+        KioApi.log(CutProblem.ID, 'cut point mouse down');
     }
 
     private function mouseMove(event:MouseEvent):void {
@@ -89,7 +90,7 @@ public class CutPoint extends Sprite {
         var x:int = _field.screen2logicX(localX);
         var y:int = _field.screen2logicY(localY);
 
-        if (level == 0) {
+        if (_level == 0) {
             var otherP:FieldCords = _ind == 1 ? _cut.p2 : _cut.p1;
             var otherSideNum:int = sideNum(otherP.x, otherP.y);
             var thisSideNum:int = sideNum(x, y, otherSideNum);

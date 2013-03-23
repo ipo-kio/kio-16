@@ -40,7 +40,7 @@ public class CutProblem implements KioProblem {
         KioApi.registerLocalization(ID, KioApi.L_BG, new Settings(LOCALIZATION_BG).data);
         KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(LOCALIZATION_TH).data);
 
-        _workspace = new CutWorkspace();
+        _workspace = new CutWorkspace(this);
     }
 
     public function get id():String {
@@ -67,7 +67,7 @@ public class CutProblem implements KioProblem {
         if (! _workspace.load(solution))
             return false;
 
-        KioApi.instance(ID).autoSaveSolution();
+        KioApi.instance(this).autoSaveSolution();
         _workspace.updateCurrentResult();
 
         return true;

@@ -22,7 +22,7 @@ public class TransmissionMechanismView extends BasicView {
          if(e.ctrlKey){
              var newGear:TransferGear = new TransferGear(transmissionMechanism, e.stageX-110, e.stageY-10, 20, 10, ColorGenerator.nextHueOfColor(transmissionMechanism.transferGearList));
             transmissionMechanism.addTransferGear(newGear);
-             KioApi.instance(ClockProblem.ID).log("CREATE BY CLICK @SSS", newGear.id, e.stageX, e.stageY);
+             KioApi.log(ClockProblem.ID, "CREATE BY CLICK @SSS", newGear.id, e.stageX, e.stageY);
             transmissionMechanism.transferGearList[transmissionMechanism.transferGearList.length-1].view.update();
          }else{
              if(transmissionMechanism.getByCoord(e.stageX-parent.x-parent.parent.x-100, e.stageY-parent.y-parent.parent.y)==null){

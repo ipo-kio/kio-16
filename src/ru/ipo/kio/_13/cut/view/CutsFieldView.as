@@ -36,6 +36,7 @@ public class CutsFieldView extends Sprite {
     private const highlightLayer:Sprite = new Sprite();
     private const cutsLayer:Sprite = new Sprite();
     private const polygonsLayer:Sprite = new Sprite();
+    private var _level:int;
 
     //all cuts
     //highlight layer
@@ -44,10 +45,11 @@ public class CutsFieldView extends Sprite {
     //this - background
     //layers
 
-    public function CutsFieldView(m:int, n:int, field:CutsField) {
+    public function CutsFieldView(m:int, n:int, field:CutsField, level:int) {
         this._field = field;
         this._m = m;
         this._n = n;
+        _level = level;
 
         drawBackground();
 
@@ -123,8 +125,8 @@ public class CutsFieldView extends Sprite {
 
     private function putCutPoints():void {
         for each (var cut:Cut in _field.cuts) {
-            var point1:CutPoint = new CutPoint(this, cut, 1);
-            var point2:CutPoint = new CutPoint(this, cut, 2);
+            var point1:CutPoint = new CutPoint(this, cut, 1, _level);
+            var point2:CutPoint = new CutPoint(this, cut, 2, _level);
             cutsLayer.addChild(point1);
             cutsLayer.addChild(point2);
         }

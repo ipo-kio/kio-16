@@ -49,12 +49,16 @@ public class DebuggerControls extends Sprite {
     private var _manualRegime:Boolean = true;
     private var _enabled:Boolean = true;
 
-    private static const api:KioApi = KioApi.instance(BlocksProblem.ID);
+    private var api:KioApi;
+    private var _workspace:BlocksWorkspace;
 
-    function DebuggerControls(dbg:BlocksDebugger) {
+    function DebuggerControls(dbg:BlocksDebugger, workspace:BlocksWorkspace) {
+        _workspace = workspace;
+        api = _workspace.api;
+
         _dbg = dbg;
 
-        var level:int = KioApi.instance(BlocksProblem.ID).problem.level;
+        var level:int = api.problem.level;
 
         var skip:int = BUTTON_WIDTH + BUTTON_H_SKIP;
         addButton(loc.buttons.to_start, "start", BUTTON_X0, BUTTON_Y0);
@@ -200,16 +204,16 @@ public class DebuggerControls extends Sprite {
                 manualButton.visible = false;
                 stopManualButton.visible = true;
 
-                BlocksWorkspace.instance.manualRegime = true;
+                _workspace.manualRegime = true;
                 break;
             case "stop man":
                 manualButton.visible = true;
                 stopManualButton.visible = false;
 
-                BlocksWorkspace.instance.manualRegime = false;
+                _workspace.manualRegime = false;
                 break;
             case "clear":
-                BlocksWorkspace.instance.editor.editorField.text = "";
+                _workspace.editor.editorField.text = "";
                 break;
         }
     }
@@ -223,7 +227,7 @@ public class DebuggerControls extends Sprite {
         step = _dbg.step;
 
         var cmd:Command = _dbg.currentCommand;
-        var editor:Editor = BlocksWorkspace.instance.editor;
+        var editor:Editor = _workspace.editor;
         if (cmd == null)
             editor.setHighlight(-1);
         else

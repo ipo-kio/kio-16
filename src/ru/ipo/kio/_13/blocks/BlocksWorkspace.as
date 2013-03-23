@@ -21,6 +21,7 @@ import ru.ipo.kio._13.blocks.view.DebuggerView;
 import ru.ipo.kio._13.blocks.view.Editor;
 import ru.ipo.kio._13.cut.view.InfoPanel;
 import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.TextUtils;
 
 public class BlocksWorkspace extends Sprite {
@@ -30,24 +31,21 @@ public class BlocksWorkspace extends Sprite {
 
     public static const MANUAL_REGIME_EVENT:String = 'manual regime';
 
-    private static var _instance:BlocksWorkspace = null;
     private var _editor:Editor;
     private var _debuggerControls:DebuggerControls;
     private var _blocksDebugger:BlocksDebugger;
     private var _blocksSelector:BlocksSelector;
 
-    private const api:KioApi = KioApi.instance(BlocksProblem.ID);
+    private var _api:KioApi;
 
     private var _manualRegime:Boolean = false;
 
     private var _resultsInfo:InfoPanel;
     private var _recordInfo:InfoPanel;
 
-    public function BlocksWorkspace() {
-        if (_instance == null)
-            _instance = this;
-        else
-            throw new Error('Could not create the second instance of the Blocks Field');
+    public function BlocksWorkspace(problem:BlocksProblem) {
+
+        _api = KioApi.instance(problem);
 
         TextUtils.embedFonts();
 
@@ -55,11 +53,11 @@ public class BlocksWorkspace extends Sprite {
 
         initInfoFields();
 
-        _editor = new Editor(552, 100, api.problem.level == 0);
+        _editor = new Editor(this, 552, 100, _api.problem.level == 0);
 
         addChild(_editor);
 
-        switch(api.problem.level) {
+        switch(_api.problem.level) {
             case 0:
                 var field:BlocksField = new BlocksField(4, 6, [
                     [],
@@ -109,14 +107,14 @@ public class BlocksWorkspace extends Sprite {
                 break;
         }
 
-        _blocksSelector = new BlocksSelector(field.lines, field.cols, field.boundary, 4);
+        _blocksSelector = new BlocksSelector(field.lines, field.cols, field.boundary, 4, api);
         _blocksSelector.field = field.clone();
 
-        _blocksDebugger = new BlocksDebugger(field);
-        _debuggerControls = new DebuggerControls(_blocksDebugger);
+        _blocksDebugger = new BlocksDebugger(field, this);
+        _debuggerControls = new DebuggerControls(_blocksDebugger, this);
         addChild(_debuggerControls);
 
-        var dbgView:DebuggerView = new DebuggerView(_blocksDebugger);
+        var dbgView:DebuggerView = new DebuggerView(_blocksDebugger, this);
         addChild(dbgView);
 
         _debuggerControls.x = 0;
@@ -125,7 +123,7 @@ public class BlocksWorkspace extends Sprite {
         _editor.x = 4;
         _editor.y = _debuggerControls.y + _debuggerControls.height + 6;
 
-        if (api.problem.level == 0) {
+        if (_api.problem.level == 0) {
             _editor.editorField.type = TextFieldType.DYNAMIC;
             _editor.editorField.selectable = false;
         }
@@ -137,12 +135,12 @@ public class BlocksWorkspace extends Sprite {
 
         _blocksSelector.addEventListener(Event.CHANGE, blocksChangeHandler);
 
-        api.addEventListener(KioApi.RECORD_EVENT, apiRecordHandler);
+        _api.addEventListener(KioApi.RECORD_EVENT, apiRecordHandler);
     }
 
     private function initInfoFields():void {
-        var loc:Object = api.localization;
-        var labels:Array = api.problem.level == 0 ?
+        var loc:Object = _api.localization;
+        var labels:Array = _api.problem.level == 0 ?
                 [loc.labels.in_place, loc.labels.penalty, loc.labels.steps] :
                 [loc.labels.in_place, loc.labels.prg_len, loc.labels.steps];
         _resultsInfo = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0x000000, 1.2, loc.labels.result, labels, 300);
@@ -161,10 +159,6 @@ public class BlocksWorkspace extends Sprite {
     private function blocksChangeHandler(event:Event):void {
         _blocksDebugger.initialField = _blocksSelector.field.clone();
 //        _debuggerControls.enabled = _blocksDebugger.validateFieldBlocks() == null;
-    }
-
-    public static function get instance():BlocksWorkspace {
-        return _instance;
     }
 
     public function get editor():Editor {
@@ -189,7 +183,7 @@ public class BlocksWorkspace extends Sprite {
     public function displayResult(result:Object, isRecord:Boolean = false):void {
         var panel:InfoPanel = isRecord ? _recordInfo : _resultsInfo;
         panel.setValue(0, result.in_place);
-        if (api.problem.level == 0)
+        if (_api.problem.level == 0)
             panel.setValue(1, result.penalty);
         else
             panel.setValue(1, result.prg_len);
@@ -207,18 +201,22 @@ public class BlocksWorkspace extends Sprite {
     private function apiRecordHandler(event:Event):void {
         var result:Object = _blocksDebugger.getResult();
         displayResult(result, true); //TODO implement passing this result in API
-        if (api.problem.level == 0)
-            api.log('new record @BSSt', result.in_place, result.penalty, result.steps, _editor.editorField.text);
-        else if (api.problem.level == 1)
-            api.log('new record @BSSt', result.in_place, result.prg_len, result.steps, _editor.editorField.text);
+        if (_api.problem.level == 0)
+            _api.log('new record @BSSt', result.in_place, result.penalty, result.steps, _editor.editorField.text);
+        else if (_api.problem.level == 1)
+            _api.log('new record @BSSt', result.in_place, result.prg_len, result.steps, _editor.editorField.text);
         else
-            api.log('new record @BSStt',
+            _api.log('new record @BSStt',
                     result.in_place,
                     result.prg_len,
                     result.steps,
                     _editor.editorField.text,
                     _blocksDebugger.initialField.logRepresentation
             );
+    }
+
+    public function get api():KioApi {
+        return _api;
     }
 
 }

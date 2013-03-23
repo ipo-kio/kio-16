@@ -51,16 +51,16 @@ public class KioApi extends EventDispatcher {
      * @param problem регистрируемая задача
      */
     public static function initialize(problem:KioProblem):void {
-        apis[problem.id] = new KioApi(problem);
+        apis[problem] = new KioApi(problem);
     }
 
     /**
      * Позволяет обратиться к api задачи по ее id
-     * @param id
+     * @param problem
      * @return
      */
-    public static function instance(id:String):KioApi {
-        return apis[id];
+    public static function instance(problem:KioProblem):KioApi {
+        return apis[problem];
     }
 
     /**
@@ -116,6 +116,10 @@ public class KioApi extends EventDispatcher {
         KioBase.instance.log(problem.id + ': ' + msg, args);
     }
 
+    public static function log(id:String, msg:String, ...args):void {
+        KioBase.instance.log(id + ': ' + msg, args);
+    }
+
     public function logSize():int {
         return settings.__problem_log__.length;
     }
@@ -126,7 +130,7 @@ public class KioApi extends EventDispatcher {
      * этот метод. Он сохранит текущее решение. При загрузке оно насильно будет загружено в программу.
      */
     public function autoSaveSolution():void {
-        if (! _problem.display || ! _problem.display.stage)
+        if (! _problem.display || ! _problem.display.stage || _isChecker)
             return;
 
         problemData.autoSave = _problem.solution;
@@ -172,6 +176,10 @@ public class KioApi extends EventDispatcher {
      */
     public function get record_result():Object {
         return _record_result;
+    }
+
+    public function resetRecordResult():void {
+        _record_result = null;
     }
 
     private function get problemData():Object {
@@ -240,6 +248,10 @@ public class KioApi extends EventDispatcher {
 
     public static function set isChecker(isChecker:Boolean):void {
         _isChecker = isChecker;
+    }
+
+    public static function clearInstance():void {
+        apis = new Dictionary();
     }
 }
 }
