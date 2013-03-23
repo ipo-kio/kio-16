@@ -16,8 +16,6 @@ import flash.text.TextFormat;
 
 import mx.core.BitmapAsset;
 
-import ru.ipo.kio._13.blocks.BlocksProblem;
-
 import ru.ipo.kio._13.blocks.BlocksWorkspace;
 
 import ru.ipo.kio._13.blocks.model.Block;
@@ -26,7 +24,6 @@ import ru.ipo.kio._13.blocks.model.BlocksDebugger;
 import ru.ipo.kio._13.blocks.model.BlocksField;
 import ru.ipo.kio._13.blocks.model.FieldChangeEvent;
 import ru.ipo.kio._13.blocks.parser.Command;
-import ru.ipo.kio.api.KioApi;
 
 public class DebuggerView extends Sprite {
 
@@ -73,11 +70,13 @@ public class DebuggerView extends Sprite {
     private var manualField:BlocksField;
 
     private var blocksCountFailField:TextField;
+    private var _workspace:BlocksWorkspace;
 
-    public function DebuggerView(dbg:BlocksDebugger) {
+    public function DebuggerView(dbg:BlocksDebugger, workspace: BlocksWorkspace) {
         _dbg = dbg;
+        _workspace = workspace;
 
-        if (KioApi.instance(BlocksProblem.ID).problem.level == 0)
+        if (_workspace.api.problem.level == 0)
             BLOCKS_LEFT += 2 * BLOCK_WIDTH;
 
         drawBackground();
@@ -91,7 +90,6 @@ public class DebuggerView extends Sprite {
         addChild(movingLayer);
 
         _dbg.addEventListener(FieldChangeEvent.FIELD_CHANGED, startAnimation);
-        var workspace:BlocksWorkspace = BlocksWorkspace.instance;
         workspace.addEventListener(BlocksWorkspace.MANUAL_REGIME_EVENT, manualRegimeChangeHandler);
         workspace.editor.addEventListener(FieldChangeEvent.FIELD_CHANGED, startAnimation); //fired in manual regime
 
@@ -287,8 +285,7 @@ public class DebuggerView extends Sprite {
     }
 
     private function manualRegimeChangeHandler(event:Event):void {
-        var workspace:BlocksWorkspace = BlocksWorkspace.instance;
-        if (workspace.manualRegime)
+        if (_workspace.manualRegime)
             startManualRegime(_dbg.currentField.clone());
         else
             stopManualRegime();

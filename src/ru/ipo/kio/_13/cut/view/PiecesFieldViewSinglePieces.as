@@ -105,7 +105,7 @@ public class PiecesFieldViewSinglePieces extends PiecesFieldView {
         var piece:Piece;
 
         if (isEmpty(x, y)) {
-            KioApi.instance(CutProblem.ID).log('click on empty block');
+            KioApi.log(CutProblem.ID, 'click on empty block');
 
             var zeroCords:FieldCords = new FieldCords(0, 0);
             if (_field.blocksCount >= MAX_PIECES)
@@ -114,7 +114,7 @@ public class PiecesFieldViewSinglePieces extends PiecesFieldView {
             piece.move(x, y);
             _field.addPiece(piece);
         } else {
-            KioApi.instance(CutProblem.ID).log('click to remove block');
+            KioApi.log(CutProblem.ID, 'click to remove block');
 
             var cords:FieldCords = new FieldCords(x, y);
             //remove the piece

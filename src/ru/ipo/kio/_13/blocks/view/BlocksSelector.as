@@ -10,8 +10,6 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 
-import ru.ipo.kio._13.blocks.BlocksProblem;
-
 import ru.ipo.kio._13.blocks.model.Block;
 
 import ru.ipo.kio._13.blocks.model.BlocksField;
@@ -33,9 +31,11 @@ public class BlocksSelector extends Sprite {
     private var _field:BlocksField;
     private var _maxCols:int;
 
-    private static const api:KioApi = KioApi.instance(BlocksProblem.ID);
+    private var api:KioApi;
 
-    public function BlocksSelector(lines:int, cols:int, boundaryX:int, maxCols:int) {
+    public function BlocksSelector(lines:int, cols:int, boundaryX:int, maxCols:int, api:KioApi) {
+        this.api = api;
+
         var blocks:Array = [];
         for (var i:int = 0; i < cols; i++)
             blocks.push([]);

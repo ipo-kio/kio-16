@@ -14,14 +14,13 @@ import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 import flash.text.TextFieldType;
 
-import ru.ipo.kio._13.blocks.BlocksProblem;
+import ru.ipo.kio._13.blocks.BlocksWorkspace;
 
 import ru.ipo.kio.api.KioApi;
 
 public class Editor extends Sprite {
 
     private var _editorField:EditorField;
-    private var _scroll:UIScrollBar;
     private var _keyboard:SoftKeyboard;
     private var leftBracket:SymbolSelector;
     private var rightBracket:SymbolSelector;
@@ -32,12 +31,15 @@ public class Editor extends Sprite {
 
     private var _enabled:Boolean = true;
 
-    private static const api:KioApi = KioApi.instance(BlocksProblem.ID);
+    private var api:KioApi;
+    private var _workspace:BlocksWorkspace;
 
-    public function Editor(width:int, height:int, simple:Boolean = false) {
+    public function Editor(workspace:BlocksWorkspace, width:int, height:int, simple:Boolean = false) {
+        _workspace = workspace;
+        this.api = _workspace.api;
         _editorField = new EditorField(width, height, simple);
         addChild(_editorField);
-        _scroll = new UIScrollBar();
+        var _scroll:UIScrollBar = new UIScrollBar();
         _scroll.height = height;
         addChild(_scroll);
         _scroll.scrollTarget = _editorField;
@@ -59,7 +61,7 @@ public class Editor extends Sprite {
         _editorField.addEventListener(Event.SCROLL, caretMovedHandler);
         _editorField.addEventListener(Event.CHANGE, caretMovedHandler);
 
-        _keyboard = new SoftKeyboard(this, simple);
+        _keyboard = new SoftKeyboard(this, simple, _workspace);
         _keyboard.x = 0;
         _keyboard.y = height;
         addChild(_keyboard);
@@ -181,10 +183,6 @@ public class Editor extends Sprite {
 
     public function get editorField():EditorField {
         return _editorField;
-    }
-
-    public function get enabled():Boolean {
-        return _enabled;
     }
 
     public function set enabled(enabled:Boolean):void {

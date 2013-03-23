@@ -1,7 +1,7 @@
 /**
- * Бин для хранения настроек приложения
+ * пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  *
- * Содержит настройки для отладки, специфицеские настройки для уровней хранятся в _levelImpl
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ _levelImpl
  *
  * @author: Vasiliy
  * @date: 08.01.13
@@ -26,6 +26,10 @@ public class SettingsHolder {
     private var _maxDiv:Number=3;
 
     private var _levelImpl:ITaskLevel;
+
+    public static function clearInstance():void {
+        _instance = null;
+    }
     
     public static function get instance():SettingsHolder {
         if(SettingsHolder._instance == null)
@@ -82,9 +86,9 @@ public class SettingsHolder {
     }
     
     public function registerLevelImpl(levelImpl:ITaskLevel):void{
-        if(_levelImpl!=null){
-            throw new Error("level implementation is already registered");
-        }
+//        if(_levelImpl!=null){
+//            throw new Error("level implementation is already registered");
+//        }
         _levelImpl = levelImpl;
     }
     

@@ -31,9 +31,11 @@ public class CutWorkspace extends Sprite {
 
     private var loadingProcess:Boolean = false;
 
-    private static const api:KioApi = KioApi.instance(CutProblem.ID);
+    private var api:KioApi;
 
-    public function CutWorkspace() {
+    public function CutWorkspace(problem:CutProblem) {
+        api = KioApi.instance(problem);
+
         TextUtils.embedFonts();
 
         addChild(new BG_CLS);
@@ -43,9 +45,9 @@ public class CutWorkspace extends Sprite {
         for (var i:int = 0; i < CUTS_COUNT; i++)
             cuts.push(new Cut);
 
-        field = new CutPieceFieldView(M, N, cuts);
+        field = new CutPieceFieldView(M, N, cuts, api.problem.level);
 
-        cutControls = new CutControls(CONTROLS_WIDTH, M * PiecesFieldView.CELL_HEIGHT + 6, field);
+        cutControls = new CutControls(CONTROLS_WIDTH, M * PiecesFieldView.CELL_HEIGHT + 6, field, api.problem.level);
         cutControls.x = 15;
         cutControls.y = 20 - 3;
         addChild(cutControls);

@@ -110,7 +110,7 @@ public class TransferGearViewSide extends BasicView {
             if(e.charCode==13){
                 var newValue:int = new Number(field.text);
                 var part:String = upper?"UP":"DOWN";
-                KioApi.instance(ClockProblem.ID).log("VIEW2 INPUT "+part+" @St", transferGear.id, newValue);
+                KioApi.log(ClockProblem.ID, "VIEW2 INPUT "+part+" @St", transferGear.id, newValue);
                 if(newValue<8){
                     ClockSprite.instance.showError(KioApi.getLocalization(ClockProblem.ID).messages.tooSmall);
                     return;
