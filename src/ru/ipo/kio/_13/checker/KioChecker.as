@@ -301,7 +301,7 @@ public class KioChecker extends Sprite {
         for each (l in [0, 1, 2])
             for each (var c:Object in certificates[l])
                 if (!OUTPUT_ONLY_NEW_CERTS || new_checked_logins.indexOf(c._login) != -1)
-                    write(c._login + '.kio-certificate', JSON_k.encode(sign(c)));
+                    write(removeSqBrackets(c._login) + '.kio-certificate', JSON_k.encode(sign(c)));
         for each (l in [0, 1, 2])
             makeTable(l, certificates[l], levelProblems[l], levelProblemHeaders[l]);
 
@@ -309,6 +309,11 @@ public class KioChecker extends Sprite {
         var zipOut:FileReference = new FileReference();
         var date:Date = new Date();
         zipOut.save(output.byteArray, "checker" + '.' + FROM_ENTRY + ' - ' + last_cert + '.' + date.getDay() + '.' + date.getHours() + '.' + date.getMinutes() + ".zip");
+    }
+
+    //some logins that came from the tmp dir start with [] so we need to remove them
+    private static function removeSqBrackets(login:String):String {
+        return login.replace(/\[.+]/, '');
     }
 
     private static function addText(text:String, table:Object):void {
@@ -480,10 +485,6 @@ public class KioChecker extends Sprite {
             SettingsHolder.clearInstance();
             TransmissionMechanism.clearInstance();
             var problem:KioProblem = new problemClass(level);
-
-            if (login == 'alm-0005-056-29@kio-0' && problem.id == 'CLOCK') {
-                trace('here');
-            }
 
             //get and log problem title
             var problemLocalization:Object = KioApi.getLocalization(problem.id);

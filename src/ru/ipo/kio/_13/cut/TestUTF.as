@@ -24,6 +24,13 @@ import flash.utils.Timer;
 public class TestUTF extends Sprite {
     public function TestUTF() {
 
+        var login1:String = "ymn-0002-018-1.kio-1";
+        var login2:String = "[lh]alk-0012-004-2.kio-1";
+        trace(login1.replace(/\[.+]/, ''));
+        trace(login2.replace(/\[.+]/, ''));
+
+        return;
+
         testMemLeak();
 
         return;
