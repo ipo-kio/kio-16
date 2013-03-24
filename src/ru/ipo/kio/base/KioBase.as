@@ -5,6 +5,7 @@ import flash.display.Sprite;
 import flash.errors.IllegalOperationError;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
+import flash.events.MouseEvent;
 import flash.events.TimerEvent;
 import flash.text.TextField;
 import flash.utils.ByteArray;
@@ -42,7 +43,12 @@ public class KioBase {
     private var _problems_bg:DisplayObject;
     private var _problem_header:TextField = null;
 
+    private var _version_config:Object;
+
     private var spaceSettings:SpaceSettingsDialog = null;
+
+    [Embed(source="resources/version-config.json-settings", mimeType="application/octet-stream")]
+    public static var VERSION_CONFIG:Class;
 
     [Embed(source="loc/shell.ru.json-settings", mimeType="application/octet-stream")]
     public static var SHELL_RU:Class;
@@ -56,6 +62,8 @@ public class KioBase {
     public static var SHELL_TH:Class;
 
     public function KioBase() {
+        _version_config = new Settings(VERSION_CONFIG).data;
+
         KioApi.registerLocalization(BASE_API_ID, KioApi.L_RU, new Settings(SHELL_RU).data);
         KioApi.registerLocalization(BASE_API_ID, KioApi.L_ES, new Settings(SHELL_ES).data);
         KioApi.registerLocalization(BASE_API_ID, KioApi.L_BG, new Settings(SHELL_BG).data);
@@ -97,8 +105,6 @@ public class KioBase {
                 currentDisplay = new MultipleUsersWelcomeDisplay;
                 break;
         }
-
-        initLogOutputListener();
     }
 
     public function initOneProblem(stage:DisplayObjectContainer, problem:KioProblem):void {
@@ -107,15 +113,32 @@ public class KioBase {
         //this index will be needed in setting of current problem
         _lsoProxy.setOneProblemDebugRegime();
         currentProblem = problem;
-
-        initLogOutputListener();
     }
 
-    private function initLogOutputListener():void {
-        stage.addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void {
-            if (event.altKey && event.ctrlKey && event.keyCode == 'L'.charCodeAt())
-                FileUtils.saveLog();
-        });
+    private var _mouseKeyboardLoggersInitialized:Boolean = false;
+    public function initMouseKeyboardLoggers():void {
+        if (_version_config.log_mouse_and_keyboard_level == 0)
+            return;
+
+        if (_mouseKeyboardLoggersInitialized)
+            return;
+        else
+            _mouseKeyboardLoggersInitialized = true;
+
+        if (_version_config.log_mouse_and_keyboard_level == 2)
+            stage.addEventListener(MouseEvent.MOUSE_MOVE, logMouseEvent, false, 10);
+        stage.addEventListener(MouseEvent.MOUSE_DOWN, logMouseEvent, false, 10);
+        stage.addEventListener(MouseEvent.MOUSE_UP, logMouseEvent, false, 10);
+        stage.addEventListener(KeyboardEvent.KEY_DOWN, logKeyboardEvent, false, 10);
+        stage.addEventListener(KeyboardEvent.KEY_UP, logKeyboardEvent, false, 10);
+    }
+
+    private function logMouseEvent(event:MouseEvent):void {
+        log('mouse event ' + event.type + '@ii', [event.stageX, event.stageY]);
+    }
+
+    private function logKeyboardEvent(event:KeyboardEvent):void {
+        log('keyboard event ' + event.type + '@II', [event.keyCode, event.charCode]);
     }
 
     public function checkProblem(stage:DisplayObjectContainer, problem:KioProblem, data:*):void {
@@ -529,5 +552,8 @@ public class KioBase {
         return result;
     }
 
+    public function get version_config():Object {
+        return _version_config;
+    }
 }
 }

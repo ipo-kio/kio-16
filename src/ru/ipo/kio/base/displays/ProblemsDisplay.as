@@ -111,14 +111,13 @@ public class ProblemsDisplay extends Sprite {
         helpButton.y = GlobalMetrics.STAGE_HEIGHT - GlobalMetrics.H_PADDING - helpButton.height;
         addChild(helpButton);
         helpButton.addEventListener(MouseEvent.CLICK, helpButtonClick);
+
+        KioBase.instance.initMouseKeyboardLoggers();
     }
 
     private function helpButtonClick(event:Event):void {
         KioBase.instance.log('BTN help in problems', []);
         KioBase.instance.currentDisplay = new HelpDisplay(null, false);
-
-        //TODO DON'T FORGET TO REMOVE
-//        FileUtils.saveLog();
     }
 
     private function saveButtonClick(event:Event):void {

@@ -272,20 +272,9 @@ public class TransmissionMechanism {
                 second = temp;
             }
 
-            var fbigY:Boolean=true;
-            if(first.y<second.y){
-              fbigY=false;
-            }
-            
             var alpha:Number = Math.atan((first.y-second.y)/(first.x-second.x));
 
             var y :Number= (first.y+first.getRadius()*Math.sin(alpha)+second.y-second.getRadius()*Math.sin(alpha))/2;
-
-
-            if(!fbigY){
-                y = (first.y-first.getRadius()*Math.sin(alpha)+second.y+second.getRadius()*Math.sin(alpha))/2;
-            }
-
             return {x:(first.x+first.getRadius()*Math.cos(alpha)+second.x-second.getRadius()*Math.cos(alpha))/2,
                 y:y};
         }
