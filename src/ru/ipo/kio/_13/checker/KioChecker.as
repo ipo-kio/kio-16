@@ -51,6 +51,7 @@ public class KioChecker extends Sprite {
     private static var FROM_ENTRY:int = 0;
     private static var TO_ENTRY:int = 50;
     private static const NEED_RESULTS:Boolean = true; //need create csv files with results
+    private static const OUTPUT_LOGS:Boolean = true; //output only logs
     private static const OUTPUT_ONLY_NEW_CERTS:Boolean = false;
 
     private var old_checked_logins:Array = [];
@@ -462,6 +463,29 @@ public class KioChecker extends Sprite {
         if (!data.kio_base) {
             log('No kio_base entry for login: ' + login);
             return null;
+        }
+
+        if (OUTPUT_LOGS) {
+            if (!data.kio_base.log) {
+                write(login + '.log.csv', 'no log');
+                return null;
+            }
+
+            var userLog:String = '';
+            KioBase.instance.outputLog(function(time:Number, cmd:String, extraArgs:Array):void {
+                var d:Date = new Date();
+                d.setTime(time);
+                userLog += time + ';' + d + ';' + cmd;
+
+                if (extraArgs.length > 0)
+                    for each (var arg:* in extraArgs)
+                        userLog += ";" + arg;
+
+                userLog += "\n";
+            }, data.kio_base.log);
+            write(login + '.log.csv', userLog);
+
+            return null; //TODO report return; works with :Object function
         }
 
         var level:int = data.kio_base.level;

@@ -460,12 +460,14 @@ public class KioBase {
         log.last_log_time = 0;
     }
 
-    public function outputLog(callback:Function):void {
-        var globalData:Object = lsoProxy.getGlobalData();
-        var log:Object = globalData.log;
+    public function outputLog(callback:Function, log:Object = null):void {
+        if (log == null) {
+            var globalData:Object = lsoProxy.getGlobalData();
+            var log:Object = globalData.log;
 
-        if (log == null)
-            return;
+            if (log == null)
+                return;
+        }
 
         var data:ByteArray = log.data;
         var pos:uint = data.position;
@@ -514,6 +516,11 @@ public class KioBase {
                         extraArguments = readExtraArguments(spec, data);
                     else
                         extraArguments = [];
+
+                    //filter command
+                    var at_pos:int = command.lastIndexOf('@');
+                    if (at_pos >= 0)
+                        command = command.substring(0, at_pos).replace(/\s+$/g, ''); //replace = trim right
 
                     callback(time, command, extraArguments);
             }
