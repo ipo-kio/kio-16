@@ -5,8 +5,10 @@
  * Time: 12:52
  */
 package ru.ipo.kio._13.blocks {
+import flash.display.SimpleButton;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.MouseEvent;
 import flash.text.TextFieldType;
 
 import ru.ipo.kio._13.blocks.model.Block;
@@ -21,8 +23,8 @@ import ru.ipo.kio._13.blocks.view.DebuggerView;
 import ru.ipo.kio._13.blocks.view.Editor;
 import ru.ipo.kio._13.cut.view.InfoPanel;
 import ru.ipo.kio.api.KioApi;
-import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.TextUtils;
+import ru.ipo.kio.base.displays.ShellButton;
 
 public class BlocksWorkspace extends Sprite {
 
@@ -42,6 +44,8 @@ public class BlocksWorkspace extends Sprite {
 
     private var _resultsInfo:InfoPanel;
     private var _recordInfo:InfoPanel;
+
+    public const ANY_NUMBER_OF_BLOCKS:Boolean = true;
 
     public function BlocksWorkspace(problem:BlocksProblem) {
 
@@ -154,6 +158,24 @@ public class BlocksWorkspace extends Sprite {
         _recordInfo.x = 400;
         _recordInfo.y = 510;
         addChild(_recordInfo);
+
+        if (ANY_NUMBER_OF_BLOCKS) {
+            var resetRecord:SimpleButton = new ShellButton("Очистить"); //TODO move to messages
+            resetRecord.x = 480;
+            resetRecord.y = 510;
+            resetRecord.addEventListener(MouseEvent.CLICK, function(event:Event):void {
+                api.log('reset record');
+                api.resetRecordResult();
+                var zeroResult:Object = {
+                    in_place: 0,
+                    prg_len: 0,
+                    steps : 0
+                };
+                api.submitResult(zeroResult);
+                displayResult(zeroResult, true);
+            });
+            addChild(resetRecord);
+        }
     }
 
     private function blocksChangeHandler(event:Event):void {
