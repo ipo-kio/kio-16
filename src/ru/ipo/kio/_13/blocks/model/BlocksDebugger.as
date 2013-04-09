@@ -47,6 +47,8 @@ public class BlocksDebugger extends EventDispatcher {
 
     private var _workspace:BlocksWorkspace;
 
+    private const DO_NOT_TEST_BLOCKS_COUNT:Boolean = true;
+
     public function BlocksDebugger(initialField:BlocksField, workspace:BlocksWorkspace) {
         _workspace = workspace;
         api = _workspace.api;
@@ -84,7 +86,7 @@ public class BlocksDebugger extends EventDispatcher {
     }
 
     public function validateFieldBlocks():String {
-        if (api.problem.level != 2)
+        if (api.problem.level != 2 || DO_NOT_TEST_BLOCKS_COUNT)
             return null;
 
         var blocks:int = 0;
