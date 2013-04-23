@@ -18,7 +18,7 @@ public class BlocksRunner extends Sprite {
     private function init(e:Event = null):void {
         removeEventListener(Event.ADDED_TO_STAGE, init);
 
-        KioApi.language = KioApi.L_RU;
+        KioApi.language = KioApi.L_EN;
 
         //Запускаем задачу. Метод initOneProblem() специально сделан для отладки одной задачи.
         //Первый параметр - текущий спрайт, второй параметр - задача

@@ -5,7 +5,6 @@
  * Time: 17:07
  */
 package ru.ipo.kio._13.checker {
-import ru.ipo.kio._12.checker.*;
 
 import com.adobe.serialization.json.JSON_k;
 
@@ -36,31 +35,30 @@ import flash.utils.ByteArray;
 import mx.core.BitmapAsset;
 import mx.graphics.codec.PNGEncoder;
 
-import ru.ipo.kio._12.diamond.DiamondProblem;
+import ru.ipo.kio._13.blocks.BlocksProblem;
+import ru.ipo.kio._13.clock.ClockProblem;
 
-import ru.ipo.kio._12.futurama.FuturamaProblem;
-import ru.ipo.kio._12.stagelights.StagelightsProblem;
-import ru.ipo.kio._12.train.TrainProblem;
+import ru.ipo.kio._13.cut.CutProblem;
 
 import ru.ipo.kio.api.TextUtils;
 import ru.ipo.kio.base.displays.ShellButton;
 
 public class CertificateView extends Sprite {
 
-    private var WELCOME_MESSAGE:String = "<p class='h1' align='center'>Нажмите на любое место экрана, чтобы загрузить сертификат</p>";
-    private var LOADING_MESSAGE:String = "<p align='center' class='red'>Загрузка...</p>";
+    private const WELCOME_MESSAGE:String = "<p class='h1' align='center'>Нажмите на любое место экрана, чтобы загрузить сертификат</p>";
+    private const LOADING_MESSAGE:String = "<p align='center' class='red'>Загрузка...</p>";
 
-    [Embed(source="resources/Sertificat_007b.png")]
+    [Embed(source="resources/Sertificat_001b.png")]
     private static var CERT_IMAGE:Class;
     private var IMG_CERT:BitmapAsset = new CERT_IMAGE;
 
-    [Embed(source="resources/Sertificat_008male.png")]
+/*    [Embed(source="resources/Sertificat_008male.png")]
     private static var CERT_IMAGE_TEACHER_MALE:Class;
-    private var IMG_CERT_TEACHER_MALE:BitmapAsset = new CERT_IMAGE_TEACHER_MALE;
+    private const IMG_CERT_TEACHER_MALE:BitmapAsset = new CERT_IMAGE_TEACHER_MALE;
 
     [Embed(source="resources/Sertificat_008female.png")]
     private static var CERT_IMAGE_TEACHER_FEMALE:Class;
-    private var IMG_CERT_TEACHER_FEMALE:BitmapAsset = new CERT_IMAGE_TEACHER_FEMALE;
+    private const IMG_CERT_TEACHER_FEMALE:BitmapAsset = new CERT_IMAGE_TEACHER_FEMALE;*/
 
     [Embed(systemFont="Arial", fontName="KioArial", embedAsCFF = "false", mimeType="application/x-font")]
     private static var ARIAL_NORMAL_FONT:Class;
@@ -384,9 +382,10 @@ public class CertificateView extends Sprite {
         }
 
         var img_asset:BitmapAsset;
-        if (isTeacher(certificate))
+        //TODO select here teachers bg
+        /*if (isTeacher(certificate))
             img_asset = isMale(certificate) ? IMG_CERT_TEACHER_MALE : IMG_CERT_TEACHER_FEMALE;
-        else
+        else*/
             img_asset = IMG_CERT;
 
         img = img_asset.bitmapData;
@@ -458,7 +457,7 @@ public class CertificateView extends Sprite {
             fi.x = 0;
             fi.width = img.width;
             fi.y = 1761 - info_size;
-            fi.text = 'и математике «Конструируй! Исследуй! Оптимизируй!» (КИО-2012)';
+            fi.text = 'и математике «Конструируй! Исследуй! Оптимизируй!» (КИО-2013)';
             certificatePanel.addChild(fi);
 
             fi = TextUtils.createTextFieldWithFont('KioAmbassadore', info_size * AMBASSADORE_HEIGHT_OVER_ACCENT, false, true);
@@ -490,40 +489,75 @@ public class CertificateView extends Sprite {
         }
 
         if (!isTeacher(certificate)) {
-            //futurama problem
-            displayProblemInfo(2101, "Обмен телами", [
-                "Обменов: " + o(certificate, FuturamaProblem.ID, 'length')
-            ], certificate[FuturamaProblem.ID + '_scores']);
 
-            //diamond problem
-            if (certificate._level == 0) {
-                displayProblemInfo(2227, "Человек-невидимка", [
-                    "Фокус 1: " + o(certificate, StagelightsProblem.ID, 'firstMax') + '%',
-                    "Фокус 2: " + o(certificate, StagelightsProblem.ID, 'secondMax') + '%'
-                ], certificate[StagelightsProblem.ID + '_scores']);
-            } else if (certificate._level == 1) {
-                displayProblemInfo(2227, "Алмаз и лазер", [
-                    "Точек: " + o(certificate, DiamondProblem.ID, 'points'),
-                    "Равномерность: " + truncate_long_num(o(certificate, DiamondProblem.ID, 'disp'))
-                ], certificate[DiamondProblem.ID + '_scores']);
-            } else if (certificate._level == 2) {
-                displayProblemInfo(2227, "Огранка бриллианта", [
-                    "Яркость: " + truncate_long_num(o(certificate, DiamondProblem.ID, 'light'))
-                ], certificate[DiamondProblem.ID + '_scores']);
+            //cuts problem
+
+            var cutsTitle:String;
+            switch (certificate._level) {
+                case 0: cutsTitle = 'Разрезание'; break;
+                case 1: cutsTitle = 'Меньше отходов!'; break;
+                case 2: cutsTitle = 'Оптимальный раскрой'; break;
             }
 
-            //trains problem
-            if (certificate._level != 2) {
-                displayProblemInfo(2353, "Трамваи", [
-                    "Пассажиры: " + o(certificate, TrainProblem.ID, 'happyPassengers'),
-                    "Время: " + o(certificate, TrainProblem.ID, 'time')
-                ], certificate[TrainProblem.ID + '_scores']);
-            } else {
-                displayProblemInfo(2353, "Трамвайные маршруты", [
-                    "Пассажиры: " + o(certificate, TrainProblem.ID, 'happyPassengers'),
-                    "Время: " + o(certificate, TrainProblem.ID, 'time')
-                ], certificate[TrainProblem.ID + '_scores']);
+            displayProblemInfo(2021, cutsTitle, [
+                "Многоугольников: " + o(certificate, CutProblem.ID, 'polys'),
+                "Площадь: " + o(certificate, CutProblem.ID, 'pieces'),
+                "Обрезков: " + o(certificate, CutProblem.ID, 'offcuts')
+            ], certificate[CutProblem.ID + '_scores']);
+
+            //blocks problem
+
+            var blocksTitle:String;
+            switch  (certificate._level) {
+                case 0: blocksTitle = 'Кран'; break;
+                case 1: blocksTitle = 'Кран-автомат'; break;
+                case 2: blocksTitle = 'Погрузка контейнеров'; break;
             }
+
+            displayProblemInfo(2187, blocksTitle, [
+                "Блоков на месте: " + o(certificate, BlocksProblem.ID, 'in_place'),
+                certificate._level == 0 ?
+                "Штрафных баллов: " + o(certificate, BlocksProblem.ID, 'penalty') :
+                "Длина программы: " + o(certificate, BlocksProblem.ID, 'prg_len'),
+                "Шагов программы: " + o(certificate, BlocksProblem.ID, 'steps')
+            ], certificate[BlocksProblem.ID + '_scores']);
+
+            //clock problem
+
+            var clockTitle:String;
+            switch  (certificate._level) {
+                case 0: clockTitle = 'Часы'; break;
+                case 1: clockTitle = 'Часы-ежедневник'; break;
+                case 2: clockTitle = 'Часы-календарь'; break;
+            }
+
+            var err:String = '-';
+            var size:String = '-';
+
+            if (ClockProblem.ID in certificate && certificate[ClockProblem.ID] && 'absTransmissionError' in certificate[ClockProblem.ID]) {
+                var errN:Number = certificate[ClockProblem.ID].absTransmissionError;
+
+                if (certificate._level == 1)
+                    errN /= 1000;
+                if (certificate._level == 0)
+                    errN /= 10;
+
+                err = errN.toFixed(3) + '%';
+                if (certificate[ClockProblem.ID].finished) {
+                    if (certificate._level == 0)
+                        size = Math.floor(certificate[ClockProblem.ID].square / 10000) + 'x' +
+                                Math.floor(certificate[ClockProblem.ID].square / 100) % 100 + 'x' +
+                                Math.floor(certificate[ClockProblem.ID].square % 100);
+                    else
+                        size = certificate[ClockProblem.ID].square.toFixed(3);
+                }
+            }
+
+            displayProblemInfo(2353, clockTitle, [
+                "Погрешность: " + err,
+                "Размер корпуса: " + size
+            ], certificate[ClockProblem.ID + '_scores']);
+
         } else {
             //display position
             var pos:TextField = TextUtils.createTextFieldWithFont('KioArial', 50, true, true);
@@ -545,13 +579,21 @@ public class CertificateView extends Sprite {
         }
         else {
             delta_up = 0;
-            delta_right = 0;
+            delta_right = 100;
         }
 
-        drawSignature(IMG_BASHMAKOV, 1270 - 150 + delta_right, 2470 - delta_up);
-        drawSignature(IMG_POZDNKOV, 1175 - 150 + delta_right, 2660 - delta_up);
-        drawSignature(IMG_ROMANOVSKY, 995 - 200 + delta_right, 2780 - delta_up);
+        drawSignature(IMG_BASHMAKOV, 60 + 1270 - 150 + delta_right, 2470 - delta_up);
+        drawSignature(IMG_POZDNKOV, 60 + 1175 - 150 + delta_right, 2660 - delta_up);
+        drawSignature(IMG_ROMANOVSKY, 60 + 995 - 200 + delta_right, 2780 - delta_up);
         drawSignature(IMG_TEREKHOV, 1255 - 130 + delta_right, 3030 - delta_up);
+
+        fi = TextUtils.createTextFieldWithFont('KioAmbassadore', info_size, false, true);
+        fi.autoSize = TextFieldAutoSize.CENTER;
+        fi.x = 0;
+        fi.width = img.width;
+        fi.y = 3420;
+        fi.text = "№ сертификата: " + certificate2num(certificate);
+        certificatePanel.addChild(fi);
 
         /*
 
@@ -624,8 +666,8 @@ public class CertificateView extends Sprite {
         var mm:Matrix = new Matrix();
         mm.scale(5 / 7, 5 / 7);
         mm.translate(x0, y0);
-        g.beginBitmapFill(bmp, mm, false);
-        g.drawRect(x0, y0, bmp.width, bmp.height);
+        g.beginBitmapFill(bmp, mm, false, true);
+        g.drawRect(x0, y0, bmp.width * 5 / 7, +bmp.height * 5 / 7);
         g.endFill();
     }
 
@@ -733,7 +775,7 @@ public class CertificateView extends Sprite {
         certificatePanel.y = newY;
     }
 
-    private function makeWhiteTransparent(bmp:BitmapData):void {
+    private static function makeWhiteTransparent(bmp:BitmapData):void {
         bmp.threshold(
                 bmp,
                 new Rectangle(0, 0, bmp.width, bmp.height),
@@ -743,17 +785,43 @@ public class CertificateView extends Sprite {
                 );
     }
 
-    private function isMale(certificate:Object):Boolean {
+    private static function isMale(certificate:Object):Boolean {
         var s_n:String = certificate._anketa.second_name;
         return s_n.toLowerCase().charAt(s_n.length - 1) == 'ч'; //русское ч
     }
 
-    private function isTeacher(certificate:Object):Boolean {
+    private static function isTeacher(certificate:Object):Boolean {
         return certificate._is_teacher;
     }
 
     private static function needDisplayRank(certificate:Object):Boolean {
         return certificate._rank < 100;
+    }
+
+    private static function certificate2num(certificate:Object):String {
+        var name:String = certificate._anketa.name + certificate._anketa.surname;
+
+        name = name.toUpperCase();
+
+        var d:Number = 0;
+        for (var i:int = 0; i < name.length; i++) {
+            d *= 33;
+            d += name.charCodeAt(i) - 'А'.charCodeAt(0);
+        }
+
+        var num:String = d.toString(36).toUpperCase();
+        num = num.replace(/O/g, 'x');
+        while (num.length % 4 != 0)
+            num = '0' + num;
+
+        var res:String = '';
+        for (i = 0; i < num.length / 4; i++) {
+            if (res.length != 0)
+                res += '-';
+            res += num.substr(4 * i, 4);
+        }
+
+        return res;
     }
 
 }

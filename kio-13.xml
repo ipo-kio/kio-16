@@ -222,6 +222,12 @@
                 >
             <source-path path-element="${module.kio-13.basedir}/src"/>
             <default-size width="900" height="625"/>
+            <compiler.library-path dir="${module.kio-13.basedir}/src/ru/ipo/kio/_12/train/_resources/" append="true">
+                <include name="components.swc" />
+            </compiler.library-path>
+            <compiler.library-path dir="${FLEX_HOME}/frameworks/libs/" append="true">
+                <include name="framework.swc" />
+            </compiler.library-path>
         </mxmlc>
 
         <html-wrapper

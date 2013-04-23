@@ -287,7 +287,7 @@ public class KioChecker extends Sprite {
                 sortCertificatesAndFillScores(problem_l, certificates[l]);
 
         //sum scores in all certificates
-        for each (var level:int in [0, 1,2]) {
+        for each (var level:int in [0, 1, 2]) {
             for each (var cert:Object in certificates[level])
                 cert._scores = int(
                         cert[levelProblems[level][0].id + '_scores'] +
