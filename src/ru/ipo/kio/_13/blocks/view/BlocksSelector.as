@@ -105,6 +105,11 @@ public class BlocksSelector extends Sprite {
         if (col < 0 || col >= _field.cols)
             return;
 
+
+        processAction(col, line);
+    }
+
+    public function processAction(col:int, line:int):void {
         var column:Array = _field.getColumn(col);
 
         var b:Block;

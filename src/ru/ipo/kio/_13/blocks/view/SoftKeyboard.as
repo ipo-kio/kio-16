@@ -135,10 +135,17 @@ public class SoftKeyboard extends Sprite {
     private function button_clickHandler(event:MouseEvent):void {
         var action:String = event.target.action;
         var manual:Boolean = _workspace.manualRegime;
-        var level0:Boolean = api.problem.level == 0;
 
+        processAction(action, manual);
+        if (action.indexOf("num") == 0)
+            _editor.appendAtCaret(action.substr(3)); //3 = num.length
+
+        _editor.requestFocus();
+    }
+
+    public function processAction(action:String, manual:Boolean):void {
         api.log('button ' + action + (manual ? ' manual' : ''));
-
+        var level0:Boolean = api.problem.level == 0;
         switch (action) {
             case 'left':
                 if (manual)
@@ -188,11 +195,6 @@ public class SoftKeyboard extends Sprite {
                     _editor.undo(); //TODO make disabled if can not undo
                 break;
         }
-
-        if (action.indexOf("num") == 0)
-            _editor.appendAtCaret(action.substr(3)); //3 = num.length
-
-        _editor.requestFocus();
     }
 
     public function get controlsRegime():Boolean {

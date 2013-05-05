@@ -13,7 +13,7 @@ import flash.text.TextField;
 import flash.text.TextFieldType;
 import flash.ui.KeyboardType;
 
-import mx.events.DragEvent;
+
 
 import ru.ipo.kio._13.clock.ClockProblem;
 import ru.ipo.kio._13.clock.ClockSprite;

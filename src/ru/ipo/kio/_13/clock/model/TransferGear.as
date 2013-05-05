@@ -1,11 +1,13 @@
 package ru.ipo.kio._13.clock.model {
-import mx.utils.HSBColor;
+
 
 import ru.ipo.kio._13.clock.utils.MathUtils;
 
 import ru.ipo.kio._13.clock.view.BasicView;
 import ru.ipo.kio._13.clock.view.TransferGearView;
 import ru.ipo.kio._13.clock.view.TransferGearViewSide;
+
+import mx.utils.HSBColor;
 
 public class TransferGear {
     
