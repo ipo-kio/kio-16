@@ -67,6 +67,11 @@ public class Editor extends Sprite {
         addChild(_keyboard);
     }
 
+
+    public function get keyboard():SoftKeyboard {
+        return _keyboard;
+    }
+
     private function caretMovedHandler(event:Event):void {
         if (event instanceof KeyboardEvent)
             api.log('key in editor pressed');

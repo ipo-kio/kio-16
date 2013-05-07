@@ -9,6 +9,7 @@ import flash.display.Sprite;
 import flash.events.Event;
 
 import ru.ipo.kio._13.blocks.BlocksProblem;
+import ru.ipo.kio._13.blocks.logdebug.BlockLogHandler;
 import ru.ipo.kio._13.clock.ClockProblem;
 import ru.ipo.kio._13.cut.CutProblem;
 
@@ -33,7 +34,8 @@ public class KIOShell_0 extends Sprite {
         removeEventListener(Event.ADDED_TO_STAGE, init);
 
         KioApi.localizationSelfTest(KioApi.L_RU);
-
+        KioBase.instance.allowLogDebugger=true;
+        KioBase.instance.addLogDebuggerHandler(new BlockLogHandler());
         KioBase.instance.init(this,
                 [
                     new CutProblem(_level),

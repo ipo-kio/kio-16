@@ -8,7 +8,7 @@ import flash.crypto.generateRandomBytes;
 import flash.geom.Point;
 import flash.sampler.isGetterSetter;
 
-import mx.utils.object_proxy;
+
 
 import ru.ipo.kio._13.clock.model.SimpleGear;
 import ru.ipo.kio._13.clock.model.SettingsHolder;

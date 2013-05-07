@@ -31,6 +31,9 @@ ru.ipo.kio.base{
         public static const ANKETA_LEFT:int = 50;
         public static const ANKETA_BLOCK_SKIP:int = 30;
 
+        public static const DEBUGGER_Y : int = STAGE_HEIGHT;
+        public static const DEBUGGER_HEIGHT : int = 100;
+
 	}
 
 }

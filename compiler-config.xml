@@ -2,7 +2,8 @@
 <flex-config xmlns="http://www.adobe.com/2006/flex-config">
     <default-size>
         <width>900</width>
-        <height>625</height>
+        <!--add 100 px height for player-->
+        <height>725</height>
     </default-size>
     <static-link-runtime-shared-libraries>true</static-link-runtime-shared-libraries>
 </flex-config>

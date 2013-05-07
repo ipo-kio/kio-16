@@ -6,6 +6,7 @@ import flash.errors.IllegalOperationError;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
+import flash.events.PressAndTapGestureEvent;
 import flash.events.TimerEvent;
 import flash.text.TextField;
 import flash.utils.ByteArray;
@@ -18,6 +19,7 @@ import ru.ipo.kio.base.displays.MultipleUsersWelcomeDisplay;
 import ru.ipo.kio.base.displays.OneUserWelcomeDisplay;
 import ru.ipo.kio.base.displays.ProblemsDisplay;
 import ru.ipo.kio.base.displays.WelcomeDisplay;
+import ru.ipo.kio.base.logdebug.LogDebugger;
 import ru.ipo.kio.base.resources.Resources;
 
 /**
@@ -46,6 +48,10 @@ public class KioBase {
     private var _version_config:Object;
 
     private var spaceSettings:SpaceSettingsDialog = null;
+
+    private var _allowLogDebugger:Boolean = false;
+    private var logDebugger:LogDebugger = new LogDebugger();
+    private var logDebuggerDisplay:Sprite = null;
 
     [Embed(source="resources/version-config.json-settings", mimeType="application/octet-stream")]
     public static var VERSION_CONFIG:Class;
@@ -93,6 +99,11 @@ public class KioBase {
     public function init(stage:DisplayObjectContainer, problems:Array, year:int, level:int):void {
         basicInitialization(level, year, stage, problems);
 
+        if(allowLogDebugger){
+            stage.addEventListener(Event.ENTER_FRAME, function(e:Event):void{
+                logDebugger.tick();
+            });
+        }
         //test this is the first start
         switch (_lsoProxy.userCount()) {
             case 0:
@@ -166,6 +177,7 @@ public class KioBase {
             contestPanel.y = GlobalMetrics.CONTEST_PANEL_Y;
             stage.addChild(contestPanel);
         }
+        addDebuggerIfNeeded(stage);
 
         //load data
 
@@ -196,6 +208,19 @@ public class KioBase {
             problem.loadSolution(best);
     }
 
+    /**
+     * Добавляет спрайт отладчика под рабочей областью
+     * @param stage
+     */
+    private function addDebuggerIfNeeded(stage:DisplayObjectContainer):void {
+        if (!logDebuggerDisplay && _allowLogDebugger) {
+            logDebuggerDisplay = logDebugger.display;
+            logDebuggerDisplay.x = GlobalMetrics.WORKSPACE_X;
+            logDebuggerDisplay.y = GlobalMetrics.DEBUGGER_Y;
+            stage.addChild(logDebuggerDisplay);
+        }
+    }
+
     public static function get instance():KioBase {
         if (!_instance)
             _instance = new KioBase;
@@ -218,6 +243,8 @@ public class KioBase {
             contestPanel.y = GlobalMetrics.CONTEST_PANEL_Y;
             stage.addChild(contestPanel);
         }
+
+        addDebuggerIfNeeded(stage);
 
         _problems_bg.visible = true;
 
@@ -254,6 +281,10 @@ public class KioBase {
         if (contestPanel) {
             stage.removeChild(contestPanel);
             contestPanel = null;
+        }
+        if (logDebuggerDisplay) {
+            stage.removeChild(logDebuggerDisplay);
+            logDebuggerDisplay = null;
         }
 
         _problems_bg.visible = false;
@@ -559,8 +590,21 @@ public class KioBase {
         return result;
     }
 
+    public function addLogDebuggerHandler(handler:ILogDebuggerHandler){
+        logDebugger.addHandler(handler);
+    }
+
     public function get version_config():Object {
         return _version_config;
+    }
+
+
+    public function get allowLogDebugger():Boolean {
+        return _allowLogDebugger;
+    }
+
+    public function set allowLogDebugger(value:Boolean):void {
+        _allowLogDebugger = value;
     }
 }
 }

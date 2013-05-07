@@ -241,5 +241,11 @@ public class BlocksWorkspace extends Sprite {
         return _api;
     }
 
+
+    public function get debuggerControls():DebuggerControls {
+        return _debuggerControls;
+    }
+
+
 }
 }

@@ -170,8 +170,13 @@ public class DebuggerControls extends Sprite {
     private function button_clickHandler(event:MouseEvent):void {
         var action:String = ActionButton(event.target).action;
 
-        api.log('debug controls ' + action);
 
+
+        processAction(action);
+    }
+
+    public function processAction(action:String):void {
+        api.log('debug controls ' + action);
         switch (action) {
             case "start":
                 _dbg.moveToStep(0);
