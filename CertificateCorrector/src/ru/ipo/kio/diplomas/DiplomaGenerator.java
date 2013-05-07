@@ -30,7 +30,7 @@ public class DiplomaGenerator {
 
     public static void main(String[] args) throws Exception {
         //generate one problem diploma
-        for (int level = 1; level <= 2; level++)
+        for (int level = 0; level <= 2; level++)
             for (int problem = 1; problem <= 3; problem ++) {
                 String numberPrefix = "KIO-01-" + level + problem + "-"; //01 - diplomas for separate problems
                 File csvInput = new File("resources/kio-results-" + level + "-" + problem + ".csv");
