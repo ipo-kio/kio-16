@@ -49,4 +49,9 @@ public class OneProblemDiplomaFormatter extends DiplomaFormatter {
         drawCenteredText(canvas, DiplomaGenerator.NAME_FONT, surname + " " + name, 30, 117);
         drawCenteredText(canvas, DiplomaGenerator.INFO_FONT, info, 11, 109);
     }
+
+    @Override
+    public boolean accepts(String[] csvLine) {
+        return true;
+    }
 }

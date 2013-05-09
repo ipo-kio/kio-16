@@ -46,4 +46,5 @@ public abstract class DiplomaFormatter {
         return number + " " + word;
     }
 
+    public abstract boolean accepts(String[] csvLine);
 }

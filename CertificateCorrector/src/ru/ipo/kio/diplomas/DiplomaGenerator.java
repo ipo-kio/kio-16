@@ -37,9 +37,18 @@ public class DiplomaGenerator {
                 File pdfOutput = new File("resources/pdf/kio-results-" + level + "-" + problem + ".pdf");
                 outputDiplomas(csvInput, pdfOutput, new OneProblemDiplomaFormatter(level, problem), numberPrefix);
             }
+
+        for (int degree = 1; degree <= 3; degree++)
+            for (int level = 0; level <= 2; level ++) {
+                String numberPrefix = "KIO-02-" + level + degree + "-";
+                File csvInput = new File("resources/kio-results-" + level + "-win.csv");
+                File pdfOutput = new File("resources/pdf/kio-results-" + level + "-" + degree + "-win.pdf");
+
+                outputDiplomas(csvInput, pdfOutput, new DegreeDiplomaFormatter(level, degree), numberPrefix);
+            }
     }
 
-    private static void outputDiplomas(File csvInput, File outputPdf, DiplomaFormatter formatter, String numberPrefix) throws IOException, DocumentException {
+    private static void outputDiplomas(File csvInput, File outputPdf, DiplomaFormatter formatter, String numberPrefix) throws Exception {
         Document doc = null;
         try {
             doc = new Document(
@@ -60,6 +69,9 @@ public class DiplomaGenerator {
             String[] csvLine;
             int diplomaIndex = 2;
             while ((csvLine = reader.readNext()) != null) {
+                if (!formatter.accepts(csvLine))
+                    continue;
+
                 doc.newPage();
                 doc.add(bgImage);
 
@@ -78,8 +90,9 @@ public class DiplomaGenerator {
 
                 diplomaIndex ++;
             }
-
-            doc.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
         } finally {
             if (doc != null)
                 doc.close();
