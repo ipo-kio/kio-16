@@ -12,17 +12,12 @@ import java.io.File;
  */
 public class TeacherDiplomaFormatter extends DiplomaFormatter {
 
-    private final int level;
-    private final int degree;
-
-    public TeacherDiplomaFormatter(int level, int degree) {
-        this.level = level;
-        this.degree = degree;
+    public TeacherDiplomaFormatter() {
     }
 
     @Override
     public File getBgImage() {
-        return new File("resources/images/Diploma_teacher.png");
+        return new File("resources/images/Deed_Teacher.png");
     }
 
     @Override
@@ -35,9 +30,10 @@ public class TeacherDiplomaFormatter extends DiplomaFormatter {
         if (! csvLine[1].trim().equals(""))
             place = csvLine[1] + ", " + place;
 
-        int participants = Integer.parseInt(csvLine[4].trim());
+//        int participants = Integer.parseInt(csvLine[4].trim());
 
-        drawCenteredText(canvas, DiplomaGenerator.NAME_FONT, surname + " " + name, 30, 105);
+        drawCenteredText(canvas, DiplomaGenerator.NAME_FONT, name, 30, 117);
+        drawCenteredText(canvas, DiplomaGenerator.INFO_FONT, school + ", " + place, 11, 109);
     }
 
     @Override

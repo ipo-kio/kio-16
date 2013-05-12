@@ -32,20 +32,28 @@ public class DiplomaGenerator {
         //generate one problem diploma
         for (int level = 0; level <= 2; level++)
             for (int problem = 1; problem <= 3; problem ++) {
-                String numberPrefix = "KIO-01-" + level + problem + "-"; //01 - diplomas for separate problems
+                String numberPrefix = "Диплом №KIO-01-" + level + problem + "-"; //01 - diplomas for separate problems
                 File csvInput = new File("resources/kio-results-" + level + "-" + problem + ".csv");
                 File pdfOutput = new File("resources/pdf/kio-results-" + level + "-" + problem + ".pdf");
                 outputDiplomas(csvInput, pdfOutput, new OneProblemDiplomaFormatter(level, problem), numberPrefix);
             }
 
+        //output diplomas with degree
         for (int degree = 1; degree <= 3; degree++)
             for (int level = 0; level <= 2; level ++) {
-                String numberPrefix = "KIO-02-" + level + degree + "-";
+                String numberPrefix = "Диплом №KIO-02-" + level + degree + "-";
                 File csvInput = new File("resources/kio-results-" + level + "-win.csv");
                 File pdfOutput = new File("resources/pdf/kio-results-" + level + "-" + degree + "-win.pdf");
 
                 outputDiplomas(csvInput, pdfOutput, new DegreeDiplomaFormatter(level, degree), numberPrefix);
             }
+
+        //output teachers
+        String numberPrefix = "Грамота №KIO-03-00-";
+        File csvInput = new File("resources/teachers.csv");
+        File pdfOutput = new File("resources/pdf/teachers.pdf");
+
+        outputDiplomas(csvInput, pdfOutput, new TeacherDiplomaFormatter(), numberPrefix);
     }
 
     private static void outputDiplomas(File csvInput, File outputPdf, DiplomaFormatter formatter, String numberPrefix) throws Exception {
@@ -83,7 +91,7 @@ public class DiplomaGenerator {
                 canvas.beginText();
 
                 formatter.format(canvas, csvLine);
-                formatter.drawCenteredText(canvas, INFO_FONT, "Диплом №" + diplomaNumber, 11, 6);
+                formatter.drawCenteredText(canvas, INFO_FONT, diplomaNumber, 11, 6);
 
                 canvas.endText();
                 canvas.restoreState();

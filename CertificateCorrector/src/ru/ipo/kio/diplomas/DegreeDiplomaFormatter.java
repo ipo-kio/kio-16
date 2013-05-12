@@ -23,8 +23,19 @@ public class DegreeDiplomaFormatter extends DiplomaFormatter {
     @Override
     public File getBgImage() {
         String degreeS = "";
-        for (int i = 0; i < degree; i++)
-            degreeS += "I";
+        switch (degree) {
+            case 1:
+            case 2:
+            case 3:
+                for (int i = 0; i < degree; i++)
+                    degreeS += "I";
+                break;
+            case 4:
+                degreeS = "IV";
+                break;
+            case 5:
+                degreeS = "V";
+        }
 
         return new File("resources/images/Diploma_" + degreeS + "_" + level + ".png");
     }
@@ -33,7 +44,7 @@ public class DegreeDiplomaFormatter extends DiplomaFormatter {
     public void format(PdfContentByte canvas, String[] csvLine) {
         String surname = csvLine[21].toUpperCase();
         String name = csvLine[22].toUpperCase();
-        drawCenteredText(canvas, DiplomaGenerator.NAME_FONT, surname + " " + name, 30, 105);
+        drawCenteredText(canvas, DiplomaGenerator.NAME_FONT, surname + " " + name, 30, 104);
     }
 
     @Override
