@@ -44,7 +44,10 @@ public class DegreeDiplomaFormatter extends DiplomaFormatter {
     public void format(PdfContentByte canvas, String[] csvLine) {
         String surname = csvLine[21].toUpperCase();
         String name = csvLine[22].toUpperCase();
-        drawCenteredText(canvas, DiplomaGenerator.NAME_FONT, surname + " " + name, 30, 104);
+        if (degree <= 3)
+            drawCenteredText(canvas, DiplomaGenerator.NAME_FONT, surname + " " + name, 30, 104);
+        else
+            drawCenteredText(canvas, DiplomaGenerator.NAME_FONT, surname + " " + name, 30, 113);
     }
 
     @Override

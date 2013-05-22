@@ -39,8 +39,11 @@ public class DiplomaGenerator {
             }
 
         //output diplomas with degree
-        for (int degree = 1; degree <= 3; degree++)
+        for (int degree = 1; degree <= 5; degree++)
             for (int level = 0; level <= 2; level ++) {
+                if (degree >= 4 && level != 2)
+                    continue;
+
                 String numberPrefix = "Диплом №KIO-02-" + level + degree + "-";
                 File csvInput = new File("resources/kio-results-" + level + "-win.csv");
                 File pdfOutput = new File("resources/pdf/kio-results-" + level + "-" + degree + "-win.pdf");

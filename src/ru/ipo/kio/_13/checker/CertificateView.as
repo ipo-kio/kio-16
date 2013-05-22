@@ -52,11 +52,11 @@ public class CertificateView extends Sprite {
     private static var CERT_IMAGE:Class;
     private var IMG_CERT:BitmapAsset = new CERT_IMAGE;
 
-/*    [Embed(source="resources/Sertificat_008male.png")]
-    private static var CERT_IMAGE_TEACHER_MALE:Class;
-    private const IMG_CERT_TEACHER_MALE:BitmapAsset = new CERT_IMAGE_TEACHER_MALE;
+    [Embed(source="resources/Sertificat_Teacher.png")]
+    private static var CERT_IMAGE_TEACHER:Class;
+    private const IMG_CERT_TEACHER:BitmapAsset = new CERT_IMAGE_TEACHER;
 
-    [Embed(source="resources/Sertificat_008female.png")]
+    /*    [Embed(source="resources/Sertificat_008female.png")]
     private static var CERT_IMAGE_TEACHER_FEMALE:Class;
     private const IMG_CERT_TEACHER_FEMALE:BitmapAsset = new CERT_IMAGE_TEACHER_FEMALE;*/
 
@@ -383,9 +383,9 @@ public class CertificateView extends Sprite {
 
         var img_asset:BitmapAsset;
         //TODO select here teachers bg
-        /*if (isTeacher(certificate))
-            img_asset = isMale(certificate) ? IMG_CERT_TEACHER_MALE : IMG_CERT_TEACHER_FEMALE;
-        else*/
+        if (isTeacher(certificate))
+            img_asset = IMG_CERT_TEACHER;
+        else
             img_asset = IMG_CERT;
 
         img = img_asset.bitmapData;
@@ -408,7 +408,7 @@ public class CertificateView extends Sprite {
         fi.autoSize = TextFieldAutoSize.CENTER;
         fi.x = 0;
         fi.width = img.width;
-        fi.y = isTeacher(certificate) ? 1400 : 1405 - name_size;
+        fi.y = isTeacher(certificate) ? 1590 : 1405 - name_size;
         if (isTeacher(certificate))
             fi.text = certificate._anketa.surname + ' ' + certificate._anketa.name + ' ' + certificate._anketa.second_name;
         else
@@ -431,8 +431,9 @@ public class CertificateView extends Sprite {
         else if (certificate._level == 2)
             level_name = ' II уровень ';
 
+        var info_size:int = 32 * AMBASSADORE_m_FIX;
+
         if (!isTeacher(certificate)) {
-            var info_size:int = 32 * AMBASSADORE_m_FIX;
 
             fi = TextUtils.createTextFieldWithFont('KioAmbassadore', info_size * AMBASSADORE_HEIGHT_OVER_ACCENT, false, true);
             fi.autoSize = TextFieldAutoSize.CENTER;
@@ -564,7 +565,7 @@ public class CertificateView extends Sprite {
             pos.autoSize = TextFieldAutoSize.CENTER;
             pos.x = 0;
             pos.width = img.width;
-            pos.y = 1510;
+            pos.y = 1630;
             pos.defaultTextFormat = new TextFormat('KioArial', 50, 0, true, true);
             pos.text = certificate._position;
             certificatePanel.addChild(pos);
@@ -576,16 +577,15 @@ public class CertificateView extends Sprite {
         if (isTeacher(certificate)) {
             delta_up = 100;
             delta_right = 140;
-        }
-        else {
+        } else {
             delta_up = 0;
             delta_right = 100;
-        }
 
-        drawSignature(IMG_BASHMAKOV, 60 + 1270 - 150 + delta_right, 2470 - delta_up);
-        drawSignature(IMG_POZDNKOV, 60 + 1175 - 150 + delta_right, 2660 - delta_up);
-        drawSignature(IMG_ROMANOVSKY, 60 + 995 - 200 + delta_right, 2780 - delta_up);
-        drawSignature(IMG_TEREKHOV, 1255 - 130 + delta_right, 3030 - delta_up);
+            drawSignature(IMG_BASHMAKOV, 60 + 1270 - 150 + delta_right, 2470 - delta_up);
+            drawSignature(IMG_POZDNKOV, 60 + 1175 - 150 + delta_right, 2660 - delta_up);
+            drawSignature(IMG_ROMANOVSKY, 60 + 995 - 200 + delta_right, 2780 - delta_up);
+            drawSignature(IMG_TEREKHOV, 1255 - 130 + delta_right, 3030 - delta_up);
+        }
 
         fi = TextUtils.createTextFieldWithFont('KioAmbassadore', info_size, false, true);
         fi.autoSize = TextFieldAutoSize.CENTER;
