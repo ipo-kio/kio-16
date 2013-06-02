@@ -408,7 +408,7 @@ public class CertificateView extends Sprite {
         fi.autoSize = TextFieldAutoSize.CENTER;
         fi.x = 0;
         fi.width = img.width;
-        fi.y = isTeacher(certificate) ? 1590 : 1405 - name_size;
+        fi.y = isTeacher(certificate) ? 1610 : 1405 - name_size;
         if (isTeacher(certificate))
             fi.text = certificate._anketa.surname + ' ' + certificate._anketa.name + ' ' + certificate._anketa.second_name;
         else
@@ -565,7 +565,7 @@ public class CertificateView extends Sprite {
             pos.autoSize = TextFieldAutoSize.CENTER;
             pos.x = 0;
             pos.width = img.width;
-            pos.y = 1630;
+            pos.y = 1640;
             pos.defaultTextFormat = new TextFormat('KioArial', 50, 0, true, true);
             pos.text = certificate._position;
             certificatePanel.addChild(pos);
