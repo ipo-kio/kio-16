@@ -1,59 +1,58 @@
-﻿/*This file contains texts that are common to all problems and that are used in the Shell*/
+ /*This file contains texts that are common to all problems and that are used in the Shell*/
 {
     "contest_header":"CTE contest 2012",
-    "contest_level":["Beginner Level", "I Level", "II Level"],
+    "contest_level":["ระดับเริ่มต้น", "ระดับ 1", "ระดับ 2"],
     "help":{ /*Common help text*/
 		"all_problems": <<< /*Such quotes <<< >>> mark the text, that spans multiple lines.
-		                    Multiline text is always treated as html, so you can use tags like <p> and <br>.
-							Don't use double quotes in the multiline text*/
-			<p>While you are solving a problem the flash-program saves your best solution automatically 
-			using memory provided by a flash-player. Amount of this memory is corrected during the first 
-			launch of the task program. Some other programs on your computer, the ones that clean the 
-			computer’s memory, can remove your temporary solutions. That’s why every time you finish 
-			working on a problem you should save your solution by clicking on button Save Best 
-			Solutions (and a questioner). After that the program will offer you to choose a folder 
-			to store the file and to give a name to the file. This is the file that you need to send 
-			to the CTE Organizing Committee  at the end of the competition via CTE site. 
-			If you want to continue to solve the problems using another computer you need to 
-			take this file with you and all necessary information won’t be lost. 
+		                    ข้อความ multiline จะถือว่าเสมอเป็น HTML, เพื่อให้คุณสามารถใช้แท็กเช่น <p> และ <br>
+อย่าใช้คำพูดสองครั้งในข้อความ multiline * /
+<p> ขณะที่คุณกำลังแก้ปัญหาแฟลชโปรแกรมบันทึกทางออกที่ดีที่สุดของคุณโดยอัตโนมัติ
+ใช้หน่วยความจำให้โดยแฟลชผู้เล่น จำนวนหน่วยความจำนี้จะได้รับการแก้ไขในช่วงแรก
+เปิดตัวของโปรแกรมงาน บางโปรแกรมอื่น ๆ บนเครื่องคอมพิวเตอร์ของคุณเป็นคนที่ทำความสะอาด
+หน่วยความจำของเครื่องคอมพิวเตอร์ที่สามารถลบการแก้ปัญหาชั่วคราว นั่นเป็นเหตุผลที่เวลาที่คุณเสร็จสิ้นทุก
+ทำงานกับปัญหาคุณควรบันทึกแก้ปัญหาของคุณโดยคลิกที่ปุ่มบันทึกที่ดีที่สุด
+โซลูชั่น (และผู้ถาม) หลังจากนั้นโปรแกรมจะให้คุณเลือกโฟลเดอร์
+ในการจัดเก็บไฟล์และให้ชื่อไปยังแฟ้ม นี้เป็นแฟ้มที่คุณต้องการส่ง
+ให้คณะกรรมการจัด CTE ในตอนท้ายของการแข่งขันผ่านทางเว็บไซต์ CTE
+ถ้าคุณต้องการที่จะดำเนินการในการแก้ปัญหาโดยใช้คอมพิวเตอร์เครื่องอื่นที่คุณต้องการ
+ใช้ไฟล์นี้กับคุณและข้อมูลที่จำเป็นทั้งหมดจะไม่สูญหาย. 
 
-            CuandWhile solving the problems you may need to save an interim solution 
-			and open it later for improving. You can make it by clicking on buttons
-			that save and open one of the interim solutions. Clearing buttons can help 
-			you to remove all the constructing elements from the work field. 
-
+            CuandWhile แก้ปัญหาที่คุณอาจจำเป็นต้องบันทึกการแก้ปัญหาระหว่างกาล
+และเปิดได้ในภายหลังสำหรับการปรับปรุง คุณสามารถทำมันได้โดยคลิกที่ปุ่ม
+ที่บันทึกและเปิดหนึ่งของการแก้ปัญหาระหว่างกาล ปุ่มสำนักหักบัญชีสามารถช่วย
+ให้คุณลบทุกองค์ประกอบของการสร้างงานจากสนาม
 </p>
 		>>>
 	},
-	"buttons":{
-		"load_workspace": "Load best results and questionnaire",
-		"save_workspace": "Save best results and questionnaire"
+	"ปุ่มกด":{
+		"load_workspace": "Load คำถาทที่ดีที่สุดและผลที่ดีที่สุด",
+		"save_workspace": "บันทึกคำถามที่ดีที่สุด"
 	},
 	"contest_panel":{
-	    "problem_header":"Problem",
-		"current_solution_caption" : "Solution",
-		"help_header" : "Help",
-		"records_and_anketa_header" : "Best results and questionnaire",
-		"record_header" : "Record",
+	    "problem_header":"ปัญหา",
+		"current_solution_caption" : "วิธีแก้",
+		"help_header" : "ช่วยเหลือ",
+		"records_and_anketa_header" : "ผลที่ดีที่สุดและคำถามที่ดีที่สุด",
+		"record_header" : "บันทึก",
 		"buttons":{
-			"help" : "Help",
-			"statement": "Statement",
+			"help" : "ช่วยเหลือ",
+			"statement": "ข้อความ",
 			"load" : "Load",
-			"save" : "Save",
-			"clear" : "Clear",
-			"back" : "Close"
+			"save" : "บันทึก",
+			"clear" : "ล้าง",
+			"back" : "ปิด"
 		}
     },
     "files":{
-        "all_files": "All files",
-        "results": "Results and questionnaire",
-        "solutions": "Problem solutions"
+        "all_files": "ไฟล์ทั้งหมด",
+        "results": "ผลลัพธ์และคำถาม",
+        "solutions": "การแก้ปัญหา"
     },
     "screen":{
 		"buttons":{
-			"continue_": "Continue",
-            "loadWorkspace" : "Load",
-            "back" : "Back"
+			"continue_": "ต่อ",
+            "loadWorkspace" : "โหลด",
+            "back" : "ย้อนกลับ"
         },
         "welcome":{
 			"greeting": <<<
