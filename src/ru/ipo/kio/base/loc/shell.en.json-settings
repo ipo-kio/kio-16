@@ -88,7 +88,7 @@
             >>>,
             "button_go": "Continue",
             "button_new_participant": "New participant"
-        },
+        },  /* 42 */
         "settings":{
 			"mainMessage": <<<
 				<p class='h1'>Correct your settings</p>

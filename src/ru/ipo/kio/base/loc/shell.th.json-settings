@@ -1,11 +1,9 @@
- /*This file contains texts that are common to all problems and that are used in the Shell*/
+﻿ /*This file contains texts that are common to all problems and that are used in the Shell*/
 {
     "contest_header":"CTE contest 2012",
     "contest_level":["ระดับเริ่มต้น", "ระดับ 1", "ระดับ 2"],
     "help":{ /*Common help text*/
-		"all_problems": <<< /*Such quotes <<< >>> mark the text, that spans multiple lines.
-		                    ข้อความ multiline จะถือว่าเสมอเป็น HTML, เพื่อให้คุณสามารถใช้แท็กเช่น <p> และ <br>
-อย่าใช้คำพูดสองครั้งในข้อความ multiline * /
+		"all_problems": <<<
 <p> ขณะที่คุณกำลังแก้ปัญหาแฟลชโปรแกรมบันทึกทางออกที่ดีที่สุดของคุณโดยอัตโนมัติ
 ใช้หน่วยความจำให้โดยแฟลชผู้เล่น จำนวนหน่วยความจำนี้จะได้รับการแก้ไขในช่วงแรก
 เปิดตัวของโปรแกรมงาน บางโปรแกรมอื่น ๆ บนเครื่องคอมพิวเตอร์ของคุณเป็นคนที่ทำความสะอาด
@@ -109,7 +107,7 @@
             "participant_name": "Name and Surname of the participant (In capital letters)",
 			"name": "Name",
 			"surname": "Surname",
-			"second_name": "Second surname",  /*Patronym, Middle name*/
+			"second_name": "Second surname",
 			"connection": "Contacts",
 			"e_mail": "e-mail",
 			"institution": "Educational institution",
@@ -117,7 +115,7 @@
 
 			"grade": "Grade",
 			"address": "Address",
-			"name_restriction": "A-Za-z\-" /*You can write down a range of recognizable symbols here*/
+			"name_restriction": "A-Za-z\-"
         },
         "problems": {
             "fill_form": "Fill in the questionnaire",
@@ -128,7 +126,7 @@
             "screen_header":"Problem"
         },
         "about": {
-            "header": <<<About CTE competition>>>, /*About authors and copy right*/
+            "header": <<<About CTE competition>>>,
             "text" : <<<
                 <p class='h1c'>Institute of productive learning of the Russian Academy of Education</p>
                 <p class='h1c'>Comuter Tools in Education Journal</p>
@@ -136,16 +134,13 @@
                 <p><b>International Organizing Committee:</b> Maria Losada and Mario Cruz (Colombia),Emiliya Velikova (Bulgaria),
                                                     Anastasia Dementeva and Sergey Pozdnyakov (Russia), Atit Maitarattanakon
                                                     (Thailand).</p>
-                /*<p><br></p>*/
                 <p><b>Organizers and methodologists:</b>Sophie Entina, Sergey Pozdnyakov, Ilya Posov</p>
                 <p><b>Volunteers:</b> Akudzhuoby Uchenna, Bihalova Julia, Davidovich Ilona,
                                                   Ivanov Pavel, Podolskaya Alexandra, Shakshin Dmitry</p>
-                /*<p><br></p>*/
                 <p><b>Web programmer:</b> Nikolai Yasnov</p>
                 <p><b>Secretary:</b> Tatyana Myand</p>
                 <p><b>Designer:</b> Anna Vasilkova</p>
 
-                /*<p><br></p>*/
                 <p><b>Problems creation:</b></p>
                 <p><b>Tasks authors:</b> Ilya Posov («Diamand and Laser», «Brilliant Cutting», «Body Swap»),
                                         Butikov E. («Invisible Man»), Sergey Pozdnyakov («Trams», «Tram Routs»).</p>
