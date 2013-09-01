@@ -45,7 +45,7 @@ public class BlocksWorkspace extends Sprite {
     private var _resultsInfo:InfoPanel;
     private var _recordInfo:InfoPanel;
 
-    public const ANY_NUMBER_OF_BLOCKS:Boolean = true;
+    public const ANY_NUMBER_OF_BLOCKS:Boolean = false;
 
     public function BlocksWorkspace(problem:BlocksProblem) {
 

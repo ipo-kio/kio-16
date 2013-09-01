@@ -1,6 +1,6 @@
 ﻿/*This file contains texts that are common to all problems and that are used in the Shell*/
 {
-    "contest_header":"CTE contest 2012",
+    "contest_header":"CTE contest 2013",
     "contest_level":["Beginner Level", "I Level", "II Level"],
     "help":{ /*Common help text*/
 		"all_problems": <<< /*Such quotes <<< >>> mark the text, that spans multiple lines.
@@ -57,10 +57,10 @@
         },
         "welcome":{
 			"greeting": <<<
-				Welcome to competition CTE-2012!
+				Welcome to competition CTE-2013!
 	        >>>,
     		"mainMessage_0": <<<
-    		    <p>We would like to offer you to solve 3 problems and get acquainted with welcome address.</p>
+    		    <p>We would like to offer you to solve 3 problems.</p>
 				<p>Before you begin to solve the problems you need to:</p>
 				<li>Let the program save data on hard drive</li>
 				<li>Fill in the questionnaire</li>
@@ -96,11 +96,11 @@
 				Click on 'Settings' and customize settings like it is shown in the picture</p>
 			>>>,
             "mainMessageContinuation": <<<
-				<p>Make shure that</p>
-				<li>the 'not to ask'chek mark is not active</li>
-				<li>The slider is set at least on 1 megabyte</li>
-				<p class='warning'>Warning! If you customize settings wrong the program will
-				demand you to customize them correct and won't continue to work untill you do it.</p>
+				<p>Make sure that</p>
+				<li>the 'not to ask' box is not checked</li>
+				<li>The slider is set at least on 10 megabyte</li>
+				<p class='warning'>Warning! If you customize settings incorrectly the program will
+				demand you fix settings and will not continue to work until you do it.</p>
 			>>>,
 			"configure_button": "Settings"
         },
@@ -129,33 +129,28 @@
             "screen_header":"Problem"
         },
         "about": {
-            "header": <<<About CTE competition>>>, /*About authors and copy right*/
+            "header": <<<About CTE 2013 competition>>>, /*About authors and copy right*/
             "text" : <<<
                 <p class='h1c'>Institute of productive learning of the Russian Academy of Education</p>
-                <p class='h1c'>Comuter Tools in Education Journal</p>
+                <p class='h1c'>Computer Tools in Education Journal</p>
                 <p><br></p>
-                <p><b>International Organizing Committee:</b> Maria Losada and Mario Cruz (Colombia),Emiliya Velikova (Bulgaria),
-                                                    Anastasia Dementeva and Sergey Pozdniakov (Russia), Atit Maitarattanakon
+                <p><b>International Organizing Committee:</b> Maria Losada and Mario Cruz (Colombia), Emiliya Velikova (Bulgaria),
+                                                    Sergey Pozdniakov (Russia), Atit Maitarattanakon
                                                     (Thailand).</p>
-                /*<p><br></p>*/
-                <p><b>Organizers and methodologists:</b>Sophie Entina, Sergey Pozdniakov, Ilya Posov</p>
-                <p><b>Volunteers:</b> Akudzhuoby Uchenna, Bihalova Julia, Davidovich Ilona,
-                                                  Ivanov Pavel, Podolskaya Alexandra, Shakshin Dmitry</p>
-                /*<p><br></p>*/
-                <p><b>Web programmer:</b> Nikolai Yasnov</p>
-                <p><b>Secretary:</b> Tatyana Myand</p>
-                <p><b>Designer:</b> Anna Vasilkova</p>
 
-                /*<p><br></p>*/
-                <p><b>Problems creation:</b></p>
-                <p><b>Tasks authors:</b> Ilya Posov («Diamand and Laser», «Brilliant Cutting», «Body Swap»),
-                                        Butikov E. («Invisible Man»), Sergey Pozdniakov («Trams», «Tram Routs»).</p>
-                <p><b>Flash pragrammers:</b> Akimushkin V., Posov I., Osipov V.</p>
-                <p><b>Designer:</b> Anna Vasilkova</p>
+                <p><b>Organizers and methodologists:</b>Sophie Entina, Sergey Pozdniakov, Ilya Posov</p>
+                <p><b>Secretary:</b> Tatyana Myand</p>
+                <p><b>Problems created by:</b></p>
+                <p><b>Authors:</b> Iosif Romanovsky (problem `Crane' and its variations),
+                                        Marianna Russkikh. (problem `Cut' and its variations),
+                                        Sergey Pozdniakov (problem `Clock' and its variations).</p>
+                <p><b>Flash pragrammers:</b> Vasily Akimushkin, Ilya Posov</p>
+                <p><b>Designer:</b> A. Baranov, O. Semenova</p>
                 <p><br></p>
                 <p><b>E-mail:</b> <a href='mailto:kio.org@gmail.com'>kio.org@gmail.com</a></p>
                 <p><b>Contest web-site:</b> <a href='www.kio.spb.ru/kio'>www.kio.spb.ru/kio</a></p>
-
+                <p><b>Web programmer:</b> Nikolai Yasnov</p>
+                <p><b>Web designer:</b> Anna Vasilkova</p>
                 <p class='h2'><br>© Center of information technologies in education «CTE»</p>
             >>>
 		},
