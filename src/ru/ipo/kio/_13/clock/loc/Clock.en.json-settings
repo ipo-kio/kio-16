@@ -5,7 +5,7 @@
            	You could accidentally get a clock with two faces, if the second wheel of the last cogwheel is not connected with the second wheel of
            	the main axle, i.e., the cogwheels do not form a closed contour.
            	Besides, you could accidentally make a minute hand rotate in the wrong direction.
-           	Such solutions are also taken into account, but solutions with one face and one with right hands directions are considered as better solutions.
+           	Such solutions are also taken into account, but solutions with one face and with right hands directions are considered as better solutions.
            	If rotations of hands is not consistent, then the program display an inaccuracy in percents. You should make this inaccuracy to be zero.
            	If you manage to make a clock with one face and the right direction of the minute hand, then you should optimize a size of a clock body.
            	The size is an area of the smallest rectangle that contains all cogwheels.<p>
@@ -15,47 +15,113 @@
     	    <p>   You can work with cogwheels in the two working areas. At the top of the screen the mechanism is viewed from the top.
     	    At the bottom there is a scheme of connection of cogwheels.
     	    It is a kind of view from the side, but it does not reflect real positions of cogwheels on the plane.</p>
-    		<p>   Every cogwheel consists of two cog wheels. Wheels are Кольца жестко соединены с осью шестерни.
-    		Исключение составляет лишь первая – ведущая – шестерня, на оси которой есть свободно вращающееся колесо со второй стрелкой. Шестерни можно передвигать мышкой и менять числа зубьев, вводя их значения в соответствующие поля. Количество зубьев не может быть меньше 8 и больше 40. Пока шестерни не соединены в кольцо, на последней шестерне размещается стрелка, которая показывается на втором циферблате. Когда вращение передается на второе кольцо главной шестерни, на обоих циферблатах демонстрируются обе стрелки.</p>
-    		<p>   Каждая шестерня связана только  с двумя соседними. При щелчке мышкой на любую шестерню, выделяются те две, с которыми её можно соединить через нижнее или верхнее зубчатое колесо. Когда колеса разных шестерен входят в зацепление, их зубья подсвечиваются розовыми кольцами. Обратите внимание, что колеса шестерен не должны зацеплять оси других шестерен. В этом случае механизм не работает и появляется сигнал поломки.</p>
-    		<p>   Добавлять шестерни можно с помощью соответствующей кнопки, либо флажка, который появляется при подведении курсора к области соединения двух колес в нижней схеме. Если в этот момент сделать щелчок мышкой, на этом месте вставится новая шестерня с одинаковым числом зубьев на обоих колесах.</p>
-    		<p>   Кнопка «Показать/скрыть изделие» позволяет переходить от механизма часов к их внешнему виду. Кнопка «На начало» устанавливает часы на время 0 часов, 0 минут. Работу часов можно наблюдать как в анимационном, так и в пошаговом режиме. Скорость ведущей стрелки можно менять (делать скорость слишком большой не нужно, так как могут появиться оптические эффекты, искажающие правильное восприятие вращения).</p>
-    		<p>   Любые решения можно сохранять и загружать по мере надобности (обычно этим не пользуются, так как рекорд запоминается автоматически, а лучшие решения всех задач также собираются вместе автоматически при нажатии кнопки сохранения лучших результатов и анкеты).</p>
+    		<p>   Every cogwheel consists of two wheels. Both wheels are connected to one axle.
+    		The only exception is the first main cogwheel, one of its wheels is not connected to the axle, but freely rotates with the second hand.
+    		Cogwheels may be moved by a mouse, their number of cogs may be changed by entering numbers into corresponding fields.
+    		 Number of cogs may not be less than 8 and greater than 40.
+    		 While cogwheels are not connected in the circle, the last cogwheel has a hand that corresponds on the second clock face.
+    		 When the second wheel of the main cogwheel is rotated, both faces demonstrate their hands.</p>
+
+    		<p>
+    		Each cogwheel is connected only with two neighbouring cogwheels. After clicking any cogwheel two neighbouring cogwheels are selected.
+    		One of them may be connected with the cogwheel by the top wheel, and one by the bottom.
+    		When wheels of two different links with each other, their cogs are highlighted with pink rings.
+    		Noet that wheels should not go over axles of other cogwheels, in such a case clocks are treated as broken and the program
+    		signalizes about this.</p>
+
+    		<p>   You can add cogwheels with the corresponding button or a checkbox that appears
+    		when you move a cursor over an area where two wheels are connected at the bottom of the screen.
+    		If you click at this moment, then a new cogwheel will appear there, it will have the same number of cogs on the both wheels.</p>
+    		<p>   `Show/Hide clock' button allows to go the the real view of the clock.
+    		`To start' button sets current time to 0 hours, 0 minutes. Clock may work both the animation mode and in the step by step mode.
+    		The speed of the main hand may be changed. (Do not make the hand rotate too fast, because it may lead to optical illusions that
+    		make you perceive rotation incorrectly).</p>
+    		<p>   Any solution may be saved and loaded when needed, but you will probably use this feature seldom, because a record solution is stored automatically,
+    		and all best solutions of all problems are collected automatically when the best results and questionnaire are saved.</p>
 
     	>>>,
         "title1": "Day clocks", /*Этот заголовок пишется вверху окна. Цифра 1 означает, что заголовок используется для первого уровня*/
         "statement1": <<<
-            <p><b>   Введение.</b> Часы – одно из самых удивительных устройств в истории техники. История механических часов начинается в Древней Греции. В Китае механические часы существовали уже более тысячи лет назад. Оттуда часы пришли в Европу, где усовершенствовались и обрели множество новых функций и форм.</p>
-            <p>   Первые часы имели одну стрелку. Если нужно было вести отсчет разных промежутков времени, делалось несколько циферблатов. Например, часы на Башне Зиммера в городе Лир (Бельгия) показывали время на всех континентах, фазы Луны, время приливов и отливов и многие другие периодические явления.</p>
-            <p><b>   Задание.</b> В задаче вам нужно будет собрать механизм часов-ежедневника, так чтобы пока маленькая стрелка проходила недельный круг, большая правильно показывала часы дня и ночи. При этом у вас могут получиться часы с двумя циферблатами (если второе колесо последней шестерни не будет сцеплено со вторым колесом на главной оси, то есть шестерни не образуют замкнутый контур). Кроме того, может оказаться, что большая стрелка станет вращаться в обратном направлении. Это неплохо, если за каждый оборот большой стрелки будет отсчитываться ровно половина суток, но лучшим считается решение с правильным направлением вращения. Если вращение стрелок согласовано не точно, то будет указана погрешность в процентах. Нужно, чтобы она стала равной нулю. Ещё лучше, если вам удастся расположить шестерни часов так, чтобы обе стрелки были на главной оси. Среди таких решений лучшим будет то, у которого размер корпуса часов меньше (корпус - это круг, который появляется, как только стрелки оказываются на одной оси; размер корпуса определяется как площадь этого круга).</p>
-    		<p>   Лучшее решение сохраняется автоматически и к нему можно всегда вернуться, нажав кнопку загрузки рекорда.</p>
-    		<p><b>   На заметку учителю</b>. Известный ученый Симур Паперт – автор языка ЛОГО – писал, что освоил умножение чисел ещё до школы, потому что любил возиться с механизмами из шестерен. Обратите внимание, что числа зубьев расположены так же, как числитель и знаменатель дроби. Это не случайно. Работа с шестернями дает новый взгляд на работу с дробями.</p>
+                    <p><b>Statement.</b> In this problem you should construct a clock from cogwheels. The clock should have to hands
+                    such that while the first hand make complete circle in one week, the second hand makes a circle in one hour.
+                   	You could accidentally get a clock with two faces, if the second wheel of the last cogwheel is not connected with the second wheel of
+                   	the main axle, i.e., the cogwheels do not form a closed contour.
+                   	Besides, you could accidentally make a minute hand rotate in the wrong direction.
+                   	Such solutions are also taken into account, but solutions with one face and with right hands directions are considered as better solutions.
+                   	If rotations of hands is not consistent, then the program display an inaccuracy in percents. You should make this inaccuracy to be zero.
+                   	If you manage to make a clock with one face and the right direction of the minute hand, then you should optimize a size of a clock body.
+                   	The size is an area of the smallest rectangle that contains all cogwheels.<p>
+            		<p>  The best solution is saved automatically, and you can always return to it by pressing a button that loads a record.</p>
     			>>>,
     	"help1":<<<
-    	    <p>   С шестернями можно работать в двух рабочих областях. В верхней части экрана изображен вид механизма сверху. Внизу находится схема соединения шестерен. Она напоминает вид сбоку, но не учитывает возможные перемещения шестерен по плоскости.</p>
-    		<p>   Каждая шестерня состоит из двух зубчатых колес. Кольца жестко соединены с осью шестерни. Исключение составляет лишь первая – ведущая – шестерня, на оси которой есть свободно вращающееся колесо со второй стрелкой. Шестерни можно передвигать мышкой и менять числа зубьев, вводя их значения в соответствующие поля. Количество зубьев не может быть меньше 8 и больше 40. Пока шестерни не соединены в кольцо, на последней шестерне размещается стрелка, которая показывается на втором циферблате. Когда вращение передается на второе кольцо главной шестерни, на обоих циферблатах демонстрируются обе стрелки.</p>
-    		<p>   Каждая шестерня связана только  с двумя соседними. При щелчке мышкой на любую шестерню, выделяются те две, с которыми её можно соединить через нижнее или верхнее зубчатое колесо. Когда колеса разных шестерен входят в зацепление, их зубья подсвечиваются розовыми кольцами. Обратите внимание, что колеса шестерен не должны зацеплять оси других шестерен. В этом случае механизм не работает и появляется сигнал поломки.</p>
-    		<p>   Добавлять шестерни можно с помощью соответствующей кнопки, либо флажка, который появляется при подведении курсора к области соединения двух колес в нижней схеме. Если в этот момент сделать щелчок мышкой, на этом месте вставится новая шестерня с одинаковым числом зубьев на обоих колесах.</p>
-    		<p>   Кнопка «Показать/скрыть изделие» позволяет переходить от механизма часов к их внешнему виду. Кнопка «На начало» устанавливает часы на начало отсчета. Работу часов можно наблюдать как в анимационном, так и в пошаговом режиме. Скорость ведущей стрелки можно менять (делать скорость слишком большой не нужно, так как могут появиться оптические эффекты, искажающие правильное восприятие вращения).</p>
-    		<p>   Любые решения можно сохранять и загружать по мере надобности (обычно этим не пользуются, так как рекорд запоминается автоматически, а лучшие решения всех задач также собираются вместе автоматически при нажатии кнопки сохранения лучших результатов и анкеты).</p>
+    	    <p>   You can work with cogwheels in the two working areas. At the top of the screen the mechanism is viewed from the top.
+                	    At the bottom there is a scheme of connection of cogwheels.
+                	    It is a kind of view from the side, but it does not reflect real positions of cogwheels on the plane.</p>
+                		<p>   Every cogwheel consists of two wheels. Both wheels are connected to one axle.
+                		The only exception is the first main cogwheel, one of its wheels is not connected to the axle, but freely rotates with the second hand.
+                		Cogwheels may be moved by a mouse, their number of cogs may be changed by entering numbers into corresponding fields.
+                		 Number of cogs may not be less than 8 and greater than 40.
+                		 While cogwheels are not connected in the circle, the last cogwheel has a hand that corresponds on the second clock face.
+                		 When the second wheel of the main cogwheel is rotated, both faces demonstrate their hands.</p>
 
+                		<p>
+                		Each cogwheel is connected only with two neighbouring cogwheels. After clicking any cogwheel two neighbouring cogwheels are selected.
+                		One of them may be connected with the cogwheel by the top wheel, and one by the bottom.
+                		When wheels of two different links with each other, their cogs are highlighted with pink rings.
+                		Noet that wheels should not go over axles of other cogwheels, in such a case clocks are treated as broken and the program
+                		signalizes about this.</p>
+
+                		<p>   You can add cogwheels with the corresponding button or a checkbox that appears
+                		when you move a cursor over an area where two wheels are connected at the bottom of the screen.
+                		If you click at this moment, then a new cogwheel will appear there, it will have the same number of cogs on the both wheels.</p>
+                		<p>   `Show/Hide clock' button allows to go the the real view of the clock.
+                		`To start' button sets current time to 0 hours, 0 minutes. Clock may work both the animation mode and in the step by step mode.
+                		The speed of the main hand may be changed. (Do not make the hand rotate too fast, because it may lead to optical illusions that
+                		make you perceive rotation incorrectly).</p>
+                		<p>   Any solution may be saved and loaded when needed, but you will probably use this feature seldom, because a record solution is stored automatically,
+                		and all best solutions of all problems are collected automatically when the best results and questionnaire are saved.</p>
     	>>>,
     	"title2": "Clock-calendar",
     	"statement2": <<<
-            <p><b>   Введение.</b> Часы – одно из самых удивительных устройств в истории техники. История механических часов начинается в Древней Греции. В Китае механические часы существовали уже более тысячи лет назад. Оттуда часы пришли в Европу, где усовершенствовались и обрели множество новых функций и форм. </p>
-            <p>   Интересные часы изобрёл русский изобретатель-самородок Иван Петрович Кулибин. Сделанные им знаменитые карманные часы хранятся в Эрмитаже, другие – планетные часы – можно только представить на основании чертежей и рисунков, которые сохранились в его фонде. Плоский циферблат часов был снабжен 6 стрелками. Первая из них, имеющая на себе знак Солнца, обращалась вокруг циферблата за 365 дней. Она должна была показывать месяцы. Вторая стрелка со знаком Земли показывала начало весны, лета, осени и зимы; третья — дни недели,  четвертая показывала часы; пятая — минуты; шестая — секунды.</p>
-    		<p><b>   Задание.</b> В задаче вам нужно будет собрать механизм часов-календаря так, чтобы в то время как большая стрелка проходила четырехнедельный круг (его можно было бы назвать лунным месяцем, но это будет неточно), маленькая передвигалась по годовому кругу. Сразу обращаем ваше внимание, что в году не 365 и не 366, а 365,24220… так называемых средних суток. Это связано с тем, что год – оборот Земли вокруг Солнца не равен целому числу суток – числу оборотов Земли вокруг своей оси. Поэтому сделать точные часы вам не удастся. Кроме того, у вас могут получиться часы с двумя циферблатами (если второе колесо последней шестерни не будет сцеплено со вторым колесом на главной оси, то есть шестерни не образуют замкнутый контур). Также, может оказаться, что большая стрелка станет вращаться в обратном направлении. Это неплохо, если за каждый оборот большой стрелки будет отсчитываться ровно четыре недели, но лучшим считается решение с правильным направлением вращения. Если вращение стрелок согласовано не точно, то будет указана погрешность в процентах. Нужно, чтобы она стала как можно меньше. Ещё лучше, если вам удастся расположить шестерни часов так, чтобы обе стрелки были на главной оси. Среди таких решений лучшим будет то, у которого размер корпуса часов меньше (корпус - это круг с центром, совпадающим с центром ведущей шестерни, который появляется, как только стрелки оказываются на одной оси; размер корпуса определяется как площадь этого круга).</p>
-    		<p>   Лучшее решение сохраняется автоматически и к нему можно всегда вернуться, нажав кнопку загрузки рекорда.</p>
-    		<p><b>   На заметку учителю</b>. Известный петербургский математик Пафнутий Львович Чебышев занимался теорией механизмов и разработал теорию наилучших приближений, которая позволяет находить шестерни с минимальным числом зубьев, дающих наиболее точные передаточные отношения. Ребята могут почитать про это в Интернете по ключевым словам «цепные или непрерывные дроби».</p>
-            	>>>,
+    	    <p><b>Statement.</b> In this problem you should construct a clock from cogwheels. The clock should have to hands
+            such that while the first hand make complete circle in four week, the second hand makes a circle in one year. Note that one year
+            consists of 365,24220…, so it is impossible to solve the problem accurately, but you should make a clock as accurate as possible.
+            You could accidentally get a clock with two faces, if the second wheel of the last cogwheel is not connected with the second wheel of
+            the main axle, i.e., the cogwheels do not form a closed contour.
+            Besides, you could accidentally make a minute hand rotate in the wrong direction.
+            Such solutions are also taken into account, but solutions with one face and with right hands directions are considered as better solutions.
+            If rotations of hands is not consistent, then the program display an inaccuracy in percents. You should make this inaccuracy to be zero.
+            If you manage to make a clock with one face and the right direction of the minute hand, then you should optimize a size of a clock body.
+            The size is an area of the smallest rectangle that contains all cogwheels.<p>
+            <p>  The best solution is saved automatically, and you can always return to it by pressing a button that loads a record.</p>
+        >>>,
     	"help2":<<<
-    	    <p>   С шестернями можно работать в двух рабочих областях. В верхней части экрана изображен вид механизма сверху. Внизу находится схема соединения шестерен. Она напоминает вид сбоку, но не учитывает возможные перемещения шестерен по плоскости.</p>
-    		<p>   Каждая шестерня состоит из двух зубчатых колес. Кольца жестко соединены с осью шестерни. Исключение составляет лишь первая – ведущая – шестерня, на оси которой есть свободно вращающееся колесо со второй стрелкой. Шестерни можно передвигать мышкой и менять числа зубьев, вводя их значения в соответствующие поля. Количество зубьев не может быть меньше 8 и больше 40. Пока шестерни не соединены в кольцо, на последней шестерне размещается стрелка, которая показывается на втором циферблате. Когда вращение передается на второе кольцо главной шестерни, на обоих циферблатах демонстрируются обе стрелки.</p>
-    		<p>   Каждая шестерня связана только  с двумя соседними. При щелчке мышкой на любую шестерню, выделяются те две, с которыми её можно соединить через нижнее или верхнее зубчатое колесо. Когда колеса разных шестерен входят в зацепление, их зубья подсвечиваются розовыми кольцами. Обратите внимание, что колеса шестерен не должны зацеплять оси других шестерен. В этом случае механизм не работает и появляется сигнал поломки.</p>
-    		<p>   Добавлять шестерни можно с помощью соответствующей кнопки, либо флажка, который появляется при подведении курсора к области соединения двух колес в нижней схеме. Если в этот момент сделать щелчок мышкой, на этом месте вставится новая шестерня с одинаковым числом зубьев на обоих колесах.</p>
-    		<p>   Кнопка «Показать/скрыть изделие» позволяет переходить от механизма часов к их внешнему виду. Кнопка «На начало» устанавливает часы на начало отсчета. Работу часов можно наблюдать как в анимационном, так и в пошаговом режиме. Скорость ведущей стрелки можно менять (делать скорость слишком большой не нужно, так как могут появиться оптические эффекты, искажающие правильное восприятие вращения).</p>
-    		<p>   Любые решения можно сохранять и загружать по мере надобности (обычно этим не пользуются, так как рекорд запоминается автоматически, а лучшие решения всех задач также собираются вместе автоматически при нажатии кнопки сохранения лучших результатов и анкеты).</p>
+    	<p>   You can work with cogwheels in the two working areas. At the top of the screen the mechanism is viewed from the top.
+            	    At the bottom there is a scheme of connection of cogwheels.
+            	    It is a kind of view from the side, but it does not reflect real positions of cogwheels on the plane.</p>
+            		<p>   Every cogwheel consists of two wheels. Both wheels are connected to one axle.
+            		The only exception is the first main cogwheel, one of its wheels is not connected to the axle, but freely rotates with the second hand.
+            		Cogwheels may be moved by a mouse, their number of cogs may be changed by entering numbers into corresponding fields.
+            		 Number of cogs may not be less than 8 and greater than 40.
+            		 While cogwheels are not connected in the circle, the last cogwheel has a hand that corresponds on the second clock face.
+            		 When the second wheel of the main cogwheel is rotated, both faces demonstrate their hands.</p>
 
+            		<p>
+            		Each cogwheel is connected only with two neighbouring cogwheels. After clicking any cogwheel two neighbouring cogwheels are selected.
+            		One of them may be connected with the cogwheel by the top wheel, and one by the bottom.
+            		When wheels of two different links with each other, their cogs are highlighted with pink rings.
+            		Noet that wheels should not go over axles of other cogwheels, in such a case clocks are treated as broken and the program
+            		signalizes about this.</p>
+
+            		<p>   You can add cogwheels with the corresponding button or a checkbox that appears
+            		when you move a cursor over an area where two wheels are connected at the bottom of the screen.
+            		If you click at this moment, then a new cogwheel will appear there, it will have the same number of cogs on the both wheels.</p>
+            		<p>   `Show/Hide clock' button allows to go the the real view of the clock.
+            		`To start' button sets current time to 0 hours, 0 minutes. Clock may work both the animation mode and in the step by step mode.
+            		The speed of the main hand may be changed. (Do not make the hand rotate too fast, because it may lead to optical illusions that
+            		make you perceive rotation incorrectly).</p>
+            		<p>   Any solution may be saved and loaded when needed, but you will probably use this feature seldom, because a record solution is stored automatically,
+            		and all best solutions of all problems are collected automatically when the best results and questionnaire are saved.</p>
     	>>>
 ,
 	"buttons":{
