@@ -1,0 +1,5 @@
+/*create file level-language.json-settings with the following contents*/
+{
+    "level" : 1,
+    "language": "ru"
+}

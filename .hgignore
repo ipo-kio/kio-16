@@ -3,4 +3,5 @@
 ^bin-debug
 ^solutions/
 ^kio-\d+\.properties$
-^CertificateCorrector/lib/itext/
+^CertificateCorrector/lib/
+^lib/

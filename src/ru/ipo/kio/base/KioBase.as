@@ -6,7 +6,6 @@ import flash.errors.IllegalOperationError;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
-import flash.events.PressAndTapGestureEvent;
 import flash.events.TimerEvent;
 import flash.text.TextField;
 import flash.utils.ByteArray;
