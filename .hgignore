@@ -5,3 +5,4 @@
 ^kio-\d+\.properties$
 ^CertificateCorrector/lib/
 ^lib/
+/level-language.json-settings$
