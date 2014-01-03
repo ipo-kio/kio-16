@@ -30,9 +30,9 @@ public class ExampleProblemSprite extends Sprite {
     private var textField:TextField;
 
     //конструктор спрайта, инициализация всех объектов
-    public function ExampleProblemSprite() {
+    public function ExampleProblemSprite(problem:KioProblem) {
         //получаем доступ к API, для этого передаем в качестве параметра id нашей задачи
-        var api:KioApi = KioApi.instance(ExampleProblem.ID);
+        var api:KioApi = KioApi.instance(problem);
 
         textField = new TextField();
         //в качестве текста для первоначального отображения устанавливаем текст, взятый из объекта локализации.

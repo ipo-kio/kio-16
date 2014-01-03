@@ -3,7 +3,7 @@
     <default-size>
         <width>900</width>
         <!--add 100 px height for player-->
-        <height>725</height>
+        <height>625</height>
     </default-size>
     <static-link-runtime-shared-libraries>true</static-link-runtime-shared-libraries>
 </flex-config>

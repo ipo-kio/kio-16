@@ -40,7 +40,7 @@ public class ExampleProblem implements KioProblem {
 
         //теперь можно писать код конструктора, в частности, создавать объекты, которые используют API:
         //В конструкторе MainSpirte есть вызов API (KioApi.instance(...).localization)
-        sp = new ExampleProblemSprite();
+        sp = new ExampleProblemSprite(this);
     }
 
     /**
@@ -98,9 +98,9 @@ public class ExampleProblem implements KioProblem {
             sp.text = solution.txt;
 
             //не забыть сохранить решение, как обычно после того как оно изменилось
-            KioApi.instance(ID).autoSaveSolution();
+            KioApi.instance(this).autoSaveSolution();
             //не забыть как обычно после изменения решения пересчитать текущий результат
-            KioApi.instance(ID).submitResult(sp.currentResult());
+            KioApi.instance(this).submitResult(sp.currentResult());
             //Если текущий результат еще и показывается где-то на экране, его тоже надо пересчитать
             //TODO это все должно происходить автоматически
 
