@@ -9,6 +9,7 @@ import ru.ipo.kio.base.KioBase;
  * Этот класс используется для запуска примера. При создании своей задачи для отладки необходимо создать такой же файл.
  * @author Ilya
  */
+[SWF(width=900, height=625)]
 public class ExampleRunner extends Sprite {
 
     //С этого конструктора начинается программа
