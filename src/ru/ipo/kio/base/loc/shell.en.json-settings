@@ -1,6 +1,6 @@
 ﻿/*This file contains texts that are common to all problems and that are used in the Shell*/
 {
-    "contest_header":"CTE contest 2013",
+    "contest_header":"CTE contest 2014",
     "contest_level":["Beginner Level", "I Level", "II Level"],
     "help":{ /*Common help text*/
 		"all_problems": <<< /*Such quotes <<< >>> mark the text, that spans multiple lines.
@@ -57,7 +57,7 @@
         },
         "welcome":{
 			"greeting": <<<
-				Welcome to competition CTE-2013!
+				Welcome to competition CTE-2014!
 	        >>>,
     		"mainMessage_0": <<<
     		    <p>We would like to offer you to solve 3 problems.</p>
@@ -129,7 +129,7 @@
             "screen_header":"Problem"
         },
         "about": {
-            "header": <<<About CTE 2013 competition>>>, /*About authors and copy right*/
+            "header": <<<About CTE 2014 competition>>>, /*About authors and copy right*/
             "text" : <<<
                 <p class='h1c'>Institute of productive learning of the Russian Academy of Education</p>
                 <p class='h1c'>Computer Tools in Education Journal</p>

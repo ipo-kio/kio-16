@@ -2,7 +2,7 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="kio-14">
     <configurations>
-      <configuration name="kio-14" pure-as="true" main-class="ru.ipo.kio._13.KIOShell" output-file="kio_14.swf" output-folder="$MODULE_DIR$/out">
+      <configuration name="kio-14" pure-as="true" main-class="ru.ipo.kio._14.KIOShell" output-file="kio_14.swf" output-folder="$MODULE_DIR$/out">
         <dependencies target-player="11.1">
           <entries>
             <entry library-id="6eca94aa-3b4c-476b-a27d-7f09d0d2d562">

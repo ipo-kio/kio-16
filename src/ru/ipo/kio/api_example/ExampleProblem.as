@@ -55,7 +55,7 @@ public class ExampleProblem implements KioProblem {
      * Год задачи
      */
     public function get year():int {
-        return 2013;
+        return 2014;
     }
 
     /**
