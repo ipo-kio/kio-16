@@ -8,13 +8,10 @@ import flash.display.Sprite;
 
         private var star:Star;
         private var isSelected:Boolean;
-        private var notSelected:Boolean;
 
         public function StarView(star:Star) {
             this.star = star;
             isSelected = (mouseX >= (star.x - star.radius) && mouseX <= (star.x + star.radius)) && (mouseY >= (star.y - star.radius) && mouseY <= (star.y + star.radius));
-            notSelected = !isSelected;
-
             drawStar();
         }
 
@@ -24,7 +21,7 @@ import flash.display.Sprite;
                 graphics.beginFill(0xffcc00);
                 graphics.drawCircle(star.x, star.y, star.radius);
                 graphics.endFill();
-            } else if (notSelected) {
+            } else {
                 graphics.clear();
                 graphics.beginFill(0xfcdd76);
                 graphics.drawCircle(star.x, star.y, star.radius);
