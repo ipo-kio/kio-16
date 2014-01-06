@@ -3,14 +3,18 @@
  */
 package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
+import flash.events.MouseEvent;
 
-    public class StarRunner extends Sprite {
+public class StarRunner extends Sprite {
         public function StarRunner() {
             var sky:StarrySkyView = new StarrySkyView();
 
-            var panel:InfoPanel = new InfoPanel();
-            panel.x = 0;
-            panel.y = sky.height;
+            var panel:InfoPanel = new InfoPanel(sky);
+
+            addEventListener(MouseEvent.MOUSE_MOVE, function(e:MouseEvent):void {
+                panel.text = "X coordinates: " + mouseX + "," + "Y coordinates: " + mouseY;
+            });
+
 
             addChild(sky);
             addChild(panel);

@@ -10,7 +10,7 @@ public class StarrySkyView extends Sprite {
 
         public function StarrySkyView() {
             drawSky();
-            addEventListener(MouseEvent.MOUSE_MOVE, function(e:Event):void {
+            addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
                 drawSky();
             });
         }

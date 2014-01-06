@@ -6,21 +6,32 @@ import flash.display.Sprite;
 import flash.events.MouseEvent;
 import flash.text.TextField;
 
-public class InfoPanel extends Sprite {
+    public class InfoPanel extends Sprite {
 
         private var txt:TextField;
+        private var sky:StarrySkyView;
 
-        public function InfoPanel() {
+        public function InfoPanel(sky:StarrySkyView) {
+            this.sky = sky;
+            drawPanel();
+            addChild(txt);
+        }
 
+        public function set text(value:String):void {
+            txt.text = value;
+        }
+
+        public function get text():String {
+            return txt.text;
+        }
+
+        private function drawPanel():void {
             txt = new TextField();
             txt.width = 500;
             txt.height = 50;
-
-            addEventListener(MouseEvent.MOUSE_MOVE, function(e:MouseEvent) {
-                txt.text = "X coordinates: " + mouseX + "," + "Y coordinates: " + mouseY;
-            });
-
-            addChild(txt);
+            txt.x = 0;
+            txt.y = sky.height;
+            txt.selectable = false;
         }
     }
 }
