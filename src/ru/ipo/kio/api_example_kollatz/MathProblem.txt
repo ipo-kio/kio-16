@@ -1,0 +1,56 @@
+import java.util.Scanner;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: user
+ * Date: 27.09.13
+ * Time: 21:32
+ */
+public class MathProblem {
+
+    private static Scanner in = new Scanner(System.in);
+    private static int step = 0;
+
+    public static void main(String[] args) {
+        System.out.println("Enter a number: ");
+        int x = in.nextInt();
+
+        compute(x);
+        System.out.println();
+        System.out.println("Total Count Of Steps: " + step);
+    }
+
+    private static void compute(int x) {
+
+        int prev = x;
+        while (x != 1) {
+            if (x % 2 == 0) {
+                x = device2(prev, x);
+                step++;
+            } else {
+                x = make3TimesAndAdd1(prev, x);
+                step++;
+            }
+        }
+    }
+
+    private static int make3TimesAndAdd1(int prev, int x) {
+        x = x * 3 + 1;
+        if (step == 0)
+            System.out.print(prev + " -> " + x);
+        else
+            System.out.print(" -> " + x);
+        return x;
+    }
+
+    private static int device2(int prev, int x) {
+        x = x / 2;
+        if (step == 0)
+            System.out.print(prev + " -> " + x);
+        else
+            System.out.print(" -> " + x);
+        return x;
+    }
+
+
+}
