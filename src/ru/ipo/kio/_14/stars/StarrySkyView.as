@@ -3,10 +3,15 @@
  */
 package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
+import flash.events.Event;
+import flash.events.MouseEvent;
 
-    public class StarrySkyView extends Sprite {
+public class StarrySkyView extends Sprite {
         public function StarrySkyView() {
             drawSky();
+            addEventListener(MouseEvent.MOUSE_MOVE, function(e:Event):void {
+                drawSky();
+            });
         }
 
         private function drawSky():void {
