@@ -14,7 +14,7 @@ import flash.events.MouseEvent;
             panel = new InfoPanel(this);
             drawSky();
             addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
-                panel.text = "X coordinates: " + mouseX + "," + "Y coordinates: " + mouseY;
+                panel.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY;
             });
             panel.x = 0;
             panel.y = this.height;

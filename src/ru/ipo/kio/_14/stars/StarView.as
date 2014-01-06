@@ -12,15 +12,17 @@ public class StarView extends Sprite {
 
         public function StarView(star:Star) {
             this.star = star;
-            _isSelected = (mouseX >= (star.x - star.radius) && mouseX <= (star.x + star.radius)) && (mouseY >= (star.y - star.radius) && mouseY <= (star.y + star.radius));
+//            _isSelected = (mouseX >= (star.x - star.radius) && mouseX <= (star.x + star.radius)) && (mouseY >= (star.y - star.radius) && mouseY <= (star.y + star.radius));
             drawDefaultStar();
 
             addEventListener(MouseEvent.ROLL_OVER, function(e:MouseEvent):void {
                 drawSelectedStar();
+                _isSelected = true;
             });
 
             addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
                 drawDefaultStar();
+                _isSelected = false;
             });
         }
 

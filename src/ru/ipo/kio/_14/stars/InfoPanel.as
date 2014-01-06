@@ -26,10 +26,10 @@ import flash.text.TextField;
 
         private function drawPanel():void {
             txt = new TextField();
-            txt.width = 500;
+            txt.width = 160;
             txt.height = 50;
             txt.selectable = false;
-            txt.text = "X coordinates: " + mouseX + "," + "Y coordinates: " + mouseY;
+            txt.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY;
         }
     }
 }
