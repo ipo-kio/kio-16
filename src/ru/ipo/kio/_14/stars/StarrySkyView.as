@@ -18,7 +18,7 @@ public class StarrySkyView extends Sprite {
 
             graphics.clear();
             graphics.beginFill(0x0047ab);
-            graphics.drawRect(0, 0, 700, 600);
+            graphics.drawRect(0, 0, 500, 300);
             graphics.endFill();
 
             var star1:Star = new Star(13, 25, 1);
