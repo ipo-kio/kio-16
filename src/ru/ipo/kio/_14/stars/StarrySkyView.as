@@ -8,11 +8,18 @@ import flash.events.MouseEvent;
 
     public class StarrySkyView extends Sprite {
 
+        private var panel:InfoPanel;
+
         public function StarrySkyView() {
+            panel = new InfoPanel(this);
             drawSky();
             addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
+                panel.text = "X coordinates: " + mouseX + "," + "Y coordinates: " + mouseY;
                 drawSky();
             });
+            panel.x = 0;
+            panel.y = this.height;
+            addChild(panel);
         }
 
         private function drawSky():void {

@@ -28,9 +28,8 @@ import flash.text.TextField;
             txt = new TextField();
             txt.width = 500;
             txt.height = 50;
-            txt.x = 0;
-            txt.y = sky.height;
             txt.selectable = false;
+            txt.text = "X coordinates: " + mouseX + "," + "Y coordinates: " + mouseY;
         }
     }
 }
