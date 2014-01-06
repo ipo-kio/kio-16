@@ -3,8 +3,9 @@
  */
 package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
+import flash.events.MouseEvent;
 
-    public class StarView extends Sprite {
+public class StarView extends Sprite {
 
         private var star:Star;
         private var _isSelected:Boolean;
@@ -12,21 +13,29 @@ import flash.display.Sprite;
         public function StarView(star:Star) {
             this.star = star;
             _isSelected = (mouseX >= (star.x - star.radius) && mouseX <= (star.x + star.radius)) && (mouseY >= (star.y - star.radius) && mouseY <= (star.y + star.radius));
-            drawStar();
+            drawDefaultStar();
+
+            addEventListener(MouseEvent.ROLL_OVER, function(e:MouseEvent):void {
+                drawSelectedStar();
+            });
+
+            addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
+                drawDefaultStar();
+            });
         }
 
-        private function drawStar():void {
-            if (_isSelected) {
-                graphics.clear();
-                graphics.beginFill(0xffcc00);
-                graphics.drawCircle(star.x, star.y, star.radius);
-                graphics.endFill();
-            } else {
-                graphics.clear();
-                graphics.beginFill(0xfcdd76);
-                graphics.drawCircle(star.x, star.y, star.radius);
-                graphics.endFill();
-            }
+        private function drawDefaultStar():void {
+            graphics.clear();
+            graphics.beginFill(0xfcdd76);
+            graphics.drawCircle(star.x, star.y, star.radius);
+            graphics.endFill();
+        }
+
+        private function drawSelectedStar():void {
+            graphics.clear();
+            graphics.beginFill(0xffcc00);
+            graphics.drawCircle(star.x, star.y, star.radius);
+            graphics.endFill();
         }
 
 

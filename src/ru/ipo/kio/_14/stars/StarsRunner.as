@@ -8,14 +8,7 @@ import flash.display.Sprite;
         public function StarsRunner() {
 
             var sky:StarrySkyView = new StarrySkyView();
-//            var panel:InfoPanel = new InfoPanel(sky);
-//
-//            addEventListener(MouseEvent.MOUSE_MOVE, function(e:MouseEvent):void {
-//                panel.text = "X coordinates: " + mouseX + "," + "Y coordinates: " + mouseY;
-//            });
-
             addChild(sky);
-//            addChild(panel);
         }
     }
 }
