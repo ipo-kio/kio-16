@@ -5,7 +5,7 @@ package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 
-public class StarRunner extends Sprite {
+    public class StarRunner extends Sprite {
         public function StarRunner() {
             var sky:StarrySkyView = new StarrySkyView();
 

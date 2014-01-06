@@ -4,7 +4,7 @@
 package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
 
-public class StarView extends Sprite {
+    public class StarView extends Sprite {
 
         private var star:Star;
         private var isSelected:Boolean;
