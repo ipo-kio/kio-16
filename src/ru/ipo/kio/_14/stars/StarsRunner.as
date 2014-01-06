@@ -4,8 +4,8 @@
 package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
 
-    public class StarRunner extends Sprite {
-        public function StarRunner() {
+    public class StarsRunner extends Sprite {
+        public function StarsRunner() {
 
             var sky:StarrySkyView = new StarrySkyView();
 //            var panel:InfoPanel = new InfoPanel(sky);
