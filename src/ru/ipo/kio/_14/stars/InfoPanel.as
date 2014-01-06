@@ -27,7 +27,7 @@ import flash.text.TextField;
         private function drawPanel():void {
             txt = new TextField();
             txt.width = 160;
-            txt.height = 50;
+            txt.height = 70;
             txt.selectable = false;
             txt.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY;
         }

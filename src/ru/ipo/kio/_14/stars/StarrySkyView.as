@@ -8,18 +8,24 @@ import flash.events.MouseEvent;
 
     public class StarrySkyView extends Sprite {
 
-        private var stars:Array;
+        private var starViews:Array;
 
         private var panel:InfoPanel;
 
         public function StarrySkyView(stars:Array) {
 
-            this.stars = stars;
             panel = new InfoPanel(this);
+            starViews = [];
+            var currentStar:int = -1;
+
+            for (var i:int = 0; i < stars.length; i++) {
+                starViews[i] = new StarView(stars[i]);
+            }
 
             drawSky();
+
             addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
-                panel.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY;
+                panel.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY + ",\n" + "currentStar: " + currentStar;
             });
             panel.x = 0;
             panel.y = this.height;
@@ -33,9 +39,8 @@ import flash.events.MouseEvent;
             graphics.drawRect(0, 0, 500, 300);
             graphics.endFill();
 
-            for (var i:int = 0; i < stars.length; i++) {
-                var starView:StarView = new StarView(stars[i]);
-                addChild(starView);
+            for (var i:int = 0; i < starViews.length; i++) {
+                addChild(starViews[i]);
             }
         }
     }

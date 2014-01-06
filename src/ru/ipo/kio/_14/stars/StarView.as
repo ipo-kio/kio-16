@@ -5,7 +5,7 @@ package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 
-public class StarView extends Sprite {
+    public class StarView extends Sprite {
 
         private var star:Star;
         private var _isSelected:Boolean;
@@ -39,7 +39,6 @@ public class StarView extends Sprite {
             graphics.drawCircle(star.x, star.y, star.radius);
             graphics.endFill();
         }
-
 
         public function get isSelected():Boolean {
             return _isSelected;
