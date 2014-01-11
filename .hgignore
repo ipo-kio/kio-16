@@ -4,5 +4,5 @@
 ^solutions/
 ^kio-\d+\.properties$
 ^CertificateCorrector/lib/
-^lib/
 /level-language.json-settings$
+^away3d-examples
