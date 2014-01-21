@@ -16,10 +16,11 @@ import flash.events.MouseEvent;
 
             panel = new InfoPanel(this);
             starViews = [];
-            var currentStar:int = -1;
+            var currentStar:int;
 
             for (var i:int = 0; i < stars.length; i++) {
                 starViews[i] = new StarView(stars[i]);
+                starViews[i].index = i;
             }
 
             drawSky();
