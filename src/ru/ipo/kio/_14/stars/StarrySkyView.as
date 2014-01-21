@@ -11,24 +11,23 @@ import flash.events.MouseEvent;
         private var starViews:Array;
 
         private var panel:InfoPanel;
+        private var currentStar:int = -1;
 
         public function StarrySkyView(stars:Array) {
 
             panel = new InfoPanel(this);
             starViews = [];
-            var currentStar:int = -1;
+//            currentStar:int = -1;
 
             for (var i:int = 0; i < stars.length; i++) {
                 starViews[i] = new StarView(stars[i]);
-                stars[i].index = i;
+                starViews[i].index = i;
             }
 
             drawSky();
 
             for (var k:int = 0; k < starViews.length; k++) {
-                starViews[k].addEventListener(MouseEvent.ROLL_OVER, function(e:MouseEvent):void {
-                    currentStar = stars[k].index;
-                });
+                starViews[k].addEventListener(MouseEvent.ROLL_OVER, createRollOverListener(k));
             }
 
             for (var t:int = 0; t < starViews.length; t++) {
@@ -43,6 +42,12 @@ import flash.events.MouseEvent;
             panel.x = 0;
             panel.y = this.height;
             addChild(panel);
+        }
+
+        private function createRollOverListener(k:int):Function {
+            return function(event:MouseEvent):void {
+                 currentStar = starViews[k].index;
+            }
         }
 
         private function drawSky():void {

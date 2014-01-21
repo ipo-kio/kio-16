@@ -10,6 +10,8 @@ import flash.events.MouseEvent;
         private var _star:Star;
         private var _isSelected:Boolean;
 
+        private var _index:int
+
         public function StarView(star:Star) {
             this._star = star;
 //            _isSelected = (mouseX >= (star.x - star.radius) && mouseX <= (star.x + star.radius)) && (mouseY >= (star.y - star.radius) && mouseY <= (star.y + star.radius));
@@ -38,6 +40,14 @@ import flash.events.MouseEvent;
             graphics.beginFill(0xffcc00);
             graphics.drawCircle(_star.x, _star.y, _star.radius);
             graphics.endFill();
+        }
+
+        public function get index():int {
+            return _index;
+        }
+
+        public function set index(value:int):void {
+            _index = value;
         }
 
         public function get isSelected():Boolean {
