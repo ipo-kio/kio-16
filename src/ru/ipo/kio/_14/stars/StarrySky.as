@@ -8,7 +8,7 @@ import flash.events.EventDispatcher;
     public class StarrySky extends EventDispatcher {
 
         private var starsView:Array;
-        private static var starsLines:Array;
+        private var starsLines:Array;
 
 
         public function StarrySky(starsView:Array) {
@@ -16,14 +16,29 @@ import flash.events.EventDispatcher;
             starsLines = [];
         }
 
-        public static function addLine():void {
+        public function addLine(a:int, b:int):void {
+            for (var i:int = 0; i < starsView.length; i++) {
+                if (starsView[i].index == a) {
+                    for (var j:int = 0; j < starsView.length; j++) {
+                        if (starsView[j].index == b) {
+                            starsView.push([starsView[i], starsView[j]]);
+                            dispatchEvent(new Event("add_new_line"));
+                        }
+                    }
+                }
+            }
 
-//            dispatchEvent(new Event("add_new_line"));
         }
 
-        public static function deleteLine():void {
-
-//            dispatchEvent(new Event("del_line"));
+        public function deleteLine(a:int, b:int):void {
+            for (var i:int = 0; i < starsLines.length; i++) {
+                if (starsLines[i][0].index == a) {
+                    if (starsLines[i][1].index == b) {
+                        starsLines[i] = []; //todo delete line
+                        dispatchEvent(new Event("del_line"));
+                    }
+                }
+            }
         }
     }
 }

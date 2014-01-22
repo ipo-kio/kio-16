@@ -13,8 +13,9 @@ import flash.events.MouseEvent;
         private var panel:InfoPanel;
 
         private var currentStar:int = -1;
-        private var saveCurrentStar;
+        private var saveCurrentStar:int;
         private var lines:Array;
+        private var sky:StarrySky;
 
         public function StarrySkyView(stars:Array) {
 
@@ -26,6 +27,8 @@ import flash.events.MouseEvent;
                 starViews[i] = new StarView(stars[i]);
                 starViews[i].index = i;
             }
+
+            sky = new StarrySky(starViews);
 
             drawSky();
 

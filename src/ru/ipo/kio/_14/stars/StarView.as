@@ -10,7 +10,7 @@ import flash.events.MouseEvent;
         private var _star:Star;
         private var _isSelected:Boolean;
 
-        private var _index:int
+        private var _index:int;
 
         public function StarView(star:Star) {
             this._star = star;
