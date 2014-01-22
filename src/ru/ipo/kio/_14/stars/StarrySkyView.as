@@ -11,13 +11,16 @@ import flash.events.MouseEvent;
         private var starViews:Array;
 
         private var panel:InfoPanel;
+
         private var currentStar:int = -1;
+        private var saveCurrentStar;
+        private var lines:Array;
 
         public function StarrySkyView(stars:Array) {
 
             panel = new InfoPanel(this);
             starViews = [];
-//            currentStar:int = -1;
+            lines = [];
 
             for (var i:int = 0; i < stars.length; i++) {
                 starViews[i] = new StarView(stars[i]);
@@ -39,6 +42,16 @@ import flash.events.MouseEvent;
             addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
                 panel.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY + ",\n" + "currentStar: " + currentStar;
             });
+
+            addEventListener("add_new_line", function(e:Event):void {
+                drawSky();
+            });
+
+            addEventListener("del_line", function(e:Event):void {
+                drawSky();
+            });
+
+
             panel.x = 0;
             panel.y = this.height;
             addChild(panel);
