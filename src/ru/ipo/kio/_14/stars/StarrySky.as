@@ -18,12 +18,12 @@ import flash.events.EventDispatcher;
 
         public static function addLine():void {
 
-            dispatchEvent(new Event("add_new_line"));
+//            dispatchEvent(new Event("add_new_line"));
         }
 
         public static function deleteLine():void {
 
-            dispatchEvent(new Event("del_line"));
+//            dispatchEvent(new Event("del_line"));
         }
     }
 }
