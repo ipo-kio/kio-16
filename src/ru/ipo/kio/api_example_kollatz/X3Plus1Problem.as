@@ -1,7 +1,7 @@
 package ru.ipo.kio.api_example_kollatz {
 import flash.display.DisplayObject;
 
-import ru.ipo.kio._3x_pl_1.X3Plus1ProblemSprite;
+import ru.ipo.kio.api_example_kollatz.X3Plus1ProblemSprite;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
