@@ -34,7 +34,7 @@ import flash.events.EventDispatcher;
             for (var i:int = 0; i < starsLines.length; i++) {
                 if (starsLines[i][0].index == a) {
                     if (starsLines[i][1].index == b) {
-                        starsLines[i] = []; //todo delete line
+                        starsLines.splice(i, i);
                         dispatchEvent(new Event("del_line"));
                     }
                 }
