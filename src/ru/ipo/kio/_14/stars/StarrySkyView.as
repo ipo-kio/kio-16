@@ -83,8 +83,10 @@ import flash.events.MouseEvent;
 //
 //        private function createMoseUpListener(k:int, line:LineView):Function {
 //            return function(event:MouseEvent):void {
-//                lines.push([line, saveCurrentStar, currentStar]);
-//                sky.addLine(saveCurrentStar, currentStar);
+//                 if (currentStar != -1 && currentStar != saveCurrentStar) {
+    //                lines.push([line, saveCurrentStar, currentStar]);
+    //                sky.addLine(saveCurrentStar, currentStar);
+    //              }
 //            }
 //        }
 //
