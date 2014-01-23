@@ -5,7 +5,7 @@ package ru.ipo.kio._14.stars {
 import flash.events.Event;
 import flash.events.EventDispatcher;
 
-    public class StarrySky extends EventDispatcher {
+public class StarrySky extends EventDispatcher {
 
         private var starsView:Array;
         private var starsLines:Array;
@@ -18,17 +18,13 @@ import flash.events.EventDispatcher;
             _sumOfLines = 0;
         }
 
-        public function addLine(a:int, b:int):void {
-            for (var i:int = 0; i < starsView.length; i++) {
-                if (starsView[i].index == a) {
-                    for (var j:int = 0; j < starsView.length; j++) {
-                        if (starsView[j].index == b) {
-                            _sumOfLines += Math.sqrt(Math.pow((starsView[j].x - starsView[i].x), 2) + Math.pow((starsView[j].y - starsView[i].y), 2));
-                            starsLines.push([starsView[i], starsView[j]]);
+        public function addLine(a:StarView, b:StarView):void {
+            for (var i:int = 0; i < starsLines.length; i++) {
+                if (starsLines[i][0] != a && starsLines[i][1] != b) {
+                    _sumOfLines += Math.sqrt(Math.pow((b.x - a.x), 2) + Math.pow((b.y - a.y), 2));
+                    starsLines.push([a, b]);
 
-                            dispatchEvent(new Event("add_new_line"));
-                        }
-                    }
+                    dispatchEvent(new Event("add_new_line"));
                 }
             }
         }

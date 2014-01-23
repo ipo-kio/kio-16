@@ -64,7 +64,7 @@ import flash.events.MouseEvent;
             addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
                 if (currentStar != -1 && currentStar != saveCurrentStar) {
                     lines.push([lineView, saveCurrentStar, currentStar]);
-                    sky.addLine(saveCurrentStar, currentStar);
+                    sky.addLine(getStarViewByIndex(saveCurrentStar), getStarViewByIndex(currentStar));
                 }
                 pressed = false;
             });
