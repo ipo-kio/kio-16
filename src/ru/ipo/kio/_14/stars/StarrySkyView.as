@@ -14,7 +14,7 @@ import flash.events.MouseEvent;
 
         private var currentLine = -1;
         private var currentStar:int = -1;
-        private var saveCurrentStar:int;
+        private var saveCurrentStar:int = -1;
         private var pressed:Boolean;
 
         private var lines:Array;
@@ -51,14 +51,14 @@ import flash.events.MouseEvent;
             addEventListener(MouseEvent.MOUSE_DOWN, function(event:MouseEvent):void {
                 if (currentStar != -1) {
                     saveCurrentStar = currentStar;
-                    lineView = new LineView(starViews[k].x, starViews[k].y, mouseX, mouseY);
+                    lineView = new LineView((getStarViewOnIndex(currentStar)).x, (getStarViewOnIndex(currentStar)).y, mouseX, mouseY);
                     pressed = true;
                 }
             });
 
             addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
                 if (pressed)
-                    lineView = new LineView(starViews[k].x, starViews[k].y, mouseX, mouseY);
+                    lineView = new LineView((getStarViewOnIndex(currentStar)).x, (getStarViewOnIndex(currentStar)).y, mouseX, mouseY);
 //                lines.push([line, saveCurrentStar, currentStar]);
 //                sky.addLine(saveCurrentStar, currentStar);
             });
@@ -74,7 +74,7 @@ import flash.events.MouseEvent;
             }
 
             addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
-                panel.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY + ",\n" + "currentStar: " + currentStar;
+                panel.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY + ",\n" + "current_Star: " + currentStar + ",\n" + "save_current_Star: " + saveCurrentStar;
             });
 
             addEventListener("add_new_line", function(e:Event):void {
@@ -103,7 +103,13 @@ import flash.events.MouseEvent;
             }
         }
 
-
+        private function getStarViewOnIndex(ind:int):StarView {
+            for (var i:int = 0; i < starViews.length; i++) {
+                if (starViews[i].index == ind)
+                    return starViews[i];
+            }
+            return null;
+        }
 
 
 //
