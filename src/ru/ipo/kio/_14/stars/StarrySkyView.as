@@ -15,6 +15,7 @@ import flash.events.MouseEvent;
         private var currentLine = -1;
         private var currentStar:int = -1;
         private var saveCurrentStar:int;
+        private var pressed:Boolean;
 
         private var lines:Array;
         private var sky:StarrySky;
@@ -78,15 +79,15 @@ import flash.events.MouseEvent;
             addChild(panel);
         }
 
-        private function createRollOverListenerForLine(k:int):Function {
+        private function createRollOverListener(k:int):Function {
             return function(event:MouseEvent):void {
-                currentLine = lines[k][0].lineIndex;
+                currentStar = starViews[k].index;
             }
         }
 
-        private function createRollOverListener(k:int):Function {
+        private function createRollOverListenerForLine(k:int):Function {
             return function(event:MouseEvent):void {
-                 currentStar = starViews[k].index;
+                currentLine = lines[k][0].lineIndex;
             }
         }
 
@@ -94,9 +95,9 @@ import flash.events.MouseEvent;
             return function(event:MouseEvent):void {
                 if (currentStar != -1) {
                     saveCurrentStar = currentStar;
-                    lineView = new LineView();
+                    lineView = new LineView(starViews[k].x, starViews[k].y, mouseX, mouseY);
+                    pressed = true;
                 }
-
             }
         }
 //
