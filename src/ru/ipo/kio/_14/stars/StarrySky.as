@@ -10,10 +10,12 @@ import flash.events.EventDispatcher;
         private var starsView:Array;
         private var starsLines:Array;
 
+        private var _sumOfLines:Number;
 
         public function StarrySky(starsView:Array) {
             this.starsView = starsView;
             starsLines = [];
+            _sumOfLines = 0;
         }
 
         public function addLine(a:int, b:int):void {
@@ -21,13 +23,13 @@ import flash.events.EventDispatcher;
                 if (starsView[i].index == a) {
                     for (var j:int = 0; j < starsView.length; j++) {
                         if (starsView[j].index == b) {
-                            starsView.push([starsView[i], starsView[j]]);
+                            starsLines.push([starsView[i], starsView[j]]);
+                            _sumOfLines += Math.sqrt(Math.pow((starsLines[j].x - starsLines[i].x), 2) + Math.pow((starsLines[j].y - starsLines[i].y), 2));
                             dispatchEvent(new Event("add_new_line"));
                         }
                     }
                 }
             }
-
         }
 
         public function deleteLine(a:int, b:int):void {
@@ -39,6 +41,15 @@ import flash.events.EventDispatcher;
                     }
                 }
             }
+        }
+
+
+        public function get sumOfLines():Number {
+            return _sumOfLines;
+        }
+
+        public function set sumOfLines(value:Number):void {
+            _sumOfLines = value;
         }
     }
 }

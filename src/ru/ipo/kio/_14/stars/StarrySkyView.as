@@ -44,12 +44,12 @@ import flash.events.MouseEvent;
                 });
             }
 
-            for (var k:int = 0; k < lines.length; k++) {
-                starViews[k].addEventListener(MouseEvent.ROLL_OVER, createRollOverListenerForLine(k));
+            for (var s:int = 0; s < lines.length; s++) {
+               lines[s].addEventListener(MouseEvent.ROLL_OVER, createRollOverListenerForLine(s));
             }
 
-            for (var t:int = 0; t < lines.length; t++) {
-                starViews[t].addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
+            for (var p:int = 0; p < lines.length; p++) {
+                lines[p].addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
                     currentLine = -1;
                 });
             }
