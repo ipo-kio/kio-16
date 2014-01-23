@@ -51,14 +51,14 @@ import flash.events.MouseEvent;
             addEventListener(MouseEvent.MOUSE_DOWN, function(event:MouseEvent):void {
                 if (currentStar != -1) {
                     saveCurrentStar = currentStar;
-                    lineView = new LineView((getStarViewOnIndex(currentStar)).x, (getStarViewOnIndex(currentStar)).y, mouseX, mouseY);
+                    lineView = new LineView((getStarViewByIndex(currentStar)).x, (getStarViewByIndex(currentStar)).y, mouseX, mouseY);
                     pressed = true;
                 }
             });
 
             addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
                 if (pressed)
-                    lineView = new LineView((getStarViewOnIndex(currentStar)).x, (getStarViewOnIndex(currentStar)).y, mouseX, mouseY);
+                    lineView = new LineView((getStarViewByIndex(currentStar)).x, (getStarViewByIndex(currentStar)).y, mouseX, mouseY);
 //                lines.push([line, saveCurrentStar, currentStar]);
 //                sky.addLine(saveCurrentStar, currentStar);
             });
@@ -103,7 +103,7 @@ import flash.events.MouseEvent;
             }
         }
 
-        private function getStarViewOnIndex(ind:int):StarView {
+        private function getStarViewByIndex(ind:int):StarView {
             for (var i:int = 0; i < starViews.length; i++) {
                 if (starViews[i].index == ind)
                     return starViews[i];
