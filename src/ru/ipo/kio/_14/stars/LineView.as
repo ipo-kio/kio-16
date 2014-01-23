@@ -16,13 +16,9 @@ import flash.events.MouseEvent;
         private var _lineIndex:int;
 
 
-        public function LineView(x1:Number, y1:Number, x2:Number, y2:Number) {
+        public function LineView(x1:Number, y1:Number) {
             this.x1 = x1;
             this.y1 = y1;
-            this.x2 = x2;
-            this.y2 = y2;
-
-            drawDefaultLine();
 
             addEventListener(MouseEvent.ROLL_OVER, function(e:MouseEvent):void {
                 drawSelectedLine();
@@ -45,11 +41,20 @@ import flash.events.MouseEvent;
 
         public function registerNewLine(x1:Number, y1:Number, x2:Number, y2:Number):void {
             _lineIndex = ((x1 + y1) * (x2 + y2)) * 150;
+            this.x2 = x2;
+            this.y2 = y2;
         }
 
         public function deleteLine():void {
             if (_isSelected)
                 graphics.clear();
+        }
+
+        private function drawNewLine(x2:Number, y2:Number):void {
+            graphics.clear();
+            graphics.lineStyle(2, 0xffffff, 0.7);
+            graphics.moveTo(x1, y1);
+            graphics.lineTo(x2, y2);
         }
 
         private function drawDefaultLine():void {
