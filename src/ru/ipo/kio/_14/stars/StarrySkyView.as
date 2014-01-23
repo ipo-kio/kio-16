@@ -47,13 +47,21 @@ import flash.events.MouseEvent;
                 });
             }
 
-            for (var j:int = 0; j < starViews.length; j++) {
-                starViews[j].addEventListener(MouseEvent.MOUSE_DOWN, createMouseDownListener(j));
-            }
 
-            for (var v:int = 0; v < starViews.length; v++) {
-                starViews[v].addEventListener(MouseEvent.MOUSE_MOVE, createMouseMoveListener(v));
-            }
+            addEventListener(MouseEvent.MOUSE_DOWN, function(event:MouseEvent):void {
+                if (currentStar != -1) {
+                    saveCurrentStar = currentStar;
+                    lineView = new LineView(starViews[k].x, starViews[k].y, mouseX, mouseY);
+                    pressed = true;
+                }
+            });
+
+            addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
+                if (pressed)
+                    lineView = new LineView(starViews[k].x, starViews[k].y, mouseX, mouseY);
+//                lines.push([line, saveCurrentStar, currentStar]);
+//                sky.addLine(saveCurrentStar, currentStar);
+            });
 
             for (var s:int = 0; s < lines.length; s++) {
                lines[s][0].addEventListener(MouseEvent.ROLL_OVER, createRollOverListenerForLine(s));
@@ -95,24 +103,9 @@ import flash.events.MouseEvent;
             }
         }
 
-        private function createMouseDownListener(k:int):Function {
-            return function(event:MouseEvent):void {
-                if (currentStar != -1) {
-                    saveCurrentStar = currentStar;
-                    lineView = new LineView(starViews[k].x, starViews[k].y, mouseX, mouseY);
-                    pressed = true;
-                }
-            }
-        }
 
-        private function createMouseMoveListener(k:int):Function {
-            return function(event:MouseEvent):void {
-                if (pressed)
-                    lineView = new LineView(starViews[k].x, starViews[k].y, mouseX, mouseY);
-//                lines.push([line, saveCurrentStar, currentStar]);
-//                sky.addLine(saveCurrentStar, currentStar);
-            }
-        }
+
+
 //
 //        private function createMoseUpListener(k:int, line:LineView):Function {
 //            return function(event:MouseEvent):void {
