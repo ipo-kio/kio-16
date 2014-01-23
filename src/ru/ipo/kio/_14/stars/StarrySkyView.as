@@ -66,6 +66,7 @@ import flash.events.MouseEvent;
                     lines.push([lineView, saveCurrentStar, currentStar]);
                     sky.addLine(getStarViewByIndex(saveCurrentStar), getStarViewByIndex(currentStar));
                 }
+                saveCurrentStar = -1;
                 pressed = false;
             });
 

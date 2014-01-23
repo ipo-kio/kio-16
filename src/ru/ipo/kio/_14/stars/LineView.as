@@ -20,6 +20,10 @@ import flash.events.MouseEvent;
             this.x1 = x1;
             this.y1 = y1;
 
+            graphics.clear();
+            graphics.lineStyle(2, 0xffffff, 0.7);
+            graphics.moveTo(x1, y1);
+
             addEventListener(MouseEvent.ROLL_OVER, function(e:MouseEvent):void {
                 drawSelectedLine();
                 _isSelected = true;
@@ -51,9 +55,6 @@ import flash.events.MouseEvent;
         }
 
         public function drawNewLine(x2:Number, y2:Number):void {
-            graphics.clear();
-            graphics.lineStyle(2, 0xffffff, 0.7);
-            graphics.moveTo(x1, y1);
             graphics.lineTo(x2, y2);
         }
 
