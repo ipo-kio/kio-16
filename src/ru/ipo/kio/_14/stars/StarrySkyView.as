@@ -19,6 +19,8 @@ import flash.events.MouseEvent;
         private var lines:Array;
         private var sky:StarrySky;
 
+        private var lineView:LineView;
+
         public function StarrySkyView(stars:Array) {
 
             panel = new InfoPanel(this);
@@ -44,12 +46,16 @@ import flash.events.MouseEvent;
                 });
             }
 
+            for (var j:int = 0; j < starViews.length; j++) {
+                starViews[j].addEventListener(MouseEvent.MOUSE_DOWN, createMouseDownListener(j));
+            }
+
             for (var s:int = 0; s < lines.length; s++) {
-               lines[s].addEventListener(MouseEvent.ROLL_OVER, createRollOverListenerForLine(s));
+               lines[s][0].addEventListener(MouseEvent.ROLL_OVER, createRollOverListenerForLine(s));
             }
 
             for (var p:int = 0; p < lines.length; p++) {
-                lines[p].addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
+                lines[p][0].addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
                     currentLine = -1;
                 });
             }
@@ -74,7 +80,7 @@ import flash.events.MouseEvent;
 
         private function createRollOverListenerForLine(k:int):Function {
             return function(event:MouseEvent):void {
-                currentLine = lines[k].lineIndex;
+                currentLine = lines[k][0].lineIndex;
             }
         }
 
@@ -84,14 +90,15 @@ import flash.events.MouseEvent;
             }
         }
 
-//        private function createMouseDownListener(k:int, line:LineView):Function {
-//            return function(event:MouseEvent):void {
-//                if (currentStar != -1) {
-//                    saveCurrentStar = currentStar;
-//                }
-//
-//            }
-//        }
+        private function createMouseDownListener(k:int):Function {
+            return function(event:MouseEvent):void {
+                if (currentStar != -1) {
+                    saveCurrentStar = currentStar;
+                    lineView = new LineView();
+                }
+
+            }
+        }
 //
 //        private function createMouseDownAndMoveListener(k:int, line:LineView):Function {
 //            return function(event:MouseEvent):void {
