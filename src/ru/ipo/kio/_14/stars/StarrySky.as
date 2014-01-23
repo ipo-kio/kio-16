@@ -23,8 +23,9 @@ import flash.events.EventDispatcher;
                 if (starsView[i].index == a) {
                     for (var j:int = 0; j < starsView.length; j++) {
                         if (starsView[j].index == b) {
+                            _sumOfLines += Math.sqrt(Math.pow((starsView[j].x - starsView[i].x), 2) + Math.pow((starsView[j].y - starsView[i].y), 2));
                             starsLines.push([starsView[i], starsView[j]]);
-                            _sumOfLines += Math.sqrt(Math.pow((starsLines[j].x - starsLines[i].x), 2) + Math.pow((starsLines[j].y - starsLines[i].y), 2));
+
                             dispatchEvent(new Event("add_new_line"));
                         }
                     }
@@ -36,7 +37,9 @@ import flash.events.EventDispatcher;
             for (var i:int = 0; i < starsLines.length; i++) {
                 if (starsLines[i][0].index == a) {
                     if (starsLines[i][1].index == b) {
+                        _sumOfLines = _sumOfLines - Math.sqrt(Math.pow((starsLines[i][1].x - starsLines[i][0].x), 2) + Math.pow((starsLines[i][1].y - starsLines[i][0].y), 2));
                         starsLines.splice(i, i);
+
                         dispatchEvent(new Event("del_line"));
                     }
                 }
