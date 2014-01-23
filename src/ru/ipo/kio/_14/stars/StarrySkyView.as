@@ -51,14 +51,14 @@ import flash.events.MouseEvent;
             addEventListener(MouseEvent.MOUSE_DOWN, function(event:MouseEvent):void {
                 if (currentStar != -1) {
                     saveCurrentStar = currentStar;
-                    lineView = new LineView((getStarViewByIndex(currentStar)).x, (getStarViewByIndex(currentStar)).y, mouseX, mouseY);
+                    lineView = new LineView((getStarViewByIndex(currentStar)).x, (getStarViewByIndex(currentStar)).y);
                     pressed = true;
                 }
             });
 
             addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
                 if (pressed)
-                    lineView = new LineView((getStarViewByIndex(currentStar)).x, (getStarViewByIndex(currentStar)).y, mouseX, mouseY);
+                    lineView.drawNewLine(mouseX, mouseY);
             });
 
             addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
@@ -80,7 +80,9 @@ import flash.events.MouseEvent;
             }
 
             addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
-                panel.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY + ",\n" + "current_Star: " + currentStar + ",\n" + "save_current_Star: " + saveCurrentStar;
+                panel.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY + ",\n" +
+                        "current_Star: " + currentStar + ",\n" + "save_current_Star: " + saveCurrentStar + ",\n" +
+                        "pressed: " + pressed;
             });
 
             addEventListener("add_new_line", function(e:Event):void {

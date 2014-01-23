@@ -50,7 +50,7 @@ import flash.events.MouseEvent;
                 graphics.clear();
         }
 
-        private function drawNewLine(x2:Number, y2:Number):void {
+        public function drawNewLine(x2:Number, y2:Number):void {
             graphics.clear();
             graphics.lineStyle(2, 0xffffff, 0.7);
             graphics.moveTo(x1, y1);
