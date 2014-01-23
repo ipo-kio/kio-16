@@ -47,7 +47,7 @@ import flash.events.MouseEvent;
                 });
             }
 
-
+            //draw line
             addEventListener(MouseEvent.MOUSE_DOWN, function(event:MouseEvent):void {
                 if (currentStar != -1) {
                     saveCurrentStar = currentStar;
@@ -61,6 +61,14 @@ import flash.events.MouseEvent;
                     lineView = new LineView((getStarViewByIndex(currentStar)).x, (getStarViewByIndex(currentStar)).y, mouseX, mouseY);
 //                lines.push([line, saveCurrentStar, currentStar]);
 //                sky.addLine(saveCurrentStar, currentStar);
+            });
+
+            addEventListener(MouseEvent.MOUSE_DOWN, function(event:MouseEvent):void {
+                if (currentStar != -1 && currentStar != saveCurrentStar) {
+                    lines.push([lineView, saveCurrentStar, currentStar]);
+                    sky.addLine(saveCurrentStar, currentStar);
+                    pressed = false;
+                }
             });
 
             for (var s:int = 0; s < lines.length; s++) {
@@ -111,17 +119,6 @@ import flash.events.MouseEvent;
             return null;
         }
 
-
-//
-//        private function createMoseUpListener(k:int, line:LineView):Function {
-//            return function(event:MouseEvent):void {
-//                 if (currentStar != -1 && currentStar != saveCurrentStar) {
-    //                 lines.push([line, saveCurrentStar, currentStar]);
-    //                 sky.addLine(saveCurrentStar, currentStar);
-//                     pressed = false;
-    //             }
-//            }
-//        }
 //
 //        private function createDeleteLineListener(k:int, line:LineView):Function {
 //            return function(event:MouseEvent):void {
