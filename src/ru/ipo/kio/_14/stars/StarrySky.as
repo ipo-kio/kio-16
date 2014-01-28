@@ -19,13 +19,12 @@ public class StarrySky extends EventDispatcher {
         }
 
         public function addLine(a:StarView, b:StarView):void {
-            for (var i:int = 0; i < starsLines.length; i++) {
-                if (starsLines[i][0] != a && starsLines[i][1] != b) {
-                    _sumOfLines += Math.sqrt(Math.pow((b.x - a.x), 2) + Math.pow((b.y - a.y), 2));
-                    starsLines.push([a, b]);
+            var arr:Array = [a, b];
+            if (contains(arr)) {
+                _sumOfLines += Math.sqrt(Math.pow((b.x - a.x), 2) + Math.pow((b.y - a.y), 2));
+                starsLines.push(arr);
 
-                    dispatchEvent(new Event("add_new_line"));
-                }
+                dispatchEvent(new Event("add_new_line"));
             }
         }
 
@@ -51,6 +50,12 @@ public class StarrySky extends EventDispatcher {
             _sumOfLines = value;
         }
 
-
+        private function contains(element:Array):Boolean {
+            for (var i:int = 0; i < starsLines.length; i++)  {
+                if (starsLines[i] == element)
+                    return true;
+            }
+            return false;
+        }
     }
 }
