@@ -78,8 +78,9 @@ import flash.events.MouseEvent;
             });
 
             addEventListener(MouseEvent.CLICK, function(event:MouseEvent):void {
-                if (currentStar != -1 && currentStar != saveCurrentStar) {
-                    sky.addLine(getStarViewByIndex(saveCurrentStar), getStarViewByIndex(currentStar));
+                if (currentLine != -1) {
+                    var lineArr:Array = getLineArrayByLineIndex(currentLine);
+                    sky.deleteLine(lineArr[1], lineArr[2]);
                 }
             });
 
@@ -132,7 +133,7 @@ import flash.events.MouseEvent;
         private function getLineArrayByLineIndex(lineIndex:int):Array {
             for (var i:int = 0; i < lines.length; i++) {
                 if (lines[i][0].index == lineIndex)
-                    return lines[i];
+                    return lines.slice(i, i);
             }
             return null;
         }

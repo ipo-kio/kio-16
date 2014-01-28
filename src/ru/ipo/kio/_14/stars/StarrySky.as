@@ -50,5 +50,7 @@ public class StarrySky extends EventDispatcher {
         public function set sumOfLines(value:Number):void {
             _sumOfLines = value;
         }
+
+
     }
 }
