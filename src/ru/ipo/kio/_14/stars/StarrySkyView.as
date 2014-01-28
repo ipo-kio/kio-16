@@ -146,18 +146,6 @@ import flash.events.MouseEvent;
             return null;
         }
 
-//
-//        private function createDeleteLineListener(k:int, line:LineView):Function {
-//            return function(event:MouseEvent):void {
-//                //по заданным индексам находим линию в массиве и уаляем её
-//                for (var i:int; i < lines.length; i++) {
-//
-//                }
-//                lines.push([line, saveCurrentStar, currentStar]);
-//                sky.deleteLine(saveCurrentStar, currentStar);
-//            }
-//        }
-
         private function drawSky():void {
 
             graphics.clear();
