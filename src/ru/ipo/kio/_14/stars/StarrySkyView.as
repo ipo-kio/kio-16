@@ -12,7 +12,7 @@ import flash.events.MouseEvent;
 
         private var panel:InfoPanel;
 
-        private var currentLine = -1;
+        private var currentLine:int = -1;
         private var currentStar:int = -1;
         private var saveCurrentStar:int = -1;
         private var pressed:Boolean;
