@@ -47,6 +47,16 @@ import flash.events.MouseEvent;
                 });
             }
 
+            for (var m:int = 0; m < starViews.length; m++) {
+                lines[m].addEventListener(MouseEvent.ROLL_OVER, createLineRollOverListener(m));
+            }
+
+            for (var n:int = 0; n < starViews.length; n++) {
+                lines[n].addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
+                    currentLine = -1;
+                });
+            }
+
             //draw line
             addEventListener(MouseEvent.MOUSE_DOWN, function(event:MouseEvent):void {
                 if (currentStar != -1) {
@@ -63,15 +73,18 @@ import flash.events.MouseEvent;
 
             addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
                 if (currentStar != -1 && currentStar != saveCurrentStar) {
-                    lines.push([lineView, saveCurrentStar, currentStar]);
                     sky.addLine(getStarViewByIndex(saveCurrentStar), getStarViewByIndex(currentStar));
                 }
-                saveCurrentStar = -1;
-                pressed = false;
+            });
+
+            addEventListener(MouseEvent.CLICK, function(event:MouseEvent):void {
+                if (currentStar != -1 && currentStar != saveCurrentStar) {
+                    sky.addLine(getStarViewByIndex(saveCurrentStar), getStarViewByIndex(currentStar));
+                }
             });
 
             for (var s:int = 0; s < lines.length; s++) {
-               lines[s][0].addEventListener(MouseEvent.ROLL_OVER, createRollOverListenerForLine(s));
+               lines[s][0].addEventListener(MouseEvent.ROLL_OVER, createLineRollOverListener(s));
             }
 
             for (var p:int = 0; p < lines.length; p++) {
@@ -87,6 +100,9 @@ import flash.events.MouseEvent;
             });
 
             addEventListener("add_new_line", function(e:Event):void {
+                lines.push([lineView, saveCurrentStar, currentStar]);
+                saveCurrentStar = -1;
+                pressed = false;
                 drawSky();
             });
 
@@ -100,16 +116,25 @@ import flash.events.MouseEvent;
             addChild(panel);
         }
 
+        private function createLineRollOverListener(m:int):Function {
+            return function(event:MouseEvent):void {
+                currentLine = lines[m][0].lineIndex;
+            }
+
+        }
+
         private function createRollOverListener(k:int):Function {
             return function(event:MouseEvent):void {
                 currentStar = starViews[k].index;
             }
         }
 
-        private function createRollOverListenerForLine(k:int):Function {
-            return function(event:MouseEvent):void {
-                currentLine = lines[k][0].lineIndex;
+        private function getLineArrayByLineIndex(lineIndex:int):Array {
+            for (var i:int = 0; i < lines.length; i++) {
+                if (lines[i][0].index == lineIndex)
+                    return lines[i];
             }
+            return null;
         }
 
         private function getStarViewByIndex(ind:int):StarView {
