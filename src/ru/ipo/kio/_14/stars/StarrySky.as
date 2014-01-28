@@ -20,7 +20,7 @@ public class StarrySky extends EventDispatcher {
 
         public function addLine(a:StarView, b:StarView):void {
             var arr:Array = [a, b];
-            if (contains(arr)) {
+            if (!contains(arr)) {
                 _sumOfLines += Math.sqrt(Math.pow((b.x - a.x), 2) + Math.pow((b.y - a.y), 2));
                 starsLines.push(arr);
 

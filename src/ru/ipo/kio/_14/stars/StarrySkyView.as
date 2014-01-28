@@ -47,11 +47,11 @@ import flash.events.MouseEvent;
                 });
             }
 
-            for (var m:int = 0; m < starViews.length; m++) {
+            for (var m:int = 0; m < lines.length; m++) {
                 lines[m].addEventListener(MouseEvent.ROLL_OVER, createLineRollOverListener(m));
             }
 
-            for (var n:int = 0; n < starViews.length; n++) {
+            for (var n:int = 0; n < lines.length; n++) {
                 lines[n].addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
                     currentLine = -1;
                 });
