@@ -74,6 +74,9 @@ import flash.events.MouseEvent;
             addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
                 if (currentStar != -1 && currentStar != saveCurrentStar) {
                     sky.addLine(getStarViewByIndex(saveCurrentStar), getStarViewByIndex(currentStar));
+                    lines.push([lineView, saveCurrentStar, currentStar]);
+                    saveCurrentStar = -1;
+                    pressed = false;
                 }
             });
 
@@ -101,9 +104,6 @@ import flash.events.MouseEvent;
             });
 
             addEventListener("add_new_line", function(e:Event):void {
-                lines.push([lineView, saveCurrentStar, currentStar]);
-                saveCurrentStar = -1;
-                pressed = false;
                 drawSky();
             });
 
