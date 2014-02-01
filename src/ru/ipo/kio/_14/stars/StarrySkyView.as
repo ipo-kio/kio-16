@@ -63,9 +63,11 @@ import flash.events.MouseEvent;
             //draw line
             addEventListener(MouseEvent.MOUSE_DOWN, function(event:MouseEvent):void {
                 if (currentStar != -1) {
-                    saveCurrentStar = currentStar;
-                    lineView = new LineView(drawingLinesLayer, (getStarViewByIndex(currentStar)).x, (getStarViewByIndex(currentStar)).y);
                     pressed = true;
+                    saveCurrentStar = currentStar;
+//                    lineView = new LineView(drawingLinesLayer, (getStarViewByIndex(currentStar)).x, (getStarViewByIndex(currentStar)).y);
+                    lineView = new LineView(drawingLinesLayer, event.localX, event.localY);
+
                 }
             });
 
@@ -79,8 +81,9 @@ import flash.events.MouseEvent;
                     sky.addLine(getStarViewByIndex(saveCurrentStar), getStarViewByIndex(currentStar));
                     lines.push([lineView, saveCurrentStar, currentStar]);
                 }
-                saveCurrentStar = -1;
                 pressed = false;
+                saveCurrentStar = -1;
+
             });
 
             addEventListener(MouseEvent.CLICK, function(event:MouseEvent):void {
