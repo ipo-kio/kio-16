@@ -66,6 +66,7 @@ import flash.events.MouseEvent;
                     pressed = true;
                     saveCurrentStar = currentStar;
 //                    lineView = new LineView(drawingLinesLayer, (getStarViewByIndex(currentStar)).x, (getStarViewByIndex(currentStar)).y);
+//                    lineView = new LineView(drawingLinesLayer, event.localX, event.localY);
                     lineView = new LineView(drawingLinesLayer, event.localX, event.localY);
 
                 }
