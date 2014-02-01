@@ -25,6 +25,8 @@ import flash.events.MouseEvent;
         public function StarrySkyView(stars:Array) {
 
             var drawingLinesLayer:Sprite = new Sprite();
+            drawingLinesLayer.graphics.drawRect(0, 0, 500, 300);
+
             panel = new InfoPanel(this);
             starViews = [];
             lines = [];
@@ -116,6 +118,7 @@ import flash.events.MouseEvent;
             panel.x = 0;
             panel.y = this.height;
             addChild(panel);
+            addChild(drawingLinesLayer);
         }
 
         private function createLineRollOverListener(m:int):Function {

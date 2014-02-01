@@ -54,10 +54,10 @@ public class LineView extends Sprite {
         }
 
         public function drawNewLine(x2:Number, y2:Number):void {
-            drawingLayer.graphics.lineTo(x2, y2);
             drawingLayer.graphics.clear();
             drawingLayer.graphics.lineStyle(2, 0xffffff, 0.7);
             drawingLayer.graphics.moveTo(x1, y1);
+            drawingLayer.graphics.lineTo(x2, y2);
         }
 
         private function drawDefaultLine():void {
