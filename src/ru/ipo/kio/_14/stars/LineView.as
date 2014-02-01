@@ -16,7 +16,6 @@ import flash.events.MouseEvent;
         private var _lineIndex:int;
 
         private var drawingLayer:Sprite;
-        private var clearDrawLayer:Boolean;
 
         public function LineView(drawingLinesLayer:Sprite, x1:Number, y1:Number) {
 
