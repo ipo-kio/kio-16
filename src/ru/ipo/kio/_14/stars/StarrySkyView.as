@@ -24,6 +24,7 @@ import flash.events.MouseEvent;
 
         public function StarrySkyView(stars:Array) {
 
+            var drawingLinesLayer:Sprite = new Sprite();
             panel = new InfoPanel(this);
             starViews = [];
             lines = [];
@@ -61,7 +62,7 @@ import flash.events.MouseEvent;
             addEventListener(MouseEvent.MOUSE_DOWN, function(event:MouseEvent):void {
                 if (currentStar != -1) {
                     saveCurrentStar = currentStar;
-                    lineView = new LineView((getStarViewByIndex(currentStar)).x, (getStarViewByIndex(currentStar)).y);
+                    lineView = new LineView(drawingLinesLayer, (getStarViewByIndex(currentStar)).x, (getStarViewByIndex(currentStar)).y);
                     pressed = true;
                 }
             });

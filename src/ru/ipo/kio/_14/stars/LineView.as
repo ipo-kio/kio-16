@@ -5,7 +5,7 @@ package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 
-    public class LineView extends Sprite {
+public class LineView extends Sprite {
 
         private var x1:Number;
         private var y1:Number;
@@ -15,14 +15,13 @@ import flash.events.MouseEvent;
         private var _isSelected:Boolean;
         private var _lineIndex:int;
 
+        private var drawingLayer:Sprite;
 
-        public function LineView(x1:Number, y1:Number) {
+        public function LineView(drawingLinesLayer:Sprite, x1:Number, y1:Number) {
+
             this.x1 = x1;
             this.y1 = y1;
-
-            graphics.clear();
-            graphics.lineStyle(2, 0xffffff, 0.7);
-            graphics.moveTo(x1, y1);
+            this.drawingLayer = drawingLinesLayer;
 
             addEventListener(MouseEvent.ROLL_OVER, function(e:MouseEvent):void {
                 drawSelectedLine();
@@ -55,7 +54,10 @@ import flash.events.MouseEvent;
         }
 
         public function drawNewLine(x2:Number, y2:Number):void {
-            graphics.lineTo(x2, y2);
+            drawingLayer.graphics.lineTo(x2, y2);
+            drawingLayer.graphics.clear();
+            drawingLayer.graphics.lineStyle(2, 0xffffff, 0.7);
+            drawingLayer.graphics.moveTo(x1, y1);
         }
 
         private function drawDefaultLine():void {
