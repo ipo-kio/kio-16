@@ -48,7 +48,7 @@ import flash.events.MouseEvent;
             this.y2 = y2;
         }
 
-        public function deleteLine1():void {
+        public function deleteLineFromField():void {
             if (_isSelected)
                 drawingLayer.graphics.clear();
         }
