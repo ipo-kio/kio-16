@@ -81,6 +81,8 @@ import flash.events.MouseEvent;
                 if (currentStar != -1 && currentStar != saveCurrentStar) {
                     sky.addLine(getStarViewByIndex(saveCurrentStar), getStarViewByIndex(currentStar));
                     lines.push([lineView, saveCurrentStar, currentStar]);
+                } else {
+                    lineView.deleteLine();
                 }
                 pressed = false;
                 saveCurrentStar = -1;

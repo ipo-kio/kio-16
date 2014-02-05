@@ -48,9 +48,13 @@ import flash.events.MouseEvent;
             this.y2 = y2;
         }
 
-        public function deleteLine():void {
+        public function deleteLine1():void {
             if (_isSelected)
                 drawingLayer.graphics.clear();
+        }
+
+        public function deleteLine():void {
+            drawingLayer.graphics.clear();
         }
 
         public function drawNewLine(x2:Number, y2:Number):void {
