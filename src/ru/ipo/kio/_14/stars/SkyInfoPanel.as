@@ -5,12 +5,12 @@ package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
 import flash.text.TextField;
 
-    public class InfoPanel extends Sprite {
+    public class SkyInfoPanel extends Sprite {
 
         private var txt:TextField;
         private var sky:StarrySkyView;
 
-        public function InfoPanel(sky:StarrySkyView) {
+        public function SkyInfoPanel(sky:StarrySkyView) {
             this.sky = sky;
             drawPanel();
             addChild(txt);

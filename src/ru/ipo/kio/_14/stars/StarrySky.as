@@ -7,55 +7,68 @@ import flash.events.EventDispatcher;
 
 public class StarrySky extends EventDispatcher {
 
-        private var starsView:Array;
-        private var starsLines:Array;
+    private var _stars:Array/*<Star>*/;
+    private var _starsLines:Array/*<Line>*/;
 
-        private var _sumOfLines:Number;
+    private var _sumOfLines:Number = 0;
 
-        public function StarrySky(starsView:Array) {
-            this.starsView = starsView;
-            starsLines = [];
-            _sumOfLines = 0;
-        }
-
-        public function addLine(a:StarView, b:StarView):void {
-            var arr:Array = [a, b];
-            if (!contains(arr)) {
-                _sumOfLines += Math.sqrt(Math.pow((b.x - a.x), 2) + Math.pow((b.y - a.y), 2));
-                starsLines.push(arr);
-
-                dispatchEvent(new Event("add_new_line"));
-            }
-        }
-
-        public function deleteLine(a:int, b:int):void {
-            for (var i:int = 0; i < starsLines.length; i++) {
-                if (starsLines[i][0].index == a) {
-                    if (starsLines[i][1].index == b) {
-                        _sumOfLines = _sumOfLines - Math.sqrt(Math.pow((starsLines[i][1].x - starsLines[i][0].x), 2) + Math.pow((starsLines[i][1].y - starsLines[i][0].y), 2));
-                        starsLines.splice(i, i);
-
-                        dispatchEvent(new Event("del_line"));
-                    }
-                }
-            }
-        }
-
-
-        public function get sumOfLines():Number {
-            return _sumOfLines;
-        }
-
-        public function set sumOfLines(value:Number):void {
-            _sumOfLines = value;
-        }
-
-        private function contains(element:Array):Boolean {
-            for (var i:int = 0; i < starsLines.length; i++)  {
-                if (starsLines[i] == element)
-                    return true;
-            }
-            return false;
-        }
+    public function StarrySky(stars:Array) {
+        _stars = stars;
+        _starsLines = [];
     }
+
+    //returns index of added line
+    public function addLine(a:Star, b:Star):int {
+        var line:Line = new Line(a, b);
+        if (!contains(line)) {
+            _starsLines.push(line);
+
+            skyChanged();
+
+            return _starsLines.length - 1;
+        }
+
+        return -1;
+    }
+
+    public function get sumOfLines():Number {
+        return _sumOfLines;
+    }
+
+    private function findLine(line:Line):int {
+        for (var i:int = 0; i < _starsLines.length; i++)
+            if (_starsLines[i].s1 == line.s1 && _starsLines[i].s2 == line.s2 ||
+                    _starsLines[i].s1 == line.s2 && _starsLines[i].s2 == line.s1)
+                return i;
+        return -1;
+    }
+
+    private function contains(line:Line):Boolean {
+        return findLine(line) >= 0;
+    }
+
+    public function get stars():Array {
+        return _stars;
+    }
+
+    public function get starsLines():Array {
+        return _starsLines;
+    }
+
+    public function removeLineWithIndex(ind:int):void {
+        _starsLines.splice(ind, 1);
+        skyChanged();
+    }
+
+    private function skyChanged():void {
+        //evaluate, count, compute
+        //compute total length
+        _sumOfLines = 0;
+        for each (var line:Line in starsLines)
+            _sumOfLines += line.distance;
+        //for output.     var n:Number = 1.123123123;    n.toFixed(3) -> converts to String with 3 digits after a point
+
+        dispatchEvent(new Event(Event.CHANGE));
+    }
+}
 }
