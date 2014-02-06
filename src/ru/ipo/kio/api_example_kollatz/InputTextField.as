@@ -5,7 +5,7 @@
  * Time: 13:01
  * To change this template use File | Settings | File Templates.
  */
-package ru.ipo.kio._3x_pl_1 {
+package ru.ipo.kio.api_example_kollatz {
 import flash.display.Sprite;
 import flash.text.TextField;
 import flash.text.TextFieldType;

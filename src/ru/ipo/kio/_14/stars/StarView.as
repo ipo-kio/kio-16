@@ -7,11 +7,13 @@ import flash.events.MouseEvent;
 
     public class StarView extends Sprite {
 
-        private var star:Star;
+        private var _star:Star;
         private var _isSelected:Boolean;
 
+        private var _index:int
+
         public function StarView(star:Star) {
-            this.star = star;
+            this._star = star;
 //            _isSelected = (mouseX >= (star.x - star.radius) && mouseX <= (star.x + star.radius)) && (mouseY >= (star.y - star.radius) && mouseY <= (star.y + star.radius));
             drawDefaultStar();
 
@@ -29,15 +31,23 @@ import flash.events.MouseEvent;
         private function drawDefaultStar():void {
             graphics.clear();
             graphics.beginFill(0xfcdd76);
-            graphics.drawCircle(star.x, star.y, star.radius);
+            graphics.drawCircle(_star.x, _star.y, _star.radius);
             graphics.endFill();
         }
 
         private function drawSelectedStar():void {
             graphics.clear();
             graphics.beginFill(0xffcc00);
-            graphics.drawCircle(star.x, star.y, star.radius);
+            graphics.drawCircle(_star.x, _star.y, _star.radius);
             graphics.endFill();
+        }
+
+        public function get index():int {
+            return _index;
+        }
+
+        public function set index(value:int):void {
+            _index = value;
         }
 
         public function get isSelected():Boolean {
