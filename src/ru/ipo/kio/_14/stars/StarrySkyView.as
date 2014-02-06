@@ -12,11 +12,21 @@ import flash.events.MouseEvent;
 
         private var panel:InfoPanel;
 
+        private var currentLine:int = -1;
         private var currentStar:int = -1;
-        private var saveCurrentStar;
+        private var saveCurrentStar:int = -1;
+        private var pressed:Boolean;
+
         private var lines:Array;
+        private var sky:StarrySky;
+
+        private var lineView:LineView;
 
         public function StarrySkyView(stars:Array) {
+
+            var drawingLinesLayer:Sprite = new Sprite();
+            drawingLinesLayer.graphics.drawRect(0, 0, 500, 300);
+            addChild(drawingLinesLayer);
 
             panel = new InfoPanel(this);
             starViews = [];
@@ -26,6 +36,8 @@ import flash.events.MouseEvent;
                 starViews[i] = new StarView(stars[i]);
                 starViews[i].index = i;
             }
+
+            sky = new StarrySky(starViews);
 
             drawSky();
 
@@ -39,8 +51,65 @@ import flash.events.MouseEvent;
                 });
             }
 
+            for (var m:int = 0; m < lines.length; m++) {
+                lines[m].addEventListener(MouseEvent.ROLL_OVER, createLineRollOverListener(m));
+            }
+
+            for (var n:int = 0; n < lines.length; n++) {
+                lines[n].addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
+                    currentLine = -1;
+                });
+            }
+
+            //draw line
+            addEventListener(MouseEvent.MOUSE_DOWN, function(event:MouseEvent):void {
+                if (currentStar != -1) {
+                    pressed = true;
+                    saveCurrentStar = currentStar;
+//                    lineView = new LineView(drawingLinesLayer, (getStarViewByIndex(currentStar)).x, (getStarViewByIndex(currentStar)).y);
+//                    lineView = new LineView(drawingLinesLayer, event.localX, event.localY);
+                    lineView = new LineView(drawingLinesLayer, event.localX, event.localY);
+                }
+            });
+
+            addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
+                if (pressed)
+                    lineView.drawNewLine(mouseX, mouseY);
+            });
+
+            addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
+                if (currentStar != -1 && currentStar != saveCurrentStar) {
+                    sky.addLine(getStarViewByIndex(saveCurrentStar), getStarViewByIndex(currentStar));
+                    lines.push([lineView, saveCurrentStar, currentStar]);
+                } else {
+                    lineView.deleteLine();
+                }
+                pressed = false;
+                saveCurrentStar = -1;
+
+            });
+
+            addEventListener(MouseEvent.CLICK, function(event:MouseEvent):void {
+                if (currentLine != -1) {
+                    var lineArr:Array = getLineArrayByLineIndex(currentLine);
+                    sky.deleteLine(lineArr[1], lineArr[2]);
+                }
+            });
+
+            for (var s:int = 0; s < lines.length; s++) {
+               lines[s][0].addEventListener(MouseEvent.ROLL_OVER, createLineRollOverListener(s));
+            }
+
+            for (var p:int = 0; p < lines.length; p++) {
+                lines[p][0].addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
+                    currentLine = -1;
+                });
+            }
+
             addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
-                panel.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY + ",\n" + "currentStar: " + currentStar;
+                panel.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY + ",\n" +
+                        "current_Star: " + currentStar + ",\n" + "save_current_Star: " + saveCurrentStar + ",\n" +
+                        "pressed: " + pressed;
             });
 
             addEventListener("add_new_line", function(e:Event):void {
@@ -57,10 +126,33 @@ import flash.events.MouseEvent;
             addChild(panel);
         }
 
+        private function createLineRollOverListener(m:int):Function {
+            return function(event:MouseEvent):void {
+                currentLine = lines[m][0].lineIndex;
+            }
+
+        }
+
         private function createRollOverListener(k:int):Function {
             return function(event:MouseEvent):void {
-                 currentStar = starViews[k].index;
+                currentStar = starViews[k].index;
             }
+        }
+
+        private function getLineArrayByLineIndex(lineIndex:int):Array {
+            for (var i:int = 0; i < lines.length; i++) {
+                if (lines[i][0].index == lineIndex)
+                    return lines.slice(i, i);
+            }
+            return null;
+        }
+
+        private function getStarViewByIndex(ind:int):StarView {
+            for (var i:int = 0; i < starViews.length; i++) {
+                if (starViews[i].index == ind)
+                    return starViews[i];
+            }
+            return null;
         }
 
         private function drawSky():void {

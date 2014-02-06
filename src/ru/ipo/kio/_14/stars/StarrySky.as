@@ -5,25 +5,57 @@ package ru.ipo.kio._14.stars {
 import flash.events.Event;
 import flash.events.EventDispatcher;
 
-    public class StarrySky extends EventDispatcher {
+public class StarrySky extends EventDispatcher {
 
         private var starsView:Array;
-        private static var starsLines:Array;
+        private var starsLines:Array;
 
+        private var _sumOfLines:Number;
 
         public function StarrySky(starsView:Array) {
             this.starsView = starsView;
             starsLines = [];
+            _sumOfLines = 0;
         }
 
-        public static function addLine():void {
+        public function addLine(a:StarView, b:StarView):void {
+            var arr:Array = [a, b];
+            if (!contains(arr)) {
+                _sumOfLines += Math.sqrt(Math.pow((b.x - a.x), 2) + Math.pow((b.y - a.y), 2));
+                starsLines.push(arr);
 
-            dispatchEvent(new Event("add_new_line"));
+                dispatchEvent(new Event("add_new_line"));
+            }
         }
 
-        public static function deleteLine():void {
+        public function deleteLine(a:int, b:int):void {
+            for (var i:int = 0; i < starsLines.length; i++) {
+                if (starsLines[i][0].index == a) {
+                    if (starsLines[i][1].index == b) {
+                        _sumOfLines = _sumOfLines - Math.sqrt(Math.pow((starsLines[i][1].x - starsLines[i][0].x), 2) + Math.pow((starsLines[i][1].y - starsLines[i][0].y), 2));
+                        starsLines.splice(i, i);
 
-            dispatchEvent(new Event("del_line"));
+                        dispatchEvent(new Event("del_line"));
+                    }
+                }
+            }
+        }
+
+
+        public function get sumOfLines():Number {
+            return _sumOfLines;
+        }
+
+        public function set sumOfLines(value:Number):void {
+            _sumOfLines = value;
+        }
+
+        private function contains(element:Array):Boolean {
+            for (var i:int = 0; i < starsLines.length; i++)  {
+                if (starsLines[i] == element)
+                    return true;
+            }
+            return false;
         }
     }
 }
