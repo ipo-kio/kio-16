@@ -11,8 +11,11 @@ public class Resources {
     [Embed(source="bg.png")]
     public static const BG_IMAGE:Class;
 
-    [Embed(source="Problem_BG.png")]
-    public static const BG_PR_IMAGE:Class;
+    [Embed(source="Problem_BG_top.png")]
+    public static const BG_PR_IMAGE_TOP:Class;
+
+    [Embed(source="Problem_BG_right.png")]
+    public static const BG_PR_IMAGE_RIGHT:Class;
 
     [Embed(source="imgs/up_arrow.png")]
     public static const UP_ARROW_IMAGE:Class;

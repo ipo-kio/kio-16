@@ -48,7 +48,6 @@ public class KioBase {
 
     private var spaceSettings:SpaceSettingsDialog = null;
 
-    private var _allowLogDebugger:Boolean = false;
     private var logDebugger:LogDebugger = new LogDebugger();
     private var logDebuggerDisplay:Sprite = null;
 
@@ -83,9 +82,16 @@ public class KioBase {
         this.stage = stage;
         this.problems = problems;
 
-        _problems_bg = new Resources.BG_PR_IMAGE;
+        _problems_bg = new Sprite();
         _problems_bg.visible = false;
         stage.addChild(_problems_bg);
+
+        var _problems_right:DisplayObject = new Resources.BG_PR_IMAGE_RIGHT;
+        var _problems_top:DisplayObject = new Resources.BG_PR_IMAGE_TOP;
+        Sprite(_problems_bg).addChild(_problems_right);
+        Sprite(_problems_bg).addChild(_problems_top);
+        _problems_right.x = 780;
+        _problems_right.y = 25;
 
         var flush_timer:Timer = new Timer(FLUSH_TIMER_DELAY);
         flush_timer.addEventListener(TimerEvent.TIMER, function (event:Event):void {
@@ -161,7 +167,7 @@ public class KioBase {
         this.problems = null;
 
         if (!_problems_bg) {
-            _problems_bg = new Resources.BG_PR_IMAGE;
+            _problems_bg = new Resources.BG_PR_IMAGE_TOP; //does not really matters what to assign, because nobody sees this
             _problems_bg.visible = false;
         }
 
@@ -212,7 +218,7 @@ public class KioBase {
      * @param stage
      */
     private function addDebuggerIfNeeded(stage:DisplayObjectContainer):void {
-        if (!logDebuggerDisplay && _allowLogDebugger) {
+        if (!logDebuggerDisplay && allowLogDebugger) {
             logDebuggerDisplay = logDebugger.display;
             logDebuggerDisplay.x = GlobalMetrics.WORKSPACE_X;
             logDebuggerDisplay.y = GlobalMetrics.DEBUGGER_Y;
@@ -589,7 +595,7 @@ public class KioBase {
         return result;
     }
 
-    public function addLogDebuggerHandler(handler:ILogDebuggerHandler){
+    public function addLogDebuggerHandler(handler:ILogDebuggerHandler):void {
         logDebugger.addHandler(handler);
     }
 
@@ -599,11 +605,7 @@ public class KioBase {
 
 
     public function get allowLogDebugger():Boolean {
-        return _allowLogDebugger;
-    }
-
-    public function set allowLogDebugger(value:Boolean):void {
-        _allowLogDebugger = value;
+        return "log_debugger" in version_config && version_config.log_debugger;
     }
 }
 }

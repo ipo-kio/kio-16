@@ -57,19 +57,19 @@ public class LogDebuggerView  extends Sprite{
         buttonUp.x = 680;
         buttonUp.y = 60;
         buttonUp.width = 30;
-        buttonUp.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{
+        buttonUp.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
             logDebugger.delay++;
-            speedInput.text = ""+ logDebugger.delay;
-        })
+            speedInput.text = "" + logDebugger.delay;
+        });
         addChild(buttonDown);
         buttonDown.label="<" ;
         buttonDown.x = 650;
         buttonDown.y = 60;
         buttonDown.width = 30;
-        buttonDown.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{
+        buttonDown.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
             logDebugger.delay--;
-            speedInput.text = ""+logDebugger.delay;
-        })
+            speedInput.text = "" + logDebugger.delay;
+        });
 
         placeButtons();
     }
@@ -84,10 +84,10 @@ public class LogDebuggerView  extends Sprite{
         commandArea.text = "";
         indexes = new Vector.<Array>();
         for each(var command:LogDebugCommand in logDebugger.commands){
-            var commandIndexes:  Array = new Array();
-            commandIndexes.push(commandArea.text.length)
+            var commandIndexes:  Array = [];
+            commandIndexes.push(commandArea.text.length);
             commandArea.appendText(command.text+"\n");
-            commandIndexes.push(commandArea.text.length)
+            commandIndexes.push(commandArea.text.length);
             indexes.push(commandIndexes);
         }
     }
@@ -97,7 +97,7 @@ public class LogDebuggerView  extends Sprite{
         addChild(playButton);
         playButton.x = 550;
         playButton.y = 20;
-        playButton.addEventListener(MouseEvent.CLICK, function (e:MouseEvent) {
+        playButton.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
             playButton.visible = false;
             pauseButton.visible = true;
             logDebugger.play();
@@ -108,7 +108,7 @@ public class LogDebuggerView  extends Sprite{
         addChild(pauseButton);
         pauseButton.x = 550;
         pauseButton.y = 20;
-        pauseButton.addEventListener(MouseEvent.CLICK, function (e:MouseEvent) {
+        pauseButton.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
             pauseButton.visible = false;
             playButton.visible = true;
             logDebugger.pause();
@@ -118,7 +118,7 @@ public class LogDebuggerView  extends Sprite{
         addChild(stopButton);
         stopButton.x = 650;
         stopButton.y = 20;
-        stopButton.addEventListener(MouseEvent.CLICK, function (e:MouseEvent) {
+        stopButton.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
             logDebugger.stop();
             pauseButton.visible = false;
             playButton.visible = true;
@@ -128,7 +128,7 @@ public class LogDebuggerView  extends Sprite{
         addChild(loadButton);
         loadButton.x = 750;
         loadButton.y = 20;
-        loadButton.addEventListener(MouseEvent.CLICK, function (e:MouseEvent) {
+        loadButton.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
             logDebugger.load();
         });
     }

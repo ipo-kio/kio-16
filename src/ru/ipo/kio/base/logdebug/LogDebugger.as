@@ -107,7 +107,7 @@ public class LogDebugger extends EventDispatcher{
         return _display;
     }
 
-    public function addHandler(handler:ILogDebuggerHandler){
+    public function addHandler(handler:ILogDebuggerHandler):void {
         handlers.push(handler);
     }
 
