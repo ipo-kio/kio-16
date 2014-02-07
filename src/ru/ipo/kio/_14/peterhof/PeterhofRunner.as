@@ -4,6 +4,7 @@
 package ru.ipo.kio._14.peterhof {
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.system.Capabilities;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.base.KioBase;

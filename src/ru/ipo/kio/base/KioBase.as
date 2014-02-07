@@ -1,4 +1,5 @@
 package ru.ipo.kio.base {
+import flash.crypto.generateRandomBytes;
 import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
@@ -7,11 +8,14 @@ import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 import flash.events.TimerEvent;
+import flash.system.Capabilities;
 import flash.text.TextField;
+import flash.utils.ByteArray;
 import flash.utils.ByteArray;
 import flash.utils.Timer;
 
 import ru.ipo.kio.api.*;
+import ru.ipo.kio.api.DataUtils;
 import ru.ipo.kio.api.controls.SpaceSettingsDialog;
 import ru.ipo.kio.base.displays.DisplayUtils;
 import ru.ipo.kio.base.displays.MultipleUsersWelcomeDisplay;
@@ -360,31 +364,81 @@ public class KioBase {
     private static const LOG_CMD_TIMESTAMP:String = 'timestamp';
     private static const LOG_CMD_TIME_BYTE:String = 'time-byte';
 
-    private function initLogger():void {
+    private var cached_logger:Object = null;
+
+    private function getLogger():Object {
+        if (cached_logger != null)
+            return cached_logger;
+
         var lso:LsoProxy = lsoProxy;
         var global:Object = lso.getGlobalData();
 
         if (!global.log) {
-            global.log = {
+            global.machine_id = generateMachineId();
+            global.log = {};
+
+            global.log[global.machine_id] = {
                 dict: {},
                 data: new ByteArray,
                 next_msg_code: 0,
                 last_log_start: 0, //milliseconds accurate log start (after the program loaded)
-                last_log_time: 0 //last logged value, accurate to 10 ms
+                last_log_time: 0, //last logged value, accurate to 10 ms
+                machine_info: getMachineInfo()
             };
             lso.flush();
         }
 
-        if (global.log.data.position != global.log.data.length)
-            global.log.data.position = global.log.data.length;
+        var mid:String = global.machine_id;
+
+        var log:Object = global.log[mid];
+        var data:ByteArray = log.data;
+        if (data.position != data.length)
+            data.position = data.length;
+
+        cached_logger = log;
+        return log;
+    }
+
+    private static function getMachineInfo():Object {
+        return {
+            os: Capabilities.os,
+            manufacturer: Capabilities.manufacturer,
+            cpu: Capabilities.cpuArchitecture,
+            version: Capabilities.version,
+            language: Capabilities.language,
+            playerType: Capabilities.playerType,
+            dpi: Capabilities.screenDPI,
+            screenWidth: Capabilities.screenResolutionX,
+            screenHeight: Capabilities.screenResolutionY
+        }
+    }
+
+    private static function generateMachineId():String {
+        //generate random part
+        var rnd_len:int = 5;
+        var rnd:ByteArray = generateRandomBytes(rnd_len);
+
+        var randomPart:String = "";
+        for (var i:int = 0; i < rnd_len; i++)
+            randomPart += rnd[i].toString(16);
+
+        //generate machine-id part
+        var info:Object = getMachineInfo();
+        var infoString:String = "";
+        for each (var value:Object in info) //TODO not sure the order is fixed
+            infoString += value;
+
+        var machineInfoPart:String = DataUtils.hash(infoString).toString(16);
+
+        //generate time part
+        var now:Date = new Date();
+        var timePart:String = now.getTime().toString(16);
+
+        return machineInfoPart + "-" + timePart + "-" + randomPart;
     }
 
     public function log(msg:String, extraArguments:Array):void {
-        initLogger(); //TODO init only on start
-
-        var lso:LsoProxy = lsoProxy;
-        var global:Object = lso.getGlobalData();
-        var logger:Object = global.log;
+        var logger:Object = getLogger();
         var log:ByteArray = logger.data;
 
         if (log.length > 2 * 1024 * 1024) //don't log more than 2 mbs
@@ -474,7 +528,7 @@ public class KioBase {
     }
 
     private function writeCommandToLog(msg:String):void {
-        var log:Object = lsoProxy.getGlobalData().log;
+        var log:Object = getLogger();
 
         if (!Object(log.dict).hasOwnProperty(msg))
             log.dict[msg] = log.next_msg_code++;
@@ -490,8 +544,7 @@ public class KioBase {
     }
 
     public function __debug_resetLogTime():void {
-        var globalData:Object = lsoProxy.getGlobalData();
-        var log:Object = globalData.log;
+        var log:Object = getLogger();
         log.last_log_start = 0;
         log.last_log_time = 0;
     }
@@ -499,7 +552,7 @@ public class KioBase {
     public function outputLog(callback:Function, log:Object = null):void {
         if (log == null) {
             var globalData:Object = lsoProxy.getGlobalData();
-            var log:Object = globalData.log;
+            log = getLogger();
 
             if (log == null)
                 return;
