@@ -20,8 +20,8 @@ public class StarsRunner extends Sprite {
 
     public function StarsRunner() {
         var stars:Array = [new Star(13, 25, 1), new Star(33, 55, 3), new Star(64, 105, 2),
-            new Star(10, 145, 2), new Star(173, 65, 1), new Star(163, 60, 3), new Star(103, 98, 1),
-            new Star(203, 98, 3), new Star(211, 160, 2), new Star(247, 66, 1), new Star(274, 95, 2)
+            new Star(10, 145, 2), new Star(243, 65, 1), new Star(163, 60, 3), new Star(103, 98, 1),
+            new Star(203, 98, 3), new Star(211, 160, 2), new Star(277, 66, 1), new Star(274, 95, 2)
         ];
 
         sky = new StarrySky(stars);

@@ -5,15 +5,16 @@ package ru.ipo.kio._14.stars {
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
+import flash.geom.Matrix;
 
-    public class StarView extends Sprite {
+public class StarView extends Sprite {
 
         [Embed(source="resources/default_star.png")]
         private static const DEFAULT_STAR_RADIUS_2:Class;
-        private static const DEFAULT_STAR_RADIUS_2_BMP:BitmapData = new DEFAULT_STAR_RADIUS_2().bitmapData;
+        private static const DEFAULT_STAR_RADIUS_3_BMP:BitmapData = new DEFAULT_STAR_RADIUS_2().bitmapData;
         [Embed(source="resources/selected_star.png")]
         private static const SELECTED_STAR_RADIUS_2:Class;
-        private static const SELECTED_STAR_RADIUS_2_BMP:BitmapData = new SELECTED_STAR_RADIUS_2().bitmapData;
+        private static const SELECTED_STAR_RADIUS_3_BMP:BitmapData = new SELECTED_STAR_RADIUS_2().bitmapData;
 
 
         private static const SELECTED_COLOR:uint = 0xffcc00;
@@ -59,20 +60,30 @@ import flash.events.MouseEvent;
             switch (_star.radius) {
                 case 1:
                     graphics.clear();
-                    graphics.beginFill(SELECTED_COLOR);
+                    graphics.beginFill(DEFAULT_COLOR);
                     graphics.drawCircle(_star.x, _star.y, _star.radius);
                     graphics.endFill();
                     break;
                 case 2:
                     graphics.clear();
-                    graphics.beginBitmapFill(SELECTED_STAR_RADIUS_2_BMP);
+                    graphics.beginFill(DEFAULT_COLOR);
                     graphics.drawCircle(_star.x, _star.y, _star.radius);
                     graphics.endFill();
                     break;
                 case 3:
-                   graphics.clear();
-                    graphics.beginFill(SELECTED_COLOR);
-                    graphics.drawCircle(_star.x, _star.y, _star.radius);
+                    graphics.clear();
+
+                    var dx:Number = _star.x - (DEFAULT_STAR_RADIUS_3_BMP.width*0.5);
+                    var dy:Number = _star.y - (DEFAULT_STAR_RADIUS_3_BMP.height*0.5);
+
+                    var matrix:Matrix = new Matrix();
+                    matrix.translate(dx, dy);
+
+                    graphics.beginBitmapFill(DEFAULT_STAR_RADIUS_3_BMP, matrix);
+                    graphics.drawRect(dx, dy, DEFAULT_STAR_RADIUS_3_BMP.width, DEFAULT_STAR_RADIUS_3_BMP.height
+                    );
+//                    graphics.beginFill(DEFAULT_COLOR);
+//                    graphics.drawCircle(_star.x, _star.y, _star.radius);
                     graphics.endFill();
                     break;
             }
@@ -82,20 +93,29 @@ import flash.events.MouseEvent;
             switch (_star.radius) {
                 case 1:
                     graphics.clear();
-                    graphics.beginFill(DEFAULT_COLOR);
+                    graphics.beginFill(SELECTED_COLOR);
                     graphics.drawCircle(_star.x, _star.y, _star.radius);
                     graphics.endFill();
                     break;
                 case 2:
                     graphics.clear();
-                    graphics.beginBitmapFill(DEFAULT_STAR_RADIUS_2_BMP);
+                    graphics.beginFill(SELECTED_COLOR);
                     graphics.drawCircle(_star.x, _star.y, _star.radius);
                     graphics.endFill();
                     break;
                 case 3:
                     graphics.clear();
-                    graphics.beginFill(DEFAULT_COLOR);
-                    graphics.drawCircle(_star.x, _star.y, _star.radius);
+
+                    var dx:Number = _star.x - (SELECTED_STAR_RADIUS_3_BMP.width*0.5);
+                    var dy:Number = _star.y - (SELECTED_STAR_RADIUS_3_BMP.height*0.5);
+
+                    var matrix:Matrix = new Matrix();
+                    matrix.translate(dx, dy);
+
+                    graphics.beginBitmapFill(SELECTED_STAR_RADIUS_3_BMP, matrix);
+                    graphics.drawRect(dx, dy, SELECTED_STAR_RADIUS_3_BMP.width, SELECTED_STAR_RADIUS_3_BMP.height);
+//                    graphics.beginFill(SELECTED_COLOR);
+//                    graphics.drawCircle(_star.x, _star.y, _star.radius);
                     graphics.endFill();
                     break;
             }
