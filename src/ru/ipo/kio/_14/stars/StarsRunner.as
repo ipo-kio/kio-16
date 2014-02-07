@@ -15,6 +15,9 @@ public class StarsRunner extends Sprite {
     private var infoPanel:InfoPanel;
     private var infoPanelRecord:InfoPanel;
 
+    [Embed(source='resources/EskizOne-Regular.ttf', embedAsCFF="false", fontName="EskizOne-Regular", mimeType='application/x-font-truetype')]
+    private static var MyFont:Class;
+
     public function StarsRunner() {
         var stars:Array = [new Star(13, 25, 1), new Star(33, 55, 3), new Star(64, 105, 2),
             new Star(10, 145, 2), new Star(173, 65, 1), new Star(163, 60, 3), new Star(103, 98, 1),
@@ -28,16 +31,16 @@ public class StarsRunner extends Sprite {
         sky.addEventListener(Event.CHANGE, sky_changeHandler);
 
         infoPanel = new InfoPanel(
-            /*"KioArial", true, //*/"Arial", false,
-            20, 0xFF0000, 0x00FF00, 0x0000FF,
-            3, "Текущий результат",
+            /*"KioArial", true, //*/"EskizOne-Regular", true,
+            22, 0x92000a, 0x08457e, 0x3b5998,
+            2, "Текущий результат",
             ["Сумма длинн линий", "Количество линий"], 300
         );
 
         infoPanelRecord = new InfoPanel(
-            /*"KioArial", true, //*/"Arial", false,
-            20, 0xFF0000, 0x00FF00, 0x0000FF,
-            3, "Рекорд",
+            /*"KioArial", true, //*/"EskizOne-Regular", true,
+            22, 0x92000a, 0x08457e, 0x3b5998,
+            2, "Рекорд",
             ["Сумма длинн линий", "Количество линий"], 300
         );
 
@@ -51,7 +54,7 @@ public class StarsRunner extends Sprite {
         addChild(infoPanelRecord);
         infoPanel.x = 520;
         infoPanelRecord.x = 520;
-        infoPanelRecord.y = 200;
+        infoPanelRecord.y = 150;
     }
 
     private function sky_changeHandler(event:Event):void {
