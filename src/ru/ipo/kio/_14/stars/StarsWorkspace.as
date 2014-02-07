@@ -8,7 +8,7 @@ import flash.events.Event;
 import ru.ipo.kio.api.controls.InfoPanel;
 
 [SWF(width=900, height=600)]
-public class StarsRunner extends Sprite {
+public class StarsWorkspace extends Sprite {
 
     private var sky:StarrySky;
 
@@ -18,7 +18,7 @@ public class StarsRunner extends Sprite {
     [Embed(source='resources/EskizOne-Regular.ttf', embedAsCFF="false", fontName="EskizOne-Regular", mimeType='application/x-font-truetype')]
     private static var MyFont:Class;
 
-    public function StarsRunner() {
+    public function StarsWorkspace() {
         var stars:Array = [new Star(13, 25, 1), new Star(33, 55, 3), new Star(64, 105, 2),
             new Star(10, 145, 2), new Star(243, 65, 1), new Star(163, 60, 3), new Star(103, 98, 1),
             new Star(203, 98, 3), new Star(211, 160, 2), new Star(277, 66, 1), new Star(274, 95, 2)
