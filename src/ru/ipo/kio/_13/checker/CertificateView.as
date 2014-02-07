@@ -373,7 +373,6 @@ public class CertificateView extends Sprite {
         else
             certificate = loadCertificate(certificateFile.data);
 
-
         if (welcomePanel) {
             removeChild(welcomePanel);
             welcomePanel = null;

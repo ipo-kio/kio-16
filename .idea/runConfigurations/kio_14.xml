@@ -16,7 +16,7 @@
     <option name="launcherParameters">
       <LauncherParameters>
         <option name="browserFamily" value="FIREFOX" />
-        <option name="launcherType" value="Player" />
+        <option name="launcherType" value="Browser" />
         <option name="newPlayerInstance" value="false" />
         <option name="playerPath" value="/usr/bin/flashplayerdebugger" />
       </LauncherParameters>
@@ -32,7 +32,9 @@
     <option name="screenWidth" value="0" />
     <option name="url" value="http://" />
     <option name="usbDebugPort" value="7936" />
+    <RunnerSettings RunnerId="FlexDebugRunner" />
     <RunnerSettings RunnerId="FlexRunner" />
+    <ConfigurationWrapper RunnerId="FlexDebugRunner" />
     <ConfigurationWrapper RunnerId="FlexRunner" />
     <method />
   </configuration>

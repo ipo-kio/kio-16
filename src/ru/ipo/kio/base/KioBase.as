@@ -55,7 +55,7 @@ public class KioBase {
     private var logDebugger:LogDebugger = new LogDebugger();
     private var logDebuggerDisplay:Sprite = null;
 
-    [Embed(source="resources/version-config.json-settings", mimeType="application/octet-stream")]
+    [Embed(source="../version-config.json-settings", mimeType="application/octet-stream")]
     public static var VERSION_CONFIG:Class;
 
     [Embed(source="loc/shell.ru.json-settings", mimeType="application/octet-stream")]
@@ -366,7 +366,7 @@ public class KioBase {
 
     private var cached_logger:Object = null;
 
-    private function getLogger():Object {
+    public function getLogger():Object {
         if (cached_logger != null)
             return cached_logger;
 
@@ -383,7 +383,7 @@ public class KioBase {
                 next_msg_code: 0,
                 last_log_start: 0, //milliseconds accurate log start (after the program loaded)
                 last_log_time: 0, //last logged value, accurate to 10 ms
-                machine_info: getMachineInfo()
+                machine_info: machineInfo
             };
             lso.flush();
         }
@@ -392,14 +392,13 @@ public class KioBase {
 
         var log:Object = global.log[mid];
         var data:ByteArray = log.data;
-        if (data.position != data.length)
-            data.position = data.length;
+        data.position = data.length;
 
         cached_logger = log;
         return log;
     }
 
-    private static function getMachineInfo():Object {
+    public static function get machineInfo():Object {
         return {
             os: Capabilities.os,
             manufacturer: Capabilities.manufacturer,
@@ -413,20 +412,21 @@ public class KioBase {
         }
     }
 
-    private static function generateMachineId():String {
+    public function get machineId():String {
+        return lsoProxy.getGlobalData().machine_id;
+    }
+
+    public static function generateMachineId():String {
         //generate random part
         var rnd_len:int = 5;
         var rnd:ByteArray = generateRandomBytes(rnd_len);
-
-        var randomPart:String = "";
-        for (var i:int = 0; i < rnd_len; i++)
-            randomPart += rnd[i].toString(16);
+        var randomPart:String = DataUtils.convertByteArrayToString(rnd);
 
         //generate machine-id part
-        var info:Object = getMachineInfo();
+        var info:Object = machineInfo;
         var infoString:String = "";
-        for each (var value:Object in info) //TODO not sure the order is fixed
-            infoString += value;
+        for each (var key:String in ["os", "manufacturer", "cpu", "version", "language", "playerType", "dpi", "screenWidth", "screenHeight"])
+            infoString += info[key] + "|";
 
         var machineInfoPart:String = DataUtils.hash(infoString).toString(16);
 
@@ -435,6 +435,27 @@ public class KioBase {
         var timePart:String = now.getTime().toString(16);
 
         return machineInfoPart + "-" + timePart + "-" + randomPart;
+    }
+
+    //this may be called only when log is already created, i.e. globalData.log != undefined
+    public function updateLog(log_machine_id:String, new_log:Object):void {
+        if (log_machine_id == machineId)
+            return;
+
+        var global:Object = lsoProxy.getGlobalData();
+        var log:Object = global.log;
+        if (log_machine_id in log) {
+            //update with new log only if the previous log was shorter
+            var currentData:ByteArray = log[log_machine_id].data;
+            var newData:ByteArray = new_log.data;
+            if (newData.length > currentData.length) {
+                log[log_machine_id] = new_log;
+                newData.position = newData.length;
+            }
+        } else
+            log[log_machine_id] = new_log;
+
+        lsoProxy.flush();
     }
 
     public function log(msg:String, extraArguments:Array):void {

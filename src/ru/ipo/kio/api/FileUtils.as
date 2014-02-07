@@ -1,10 +1,11 @@
 package ru.ipo.kio.api {
 import com.adobe.serialization.json.JSON_k;
 
+import flash.crypto.generateRandomBytes;
+
 import flash.events.Event;
 import flash.net.FileFilter;
 import flash.net.FileReference;
-import flash.text.GridFitType;
 import flash.utils.ByteArray;
 
 import ru.ipo.kio.base.KioBase;
@@ -33,7 +34,10 @@ public class FileUtils {
                 var solUTF:String = data.readUTFBytes(data.length);
                 try {
                     var sol:Object = JSON_k.decode(solUTF);
-                    problem.loadSolution(sol);
+                    problem.loadSolution(sol.solution);
+
+                    KioBase.instance.updateLog(sol.machine_id, sol.log);
+                    KioBase.instance.log("Loaded solution@tt", [sol.save_id, sol.machine_id]);
                 } catch (error:Error) {
                     //TODO show error message
                 }
@@ -44,9 +48,22 @@ public class FileUtils {
 
     public static function saveSolution(problem:KioProblem):void {
         var fr:FileReference = new FileReference();
-        var sol:Object = problem.solution;
+        var sol:Object = wrapSolutionToSave(problem.solution);
+
+        KioBase.instance.log("Saving solution@tt", [sol.save_id, sol.machine_id]);
 
         fr.save(JSON_k.encode(sol), SOLUTION_FILE_NAME + inventDate() + ".kio-" + problem.id + "-" + KioBase.instance.level);
+    }
+
+    private static function wrapSolutionToSave(solution:Object):Object {
+        var result:Object = {
+            solution: solution,
+            save_id: DataUtils.convertByteArrayToString(generateRandomBytes(10)),
+            machine_id: KioBase.instance.machineId,
+            log: KioBase.instance.getLogger()
+        };
+
+        return result;
     }
 
     public static function saveAll():void {
