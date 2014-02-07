@@ -1,0 +1,76 @@
+/**
+ * Created by user on 07.02.14.
+ */
+package ru.ipo.kio._14.stars.resources {
+import flash.display.DisplayObject;
+
+import ru.ipo.kio._14.stars.StarsWorkspace;
+import ru.ipo.kio.api.KioApi;
+
+import ru.ipo.kio.api.KioProblem;
+
+public class StarsProblem implements KioProblem {
+
+    public static const ID:String = "stars";
+
+    private var _workspace:StarsWorkspace;
+
+    private var _level:int;
+
+    public function StarsProblem(level:int) {
+        _level = level;
+
+        KioApi.initialize(this);
+
+        _workspace = new StarsWorkspace(this);
+    }
+
+    public function get id():String {
+        return "";
+    }
+
+    public function get year():int {
+        return 2014;
+    }
+
+    public function get level():int {
+        return 0;
+    }
+
+    public function get display():DisplayObject {
+        return null;
+    }
+
+    public function get solution():Object {
+        return null;
+    }
+
+    public function get best():Object {
+        return null;
+    }
+
+    public function loadSolution(solution:Object):Boolean {
+        return false;
+    }
+
+    public function check(solution:Object):Object {
+        return null;
+    }
+
+    public function compare(solution1:Object, solution2:Object):int {
+        return 0;
+    }
+
+    public function get icon():Class {
+        return null;
+    }
+
+    public function get icon_help():Class {
+        return null;
+    }
+
+    public function get icon_statement():Class {
+        return null;
+    }
+}
+}
