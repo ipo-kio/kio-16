@@ -37,7 +37,7 @@ import flash.events.MouseEvent;
         private function addHitArea():void {
             var hit:Sprite = new Sprite();
             hit.graphics.beginFill(0);
-            hit.graphics.drawCircle(_star.x, _star.y, 10);
+            hit.graphics.drawCircle(_star.x, _star.y, 5);
             hit.graphics.endFill();
 
             addChild(hit);
