@@ -11,6 +11,10 @@ import flash.events.MouseEvent;
         [Embed(source="resources/default_star.png")]
         private static const DEFAULT_STAR_RADIUS_2:Class;
         private static const DEFAULT_STAR_RADIUS_2_BMP:BitmapData = new DEFAULT_STAR_RADIUS_2().bitmapData;
+        [Embed(source="resources/selected_star.png")]
+        private static const SELECTED_STAR_RADIUS_2:Class;
+        private static const SELECTED_STAR_RADIUS_2_BMP:BitmapData = new SELECTED_STAR_RADIUS_2().bitmapData;
+
 
         private static const SELECTED_COLOR:uint = 0xffcc00;
         private static const DEFAULT_COLOR:uint = 0xfcdd76;
@@ -55,19 +59,19 @@ import flash.events.MouseEvent;
             switch (_star.radius) {
                 case 1:
                     graphics.clear();
-                    graphics.beginFill(DEFAULT_COLOR);
+                    graphics.beginFill(SELECTED_COLOR);
                     graphics.drawCircle(_star.x, _star.y, _star.radius);
                     graphics.endFill();
                     break;
                 case 2:
                     graphics.clear();
-                    graphics.beginBitmapFill(DEFAULT_STAR_RADIUS_2_BMP);
+                    graphics.beginBitmapFill(SELECTED_STAR_RADIUS_2_BMP);
                     graphics.drawCircle(_star.x, _star.y, _star.radius);
                     graphics.endFill();
                     break;
                 case 3:
                    graphics.clear();
-                    graphics.beginFill(DEFAULT_COLOR);
+                    graphics.beginFill(SELECTED_COLOR);
                     graphics.drawCircle(_star.x, _star.y, _star.radius);
                     graphics.endFill();
                     break;
