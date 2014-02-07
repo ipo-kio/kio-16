@@ -39,7 +39,23 @@ public class LineView extends Sprite {
         addEventListener(MouseEvent.ROLL_OUT, function (e:MouseEvent):void {
             isSelected = false;
         });
+
+        //make big height for line to interact with mouse
+        addHitArea();
     }
+
+    private function addHitArea():void {
+        var hit:Sprite = new Sprite();
+        hit.graphics.lineStyle(8, 0, 0);
+        hit.graphics.moveTo(x1, y1);
+        hit.graphics.lineTo(x2, y2);
+
+        addChild(hit);
+        hit.visible = false;
+
+        this.hitArea = hit;
+    }
+
 
     public function get isSelected():Boolean {
         return _isSelected;

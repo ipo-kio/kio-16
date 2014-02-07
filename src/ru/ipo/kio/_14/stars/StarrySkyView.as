@@ -2,16 +2,20 @@
  * Created by user on 06.01.14.
  */
 package ru.ipo.kio._14.stars {
+import flash.display.BitmapData;
 import flash.display.Sprite;
-import flash.events.Event;
 import flash.events.MouseEvent;
 
     public class StarrySkyView extends Sprite {
 
+        [Embed(source="resources/Nature-clouds-above-night-resolution-wallpaper-500x400.jpg")]
+        private static const BACKGROUND:Class;
+        private static const BACKGROUND_BMP:BitmapData = new BACKGROUND().bitmapData;
+
         private var starViews:Array/*<StarView>*/;
         private var lines:Array/*<LineView>*/;
 
-        private var panel:SkyInfoPanel;
+//        private var panel:SkyInfoPanel;
 
         private var currentStar:int = -1;
         private var saveCurrentStar:int = -1;
@@ -26,7 +30,7 @@ import flash.events.MouseEvent;
 
             addChild(drawingLinesLayer);
 
-            panel = new SkyInfoPanel(this);
+//            panel = new SkyInfoPanel(this);
             starViews = [];
             lines = [];
 
@@ -84,7 +88,7 @@ import flash.events.MouseEvent;
                 saveCurrentStar = -1;
             });
 
-            addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
+            /*addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
                 panel.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY + ",\n" +
                         "current_Star: " + currentStar + ",\n" + "save_current_Star: " + saveCurrentStar + ",\n" +
                         "pressed: " + pressed;
@@ -92,7 +96,7 @@ import flash.events.MouseEvent;
 
             panel.x = 0;
             panel.y = this.height;
-            addChild(panel);
+            addChild(panel);*/
         }
 
         private function createRollOverListener(k:int):Function {
@@ -107,8 +111,9 @@ import flash.events.MouseEvent;
 
         private function drawSky():void {
             graphics.clear();
-            graphics.beginFill(0x0047ab);
-            graphics.drawRect(0, 0, 500, 300);
+//            graphics.beginFill(0x0047ab);
+            graphics.beginBitmapFill(BACKGROUND_BMP);
+            graphics.drawRect(0, 0, 500, 400);
             graphics.endFill();
 
             for (var i:int = 0; i < starViews.length; i++) {
