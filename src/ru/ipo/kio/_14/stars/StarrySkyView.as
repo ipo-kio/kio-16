@@ -2,10 +2,15 @@
  * Created by user on 06.01.14.
  */
 package ru.ipo.kio._14.stars {
+import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 
     public class StarrySkyView extends Sprite {
+
+        [Embed(source="resources/Nature-clouds-above-night-resolution-wallpaper-1440x1920.jpg")]
+        private static const BACKGROUND:Class;
+        private static const BACKGROUND_BMP:BitmapData = new BACKGROUND().bitmapData;
 
         private var starViews:Array/*<StarView>*/;
         private var lines:Array/*<LineView>*/;
@@ -106,8 +111,9 @@ import flash.events.MouseEvent;
 
         private function drawSky():void {
             graphics.clear();
-            graphics.beginFill(0x0047ab);
-            graphics.drawRect(0, 0, 500, 300);
+//            graphics.beginFill(0x0047ab);
+            graphics.beginBitmapFill(BACKGROUND_BMP);
+            graphics.drawRect(0, 0, 500, 400);
             graphics.endFill();
 
             for (var i:int = 0; i < starViews.length; i++) {
