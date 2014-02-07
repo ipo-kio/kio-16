@@ -1,5 +1,4 @@
 package ru.ipo.kio.base {
-import flash.crypto.generateRandomBytes;
 import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
@@ -8,14 +7,11 @@ import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 import flash.events.TimerEvent;
-import flash.system.Capabilities;
 import flash.text.TextField;
-import flash.utils.ByteArray;
 import flash.utils.ByteArray;
 import flash.utils.Timer;
 
 import ru.ipo.kio.api.*;
-import ru.ipo.kio.api.DataUtils;
 import ru.ipo.kio.api.controls.SpaceSettingsDialog;
 import ru.ipo.kio.base.displays.DisplayUtils;
 import ru.ipo.kio.base.displays.MultipleUsersWelcomeDisplay;
@@ -373,24 +369,23 @@ public class KioBase {
         var lso:LsoProxy = lsoProxy;
         var global:Object = lso.getGlobalData();
 
+        var machine_id:String = lso.machineId;
+
         if (!global.log) {
-            global.machine_id = generateMachineId();
             global.log = {};
 
-            global.log[global.machine_id] = {
+            global.log[machine_id] = {
                 dict: {},
                 data: new ByteArray,
                 next_msg_code: 0,
                 last_log_start: 0, //milliseconds accurate log start (after the program loaded)
                 last_log_time: 0, //last logged value, accurate to 10 ms
-                machine_info: machineInfo
+                machine_info: LsoProxy.machineInfo
             };
             lso.flush();
         }
 
-        var mid:String = global.machine_id;
-
-        var log:Object = global.log[mid];
+        var log:Object = global.log[machine_id];
         var data:ByteArray = log.data;
         data.position = data.length;
 
@@ -398,48 +393,18 @@ public class KioBase {
         return log;
     }
 
-    public static function get machineInfo():Object {
-        return {
-            os: Capabilities.os,
-            manufacturer: Capabilities.manufacturer,
-            cpu: Capabilities.cpuArchitecture,
-            version: Capabilities.version,
-            language: Capabilities.language,
-            playerType: Capabilities.playerType,
-            dpi: Capabilities.screenDPI,
-            screenWidth: Capabilities.screenResolutionX,
-            screenHeight: Capabilities.screenResolutionY
-        }
+    public function getAllLoggers():Object {
+        var globalData:Object = lsoProxy.getGlobalData();
+        return globalData.log;
     }
 
     public function get machineId():String {
-        return lsoProxy.getGlobalData().machine_id;
-    }
-
-    public static function generateMachineId():String {
-        //generate random part
-        var rnd_len:int = 5;
-        var rnd:ByteArray = generateRandomBytes(rnd_len);
-        var randomPart:String = DataUtils.convertByteArrayToString(rnd);
-
-        //generate machine-id part
-        var info:Object = machineInfo;
-        var infoString:String = "";
-        for each (var key:String in ["os", "manufacturer", "cpu", "version", "language", "playerType", "dpi", "screenWidth", "screenHeight"])
-            infoString += info[key] + "|";
-
-        var machineInfoPart:String = DataUtils.hash(infoString).toString(16);
-
-        //generate time part
-        var now:Date = new Date();
-        var timePart:String = now.getTime().toString(16);
-
-        return machineInfoPart + "-" + timePart + "-" + randomPart;
+        return lsoProxy.machineId;
     }
 
     //this may be called only when log is already created, i.e. globalData.log != undefined
     public function updateLog(log_machine_id:String, new_log:Object):void {
-        if (log_machine_id == machineId)
+        if (log_machine_id == lsoProxy.machineId)
             return;
 
         var global:Object = lsoProxy.getGlobalData();
@@ -572,7 +537,6 @@ public class KioBase {
 
     public function outputLog(callback:Function, log:Object = null):void {
         if (log == null) {
-            var globalData:Object = lsoProxy.getGlobalData();
             log = getLogger();
 
             if (log == null)

@@ -5,10 +5,13 @@
  * Time: 22:08
  */
 package ru.ipo.kio.api {
+import flash.crypto.generateRandomBytes;
 import flash.events.Event;
 import flash.events.NetStatusEvent;
 import flash.net.SharedObject;
 import flash.net.SharedObjectFlushStatus;
+import flash.system.Capabilities;
+import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 
 import ru.ipo.kio.base.KioBase;
@@ -96,7 +99,8 @@ public class LsoProxy {
             }
             //copy data
             for (var key:String in _data)
-                _local.data[key] = _data[key];
+                if (_data.hasOwnProperty(key))
+                    _local.data[key] = _data[key];
             _data = _local.data;
         }
 
@@ -158,10 +162,12 @@ public class LsoProxy {
         var key:String;
 
         for (key in ud)
-            delete ud[key];
+            if (ud.hasOwnProperty(key))
+                delete ud[key];
 
         for (key in data)
-            ud[key] = data[key];
+            if (data.hasOwnProperty(key))
+                ud[key] = data[key];
         flush();
     }
 
@@ -225,6 +231,49 @@ public class LsoProxy {
 
     public function isOneProblemDebugRegime():Boolean {
         return one_problem_debug_regime;
+    }
+
+    // machine id
+
+    public function get machineId():String {
+        if (!("machine_id" in _data))
+            _data.machine_id = generateMachineId();
+        return _data.machine_id;
+    }
+
+    public static function get machineInfo():Object {
+        return {
+            os: Capabilities.os,
+            manufacturer: Capabilities.manufacturer,
+            cpu: Capabilities.cpuArchitecture,
+            version: Capabilities.version,
+            language: Capabilities.language,
+            playerType: Capabilities.playerType,
+            dpi: Capabilities.screenDPI,
+            screenWidth: Capabilities.screenResolutionX,
+            screenHeight: Capabilities.screenResolutionY
+        }
+    }
+
+    private static function generateMachineId():String {
+        //generate random part
+        var rnd_len:int = 5;
+        var rnd:ByteArray = generateRandomBytes(rnd_len);
+        var randomPart:String = DataUtils.convertByteArrayToString(rnd);
+
+        //generate machine-id part
+        var info:Object = machineInfo;
+        var infoString:String = "";
+        for each (var key:String in ["os", "manufacturer", "cpu", "version", "language", "playerType", "dpi", "screenWidth", "screenHeight"])
+            infoString += info[key] + "|";
+
+        var machineInfoPart:String = DataUtils.hash(infoString).toString(16);
+
+        //generate time part
+        var now:Date = new Date();
+        var timePart:String = now.getTime().toString(16);
+
+        return machineInfoPart + "-" + timePart + "-" + randomPart;
     }
 }
 }
