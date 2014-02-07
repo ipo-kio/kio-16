@@ -3,7 +3,6 @@
  */
 package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
-import flash.events.Event;
 import flash.events.MouseEvent;
 
     public class StarrySkyView extends Sprite {
@@ -11,7 +10,7 @@ import flash.events.MouseEvent;
         private var starViews:Array/*<StarView>*/;
         private var lines:Array/*<LineView>*/;
 
-        private var panel:SkyInfoPanel;
+//        private var panel:SkyInfoPanel;
 
         private var currentStar:int = -1;
         private var saveCurrentStar:int = -1;
@@ -26,7 +25,7 @@ import flash.events.MouseEvent;
 
             addChild(drawingLinesLayer);
 
-            panel = new SkyInfoPanel(this);
+//            panel = new SkyInfoPanel(this);
             starViews = [];
             lines = [];
 
@@ -84,7 +83,7 @@ import flash.events.MouseEvent;
                 saveCurrentStar = -1;
             });
 
-            addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
+            /*addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
                 panel.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY + ",\n" +
                         "current_Star: " + currentStar + ",\n" + "save_current_Star: " + saveCurrentStar + ",\n" +
                         "pressed: " + pressed;
@@ -92,7 +91,7 @@ import flash.events.MouseEvent;
 
             panel.x = 0;
             panel.y = this.height;
-            addChild(panel);
+            addChild(panel);*/
         }
 
         private function createRollOverListener(k:int):Function {
