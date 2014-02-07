@@ -8,7 +8,7 @@ import flash.events.MouseEvent;
 
     public class StarrySkyView extends Sprite {
 
-        [Embed(source="resources/Nature-clouds-above-night-resolution-wallpaper-1440x1920.jpg")]
+        [Embed(source="resources/Nature-clouds-above-night-resolution-wallpaper-500x400.jpg")]
         private static const BACKGROUND:Class;
         private static const BACKGROUND_BMP:BitmapData = new BACKGROUND().bitmapData;
 
