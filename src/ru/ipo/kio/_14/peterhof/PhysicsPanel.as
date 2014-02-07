@@ -12,7 +12,7 @@ public class PhysicsPanel extends Sprite {
     private var _hill:Hill;
 
     private var ds_editor:NumberEditor = new NumberEditor(200, 40, 0.001, 10, Consts.D, "м", 3);
-    private var rho_editor:NumberEditor = new NumberEditor(200, 40, 0.001, 10, Consts.RHO, "кг/м^3", 3);
+    private var rho_editor:NumberEditor = new NumberEditor(200, 40, 0.01, 100000, Consts.RHO, "кг/м^3", 2);
     private var eta_editor:NumberEditor = new NumberEditor(200, 40, 0.0001, 100, 1000 * Consts.ETA, "г/м с", 4);
     private var g_editor:NumberEditor = new NumberEditor(200, 40, 0, 1000, Consts.G, "м/c^2", 3);
     private var k_editor:NumberEditor = new NumberEditor(200, 40, 0, 100, Consts.K, "*", 6);

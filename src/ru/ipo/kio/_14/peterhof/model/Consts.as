@@ -7,7 +7,7 @@ public class Consts {
     public static const HILL_LENGTH1:int = 50;
     public static const HILL_LENGTH2:int = 75;
     public static const HILL_LENGTH:int = HILL_LENGTH1 + HILL_LENGTH2;
-    public static const HILL_WIDTH:int = 50;
+    public static const HILL_WIDTH:int = 100;
     public static const HILL_HEIGHT:int = 50;
     public static const MIN_DIST:int = 20;
 
