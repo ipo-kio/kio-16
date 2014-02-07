@@ -5,7 +5,7 @@ package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
 import flash.events.Event;
 
-import ru.ipo.kio._14.stars.resources.StarsProblem;
+import ru.ipo.kio._14.stars.StarsProblem;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.controls.InfoPanel;
 

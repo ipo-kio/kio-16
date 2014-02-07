@@ -1,7 +1,7 @@
 /**
  * Created by user on 07.02.14.
  */
-package ru.ipo.kio._14.stars.resources {
+package ru.ipo.kio._14.stars {
 import flash.display.DisplayObject;
 
 import ru.ipo.kio._14.stars.StarsWorkspace;
@@ -34,11 +34,11 @@ public class StarsProblem implements KioProblem {
     }
 
     public function get level():int {
-        return 0;
+        return _level;
     }
 
     public function get display():DisplayObject {
-        return null;
+        return _workspace;
     }
 
     public function get solution():Object {
