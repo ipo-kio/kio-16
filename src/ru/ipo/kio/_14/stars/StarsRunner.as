@@ -58,7 +58,7 @@ public class StarsRunner extends Sprite {
     }
 
     private function sky_changeHandler(event:Event):void {
-        trace(sky.sumOfLines.toFixed(3));
+//        trace(sky.sumOfLines.toFixed(3));
 
         infoPanel.setValue(0, "" + sky.sumOfLines.toFixed(3));
         infoPanel.setValue(1, "" + sky.starsLines.length);
