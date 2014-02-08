@@ -32,16 +32,14 @@ public class LineView extends Sprite {
         this.y2 = line.s2.y;
         drawDefaultLine();
 
-        addEventListener(MouseEvent.ROLL_OVER, function (e:MouseEvent):void {
-            isSelected = true;
-        });
-
-        addEventListener(MouseEvent.ROLL_OUT, function (e:MouseEvent):void {
-            isSelected = false;
-        });
+        addEventListener(MouseEvent.ROLL_OVER, rollOverForLine);
+        addEventListener(MouseEvent.ROLL_OUT, rollOutForLine);
 
         //make big height for line to interact with mouse
         addHitArea();
+
+//        removeEventListener(MouseEvent.ROLL_OVER, rollOverForLine);
+//        removeEventListener(MouseEvent.ROLL_OUT, rollOutForLine);
     }
 
     private function addHitArea():void {
@@ -56,6 +54,13 @@ public class LineView extends Sprite {
         this.hitArea = hit;
     }
 
+    private function rollOverForLine(e:MouseEvent):void {
+        isSelected = true;
+    }
+
+    private function rollOutForLine(e:MouseEvent):void {
+        isSelected = false;
+    }
 
     public function get isSelected():Boolean {
         return _isSelected;
@@ -69,14 +74,14 @@ public class LineView extends Sprite {
             drawDefaultLine();
     }
 
-    public function deleteLineFromField():void {
-        if (_isSelected)
-            graphics.clear();
-    }
-
-    public function deleteLine():void {
-        graphics.clear();
-    }
+//    public function deleteLineFromField():void {
+//        if (_isSelected)
+//            graphics.clear();
+//    }
+//
+//    public function deleteLine():void {
+//        graphics.clear();
+//    }
 
     public function drawNewLine(x2:Number, y2:Number):void {
         graphics.clear();
