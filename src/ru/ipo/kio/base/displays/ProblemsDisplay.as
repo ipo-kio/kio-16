@@ -24,8 +24,13 @@ import ru.ipo.kio.base.resources.Resources;
 
 public class ProblemsDisplay extends Sprite {
 
+    public static var firstTimeInitialized:Boolean = false;
+
     public function ProblemsDisplay() {
-        KioBase.instance.log('Show problems display v2', []);
+        if (!firstTimeInitialized) {
+            KioBase.instance.log('Program started', []);
+            firstTimeInitialized = true;
+        }
 
         DisplayUtils.placeBackground(this);
 

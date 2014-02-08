@@ -56,7 +56,7 @@ public class FileUtils {
         var fr:FileReference = new FileReference();
         var sol:Object = wrapSolutionToSave(problem.solution);
 
-        KioBase.instance.log("Saving solution@tt", [sol.save_id, LsoProxy.machineInfo]);
+        KioBase.instance.log("Saving solution@tt", [sol.save_id, KioBase.instance.machineId]);
 
         fr.save(JSON_k.encode(sol), SOLUTION_FILE_NAME + inventDate() + ".kio-" + problem.id + "-" + KioBase.instance.level);
     }
