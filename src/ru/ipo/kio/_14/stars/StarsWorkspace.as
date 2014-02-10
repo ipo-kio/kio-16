@@ -9,7 +9,7 @@ import ru.ipo.kio._14.stars.StarsProblem;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.controls.InfoPanel;
 
-[SWF(width=900, height=600)]
+[SWF(width=900, height=625)]
 public class StarsWorkspace extends Sprite {
 
     private var api:KioApi;
