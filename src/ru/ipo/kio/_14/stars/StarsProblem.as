@@ -4,7 +4,6 @@
 package ru.ipo.kio._14.stars {
 import flash.display.DisplayObject;
 
-import ru.ipo.kio._14.stars.StarsWorkspace;
 import ru.ipo.kio.api.KioApi;
 
 import ru.ipo.kio.api.KioProblem;
