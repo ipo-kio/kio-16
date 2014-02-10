@@ -42,15 +42,15 @@ public class StarsWorkspace extends Sprite {
 
         infoPanel = new InfoPanel(
             /*"KioArial", true, //*/"EskizOne-Regular", true,
-            22, 0x92000a, 0x08457e, 0x3b5998,
-            2, "Текущий результат",
+            18, 0x92000a, 0x08457e, 0x3b5998,
+            1.5, "Текущий результат",
             ["Сумма длинн линий", "Количество линий"], 200
         );
 
         infoPanelRecord = new InfoPanel(
             /*"KioArial", true, //*/"EskizOne-Regular", true,
-            22, 0x92000a, 0x08457e, 0x3b5998,
-            2, "Рекорд",
+            18, 0x92000a, 0x08457e, 0x3b5998,
+            1.5, "Рекорд",
             ["Сумма длинн линий", "Количество линий"], 200
         );
 
@@ -62,8 +62,8 @@ public class StarsWorkspace extends Sprite {
 
         addChild(infoPanel);
         addChild(infoPanelRecord);
-        infoPanel.x = 520;
-        infoPanelRecord.x = 520;
+        infoPanel.x = 510;
+        infoPanelRecord.x = 510;
         infoPanelRecord.y = 150;
     }
 
