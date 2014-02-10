@@ -80,5 +80,9 @@ public class StarrySky extends EventDispatcher {
             serializeArray.push(line.serialize());
         return serializeArray;
     }
+
+    public function getStarByIndex(ind:int):Star {
+        return stars[ind];
+    }
 }
 }

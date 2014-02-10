@@ -77,7 +77,6 @@ public class StarrySkyView extends Sprite {
                 if (pressed && currentStar != -1 && currentStar != saveCurrentStar) {
                     var lineInd:int = sky.addLine(starrySky.stars[saveCurrentStar], starrySky.stars[currentStar]);
                     if (lineInd >= 0) {
-                        lines.push(currentLineView);
                         var star1:Star = getStarByIndex(saveCurrentStar);
                         var star2:Star = getStarByIndex(currentStar);
                         fixLineView(star1, star2);
@@ -135,6 +134,7 @@ public class StarrySkyView extends Sprite {
         }
 
         public function fixLineView(star1:Star, star2:Star):void {
+            lines.push(currentLineView);
             currentLineView.fixNewLine(new Line(star1, star2));
             currentLineView.addEventListener(MouseEvent.CLICK, lineView_clickHandler);
         }

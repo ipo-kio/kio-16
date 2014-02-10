@@ -80,12 +80,8 @@ public class StarsWorkspace extends Sprite {
     }
 
     public function get solution():Object {
-        var solutionLines:Array = [];
-        for each (var line:Line in sky.starsLines) {
-            solutionLines.push([line.s1, line.s2]);
-        }
         return {
-            lines : solutionLines
+            lines : sky.serialize()
         }
     }
 
@@ -97,15 +93,15 @@ public class StarsWorkspace extends Sprite {
     }
 
     public function load(solution:Object):Boolean {
-        /*var starsLines:Array = solution.lines;
-        for (var i:int = 0; i < starsLines.length; i++) {
-            var s1:Star = starsLines[i][0] as Star;
-            var s2:Star = starsLines[i][1] as Star;
+        var starsIndexLines:Array = solution.lines;
+        for (var i:int = 0; i < starsIndexLines.length; i++) {
+            var s1:Star = sky.getStarByIndex(starsIndexLines[i][0]);
+            var s2:Star = sky.getStarByIndex(starsIndexLines[i][1]);
             skyView.createLineView(s1.x, s1.y);
             skyView.drawLineView(s2.x, s2.y);
             skyView.fixLineView(s1, s2);
             sky.addLine(s1, s2);
-        }*/
+        }
         return true;
     }
 }
