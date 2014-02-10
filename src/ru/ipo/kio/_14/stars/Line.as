@@ -26,8 +26,8 @@ public class Line {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    public function serialize(_s1:Star, s2:Star):Array {
-
+    public function serialize():Array {
+        return [_s1.index, _s2.index];
     }
 }
 }

@@ -73,5 +73,12 @@ public class StarrySky extends EventDispatcher {
 
         dispatchEvent(new Event(Event.CHANGE));
     }
+
+    public function serialize():Array {
+        var serializeArray:Array = [];
+        for each (var line:Line in starsLines)
+            serializeArray.push(line.serialize());
+        return serializeArray;
+    }
 }
 }
