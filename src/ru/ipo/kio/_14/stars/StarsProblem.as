@@ -58,7 +58,7 @@ public class StarsProblem implements KioProblem {
     }
 
     public function loadSolution(solution:Object):Boolean {
-        if (_workspace.load(solution) == null)
+        if (!_workspace.load(solution))
             return false;
 
         KioApi.instance(this).autoSaveSolution();
