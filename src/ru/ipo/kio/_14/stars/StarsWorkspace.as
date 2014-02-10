@@ -97,13 +97,15 @@ public class StarsWorkspace extends Sprite {
     }
 
     public function load(solution:Object):Boolean {
-        var starsLines:Array = solution.lines;
+        /*var starsLines:Array = solution.lines;
         for (var i:int = 0; i < starsLines.length; i++) {
-            skyView.createLineView(starsLines[i][0].x, starsLines[i][0].y);
-            skyView.drawLineView(starsLines[i][1].x, starsLines[i][1].y);
-            skyView.fixLineView(starsLines[i][0], starsLines[i][1]);
-            sky.addLine(starsLines[i][0], starsLines[i][1]);
-        }
+            var s1:Star = starsLines[i][0] as Star;
+            var s2:Star = starsLines[i][1] as Star;
+            skyView.createLineView(s1.x, s1.y);
+            skyView.drawLineView(s2.x, s2.y);
+            skyView.fixLineView(s1, s2);
+            sky.addLine(s1, s2);
+        }*/
         return true;
     }
 }

@@ -15,6 +15,9 @@ public class StarrySky extends EventDispatcher {
     public function StarrySky(stars:Array) {
         _stars = stars;
         _starsLines = [];
+
+        for (var i:int = 0; i < stars.length; i++)
+            stars[i].index = i;
     }
 
     //returns index of added line
