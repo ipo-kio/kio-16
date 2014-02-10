@@ -59,7 +59,8 @@ public class StarsProblem implements KioProblem {
     }
 
     public function check(solution:Object):Object {
-        return null;
+        loadSolution(solution);
+        return _workspace.currentResult();
     }
 
     public function compare(solution1:Object, solution2:Object):int {
