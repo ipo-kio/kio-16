@@ -107,7 +107,7 @@ public class StarrySkyView extends Sprite {
             }
         }
 
-        private function getStarByIndex(ind:int):Star {
+        public function getStarByIndex(ind:int):Star {
             return sky.stars[ind];
         }
 

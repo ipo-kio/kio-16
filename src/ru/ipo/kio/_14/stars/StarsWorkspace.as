@@ -69,14 +69,17 @@ public class StarsWorkspace extends Sprite {
 
     private function sky_changeHandler(event:Event):void {
 //        trace(sky.sumOfLines.toFixed(3));
-        api.autoSaveSolution();
-        api.submitResult(currentResult());
 
         infoPanel.setValue(0, "" + sky.sumOfLines.toFixed(3));
         infoPanel.setValue(1, "" + sky.starsLines.length);
 
         infoPanelRecord.setValue(0, "" + sky.sumOfLines.toFixed(3));
         infoPanelRecord.setValue(1, "" + sky.starsLines.length);
+
+        api.autoSaveSolution();
+        api.submitResult(currentResult());
+
+        trace(sky.serialize());
     }
 
     public function get solution():Object {
@@ -95,8 +98,8 @@ public class StarsWorkspace extends Sprite {
     public function load(solution:Object):Boolean {
         var starsIndexLines:Array = solution.lines;
         for (var i:int = 0; i < starsIndexLines.length; i++) {
-            var s1:Star = sky.getStarByIndex(starsIndexLines[i][0]);
-            var s2:Star = sky.getStarByIndex(starsIndexLines[i][1]);
+            var s1:Star = skyView.getStarByIndex(starsIndexLines[i][0]);
+            var s2:Star = skyView.getStarByIndex(starsIndexLines[i][1]);
             skyView.createLineView(s1.x, s1.y);
             skyView.drawLineView(s2.x, s2.y);
             skyView.fixLineView(s1, s2);
