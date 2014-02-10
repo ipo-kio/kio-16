@@ -10,6 +10,7 @@ import ru.ipo.kio._14.stars.StarsProblem;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.base.KioBase;
 
+[SWF(width=900, height=625)]
 public class StarsRunner extends Sprite {
     public function StarsRunner() {
         //Код в конструкторе рекомендуется всегда писать таким же, как здесь.

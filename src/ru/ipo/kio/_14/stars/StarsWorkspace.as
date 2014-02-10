@@ -5,11 +5,9 @@ package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
 import flash.events.Event;
 
-import ru.ipo.kio._14.stars.StarsProblem;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.controls.InfoPanel;
 
-[SWF(width=900, height=625)]
 public class StarsWorkspace extends Sprite {
 
     private var api:KioApi;
@@ -23,6 +21,11 @@ public class StarsWorkspace extends Sprite {
     private static var MyFont:Class;
 
     public function StarsWorkspace(problem:StarsProblem) {
+
+        graphics.beginFill(0, 1);
+        graphics.drawRect(0, 0, 780, 600);
+        graphics.endFill();
+
         //получаем доступ к API, для этого передаем в качестве параметра id нашей задачи
         api = KioApi.instance(problem);
 
@@ -41,14 +44,14 @@ public class StarsWorkspace extends Sprite {
             /*"KioArial", true, //*/"EskizOne-Regular", true,
             22, 0x92000a, 0x08457e, 0x3b5998,
             2, "Текущий результат",
-            ["Сумма длинн линий", "Количество линий"], 300
+            ["Сумма длинн линий", "Количество линий"], 200
         );
 
         infoPanelRecord = new InfoPanel(
             /*"KioArial", true, //*/"EskizOne-Regular", true,
             22, 0x92000a, 0x08457e, 0x3b5998,
             2, "Рекорд",
-            ["Сумма длинн линий", "Количество линий"], 300
+            ["Сумма длинн линий", "Количество линий"], 200
         );
 
         infoPanel.setValue(0, "" + sky.sumOfLines.toFixed(3));

@@ -34,7 +34,7 @@ public class StarsProblem implements KioProblem {
     }
 
     public function get id():String {
-        return "";
+        return ID;
     }
 
     public function get year():int {
