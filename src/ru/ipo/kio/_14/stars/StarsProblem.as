@@ -42,7 +42,7 @@ public class StarsProblem implements KioProblem {
     }
 
     public function get solution():Object {
-        return null;
+        return _workspace.solution;
     }
 
     public function get best():Object {
@@ -50,7 +50,12 @@ public class StarsProblem implements KioProblem {
     }
 
     public function loadSolution(solution:Object):Boolean {
-        return false;
+        if (_workspace.load(solution) == null)
+            return false;
+
+        KioApi.instance(this).autoSaveSolution();
+        KioApi.instance(this).submitResult(_workspace.currentResult());
+        return true;
     }
 
     public function check(solution:Object):Object {

@@ -6,7 +6,7 @@ import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 
-    public class StarrySkyView extends Sprite {
+public class StarrySkyView extends Sprite {
 
         [Embed(source="resources/Nature-clouds-above-night-resolution-wallpaper-500x400.jpg")]
         private static const BACKGROUND:Class;
@@ -60,15 +60,17 @@ import flash.events.MouseEvent;
                     saveCurrentStar = currentStar;
                     var star:Star = getStarByIndex(currentStar);
 
-                    var lineView:LineView = new LineView(star.x, star.y);
+                    createLineView(star.x, star.y);
+                    /*var lineView:LineView = new LineView(star.x, star.y);
                     drawingLinesLayer.addChild(lineView);
-                    currentLineView = lineView;
+                    currentLineView = lineView;*/
                 }
             });
 
             addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
                 if (pressed)
-                    currentLineView.drawNewLine(event.localX, event.localY);
+                    drawLineView(event.localX, event.localY);
+//                    currentLineView.drawNewLine(event.localX, event.localY);
             });
 
             addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
@@ -78,8 +80,9 @@ import flash.events.MouseEvent;
                         lines.push(currentLineView);
                         var star1:Star = getStarByIndex(saveCurrentStar);
                         var star2:Star = getStarByIndex(currentStar);
-                        currentLineView.fixNewLine(new Line(star1, star2));
-                        currentLineView.addEventListener(MouseEvent.CLICK, lineView_clickHandler);
+                        fixLineView(star1, star2);
+                        /*currentLineView.fixNewLine(new Line(star1, star2));
+                        currentLineView.addEventListener(MouseEvent.CLICK, lineView_clickHandler);*/
                     }
                 } else if (pressed)
                     drawingLinesLayer.removeChild(currentLineView);
@@ -119,6 +122,21 @@ import flash.events.MouseEvent;
             for (var i:int = 0; i < starViews.length; i++) {
                 addChild(starViews[i]);
             }
+        }
+
+        public function createLineView(startX:Number, startY:Number):void {
+            var lineView:LineView = new LineView(startX, startY);
+            drawingLinesLayer.addChild(lineView);
+            currentLineView = lineView;
+        }
+
+        public function drawLineView(localX:Number, localY:Number):void {
+            currentLineView.drawNewLine(localX, localY);
+        }
+
+        public function fixLineView(star1:Star, star2:Star):void {
+            currentLineView.fixNewLine(new Line(star1, star2));
+            currentLineView.addEventListener(MouseEvent.CLICK, lineView_clickHandler);
         }
 
         private function lineView_clickHandler(event:MouseEvent):void {
