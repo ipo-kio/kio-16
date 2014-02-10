@@ -25,5 +25,9 @@ public class Line {
         var dy:Number = _s1.y - _s2.y;
         return Math.sqrt(dx * dx + dy * dy);
     }
+
+    public function serialize():Array {
+        return [_s1.index, _s2.index];
+    }
 }
 }

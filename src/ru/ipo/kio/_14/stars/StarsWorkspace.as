@@ -5,15 +5,14 @@ package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
 import flash.events.Event;
 
-import ru.ipo.kio._14.stars.StarsProblem;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.controls.InfoPanel;
 
-[SWF(width=900, height=600)]
 public class StarsWorkspace extends Sprite {
 
     private var api:KioApi;
     private var sky:StarrySky;
+    private var skyView:StarrySkyView;
 
     private var infoPanel:InfoPanel;
     private var infoPanelRecord:InfoPanel;
@@ -22,6 +21,11 @@ public class StarsWorkspace extends Sprite {
     private static var MyFont:Class;
 
     public function StarsWorkspace(problem:StarsProblem) {
+
+        graphics.beginFill(0, 1);
+        graphics.drawRect(0, 0, 780, 600);
+        graphics.endFill();
+
         //получаем доступ к API, для этого передаем в качестве параметра id нашей задачи
         api = KioApi.instance(problem);
 
@@ -31,23 +35,23 @@ public class StarsWorkspace extends Sprite {
         ];
 
         sky = new StarrySky(stars);
-        var skyView:StarrySkyView = new StarrySkyView(sky);
+        skyView = new StarrySkyView(sky);
         addChild(skyView);
 
         sky.addEventListener(Event.CHANGE, sky_changeHandler);
 
         infoPanel = new InfoPanel(
             /*"KioArial", true, //*/"EskizOne-Regular", true,
-            22, 0x92000a, 0x08457e, 0x3b5998,
-            2, "Текущий результат",
-            ["Сумма длинн линий", "Количество линий"], 300
+            18, 0x92000a, 0x08457e, 0x3b5998,
+            1.5, "Текущий результат",
+            ["Сумма длинн линий", "Количество линий"], 200
         );
 
         infoPanelRecord = new InfoPanel(
             /*"KioArial", true, //*/"EskizOne-Regular", true,
-            22, 0x92000a, 0x08457e, 0x3b5998,
-            2, "Рекорд",
-            ["Сумма длинн линий", "Количество линий"], 300
+            18, 0x92000a, 0x08457e, 0x3b5998,
+            1.5, "Рекорд",
+            ["Сумма длинн линий", "Количество линий"], 200
         );
 
         infoPanel.setValue(0, "" + sky.sumOfLines.toFixed(3));
@@ -58,8 +62,8 @@ public class StarsWorkspace extends Sprite {
 
         addChild(infoPanel);
         addChild(infoPanelRecord);
-        infoPanel.x = 520;
-        infoPanelRecord.x = 520;
+        infoPanel.x = 510;
+        infoPanelRecord.x = 510;
         infoPanelRecord.y = 150;
     }
 
@@ -71,6 +75,40 @@ public class StarsWorkspace extends Sprite {
 
         infoPanelRecord.setValue(0, "" + sky.sumOfLines.toFixed(3));
         infoPanelRecord.setValue(1, "" + sky.starsLines.length);
+
+        api.autoSaveSolution();
+        api.submitResult(currentResult());
+
+        trace('sk ch', sky.serialize());
+    }
+
+    public function get solution():Object {
+        return {
+            lines : sky.serialize()
+        }
+    }
+
+    public function currentResult():Object {
+        return {
+            sum_of_lines : sky.sumOfLines.toFixed(3),
+            total_count_of_lines : sky.starsLines.length
+        }
+    }
+
+    public function load(solution:Object):Boolean {
+        var starsIndexLines:Array = solution.lines;
+
+        skyView.clearLines();
+
+        for (var i:int = 0; i < starsIndexLines.length; i++) {
+            var s1:Star = sky.getStarByIndex(starsIndexLines[i][0]);
+            var s2:Star = sky.getStarByIndex(starsIndexLines[i][1]);
+            skyView.createLineView(s1.x, s1.y);
+            skyView.drawLineView(s2.x, s2.y);
+            skyView.fixLineView(s1, s2);
+            sky.addLine(s1, s2);
+        }
+        return true;
     }
 }
 }

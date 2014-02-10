@@ -15,6 +15,9 @@ public class StarrySky extends EventDispatcher {
     public function StarrySky(stars:Array) {
         _stars = stars;
         _starsLines = [];
+
+        for (var i:int = 0; i < stars.length; i++)
+            stars[i].index = i;
     }
 
     //returns index of added line
@@ -69,6 +72,17 @@ public class StarrySky extends EventDispatcher {
         //for output.     var n:Number = 1.123123123;    n.toFixed(3) -> converts to String with 3 digits after a point
 
         dispatchEvent(new Event(Event.CHANGE));
+    }
+
+    public function serialize():Array {
+        var serializeArray:Array = [];
+        for each (var line:Line in starsLines)
+            serializeArray.push(line.serialize());
+        return serializeArray;
+    }
+
+    public function getStarByIndex(ind:int):Star {
+        return stars[ind];
     }
 }
 }

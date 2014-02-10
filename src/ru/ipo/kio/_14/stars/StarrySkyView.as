@@ -6,7 +6,7 @@ import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 
-    public class StarrySkyView extends Sprite {
+public class StarrySkyView extends Sprite {
 
         [Embed(source="resources/Nature-clouds-above-night-resolution-wallpaper-500x400.jpg")]
         private static const BACKGROUND:Class;
@@ -34,10 +34,8 @@ import flash.events.MouseEvent;
             starViews = [];
             lines = [];
 
-            for (var i:int = 0; i < starrySky.stars.length; i++) {
+            for (var i:int = 0; i < starrySky.stars.length; i++)
                 starViews[i] = new StarView(starrySky.stars[i]);
-                starViews[i].index = i;
-            }
 
             sky = starrySky;
 
@@ -60,26 +58,28 @@ import flash.events.MouseEvent;
                     saveCurrentStar = currentStar;
                     var star:Star = getStarByIndex(currentStar);
 
-                    var lineView:LineView = new LineView(star.x, star.y);
+                    createLineView(star.x, star.y);
+                    /*var lineView:LineView = new LineView(star.x, star.y);
                     drawingLinesLayer.addChild(lineView);
-                    currentLineView = lineView;
+                    currentLineView = lineView;*/
                 }
             });
 
             addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
                 if (pressed)
-                    currentLineView.drawNewLine(event.localX, event.localY);
+                    drawLineView(event.localX, event.localY);
+//                    currentLineView.drawNewLine(event.localX, event.localY);
             });
 
             addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
                 if (pressed && currentStar != -1 && currentStar != saveCurrentStar) {
                     var lineInd:int = sky.addLine(starrySky.stars[saveCurrentStar], starrySky.stars[currentStar]);
                     if (lineInd >= 0) {
-                        lines.push(currentLineView);
                         var star1:Star = getStarByIndex(saveCurrentStar);
                         var star2:Star = getStarByIndex(currentStar);
-                        currentLineView.fixNewLine(new Line(star1, star2));
-                        currentLineView.addEventListener(MouseEvent.CLICK, lineView_clickHandler);
+                        fixLineView(star1, star2);
+                        /*currentLineView.fixNewLine(new Line(star1, star2));
+                        currentLineView.addEventListener(MouseEvent.CLICK, lineView_clickHandler);*/
                     }
                 } else if (pressed)
                     drawingLinesLayer.removeChild(currentLineView);
@@ -121,6 +121,22 @@ import flash.events.MouseEvent;
             }
         }
 
+        public function createLineView(startX:Number, startY:Number):void {
+            var lineView:LineView = new LineView(startX, startY);
+            drawingLinesLayer.addChild(lineView);
+            currentLineView = lineView;
+        }
+
+        public function drawLineView(localX:Number, localY:Number):void {
+            currentLineView.drawNewLine(localX, localY);
+        }
+
+        public function fixLineView(star1:Star, star2:Star):void {
+            lines.push(currentLineView);
+            currentLineView.fixNewLine(new Line(star1, star2));
+            currentLineView.addEventListener(MouseEvent.CLICK, lineView_clickHandler);
+        }
+
         private function lineView_clickHandler(event:MouseEvent):void {
             var lineView:LineView = event.target as LineView;
             if (lineView != null) {
@@ -128,14 +144,26 @@ import flash.events.MouseEvent;
                 //remove line from sky._starsLines and from _lines
                 for (var lineViewInd:int = 0; lineViewInd < lines.length; lineViewInd++)
                     if (lines[lineViewInd] == lineView) {
-                        lines.splice(lineViewInd, 1);
-                        sky.removeLineWithIndex(lineViewInd);
-                        drawingLinesLayer.removeChild(lineView);
+                        removeLine(lineViewInd);
                         return;
                     }
                 trace("ERROR!! failed to find lineView to remove");
                 throw new Error("ERROR!! failed to find lineView to remove");
             }
         }
+
+    private function removeLine(lineViewInd:int):void {
+        var lineView:LineView = lines[lineViewInd];
+
+        lines.splice(lineViewInd, 1);
+        sky.removeLineWithIndex(lineViewInd);
+
+        drawingLinesLayer.removeChild(lineView);
     }
+
+    public function clearLines():void {
+        for (var i:int = lines.length - 1; i >= 0; i--)
+            removeLine(i);
+    }
+}
 }
