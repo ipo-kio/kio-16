@@ -35,8 +35,6 @@ package ru.ipo.kio._14.stars {
         public function get radius():int {
             return _radius;
         }
-
-
         public function get index():int {
             return _index;
         }

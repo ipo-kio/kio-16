@@ -34,10 +34,8 @@ public class StarrySkyView extends Sprite {
             starViews = [];
             lines = [];
 
-            for (var i:int = 0; i < starrySky.stars.length; i++) {
+            for (var i:int = 0; i < starrySky.stars.length; i++)
                 starViews[i] = new StarView(starrySky.stars[i]);
-                starViews[i].index = i;
-            }
 
             sky = starrySky;
 
@@ -107,7 +105,7 @@ public class StarrySkyView extends Sprite {
             }
         }
 
-        public function getStarByIndex(ind:int):Star {
+        private function getStarByIndex(ind:int):Star {
             return sky.stars[ind];
         }
 
@@ -146,14 +144,26 @@ public class StarrySkyView extends Sprite {
                 //remove line from sky._starsLines and from _lines
                 for (var lineViewInd:int = 0; lineViewInd < lines.length; lineViewInd++)
                     if (lines[lineViewInd] == lineView) {
-                        lines.splice(lineViewInd, 1);
-                        sky.removeLineWithIndex(lineViewInd);
-                        drawingLinesLayer.removeChild(lineView);
+                        removeLine(lineViewInd);
                         return;
                     }
                 trace("ERROR!! failed to find lineView to remove");
                 throw new Error("ERROR!! failed to find lineView to remove");
             }
         }
+
+    private function removeLine(lineViewInd:int):void {
+        var lineView:LineView = lines[lineViewInd];
+
+        lines.splice(lineViewInd, 1);
+        sky.removeLineWithIndex(lineViewInd);
+
+        drawingLinesLayer.removeChild(lineView);
     }
+
+    public function clearLines():void {
+        for (var i:int = lines.length - 1; i >= 0; i--)
+            removeLine(i);
+    }
+}
 }
