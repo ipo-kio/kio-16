@@ -72,6 +72,8 @@ public class StarsProblem implements KioProblem {
     }
 
     public function compare(solution1:Object, solution2:Object):int {
+        /*if (solution1.total_count_of_lines == solution2.total_count_of_lines)
+            return solution1.sum_of_lines - solution2.sum_of_lines;*/
         return 0;
     }
 
