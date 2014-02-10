@@ -81,7 +81,9 @@ public class StarsWorkspace extends Sprite {
         for each (var line:Line in sky.starsLines) {
             solutionLines.push([line.s1, line.s2]);
         }
-        return {lines : solutionLines}
+        return {
+            lines : solutionLines
+        }
     }
 
     public function currentResult():Object {
