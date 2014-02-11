@@ -81,17 +81,40 @@ public class FileUtils {
     public static function saveLog():void {
         var fr:FileReference = new FileReference();
         var log:String = 'total memory ' + KioBase.instance.lsoProxy.usedBytes + "\n";
-        KioBase.instance.outputLog(function(time:Number, cmd:String, extraArgs:Array):void {
-            var d:Date = new Date();
-            d.setTime(time);
-            log += time + ' | ' + d + ' | ' + cmd;
 
-            if (extraArgs.length > 0)
-                for each (var arg:* in extraArgs)
-                    log += "|" + arg;
+        var all_logs:Object = KioBase.instance.allLogs;
+        for (var log_id:String in all_logs) {
+            if (!all_logs.hasOwnProperty(log_id))
+                continue;
 
-            log += "\n";
-        });
+            var logData:Object = all_logs[log_id];
+
+            log += "--------------------------------------------------------------\n";
+            log += "log id: " + log_id + "\n";
+            //TODO add info about this id
+            var info:Object = logData.machine_info;
+            log += "OS:             " + info.os;
+            log += "Manufacturer:   " + info.manufacturer;
+            log += "CPU:            " + info.cpu;
+            log += "Player version: " + info.version;
+            log += "Language:       " + info.language;
+            log += "Player type:    " + info.playerType;
+            log += "DPI:            " + info.dpi;
+            log += "Screen width:   " + info.screenWidth;
+            log += "Screen height:  " + info.screenHeight;
+
+            KioBase.instance.outputLog(function(time:Number, cmd:String, extraArgs:Array):void {
+                var d:Date = new Date();
+                d.setTime(time);
+                log += time + ' | ' + d + ' | ' + cmd;
+
+                if (extraArgs.length > 0)
+                    for each (var arg:* in extraArgs)
+                        log += "|" + arg;
+
+                log += "\n";
+            }, logData);
+        }
         fr.save(log, "kio" + inventDate() + ".log");
     }
 

@@ -107,6 +107,7 @@ public class LsoProxy {
         try {
             if (_local.flush(LSO_SIZE) != SharedObjectFlushStatus.FLUSHED)
                 KioBase.instance.complainLSO();
+            trace('FLUSHED');
         } catch (e:Error) {
             KioBase.instance.complainLSO();
         }
