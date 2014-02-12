@@ -58,7 +58,7 @@ public class FileUtils {
 
         fr.save(JSON_k.encode(sol), SOLUTION_FILE_NAME + inventDate() + ".kio-" + problem.id + "-" + KioBase.instance.level);
 
-        KioBase.instance.log("Solution saved@ttt", [sol.save_id, KioBase.instance.machineId, KioBase.instance.userId]);
+        KioBase.instance.log("Solution saved@tt", [sol.save_id, KioBase.instance.logId]);
     }
 
     private static function wrapSolutionToSave(solution:Object):Object {
@@ -90,18 +90,20 @@ public class FileUtils {
             var logData:Object = all_logs[log_id];
 
             log += "--------------------------------------------------------------\n";
+//          log += "fadaa129-14422533008-70dda1-1442253281b-68\n"
+            log += "        Machine  Time        RND    Time(user)  RND\n";
             log += "log id: " + log_id + "\n";
             //TODO add info about this id
             var info:Object = logData.machine_info;
-            log += "OS:             " + info.os;
-            log += "Manufacturer:   " + info.manufacturer;
-            log += "CPU:            " + info.cpu;
-            log += "Player version: " + info.version;
-            log += "Language:       " + info.language;
-            log += "Player type:    " + info.playerType;
-            log += "DPI:            " + info.dpi;
-            log += "Screen width:   " + info.screenWidth;
-            log += "Screen height:  " + info.screenHeight;
+            log += "OS:             " + info.os + "\n";
+            log += "Manufacturer:   " + info.manufacturer + "\n";
+            log += "CPU:            " + info.cpu + "\n";
+            log += "Player version: " + info.version + "\n";
+            log += "Language:       " + info.language + "\n";
+            log += "Player type:    " + info.playerType + "\n";
+            log += "DPI:            " + info.dpi + "\n";
+            log += "Screen width:   " + info.screenWidth + "\n";
+            log += "Screen height:  " + info.screenHeight + "\n";
 
             KioBase.instance.outputLog(function(time:Number, cmd:String, extraArgs:Array):void {
                 var d:Date = new Date();
