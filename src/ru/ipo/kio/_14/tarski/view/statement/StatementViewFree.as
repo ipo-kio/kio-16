@@ -29,8 +29,8 @@ public class StatementViewFree extends BasicView {
         graphics.drawRect(0,0,700,40);
         clearAll();
         var list:Vector.<LogicItem>  = statement.logicItems;
-        var predelimiter:Delimiter = new Delimiter();
-        var aftdelimiter:Delimiter = new Delimiter();
+        var predelimiter:Delimiter = new Delimiter(statement);
+        var aftdelimiter:Delimiter = new Delimiter(statement);
         var x:int = 0;
         for(var i:int = 0;i<list.length; i++){
             predelimiter.afterItem=list[i];
@@ -49,7 +49,7 @@ public class StatementViewFree extends BasicView {
             }
 
             predelimiter=aftdelimiter;
-            aftdelimiter = new Delimiter();
+            aftdelimiter = new Delimiter(statement);
         }
         predelimiter.x = x;
         addChild(predelimiter);

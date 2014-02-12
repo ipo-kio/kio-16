@@ -19,6 +19,13 @@ import ru.ipo.kio._14.tarski.model.Configuration;
 import ru.ipo.kio._14.tarski.model.ConfigurationHolder;
 import ru.ipo.kio._14.tarski.model.Figure;
 import ru.ipo.kio._14.tarski.model.Statement;
+import ru.ipo.kio._14.tarski.model.editor.LogicItemProvider;
+import ru.ipo.kio._14.tarski.model.editor.LogicItemProvider1;
+import ru.ipo.kio._14.tarski.model.editor.LogicItemProvider2;
+import ru.ipo.kio._14.tarski.model.evaluator.Evaluator1;
+import ru.ipo.kio._14.tarski.model.evaluator.Evaluator2;
+import ru.ipo.kio._14.tarski.model.parser.StatementParser1;
+import ru.ipo.kio._14.tarski.model.parser.StatementParser2;
 import ru.ipo.kio._14.tarski.model.properties.ColorValue;
 import ru.ipo.kio._14.tarski.model.properties.ShapeValue;
 import ru.ipo.kio._14.tarski.model.properties.SizeValue;
@@ -43,16 +50,28 @@ public class TarskiSprite extends Sprite {
 
     private var _operationToolboxView:ToolboxView;
 
-    public function TarskiSprite() {
+    private var _statement:Statement;
+
+    private var _logicItemProvider:LogicItemProvider;
+
+    public function TarskiSprite(level:int) {
         _instance=this;
+
         graphics.beginFill(0xFFFFFF);
         graphics.drawRect(0,0,800,600);
         graphics.endFill();
 
+        if(level==1){
+            _statement=new Statement(new StatementParser1(), new Evaluator1());
+            _logicItemProvider = new LogicItemProvider1();
+        }else if (level==2){
+            _statement=new Statement(new StatementParser2(), new Evaluator2());
+            _logicItemProvider = new LogicItemProvider2();
+        }
 
-        _variableToolboxView = new ToolboxView(Statement.instance.variables, 200);
-        _predicateToolboxView = new ToolboxView(Statement.instance.predicates, 400);
-        _operationToolboxView = new ToolboxView(Statement.instance.operations, 200);
+        _variableToolboxView = new ToolboxView(_logicItemProvider.variables, 200);
+        _predicateToolboxView = new ToolboxView(_logicItemProvider.predicates, 300);
+        _operationToolboxView = new ToolboxView(_logicItemProvider.operations, 150);
 
         _variableToolboxView.x=20;
         _variableToolboxView.y=370;
@@ -68,10 +87,10 @@ public class TarskiSprite extends Sprite {
 
 
 
-        Statement.instance.view.x=20;
-        Statement.instance.view.y=530;
-        addChild(Statement.instance.view);
-        Statement.instance.view.update();
+        _statement.view.x=20;
+        _statement.view.y=530;
+        addChild(_statement.view);
+        _statement.view.update();
 
         var loadButton:ShellButton = new ShellButton("Загрузить");
         loadButton.x = 10;
@@ -95,7 +114,7 @@ public class TarskiSprite extends Sprite {
         clearButton.y = 5;
         addChild(clearButton);
         clearButton.addEventListener(MouseEvent.CLICK, function(e:Event):void{
-            Statement.instance.clear();
+            _statement.clear();
         });
 
 
@@ -104,12 +123,18 @@ public class TarskiSprite extends Sprite {
         backspaceButton.y = 500;
         addChild(backspaceButton);
         backspaceButton.addEventListener(MouseEvent.CLICK, function(e:Event):void{
-            Statement.instance.backspace();
+            _statement.backspace();
         });
+
+    }
+
+
+    public function get statement():Statement {
+        return _statement;
     }
 
     public function update():void{
-        Statement.instance.view.update();
+        _statement.view.update();
         _variableToolboxView.update();
 
         graphics.clear();

@@ -3,6 +3,7 @@
  * @since: 06.02.14
  */
 package ru.ipo.kio._14.tarski.view.statement {
+import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
 import ru.ipo.kio._14.tarski.view.*;
 
 import flash.display.DisplayObject;
@@ -22,6 +23,7 @@ import ru.ipo.kio._14.tarski.model.operation.LogicEvaluatedItem;
 import ru.ipo.kio._14.tarski.model.predicates.OnePlacePredicate;
 import ru.ipo.kio._14.tarski.model.predicates.OnePlacePredicate;
 import ru.ipo.kio._14.tarski.model.predicates.TwoPlacePredicate;
+import ru.ipo.kio._14.tarski.TarskiSprite;
 
 public class LogicItemView extends BasicView{
 
@@ -33,7 +35,7 @@ public class LogicItemView extends BasicView{
         this.logicItem = logicItem;
         if(logicItem is Variable){
             addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{
-                Statement.instance.activeVariable= Variable(logicItem);
+                TarskiSprite.instance.statement.activeVariable= Variable(logicItem);
             })
         }
 
@@ -73,6 +75,11 @@ public class LogicItemView extends BasicView{
         if(logicItem is TwoPlacePredicate){
             (TwoPlacePredicate(logicItem)).placeHolder2.view.update();
             x=addChildAndShift((TwoPlacePredicate(logicItem)).placeHolder2.view, x);
+        }
+
+        if(logicItem is Quantifier){
+            (Quantifier(logicItem)).placeHolder.view.update();
+            x=addChildAndShift((Quantifier(logicItem)).placeHolder.view, x);
         }
 
 

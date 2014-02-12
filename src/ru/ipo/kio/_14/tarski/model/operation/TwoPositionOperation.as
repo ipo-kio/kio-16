@@ -9,7 +9,7 @@ import flash.utils.Dictionary;
 
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 
-public class TwoPositionOperation extends LogicEvaluatedItem implements LogicItem{
+public class TwoPositionOperation extends BaseOperation{
 
     private var _operand1:LogicEvaluatedItem;
 

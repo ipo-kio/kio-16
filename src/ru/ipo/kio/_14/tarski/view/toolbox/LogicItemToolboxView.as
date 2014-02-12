@@ -3,13 +3,13 @@
  * @since: 06.02.14
  */
 package ru.ipo.kio._14.tarski.view.toolbox {
+import ru.ipo.kio._14.tarski.TarskiSprite;
 import ru.ipo.kio._14.tarski.view.*;
 
 import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.text.TextField;
 
-import ru.ipo.kio._14.tarski.model.Statement;
 
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 
@@ -34,7 +34,7 @@ public class LogicItemToolboxView extends BasicView{
 
 
         addEventListener(MouseEvent.CLICK, function(e:Event):void{
-            Statement.instance.addLogicItem(logicItem.getCloned());
+            TarskiSprite.instance.statement.addLogicItem(logicItem.getCloned());
         });
 
 

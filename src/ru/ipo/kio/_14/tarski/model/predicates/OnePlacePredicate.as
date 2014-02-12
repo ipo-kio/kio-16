@@ -5,6 +5,8 @@
 package ru.ipo.kio._14.tarski.model.predicates {
 import flash.utils.Dictionary;
 
+import ru.ipo.kio._14.tarski.model.Figure;
+
 
 public class OnePlacePredicate extends BasePredicate {
 
@@ -44,6 +46,46 @@ public class OnePlacePredicate extends BasePredicate {
             _formalOperand=_placeHolder.variable.code;
         }
     }
+
+    override public function evaluateWithQuants(data:Dictionary, figures:Vector.<Figure>):Boolean{
+        //если переменная определена, то просто вычисляем
+        var temp1:Object;
+        if(data[formalOperand]!=null && isOne(formalOperand+"")){
+            temp1 = data[formalOperand];
+            data[formalOperand]=null;
+        }
+
+        var result:Boolean;
+
+        if(data[formalOperand]!=null){
+            result = evaluate(data);
+        }else{
+            var exists:Boolean = isOne(formalOperand);
+            var forAll:Boolean=true;
+            for(var i:int=0; i<figures.length; i++){
+                if(isRegisteredIndex(i,figures,data)){
+                    continue;
+                }
+                data[formalOperand]=figures[i];
+                var currentCheck:Boolean = evaluate(data);
+                data[formalOperand]=null;
+                if(exists && currentCheck){
+                    result = true;
+                    if(temp1!=null){
+                        data[formalOperand]=temp1;
+                    }
+                    return result;
+                }
+                forAll = forAll&&currentCheck;
+            }
+            result = forAll;
+        }
+        if(temp1!=null){
+            data[formalOperand]=temp1;
+        }
+        return result;
+    }
+
 
     public function getBeforeHolder():VariablePlaceHolder {
         return null;

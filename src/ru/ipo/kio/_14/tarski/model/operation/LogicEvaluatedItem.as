@@ -9,12 +9,17 @@ package ru.ipo.kio._14.tarski.model.operation {
 import flash.errors.IllegalOperationError;
 import flash.utils.Dictionary;
 
+import ru.ipo.kio._14.tarski.model.Figure;
+
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
+import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
 import ru.ipo.kio._14.tarski.view.BasicView;
 import ru.ipo.kio._14.tarski.view.toolbox.LogicItemToolboxView;
 import ru.ipo.kio._14.tarski.view.statement.LogicItemView;
 
 public class LogicEvaluatedItem implements LogicItem{
+
+    private var _quants:Vector.<Quantifier> = new Vector.<Quantifier>();
 
     protected var itemToolboxView:LogicItemToolboxView;
 
@@ -24,6 +29,36 @@ public class LogicEvaluatedItem implements LogicItem{
         itemToolboxView = new LogicItemToolboxView(this);
         itemView = new LogicItemView(this);
     }
+
+    public function get quants():Vector.<Quantifier> {
+        return _quants;
+    }
+
+
+    public function set quants(value:Vector.<Quantifier>):void {
+        _quants = value;
+    }
+
+    protected function isRegisteredIndex(i:int, figures:Vector.<Figure>, data:Dictionary):Boolean {
+        var figure:Figure = figures[i];
+        for (var kk:Object in data) {
+              if(data[kk]==figure){
+                  return true;
+              }
+        }
+        return false;
+    }
+
+    protected function isOne(formalOperand:String){
+        for(var i:int=0; i<_quants.length; i++){
+            if(_quants[i].placeHolder.variable!=null &&
+                    _quants[i].placeHolder.variable.code==formalOperand){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /**
      * Можно ли пытаться вычислить выражение, завершено ли они
@@ -35,10 +70,20 @@ public class LogicEvaluatedItem implements LogicItem{
 
     /**
      * Вычисляет выражение на наборе данных
-     * @param data
+     * @param data - набор переменных
      * @return
      */
     public function evaluate(data:Dictionary):Boolean{
+        throw new IllegalOperationError("method must be overridden");
+    }
+
+    /**
+     * Вычисляет выражение на наборе данных
+     * @param data - набор зафиксированныз переменных (код-индекс)
+     * @param figures - список фигур
+     * @return
+     */
+    public function evaluateWithQuants(data:Dictionary, figures:Vector.<Figure>):Boolean{
         throw new IllegalOperationError("method must be overridden");
     }
 

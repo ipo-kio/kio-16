@@ -5,9 +5,19 @@
 package ru.ipo.kio._14.tarski.model.operation {
 import flash.utils.Dictionary;
 
+import ru.ipo.kio._14.tarski.model.Figure;
+
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 
 public class EquivalenceOperation extends TwoPositionOperation{
+
+    public function EquivalenceOperation() {
+        priority=1;
+    }
+
+    public override function resetPriority():void{
+        priority=1;
+    }
 
     override public function canBeEvaluated():Boolean {
         return operand1!=null && operand1.canBeEvaluated() && operand2!=null && operand2.canBeEvaluated();
@@ -16,6 +26,11 @@ public class EquivalenceOperation extends TwoPositionOperation{
     override public function evaluate(data:Dictionary):Boolean{
         return (operand1.evaluate(data) && operand2.evaluate(data))
                 ||(!operand1.evaluate(data) && !operand2.evaluate(data));
+    }
+
+    override public function evaluateWithQuantsFinal(data:Dictionary, figures:Vector.<Figure>):Boolean{
+        return (operand1.evaluateWithQuants(data, figures) && operand2.evaluateWithQuants(data, figures))
+                ||(!operand1.evaluateWithQuants(data, figures) && !operand2.evaluateWithQuants(data, figures));
     }
 
     public function toString():String {

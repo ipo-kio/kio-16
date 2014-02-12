@@ -39,7 +39,7 @@ public class NearPredicate extends TwoPlacePredicate{
     }
 
     public override function getToolboxText():String {
-        return "стоит ближе";
+        return "стоит рядом с";
     }
 
     public override function getCloned():LogicItem {

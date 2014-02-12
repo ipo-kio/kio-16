@@ -5,13 +5,20 @@
 package ru.ipo.kio._14.tarski.model.operation {
 import flash.utils.Dictionary;
 
+import ru.ipo.kio._14.tarski.model.Figure;
+
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 
-public class NotOperation extends LogicEvaluatedItem implements LogicItem{
+public class NotOperation extends BaseOperation{
 
     private var _operand:LogicEvaluatedItem;
 
     public function NotOperation() {
+        priority=5;
+    }
+
+    public override function resetPriority():void{
+        priority=5;
     }
 
     public function get operand():LogicEvaluatedItem {
@@ -30,6 +37,10 @@ public class NotOperation extends LogicEvaluatedItem implements LogicItem{
         return !_operand.evaluate(data);
     }
 
+    override public function evaluateWithQuantsFinal(data:Dictionary, figures:Vector.<Figure>):Boolean{
+        return !_operand.evaluateWithQuants(data, figures);
+    }
+
     override public function collectFormalOperand():Dictionary{
         return _operand.collectFormalOperand();
     }
@@ -40,7 +51,7 @@ public class NotOperation extends LogicEvaluatedItem implements LogicItem{
 
 
     public override function getToolboxText():String {
-        return toString();
+        return "Не верно, что";
     }
 
 

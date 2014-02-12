@@ -24,13 +24,17 @@ public class Delimiter extends BasicView {
 
     private var overed:Boolean = false;
 
-    public function Delimiter() {
+    private var statement:Statement;
+
+    public function Delimiter(statement:Statement) {
         update();
 
         _self=this;
 
+        this.statement=statement;
+
         addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{
-            Statement.instance.activeDelimiter=_self;
+            statement.activeDelimiter=_self;
         });
 
        addEventListener(MouseEvent.ROLL_OVER, function(e:MouseEvent):void{

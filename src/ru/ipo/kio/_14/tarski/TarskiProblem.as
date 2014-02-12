@@ -54,7 +54,7 @@ public class TarskiProblem implements KioProblem{
     public function TarskiProblem(level:int) {
         KioApi.initialize(this);
         _level=level;
-        _sprite=new TarskiSprite();
+        _sprite=new TarskiSprite(level);
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(TARSKI_RU).data);
         KioApi.registerLocalization(ID, KioApi.L_ES, new Settings(TARSKI_ES).data);
         KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(TARSKI_EN).data);

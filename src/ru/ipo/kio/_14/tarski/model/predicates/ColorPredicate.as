@@ -8,6 +8,8 @@ package ru.ipo.kio._14.tarski.model.predicates {
 import flash.errors.IllegalOperationError;
 import flash.utils.Dictionary;
 
+import ru.ipo.kio._14.tarski.model.Figure;
+
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 
 import ru.ipo.kio._14.tarski.model.properties.ColorValue;
@@ -39,6 +41,7 @@ public class ColorPredicate extends OnePlacePredicate{
         }
         return color.code==operand.color.code;
     }
+
 
     public function toString():String {
         return "[color-"+color.code+":"+formalOperand+"]";
