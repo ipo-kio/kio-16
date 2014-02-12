@@ -4,12 +4,16 @@
 package ru.ipo.kio._14.stars {
 import flash.display.DisplayObject;
 
-import ru.ipo.kio._14.stars.StarsWorkspace;
 import ru.ipo.kio.api.KioApi;
 
 import ru.ipo.kio.api.KioProblem;
+import ru.ipo.kio.api.Settings;
 
 public class StarsProblem implements KioProblem {
+
+    //Ссылка на файл с локализацией, в данном случае только русский язык. Если языков больше, необходимо добавить несколько ссылок
+    [Embed(source="loc/example.ru.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_RU:Class;
 
     public static const ID:String = "stars";
 
@@ -21,12 +25,15 @@ public class StarsProblem implements KioProblem {
         _level = level;
 
         KioApi.initialize(this);
+        //Регистрация локализации. Программа должна иметь локализацию для каждого из языков,
+        //на котором ее предлагается использовать.
+        KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
 
         _workspace = new StarsWorkspace(this);
     }
 
     public function get id():String {
-        return "";
+        return ID;
     }
 
     public function get year():int {
@@ -42,7 +49,7 @@ public class StarsProblem implements KioProblem {
     }
 
     public function get solution():Object {
-        return null;
+        return _workspace.solution;
     }
 
     public function get best():Object {
@@ -50,14 +57,22 @@ public class StarsProblem implements KioProblem {
     }
 
     public function loadSolution(solution:Object):Boolean {
-        return false;
+        if (!_workspace.load(solution))
+            return false;
+
+        KioApi.instance(this).autoSaveSolution();
+        KioApi.instance(this).submitResult(_workspace.currentResult());
+        return true;
     }
 
     public function check(solution:Object):Object {
-        return null;
+        loadSolution(solution);
+        return _workspace.currentResult();
     }
 
     public function compare(solution1:Object, solution2:Object):int {
+        /*if (solution1.total_count_of_lines == solution2.total_count_of_lines)
+            return solution1.sum_of_lines - solution2.sum_of_lines;*/
         return 0;
     }
 

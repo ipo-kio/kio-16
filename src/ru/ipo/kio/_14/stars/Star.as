@@ -8,6 +8,8 @@ package ru.ipo.kio._14.stars {
         private var _y:Number;
         private var _radius:int;
 
+        private var _index:int;
+
         public function Star(x:Number, y:Number, radius:int) {
             this._x = x;
             this._y = y;
@@ -32,6 +34,13 @@ package ru.ipo.kio._14.stars {
 
         public function get radius():int {
             return _radius;
+        }
+        public function get index():int {
+            return _index;
+        }
+
+        public function set index(value:int):void {
+            _index = value;
         }
     }
 }

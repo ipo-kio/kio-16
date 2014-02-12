@@ -36,8 +36,6 @@ import flash.geom.Matrix;
         private var _star:Star;
         private var _isSelected:Boolean;
 
-        private var _index:int;
-
         public function StarView(star:Star) {
             this._star = star;
 //            _isSelected = (mouseX >= (star.x - star.radius) && mouseX <= (star.x + star.radius)) && (mouseY >= (star.y - star.radius) && mouseY <= (star.y + star.radius));
@@ -169,11 +167,7 @@ import flash.geom.Matrix;
         }
 
         public function get index():int {
-            return _index;
-        }
-
-        public function set index(value:int):void {
-            _index = value;
+            return _star.index;
         }
 
         public function get isSelected():Boolean {
