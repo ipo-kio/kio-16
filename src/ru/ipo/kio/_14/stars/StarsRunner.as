@@ -37,7 +37,7 @@ public class StarsRunner extends Sprite {
         //Первый параметр - текущий спрайт, второй параметр - задача
         KioBase.instance.initOneProblem(this, new StarsProblem(0));
 
-        var s:Array = [new Star(43, 45, 1), new Star(63, 55, 3), new Star(64, 105, 2),
+        /*var s:Array = [new Star(43, 45, 1), new Star(63, 55, 3), new Star(64, 105, 2),
             new Star(70, 145, 2), new Star(243, 65, 1), new Star(163, 60, 3), new Star(103, 98, 1),
             new Star(203, 98, 3), new Star(211, 160, 2), new Star(277, 66, 1), new Star(274, 95, 2), new Star(274, 95, 2)
         ];
@@ -57,7 +57,7 @@ public class StarsRunner extends Sprite {
         var graph:Graph = new Graph(d);
         var g:Vector.<Graph> = graph.findConnectedComponents();
 //        trace(g);
-        trace(g[0].numberOfStars, g[0].numberOfEdges);
+        trace(g[0].numberOfStars, g[0].numberOfEdges);*/
     }
 }
 }

@@ -28,9 +28,8 @@ public class Graph {
 
     public function get numberOfEdges():int {
         var totalEdges:int = 0;
-        for each (var stars:Object in _graph)
-            for (var s:Object in stars)
-                totalEdges++;
+        for each (var neighbours:Object in _graph)
+            totalEdges += neighbours.length;
         totalEdges = totalEdges / 2;
         return totalEdges;
     }

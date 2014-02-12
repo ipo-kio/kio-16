@@ -4,6 +4,9 @@
 package ru.ipo.kio._14.stars {
 import flash.events.Event;
 import flash.events.EventDispatcher;
+import flash.utils.Dictionary;
+
+import ru.ipo.kio._14.stars.graphs.Graph;
 
 public class StarrySky extends EventDispatcher {
 
@@ -71,7 +74,27 @@ public class StarrySky extends EventDispatcher {
             _sumOfLines += line.distance;
         //for output.     var n:Number = 1.123123123;    n.toFixed(3) -> converts to String with 3 digits after a point
 
+        createGraph();
+
         dispatchEvent(new Event(Event.CHANGE));
+    }
+
+    private var _graph:Graph;
+
+    private var _connectedComponents:Vector.<Graph>;
+
+    private function createGraph():void {
+        var neighbours:Dictionary = new Dictionary();
+        for each (var star:Star in stars)
+            neighbours[star] = new Vector.<Star>();
+
+        for each (var line:Line in starsLines) {
+            neighbours[line.s1].push(line.s2);
+            neighbours[line.s2].push(line.s1);
+        }
+
+        _graph = new Graph(neighbours);
+        _connectedComponents = _graph.findConnectedComponents();
     }
 
     public function serialize():Array {
