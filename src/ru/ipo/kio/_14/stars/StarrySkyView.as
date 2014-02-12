@@ -159,6 +159,7 @@ public class StarrySkyView extends Sprite {
         sky.removeLineWithIndex(lineViewInd);
 
         drawingLinesLayer.removeChild(lineView);
+        lineView.dispose();
     }
 
     public function clearLines():void {

@@ -37,9 +37,6 @@ public class LineView extends Sprite {
 
         //make big height for line to interact with mouse
         addHitArea();
-
-//        removeEventListener(MouseEvent.ROLL_OVER, rollOverForLine);
-//        removeEventListener(MouseEvent.ROLL_OUT, rollOutForLine);
     }
 
     private function addHitArea():void {
@@ -102,6 +99,11 @@ public class LineView extends Sprite {
         graphics.lineStyle(3, 0xffffff, 1);
         graphics.moveTo(x1, y1);
         graphics.lineTo(x2, y2);
+    }
+
+    public function dispose():void {
+        removeEventListener(MouseEvent.ROLL_OVER, rollOverForLine);
+        removeEventListener(MouseEvent.ROLL_OUT, rollOutForLine);
     }
 }
 }
