@@ -56,7 +56,8 @@ public class StarsRunner extends Sprite {
         s[11].index = 11; d[s[11]] = new Vector.<Star>(); d[s[11]].push(s[3], s[4], s[8]);
         var graph:Graph = new Graph(d);
         var g:Vector.<Graph> = graph.findConnectedComponents();
-        trace(g);
+//        trace(g);
+        trace(g[0].numberOfStars, g[0].numberOfEdges);
     }
 }
 }

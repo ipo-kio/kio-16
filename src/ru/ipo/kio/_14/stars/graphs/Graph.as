@@ -22,6 +22,19 @@ public class Graph {
         return _graph;
     }
 
+    public function get numberOfStars():int {
+        return stars.length;
+    }
+
+    public function get numberOfEdges():int {
+        var totalEdges:int = 0;
+        for each (var stars:Object in _graph)
+            for (var s:Object in stars)
+                totalEdges++;
+        totalEdges = totalEdges / 2;
+        return totalEdges;
+    }
+
     public function findConnectedComponents():Vector.<Graph> {
         var graphs:Vector.<Graph> = new Vector.<Graph>();
 
