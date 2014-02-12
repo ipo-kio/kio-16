@@ -16,7 +16,7 @@ public class StarrySkyView extends Sprite {
         private var starViews:Array/*<StarView>*/;
         private var lines:Array/*<LineView>*/;
 
-//        private var panel:SkyInfoPanel;
+        private var panel:SkyInfoPanel;
 
         private var currentStar:int = -1;
         private var saveCurrentStar:int = -1;
@@ -31,7 +31,7 @@ public class StarrySkyView extends Sprite {
 
             addChild(drawingLinesLayer);
 
-//            panel = new SkyInfoPanel(this);
+            panel = new SkyInfoPanel(this);
             starViews = [];
             lines = [];
 
@@ -88,16 +88,27 @@ public class StarrySkyView extends Sprite {
                 starrySky_changeHandler(null); //TODO get rid of this call
             });
 
-            /*addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
-                panel.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY + ",\n" +
-                        "current_Star: " + currentStar + ",\n" + "save_current_Star: " + saveCurrentStar + ",\n" +
-                        "pressed: " + pressed;
-            });
+            for (var indLine:int = 0; indLine < lines.length; indLine++) {
+                lines[indLine].addEventListener(MouseEvent.ROLL_OVER, lineRollOverHandler(indLine));
+            }
 
-            panel.x = 0;
-            panel.y = this.height;
-            addChild(panel);*/
+             for (var indLine1:int = 0; indLine1 < lines.length; indLine1++) {
+                lines[indLine1].addEventListener(MouseEvent.ROLL_OUT, function(event:Event):void {
+                    panel.text = "";
+                });
+            }
+
             starrySky.addEventListener(Event.CHANGE, starrySky_changeHandler);
+
+            panel.x = 510;
+            panel.y = this.height;
+            addChild(panel);
+        }
+
+        private function lineRollOverHandler(k:int):Function {
+            return function(event:MouseEvent):void {
+                panel.text = "Length of line: " + lines[k].line.distance(); //TODO label visible
+            }
         }
 
         private function createRollOverListener(k:int):Function {
