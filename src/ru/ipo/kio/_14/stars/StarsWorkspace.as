@@ -44,14 +44,14 @@ public class StarsWorkspace extends Sprite {
             /*"KioArial", true, //*/"EskizOne-Regular", true,
             18, 0x92000a, 0x08457e, 0x3b5998,
             1.5, "Текущий результат",
-            ["Сумма длинн линий", "Количество линий"], 200
+            ["Сумма длинн линий", "Количество линий"], 220
         );
 
         infoPanelRecord = new InfoPanel(
             /*"KioArial", true, //*/"EskizOne-Regular", true,
             18, 0x92000a, 0x08457e, 0x3b5998,
             1.5, "Рекорд",
-            ["Сумма длинн линий", "Количество линий"], 200
+            ["Сумма длинн линий", "Количество линий"], 220
         );
 
         infoPanel.setValue(0, "" + sky.sumOfLines.toFixed(3));
