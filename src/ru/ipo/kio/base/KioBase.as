@@ -369,12 +369,12 @@ public class KioBase {
         var lso:LsoProxy = lsoProxy;
         var global:Object = lso.getGlobalData();
 
-        var machine_id:String = lso.machineId;
+        var log_id:String = logId;
 
         if (!global.log) {
             global.log = {};
 
-            global.log[machine_id] = {
+            global.log[log_id] = {
                 dict: {},
                 data: new ByteArray,
                 next_msg_code: 0,
@@ -385,12 +385,20 @@ public class KioBase {
             lso.flush();
         }
 
-        var log:Object = global.log[machine_id];
+        var log:Object = global.log[log_id];
         var data:ByteArray = log.data;
         data.position = data.length;
 
         cached_logger = log;
         return log;
+    }
+
+    public function get userId():String {
+        return lsoProxy.userData.user_id;
+    }
+
+    public function get logId():String {
+        return lsoProxy.machineId + '-' + lsoProxy.userData.user_id;
     }
 
     public function getAllLoggers():Object {
@@ -533,6 +541,10 @@ public class KioBase {
         var log:Object = getLogger();
         log.last_log_start = 0;
         log.last_log_time = 0;
+    }
+
+    public function get allLogs():Object {
+        return lsoProxy.getGlobalData().log;
     }
 
     public function outputLog(callback:Function, log:Object = null):void {

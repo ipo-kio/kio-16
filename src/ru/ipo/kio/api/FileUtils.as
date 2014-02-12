@@ -56,9 +56,9 @@ public class FileUtils {
         var fr:FileReference = new FileReference();
         var sol:Object = wrapSolutionToSave(problem.solution);
 
-        KioBase.instance.log("Saving solution@tt", [sol.save_id, LsoProxy.machineInfo]);
-
         fr.save(JSON_k.encode(sol), SOLUTION_FILE_NAME + inventDate() + ".kio-" + problem.id + "-" + KioBase.instance.level);
+
+        KioBase.instance.log("Solution saved@tt", [sol.save_id, KioBase.instance.logId]);
     }
 
     private static function wrapSolutionToSave(solution:Object):Object {
@@ -81,17 +81,42 @@ public class FileUtils {
     public static function saveLog():void {
         var fr:FileReference = new FileReference();
         var log:String = 'total memory ' + KioBase.instance.lsoProxy.usedBytes + "\n";
-        KioBase.instance.outputLog(function(time:Number, cmd:String, extraArgs:Array):void {
-            var d:Date = new Date();
-            d.setTime(time);
-            log += time + ' | ' + d + ' | ' + cmd;
 
-            if (extraArgs.length > 0)
-                for each (var arg:* in extraArgs)
-                    log += "|" + arg;
+        var all_logs:Object = KioBase.instance.allLogs;
+        for (var log_id:String in all_logs) {
+            if (!all_logs.hasOwnProperty(log_id))
+                continue;
 
-            log += "\n";
-        });
+            var logData:Object = all_logs[log_id];
+
+            log += "--------------------------------------------------------------\n";
+//          log += "fadaa129-14422533008-70dda1-1442253281b-68\n"
+            log += "        Machine  Time        RND    Time(user)  RND\n";
+            log += "log id: " + log_id + "\n";
+            //TODO add info about this id
+            var info:Object = logData.machine_info;
+            log += "OS:             " + info.os + "\n";
+            log += "Manufacturer:   " + info.manufacturer + "\n";
+            log += "CPU:            " + info.cpu + "\n";
+            log += "Player version: " + info.version + "\n";
+            log += "Language:       " + info.language + "\n";
+            log += "Player type:    " + info.playerType + "\n";
+            log += "DPI:            " + info.dpi + "\n";
+            log += "Screen width:   " + info.screenWidth + "\n";
+            log += "Screen height:  " + info.screenHeight + "\n";
+
+            KioBase.instance.outputLog(function(time:Number, cmd:String, extraArgs:Array):void {
+                var d:Date = new Date();
+                d.setTime(time);
+                log += time + ' | ' + d + ' | ' + cmd;
+
+                if (extraArgs.length > 0)
+                    for each (var arg:* in extraArgs)
+                        log += "|" + arg;
+
+                log += "\n";
+            }, logData);
+        }
         fr.save(log, "kio" + inventDate() + ".log");
     }
 

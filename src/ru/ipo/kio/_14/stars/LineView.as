@@ -12,7 +12,9 @@ public class LineView extends Sprite {
     private var x2:Number;
     private var y2:Number;
 
-    private var _isSelected:Boolean;
+    private var _isSelected:Boolean = false;
+    private var _error:Boolean = false;
+
     private var _line:Line;
 
     public function LineView(x1:Number, y1:Number) {
@@ -30,16 +32,13 @@ public class LineView extends Sprite {
         this.y1 = line.s1.y;
         this.x2 = line.s2.x;
         this.y2 = line.s2.y;
-        drawDefaultLine();
+        redraw();
 
         addEventListener(MouseEvent.ROLL_OVER, rollOverForLine);
         addEventListener(MouseEvent.ROLL_OUT, rollOutForLine);
 
         //make big height for line to interact with mouse
         addHitArea();
-
-//        removeEventListener(MouseEvent.ROLL_OVER, rollOverForLine);
-//        removeEventListener(MouseEvent.ROLL_OUT, rollOutForLine);
     }
 
     private function addHitArea():void {
@@ -68,11 +67,30 @@ public class LineView extends Sprite {
 
     public function set isSelected(value:Boolean):void {
         _isSelected = value;
+
+        redraw();
+    }
+
+    public function get error():Boolean {
+        return _error;
+    }
+
+    public function set error(value:Boolean):void {
+        _error = value;
+
+        redraw();
+    }
+
+    private function redraw():void {
         if (_isSelected)
             drawSelectedLine();
+        else if (_error)
+            drawErrorLine();
         else
             drawDefaultLine();
     }
+
+
 
 //    public function deleteLineFromField():void {
 //        if (_isSelected)
@@ -82,6 +100,12 @@ public class LineView extends Sprite {
 //    public function deleteLine():void {
 //        graphics.clear();
 //    }
+    private function drawErrorLine():void {
+        graphics.clear();
+        graphics.lineStyle(2, 0xff0000, 0.7);
+        graphics.moveTo(x1, y1);
+        graphics.lineTo(x2, y2);
+    }
 
     public function drawNewLine(x2:Number, y2:Number):void {
         graphics.clear();
@@ -102,6 +126,11 @@ public class LineView extends Sprite {
         graphics.lineStyle(3, 0xffffff, 1);
         graphics.moveTo(x1, y1);
         graphics.lineTo(x2, y2);
+    }
+
+    public function dispose():void {
+        removeEventListener(MouseEvent.ROLL_OVER, rollOverForLine);
+        removeEventListener(MouseEvent.ROLL_OUT, rollOutForLine);
     }
 }
 }

@@ -143,7 +143,7 @@ public class LsoProxy {
 
     public function get userData():Object {
         if (!_data.users  || _data.users.length == 0) {
-            _data.users = [{}];
+            _data.users = [createNewUserObject()];
             user_index = 0;
         }
 
@@ -154,6 +154,19 @@ public class LsoProxy {
         }
 
         return _data.users[user_index];
+    }
+
+    private static function createNewUserObject():Object {
+        var rnd:ByteArray = generateRandomBytes(1);
+        var randomPart:String = DataUtils.convertByteArrayToString(rnd);
+
+        //generate time part
+        var now:Date = new Date();
+        var timePart:String = now.getTime().toString(16);
+
+        return {
+            user_id: timePart + "-" + randomPart
+        }
     }
 
     public function set userData(data:Object):void {
@@ -221,7 +234,7 @@ public class LsoProxy {
     }
 
     public function createNewParticipant():void {
-        _data.users.push({});
+        _data.users.push(createNewUserObject());
         userIndex = _data.users.length - 1;
     }
 
@@ -257,7 +270,7 @@ public class LsoProxy {
 
     private static function generateMachineId():String {
         //generate random part
-        var rnd_len:int = 5;
+        var rnd_len:int = 3;
         var rnd:ByteArray = generateRandomBytes(rnd_len);
         var randomPart:String = DataUtils.convertByteArrayToString(rnd);
 
