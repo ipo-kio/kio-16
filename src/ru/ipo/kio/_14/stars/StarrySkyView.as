@@ -4,6 +4,7 @@
 package ru.ipo.kio._14.stars {
 import flash.display.BitmapData;
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.events.MouseEvent;
 
 public class StarrySkyView extends Sprite {
@@ -73,19 +74,18 @@ public class StarrySkyView extends Sprite {
 
             addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
                 if (pressed && currentStar != -1 && currentStar != saveCurrentStar) {
-                    var lineInd:int = sky.addLine(starrySky.stars[saveCurrentStar], starrySky.stars[currentStar]);
-                    if (lineInd >= 0) {
-                        var star1:Star = getStarByIndex(saveCurrentStar);
-                        var star2:Star = getStarByIndex(currentStar);
-                        fixLineView(star1, star2);
-                        /*currentLineView.fixNewLine(new Line(star1, star2));
-                        currentLineView.addEventListener(MouseEvent.CLICK, lineView_clickHandler);*/
-                    }
+                    var star1:Star = getStarByIndex(saveCurrentStar);
+                    var star2:Star = getStarByIndex(currentStar);
+                    var lineInd:int = sky.addLine(star1, star2); //TODO sky changed handler called, but we still don't have a line
+                    if (lineInd >= 0)
+                        fixLineView(sky.starsLines[lineInd]);
                 } else if (pressed)
                     drawingLinesLayer.removeChild(currentLineView);
 
                 pressed = false;
                 saveCurrentStar = -1;
+
+                starrySky_changeHandler(null); //TODO get rid of this call
             });
 
             /*addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
@@ -97,6 +97,7 @@ public class StarrySkyView extends Sprite {
             panel.x = 0;
             panel.y = this.height;
             addChild(panel);*/
+            starrySky.addEventListener(Event.CHANGE, starrySky_changeHandler);
         }
 
         private function createRollOverListener(k:int):Function {
@@ -131,9 +132,9 @@ public class StarrySkyView extends Sprite {
             currentLineView.drawNewLine(localX, localY);
         }
 
-        public function fixLineView(star1:Star, star2:Star):void {
+        public function fixLineView(line:Line):void {
             lines.push(currentLineView);
-            currentLineView.fixNewLine(new Line(star1, star2));
+            currentLineView.fixNewLine(line);
             currentLineView.addEventListener(MouseEvent.CLICK, lineView_clickHandler);
         }
 
@@ -165,6 +166,11 @@ public class StarrySkyView extends Sprite {
     public function clearLines():void {
         for (var i:int = lines.length - 1; i >= 0; i--)
             removeLine(i);
+    }
+
+    private function starrySky_changeHandler(event:Event):void {
+        for each (var lineView:LineView in lines)
+            lineView.error = sky.isLineIntersected(lineView.line);
     }
 }
 }

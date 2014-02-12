@@ -78,8 +78,6 @@ public class StarsWorkspace extends Sprite {
 
         api.autoSaveSolution();
         api.submitResult(currentResult());
-
-        trace('sk ch', sky.serialize());
     }
 
     public function get solution():Object {
@@ -103,10 +101,11 @@ public class StarsWorkspace extends Sprite {
         for (var i:int = 0; i < starsIndexLines.length; i++) {
             var s1:Star = sky.getStarByIndex(starsIndexLines[i][0]);
             var s2:Star = sky.getStarByIndex(starsIndexLines[i][1]);
+            var lineIndex:int = sky.addLine(s1, s2);
+
             skyView.createLineView(s1.x, s1.y);
             skyView.drawLineView(s2.x, s2.y);
-            skyView.fixLineView(s1, s2);
-            sky.addLine(s1, s2);
+            skyView.fixLineView(sky.starsLines[lineIndex]);
         }
         return true;
     }
