@@ -132,5 +132,11 @@ public class LineView extends Sprite {
         removeEventListener(MouseEvent.ROLL_OVER, rollOverForLine);
         removeEventListener(MouseEvent.ROLL_OUT, rollOutForLine);
     }
+
+    public function computeDistance(localX:Number, localY:Number):String {
+        var dx:Number = x1 - localX;
+        var dy:Number = y1 - localY;
+        return "" + Math.sqrt(dx * dx + dy * dy).toFixed(3);
+    }
 }
 }

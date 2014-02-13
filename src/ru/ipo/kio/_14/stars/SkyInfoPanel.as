@@ -9,10 +9,10 @@ import flash.text.TextFormat;
 public class SkyInfoPanel extends Sprite {
 
         private var txt:TextField;
-        private var sky:StarrySkyView;
+        private var _skyView:StarrySkyView;
 
         public function SkyInfoPanel(sky:StarrySkyView) {
-            this.sky = sky;
+            this._skyView = sky;
             var tf:TextFormat = new TextFormat();
             txt = new TextField();
             tf.color = 0xfffff;
@@ -30,9 +30,10 @@ public class SkyInfoPanel extends Sprite {
         }
 
         private function drawPanel():void {
-            txt.width = 160;
+            txt.width = 200;
             txt.height = 50;
             txt.selectable = false;
+            txt.text = "X coordinates: " + _skyView.mouseX + "\n" + "Y coordinates: " + _skyView.mouseY + "\n";
         }
     }
 }

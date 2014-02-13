@@ -79,8 +79,11 @@ public class StarrySkyView extends Sprite {
                     var lineInd:int = sky.addLine(star1, star2); //TODO sky changed handler called, but we still don't have a line
                     if (lineInd >= 0)
                         fixLineView(sky.starsLines[lineInd]);
+                    else
+                        drawingLinesLayer.removeChild(currentLineView);
                 } else if (pressed)
                     drawingLinesLayer.removeChild(currentLineView);
+                panel.text = "";
 
                 pressed = false;
                 saveCurrentStar = -1;
@@ -100,14 +103,14 @@ public class StarrySkyView extends Sprite {
 
             starrySky.addEventListener(Event.CHANGE, starrySky_changeHandler);
 
-            panel.x = 510;
-            panel.y = this.height;
+            panel.x = 0;
+            panel.y = this.height + 10;
             addChild(panel);
         }
 
         private function lineRollOverHandler(k:int):Function {
             return function(event:MouseEvent):void {
-                panel.text = "Length of line: " + lines[k].line.distance(); //TODO label visible
+                panel.text = "Length of line: "/* + lines[k].line.distance()*/; //TODO label visible
             }
         }
 
@@ -141,6 +144,8 @@ public class StarrySkyView extends Sprite {
 
         public function drawLineView(localX:Number, localY:Number):void {
             currentLineView.drawNewLine(localX, localY);
+            panel.text = "X coordinates: " + localX + "\n" + "Y coordinates: " + localY + "\n" +
+                    "Length of the moved line: " + currentLineView.computeDistance(localX, localY);
         }
 
         public function fixLineView(line:Line):void {
