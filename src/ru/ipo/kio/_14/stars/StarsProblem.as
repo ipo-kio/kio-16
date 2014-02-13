@@ -12,7 +12,7 @@ import ru.ipo.kio.api.Settings;
 public class StarsProblem implements KioProblem {
 
     //Ссылка на файл с локализацией, в данном случае только русский язык. Если языков больше, необходимо добавить несколько ссылок
-    [Embed(source="loc/example.ru.json-settings",mimeType="application/octet-stream")]
+    [Embed(source="loc/stars.ru.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
 
     public static const ID:String = "stars";
