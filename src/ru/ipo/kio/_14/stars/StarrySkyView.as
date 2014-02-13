@@ -82,7 +82,7 @@ public class StarrySkyView extends Sprite {
                         drawingLinesLayer.removeChild(currentLineView);
                 } else if (pressed)
                     drawingLinesLayer.removeChild(currentLineView);
-                panel.text = "";
+                panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
 
                 pressed = false;
                 saveCurrentStar = -1;
