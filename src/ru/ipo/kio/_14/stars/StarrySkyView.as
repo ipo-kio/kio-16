@@ -69,7 +69,6 @@ public class StarrySkyView extends Sprite {
             addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
                 if (pressed)
                     drawLineView(event.localX, event.localY);
-//                    currentLineView.drawNewLine(event.localX, event.localY);
             });
 
             addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
@@ -95,11 +94,15 @@ public class StarrySkyView extends Sprite {
                 lines[indLine].addEventListener(MouseEvent.ROLL_OVER, lineRollOverHandler(indLine));
             }
 
-             for (var indLine1:int = 0; indLine1 < lines.length; indLine1++) {
+            for (var indLine1:int = 0; indLine1 < lines.length; indLine1++) {
                 lines[indLine1].addEventListener(MouseEvent.ROLL_OUT, function(event:Event):void {
                     panel.text = "";
                 });
             }
+
+            addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
+                panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
+            });
 
             starrySky.addEventListener(Event.CHANGE, starrySky_changeHandler);
 

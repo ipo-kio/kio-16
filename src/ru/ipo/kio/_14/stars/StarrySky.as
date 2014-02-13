@@ -53,7 +53,7 @@ public class StarrySky extends EventDispatcher {
         return -1;
     }
 
-    public function contains(line:Line):Boolean {
+    private function contains(line:Line):Boolean {
         return findLine(line) >= 0;
     }
 
