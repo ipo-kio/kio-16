@@ -15,7 +15,7 @@ public class Stream {
             return;
         }
 
-        var v0:Number = getV0(Consts.HILL_HEIGHT - y0, L, l, s);
+        var v0:Number = getV0(Consts.WATER_EXTRA_HEIGHT + Consts.HILL_HEIGHT - y0, L, l, s);
 
         buildStream(x0, y0, z0, v0, alpha, phi);
     }

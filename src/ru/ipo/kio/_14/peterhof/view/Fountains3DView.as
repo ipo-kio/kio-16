@@ -3,6 +3,10 @@
  */
 package ru.ipo.kio._14.peterhof.view {
 
+import away3d.cameras.lenses.LensBase;
+import away3d.cameras.lenses.OrthographicLens;
+import away3d.entities.Mesh;
+
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 import flash.geom.Point;
@@ -17,7 +21,6 @@ import flash.geom.Vector3D;
 
 import ru.ipo.kio._14.peterhof.model.Consts;
 import ru.ipo.kio._14.peterhof.model.Fountain;
-import ru.ipo.kio._14.peterhof.model.FountainEvent;
 
 import ru.ipo.kio._14.peterhof.model.Hill;
 
@@ -47,6 +50,8 @@ public class Fountains3DView extends View3D {
         _hillView = new HillView(_hill);
         scene.addChild(_hillView);
 
+//        mouse_debug_mesh = new Mesh();
+
         positionCamera();
         camera.lens = _camera_lens;
 
@@ -66,7 +71,7 @@ public class Fountains3DView extends View3D {
     }
 
     public function processKeyPress(event:KeyboardEvent):void {
-        /*switch (event.keyCode) {
+        switch (event.keyCode) {
             case 37:
             case 65:
                 _camera_z -= 1;
@@ -87,7 +92,7 @@ public class Fountains3DView extends View3D {
                 _camera_x += 1;
                 positionCamera();
                 break;
-        }*/
+        }
     }
 
     private function onMouseWheel(event:MouseEvent):void {
@@ -102,6 +107,8 @@ public class Fountains3DView extends View3D {
         _camera_lens.fieldOfView = scale;
 
         camera.lens = _camera_lens;
+
+        reRender();
     }
 
     private function onMouseDown(event:MouseEvent):void {
@@ -123,6 +130,8 @@ public class Fountains3DView extends View3D {
         }
 
         stage.addEventListener(Event.MOUSE_LEAVE, onStageMouseLeave);
+
+        reRender();
     }
 
     private function onMouseMove(event:MouseEvent):void {
@@ -141,13 +150,47 @@ public class Fountains3DView extends View3D {
         f.x = intersection.x;
         f.z = intersection.y; //Points have (x,y) fields, but we store x,z there
 
-        //round
-        f.x = 2 * Math.round(f.x / 2);
-        f.z = 2 * Math.round(f.z / 2);
+        reRender();
+    }
+
+    private function intersect(nx:Number, ny:Number):Point {
+        var approx:Point = intersectApproximate(nx, ny);
+        if (approx == null)
+            return null;
+
+        var x0:Number = Consts.FOUNTAIN_PRECISION * Math.round(approx.x / Consts.FOUNTAIN_PRECISION);
+        var z0:Number = Consts.FOUNTAIN_PRECISION * Math.round(approx.y / Consts.FOUNTAIN_PRECISION);
+
+        var bestX:Number = x0;
+        var bestZ:Number = z0;
+        var bestDist:Number = Number.POSITIVE_INFINITY;
+
+        for (var i:int = -3; i <= 3; i++) {
+            var x:Number = x0 + i * Consts.FOUNTAIN_PRECISION;
+            if (x < 0 || x > Consts.HILL_LENGTH)
+                continue;
+
+            for (var j:int = -3; j <= 3; j++) {
+                var z:Number = z0 + j * Consts.FOUNTAIN_PRECISION;
+                if (z < 0 || z > Consts.HILL_WIDTH)
+                    continue;
+
+                //test x, y to be closer
+                var pnt:Vector3D = _camera.project(new Vector3D(x * Consts.PIXELS_IN_METER, Hill.xz2y(x, z) * Consts.PIXELS_IN_METER, z * Consts.PIXELS_IN_METER));
+                var dist:Number = Math.abs(pnt.x - nx) + Math.abs(pnt.y - ny);
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    bestX = x;
+                    bestZ = z;
+                }
+            }
+        }
+
+        return new Point(bestX, bestZ);
     }
 
     //return a point _x, _z for the hill
-    private function intersect(nx:Number, ny:Number):Point {
+    private function intersectApproximate(nx:Number, ny:Number):Point {
         var r:Point = intersect1(nx, ny);
         if (r != null)
             return r;
@@ -199,8 +242,18 @@ public class Fountains3DView extends View3D {
         var a:Vector3D = vRB.subtract(vLB);
         var b:Vector3D = vLT.subtract(vLB);
 
+        var vRT2:Vector3D = new Vector3D(
+                vLT.x + vRB.x - vLB.x,
+                vLT.y + vRB.y - vLB.y,
+                vLT.z + vRB.z - vLB.z
+        );
+//        trace('w', vLT.w, vLB.w, vRT.w, vRB.w);
+//        trace('diff RT', vRT2.x - vRT.x, vRT2.y - vRT.y, vRT2.z - vRT.z);
+
         var n:Vector3D = a.crossProduct(b);
         //(nx - vLB.x)*n.x + (ny - vLB.y)*n.y + (nz - vLB.z)*n.z = 0
+
+//        trace('z on plane', (vRT.x - vLB.x) * n.x + (vRT.y - vLB.y) * n.y + (vRT.z - vLB.z) * n.z);
 
         var nz:Number = -((nx - vLB.x) * n.x + (ny - vLB.y) * n.y) / n.z + vLB.z;
 

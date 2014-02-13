@@ -33,6 +33,7 @@ public class PeterhofWorkspace extends Sprite {
         _problem = problem;
         _fountainsView = new Fountains3DView();
         _fountainsView.hillView.addEventListener(FountainEvent.SELECTION_CHANGED, hillView_selection_changedHandler);
+        _fountainsView.antiAlias = 0;
 
         var rightPanel:RightPanel = new RightPanel();
         var bottomPanel:BottomPanel = new BottomPanel();
