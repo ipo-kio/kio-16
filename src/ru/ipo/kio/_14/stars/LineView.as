@@ -90,16 +90,6 @@ public class LineView extends Sprite {
             drawDefaultLine();
     }
 
-
-
-//    public function deleteLineFromField():void {
-//        if (_isSelected)
-//            graphics.clear();
-//    }
-//
-//    public function deleteLine():void {
-//        graphics.clear();
-//    }
     private function drawErrorLine():void {
         graphics.clear();
         graphics.lineStyle(2, 0xff0000, 0.7);
@@ -137,6 +127,10 @@ public class LineView extends Sprite {
         var dx:Number = x1 - localX;
         var dy:Number = y1 - localY;
         return "" + Math.sqrt(dx * dx + dy * dy).toFixed(3);
+    }
+
+    public function get text():String {
+        return "" + _line.distance;
     }
 }
 }

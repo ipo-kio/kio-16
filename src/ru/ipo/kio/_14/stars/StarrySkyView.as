@@ -96,14 +96,18 @@ public class StarrySkyView extends Sprite {
 
             addEventListener(MouseEvent.ROLL_OVER, lineRollOverHandler);
 
-            for (var indLine1:int = 0; indLine1 < lines.length; indLine1++) {
-                lines[indLine1].addEventListener(MouseEvent.ROLL_OUT, function(event:Event):void {
-                    panel.text = "";
-                });
-            }
+            addEventListener(MouseEvent.ROLL_OUT, function(event:Event):void {
+                var lineView:LineView = event.target as LineView;
+                if (lineView != null) {
+                    panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
+                }
+            });
 
             addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
-                panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
+                var lineView:LineView = event.target as LineView;
+                if (lineView != null) {
+                    panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
+                }
             });
 
             starrySky.addEventListener(Event.CHANGE, starrySky_changeHandler);
@@ -117,9 +121,8 @@ public class StarrySkyView extends Sprite {
             var lineView:LineView = event.target as LineView;
             if (lineView != null) {
                 panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY + "\n" +
-                        "Length of line: " + lineView.line.distance; //TODO label visible
+                        "Length of the selected line: " + lineView.text; //TODO label visible
             }
-
         }
 
         private function createRollOverListener(k:int):Function {

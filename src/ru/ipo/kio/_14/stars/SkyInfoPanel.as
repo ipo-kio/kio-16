@@ -13,7 +13,7 @@ public class SkyInfoPanel extends Sprite {
 
         public function SkyInfoPanel(sky:StarrySkyView) {
             this._skyView = sky;
-            var tf:TextFormat = new TextFormat("Arial", 12, 0xfffff);
+            var tf:TextFormat = new TextFormat("Arial", 13, 0xfffff);
             txt = new TextField();
             txt.defaultTextFormat = tf;
             drawPanel();
@@ -30,9 +30,9 @@ public class SkyInfoPanel extends Sprite {
 
         private function drawPanel():void {
             txt.width = 200;
-            txt.height = 80;
+            txt.height = 100;
             txt.selectable = false;
-            txt.text = "X coordinates: " + _skyView.mouseX + "\n" + "Y coordinates: " + _skyView.mouseY + "\n";
+            txt.text = "X coordinates: " + _skyView.mouseX + "\n" + "Y coordinates: " + _skyView.mouseY;
         }
     }
 }
