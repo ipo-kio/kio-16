@@ -67,8 +67,12 @@ public class StarrySkyView extends Sprite {
             });
 
             addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
-                if (pressed)
+                if (pressed) {
                     drawLineView(event.localX, event.localY);
+                    panel.text = "X coordinates: " + event.localX + "\n" + "Y coordinates: " + event.localY + "\n" +
+                        "Length of the moved line: " + currentLineView.computeDistance(event.localX, event.localY);
+                } else
+                    panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
             });
 
             addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
@@ -90,9 +94,7 @@ public class StarrySkyView extends Sprite {
                 starrySky_changeHandler(null); //TODO get rid of this call
             });
 
-            for (var indLine:int = 0; indLine < lines.length; indLine++) {
-                lines[indLine].addEventListener(MouseEvent.ROLL_OVER, lineRollOverHandler(indLine));
-            }
+            addEventListener(MouseEvent.ROLL_OVER, lineRollOverHandler);
 
             for (var indLine1:int = 0; indLine1 < lines.length; indLine1++) {
                 lines[indLine1].addEventListener(MouseEvent.ROLL_OUT, function(event:Event):void {
@@ -111,10 +113,13 @@ public class StarrySkyView extends Sprite {
             addChild(panel);
         }
 
-        private function lineRollOverHandler(k:int):Function {
-            return function(event:MouseEvent):void {
-                panel.text = "Length of line: "/* + lines[k].line.distance()*/; //TODO label visible
+        private function lineRollOverHandler(event:MouseEvent):void {
+            var lineView:LineView = event.target as LineView;
+            if (lineView != null) {
+                panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY + "\n" +
+                        "Length of line: " + lineView.line.distance; //TODO label visible
             }
+
         }
 
         private function createRollOverListener(k:int):Function {
@@ -147,8 +152,6 @@ public class StarrySkyView extends Sprite {
 
         public function drawLineView(localX:Number, localY:Number):void {
             currentLineView.drawNewLine(localX, localY);
-            panel.text = "X coordinates: " + localX + "\n" + "Y coordinates: " + localY + "\n" +
-                    "Length of the moved line: " + currentLineView.computeDistance(localX, localY);
         }
 
         public function fixLineView(line:Line):void {
