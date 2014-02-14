@@ -52,12 +52,14 @@ public class StarrySky extends EventDispatcher {
 
     public function computeSumOfLines():Number {
         _sumOfLines = 0;
-        /*switch (level) {
+        switch (level) {
             case 0:
                 if (_connectedComponents != null) {
                     for each (var g:Graph in _connectedComponents)
-                        if (g.numberOfStars > g.numberOfEdges)
+                        if (g.numberOfStars > g.numberOfEdges) {
+                            for (var s:Star in g.graph)
                             _sumOfLines++;
+                        }
                 }
                 break;
             case 1:
@@ -74,7 +76,7 @@ public class StarrySky extends EventDispatcher {
                             _sumOfLines++;
                 }
                 break;
-        }*/
+        }
 
         for each (var line:Line in starsLines)
             _sumOfLines += line.distance;
