@@ -10,6 +10,8 @@ import ru.ipo.kio._14.stars.graphs.Graph;
 
 public class StarrySky extends EventDispatcher {
 
+    private var level:int;
+
     private var _stars:Array/*<Star>*/;
     private var _starsLines:Array/*<Line>*/;
 
@@ -19,7 +21,10 @@ public class StarrySky extends EventDispatcher {
     private var _graph:Graph;
     private var _connectedComponents:Vector.<Graph>;
 
-    public function StarrySky(stars:Array) {
+    public function StarrySky(level:int, stars:Array) {
+
+        this.level = level;
+
         _stars = stars;
         _starsLines = [];
 
@@ -42,6 +47,37 @@ public class StarrySky extends EventDispatcher {
     }
 
     public function get sumOfLines():Number {
+        return _sumOfLines;
+    }
+
+    public function computeSumOfLines():Number {
+        _sumOfLines = 0;
+        switch (level) {
+            case 0:
+                if (_connectedComponents != null) {
+                    for each (var g:Graph in _connectedComponents)
+                        if (g.numberOfStars > g.numberOfEdges)
+                            _sumOfLines++;
+                }
+                break;
+            case 1:
+                if (_connectedComponents != null) {
+                    for each (var g1:Graph in _connectedComponents)
+                        if (g1.numberOfStars == g1.numberOfEdges)
+                            _sumOfLines++;
+                }
+                break;
+            case 2:
+                if (_connectedComponents != null) {
+                    for each (var g2:Graph in _connectedComponents)
+                        if (g2.numberOfStars > g2.numberOfEdges || g1.numberOfStars == g1.numberOfEdges)
+                            _sumOfLines++;
+                }
+                break;
+        }
+
+        for each (var line:Line in starsLines)
+            _sumOfLines += line.distance;
         return _sumOfLines;
     }
 
@@ -73,9 +109,7 @@ public class StarrySky extends EventDispatcher {
     private function skyChanged():void {
         //evaluate, count, compute
         //compute total length
-        _sumOfLines = 0;
-        for each (var line:Line in starsLines)
-            _sumOfLines += line.distance;
+        computeSumOfLines();
         //for output.     var n:Number = 1.123123123;    n.toFixed(3) -> converts to String with 3 digits after a point
 
         findIntersections();
@@ -182,7 +216,7 @@ public class StarrySky extends EventDispatcher {
             case 2:
                 if (_connectedComponents != null) {
                     for each (var gr:Graph in _connectedComponents)
-                        if (gr.numberOfStars < gr.numberOfEdges)
+                        if (gr.numberOfStars > gr.numberOfEdges || g1.numberOfStars == g1.numberOfEdges)
                             count++;
                         else if(gr.numberOfStars == gr.numberOfEdges)
                             count++;
