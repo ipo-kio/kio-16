@@ -59,17 +59,15 @@ public class StarrySky extends EventDispatcher {
                         if (g.numberOfStars > g.numberOfEdges) {
                             var partOfSum:Number = 0;
                             for (var s:Object in g.graph) {
-                                trace("graph ", g.numberOfEdges, " ", g.numberOfStars);
                                 for each (var neighbour:Star in g.graph[s])
                                     partOfSum += new Line(s as Star, neighbour).distance;
-                                    trace("part sum",partOfSum);
                             }
                             _sumOfLines += (partOfSum / 2);
-                            trace("sum", _sumOfLines);
                         }
                 }
                 break;
             case 1:
+                //todo sum of lines not NaN
                 if (_connectedComponents != null) {
                     for each (var g1:Graph in _connectedComponents)
                         if (g1.numberOfStars == g1.numberOfEdges)
@@ -79,6 +77,7 @@ public class StarrySky extends EventDispatcher {
                                     partOfSum1 += new Line(s1 as Star, neighbour1).distance;
                             }
                             _sumOfLines += (partOfSum1 / 2);
+                    trace("sum", _sumOfLines)
                 }
                 break;
             case 2:
@@ -228,17 +227,19 @@ public class StarrySky extends EventDispatcher {
             case 1:
                 if (_connectedComponents != null) {
                     for each (var g1:Graph in _connectedComponents)
-                        if(g.numberOfStars != 1 && g1.numberOfStars == g1.numberOfEdges)
+                        if(g1.numberOfStars != 1 && g1.numberOfStars == g1.numberOfEdges)
                             count++;
                 }
                 break;
             case 2:
                 if (_connectedComponents != null) {
                     for each (var gr:Graph in _connectedComponents)
-                        if (g.numberOfStars != 1 && (gr.numberOfStars > gr.numberOfEdges || g1.numberOfStars == g1.numberOfEdges))
-                            count++;
-                        else if(gr.numberOfStars == gr.numberOfEdges)
-                            count++;
+                        if (gr.numberOfStars != 1) {
+                            if (gr.numberOfStars > gr.numberOfEdges)
+                                count++;
+                            else if(gr.numberOfStars == gr.numberOfEdges)
+                                count++;
+                        }
                 }
                 break;
         }

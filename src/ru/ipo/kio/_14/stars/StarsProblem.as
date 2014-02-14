@@ -81,10 +81,11 @@ public class StarsProblem implements KioProblem {
         else {
             if (solution1.total_number_of_difference_graphs == solution2.total_number_of_difference_graphs) {
                 if (solution1.total_number_of_right_graphs == solution2.total_number_of_right_graphs)
-                    res = solution2.sum_of_lines - solution1.sum_of_lines;
+                    res = solution1.sum_of_lines - solution2.sum_of_lines;
                 else
-                    res = solution1.total_number_of_right_graphs - solution2.total_number_of_right_graphs;
-            }
+                    res = solution2.total_number_of_right_graphs - solution1.total_number_of_right_graphs;
+            } else
+                res = solution2.total_number_of_difference_graphs - solution1.total_number_of_difference_graphs;
         }
         return res;
     }
