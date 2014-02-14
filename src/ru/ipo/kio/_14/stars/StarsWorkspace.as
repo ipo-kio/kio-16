@@ -48,21 +48,27 @@ public class StarsWorkspace extends Sprite {
             /*"KioArial", true, //*/"EskizOne-Regular", true,
             18, 0x92000a, 0x08457e, 0x3b5998,
             1.5, "Текущий результат",
-            ["Сумма длинн линий", "Количество линий"], 220
+                ["Количество пересекающихся рёбер", "Количество правильных созвездий",
+                    "Количество различных созвездий среди правильных", "Сумма длинн линий"], 220
         );
 
         infoPanelRecord = new InfoPanel(
             /*"KioArial", true, //*/"EskizOne-Regular", true,
             18, 0x92000a, 0x08457e, 0x3b5998,
             1.5, "Рекорд",
-            ["Сумма длинн линий", "Количество линий"], 220
+                ["Количество пересекающихся рёбер", "Количество правильных созвездий",
+                    "Количество различных созвездий среди правильных", "Сумма длинн линий"], 220
         );
 
-        infoPanel.setValue(0, "" + sky.sumOfLines.toFixed(3));
-        infoPanel.setValue(1, "" + sky.starsLines.length);
+        infoPanel.setValue(0, "" + sky.countOfIntersectedLines);
+        infoPanel.setValue(1, "" + sky.sumOfLines.toFixed(3));
+        infoPanel.setValue(2, "" + sky.sumOfLines.toFixed(3));
+        infoPanel.setValue(3, "" + sky.sumOfLines.toFixed(3));
 
-        infoPanelRecord.setValue(0, "" + sky.sumOfLines.toFixed(3));
-        infoPanelRecord.setValue(1, "" + sky.starsLines.length);
+        infoPanelRecord.setValue(0, "" + sky.countOfIntersectedLines);
+        infoPanelRecord.setValue(1, "" + sky.sumOfLines.toFixed(3));
+        infoPanelRecord.setValue(2, "" + sky.sumOfLines.toFixed(3));
+        infoPanelRecord.setValue(3, "" + sky.sumOfLines.toFixed(3));
 
         _panel.x = 0;
         _panel.y = skyView.height + 10;
@@ -78,11 +84,15 @@ public class StarsWorkspace extends Sprite {
     private function sky_changeHandler(event:Event):void {
 //        trace(sky.sumOfLines.toFixed(3));
 
-        infoPanel.setValue(0, "" + sky.sumOfLines.toFixed(3));
-        infoPanel.setValue(1, "" + sky.starsLines.length);
+        infoPanel.setValue(0, "" + sky.countOfIntersectedLines);
+        infoPanel.setValue(1, "" + sky.sumOfLines.toFixed(3));
+        infoPanel.setValue(2, "" + sky.sumOfLines.toFixed(3));
+        infoPanel.setValue(3, "" + sky.sumOfLines.toFixed(3));
 
-        infoPanelRecord.setValue(0, "" + sky.sumOfLines.toFixed(3));
-        infoPanelRecord.setValue(1, "" + sky.starsLines.length);
+        infoPanelRecord.setValue(0, "" + sky.countOfIntersectedLines);
+        infoPanelRecord.setValue(1, "" + sky.sumOfLines.toFixed(3));
+        infoPanelRecord.setValue(2, "" + sky.sumOfLines.toFixed(3));
+        infoPanelRecord.setValue(3, "" + sky.sumOfLines.toFixed(3));
 
         api.autoSaveSolution();
         api.submitResult(currentResult());
