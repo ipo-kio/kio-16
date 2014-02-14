@@ -87,7 +87,7 @@ public class StarsWorkspace extends Sprite {
     private function sky_changeHandler(event:Event):void {
         infoPanel.setValue(0, "" + sky.hasIntersected());
         infoPanel.setValue(1, "" + sky.countOfRightGraphs(level));
-        infoPanel.setValue(2, "" + sky.sumOfLines.toFixed(3));
+        infoPanel.setValue(2, "" + 0/*!!!!!!!!!!!!!!!!!!!!!!!!*/); //todo algorithm
         infoPanel.setValue(3, "" + sky.sumOfLines.toFixed(3));
 
         /*infoPanelRecord.setValue(0, "" + sky.countOfIntersectedLines);

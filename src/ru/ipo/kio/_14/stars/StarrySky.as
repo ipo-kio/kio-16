@@ -168,7 +168,7 @@ public class StarrySky extends EventDispatcher {
             case 0:
                 if (_connectedComponents != null) {
                     for each (var g:Graph in _connectedComponents)
-                        if (g.numberOfStars < g.numberOfEdges)
+                        if (g.numberOfStars > g.numberOfEdges)
                             count++;
                 }
                 break;
