@@ -17,13 +17,20 @@ public class LineView extends Sprite {
 
     private var _line:Line;
 
-    public function LineView(x1:Number, y1:Number) {
+    private var _workspace:StarsWorkspace;
+
+    public function LineView(x1:Number, y1:Number, workspace:StarsWorkspace) {
+        _workspace = workspace;
         this.x1 = x1;
         this.y1 = y1;
     }
 
     public function get line():Line {
         return _line;
+    }
+
+    public function get workspace():StarsWorkspace {
+        return _workspace;
     }
 
     public function fixNewLine(line:Line):void {
@@ -55,10 +62,12 @@ public class LineView extends Sprite {
 
     private function rollOverForLine(e:MouseEvent):void {
         isSelected = true;
+        workspace.panel.text = "Length of the selected line: " + text;
     }
 
     private function rollOutForLine(e:MouseEvent):void {
         isSelected = false;
+        workspace.panel.text = "";
     }
 
     public function get isSelected():Boolean {
@@ -90,16 +99,6 @@ public class LineView extends Sprite {
             drawDefaultLine();
     }
 
-
-
-//    public function deleteLineFromField():void {
-//        if (_isSelected)
-//            graphics.clear();
-//    }
-//
-//    public function deleteLine():void {
-//        graphics.clear();
-//    }
     private function drawErrorLine():void {
         graphics.clear();
         graphics.lineStyle(2, 0xff0000, 0.7);
@@ -131,6 +130,16 @@ public class LineView extends Sprite {
     public function dispose():void {
         removeEventListener(MouseEvent.ROLL_OVER, rollOverForLine);
         removeEventListener(MouseEvent.ROLL_OUT, rollOutForLine);
+    }
+
+    public function computeDistance(localX:Number, localY:Number):String {
+        var dx:Number = x1 - localX;
+        var dy:Number = y1 - localY;
+        return "" + Math.sqrt(dx * dx + dy * dy).toFixed(3);
+    }
+
+    public function get text():String {
+        return "" + _line.distance.toFixed(3);
     }
 }
 }

@@ -10,6 +10,8 @@ import ru.ipo.kio._14.stars.graphs.Graph;
 
 public class StarrySky extends EventDispatcher {
 
+    private var level:int;
+
     private var _stars:Array/*<Star>*/;
     private var _starsLines:Array/*<Line>*/;
 
@@ -19,7 +21,10 @@ public class StarrySky extends EventDispatcher {
     private var _graph:Graph;
     private var _connectedComponents:Vector.<Graph>;
 
-    public function StarrySky(stars:Array) {
+    public function StarrySky(level:int, stars:Array) {
+
+        this.level = level;
+
         _stars = stars;
         _starsLines = [];
 
@@ -42,6 +47,39 @@ public class StarrySky extends EventDispatcher {
     }
 
     public function get sumOfLines():Number {
+        return _sumOfLines;
+    }
+
+    public function computeSumOfLines():Number {
+        _sumOfLines = 0;
+        switch (level) {
+            case 0:
+                if (_connectedComponents != null) {
+                    for each (var g:Graph in _connectedComponents)
+                        if (g.numberOfStars > g.numberOfEdges) {
+                            for (var s:Star in g.graph)
+                            _sumOfLines++;
+                        }
+                }
+                break;
+            case 1:
+                if (_connectedComponents != null) {
+                    for each (var g1:Graph in _connectedComponents)
+                        if (g1.numberOfStars == g1.numberOfEdges)
+                            _sumOfLines++;
+                }
+                break;
+            case 2:
+                if (_connectedComponents != null) {
+                    for each (var g2:Graph in _connectedComponents)
+                        if (g2.numberOfStars > g2.numberOfEdges || g1.numberOfStars == g1.numberOfEdges)
+                            _sumOfLines++;
+                }
+                break;
+        }
+
+        for each (var line:Line in starsLines)
+            _sumOfLines += line.distance;
         return _sumOfLines;
     }
 
@@ -73,9 +111,7 @@ public class StarrySky extends EventDispatcher {
     private function skyChanged():void {
         //evaluate, count, compute
         //compute total length
-        _sumOfLines = 0;
-        for each (var line:Line in starsLines)
-            _sumOfLines += line.distance;
+        computeSumOfLines();
         //for output.     var n:Number = 1.123123123;    n.toFixed(3) -> converts to String with 3 digits after a point
 
         findIntersections();
@@ -91,7 +127,7 @@ public class StarrySky extends EventDispatcher {
     }
 
     public function hasIntersectedLines():Boolean {
-        return intersectedLines.length > 0;
+        return sizeOfIntersectedLines > 0;
     }
 
     public function isLineIntersected(line:Line):Boolean {
@@ -126,8 +162,6 @@ public class StarrySky extends EventDispatcher {
         return pos1 > 0 && pos2 < 0 || pos2 > 0 && pos1 < 0;
     }
 
-
-
     private function createGraph():void {
         var neighbours:Dictionary = new Dictionary();
         for each (var star:Star in stars)
@@ -151,6 +185,53 @@ public class StarrySky extends EventDispatcher {
 
     public function getStarByIndex(ind:int):Star {
         return stars[ind];
+    }
+
+    public function get sizeOfIntersectedLines():int {
+        if (intersectedLines != null) {
+            var n:int = 0;
+            for (var key:* in intersectedLines) {
+                n++;
+            }
+            return n;
+        }
+        return 0;
+    }
+
+    public function countOfRightGraphs(level:int):String {
+        var count:int = 0;
+        switch (level) {
+            case 0:
+                if (_connectedComponents != null) {
+                    for each (var g:Graph in _connectedComponents)
+                        if (g.numberOfStars > g.numberOfEdges)
+                            count++;
+                }
+                break;
+            case 1:
+                if (_connectedComponents != null) {
+                    for each (var g1:Graph in _connectedComponents)
+                        if(g1.numberOfStars == g1.numberOfEdges)
+                            count++;
+                }
+                break;
+            case 2:
+                if (_connectedComponents != null) {
+                    for each (var gr:Graph in _connectedComponents)
+                        if (gr.numberOfStars > gr.numberOfEdges || g1.numberOfStars == g1.numberOfEdges)
+                            count++;
+                        else if(gr.numberOfStars == gr.numberOfEdges)
+                            count++;
+                }
+                break;
+        }
+        return "" + count;
+    }
+
+    public function hasIntersected():String {
+        if (hasIntersectedLines())
+            return "ЕСТЬ";
+        return "НЕТ";
     }
 }
 }

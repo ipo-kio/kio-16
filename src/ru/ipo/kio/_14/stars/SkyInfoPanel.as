@@ -9,13 +9,12 @@ import flash.text.TextFormat;
 public class SkyInfoPanel extends Sprite {
 
         private var txt:TextField;
-        private var sky:StarrySkyView;
+        private var _skyView:StarrySkyView;
 
         public function SkyInfoPanel(sky:StarrySkyView) {
-            this.sky = sky;
-            var tf:TextFormat = new TextFormat();
+            this._skyView = sky;
+            var tf:TextFormat = new TextFormat("Arial", 13, 0xfffff);
             txt = new TextField();
-            tf.color = 0xfffff;
             txt.defaultTextFormat = tf;
             drawPanel();
             addChild(txt);
@@ -30,8 +29,8 @@ public class SkyInfoPanel extends Sprite {
         }
 
         private function drawPanel():void {
-            txt.width = 160;
-            txt.height = 50;
+            txt.width = 250;
+            txt.height = 100;
             txt.selectable = false;
         }
     }
