@@ -154,7 +154,9 @@ public class StarrySky extends EventDispatcher {
     }
 
     public function get countOfIntersectedLines():int {
-        return intersectedLines.length;
+        if (intersectedLines != null)
+            return intersectedLines.length;
+        return 0;
     }
 }
 }

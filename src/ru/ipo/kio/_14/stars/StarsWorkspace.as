@@ -46,18 +46,18 @@ public class StarsWorkspace extends Sprite {
 
         infoPanel = new InfoPanel(
             /*"KioArial", true, //*/"EskizOne-Regular", true,
-            18, 0x92000a, 0x08457e, 0x3b5998,
-            1.5, "Текущий результат",
+            14, 0x92000a, 0x08457e, 0x3b5998,
+            1.2, "Текущий результат",
                 ["Количество пересекающихся рёбер", "Количество правильных созвездий",
-                    "Количество различных созвездий среди правильных", "Сумма длинн линий"], 220
+                    "Количество различных созвездий", "Сумма длинн линий"], 250
         );
 
         infoPanelRecord = new InfoPanel(
             /*"KioArial", true, //*/"EskizOne-Regular", true,
-            18, 0x92000a, 0x08457e, 0x3b5998,
-            1.5, "Рекорд",
+            14, 0x92000a, 0x08457e, 0x3b5998,
+            1.2, "Рекорд",
                 ["Количество пересекающихся рёбер", "Количество правильных созвездий",
-                    "Количество различных созвездий среди правильных", "Сумма длинн линий"], 220
+                    "Количество различных созвездий", "Сумма длинн линий"], 250
         );
 
         infoPanel.setValue(0, "" + sky.countOfIntersectedLines);
@@ -82,8 +82,6 @@ public class StarsWorkspace extends Sprite {
     }
 
     private function sky_changeHandler(event:Event):void {
-//        trace(sky.sumOfLines.toFixed(3));
-
         infoPanel.setValue(0, "" + sky.countOfIntersectedLines);
         infoPanel.setValue(1, "" + sky.sumOfLines.toFixed(3));
         infoPanel.setValue(2, "" + sky.sumOfLines.toFixed(3));
@@ -125,6 +123,7 @@ public class StarsWorkspace extends Sprite {
             skyView.drawLineView(s2.x, s2.y);
             skyView.fixLineView(sky.starsLines[lineIndex]);
         }
+        skyView.starrySky_changeHandler(null); //TODO get rid of this call
         return true;
     }
 

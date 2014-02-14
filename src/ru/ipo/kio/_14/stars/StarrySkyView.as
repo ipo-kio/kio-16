@@ -165,7 +165,7 @@ public class StarrySkyView extends Sprite {
             removeLine(i);
     }
 
-    private function starrySky_changeHandler(event:Event):void {
+    public function starrySky_changeHandler(event:Event):void {
         for each (var lineView:LineView in lines)
             lineView.error = sky.isLineIntersected(lineView.line);
     }
