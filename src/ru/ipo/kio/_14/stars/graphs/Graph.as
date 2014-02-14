@@ -9,13 +9,13 @@ import ru.ipo.kio._14.stars.Star;
 public class Graph {
 
     private var _graph:Dictionary; //<Star -> starsList <Vector.<Star>>>
-    private var stars:Vector.<Star>;
+    private var _stars:Vector.<Star>;
 
     public function Graph(graph:Dictionary) {
         _graph = graph;
-        stars = new Vector.<Star>();
+        _stars = new Vector.<Star>();
         for (var s:Object in _graph)
-            stars.push(s);
+            _stars.push(s);
     }
 
     public function get graph():Dictionary {
@@ -23,7 +23,7 @@ public class Graph {
     }
 
     public function get numberOfStars():int {
-        return stars.length;
+        return _stars.length;
     }
 
     public function get numberOfEdges():int {
@@ -41,13 +41,13 @@ public class Graph {
         var visited:Dictionary = new Dictionary(); // Star// -> int (number of a connected component)
 
         // #2
-        for each (var star:Star in stars)
+        for each (var star:Star in _stars)
             visited[star] = 0;
 
         // #3
         var cc:int = 1;
         searchCC: while (true) {
-            for each (star in stars) {
+            for each (star in _stars) {
                 if (visited[star] == 0) {
                     visitVertex(star);
                     graphs.push(extractCC());
@@ -75,6 +75,10 @@ public class Graph {
         }
 
         return graphs;
+    }
+
+    public function get stars():Vector.<Star> {
+        return _stars;
     }
 }
 }
