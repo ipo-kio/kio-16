@@ -57,8 +57,12 @@ public class StarrySky extends EventDispatcher {
                 if (_connectedComponents != null) {
                     for each (var g:Graph in _connectedComponents)
                         if (g.numberOfStars > g.numberOfEdges) {
-                            for (var s:Star in g.graph)
-                            _sumOfLines++;
+                            var partOfSum:Number = 0;
+                            for (var s:Object in g.graph) {
+                                for each (var neighbour:Star in g.graph[s])
+                                    partOfSum += new Line(s as Star, neighbour).distance;
+                            }
+                            _sumOfLines += partOfSum * 0.5;
                         }
                 }
                 break;
@@ -66,20 +70,30 @@ public class StarrySky extends EventDispatcher {
                 if (_connectedComponents != null) {
                     for each (var g1:Graph in _connectedComponents)
                         if (g1.numberOfStars == g1.numberOfEdges)
-                            _sumOfLines++;
+                            var partOfSum1:Number = 0;
+                            for (var s1:Object in g1.graph) {
+                                for each (var neighbour1:Star in g1.graph[s1])
+                                    partOfSum1 += new Line(s1 as Star, neighbour1).distance;
+                            }
+                            _sumOfLines += partOfSum1 * 0.5;
                 }
                 break;
             case 2:
                 if (_connectedComponents != null) {
                     for each (var g2:Graph in _connectedComponents)
                         if (g2.numberOfStars > g2.numberOfEdges || g1.numberOfStars == g1.numberOfEdges)
-                            _sumOfLines++;
+                            var partOfSum2:Number = 0;
+                            for (var s2:Object in g2.graph) {
+                                for each (var neighbour2:Star in g2.graph[s2])
+                                    partOfSum2 += new Line(s2 as Star, neighbour2).distance;
+                            }
+                            _sumOfLines += partOfSum2 * 0.5;
                 }
                 break;
         }
 
-        for each (var line:Line in starsLines)
-            _sumOfLines += line.distance;
+        /*for each (var line:Line in starsLines)
+            _sumOfLines += line.distance;*/
         return _sumOfLines;
     }
 
