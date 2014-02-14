@@ -91,7 +91,7 @@ public class StarrySky extends EventDispatcher {
     }
 
     public function hasIntersectedLines():Boolean {
-        return intersectedLines.length > 0;
+        return sizeOfIntersectedLines > 0;
     }
 
     public function isLineIntersected(line:Line):Boolean {
@@ -126,8 +126,6 @@ public class StarrySky extends EventDispatcher {
         return pos1 > 0 && pos2 < 0 || pos2 > 0 && pos1 < 0;
     }
 
-
-
     private function createGraph():void {
         var neighbours:Dictionary = new Dictionary();
         for each (var star:Star in stars)
@@ -153,10 +151,51 @@ public class StarrySky extends EventDispatcher {
         return stars[ind];
     }
 
-    public function get countOfIntersectedLines():int {
-        if (intersectedLines != null)
-            return intersectedLines.length;
+    public function get sizeOfIntersectedLines():int {
+        if (intersectedLines != null) {
+            var n:int = 0;
+            for (var key:* in intersectedLines) {
+                n++;
+            }
+            return n;
+        }
         return 0;
+    }
+
+    public function countOfRightGraphs(level:int):String {
+        var count:int = 0;
+        switch (level) {
+            case 0:
+                if (_connectedComponents != null) {
+                    for each (var g:Graph in _connectedComponents)
+                        if (g.numberOfStars < g.numberOfEdges)
+                            count++;
+                }
+                break;
+            case 1:
+                if (_connectedComponents != null) {
+                    for each (var g1:Graph in _connectedComponents)
+                        if(g1.numberOfStars == g1.numberOfEdges)
+                            count++;
+                }
+                break;
+            case 2:
+                if (_connectedComponents != null) {
+                    for each (var gr:Graph in _connectedComponents)
+                        if (gr.numberOfStars < gr.numberOfEdges)
+                            count++;
+                        else if(gr.numberOfStars == gr.numberOfEdges)
+                            count++;
+                }
+                break;
+        }
+        return "" + count;
+    }
+
+    public function hasIntersected():String {
+        if (hasIntersectedLines())
+            return "ЕСТЬ";
+        return "НЕТ";
     }
 }
 }

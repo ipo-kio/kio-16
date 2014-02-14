@@ -11,6 +11,8 @@ import ru.ipo.kio.api.controls.InfoPanel;
 public class StarsWorkspace extends Sprite {
 
     private var api:KioApi;
+    private var level:int;
+
     private var sky:StarrySky;
     private var skyView:StarrySkyView;
 
@@ -30,6 +32,7 @@ public class StarsWorkspace extends Sprite {
 
         //получаем доступ к API, для этого передаем в качестве параметра id нашей задачи
         api = KioApi.instance(problem);
+        level = problem.level;
 
         var stars:Array = [new Star(43, 45, 1), new Star(63, 55, 3), new Star(64, 105, 2),
             new Star(70, 145, 2), new Star(243, 65, 1), new Star(163, 60, 3), new Star(103, 98, 1),
@@ -48,7 +51,7 @@ public class StarsWorkspace extends Sprite {
             /*"KioArial", true, //*/"EskizOne-Regular", true,
             14, 0x92000a, 0x08457e, 0x3b5998,
             1.2, "Текущий результат",
-                ["Количество пересекающихся рёбер", "Количество правильных созвездий",
+                ["Пересечения линий", "Количество правильных созвездий",
                     "Количество различных созвездий", "Сумма длинн линий"], 250
         );
 
@@ -56,19 +59,19 @@ public class StarsWorkspace extends Sprite {
             /*"KioArial", true, //*/"EskizOne-Regular", true,
             14, 0x92000a, 0x08457e, 0x3b5998,
             1.2, "Рекорд",
-                ["Количество пересекающихся рёбер", "Количество правильных созвездий",
+                ["Пересечения линий", "Количество правильных созвездий",
                     "Количество различных созвездий", "Сумма длинн линий"], 250
         );
 
-        infoPanel.setValue(0, "" + sky.countOfIntersectedLines);
-        infoPanel.setValue(1, "" + sky.sumOfLines.toFixed(3));
-        infoPanel.setValue(2, "" + sky.sumOfLines.toFixed(3));
-        infoPanel.setValue(3, "" + sky.sumOfLines.toFixed(3));
+        infoPanel.setValue(0, "НЕТ");
+        infoPanel.setValue(1, "" + 0);
+        infoPanel.setValue(2, "" + 0);
+        infoPanel.setValue(3, "" + 0);
 
-        infoPanelRecord.setValue(0, "" + sky.countOfIntersectedLines);
-        infoPanelRecord.setValue(1, "" + sky.sumOfLines.toFixed(3));
-        infoPanelRecord.setValue(2, "" + sky.sumOfLines.toFixed(3));
-        infoPanelRecord.setValue(3, "" + sky.sumOfLines.toFixed(3));
+        infoPanelRecord.setValue(0, "НЕТ");
+        infoPanelRecord.setValue(1, "" + 0);
+        infoPanelRecord.setValue(2, "" + 0);
+        infoPanelRecord.setValue(3, "" + 0);
 
         _panel.x = 0;
         _panel.y = skyView.height + 10;
@@ -82,15 +85,15 @@ public class StarsWorkspace extends Sprite {
     }
 
     private function sky_changeHandler(event:Event):void {
-        infoPanel.setValue(0, "" + sky.countOfIntersectedLines);
-        infoPanel.setValue(1, "" + sky.sumOfLines.toFixed(3));
+        infoPanel.setValue(0, "" + sky.hasIntersected());
+        infoPanel.setValue(1, "" + sky.countOfRightGraphs(level));
         infoPanel.setValue(2, "" + sky.sumOfLines.toFixed(3));
         infoPanel.setValue(3, "" + sky.sumOfLines.toFixed(3));
 
-        infoPanelRecord.setValue(0, "" + sky.countOfIntersectedLines);
+        /*infoPanelRecord.setValue(0, "" + sky.countOfIntersectedLines);
         infoPanelRecord.setValue(1, "" + sky.sumOfLines.toFixed(3));
         infoPanelRecord.setValue(2, "" + sky.sumOfLines.toFixed(3));
-        infoPanelRecord.setValue(3, "" + sky.sumOfLines.toFixed(3));
+        infoPanelRecord.setValue(3, "" + sky.sumOfLines.toFixed(3));*/
 
         api.autoSaveSolution();
         api.submitResult(currentResult());
