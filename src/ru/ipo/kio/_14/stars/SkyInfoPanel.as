@@ -29,10 +29,9 @@ public class SkyInfoPanel extends Sprite {
         }
 
         private function drawPanel():void {
-            txt.width = 200;
+            txt.width = 250;
             txt.height = 100;
             txt.selectable = false;
-            txt.text = "X coordinates: " + _skyView.mouseX + "\n" + "Y coordinates: " + _skyView.mouseY;
         }
     }
 }

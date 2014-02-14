@@ -17,13 +17,20 @@ public class LineView extends Sprite {
 
     private var _line:Line;
 
-    public function LineView(x1:Number, y1:Number) {
+    private var _workspace:StarsWorkspace;
+
+    public function LineView(x1:Number, y1:Number, workspace:StarsWorkspace) {
+        _workspace = workspace;
         this.x1 = x1;
         this.y1 = y1;
     }
 
     public function get line():Line {
         return _line;
+    }
+
+    public function get workspace():StarsWorkspace {
+        return _workspace;
     }
 
     public function fixNewLine(line:Line):void {
@@ -55,10 +62,12 @@ public class LineView extends Sprite {
 
     private function rollOverForLine(e:MouseEvent):void {
         isSelected = true;
+        workspace.panel.text = "Length of the selected line: " + text;
     }
 
     private function rollOutForLine(e:MouseEvent):void {
         isSelected = false;
+        workspace.panel.text = "";
     }
 
     public function get isSelected():Boolean {
@@ -130,7 +139,7 @@ public class LineView extends Sprite {
     }
 
     public function get text():String {
-        return "" + _line.distance;
+        return "" + _line.distance.toFixed(3);
     }
 }
 }

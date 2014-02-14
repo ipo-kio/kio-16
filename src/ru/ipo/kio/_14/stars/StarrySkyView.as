@@ -16,7 +16,7 @@ public class StarrySkyView extends Sprite {
         private var starViews:Array/*<StarView>*/;
         private var lines:Array/*<LineView>*/;
 
-        private var panel:SkyInfoPanel;
+        private var _workspace:StarsWorkspace;
 
         private var currentStar:int = -1;
         private var saveCurrentStar:int = -1;
@@ -27,11 +27,11 @@ public class StarrySkyView extends Sprite {
 
         private var drawingLinesLayer:Sprite = new Sprite();
 
-        public function StarrySkyView(starrySky:StarrySky) {
+        public function StarrySkyView(starrySky:StarrySky, workspace:StarsWorkspace) {
 
+            _workspace = workspace;
             addChild(drawingLinesLayer);
 
-            panel = new SkyInfoPanel(this);
             starViews = [];
             lines = [];
 
@@ -69,10 +69,9 @@ public class StarrySkyView extends Sprite {
             addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
                 if (pressed) {
                     drawLineView(event.localX, event.localY);
-                    panel.text = "X coordinates: " + event.localX + "\n" + "Y coordinates: " + event.localY + "\n" +
-                        "Length of the moved line: " + currentLineView.computeDistance(event.localX, event.localY);
-                } else
-                    panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
+                    workspace.panel.text = "Length of the moved line: " + currentLineView.computeDistance(event.localX, event.localY);
+                } //else
+//                    workspace.panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
             });
 
             addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
@@ -86,7 +85,8 @@ public class StarrySkyView extends Sprite {
                         drawingLinesLayer.removeChild(currentLineView);
                 } else if (pressed)
                     drawingLinesLayer.removeChild(currentLineView);
-                panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
+//                workspace.panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
+                workspace.panel.text = "";
 
                 pressed = false;
                 saveCurrentStar = -1;
@@ -94,35 +94,7 @@ public class StarrySkyView extends Sprite {
                 starrySky_changeHandler(null); //TODO get rid of this call
             });
 
-            addEventListener(MouseEvent.ROLL_OVER, lineRollOverHandler);
-
-            addEventListener(MouseEvent.ROLL_OUT, function(event:Event):void {
-                var lineView:LineView = event.target as LineView;
-                if (lineView != null) {
-                    panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
-                }
-            });
-
-            addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
-                var lineView:LineView = event.target as LineView;
-                if (lineView != null) {
-                    panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
-                }
-            });
-
             starrySky.addEventListener(Event.CHANGE, starrySky_changeHandler);
-
-            panel.x = 0;
-            panel.y = this.height + 10;
-            addChild(panel);
-        }
-
-        private function lineRollOverHandler(event:MouseEvent):void {
-            var lineView:LineView = event.target as LineView;
-            if (lineView != null) {
-                panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY + "\n" +
-                        "Length of the selected line: " + lineView.text; //TODO label visible
-            }
         }
 
         private function createRollOverListener(k:int):Function {
@@ -148,7 +120,7 @@ public class StarrySkyView extends Sprite {
         }
 
         public function createLineView(startX:Number, startY:Number):void {
-            var lineView:LineView = new LineView(startX, startY);
+            var lineView:LineView = new LineView(startX, startY, _workspace);
             drawingLinesLayer.addChild(lineView);
             currentLineView = lineView;
         }

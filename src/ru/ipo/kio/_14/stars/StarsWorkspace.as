@@ -17,6 +17,8 @@ public class StarsWorkspace extends Sprite {
     private var infoPanel:InfoPanel;
     private var infoPanelRecord:InfoPanel;
 
+    private var _panel:SkyInfoPanel;
+
     [Embed(source='resources/EskizOne-Regular.ttf', embedAsCFF="false", fontName="EskizOne-Regular", mimeType='application/x-font-truetype')]
     private static var MyFont:Class;
 
@@ -35,10 +37,12 @@ public class StarsWorkspace extends Sprite {
         ];
 
         sky = new StarrySky(stars);
-        skyView = new StarrySkyView(sky);
+        skyView = new StarrySkyView(sky, this);
         addChild(skyView);
 
         sky.addEventListener(Event.CHANGE, sky_changeHandler);
+
+        _panel = new SkyInfoPanel(skyView);
 
         infoPanel = new InfoPanel(
             /*"KioArial", true, //*/"EskizOne-Regular", true,
@@ -59,6 +63,10 @@ public class StarsWorkspace extends Sprite {
 
         infoPanelRecord.setValue(0, "" + sky.sumOfLines.toFixed(3));
         infoPanelRecord.setValue(1, "" + sky.starsLines.length);
+
+        _panel.x = 0;
+        _panel.y = skyView.height + 10;
+        addChild(_panel);
 
         addChild(infoPanel);
         addChild(infoPanelRecord);
@@ -108,6 +116,11 @@ public class StarsWorkspace extends Sprite {
             skyView.fixLineView(sky.starsLines[lineIndex]);
         }
         return true;
+    }
+
+
+    public function get panel():SkyInfoPanel {
+        return _panel;
     }
 }
 }
