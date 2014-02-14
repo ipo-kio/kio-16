@@ -35,6 +35,7 @@ public class StarsWorkspace extends Sprite {
         level = problem.level;
 
 //        trace(api.localization.statement0);
+        api.addEventListener(KioApi.RECORD_EVENT, recordChanched);
 
         var stars:Array = [new Star(43, 45, 1), new Star(63, 55, 3), new Star(64, 105, 2),
             new Star(70, 145, 2), new Star(243, 65, 1), new Star(163, 60, 3), new Star(103, 98, 1),
@@ -86,16 +87,18 @@ public class StarsWorkspace extends Sprite {
         infoPanelRecord.y = 150;
     }
 
+    private function recordChanched(event:Event):void {
+        infoPanelRecord.setValue(0, "" + sky.hasIntersected());
+        infoPanelRecord.setValue(1, "" + sky.countOfRightGraphs(level));
+        infoPanelRecord.setValue(2, "" + 0/*!!!!!!!!!!!!!!!!!!!!!!!!*/);
+        infoPanelRecord.setValue(3, "" + sky.sumOfLines.toFixed(3));
+    }
+
     private function sky_changeHandler(event:Event):void {
         infoPanel.setValue(0, "" + sky.hasIntersected());
         infoPanel.setValue(1, "" + sky.countOfRightGraphs(level));
         infoPanel.setValue(2, "" + 0/*!!!!!!!!!!!!!!!!!!!!!!!!*/); //todo algorithm
         infoPanel.setValue(3, "" + sky.sumOfLines.toFixed(3));
-
-        /*infoPanelRecord.setValue(0, "" + sky.countOfIntersectedLines);
-        infoPanelRecord.setValue(1, "" + sky.sumOfLines.toFixed(3));
-        infoPanelRecord.setValue(2, "" + sky.sumOfLines.toFixed(3));
-        infoPanelRecord.setValue(3, "" + sky.sumOfLines.toFixed(3));*/
 
         api.autoSaveSolution();
         api.submitResult(currentResult());

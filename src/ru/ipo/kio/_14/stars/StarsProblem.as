@@ -71,9 +71,22 @@ public class StarsProblem implements KioProblem {
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        /*if (solution1.total_count_of_lines == solution2.total_count_of_lines)
-            return solution1.sum_of_lines - solution2.sum_of_lines;*/
-        return 0;
+        var res:int = 0;
+        if (solution1.has_intersected_lines && solution2.has_intersected_lines)
+            return 0;
+        else if (solution1.has_intersected_lines && !solution2.has_intersected_lines)
+            return 1;
+        else if (!solution1.has_intersected_lines && solution2.has_intersected_lines)
+            return -1;
+        else {
+            if (solution1.total_number_of_difference_graphs == solution2.total_number_of_difference_graphs) {
+                if (solution1.total_number_of_right_graphs == solution2.total_number_of_right_graphs)
+                    res = solution2.sum_of_lines - solution1.sum_of_lines;
+                else
+                    res = solution1.total_number_of_right_graphs - solution2.total_number_of_right_graphs;
+            }
+        }
+        return res;
     }
 
     public function get icon():Class {

@@ -221,21 +221,21 @@ public class StarrySky extends EventDispatcher {
             case 0:
                 if (_connectedComponents != null) {
                     for each (var g:Graph in _connectedComponents)
-                        if (g.numberOfStars > g.numberOfEdges)
+                        if (g.numberOfStars != 1 && g.numberOfStars > g.numberOfEdges)
                             count++;
                 }
                 break;
             case 1:
                 if (_connectedComponents != null) {
                     for each (var g1:Graph in _connectedComponents)
-                        if(g1.numberOfStars == g1.numberOfEdges)
+                        if(g.numberOfStars != 1 && g1.numberOfStars == g1.numberOfEdges)
                             count++;
                 }
                 break;
             case 2:
                 if (_connectedComponents != null) {
                     for each (var gr:Graph in _connectedComponents)
-                        if (gr.numberOfStars > gr.numberOfEdges || g1.numberOfStars == g1.numberOfEdges)
+                        if (g.numberOfStars != 1 && (gr.numberOfStars > gr.numberOfEdges || g1.numberOfStars == g1.numberOfEdges))
                             count++;
                         else if(gr.numberOfStars == gr.numberOfEdges)
                             count++;
