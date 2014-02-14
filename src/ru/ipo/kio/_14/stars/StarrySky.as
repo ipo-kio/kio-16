@@ -59,10 +59,13 @@ public class StarrySky extends EventDispatcher {
                         if (g.numberOfStars > g.numberOfEdges) {
                             var partOfSum:Number = 0;
                             for (var s:Object in g.graph) {
+                                trace("graph ", g.numberOfEdges, " ", g.numberOfStars);
                                 for each (var neighbour:Star in g.graph[s])
                                     partOfSum += new Line(s as Star, neighbour).distance;
+                                    trace("part sum",partOfSum);
                             }
-                            _sumOfLines += partOfSum * 0.5;
+                            _sumOfLines += (partOfSum / 2);
+                            trace("sum", _sumOfLines);
                         }
                 }
                 break;
@@ -75,7 +78,7 @@ public class StarrySky extends EventDispatcher {
                                 for each (var neighbour1:Star in g1.graph[s1])
                                     partOfSum1 += new Line(s1 as Star, neighbour1).distance;
                             }
-                            _sumOfLines += partOfSum1 * 0.5;
+                            _sumOfLines += (partOfSum1 / 2);
                 }
                 break;
             case 2:
@@ -87,7 +90,7 @@ public class StarrySky extends EventDispatcher {
                                 for each (var neighbour2:Star in g2.graph[s2])
                                     partOfSum2 += new Line(s2 as Star, neighbour2).distance;
                             }
-                            _sumOfLines += partOfSum2 * 0.5;
+                            _sumOfLines += (partOfSum2 / 2);
                 }
                 break;
         }
@@ -124,8 +127,6 @@ public class StarrySky extends EventDispatcher {
 
     private function skyChanged():void {
         //evaluate, count, compute
-        //compute total length
-        computeSumOfLines();
         //for output.     var n:Number = 1.123123123;    n.toFixed(3) -> converts to String with 3 digits after a point
 
         findIntersections();
@@ -136,6 +137,8 @@ public class StarrySky extends EventDispatcher {
             _graph = null;
             _connectedComponents = null;
         }
+        //compute total length
+        computeSumOfLines();
 
         dispatchEvent(new Event(Event.CHANGE));
     }
