@@ -83,13 +83,21 @@ public class StarrySky extends EventDispatcher {
             case 2:
                 if (_connectedComponents != null) {
                     for each (var g2:Graph in _connectedComponents)
-                        if (g2.numberOfStars > g2.numberOfEdges || g2.numberOfStars == g2.numberOfEdges)
+                        if (g2.numberOfStars > g2.numberOfEdges) {
                             var partOfSum2:Number = 0;
                             for (var s2:Object in g2.graph) {
                                 for each (var neighbour2:Star in g2.graph[s2])
                                     partOfSum2 += new Line(s2 as Star, neighbour2).distance;
                             }
                             _sumOfLines += (partOfSum2 / 2);
+                        } else if (g2.numberOfStars == g2.numberOfEdges) {
+                            var partOfSum22:Number = 0;
+                            for (var s22:Object in g2.graph) {
+                                for each (var neighbour22:Star in g2.graph[s22])
+                                    partOfSum22 += new Line(s22 as Star, neighbour22).distance;
+                            }
+                            _sumOfLines += (partOfSum22 / 2);
+                        }
                 }
                 break;
         }

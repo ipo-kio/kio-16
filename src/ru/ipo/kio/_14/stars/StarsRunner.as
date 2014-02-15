@@ -35,7 +35,7 @@ public class StarsRunner extends Sprite {
 
         //Запускаем задачу. Метод initOneProblem() специально сделан для отладки одной задачи.
         //Первый параметр - текущий спрайт, второй параметр - задача
-        KioBase.instance.initOneProblem(this, new StarsProblem(0));
+        KioBase.instance.initOneProblem(this, new StarsProblem(1));
 
         /*var s:Array = [new Star(43, 45, 1), new Star(63, 55, 3), new Star(64, 105, 2),
             new Star(70, 145, 2), new Star(243, 65, 1), new Star(163, 60, 3), new Star(103, 98, 1),
