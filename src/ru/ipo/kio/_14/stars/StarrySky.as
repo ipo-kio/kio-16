@@ -70,15 +70,15 @@ public class StarrySky extends EventDispatcher {
                 //todo sum of lines not NaN
                 if (_connectedComponents != null) {
                     for each (var g1:Graph in _connectedComponents)
-                        if (g1.numberOfStars == g1.numberOfEdges)
+                        if (g1.numberOfStars == g1.numberOfEdges) {
                             var partOfSum1:Number = 0;
                             for (var s1:Object in g1.graph) {
-                                for each (var neighbour1:Star in g1.graph[s1])
+                                for each (var neighbour1:Star in g1.graph[s1]) {
                                     partOfSum1 += new Line(s1 as Star, neighbour1).distance;
-                                trace("part_of_sum ", partOfSum1);
+                                }
                             }
                             _sumOfLines += (partOfSum1 / 2);
-                    trace("sum", _sumOfLines);
+                        }
                 }
                 break;
             case 2:
