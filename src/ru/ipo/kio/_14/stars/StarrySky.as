@@ -78,7 +78,7 @@ public class StarrySky extends EventDispatcher {
                                 trace("part_of_sum ", partOfSum1);
                             }
                             _sumOfLines += (partOfSum1 / 2);
-                    trace("sum", _sumOfLines)
+                    trace("sum", _sumOfLines);
                 }
                 break;
             case 2:
