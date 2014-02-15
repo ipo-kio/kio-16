@@ -53,7 +53,7 @@ public class StarsWorkspace extends Sprite {
         infoPanel = new InfoPanel(
             /*"KioArial", true, //*/"EskizOne-Regular", true,
             14, 0x92000a, 0x08457e, 0x3b5998,
-            1.2, "Текущий результат",
+            1.2, api.localization.result/*"Текущий результат"*/,
                 ["Пересечения линий", "Количество правильных созвездий",
                     "Количество различных созвездий", "Сумма длинн линий"], 250
         );
@@ -61,7 +61,7 @@ public class StarsWorkspace extends Sprite {
         infoPanelRecord = new InfoPanel(
             /*"KioArial", true, //*/"EskizOne-Regular", true,
             14, 0x92000a, 0x08457e, 0x3b5998,
-            1.2, "Рекорд",
+            1.2, api.localization.record/*"Рекорд"*/,
                 ["Пересечения линий", "Количество правильных созвездий",
                     "Количество различных созвездий", "Сумма длинн линий"], 250
         );
@@ -99,6 +99,11 @@ public class StarsWorkspace extends Sprite {
         infoPanel.setValue(1, "" + sky.countOfRightGraphs(level));
         infoPanel.setValue(2, "" + 0/*!!!!!!!!!!!!!!!!!!!!!!!!*/); //todo algorithm
         infoPanel.setValue(3, "" + sky.sumOfLines.toFixed(3));
+
+        /*if (sky.hasIntersected() == "ЕСТЬ")
+            panel.text = api.localization.intersected_lines_message;
+        else
+            panel.text = "";*/
 
         api.autoSaveSolution();
         api.submitResult(currentResult());
