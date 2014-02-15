@@ -71,7 +71,6 @@ public class StarsProblem implements KioProblem {
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        var res:int = 0;
         if (solution1.has_intersected_lines == "ЕСТЬ" && solution2.has_intersected_lines == "ЕСТЬ")
             return 0;
         else if (solution1.has_intersected_lines == "ЕСТЬ" && solution2.has_intersected_lines == "НЕТ")
@@ -79,13 +78,14 @@ public class StarsProblem implements KioProblem {
         else if (solution1.has_intersected_lines == "НЕТ" && solution2.has_intersected_lines == "ЕСТЬ")
             return 0;
         else {
+            var res:int = 0;
             if (solution1.total_number_of_difference_graphs == solution2.total_number_of_difference_graphs) {
                 if (solution1.total_number_of_right_graphs == solution2.total_number_of_right_graphs)
-                    res = solution1.sum_of_lines - solution2.sum_of_lines;
+                    res = solution2.sum_of_lines - solution1.sum_of_lines;
                 else
-                    res = solution2.total_number_of_right_graphs - solution1.total_number_of_right_graphs;
+                    res = solution1.total_number_of_right_graphs - solution2.total_number_of_right_graphs;
             } else
-                res = solution2.total_number_of_difference_graphs - solution1.total_number_of_difference_graphs;
+                res = solution1.total_number_of_difference_graphs - solution2.total_number_of_difference_graphs;
         }
         return res;
     }
