@@ -75,6 +75,7 @@ public class StarrySky extends EventDispatcher {
                             for (var s1:Object in g1.graph) {
                                 for each (var neighbour1:Star in g1.graph[s1])
                                     partOfSum1 += new Line(s1 as Star, neighbour1).distance;
+                                trace("part_of_sum ", partOfSum1);
                             }
                             _sumOfLines += (partOfSum1 / 2);
                     trace("sum", _sumOfLines)
@@ -90,6 +91,7 @@ public class StarrySky extends EventDispatcher {
                                     partOfSum2 += new Line(s2 as Star, neighbour2).distance;
                             }
                             _sumOfLines += (partOfSum2 / 2);
+
                         } else if (g2.numberOfStars == g2.numberOfEdges) {
                             var partOfSum22:Number = 0;
                             for (var s22:Object in g2.graph) {
