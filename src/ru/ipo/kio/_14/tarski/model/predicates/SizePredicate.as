@@ -41,7 +41,7 @@ public class SizePredicate extends OnePlacePredicate{
     }
 
     public function toString():String {
-        return "[size-"+size.code+":"+formalOperand+"]";
+        return quantsToSts()+"[size-"+size.code+":"+formalOperand+"]";
     }
 
     public override function getToolboxText():String {

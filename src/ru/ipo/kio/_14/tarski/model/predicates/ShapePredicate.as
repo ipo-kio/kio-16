@@ -39,7 +39,7 @@ public class ShapePredicate extends OnePlacePredicate{
     }
 
     public function toString():String {
-        return "[shape-"+shape.code+":"+formalOperand+"]";
+        return quantsToSts()+"[shape-"+shape.code+":"+formalOperand+"]";
     }
 
     public override function getToolboxText():String {

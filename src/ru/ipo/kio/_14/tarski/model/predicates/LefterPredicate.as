@@ -28,7 +28,7 @@ public class LefterPredicate extends TwoPlacePredicate{
     }
 
     public function toString():String {
-        return "[lefter:"+formalOperand1 +";"+formalOperand2+"]";
+        return quantsToSts()+"[lefter:"+formalOperand1 +";"+formalOperand2+"]";
     }
 
     public override function getToolboxText():String {

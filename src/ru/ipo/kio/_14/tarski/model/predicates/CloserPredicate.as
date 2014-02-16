@@ -29,7 +29,7 @@ public class CloserPredicate extends TwoPlacePredicate{
 
 
     public function toString():String {
-        return "[closer:"+formalOperand1 +";"+formalOperand2+"]";
+        return quantsToSts()+"[closer:"+formalOperand1 +";"+formalOperand2+"]";
     }
 
     public override function getToolboxText():String {

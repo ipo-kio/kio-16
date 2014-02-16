@@ -15,6 +15,7 @@ public class LogicItemProvider2 extends LogicItemProvider1{
         _operations.push(new Brace(false));
 
         _variables.push(new Quantifier(Quantifier.EXIST));
+        _variables.push(new Quantifier(Quantifier.ALL));
     }
 }
 }

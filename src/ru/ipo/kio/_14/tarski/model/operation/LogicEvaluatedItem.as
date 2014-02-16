@@ -30,6 +30,14 @@ public class LogicEvaluatedItem implements LogicItem{
         itemView = new LogicItemView(this);
     }
 
+    protected function quantsToSts(): String{
+        var quants:String = "";
+        for(var i:int=0; i<_quants.length; i++){
+          quants+=_quants[i].toString();
+        }
+        return quants;
+    }
+
     public function get quants():Vector.<Quantifier> {
         return _quants;
     }
@@ -49,14 +57,30 @@ public class LogicEvaluatedItem implements LogicItem{
         return false;
     }
 
-    protected function isOne(formalOperand:String){
+    protected function isAll(formalOperand:String):Boolean {
         for(var i:int=0; i<_quants.length; i++){
             if(_quants[i].placeHolder.variable!=null &&
-                    _quants[i].placeHolder.variable.code==formalOperand){
+                    _quants[i].placeHolder.variable.code==formalOperand &&
+                    _quants[i].code==Quantifier.ALL){
                 return true;
             }
         }
         return false;
+    }
+
+    protected function isOne(formalOperand:String):Boolean{
+        for(var i:int=0; i<_quants.length; i++){
+            if(_quants[i].placeHolder.variable!=null &&
+                    _quants[i].placeHolder.variable.code==formalOperand &&
+                    _quants[i].code==Quantifier.EXIST){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function checkQuantors(quantors:Vector.<Quantifier>):Boolean{
+       return false;
     }
 
 

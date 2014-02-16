@@ -3,6 +3,7 @@
  * @since: 11.02.14
  */
 package ru.ipo.kio._14.tarski.model.parser {
+import flash.sampler.isGetterSetter;
 import flash.utils.Dictionary;
 
 import mx.logging.LogLogger;
@@ -24,6 +25,7 @@ import ru.ipo.kio._14.tarski.model.predicates.BasePredicate;
 import ru.ipo.kio._14.tarski.model.predicates.OnePlacePredicate;
 import ru.ipo.kio._14.tarski.model.predicates.TwoPlacePredicate;
 import ru.ipo.kio._14.tarski.model.predicates.Variable;
+import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
 import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
 
 public class StatementParser2 extends StatementParser1{
@@ -65,18 +67,36 @@ public class StatementParser2 extends StatementParser1{
             }
         }
 
-        logicItems = removeBraces(logicItems);
+        logicItems = removeBracesAndClearQuantifiers(logicItems);
         var result:LogicEvaluatedItem = parseByPriority(logicItems);
+        trace(result);
         if(result!=null){
             result.commit();
-            for(var i:int=0; i<quantOperand.length; i++){
-                var quant:Quantifier = new Quantifier(Quantifier.EXIST);
-                quant.placeHolder.variable=new Variable(quantOperand[i]);
-                //ищем минимальную подформулу, содержащую указанную переменную и прописываем там квантор
-                pushQuantor(result, quant);
+            if(countKeys(result.collectFormalOperand())!=quantOperand.length){
+                return null;
             }
+
+            if(!result.checkQuantors(new Vector.<Quantifier>())){
+                return null;
+            }
+
+//            for(var i:int=0; i<quantOperand.length; i++){
+//                var quant:Quantifier = new Quantifier(Quantifier.EXIST);
+//                quant.placeHolder.variable=new Variable(quantOperand[i]);
+//                //ищем минимальную подформулу, содержащую указанную переменную и прописываем там квантор
+//                pushQuantor(result, quant);
+//            }
         }
         return result;
+    }
+
+    public static function countKeys(myDictionary:flash.utils.Dictionary):int
+    {
+        var n:int = 0;
+        for (var key:* in myDictionary) {
+            n++;
+        }
+        return n;
     }
 
     private function pushQuantor(result:LogicEvaluatedItem, quant:Quantifier):void {
@@ -178,6 +198,25 @@ public class StatementParser2 extends StatementParser1{
                 var notOperation = new NotOperation();
                 notOperation.operand=parseByPriority(logicItems.slice(index+1));
                 return notOperation;
+            }else if(logicItem is Quantifier && index==0){
+                var quants:Vector.<Quantifier>  = new Vector.<Quantifier>();
+                var quantIndex:int=index;
+                for(quantIndex;quantIndex<logicItems.length ; quantIndex++){
+                    if(logicItems[quantIndex] is Quantifier){
+                        quants.push(logicItems[quantIndex]);
+                    }else{
+                        quantIndex--;
+                        break;
+                    }
+                }
+                var operation:LogicEvaluatedItem = parseByPriority(logicItems.slice(quantIndex+1));
+                if(quants.length>3){
+                    return null;
+                }
+                for(var i:int=0; i<quants.length; i++){
+                    operation.quants.push(quants[i]);
+                }
+                return operation;
             }
         }else{
             if(logicItems.length==1 && logicItems[0] instanceof BasePredicate){
@@ -196,14 +235,19 @@ public class StatementParser2 extends StatementParser1{
                     index=i;
                     priority=(BaseOperation(logicItems[i])).priority;
                 }
+            }else if (logicItems[i] is Quantifier) {
+                if(priority>(Quantifier(logicItems[i])).priority){
+                    index=i;
+                    priority=(Quantifier(logicItems[i])).priority;
+                }
             }
         }
         return index;
     }
 
-    private function removeBraces(logicItems:Vector.<LogicItem>):Vector.<LogicItem> {
+    private function removeBracesAndClearQuantifiers(logicItems:Vector.<LogicItem>):Vector.<LogicItem> {
         for (var i:int = logicItems.length - 1; i >= 0; i--) {
-            if (logicItems[i] instanceof Brace || logicItems[i] instanceof Quantifier) {
+            if (logicItems[i] instanceof Brace) {
                 logicItems.splice(i, 1);
             }else if(logicItems[i] is LogicEvaluatedItem){
               LogicEvaluatedItem(logicItems[i]).quants=new Vector.<Quantifier>();
@@ -227,10 +271,14 @@ public class StatementParser2 extends StatementParser1{
                     }
                 }
             } else {
-                if (logicItems[i] instanceof BaseOperation) {
+                if (logicItems[i] is BaseOperation) {
                     ((BaseOperation)(logicItems[i])).resetPriority();
                     ((BaseOperation)(logicItems[i])).priority += braceCount * 10;
+                }else if(logicItems[i] is Quantifier){
+                    ((Quantifier)(logicItems[i])).resetPriority();
+                    ((Quantifier)(logicItems[i])).priority += braceCount * 10;
                 }
+
             }
         }
 

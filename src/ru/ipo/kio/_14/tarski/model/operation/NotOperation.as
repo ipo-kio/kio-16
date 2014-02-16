@@ -8,6 +8,7 @@ import flash.utils.Dictionary;
 import ru.ipo.kio._14.tarski.model.Figure;
 
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
+import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
 
 public class NotOperation extends BaseOperation{
 
@@ -46,7 +47,7 @@ public class NotOperation extends BaseOperation{
     }
 
     public function toString():String {
-        return "!" + operand + "";
+        return quantsToSts()+"!" + operand + "";
     }
 
 
@@ -56,9 +57,23 @@ public class NotOperation extends BaseOperation{
 
 
     public override function commit():void {
+        for(var i:int=0; i<quants.length; i++){
+            quants[i].commit();
+        }
         if(_operand!=null){
             _operand.commit();
         }
+    }
+
+    override public function checkQuantors(quantors:Vector.<Quantifier>):Boolean{
+        var quantorsNew:Vector.<Quantifier> = new Vector.<Quantifier>();
+        for(var i:int=0; i<quantors.length; i++){
+            quantorsNew.push(quantors[i]);
+        }
+        for(var i:int=0; i<quants.length; i++){
+            quantorsNew.push(quants[i]);
+        }
+        return _operand.checkQuantors(quantorsNew);
     }
 
     public override function getCloned():LogicItem {

@@ -30,10 +30,10 @@ public class ImplicationOperation extends TwoPositionOperation{
 
     override public function evaluateWithQuantsFinal(data:Dictionary, figures:Vector.<Figure>):Boolean{
         return !operand1.evaluateWithQuants(data, figures)||operand2.evaluateWithQuants(data, figures);
-    }
+}
 
     public function toString():String {
-        return "[" + operand1 + "=>" +operand2+ "]";
+        return quantsToSts()+"[" + operand1 + "=>" +operand2+ "]";
     }
 
     public override function getToolboxText():String {
