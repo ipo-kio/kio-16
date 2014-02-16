@@ -6,6 +6,7 @@ package ru.ipo.kio._14.tarski.model.predicates {
 import flash.utils.Dictionary;
 
 import ru.ipo.kio._14.tarski.model.Figure;
+import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
 
 
 public class OnePlacePredicate extends BasePredicate {
@@ -45,20 +46,34 @@ public class OnePlacePredicate extends BasePredicate {
         if(_placeHolder.variable!=null){
             _formalOperand=_placeHolder.variable.code;
         }
+        for(var i:int=0; i<quants.length; i++){
+            quants[i].commit();
+        }
+    }
+
+
+    override public function checkQuantors(quantors:Vector.<Quantifier>):Boolean{
+        var quantorsNew:Vector.<Quantifier> = new Vector.<Quantifier>();
+        for(var i:int=0; i<quantors.length; i++){
+            quantorsNew.push(quantors[i]);
+        }
+        for(var i:int=0; i<quants.length; i++){
+            quantorsNew.push(quants[i]);
+        }
+
+        var checkOne:Boolean = false;
+        for(var i:int=0; i<quantorsNew.length; i++){
+            if(quantorsNew[i].formalOperand==_formalOperand){
+                checkOne = true;
+            }
+        }
+        return checkOne;
+
     }
 
     override public function evaluateWithQuants(data:Dictionary, figures:Vector.<Figure>):Boolean{
-        //если переменная определена, то просто вычисляем
-        var temp1:Object;
-        if(data[formalOperand]!=null && isOne(formalOperand+"")){
-            temp1 = data[formalOperand];
-            data[formalOperand]=null;
-        }
-
-        var result:Boolean;
-
-        if(data[formalOperand]!=null){
-            result = evaluate(data);
+         if(data[formalOperand]!=null){
+            return evaluate(data);
         }else{
             var exists:Boolean = isOne(formalOperand);
             var forAll:Boolean=true;
@@ -70,20 +85,12 @@ public class OnePlacePredicate extends BasePredicate {
                 var currentCheck:Boolean = evaluate(data);
                 data[formalOperand]=null;
                 if(exists && currentCheck){
-                    result = true;
-                    if(temp1!=null){
-                        data[formalOperand]=temp1;
-                    }
-                    return result;
+                    return true;
                 }
                 forAll = forAll&&currentCheck;
             }
-            result = forAll;
+            return forAll;
         }
-        if(temp1!=null){
-            data[formalOperand]=temp1;
-        }
-        return result;
     }
 
 

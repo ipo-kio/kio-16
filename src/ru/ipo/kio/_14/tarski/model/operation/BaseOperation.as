@@ -4,6 +4,7 @@
  */
 package ru.ipo.kio._14.tarski.model.operation {
 import flash.errors.IllegalOperationError;
+import flash.events.GestureEvent;
 import flash.utils.Dictionary;
 
 import ru.ipo.kio._14.tarski.model.Figure;
@@ -12,14 +13,18 @@ import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 
 public class BaseOperation extends LogicEvaluatedItem implements LogicItem {
 
-    private var _priority:int=1;
 
     public function BaseOperation() {
     }
 
+    private var _priority:int=1;
+
+
     public function resetPriority():void{
         _priority=1;
     }
+
+
 
 
     public function get priority():int {
@@ -32,6 +37,13 @@ public class BaseOperation extends LogicEvaluatedItem implements LogicItem {
 
     public function evaluateWithQuantsFinal(data:Dictionary, figures:Vector.<Figure>):Boolean{
         throw new IllegalOperationError("method must be overridden");
+    }
+
+    public override function commit():void {
+
+        for(var i:int=0; i<quants.length; i++){
+            quants[i].commit();
+        }
     }
 
     override public function evaluateWithQuants(data:Dictionary, figures:Vector.<Figure>):Boolean{
@@ -130,26 +142,32 @@ public class BaseOperation extends LogicEvaluatedItem implements LogicItem {
         var firstExists:Boolean = isOne(first+"");
         var secondExists:Boolean = isOne(second+"");
         var thirdExists:Boolean = isOne(third+"");
+        var firstAll:Boolean = isAll(first+"");
+        var secondAll:Boolean = isAll(second+"");
+        var thirdAll:Boolean = isAll(third+"");
 
-        if(firstExists && secondExists && thirdExists){
-            return checkSingleThree(first, second, third, figures, data);
-        }else if (!firstExists && ! secondExists && ! thirdExists){
-            return checkAllThree(first, second, third, figures, data);
+        if(!firstAll && !firstExists){
+            return checkTwo(second, third, figures, data);
+        }else if(!secondAll && ! secondExists){
+            return checkTwo(first, third, figures, data);
+        }else if(!thirdAll && ! thirdExists){
+            return checkTwo(first, second, figures, data);
         }else{
-            if(firstExists && !secondExists && !thirdExists){
+            if(firstExists && secondExists && thirdExists){
+                return checkSingleThree(first, second, third, figures, data);
+            }else if (firstAll && secondAll && thirdAll){
+                return checkAllThree(first, second, third, figures, data);
+            }else if(firstExists && secondAll && thirdAll){
                 checkSingleAllAllThree(first, second, third, figures, data);
-            }else if (secondExists && !firstExists && !thirdExists){
-                checkSingleAllAllThree(second, first, third, figures, data);
-            }else if (thirdExists && !firstExists && !secondExists){
-                checkSingleAllAllThree(third, first, second, figures, data);
-            }
-
-
-            if(!firstExists && secondExists && thirdExists){
-                checkSingleSingleAllThree(second, third, first, figures, data);
-            }else if(!secondExists && firstExists && thirdExists){
-                checkSingleSingleAllThree(first, third, second, figures, data);
-            }else if(!thirdExists && firstExists && secondExists){
+            }else if (secondExists && firstAll && thirdAll){
+                checkAllSingleAllThree(first, second, third, figures, data);
+            }else if (thirdExists && firstAll && secondAll){
+                checkAllAllSingleThree(first, second, third, figures, data);
+            }else if(firstAll && secondExists && thirdExists){
+               checkAllSingleSingleThree(first, second, third, figures, data);
+            }else if(secondAll && firstExists && thirdExists){
+               checkSingleAllSingleThree(first, second, third, figures, data);
+            }else if(thirdAll && firstExists && secondExists){
                 checkSingleSingleAllThree(first, second, third, figures, data);
             }
         }
@@ -157,29 +175,191 @@ public class BaseOperation extends LogicEvaluatedItem implements LogicItem {
         return false;
     }
 
-    private function checkSingleSingleAllThree(first:Object, second:Object, third:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
+    private function checkSingleAllSingleThree(first:Object, second:Object, third:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
+        var firstCheck:Boolean=false;
         for(var i:int=0;i<figures.length;i++){
+            if(isRegisteredIndex(i,figures,data)){
+                continue;
+            }
+            data[first]=figures[i];
+            var secondCheck:Boolean=true;
             for(var j:int=0;j<figures.length;j++){
-                var allCheck:Boolean=true;
+                if(isRegisteredIndex(j,figures,data)){
+                    continue;
+                }
+                data[second]=figures[j];
+                var thirdCheck:Boolean=false;
                 for(var k:int=0;k<figures.length;k++){
                     if(i!=j && j!=k){
-                        if(isRegisteredIndex(i,figures,data) || isRegisteredIndex(j,figures,data) || isRegisteredIndex(k,figures,data)){
+                        if(isRegisteredIndex(k,figures,data)){
                             continue;
                         }
-                        data[first]=figures[i];
-                        data[second]=figures[j];
                         data[third]=figures[k];
                         var currentCheck:Boolean = evaluateWithQuantsFinal(data, figures);
-                        data[first]=null;
-                        data[second]=null;
+                        data[third]=null;
+                        if(currentCheck){
+                            thirdCheck=true;
+                            break;
+                        }
+                    }
+                }
+                data[second]=null;
+                secondCheck=secondCheck&&thirdCheck;
+            }
+            data[first]=null;
+            if(secondCheck==true){
+                firstCheck= true;
+                break;
+            }
+        }
+        return firstCheck;
+    }
+
+
+    private function checkAllSingleSingleThree(first:Object, second:Object, third:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
+        var firstCheck:Boolean=true;
+        for(var i:int=0;i<figures.length;i++){
+            if(isRegisteredIndex(i,figures,data)){
+                continue;
+            }
+            data[first]=figures[i];
+            var secondCheck:Boolean=false;
+            for(var j:int=0;j<figures.length;j++){
+                if(isRegisteredIndex(j,figures,data)){
+                    continue;
+                }
+                data[second]=figures[j];
+                var thirdCheck:Boolean=false;
+                for(var k:int=0;k<figures.length;k++){
+                    if(i!=j && j!=k){
+                        if(isRegisteredIndex(k,figures,data)){
+                            continue;
+                        }
+                        data[third]=figures[k];
+                        var currentCheck:Boolean = evaluateWithQuantsFinal(data, figures);
+                        data[third]=null;
+                        if(currentCheck){
+                            thirdCheck=true;
+                            break;
+                        }
+                    }
+                }
+                data[second]=null;
+                if(thirdCheck){
+                    secondCheck=true;
+                    break;
+                }
+            }
+            firstCheck=firstCheck&&secondCheck
+            data[first]=null;
+        }
+        return firstCheck;
+    }
+
+    private function checkAllSingleAllThree(first:Object, second:Object, third:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
+        var firstCheck:Boolean=true;
+        for(var i:int=0;i<figures.length;i++){
+            if(isRegisteredIndex(i,figures,data)){
+                continue;
+            }
+            data[first]=figures[i];
+            var secondCheck:Boolean=false;
+            for(var j:int=0;j<figures.length;j++){
+                if(isRegisteredIndex(j,figures,data)){
+                    continue;
+                }
+                data[second]=figures[j];
+                var thirdCheck:Boolean=true;
+                for(var k:int=0;k<figures.length;k++){
+                    if(i!=j && j!=k){
+                        if(isRegisteredIndex(k,figures,data)){
+                            continue;
+                        }
+                        data[third]=figures[k];
+                        var currentCheck:Boolean = evaluateWithQuantsFinal(data, figures);
+                        data[third]=null;
+                        thirdCheck=thirdCheck&&currentCheck;
+                    }
+                }
+                data[second]=null;
+                if(thirdCheck){
+                    secondCheck=true;
+                    break;
+                }
+            }
+            firstCheck=firstCheck&&secondCheck
+            data[first]=null;
+        }
+        return firstCheck;
+    }
+
+    private function checkAllAllSingleThree(first:Object, second:Object, third:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
+        var firstCheck:Boolean=true;
+        for(var i:int=0;i<figures.length;i++){
+            if(isRegisteredIndex(i,figures,data)){
+                continue;
+            }
+            data[first]=figures[i];
+            var secondCheck:Boolean=true;
+            for(var j:int=0;j<figures.length;j++){
+                if(isRegisteredIndex(j,figures,data)){
+                    continue;
+                }
+                data[second]=figures[j];
+                var thirdCheck:Boolean=false;
+                for(var k:int=0;k<figures.length;k++){
+                    if(i!=j && j!=k){
+                        if(isRegisteredIndex(k,figures,data)){
+                            continue;
+                        }
+                        data[third]=figures[k];
+                        var currentCheck:Boolean = evaluateWithQuantsFinal(data, figures);
+                        data[third]=null;
+                        if(currentCheck){
+                            thirdCheck=true;
+                            break;
+                        }
+                    }
+                }
+                secondCheck=secondCheck&&thirdCheck;
+                data[second]=null;
+            }
+            firstCheck=firstCheck&&secondCheck
+            data[first]=null;
+        }
+        return firstCheck;
+    }
+
+
+    private function checkSingleSingleAllThree(first:Object, second:Object, third:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
+        for(var i:int=0;i<figures.length;i++){
+            if(isRegisteredIndex(i,figures,data)){
+                continue;
+            }
+            data[first]=figures[i];
+            for(var j:int=0;j<figures.length;j++){
+                var allCheck:Boolean=true;
+                if(isRegisteredIndex(j,figures,data)){
+                    continue;
+                }
+                data[second]=figures[j];
+                for(var k:int=0;k<figures.length;k++){
+                    if(i!=j && j!=k){
+                        if(isRegisteredIndex(k,figures,data)){
+                            continue;
+                        }
+                        data[third]=figures[k];
+                        var currentCheck:Boolean = evaluateWithQuantsFinal(data, figures);
                         data[third]=null;
                         allCheck=allCheck&&currentCheck;
                     }
                 }
+                data[second]=null;
                 if(allCheck){
                     return true;
                 }
             }
+            data[first]=null;
         }
         return false;
     }
@@ -187,23 +367,29 @@ public class BaseOperation extends LogicEvaluatedItem implements LogicItem {
     private function checkSingleAllAllThree(first:Object, second:Object, third:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
         for(var i:int=0;i<figures.length;i++){
             var allCheck:Boolean=true;
+            if(isRegisteredIndex(i,figures,data)){
+                continue;
+            }
+            data[first]=figures[i];
             for(var j:int=0;j<figures.length;j++){
+                if(isRegisteredIndex(j,figures,data)){
+                    continue;
+                }
+                data[second]=figures[j];
                 for(var k:int=0;k<figures.length;k++){
                     if(i!=j && j!=k){
-                        if(isRegisteredIndex(i,figures,data) || isRegisteredIndex(j,figures,data) || isRegisteredIndex(k,figures,data)){
+                        if(isRegisteredIndex(k,figures,data)){
                             continue;
                         }
-                        data[first]=figures[i];
-                        data[second]=figures[j];
                         data[third]=figures[k];
                         var currentCheck:Boolean = evaluateWithQuantsFinal(data, figures);
-                        data[first]=null;
-                        data[second]=null;
                         data[third]=null;
                         allCheck=allCheck&&currentCheck;
                     }
                 }
+                data[second]=null;
             }
+            data[first]=null;
             if(allCheck){
                 return true;
             }
@@ -214,14 +400,20 @@ public class BaseOperation extends LogicEvaluatedItem implements LogicItem {
 
     private function checkSingleThree(first:Object, second:Object, third:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
         for(var i:int=0;i<figures.length;i++){
+            if(isRegisteredIndex(i,figures,data)){
+                continue;
+            }
+            data[first]=figures[i];
             for(var j:int=0;j<figures.length;j++){
+                if(isRegisteredIndex(j,figures,data)){
+                    continue;
+                }
+                data[second]=figures[j];
                 for(var k:int=0;k<figures.length;k++){
                     if(i!=j && j!=k){
-                        if(isRegisteredIndex(i,figures,data) || isRegisteredIndex(j,figures,data) || isRegisteredIndex(k,figures,data)){
+                        if(isRegisteredIndex(k,figures,data)){
                             continue;
                         }
-                        data[first]=figures[i];
-                        data[second]=figures[j];
                         data[third]=figures[k];
                         if(evaluateWithQuantsFinal(data, figures)){
                             data[first] = null;
@@ -232,7 +424,9 @@ public class BaseOperation extends LogicEvaluatedItem implements LogicItem {
 
                     }
                 }
+                data[second] = null;
             }
+            data[third] = null;
         }
         data[first] = null;
         data[second] = null;
@@ -244,24 +438,30 @@ public class BaseOperation extends LogicEvaluatedItem implements LogicItem {
     private function checkAllThree(first:Object, second:Object, third:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
         var allCheck:Boolean=true;
         for(var i:int=0;i<figures.length;i++){
+            if(isRegisteredIndex(i,figures,data)){
+                continue;
+            }
+            data[first]=figures[i];
             for(var j:int=0;j<figures.length;j++){
+                if(isRegisteredIndex(j,figures,data)){
+                    continue;
+                }
+                data[second]=figures[j];
                 for(var k:int=0;k<figures.length;k++){
                     if(i!=j && j!=k){
-                        if(isRegisteredIndex(i,figures,data) || isRegisteredIndex(j,figures,data) || isRegisteredIndex(k,figures,data)){
+                        if(isRegisteredIndex(k,figures,data)){
                             continue;
                         }
-                        data[first]=figures[i];
-                        data[second]=figures[j];
                         data[third]=figures[k];
                         var currentCheck:Boolean = evaluateWithQuantsFinal(data, figures);
                         data[first]=null;
-                        data[second]=null;
-                        data[third]=null;
                         allCheck=allCheck&&currentCheck;
 
                     }
                 }
+                data[second]=null;
             }
+            data[third]=null;
         }
         return allCheck;
     }
@@ -270,36 +470,50 @@ public class BaseOperation extends LogicEvaluatedItem implements LogicItem {
     private function checkTwo(first:Object, second:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
         var firstExists:Boolean = isOne(first+"");
         var secondExists:Boolean = isOne(second+"");
+        var firstAll:Boolean = isAll(first+"");
+        var secondAll:Boolean = isAll(second+"");
+
 
         if(firstExists && secondExists){
             return checkSingleTwo(first, second, figures, data);
-        }else if (!firstExists && ! secondExists){
+        }else if (firstAll && secondAll){
             return checkAllTwo(first, second, figures, data);
+        }else if(firstExists && secondAll){
+            return checkSingleAllTwo(first, second, figures, data);
+        }else if(secondExists && firstAll){
+            return checkAllSingleTwo(first, second, figures, data);
+        }else if(firstExists){
+            return checkSingleOne(first, figures, data);
+        }else if(secondExists){
+            return checkSingleOne(second, figures, data);
+        }else if(firstAll){
+            return checkAllOne(first, figures, data);
+        }else if(secondAll){
+            return checkAllOne(second, figures, data);
         }else{
-            if(firstExists){
-                return checkSingleAllTwo(first, second, figures, data);
-            }else{
-                return checkSingleAllTwo(second, first, figures, data);
-            }
+            return evaluateWithQuantsFinal(data, figures);
         }
     }
 
     private function checkSingleAllTwo(first:Object, second:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
         for(var i:int=0;i<figures.length;i++){
+            if(isRegisteredIndex(i,figures,data)){
+                continue;
+            }
+            data[first]=figures[i];
             var allCheck:Boolean=true;
             for(var j:int=0;j<figures.length;j++){
                 if(i!=j){
-                    if(isRegisteredIndex(i,figures,data) || isRegisteredIndex(j,figures,data)){
+                    if(isRegisteredIndex(j,figures,data)){
                         continue;
                     }
-                    data[first]=figures[i];
                     data[second]=figures[j];
                     var currentCheck:Boolean = evaluateWithQuantsFinal(data, figures);
-                    data[first]=null;
                     data[second]=null;
                     allCheck=allCheck&&currentCheck;
                 }
             }
+            data[first]=null;
             if(allCheck){
                 return true;
             }
@@ -308,34 +522,69 @@ public class BaseOperation extends LogicEvaluatedItem implements LogicItem {
     }
 
 
+    private function checkAllSingleTwo(first:Object, second:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
+        var sumCheck:Boolean=true;
+        for(var i:int=0;i<figures.length;i++){
+            if(isRegisteredIndex(i,figures,data)){
+                continue;
+            }
+            data[first]=figures[i];
+            var allCheck:Boolean=false;
+            for(var j:int=0;j<figures.length;j++){
+                if(i!=j){
+                    if(isRegisteredIndex(j,figures,data)){
+                        continue;
+                    }
+                    data[second]=figures[j];
+                    var currentCheck:Boolean = evaluateWithQuantsFinal(data, figures);
+                    data[second]=null;
+                    if(currentCheck){
+                        allCheck=true;
+                        break;
+                    }
+                }
+            }
+            data[first]=null;
+            sumCheck=sumCheck&&allCheck;
+        }
+        return sumCheck;
+    }
+
+
     private function checkAllTwo(first:Object, second:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
         var allCheck:Boolean=true;
         for(var i:int=0;i<figures.length;i++){
+            if(isRegisteredIndex(i,figures,data)){
+                continue;
+            }
+            data[first]=figures[i];
             for(var j:int=0;j<figures.length;j++){
                 if(i!=j){
-                    if(isRegisteredIndex(i,figures,data) || isRegisteredIndex(j,figures,data)){
+                    if(isRegisteredIndex(j,figures,data)){
                         continue;
                     }
-                    data[first]=figures[i];
                     data[second]=figures[j];
                     var currentCheck:Boolean = evaluateWithQuantsFinal(data, figures);
-                    data[first]=null;
                     data[second]=null;
                     allCheck=allCheck&&currentCheck;
                 }
             }
+            data[first]=null;
         }
         return allCheck;
     }
 
     private function checkSingleTwo(first:Object, second:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
         for(var i:int=0;i<figures.length;i++){
+            if(isRegisteredIndex(i,figures,data)){
+                continue;
+            }
+            data[first]=figures[i];
             for(var j:int=0;j<figures.length;j++){
                 if(i!=j){
-                    if(isRegisteredIndex(i,figures,data) || isRegisteredIndex(j,figures,data)){
+                    if(isRegisteredIndex(j,figures,data)){
                         continue;
                     }
-                    data[first]=figures[i];
                     data[second]=figures[j];
                     if(evaluateWithQuantsFinal(data, figures)){
                         data[first] = null;
@@ -345,6 +594,7 @@ public class BaseOperation extends LogicEvaluatedItem implements LogicItem {
 
                 }
             }
+            data[first] = null;
         }
         data[first] = null;
         data[second] = null;
@@ -356,10 +606,14 @@ public class BaseOperation extends LogicEvaluatedItem implements LogicItem {
     private function checkOne(first:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
         if(isOne(first+"")){
             return checkSingleOne(first, figures, data);
-        }else{
+        }else if(isAll(first+"")){
             return checkAllOne(first, figures, data);
+        }else{
+           return evaluateWithQuantsFinal(data, figures);
         }
     }
+
+
 
     private function checkAllOne(first:Object, figures:Vector.<Figure>, data:Dictionary):Boolean {
         var allCheck:Boolean=true;

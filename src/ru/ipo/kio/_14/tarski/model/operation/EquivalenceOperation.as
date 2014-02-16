@@ -34,7 +34,7 @@ public class EquivalenceOperation extends TwoPositionOperation{
     }
 
     public function toString():String {
-        return "[" + operand1 + "<=>" +operand2+ "]";
+        return quantsToSts()+"[" + operand1 + "<=>" +operand2+ "]";
     }
 
     public override function getToolboxText():String {

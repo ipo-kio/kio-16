@@ -16,16 +16,37 @@ public class Quantifier implements LogicItem {
 
     private var _placeHolder:VariablePlaceHolder;
 
+    private var _priority:int=5;
+
+
+    public function resetPriority():void{
+        _priority=5;
+    }
+
+
+    public function get priority():int {
+        return _priority;
+    }
+
+    public function set priority(value:int):void {
+        _priority = value;
+    }
+
+
 
     protected var itemToolboxView:LogicItemToolboxView;
 
     protected var itemView:LogicItemView;
 
-    private var code:String;
+    private var _code:String;
 
+
+    public function toString():String {
+        return (_code==EXIST?"E":"A") + (placeHolder.variable!=null?placeHolder.variable.code:"_");
+    }
 
     public function Quantifier(code:String) {
-        this.code = code;
+        this._code = code;
         itemToolboxView = new LogicItemToolboxView(this);
         itemView = new LogicItemView(this);
         _placeHolder=new VariablePlaceHolder(this);
@@ -34,6 +55,11 @@ public class Quantifier implements LogicItem {
 
     public function get placeHolder():VariablePlaceHolder {
         return _placeHolder;
+    }
+
+
+    public function get code():String {
+        return _code;
     }
 
     /**
@@ -55,11 +81,11 @@ public class Quantifier implements LogicItem {
     }
 
     public function getToolboxText():String {
-        return "Существует ";
+        return _code==EXIST?"Существует ":"Каждый";
     }
 
     public function getCloned():LogicItem {
-        return new Quantifier(code);
+        return new Quantifier(_code);
     }
 
     public function getView():BasicView {

@@ -8,6 +8,7 @@ import flash.utils.Dictionary;
 
 
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
+import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
 
 public class TwoPositionOperation extends BaseOperation{
 
@@ -29,6 +30,17 @@ public class TwoPositionOperation extends BaseOperation{
 
     public function set operand2(value:LogicEvaluatedItem):void {
         _operand2 = value;
+    }
+
+    override public function checkQuantors(quantors:Vector.<Quantifier>):Boolean{
+        var quantorsNew:Vector.<Quantifier> = new Vector.<Quantifier>();
+        for(var i:int=0; i<quantors.length; i++){
+            quantorsNew.push(quantors[i]);
+        }
+        for(var i:int=0; i<quants.length; i++){
+            quantorsNew.push(quants[i]);
+        }
+        return _operand1.checkQuantors(quantorsNew) && _operand2.checkQuantors(quantorsNew);
     }
 
     override public function collectFormalOperand():Dictionary{
@@ -54,6 +66,9 @@ public class TwoPositionOperation extends BaseOperation{
 
 
     public override function commit():void {
+        for(var i:int=0; i<quants.length; i++){
+            quants[i].commit();
+        }
         if(_operand1!=null){
             _operand1.commit();
         }

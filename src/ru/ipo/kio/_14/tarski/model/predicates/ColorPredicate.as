@@ -44,7 +44,7 @@ public class ColorPredicate extends OnePlacePredicate{
 
 
     public function toString():String {
-        return "[color-"+color.code+":"+formalOperand+"]";
+        return quantsToSts()+"[color-"+color.code+":"+formalOperand+"]";
     }
 
     public override function getToolboxText():String {

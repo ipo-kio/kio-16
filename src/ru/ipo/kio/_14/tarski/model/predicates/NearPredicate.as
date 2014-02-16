@@ -35,7 +35,7 @@ public class NearPredicate extends TwoPlacePredicate{
     }
 
     public function toString():String {
-        return "[near:"+formalOperand1+ ";"+formalOperand2+"]";
+        return quantsToSts()+"[near:"+formalOperand1+ ";"+formalOperand2+"]";
     }
 
     public override function getToolboxText():String {
