@@ -74,9 +74,9 @@ public class StarsProblem implements KioProblem {
         if (solution1.has_intersected_lines == "ЕСТЬ" && solution2.has_intersected_lines == "ЕСТЬ")
             return 0;
         else if (solution1.has_intersected_lines == "ЕСТЬ" && solution2.has_intersected_lines == "НЕТ")
-            return 1;
-        else if (solution1.has_intersected_lines == "НЕТ" && solution2.has_intersected_lines == "ЕСТЬ")
             return 0;
+        else if (solution1.has_intersected_lines == "НЕТ" && solution2.has_intersected_lines == "ЕСТЬ")
+            return 1;
         else {
             var res:int = 0;
             if (solution1.total_number_of_difference_graphs == solution2.total_number_of_difference_graphs) {

@@ -140,9 +140,11 @@ public class StarrySky extends EventDispatcher {
 
         findIntersections();
 
-        if (!hasIntersectedLines())
+        if (!hasIntersectedLines()) {
+//            dispatchEvent(new Event("NO_INTERSECTED_LINES"));
             createGraph();
-        else {
+        } else {
+//            dispatchEvent(new Event("INTERSECTED_LINES"));
             _graph = null;
             _connectedComponents = null;
         }
