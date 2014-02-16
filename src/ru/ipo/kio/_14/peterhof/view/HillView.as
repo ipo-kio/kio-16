@@ -3,20 +3,19 @@
  */
 package ru.ipo.kio._14.peterhof.view {
 import away3d.containers.ObjectContainer3D;
-import away3d.materials.ColorMaterial;
-import away3d.primitives.CylinderGeometry;
-import away3d.primitives.LineSegment;
-
-import flash.display.BitmapData;
-
-import flash.geom.Vector3D;
-
-import flash.utils.Dictionary;
-
 import away3d.entities.Mesh;
+import away3d.materials.ColorMaterial;
 import away3d.materials.MaterialBase;
 import away3d.materials.TextureMaterial;
+import away3d.materials.lightpickers.StaticLightPicker;
+import away3d.materials.methods.BasicSpecularMethod;
+import away3d.primitives.CylinderGeometry;
+import away3d.primitives.LineSegment;
 import away3d.utils.Cast;
+
+import flash.display.BitmapData;
+import flash.geom.Vector3D;
+import flash.utils.Dictionary;
 
 import ru.ipo.kio._14.peterhof.model.Consts;
 import ru.ipo.kio._14.peterhof.model.Fountain;
@@ -37,12 +36,15 @@ public class HillView extends ObjectContainer3D {
     private var _mouse_over_fountain:FountainView = null;
 
     private var _hill:Hill;
+    private var _lightPicker:StaticLightPicker;
 
     private var close_segments:ObjectContainer3D = new ObjectContainer3D();
 //    private var close_segments:SegmentSet = new SegmentSet();
 
-    public function HillView(hill:Hill) {
+    public function HillView(hill:Hill, lightPicker:StaticLightPicker) {
         _hill = hill;
+
+        _lightPicker = lightPicker;
 
         draw();
 
@@ -149,13 +151,14 @@ public class HillView extends ObjectContainer3D {
     private function draw():void {
         var skin:BitmapData = (new FloorDiffuse).bitmapData;
         HillGeometry.drawGrid(skin);
-        var material:MaterialBase = new TextureMaterial(Cast.bitmapTexture(skin));
+        var material:TextureMaterial = new TextureMaterial(Cast.bitmapTexture(skin));
         var _plane:Mesh = new Mesh(new HillGeometry(25, Consts.HILL_LENGTH1, Consts.HILL_LENGTH2, Consts.HILL_WIDTH, Consts.HILL_HEIGHT, 10), material);
+//        material.specularMap = Cast.bitmapTexture(HILL_NORMALS);
+        material.specular = 0.2;
 
-//        var sun:DirectionalLight = new DirectionalLight(-1, -1, 0);
+        material.lightPicker = lightPicker;
 
         addChild(_plane);
-//        scene.addChild(sun);
     }
 
     public function get selected_fountain():Fountain {
@@ -176,6 +179,10 @@ public class HillView extends ObjectContainer3D {
 
     public function get hill():Hill {
         return _hill;
+    }
+
+    public function get lightPicker():StaticLightPicker {
+        return _lightPicker;
     }
 }
 }

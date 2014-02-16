@@ -158,22 +158,32 @@ public class HillGeometry extends Geometry {
         var grid:Shape = new Shape();
 
         var g:Graphics = grid.graphics;
-        g.lineStyle(2, 0x004400);
 
-        const zScale:Number = Consts.SKIN_HEIGHT / Consts.HILL_WIDTH;
-
-        const c_from:uint = 0x004400;
+        const c_from_2:uint = 0x004400;
+        const c_from:uint = 0x448844;
         const c_to:uint = 0x77de11;
 
-        for (var z0:Number = 0; z0 <= Consts.HILL_WIDTH; z0 += Consts.FOUNTAIN_PRECISION)
-            drawLine(g, Consts.SKIN_X0, Consts.SKIN_Z0 + z0 * zScale, Consts.SKIN_X0 + Consts.SKIN_WIDTH, Consts.SKIN_Z0 + z0 * zScale, true, c_from, c_to);
+        horizontalLines(g, c_from, c_to, Consts.FOUNTAIN_PRECISION);
+        verticalLines(g, c_from, c_to, Consts.FOUNTAIN_PRECISION);
 
-        const xScale:Number = Consts.SKIN_WIDTH / Consts.HILL_LENGTH;
-
-        for (var x0:Number = 0; x0 <= Consts.HILL_LENGTH; x0 += Consts.FOUNTAIN_PRECISION)
-            drawLine(g, Consts.SKIN_X0 + x0 * xScale, Consts.SKIN_Z0, Consts.SKIN_X0 + x0 * xScale, Consts.SKIN_Z0 + Consts.SKIN_WIDTH, false, c_from, c_to);
+        horizontalLines(g, c_from_2, c_to, 5 * Consts.FOUNTAIN_PRECISION);
+        verticalLines(g, c_from_2, c_to, 5 * Consts.FOUNTAIN_PRECISION);
 
         bmp.draw(grid);
+    }
+
+    private static function verticalLines(g:Graphics, c_from:uint, c_to:uint, step:Number):void {
+        const xScale:Number = Consts.SKIN_WIDTH / Consts.HILL_LENGTH;
+
+        for (var x0:Number = 0; x0 <= Consts.HILL_LENGTH; x0 += step)
+            drawLine(g, Consts.SKIN_X0 + x0 * xScale, Consts.SKIN_Z0, Consts.SKIN_X0 + x0 * xScale, Consts.SKIN_Z0 + Consts.SKIN_WIDTH, false, c_from, c_to);
+    }
+
+    private static function horizontalLines(g:Graphics, c_from:uint, c_to:uint, step:Number):void {
+
+        const zScale:Number = Consts.SKIN_HEIGHT / Consts.HILL_WIDTH;
+        for (var z0:Number = 0; z0 <= Consts.HILL_WIDTH; z0 += step)
+            drawLine(g, Consts.SKIN_X0, Consts.SKIN_Z0 + z0 * zScale, Consts.SKIN_X0 + Consts.SKIN_WIDTH, Consts.SKIN_Z0 + z0 * zScale, true, c_from, c_to);
     }
 }
 }

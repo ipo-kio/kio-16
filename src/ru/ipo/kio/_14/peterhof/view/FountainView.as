@@ -30,7 +30,7 @@ public class FountainView extends ObjectContainer3D {
     public static const SELECTED_HEIGHT:Number = 12;
     public static const FOUNTAIN_COLOR:uint = 0xAA0000;
     public static const FOUNTAIN_SELECTED_COLOR:uint = 0xFFa200;
-    public static const WATER_COLOR:uint = 0x42AAFF;
+    public static const WATER_COLOR:uint = 0x0c3fa7; //0x4288BB;
     public static const ERROR_WATER_COLOR:uint = 0xFF42AA;
     public static const WATER_SIZE:int = 1;
 
@@ -39,7 +39,6 @@ public class FountainView extends ObjectContainer3D {
     private var _fountainMesh:Mesh;
     private var _fountainSelectedMesh:Mesh;
     private var _streamView:Vector.<Sprite3D> = new Vector.<Sprite3D>();
-    private var _error_stream:Boolean = false;
 
     private var _selected:Boolean = false;
 
@@ -47,8 +46,13 @@ public class FountainView extends ObjectContainer3D {
         _fountain = fountain;
         _hillView = hillView;
 
-        _fountainMesh = new Mesh(new CylinderGeometry(RADIUS, RADIUS, HEIGHT, 16, 1), new ColorMaterial(FOUNTAIN_COLOR));
-        _fountainSelectedMesh = new Mesh(new CylinderGeometry(SELECTED_RADIUS, SELECTED_RADIUS, SELECTED_HEIGHT, 16, 1), new ColorMaterial(FOUNTAIN_SELECTED_COLOR));
+        var normalMaterial:ColorMaterial = new ColorMaterial(FOUNTAIN_COLOR);
+        var selectedMaterial:ColorMaterial = new ColorMaterial(FOUNTAIN_SELECTED_COLOR);
+        _fountainMesh = new Mesh(new CylinderGeometry(RADIUS, RADIUS, HEIGHT, 16, 1), normalMaterial);
+        _fountainSelectedMesh = new Mesh(new CylinderGeometry(SELECTED_RADIUS, SELECTED_RADIUS, SELECTED_HEIGHT, 16, 1), selectedMaterial);
+
+        normalMaterial.lightPicker = hillView.lightPicker;
+        selectedMaterial.lightPicker = hillView.lightPicker;
 
         _fountainMesh.mouseEnabled = true;
         _fountainMesh.pickingCollider = PickingColliderType.BOUNDS_ONLY;
@@ -127,16 +131,14 @@ public class FountainView extends ObjectContainer3D {
         _streamView = new Vector.<Sprite3D>();
 
         var stream:Stream = _fountain.stream;
-        _error_stream = stream.goes_out;
 
         var waterColor:uint = stream.goes_out ? ERROR_WATER_COLOR : WATER_COLOR;
 
         var waterMaterial:ColorMaterial = new ColorMaterial(waterColor);
 
-        var points:int = stream.points.length;
         var ind:int = 0;
         for each (var point3D:Point3D in stream.points) {
-            ind ++;
+            ind++;
             if (ind % 3 != 1) //draw every third
                 continue;
 
@@ -148,18 +150,6 @@ public class FountainView extends ObjectContainer3D {
             newSprite.z = point3D.z * Consts.PIXELS_IN_METER;
             addChild(newSprite);
         }
-    }
-
-    public function frameHandler(event:Event):void {
-        return;
-
-        var colors:Array = _error_stream ? [0xFF42AA, 0xFF22AA, 0xFF00AA] : [0x42AA00, 0x00AAFF, 0x0000FF];
-//        var colors:Array = _error_stream ? [0xFF42AA, 0xFF22AA, 0xFF00AA] : [0x42AAFF, 0x22AAFF, 0x00AAFF];
-        var color:uint = colors[Math.floor(Math.random() * colors.length)];
-
-        var waterMaterial:ColorMaterial = new ColorMaterial(color);
-        for each (var sprite3D:Sprite3D in _streamView)
-            sprite3D.material = waterMaterial;
     }
 
     public function get fountain():Fountain {

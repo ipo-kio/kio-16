@@ -8,7 +8,10 @@ import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
 
+import ru.ipo.kio._14.peterhof.model.Consts;
+
 import ru.ipo.kio._14.peterhof.model.Fountain;
+import ru.ipo.kio._14.peterhof.view.Sprayer;
 
 public class FountainPanel extends Sprite {
 
@@ -21,25 +24,28 @@ public class FountainPanel extends Sprite {
 
     private var _streamLengthInfo:TextField;
 
+    private var _sprayer:Sprayer;
+
     public function FountainPanel(width:int) {
-        _alphaEditor = new NumberEditor(width, 40, 0, 90, 45, "°", 0);
+        _alphaEditor = new NumberEditor(width, 18, 0, 90, 45, "°", 0);
         var alphaEditor:TitledObject = new TitledObject("Наклон", 20, 0x0FFFFF, _alphaEditor);
         addChild(alphaEditor);
 
-        _phiEditor = new NumberEditor(width, 40, -180, 180, 0, "°", 0);
+        _phiEditor = new NumberEditor(width, 18, -180, 180, 0, "°", 0);
         var phiEditor:TitledObject = new TitledObject("Поворот", 20, 0x0FFFFF, _phiEditor);
         addChild(phiEditor);
         phiEditor.y = alphaEditor.height;
 
-        _sprayerWidthEditor = new NumberEditor(width, 40, 0.1, 10, 0.1, "см", 1);
+        _sprayerWidthEditor = new NumberEditor(width, 18, 0.1, 10, 0.1, "см", 1);
         var sprayerWidthEditor:TitledObject = new TitledObject("Ширина ф.", 20, 0x0FFFFF, _sprayerWidthEditor);
         addChild(sprayerWidthEditor);
-        sprayerWidthEditor.y = phiEditor.y + phiEditor.height;
+        sprayerWidthEditor.x = alphaEditor.width + 60;
 
-        _sprayerLengthEditor = new NumberEditor(width, 40, 0.1, 10, 5, "см", 1);
+        _sprayerLengthEditor = new NumberEditor(width, 18, 0.1, 10, 5, "см", 1);
         var sprayerLengthEditor:TitledObject = new TitledObject("Длина ф.", 20, 0x0FFFFF, _sprayerLengthEditor);
         addChild(sprayerLengthEditor);
-        sprayerLengthEditor.y = sprayerWidthEditor.y + sprayerWidthEditor.height;
+        sprayerLengthEditor.x = sprayerWidthEditor.x;
+        sprayerLengthEditor.y = phiEditor.y;
 
         _streamLengthInfo = new TextField();
         _streamLengthInfo.selectable = false;
@@ -47,7 +53,7 @@ public class FountainPanel extends Sprite {
         _streamLengthInfo.autoSize = TextFieldAutoSize.LEFT;
         _streamLengthInfo.multiline = true;
         addChild(_streamLengthInfo);
-        _streamLengthInfo.y = sprayerLengthEditor.y + sprayerLengthEditor.height;
+        _streamLengthInfo.x = sprayerWidthEditor.x + width + 60;
 
         _alphaEditor.addEventListener(Event.CHANGE, alphaEditor_changeHandler);
         _phiEditor.addEventListener(Event.CHANGE, phiEditor_changeHandler);
@@ -59,6 +65,11 @@ public class FountainPanel extends Sprite {
         _sprayerWidthEditor.visible = false;
         _sprayerLengthEditor.visible = false;
         _streamLengthInfo.visible = false;
+
+        _sprayer = new Sprayer(116, 90, Consts.D);
+        addChild(_sprayer);
+        _sprayer.x = _streamLengthInfo.x;
+        _sprayer.y = 25;
     }
 
 
@@ -93,8 +104,8 @@ public class FountainPanel extends Sprite {
         _sprayerLengthEditor.value = _fountain.l * 100;
 
         _streamLengthInfo.text = _fountain.stream.goes_out ?
-                "Длина:\nвыходит наружу" :
-                "Длина:\n" + _fountain.stream.length.toFixed(3);
+                "Длина: выходит наружу" :
+                "Длина: " + _fountain.stream.length.toFixed(3);
     }
 
     private function alphaEditor_changeHandler(event:Event):void {
@@ -108,13 +119,21 @@ public class FountainPanel extends Sprite {
     }
 
     private function sprayerWidthEditor_changeHandler(event:Event):void {
-        if (_fountain != null && !_sprayerWidthEditor.has_error())
-            _fountain.d = _sprayerWidthEditor.value / 100;
+        if (_fountain != null && !_sprayerWidthEditor.has_error()) {
+            var newValue:Number = _sprayerWidthEditor.value / 100;
+
+            _sprayer.f_width = newValue;
+            _fountain.d = newValue;
+        }
     }
 
     private function sprayerLengthEditor_changeHandler(event:Event):void {
-        if (_fountain != null && !_sprayerLengthEditor.has_error())
-            _fountain.l = _sprayerLengthEditor.value / 100;
+        if (_fountain != null && !_sprayerLengthEditor.has_error()) {
+            var newValue:Number = _sprayerLengthEditor.value / 100;
+
+            _sprayer.f_length = newValue;
+            _fountain.l = newValue;
+        }
     }
 }
 }

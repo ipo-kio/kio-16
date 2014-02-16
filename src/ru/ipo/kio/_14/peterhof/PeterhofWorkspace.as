@@ -16,8 +16,8 @@ import ru.ipo.kio.api.controls.InfoPanel;
 
 public class PeterhofWorkspace extends Sprite {
 
-    public static const _3D_WIDTH:int = 640;
-    public static const _3D_HEIGHT:int = 400;
+    public static const _3D_WIDTH:int = 780;
+    public static const _3D_HEIGHT:int = 480;
 
     private var _fountainsView:Fountains3DView;
     private var _problem:KioProblem;
@@ -35,17 +35,14 @@ public class PeterhofWorkspace extends Sprite {
         _fountainsView.hillView.addEventListener(FountainEvent.SELECTION_CHANGED, hillView_selection_changedHandler);
         _fountainsView.antiAlias = 0;
 
-        var rightPanel:RightPanel = new RightPanel();
         var bottomPanel:BottomPanel = new BottomPanel();
         addChild(_fountainsView);
-        addChild(rightPanel);
         addChild(bottomPanel);
-        rightPanel.x = _3D_WIDTH;
         bottomPanel.y = _3D_HEIGHT;
 
-        fillBottomPanel(bottomPanel);
+        _fountainPanel = new FountainPanel(100);
 
-        _fountainPanel = rightPanel.fountainPanel;
+        fillBottomPanel(bottomPanel);
 
         addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
         addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
@@ -53,7 +50,7 @@ public class PeterhofWorkspace extends Sprite {
         _fountainsView.hill.addEventListener(FountainEvent.CHANGED, hill_changedHandler);
 
         var physicsPanel:PhysicsPanel = new PhysicsPanel(_fountainsView.hill);
-        addChild(physicsPanel);
+//        addChild(physicsPanel);
         physicsPanel.x = 20;
         physicsPanel.y = 470;
     }
@@ -93,6 +90,9 @@ public class PeterhofWorkspace extends Sprite {
     }
 
     private function fillBottomPanel(bottomPanel:BottomPanel):void {
+        bottomPanel.addChild(_fountainPanel);
+        _fountainPanel.x = 10;
+
         _resultInfo = new InfoPanel("KioArial", true, 14, 0xFFFFFF, 0xFFFFFF, 0xFF8888, 1.2, "Результат", [
             "Общая длина"
         ], 200);
@@ -103,7 +103,10 @@ public class PeterhofWorkspace extends Sprite {
         bottomPanel.addChild(_resultInfo);
         bottomPanel.addChild(_recordInfo);
 
-        _recordInfo.x = 400;
+        _resultInfo.x = 500;
+        _resultInfo.y = 0;
+        _recordInfo.x = 500;
+        _recordInfo.y = 60;
     }
 
     private function addedToStageHandler(event:Event):void {

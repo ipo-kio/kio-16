@@ -3,9 +3,9 @@
  */
 package ru.ipo.kio._14.peterhof.view {
 
-import away3d.cameras.lenses.LensBase;
-import away3d.cameras.lenses.OrthographicLens;
-import away3d.entities.Mesh;
+import away3d.lights.DirectionalLight;
+import away3d.materials.lightpickers.StaticLightPicker;
+import away3d.textures.BitmapTexture;
 
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
@@ -25,6 +25,9 @@ import ru.ipo.kio._14.peterhof.model.Fountain;
 import ru.ipo.kio._14.peterhof.model.Hill;
 
 public class Fountains3DView extends View3D {
+
+    [Embed(source="../resources/sky_texture.jpg")]
+    public static const SKY_TEXTURE:Class;
 
     public static const CAMERA_RADIUS:Number = 900;
 
@@ -47,7 +50,10 @@ public class Fountains3DView extends View3D {
 
     public function Fountains3DView() {
         _hill = new Hill();
-        _hillView = new HillView(_hill);
+
+        var sun:DirectionalLight = new DirectionalLight(-1, -1, 0);
+        scene.addChild(sun);
+        _hillView = new HillView(_hill, new StaticLightPicker([sun]));
         scene.addChild(_hillView);
 
 //        mouse_debug_mesh = new Mesh();
@@ -64,6 +70,9 @@ public class Fountains3DView extends View3D {
         addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
         addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
         addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+
+//        draw();
+        background = new BitmapTexture((new SKY_TEXTURE).bitmapData);
     }
 
     public function get hillView():HillView {
@@ -99,8 +108,8 @@ public class Fountains3DView extends View3D {
         var scale:Number = _camera_lens.fieldOfView;
 
         scale -= event.delta * 0.5;
-        if (scale < 1)
-            scale = 1;
+        if (scale < 5)
+            scale = 5;
         else if (scale > 30)
             scale = 30;
 
@@ -344,9 +353,6 @@ public class Fountains3DView extends View3D {
 
             _reRender = true;
         }
-
-        for each (var fountain:FountainView in _hillView.fountains)
-            fountain.frameHandler(e);
 
         if (_reRender) {
             render();

@@ -70,8 +70,6 @@ public class NumberEditor extends Sprite {
         _units = units;
         _places = places;
 
-        _textField = new TextField();
-
         _ten = Math.pow(10, _places);
         _delta = 1 / _ten;
 
