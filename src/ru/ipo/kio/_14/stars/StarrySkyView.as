@@ -6,6 +6,7 @@ import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
+import flash.geom.Matrix;
 
 public class StarrySkyView extends Sprite {
 
@@ -110,8 +111,10 @@ public class StarrySkyView extends Sprite {
         private function drawSky():void {
             graphics.clear();
 //            graphics.beginFill(0x0047ab);
-            graphics.beginBitmapFill(BACKGROUND_BMP);
-            graphics.drawRect(0, 0, 500, 400);
+            var m:Matrix = new Matrix();
+            m.scale(2, 2);
+            graphics.beginBitmapFill(BACKGROUND_BMP, m);
+            graphics.drawRect(0, 0, 780, 480);
             graphics.endFill();
 
             for (var i:int = 0; i < starViews.length; i++) {

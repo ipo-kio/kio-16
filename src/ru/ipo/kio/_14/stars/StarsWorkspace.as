@@ -60,18 +60,18 @@ public class StarsWorkspace extends Sprite {
 
         infoPanel = new InfoPanel(
             /*"KioArial", true, //*/"EskizOne-Regular", true,
-            14, 0x92000a, 0x08457e, 0x3b5998,
+            18, 0x92000a, 0x08457e, 0x3b5998,
             1.2, api.localization.result/*"Текущий результат"*/,
-                ["Пересечения линий", "Количество правильных созвездий",
-                    "Количество различных созвездий", "Сумма длинн линий"], 250
+                ["Пересечения", "Правильных созвездий",
+                    "Различных созвездий", "Длина линий"], 250
         );
 
         infoPanelRecord = new InfoPanel(
             /*"KioArial", true, //*/"EskizOne-Regular", true,
-            14, 0x92000a, 0x08457e, 0x3b5998,
+            18, 0x92000a, 0x08457e, 0x3b5998,
             1.2, api.localization.record/*"Рекорд"*/,
-                ["Пересечения линий", "Количество правильных созвездий",
-                    "Количество различных созвездий", "Сумма длинн линий"], 250
+                ["Пересечения", "Правильных созвездий",
+                    "Различных созвездий", "Длина линий"], 250
         );
 
         infoPanel.setValue(0, "НЕТ");
@@ -85,14 +85,16 @@ public class StarsWorkspace extends Sprite {
         infoPanelRecord.setValue(3, "" + 0);
 
         _panel.x = 0;
-        _panel.y = skyView.height + 10;
+        _panel.y = skyView.height - 20;
         addChild(_panel);
 
         addChild(infoPanel);
         addChild(infoPanelRecord);
-        infoPanel.x = 510;
-        infoPanelRecord.x = 510;
-        infoPanelRecord.y = 150;
+
+        infoPanel.x = 0;
+        infoPanel.y = 480;
+        infoPanelRecord.x = 360;
+        infoPanelRecord.y = 480;
     }
 
     private function recordChanged(event:Event):void {
