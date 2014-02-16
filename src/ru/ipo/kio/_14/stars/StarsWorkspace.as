@@ -48,14 +48,6 @@ public class StarsWorkspace extends Sprite {
         sky.addEventListener(Event.CHANGE, sky_changeHandler);
         api.addEventListener(KioApi.RECORD_EVENT, recordChanged);
 
-        /*addEventListener("INTERSECTED_LINES", function(event:Event):void {
-            _panel.text = api.localization.intersected_lines_message;
-        });
-
-        addEventListener("NO_INTERSECTED_LINES", function(event:Event):void {
-            _panel.text = "";
-        });*/
-
         _panel = new SkyInfoPanel(skyView);
 
         infoPanel = new InfoPanel(
