@@ -12,7 +12,7 @@ import ru.ipo.kio.api.Settings;
 public class StarsProblem implements KioProblem {
 
     //Ссылка на файл с локализацией, в данном случае только русский язык. Если языков больше, необходимо добавить несколько ссылок
-    [Embed(source="loc/example.ru.json-settings",mimeType="application/octet-stream")]
+    [Embed(source="loc/stars.ru.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
 
     public static const ID:String = "stars";
@@ -71,9 +71,23 @@ public class StarsProblem implements KioProblem {
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        /*if (solution1.total_count_of_lines == solution2.total_count_of_lines)
-            return solution1.sum_of_lines - solution2.sum_of_lines;*/
-        return 0;
+        if (solution1.has_intersected_lines == "ЕСТЬ" && solution2.has_intersected_lines == "ЕСТЬ")
+            return 0;
+        else if (solution1.has_intersected_lines == "ЕСТЬ" && solution2.has_intersected_lines == "НЕТ")
+            return 0;
+        else if (solution1.has_intersected_lines == "НЕТ" && solution2.has_intersected_lines == "ЕСТЬ")
+            return 1;
+        else {
+            var res:int = 0;
+            if (solution1.total_number_of_difference_graphs == solution2.total_number_of_difference_graphs) {
+                if (solution1.total_number_of_right_graphs == solution2.total_number_of_right_graphs)
+                    res = solution2.sum_of_lines - solution1.sum_of_lines;
+                else
+                    res = solution1.total_number_of_right_graphs - solution2.total_number_of_right_graphs;
+            } else
+                res = solution1.total_number_of_difference_graphs - solution2.total_number_of_difference_graphs;
+        }
+        return res;
     }
 
     public function get icon():Class {

@@ -16,7 +16,7 @@ public class StarrySkyView extends Sprite {
         private var starViews:Array/*<StarView>*/;
         private var lines:Array/*<LineView>*/;
 
-//        private var panel:SkyInfoPanel;
+        private var _workspace:StarsWorkspace;
 
         private var currentStar:int = -1;
         private var saveCurrentStar:int = -1;
@@ -27,11 +27,11 @@ public class StarrySkyView extends Sprite {
 
         private var drawingLinesLayer:Sprite = new Sprite();
 
-        public function StarrySkyView(starrySky:StarrySky) {
+        public function StarrySkyView(starrySky:StarrySky, workspace:StarsWorkspace) {
 
+            _workspace = workspace;
             addChild(drawingLinesLayer);
 
-//            panel = new SkyInfoPanel(this);
             starViews = [];
             lines = [];
 
@@ -67,9 +67,11 @@ public class StarrySkyView extends Sprite {
             });
 
             addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
-                if (pressed)
+                if (pressed) {
                     drawLineView(event.localX, event.localY);
-//                    currentLineView.drawNewLine(event.localX, event.localY);
+                    workspace.panel.text = "Length of the moved line: " + currentLineView.computeDistance(event.localX, event.localY);
+                } //else
+//                    workspace.panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
             });
 
             addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
@@ -79,8 +81,12 @@ public class StarrySkyView extends Sprite {
                     var lineInd:int = sky.addLine(star1, star2); //TODO sky changed handler called, but we still don't have a line
                     if (lineInd >= 0)
                         fixLineView(sky.starsLines[lineInd]);
+                    else
+                        drawingLinesLayer.removeChild(currentLineView);
                 } else if (pressed)
                     drawingLinesLayer.removeChild(currentLineView);
+//                workspace.panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
+                workspace.panel.text = "";
 
                 pressed = false;
                 saveCurrentStar = -1;
@@ -88,15 +94,6 @@ public class StarrySkyView extends Sprite {
                 starrySky_changeHandler(null); //TODO get rid of this call
             });
 
-            /*addEventListener(MouseEvent.MOUSE_MOVE, function (e:Event):void {
-                panel.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY + ",\n" +
-                        "current_Star: " + currentStar + ",\n" + "save_current_Star: " + saveCurrentStar + ",\n" +
-                        "pressed: " + pressed;
-            });
-
-            panel.x = 0;
-            panel.y = this.height;
-            addChild(panel);*/
             starrySky.addEventListener(Event.CHANGE, starrySky_changeHandler);
         }
 
@@ -123,7 +120,7 @@ public class StarrySkyView extends Sprite {
         }
 
         public function createLineView(startX:Number, startY:Number):void {
-            var lineView:LineView = new LineView(startX, startY);
+            var lineView:LineView = new LineView(startX, startY, _workspace);
             drawingLinesLayer.addChild(lineView);
             currentLineView = lineView;
         }
@@ -168,7 +165,7 @@ public class StarrySkyView extends Sprite {
             removeLine(i);
     }
 
-    private function starrySky_changeHandler(event:Event):void {
+    public function starrySky_changeHandler(event:Event):void {
         for each (var lineView:LineView in lines)
             lineView.error = sky.isLineIntersected(lineView.line);
     }

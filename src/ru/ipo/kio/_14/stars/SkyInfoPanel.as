@@ -4,14 +4,18 @@
 package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
 import flash.text.TextField;
+import flash.text.TextFormat;
 
-    public class SkyInfoPanel extends Sprite {
+public class SkyInfoPanel extends Sprite {
 
         private var txt:TextField;
-        private var sky:StarrySkyView;
+        private var _skyView:StarrySkyView;
 
         public function SkyInfoPanel(sky:StarrySkyView) {
-            this.sky = sky;
+            this._skyView = sky;
+            var tf:TextFormat = new TextFormat("Arial", 13, 0xfffff);
+            txt = new TextField();
+            txt.defaultTextFormat = tf;
             drawPanel();
             addChild(txt);
         }
@@ -25,11 +29,9 @@ import flash.text.TextField;
         }
 
         private function drawPanel():void {
-            txt = new TextField();
-            txt.width = 160;
-            txt.height = 70;
+            txt.width = 250;
+            txt.height = 100;
             txt.selectable = false;
-            txt.text = "X coordinates: " + mouseX + ",\n" + "Y coordinates: " + mouseY;
         }
     }
 }

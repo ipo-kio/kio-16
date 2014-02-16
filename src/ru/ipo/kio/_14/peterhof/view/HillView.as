@@ -7,6 +7,8 @@ import away3d.materials.ColorMaterial;
 import away3d.primitives.CylinderGeometry;
 import away3d.primitives.LineSegment;
 
+import flash.display.BitmapData;
+
 import flash.geom.Vector3D;
 
 import flash.utils.Dictionary;
@@ -23,7 +25,7 @@ import ru.ipo.kio._14.peterhof.model.Hill;
 
 public class HillView extends ObjectContainer3D {
 
-    [Embed(source="../resources/hill_texture_old.jpg")]
+    [Embed(source="../resources/hill_texture_plain.jpg")]
     public static var FloorDiffuse:Class;
 
     [Embed(source="../resources/sky_texture.jpg")]
@@ -145,7 +147,9 @@ public class HillView extends ObjectContainer3D {
     }
 
     private function draw():void {
-        var material:MaterialBase = new TextureMaterial(Cast.bitmapTexture(FloorDiffuse));
+        var skin:BitmapData = (new FloorDiffuse).bitmapData;
+        HillGeometry.drawGrid(skin);
+        var material:MaterialBase = new TextureMaterial(Cast.bitmapTexture(skin));
         var _plane:Mesh = new Mesh(new HillGeometry(25, Consts.HILL_LENGTH1, Consts.HILL_LENGTH2, Consts.HILL_WIDTH, Consts.HILL_HEIGHT, 10), material);
 
 //        var sun:DirectionalLight = new DirectionalLight(-1, -1, 0);
