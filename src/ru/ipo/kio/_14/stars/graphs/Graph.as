@@ -98,7 +98,7 @@ public class Graph {
         return sum / 2;
     }
 
-    public function isCorrectly(level:int):Boolean {
+    public function isCorrect(level:int):Boolean {
         switch (level) {
             case 0:
                 if (numberOfStars != 1 && numberOfStars == numberOfEdges + 1)

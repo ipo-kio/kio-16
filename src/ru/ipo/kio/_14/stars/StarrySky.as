@@ -7,6 +7,7 @@ import flash.events.EventDispatcher;
 import flash.utils.Dictionary;
 
 import ru.ipo.kio._14.stars.graphs.Graph;
+import ru.ipo.kio._14.stars.graphs.IsomorphismChecker;
 
 public class StarrySky extends EventDispatcher {
 
@@ -54,7 +55,7 @@ public class StarrySky extends EventDispatcher {
         _sumOfLines = 0;
         if (_connectedComponents != null) {
             for each (var g:Graph in _connectedComponents)
-                if (g.isCorrectly(level))
+                if (g.isCorrect(level))
                     _sumOfLines += g.sumOfEdges();
         }
         return _sumOfLines;
@@ -107,11 +108,24 @@ public class StarrySky extends EventDispatcher {
 
     public function countDifferentGraphs():int {
         var count:int = 0;
-        /*if (_connectedComponents = null) {
-            for each (var g:Graph in _connectedComponents)
-                if (g.numberOfStars > g.numberOfEdges)
-                    _sumOfLines += g.sumOfEdges();
-        }*/
+        if (_connectedComponents != null) {
+            for (var g1:int = 0; g1 < _connectedComponents.length; g1++) {
+                var graph1:Graph = _connectedComponents[g1];
+                if (graph1.isCorrect(level)) {
+                    var len:int = 0;
+                    for (var g2:int = 0; g2 < g1 - 1; g2++) {
+                        var graph2:Graph = _connectedComponents[g2];
+                        if (graph2.isCorrect(level))
+                            if (IsomorphismChecker.areIsomorphic(graph1, graph2))
+                                break;
+                        len++;
+                    }
+                    if (len == g1 - 1)
+                        count++;
+                }
+            }
+        }
+
         return count;
     }
 
@@ -191,7 +205,7 @@ public class StarrySky extends EventDispatcher {
         var count:int = 0;
         if (_connectedComponents != null) {
             for each (var g:Graph in _connectedComponents)
-                if (g.isCorrectly(level))
+                if (g.isCorrect(level))
                     count++;
         }
         return "" + count;
