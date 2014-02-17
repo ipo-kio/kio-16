@@ -5,10 +5,8 @@ package ru.ipo.kio._14.peterhof.view {
 import away3d.containers.ObjectContainer3D;
 import away3d.entities.Mesh;
 import away3d.materials.ColorMaterial;
-import away3d.materials.MaterialBase;
 import away3d.materials.TextureMaterial;
 import away3d.materials.lightpickers.StaticLightPicker;
-import away3d.materials.methods.BasicSpecularMethod;
 import away3d.primitives.CylinderGeometry;
 import away3d.primitives.LineSegment;
 import away3d.utils.Cast;
@@ -156,7 +154,8 @@ public class HillView extends ObjectContainer3D {
 //        material.specularMap = Cast.bitmapTexture(HILL_NORMALS);
         material.specular = 0.2;
 
-        material.lightPicker = lightPicker;
+        if (Consts.QUALITY)
+            material.lightPicker = lightPicker;
 
         addChild(_plane);
     }

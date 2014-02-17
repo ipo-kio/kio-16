@@ -24,18 +24,22 @@ public class Fountain extends EventDispatcher {
         _z = 0;
     }
 
+    private function change():void {
+        _stream = null;
+        var time_was:Number = new Date().time;
+        dispatchEvent(new Event(Event.CHANGE));
+        trace('passed: ', new Date().time - time_was);
+    }
+
     public function get x():Number {
         return _x;
     }
 
     public function set x(value:Number):void {
+        if (_x == value)
+            return;
         _x = value;
         change();
-    }
-
-    private function change():void {
-        _stream = null;
-        dispatchEvent(new Event(Event.CHANGE));
     }
 
     public function get y():Number {
@@ -47,6 +51,8 @@ public class Fountain extends EventDispatcher {
     }
 
     public function set z(value:Number):void {
+        if (_z == value)
+            return;
         _z = value;
         change();
     }
@@ -56,6 +62,8 @@ public class Fountain extends EventDispatcher {
     }
 
     public function set l(value:Number):void {
+        if (_l == value)
+            return;
         _l = value;
         change();
     }
@@ -65,6 +73,8 @@ public class Fountain extends EventDispatcher {
     }
 
     public function set d(value:Number):void {
+        if (_d == value)
+            return;
         _d = value;
         change();
     }
@@ -74,6 +84,8 @@ public class Fountain extends EventDispatcher {
     }
 
     public function set alphaGr(value:Number):void {
+        if (_alphaGr == value)
+            return;
         _alphaGr = value;
         change();
     }
@@ -83,6 +95,8 @@ public class Fountain extends EventDispatcher {
     }
 
     public function set phiGr(value:Number):void {
+        if (_phiGr == value)
+            return;
         _phiGr = value;
         change();
     }

@@ -51,8 +51,10 @@ public class FountainView extends ObjectContainer3D {
         _fountainMesh = new Mesh(new CylinderGeometry(RADIUS, RADIUS, HEIGHT, 16, 1), normalMaterial);
         _fountainSelectedMesh = new Mesh(new CylinderGeometry(SELECTED_RADIUS, SELECTED_RADIUS, SELECTED_HEIGHT, 16, 1), selectedMaterial);
 
-        normalMaterial.lightPicker = hillView.lightPicker;
-        selectedMaterial.lightPicker = hillView.lightPicker;
+        if (Consts.QUALITY) {
+            normalMaterial.lightPicker = hillView.lightPicker;
+            selectedMaterial.lightPicker = hillView.lightPicker;
+        }
 
         _fountainMesh.mouseEnabled = true;
         _fountainMesh.pickingCollider = PickingColliderType.BOUNDS_ONLY;
@@ -139,7 +141,7 @@ public class FountainView extends ObjectContainer3D {
         var ind:int = 0;
         for each (var point3D:Point3D in stream.points) {
             ind++;
-            if (ind % 3 != 1) //draw every third
+            if (ind % 7 != 1 && ind != stream.points.length) //draw every seventh and the last
                 continue;
 
             var size:Number = WATER_SIZE;// * Math.exp(2 * ind / points);

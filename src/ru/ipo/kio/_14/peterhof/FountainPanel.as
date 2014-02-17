@@ -27,25 +27,26 @@ public class FountainPanel extends Sprite {
     private var _sprayer:Sprayer;
 
     public function FountainPanel(width:int) {
+        const skip:int = 200;
+
         _alphaEditor = new NumberEditor(width, 18, 0, 90, 45, "°", 0);
-        var alphaEditor:TitledObject = new TitledObject("Наклон", 20, 0x0FFFFF, _alphaEditor);
+        var alphaEditor:TitledObject = new TitledObject("Наклон", 18, 0x0FFFFF, _alphaEditor, skip);
         addChild(alphaEditor);
 
         _phiEditor = new NumberEditor(width, 18, -180, 180, 0, "°", 0);
-        var phiEditor:TitledObject = new TitledObject("Поворот", 20, 0x0FFFFF, _phiEditor);
+        var phiEditor:TitledObject = new TitledObject("Поворот", 18, 0x0FFFFF, _phiEditor, skip);
         addChild(phiEditor);
         phiEditor.y = alphaEditor.height;
 
-        _sprayerWidthEditor = new NumberEditor(width, 18, 0.1, 10, 0.1, "см", 1);
-        var sprayerWidthEditor:TitledObject = new TitledObject("Ширина ф.", 20, 0x0FFFFF, _sprayerWidthEditor);
+        _sprayerWidthEditor = new NumberEditor(width, 18, 0.1, 5, 0.1, "см", 1);
+        var sprayerWidthEditor:TitledObject = new TitledObject("Ширина форсунки", 18, 0x0FFFFF, _sprayerWidthEditor, skip);
         addChild(sprayerWidthEditor);
-        sprayerWidthEditor.x = alphaEditor.width + 60;
+        sprayerWidthEditor.y = phiEditor.y + phiEditor.height;
 
         _sprayerLengthEditor = new NumberEditor(width, 18, 0.1, 10, 5, "см", 1);
-        var sprayerLengthEditor:TitledObject = new TitledObject("Длина ф.", 20, 0x0FFFFF, _sprayerLengthEditor);
+        var sprayerLengthEditor:TitledObject = new TitledObject("Длина форсунки", 18, 0x0FFFFF, _sprayerLengthEditor, skip);
         addChild(sprayerLengthEditor);
-        sprayerLengthEditor.x = sprayerWidthEditor.x;
-        sprayerLengthEditor.y = phiEditor.y;
+        sprayerLengthEditor.y = sprayerWidthEditor.y + sprayerWidthEditor.height;
 
         _streamLengthInfo = new TextField();
         _streamLengthInfo.selectable = false;
@@ -53,23 +54,27 @@ public class FountainPanel extends Sprite {
         _streamLengthInfo.autoSize = TextFieldAutoSize.LEFT;
         _streamLengthInfo.multiline = true;
         addChild(_streamLengthInfo);
-        _streamLengthInfo.x = sprayerWidthEditor.x + width + 60;
+        _streamLengthInfo.x = sprayerWidthEditor.x + sprayerWidthEditor.width + 20;
 
         _alphaEditor.addEventListener(Event.CHANGE, alphaEditor_changeHandler);
         _phiEditor.addEventListener(Event.CHANGE, phiEditor_changeHandler);
         _sprayerWidthEditor.addEventListener(Event.CHANGE, sprayerWidthEditor_changeHandler);
         _sprayerLengthEditor.addEventListener(Event.CHANGE, sprayerLengthEditor_changeHandler);
 
+        //setup sprayer
+        _sprayer = new Sprayer(100, 90, Consts.D, 60);
+        addChild(_sprayer);
+
+        _sprayer.x = _streamLengthInfo.x;
+        _sprayer.y = 25;
+
+        //hide all initially
         _alphaEditor.visible = false;
         _phiEditor.visible = false;
         _sprayerWidthEditor.visible = false;
         _sprayerLengthEditor.visible = false;
         _streamLengthInfo.visible = false;
-
-        _sprayer = new Sprayer(116, 90, Consts.D);
-        addChild(_sprayer);
-        _sprayer.x = _streamLengthInfo.x;
-        _sprayer.y = 25;
+        _sprayer.visible = false;
     }
 
 
@@ -93,6 +98,7 @@ public class FountainPanel extends Sprite {
         _sprayerWidthEditor.visible = show;
         _sprayerLengthEditor.visible = show;
         _streamLengthInfo.visible = show;
+        _sprayer.visible = show;
 
         fountainChangeHandler(null);
     }
@@ -109,8 +115,10 @@ public class FountainPanel extends Sprite {
     }
 
     private function alphaEditor_changeHandler(event:Event):void {
-        if (_fountain != null && !_alphaEditor.has_error())
+        if (_fountain != null && !_alphaEditor.has_error()) {
             _fountain.alphaGr = _alphaEditor.value;
+            _sprayer.rotate(_alphaEditor.value * Math.PI / 180);
+        }
     }
 
     private function phiEditor_changeHandler(event:Event):void {

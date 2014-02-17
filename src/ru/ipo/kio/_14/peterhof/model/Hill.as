@@ -18,39 +18,39 @@ public class Hill extends EventDispatcher {
         f1.x = 10;
         f1.z = 25;
         f1.l = 0.1;
-        f1.d = 0.1;
+        f1.d = 0.04;
         f1.phiGr = -20;
         f1.alphaGr = 70;
 
         var f2:Fountain = new Fountain(this);
-        f2.x = 32;
-        f2.z = 20;
+        f2.x = 35;
+        f2.z = 60;
         f2.l = 0.1;
-        f2.d = 0.1;
+        f2.d = 0.04;
         f2.phiGr = 0;
         f2.alphaGr = 70;
 
         var f3:Fountain = new Fountain(this);
-        f3.x = 54;
+        f3.x = 55;
         f3.z = 30;
         f3.l = 0.1;
-        f3.d = 0.1;
+        f3.d = 0.04;
         f3.phiGr = 160;
         f3.alphaGr = 70;
 
         var f4:Fountain = new Fountain(this);
-        f4.x = 76;
-        f4.z = 25;
+        f4.x = 75;
+        f4.z = 65;
         f4.l = 0.1;
-        f4.d = 0.1;
+        f4.d = 0.04;
         f4.phiGr = 160;
         f4.alphaGr = 70;
 
         var f5:Fountain = new Fountain(this);
-        f5.x = 98;
+        f5.x = 100;
         f5.z = 40;
         f5.l = 0.1;
-        f5.d = 0.1;
+        f5.d = 0.04;
         f5.phiGr = -140;
         f5.alphaGr = 71;
 

@@ -50,9 +50,9 @@ public class PeterhofWorkspace extends Sprite {
         _fountainsView.hill.addEventListener(FountainEvent.CHANGED, hill_changedHandler);
 
         var physicsPanel:PhysicsPanel = new PhysicsPanel(_fountainsView.hill);
-//        addChild(physicsPanel);
-        physicsPanel.x = 20;
-        physicsPanel.y = 470;
+        addChild(physicsPanel);
+        physicsPanel.x = 400;
+        physicsPanel.y = 4;
     }
 
     public function get currentResult():Object {

@@ -26,15 +26,16 @@ public class HillGeometry extends Geometry {
         vertexes.push(0, h, d);
         vertexes.push(a, h, 0);
         vertexes.push(a, h, d);
-        vertexes.push(a + b, 0, 0);
+        vertexes.push(a + b, 0, 0);  // 4
         vertexes.push(a + b, 0, d);
-        vertexes.push(a + b + c, 0, 0);
+        vertexes.push(a + b + c, 0, 0); // 6
         vertexes.push(a + b + c, 0, d);
 
         //bottom
-        vertexes.push(0, -h2, 0); //8
+        vertexes.push(0, -h2, 0); // 8
         vertexes.push(0, -h2, d);
-        vertexes.push(a + b + c, -h2, 0);
+        vertexes.push(a + b + c, -h2, 0); // 10
+        vertexes.push(a + b + c, -h2, 0); // 10'
         vertexes.push(a + b + c, -h2, d);
 
         moveVertexesBack(vertexes, a);
@@ -49,16 +50,17 @@ public class HillGeometry extends Geometry {
         uvs.push(0, v2);
         uvs.push(u1, v1);
         uvs.push(u1, v2);
-        uvs.push(u2, v1);
+        uvs.push(u2, v1); // 4
         uvs.push(u2, v2);
-        uvs.push(u3, v1);
+        uvs.push(u3, v1); // 6
         uvs.push(u3, v2);
 
         //bottom
         uvs.push(0, 0);
         uvs.push(0, 1);
-        uvs.push(1, 0);
-        uvs.push(1, 1);
+        uvs.push(u3, 0); // 10
+        uvs.push(1, v1); // 10'
+        uvs.push(1, v2);
 
         var indices:Vector.<uint> = new Vector.<uint>;
         indices.push(0, 1, 2);
@@ -73,8 +75,8 @@ public class HillGeometry extends Geometry {
         indices.push(8, 4, 10);
         indices.push(4, 6, 10);
         //right side
-        indices.push(10, 6, 7);
-        indices.push(10, 7, 11);
+        indices.push(11, 6, 7);
+        indices.push(11, 7, 12);
 
         var subGeometry:SubGeometry = new SubGeometry();
         subGeometry.updateVertexData(vertexes);

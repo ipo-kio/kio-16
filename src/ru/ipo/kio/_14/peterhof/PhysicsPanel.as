@@ -11,40 +11,39 @@ import ru.ipo.kio._14.peterhof.model.Hill;
 public class PhysicsPanel extends Sprite {
     private var _hill:Hill;
 
-    private var ds_editor:NumberEditor = new NumberEditor(200, 40, 0.001, 10, Consts.D, "м", 3);
-    private var rho_editor:NumberEditor = new NumberEditor(200, 40, 0.01, 100000, Consts.RHO, "кг/м^3", 2);
-    private var eta_editor:NumberEditor = new NumberEditor(200, 40, 0.0001, 100, 1000 * Consts.ETA, "г/м с", 4);
-    private var g_editor:NumberEditor = new NumberEditor(200, 40, 0, 1000, Consts.G, "м/c^2", 3);
-    private var k_editor:NumberEditor = new NumberEditor(200, 40, 0, 100, Consts.K, "*", 6);
+    private const editor_width:int = 150;
+    private var ds_editor:NumberEditor = new NumberEditor(editor_width, 0, 0.001, 10, Consts.D, "м", 3);
+    private var min_dist_editor:NumberEditor = new NumberEditor(editor_width, 0, 10, 200, Consts.MIN_DIST, "м", 0);
+    private var eta_editor:NumberEditor = new NumberEditor(editor_width, 0, 0.0001, 100, 1000 * Consts.ETA, "г/м с", 4);
+    private var g_editor:NumberEditor = new NumberEditor(editor_width, 0, 0, 1000, Consts.G, "м/c^2", 3);
+    private var k_editor:NumberEditor = new NumberEditor(editor_width, 0, 0, 100, Consts.K, "*", 6);
 
     public function PhysicsPanel(hill:Hill) {
         _hill = hill;
+        var skip:int = 220;
 
-        var to1:TitledObject = new TitledObject("Диаметр трубы", 14, 0xaaaaff, ds_editor);
+        var to1:TitledObject = new TitledObject("Диаметр трубы", 14, 0xaaaaff, ds_editor, skip);
         addChild(to1);
         ds_editor.addEventListener(Event.CHANGE, ds_editor_changeHandler);
 
-        var to2:TitledObject = new TitledObject("Плотность воды", 14, 0xaaaaff, rho_editor);
+        var to2:TitledObject = new TitledObject("Минимальноее расстояние", 14, 0xaaaaff, min_dist_editor, skip);
         addChild(to2);
-        to2.x = 250;
-        rho_editor.addEventListener(Event.CHANGE, rho_editor_changeHandler);
+        to2.y = to1.height;
+        min_dist_editor.addEventListener(Event.CHANGE, min_dist_editor_changeHandler);
 
-        var to3:TitledObject = new TitledObject("Вязкость воды", 14, 0xaaaaff, eta_editor);
+        var to3:TitledObject = new TitledObject("Вязкость воды", 14, 0xaaaaff, eta_editor, skip);
         addChild(to3);
-        to3.x = 250;
-        to3.y = to2.height;
+        to3.y = to2.y + to2.height;
         eta_editor.addEventListener(Event.CHANGE, eta_editor_changeHandler);
 
-        var to4:TitledObject = new TitledObject("Ускорение свободного падения", 14, 0xaaaaff, g_editor);
+        var to4:TitledObject = new TitledObject("Ускорение свободного падения", 14, 0xaaaaff, g_editor, skip);
         addChild(to4);
-        to4.x = 500;
-        to4.y = 0;
+        to4.y = to3.y + to3.height;
         g_editor.addEventListener(Event.CHANGE, g_editor_changeHandler);
 
-        var to5:TitledObject = new TitledObject("Сопротивление воздуха", 14, 0xaaaaff, k_editor);
+        var to5:TitledObject = new TitledObject("Сопротивление воздуха", 14, 0xaaaaff, k_editor, skip);
         addChild(to5);
-        to5.x = 500;
-        to5.y = to4.height;
+        to5.y = to4.y + to4.height;
         k_editor.addEventListener(Event.CHANGE, k_editor_changeHandler);
     }
 
@@ -54,8 +53,8 @@ public class PhysicsPanel extends Sprite {
         _hill.invalidate_streams();
     }
 
-    private function rho_editor_changeHandler(event:Event):void {
-        Consts.RHO = rho_editor.value;
+    private function min_dist_editor_changeHandler(event:Event):void {
+        Consts.MIN_DIST = min_dist_editor.value;
         _hill.invalidate_streams();
     }
 

@@ -3,6 +3,8 @@
  */
 package ru.ipo.kio._14.peterhof.view {
 import flash.display.BitmapData;
+import flash.display.Graphics;
+import flash.display.Shape;
 import flash.display.Sprite;
 import flash.geom.Matrix;
 
@@ -12,30 +14,47 @@ public class Sprayer extends Sprite {
     public static const WATER_IMAGE:Class;
     public static const WATER_IMAGE_BITMAP:BitmapData = (new WATER_IMAGE).bitmapData;
 
-    public static const WATER_COLOR:uint = 0x0000FF;
-    public static const LINES_COLOR:uint = 0xFFFFFF;
-    public static const LEFT_WIDTH:int = 20;
-    public static const RIGHT_WIDTH:int = 10;
+    private static const WATER_COLOR:uint = 0x0000FF;
+    private static const LINES_COLOR:uint = 0xFFFFFF;
+    private static const BOTTOM_HEIGHT:int = 20;
+    private static const RIGHT_WIDTH:int = 10;
 
     private var _sprite_width:Number;
     private var _sprite_height:Number;
 
     private var _f_width:Number = 0;
     private var _f_length:Number = 0;
-//    private var _min_width:Number;
-//    private var _max_width:Number;
-//    private var _min_length:Number;
-//    private var _max_length:Number;
     private var _outer_width:Number;
+    private var _outer_pixel_width:Number;
 
-    public function Sprayer(sprite_width:Number, sprite_height:Number, /*min_width:Number, max_width:Number, min_length:Number, max_length:Number,*/ outer_width:Number) {
+    private var innerSprite:Sprite = new Sprite();
+
+    public function Sprayer(sprite_width:Number, sprite_height:Number, outer_width:Number, outer_pixel_width:Number) {
         _sprite_width = sprite_width;
         _sprite_height = sprite_height;
-//        _min_width = min_width;
-//        _max_width = max_width;
-//        _min_length = min_length;
-//        _max_length = max_length;
         _outer_width = outer_width;
+        _outer_pixel_width = outer_pixel_width;
+
+        addChild(innerSprite);
+        var mask:Shape = new Shape();
+        mask.graphics.beginFill(0xFFFFFF);
+        mask.graphics.drawRect(1, 1, sprite_width - 2, sprite_height - 2);
+        mask.graphics.endFill();
+        addChild(mask);
+        mask.visible = false;
+        innerSprite.mask = mask;
+
+        //draw border
+        graphics.lineStyle(1, 0xFF0000);
+        graphics.drawRect(0, 0, sprite_width, sprite_height);
+    }
+
+    public function rotate(angle:Number):void {
+        var m:Matrix = new Matrix();
+        m.translate(-_sprite_width / 2, -_sprite_height / 2);
+        m.rotate(Math.PI / 2 - angle);
+        m.translate(_sprite_width / 2, _sprite_height / 2);
+        innerSprite.transform.matrix = m;
     }
 
     public function get f_width():Number {
@@ -57,38 +76,45 @@ public class Sprayer extends Sprite {
     }
 
     private function redraw():void {
-        var center_height:Number = _sprite_height * _f_width / _outer_width; // (_f_width - _min_width) / (_max_width - _min_width);
-        var center_length:Number = _sprite_height / _outer_width * _f_length;
-
-        graphics.clear();
+        var center_width:Number = _outer_pixel_width * _f_width / _outer_width; // (_f_width - _min_width) / (_max_width - _min_width);
+        var center_length:Number = _outer_pixel_width / _outer_width * _f_length;
+        var x0:Number = (_sprite_width - _outer_pixel_width) / 2;
 
         /*
-        -----|
-             |
-             -----
-
-             -----
-             |
-        -----|
+            |   |
+        |---|   |---|
+        |           |
         */
+
+        var g:Graphics = innerSprite.graphics;
+
+        g.clear();
 
         var m:Matrix = new Matrix();
         m.translate(-10, 0);
-        graphics.beginBitmapFill(WATER_IMAGE_BITMAP, m);
-        graphics.drawRect(-2, 0, 2 + LEFT_WIDTH, _sprite_height);
-        graphics.drawRect(LEFT_WIDTH, (_sprite_height - center_height) / 2, _sprite_width - LEFT_WIDTH, center_height);
-        graphics.endFill();
+        g.beginBitmapFill(WATER_IMAGE_BITMAP, m);
+        g.drawRect(x0, _sprite_height - BOTTOM_HEIGHT, _outer_pixel_width, 10 * BOTTOM_HEIGHT + 2);
+        g.drawRect((_sprite_width - center_width) / 2, -100, center_width, _sprite_height - BOTTOM_HEIGHT + 100);
+        g.endFill();
 
-        graphics.lineStyle(2, LINES_COLOR);
-        graphics.moveTo(0, 0);
-        graphics.lineTo(LEFT_WIDTH, 0);
-        graphics.lineTo(LEFT_WIDTH, (_sprite_height - center_height) / 2);
-        graphics.lineTo(LEFT_WIDTH + center_length, (_sprite_height - center_height) / 2);
+        g.lineStyle(2, LINES_COLOR);
+        g.moveTo(x0, 10 * _sprite_height);
+        g.lineTo(x0, _sprite_height - BOTTOM_HEIGHT);
+        g.lineTo((_sprite_width - center_width) / 2, _sprite_height - BOTTOM_HEIGHT);
+        g.lineTo((_sprite_width - center_width) / 2, _sprite_height - BOTTOM_HEIGHT - center_length);
 
-        graphics.moveTo(0, _sprite_height);
-        graphics.lineTo(LEFT_WIDTH, _sprite_height);
-        graphics.lineTo(LEFT_WIDTH, (_sprite_height + center_height) / 2);
-        graphics.lineTo(LEFT_WIDTH + center_length, (_sprite_height + center_height) / 2);
+        g.moveTo(_sprite_width - x0, 10 * _sprite_height);
+        g.lineTo(_sprite_width - x0, _sprite_height - BOTTOM_HEIGHT);
+        g.lineTo((_sprite_width + center_width) / 2, _sprite_height - BOTTOM_HEIGHT);
+        g.lineTo((_sprite_width + center_width) / 2, _sprite_height - BOTTOM_HEIGHT - center_length);
+    }
+
+    public function get sprite_height():int {
+        return _sprite_height;
+    }
+
+    public function get sprite_width():int {
+        return _sprite_width;
     }
 }
 }

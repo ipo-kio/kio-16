@@ -72,7 +72,8 @@ public class Fountains3DView extends View3D {
         addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
 
 //        draw();
-        background = new BitmapTexture((new SKY_TEXTURE).bitmapData);
+//        if (Consts.QUALITY)
+//            background = new BitmapTexture((new SKY_TEXTURE).bitmapData);
     }
 
     public function get hillView():HillView {

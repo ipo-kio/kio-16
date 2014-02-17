@@ -9,7 +9,7 @@ import flash.text.TextFormat;
 
 public class TitledObject extends Sprite {
 
-    public function TitledObject(title:String, size:int, color:uint, sprite:Sprite) {
+    public function TitledObject(title:String, size:int, color:uint, sprite:Sprite, skip:Number = 0) {
         var tf:TextField = new TextField();
         tf.selectable = false;
         tf.embedFonts = true;
@@ -18,8 +18,8 @@ public class TitledObject extends Sprite {
         addChild(tf);
         tf.text = title;
 
-        sprite.x = 0;
-        sprite.y = tf.height;
+        sprite.x = skip == 0 ? tf.width : skip;
+        sprite.y = 2 * size - sprite.height;
         addChild(sprite);
     }
 }

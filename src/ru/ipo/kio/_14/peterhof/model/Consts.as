@@ -11,7 +11,7 @@ public class Consts {
     public static const HILL_WIDTH:int = 100;
     public static const HILL_HEIGHT:int = 50;
     public static const WATER_EXTRA_HEIGHT:int = 0;
-    public static const MIN_DIST:int = 20;
+    public static var MIN_DIST:int = 30;
 
     public static const HILL_LENGTH1_ANGLE:Number = Math.sqrt(HILL_LENGTH1 * HILL_LENGTH1 + HILL_HEIGHT * HILL_HEIGHT);
 
@@ -36,5 +36,7 @@ public class Consts {
     public static const SKIN_Z0:int = 128;
     public static const SKIN_WIDTH:int = 832; //1024 - 128 - 64
     public static const SKIN_HEIGHT:int = 768;
+
+    public static const QUALITY:Boolean = true;
 }
 }

@@ -63,7 +63,7 @@ public class NumberEditor extends Sprite {
 
     public function NumberEditor(width:int, height:int, min:Number, max:Number, initial_value:Number, units:String, places:int) {
         _width = width;
-        _height = height;
+        _height = NUM_PL_CLS_IMG.height;
 
         _min = min;
         _max = max;
@@ -107,7 +107,7 @@ public class NumberEditor extends Sprite {
         _textFieldUnits.text = _units;
         _textFieldUnits.textColor = 0xFFFFFF;
         _textFieldUnits.selectable = false;
-        _textFieldUnits.y = (_height - fontSize) / 2;
+        _textFieldUnits.y = (_height - _textFieldUnits.height) / 2;
 
         _textField.embedFonts = true;
         _textField.type = TextFieldType.INPUT;
@@ -117,12 +117,8 @@ public class NumberEditor extends Sprite {
         _textField.x = _buttonPlus.width + 4;
         _textField.textColor = 0xFFFFFF;
 
-        _textField.y = (_height - fontSize) / 2;
+        _textField.y = _textFieldUnits.y;
         _textField.height = _height - _textField.y;
-    }
-
-    private function round(x:Number):Number {
-        return 10;
     }
 
     public function get value():Number {
