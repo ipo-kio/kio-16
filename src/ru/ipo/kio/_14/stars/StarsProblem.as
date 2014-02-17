@@ -71,6 +71,7 @@ public class StarsProblem implements KioProblem {
     }
 
     public function compare(solution1:Object, solution2:Object):int {
+        //TODO store true/false in has_intersected_lines
         if (solution1.has_intersected_lines == "ЕСТЬ" && solution2.has_intersected_lines == "ЕСТЬ")
             return 0;
         else if (solution1.has_intersected_lines == "ЕСТЬ" && solution2.has_intersected_lines == "НЕТ")

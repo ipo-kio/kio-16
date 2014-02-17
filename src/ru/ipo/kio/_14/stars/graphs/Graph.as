@@ -4,6 +4,7 @@
 package ru.ipo.kio._14.stars.graphs {
 import flash.utils.Dictionary;
 
+import ru.ipo.kio._14.stars.Line;
 import ru.ipo.kio._14.stars.Star;
 
 public class Graph {
@@ -11,7 +12,14 @@ public class Graph {
     private var _graph:Dictionary; //<Star -> starsList <Vector.<Star>>>
     private var _stars:Vector.<Star>;
 
-    public function Graph(graph:Dictionary) {
+    private var _level:int;
+
+//    public var isCorrect:Boolean;
+
+    public function Graph(graph:Dictionary, level:int) {
+
+        _level = level;
+
         _graph = graph;
         _stars = new Vector.<Star>();
         for (var s:Object in _graph)
@@ -71,7 +79,7 @@ public class Graph {
             for (var star:Object in visited)
                 if (visited[star] == cc)
                     d[star] = _graph[star];
-            return new Graph(d);
+            return new Graph(d, _level);
         }
 
         return graphs;
@@ -79,6 +87,37 @@ public class Graph {
 
     public function get stars():Vector.<Star> {
         return _stars;
+    }
+
+    public function sumOfEdges():Number {
+        var sum:Number = 0;
+        for (var s:Object in graph) {
+            for each (var neighbour:Star in graph[s])
+                sum += new Line(s as Star, neighbour).distance;
+        }
+        return sum / 2;
+    }
+
+    public function isCorrect(level:int):Boolean {
+        switch (level) {
+            case 0:
+                if (numberOfStars != 1 && numberOfStars == numberOfEdges + 1)
+                    return true;
+                break;
+            case 1:
+                if(numberOfStars != 1 && numberOfStars == numberOfEdges)
+                    return true;
+                break;
+            case 2:
+                if (numberOfStars != 1) {
+                    if (numberOfStars == numberOfEdges + 1)
+                        return true;
+                    else if(numberOfStars == numberOfEdges)
+                        return true;
+                }
+                break;
+        }
+        return false;
     }
 }
 }

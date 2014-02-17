@@ -7,6 +7,7 @@ import flash.events.EventDispatcher;
 import flash.utils.Dictionary;
 
 import ru.ipo.kio._14.stars.graphs.Graph;
+import ru.ipo.kio._14.stars.graphs.IsomorphismChecker;
 
 public class StarrySky extends EventDispatcher {
 
@@ -52,60 +53,11 @@ public class StarrySky extends EventDispatcher {
 
     public function computeSumOfLines():Number {
         _sumOfLines = 0;
-        switch (level) {
-            case 0:
-                if (_connectedComponents != null) {
-                    for each (var g:Graph in _connectedComponents)
-                        if (g.numberOfStars > g.numberOfEdges) {
-                            var partOfSum:Number = 0;
-                            for (var s:Object in g.graph) {
-                                for each (var neighbour:Star in g.graph[s])
-                                    partOfSum += new Line(s as Star, neighbour).distance;
-                            }
-                            _sumOfLines += (partOfSum / 2);
-                        }
-                }
-                break;
-            case 1:
-                //todo sum of lines not NaN
-                if (_connectedComponents != null) {
-                    for each (var g1:Graph in _connectedComponents)
-                        if (g1.numberOfStars == g1.numberOfEdges) {
-                            var partOfSum1:Number = 0;
-                            for (var s1:Object in g1.graph) {
-                                for each (var neighbour1:Star in g1.graph[s1]) {
-                                    partOfSum1 += new Line(s1 as Star, neighbour1).distance;
-                                }
-                            }
-                            _sumOfLines += (partOfSum1 / 2);
-                        }
-                }
-                break;
-            case 2:
-                if (_connectedComponents != null) {
-                    for each (var g2:Graph in _connectedComponents)
-                        if (g2.numberOfStars > g2.numberOfEdges) {
-                            var partOfSum2:Number = 0;
-                            for (var s2:Object in g2.graph) {
-                                for each (var neighbour2:Star in g2.graph[s2])
-                                    partOfSum2 += new Line(s2 as Star, neighbour2).distance;
-                            }
-                            _sumOfLines += (partOfSum2 / 2);
-
-                        } else if (g2.numberOfStars == g2.numberOfEdges) {
-                            var partOfSum22:Number = 0;
-                            for (var s22:Object in g2.graph) {
-                                for each (var neighbour22:Star in g2.graph[s22])
-                                    partOfSum22 += new Line(s22 as Star, neighbour22).distance;
-                            }
-                            _sumOfLines += (partOfSum22 / 2);
-                        }
-                }
-                break;
+        if (_connectedComponents != null) {
+            for each (var g:Graph in _connectedComponents)
+                if (g.isCorrect(level))
+                    _sumOfLines += g.sumOfEdges();
         }
-
-        /*for each (var line:Line in starsLines)
-            _sumOfLines += line.distance;*/
         return _sumOfLines;
     }
 
@@ -142,14 +94,39 @@ public class StarrySky extends EventDispatcher {
 
         if (!hasIntersectedLines()) {
             createGraph();
+
+            countDifferentGraphs();
+
+            computeSumOfLines();
         } else {
             _graph = null;
             _connectedComponents = null;
         }
-        //compute total length
-        computeSumOfLines();
 
         dispatchEvent(new Event(Event.CHANGE));
+    }
+
+    public function countDifferentGraphs():int {
+        var count:int = 0;
+        if (_connectedComponents != null) {
+            for (var g1:int = 0; g1 < _connectedComponents.length; g1++) {
+                var graph1:Graph = _connectedComponents[g1];
+                if (graph1.isCorrect(level)) {
+                    var len:int = 0;
+                    for (var g2:int = 0; g2 < g1 - 1; g2++) {
+                        var graph2:Graph = _connectedComponents[g2];
+                        if (graph2.isCorrect(level))
+                            if (IsomorphismChecker.areIsomorphic(graph1, graph2))
+                                break;
+                        len++;
+                    }
+                    if (len == g1 - 1)
+                        count++;
+                }
+            }
+        }
+
+        return count;
     }
 
     public function hasIntersectedLines():Boolean {
@@ -198,7 +175,7 @@ public class StarrySky extends EventDispatcher {
             neighbours[line.s2].push(line.s1);
         }
 
-        _graph = new Graph(neighbours);
+        _graph = new Graph(neighbours, level);
         _connectedComponents = _graph.findConnectedComponents();
     }
 
@@ -226,32 +203,10 @@ public class StarrySky extends EventDispatcher {
 
     public function countOfRightGraphs(level:int):String {
         var count:int = 0;
-        switch (level) {
-            case 0:
-                if (_connectedComponents != null) {
-                    for each (var g:Graph in _connectedComponents)
-                        if (g.numberOfStars != 1 && g.numberOfStars > g.numberOfEdges)
-                            count++;
-                }
-                break;
-            case 1:
-                if (_connectedComponents != null) {
-                    for each (var g1:Graph in _connectedComponents)
-                        if(g1.numberOfStars != 1 && g1.numberOfStars == g1.numberOfEdges)
-                            count++;
-                }
-                break;
-            case 2:
-                if (_connectedComponents != null) {
-                    for each (var gr:Graph in _connectedComponents)
-                        if (gr.numberOfStars != 1) {
-                            if (gr.numberOfStars > gr.numberOfEdges)
-                                count++;
-                            else if(gr.numberOfStars == gr.numberOfEdges)
-                                count++;
-                        }
-                }
-                break;
+        if (_connectedComponents != null) {
+            for each (var g:Graph in _connectedComponents)
+                if (g.isCorrect(level))
+                    count++;
         }
         return "" + count;
     }
