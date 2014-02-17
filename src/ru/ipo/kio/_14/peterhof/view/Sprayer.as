@@ -14,10 +14,8 @@ public class Sprayer extends Sprite {
     public static const WATER_IMAGE:Class;
     public static const WATER_IMAGE_BITMAP:BitmapData = (new WATER_IMAGE).bitmapData;
 
-    private static const WATER_COLOR:uint = 0x0000FF;
-    private static const LINES_COLOR:uint = 0xFFFFFF;
+    private static const LINES_COLOR:uint = 0xFF0000;
     private static const BOTTOM_HEIGHT:int = 20;
-    private static const RIGHT_WIDTH:int = 10;
 
     private var _sprite_width:Number;
     private var _sprite_height:Number;
@@ -45,7 +43,7 @@ public class Sprayer extends Sprite {
         innerSprite.mask = mask;
 
         //draw border
-        graphics.lineStyle(1, 0xFF0000);
+        graphics.lineStyle(1, 0xFFFFFF);
         graphics.drawRect(0, 0, sprite_width, sprite_height);
     }
 

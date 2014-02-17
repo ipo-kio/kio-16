@@ -67,13 +67,15 @@ public class Fountains3DView extends View3D {
         height = PeterhofWorkspace._3D_HEIGHT;
 
         addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-        addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
         addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
         addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
 
 //        draw();
 //        if (Consts.QUALITY)
 //            background = new BitmapTexture((new SKY_TEXTURE).bitmapData);
+
+        addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+        addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
     }
 
     public function get hillView():HillView {
@@ -81,7 +83,7 @@ public class Fountains3DView extends View3D {
     }
 
     public function processKeyPress(event:KeyboardEvent):void {
-        switch (event.keyCode) {
+        /*switch (event.keyCode) {
             case 37:
             case 65:
                 _camera_z -= 1;
@@ -102,7 +104,7 @@ public class Fountains3DView extends View3D {
                 _camera_x += 1;
                 positionCamera();
                 break;
-        }
+        }*/
     }
 
     private function onMouseWheel(event:MouseEvent):void {
@@ -363,6 +365,14 @@ public class Fountains3DView extends View3D {
 
     public function get hill():Hill {
         return _hill;
+    }
+
+    private function addedToStageHandler(event:Event):void {
+        stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+    }
+
+    private function removedFromStageHandler(event:Event):void {
+        stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
     }
 }
 }
