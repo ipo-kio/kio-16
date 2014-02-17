@@ -2,6 +2,7 @@
  * Created by user on 06.01.14.
  */
 package ru.ipo.kio._14.stars {
+import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
 
@@ -37,9 +38,17 @@ public class StarsWorkspace extends Sprite {
 //        trace(api.localization.statement0);
 
         var stars:Array = [new Star(43, 45, 1), new Star(63, 55, 3), new Star(64, 105, 2),
-            new Star(70, 145, 2), new Star(243, 65, 1), new Star(163, 60, 3), new Star(103, 98, 1),
-            new Star(203, 98, 3), new Star(211, 160, 2), new Star(277, 66, 1), new Star(274, 95, 2)
+            new Star(70, 145, 2), new Star(238, 55, 1), new Star(163, 60, 3), new Star(103, 98, 1),
+            new Star(203, 98, 3), new Star(211, 160, 2), new Star(277, 226, 1), new Star(274, 95, 2),
+            new Star(333, 145, 1), new Star(463, 255, 3), new Star(304, 305, 2),
+            new Star(390, 245, 2), new Star(443, 65, 1), new Star(593, 60, 3), new Star(143, 148, 1),
+            new Star(503, 98, 3), new Star(411, 160, 2), new Star(357, 66, 1), new Star(574, 145, 2),
+            new Star(70, 245, 2), new Star(93, 315, 1), new Star(128, 380, 3), new Star(193, 398, 1),
+            new Star(93, 198, 3), new Star(171, 260, 2), new Star(197, 319, 1), new Star(374, 345, 2)
         ];
+
+//        var b:BitmapData;
+//        b.getPixel
 
         sky = new StarrySky(level, stars);
         skyView = new StarrySkyView(sky, this);
@@ -90,17 +99,24 @@ public class StarsWorkspace extends Sprite {
     }
 
     private function recordChanged(event:Event):void {
-        infoPanelRecord.setValue(0, "" + sky.hasIntersected());
+        infoPanelRecord.setValue(0, "" + sky.hasIntersectedAnswer());
         infoPanelRecord.setValue(1, "" + sky.countOfRightGraphs(level));
-        infoPanelRecord.setValue(2, "" + 0/*!!!!!!!!!!!!!!!!!!!!!!!!*/);
+        infoPanelRecord.setValue(2, "" + sky.countDifferentGraphs());
         infoPanelRecord.setValue(3, "" + sky.sumOfLines.toFixed(3));
     }
 
     private function sky_changeHandler(event:Event):void {
-        infoPanel.setValue(0, "" + sky.hasIntersected());
-        infoPanel.setValue(1, "" + sky.countOfRightGraphs(level));
-        infoPanel.setValue(2, "" + 0/*!!!!!!!!!!!!!!!!!!!!!!!!*/); //todo algorithm
-        infoPanel.setValue(3, "" + sky.sumOfLines.toFixed(3));
+        infoPanel.setValue(0, "" + sky.hasIntersectedAnswer());
+        if (sky.hasIntersectedLines()) {
+            infoPanel.setValue(1, "-");
+            infoPanel.setValue(2, "-");
+            infoPanel.setValue(3, "-");
+        } else {
+            infoPanel.setValue(1, "" + sky.countOfRightGraphs(level));
+            infoPanel.setValue(2, "" + sky.countDifferentGraphs()); //todo correct algorithm
+            infoPanel.setValue(3, "" + sky.sumOfLines.toFixed(3));
+        }
+
 
         api.autoSaveSolution();
         api.submitResult(currentResult());
