@@ -107,23 +107,31 @@ public class StarrySky extends EventDispatcher {
     }
 
     public function countDifferentGraphs():int {
-        var count:int = 0;
         if (_connectedComponents != null) {
-            for (var g1:int = 0; g1 < _connectedComponents.length; g1++) {
-                var graph1:Graph = _connectedComponents[g1];
-                if (graph1.isCorrect(level)) {
+            var correctGraphs:Vector.<Graph> = new Vector.<Graph>();
+            for each (var graph:Graph in _connectedComponents)
+                if (graph.isCorrect(level))
+                    correctGraphs.push(graph);
+
+            if (correctGraphs.length == 0)
+                return 0;
+            else {
+                var count:int = 1;
+                for (var g1:int = 1; g1 < correctGraphs.length; g1++) {
+                    var graph1:Graph = correctGraphs[g1];
                     var len:int = 0;
                     for (var g2:int = 0; g2 < g1 - 1; g2++) {
-                        var graph2:Graph = _connectedComponents[g2];
-                        if (graph2.isCorrect(level))
+                        var graph2:Graph = correctGraphs[g2];
                             if (IsomorphismChecker.areIsomorphic(graph1, graph2))
                                 break;
-                        len++;
+                            else
+                                len++;
                     }
                     if (len == g1 - 1)
                         count++;
                 }
             }
+
         }
 
         return count;
@@ -218,9 +226,8 @@ public class StarrySky extends EventDispatcher {
     }
 
     public function hasIntersected():Boolean {
-        if (hasIntersectedLines())
-            return true;
-        return false;
+        return hasIntersectedLines();
+
     }
 }
 }
