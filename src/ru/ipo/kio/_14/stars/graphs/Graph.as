@@ -4,8 +4,8 @@
 package ru.ipo.kio._14.stars.graphs {
 import flash.utils.Dictionary;
 
-import ru.ipo.kio._14.stars.Star;
 import ru.ipo.kio._14.stars.Line;
+import ru.ipo.kio._14.stars.Star;
 
 public class Graph {
 
@@ -14,9 +14,9 @@ public class Graph {
 
     private var _level:int;
 
-    private var isCorrect:Boolean;
+//    public var isCorrect:Boolean;
 
-    public function Graph(graph:Dictionary, level) {
+    public function Graph(graph:Dictionary, level:int) {
 
         _level = level;
 
@@ -96,6 +96,28 @@ public class Graph {
                 sum += new Line(s as Star, neighbour).distance;
         }
         return sum / 2;
+    }
+
+    public function isCorrectly(level:int):Boolean {
+        switch (level) {
+            case 0:
+                if (numberOfStars != 1 && numberOfStars == numberOfEdges + 1)
+                    return true;
+                break;
+            case 1:
+                if(numberOfStars != 1 && numberOfStars == numberOfEdges)
+                    return true;
+                break;
+            case 2:
+                if (numberOfStars != 1) {
+                    if (numberOfStars == numberOfEdges + 1)
+                        return true;
+                    else if(numberOfStars == numberOfEdges)
+                        return true;
+                }
+                break;
+        }
+        return false;
     }
 }
 }

@@ -72,16 +72,13 @@ public class StarrySky extends EventDispatcher {
                 if (_connectedComponents != null) {
                     for each (var g2:Graph in _connectedComponents)
                         if (g2.numberOfStars > g2.numberOfEdges)
-                            _sumOfLines += g.sumOfEdges()
+                            _sumOfLines += g.sumOfEdges();
 
                         else if (g2.numberOfStars == g2.numberOfEdges)
-                            _sumOfLines += g.sumOfEdges()
+                            _sumOfLines += g.sumOfEdges();
                 }
                 break;
         }
-
-        /*for each (var line:Line in starsLines)
-            _sumOfLines += line.distance;*/
         return _sumOfLines;
     }
 
@@ -204,32 +201,10 @@ public class StarrySky extends EventDispatcher {
 
     public function countOfRightGraphs(level:int):String {
         var count:int = 0;
-        switch (level) {
-            case 0:
-                if (_connectedComponents != null) {
-                    for each (var g:Graph in _connectedComponents)
-                        if (g.numberOfStars != 1 && g.numberOfStars > g.numberOfEdges)
-                            count++;
-                }
-                break;
-            case 1:
-                if (_connectedComponents != null) {
-                    for each (var g1:Graph in _connectedComponents)
-                        if(g1.numberOfStars != 1 && g1.numberOfStars == g1.numberOfEdges)
-                            count++;
-                }
-                break;
-            case 2:
-                if (_connectedComponents != null) {
-                    for each (var gr:Graph in _connectedComponents)
-                        if (gr.numberOfStars != 1) {
-                            if (gr.numberOfStars > gr.numberOfEdges)
-                                count++;
-                            else if(gr.numberOfStars == gr.numberOfEdges)
-                                count++;
-                        }
-                }
-                break;
+        if (_connectedComponents != null) {
+            for each (var g:Graph in _connectedComponents)
+                if (g.isCorrectly(level))
+                    count++;
         }
         return "" + count;
     }
