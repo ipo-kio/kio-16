@@ -125,7 +125,7 @@ public class StarsWorkspace extends Sprite {
 
     public function currentResult():Object {
         return {
-            has_intersected_lines : sky.hasIntersectedAnswer(),
+            has_intersected_lines : sky.hasIntersected(),
             total_number_of_right_graphs : sky.countOfRightGraphs(level),
             total_number_of_difference_graphs : 0,
             sum_of_lines : sky.sumOfLines.toFixed(3)
