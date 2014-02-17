@@ -56,7 +56,7 @@ public class StarrySky extends EventDispatcher {
             case 0:
                 if (_connectedComponents != null) {
                     for each (var g:Graph in _connectedComponents)
-                        if (g.numberOfStars > g.numberOfEdges)
+                        if (g.isCorrectly(level))
                             _sumOfLines += g.sumOfEdges();
                 }
                 break;
@@ -64,17 +64,14 @@ public class StarrySky extends EventDispatcher {
                 //todo sum of lines not NaN
                 if (_connectedComponents != null) {
                     for each (var g1:Graph in _connectedComponents)
-                        if (g1.numberOfStars == g1.numberOfEdges)
+                        if (g1.isCorrectly(level))
                             _sumOfLines += g1.sumOfEdges()
                 }
                 break;
             case 2:
                 if (_connectedComponents != null) {
                     for each (var g2:Graph in _connectedComponents)
-                        if (g2.numberOfStars > g2.numberOfEdges)
-                            _sumOfLines += g2.sumOfEdges();
-
-                        else if (g2.numberOfStars == g2.numberOfEdges)
+                        if (g2.isCorrectly(level))
                             _sumOfLines += g2.sumOfEdges();
                 }
                 break;
@@ -116,7 +113,7 @@ public class StarrySky extends EventDispatcher {
         if (!hasIntersectedLines()) {
             createGraph();
 
-            //todo countDifferentGraphs();
+            countDifferentGraphs();
 
             computeSumOfLines();
         } else {
@@ -125,6 +122,16 @@ public class StarrySky extends EventDispatcher {
         }
 
         dispatchEvent(new Event(Event.CHANGE));
+    }
+
+    public function countDifferentGraphs():int {
+        var count:int = 0;
+        /*if (_connectedComponents = null) {
+            for each (var g:Graph in _connectedComponents)
+                if (g.numberOfStars > g.numberOfEdges)
+                    _sumOfLines += g.sumOfEdges();
+        }*/
+        return count;
     }
 
     public function hasIntersectedLines():Boolean {
