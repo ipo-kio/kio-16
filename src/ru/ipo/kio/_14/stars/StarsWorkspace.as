@@ -94,14 +94,14 @@ public class StarsWorkspace extends Sprite {
     }
 
     private function recordChanged(event:Event):void {
-        infoPanelRecord.setValue(0, "" + sky.hasIntersected());
+        infoPanelRecord.setValue(0, "" + sky.hasIntersectedAnswer());
         infoPanelRecord.setValue(1, "" + sky.countOfRightGraphs(level));
         infoPanelRecord.setValue(2, "" + sky.countDifferentGraphs());
         infoPanelRecord.setValue(3, "" + sky.sumOfLines.toFixed(3));
     }
 
     private function sky_changeHandler(event:Event):void {
-        infoPanel.setValue(0, "" + sky.hasIntersected());
+        infoPanel.setValue(0, "" + sky.hasIntersectedAnswer());
         if (sky.hasIntersectedLines()) {
             infoPanel.setValue(1, "-");
             infoPanel.setValue(2, "-");
@@ -125,7 +125,7 @@ public class StarsWorkspace extends Sprite {
 
     public function currentResult():Object {
         return {
-            has_intersected_lines : sky.hasIntersected(),
+            has_intersected_lines : sky.hasIntersectedAnswer(),
             total_number_of_right_graphs : sky.countOfRightGraphs(level),
             total_number_of_difference_graphs : 0,
             sum_of_lines : sky.sumOfLines.toFixed(3)
