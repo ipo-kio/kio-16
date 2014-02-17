@@ -52,29 +52,10 @@ public class StarrySky extends EventDispatcher {
 
     public function computeSumOfLines():Number {
         _sumOfLines = 0;
-        switch (level) {
-            case 0:
-                if (_connectedComponents != null) {
-                    for each (var g:Graph in _connectedComponents)
-                        if (g.isCorrectly(level))
-                            _sumOfLines += g.sumOfEdges();
-                }
-                break;
-            case 1:
-                //todo sum of lines not NaN
-                if (_connectedComponents != null) {
-                    for each (var g1:Graph in _connectedComponents)
-                        if (g1.isCorrectly(level))
-                            _sumOfLines += g1.sumOfEdges()
-                }
-                break;
-            case 2:
-                if (_connectedComponents != null) {
-                    for each (var g2:Graph in _connectedComponents)
-                        if (g2.isCorrectly(level))
-                            _sumOfLines += g2.sumOfEdges();
-                }
-                break;
+        if (_connectedComponents != null) {
+            for each (var g:Graph in _connectedComponents)
+                if (g.isCorrectly(level))
+                    _sumOfLines += g.sumOfEdges();
         }
         return _sumOfLines;
     }
