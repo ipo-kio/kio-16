@@ -56,29 +56,26 @@ public class StarrySky extends EventDispatcher {
             case 0:
                 if (_connectedComponents != null) {
                     for each (var g:Graph in _connectedComponents)
-                        if (g.numberOfStars > g.numberOfEdges) {
+                        if (g.numberOfStars > g.numberOfEdges)
                             _sumOfLines += g.sumOfEdges();
-                        }
                 }
                 break;
             case 1:
                 //todo sum of lines not NaN
                 if (_connectedComponents != null) {
                     for each (var g1:Graph in _connectedComponents)
-                        if (g1.numberOfStars == g1.numberOfEdges) {
+                        if (g1.numberOfStars == g1.numberOfEdges)
                             _sumOfLines += g.sumOfEdges()
-                        }
                 }
                 break;
             case 2:
                 if (_connectedComponents != null) {
                     for each (var g2:Graph in _connectedComponents)
-                        if (g2.numberOfStars > g2.numberOfEdges) {
+                        if (g2.numberOfStars > g2.numberOfEdges)
                             _sumOfLines += g.sumOfEdges()
 
-                        } else if (g2.numberOfStars == g2.numberOfEdges) {
+                        else if (g2.numberOfStars == g2.numberOfEdges)
                             _sumOfLines += g.sumOfEdges()
-                        }
                 }
                 break;
         }
