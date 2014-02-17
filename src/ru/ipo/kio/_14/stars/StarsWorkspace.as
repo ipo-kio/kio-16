@@ -113,7 +113,7 @@ public class StarsWorkspace extends Sprite {
             infoPanel.setValue(3, "-");
         } else {
             infoPanel.setValue(1, "" + sky.countOfRightGraphs(level));
-            infoPanel.setValue(2, "" + sky.countDifferentGraphs()); //todo algorithm
+            infoPanel.setValue(2, "" + sky.countDifferentGraphs()); //todo correct algorithm
             infoPanel.setValue(3, "" + sky.sumOfLines.toFixed(3));
         }
 

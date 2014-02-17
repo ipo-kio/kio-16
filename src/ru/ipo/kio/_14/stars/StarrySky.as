@@ -95,7 +95,7 @@ public class StarrySky extends EventDispatcher {
         if (!hasIntersectedLines()) {
             createGraph();
 
-            countDifferentGraphs();
+//            countDifferentGraphs();
 
             computeSumOfLines();
         } else {
@@ -120,14 +120,14 @@ public class StarrySky extends EventDispatcher {
                 for (var g1:int = 1; g1 < correctGraphs.length; g1++) {
                     var graph1:Graph = correctGraphs[g1];
                     var len:int = 0;
-                    for (var g2:int = 0; g2 < g1 - 1; g2++) {
+                    for (var g2:int = 0; g2 <= g1 - 1; g2++) {
                         var graph2:Graph = correctGraphs[g2];
                             if (IsomorphismChecker.areIsomorphic(graph1, graph2))
                                 break;
                             else
                                 len++;
                     }
-                    if (len == g1 - 1)
+                    if (len == g1)
                         count++;
                 }
             }
