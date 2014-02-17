@@ -98,9 +98,16 @@ public class StarsWorkspace extends Sprite {
 
     private function sky_changeHandler(event:Event):void {
         infoPanel.setValue(0, "" + sky.hasIntersected());
-        infoPanel.setValue(1, "" + sky.countOfRightGraphs(level));
-        infoPanel.setValue(2, "" + 0/*!!!!!!!!!!!!!!!!!!!!!!!!*/); //todo algorithm
-        infoPanel.setValue(3, "" + sky.sumOfLines.toFixed(3));
+        if (sky.hasIntersectedLines()) {
+            infoPanel.setValue(1, "-");
+            infoPanel.setValue(2, "-");
+            infoPanel.setValue(3, "-");
+        } else {
+            infoPanel.setValue(1, "" + sky.countOfRightGraphs(level));
+            infoPanel.setValue(2, "" + 0/*!!!!!!!!!!!!!!!!!!!!!!!!*/); //todo algorithm
+            infoPanel.setValue(3, "" + sky.sumOfLines.toFixed(3));
+        }
+
 
         api.autoSaveSolution();
         api.submitResult(currentResult());
