@@ -25,7 +25,7 @@ public class StarsWorkspace extends Sprite {
     [Embed(source='resources/EskizOne-Regular.ttf', embedAsCFF="false", fontName="EskizOne-Regular", mimeType='application/x-font-truetype')]
     private static var MyFont:Class;
 
-    [Embed(source="resources/stars_load.png")]
+    [Embed(source="resources/stars_load_example.png")]
     private static const STARS_LOADING:Class;
     private static const STARS_LOADING_BMP:BitmapData = new STARS_LOADING().bitmapData;
 
