@@ -2,9 +2,12 @@
  * Created by user on 06.01.14.
  */
 package ru.ipo.kio._14.stars {
+import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.net.FileFilter;
+import flash.net.FileReference;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.controls.InfoPanel;
@@ -22,13 +25,15 @@ public class StarsWorkspace extends Sprite {
 
     private var _panel:SkyInfoPanel;
 
+    private static var fileReference:FileReference;
+
     [Embed(source='resources/EskizOne-Regular.ttf', embedAsCFF="false", fontName="EskizOne-Regular", mimeType='application/x-font-truetype')]
     private static var MyFont:Class;
 
 //    [Embed(source="resources/stars_load_example.png")]
-    [Embed(source="resources/example_loading.png")]
-    private static const STARS_LOADING:Class;
-    private static const STARS_LOADING_BMP:BitmapData = new STARS_LOADING().bitmapData;
+//    [Embed(source="resources/example_loading.png")]
+//    private static const STARS_LOADING:Class;
+//    private static const STARS_LOADING_BMP:BitmapData = new STARS_LOADING().bitmapData;
 
     public function StarsWorkspace(problem:StarsProblem) {
 
@@ -42,7 +47,7 @@ public class StarsWorkspace extends Sprite {
 
 //        trace(api.localization.statement0);
 
-        var stars:Array = loadStars();
+        loadStars();
 
         /*var stars:Array = [new Star(43, 45, 1), new Star(63, 55, 3), new Star(64, 105, 2),
             new Star(70, 145, 2), new Star(238, 55, 1), new Star(163, 60, 3), new Star(103, 98, 1),
@@ -54,6 +59,10 @@ public class StarsWorkspace extends Sprite {
             new Star(93, 198, 3), new Star(171, 260, 2), new Star(197, 319, 1), new Star(374, 345, 2)
         ];*/
 
+        //loadWorkspace()
+    }
+
+    public function loadWorkspace(stars:Array):void {
         sky = new StarrySky(level, stars);
         skyView = new StarrySkyView(sky, this);
         addChild(skyView);
@@ -64,17 +73,17 @@ public class StarsWorkspace extends Sprite {
         _panel = new SkyInfoPanel(skyView);
 
         infoPanel = new InfoPanel(
-            /*"KioArial", true, //*/"EskizOne-Regular", true,
-            18, 0x92000a, 0x08457e, 0x3b5998,
-            1.2, api.localization.result/*"Текущий результат"*/,
+                /*"KioArial", true, //*/"EskizOne-Regular", true,
+                18, 0x92000a, 0x08457e, 0x3b5998,
+                1.2, api.localization.result/*"Текущий результат"*/,
                 ["Пересечения", "Правильных созвездий",
                     "Различных созвездий", "Длина линий"], 250
         );
 
         infoPanelRecord = new InfoPanel(
-            /*"KioArial", true, //*/"EskizOne-Regular", true,
-            18, 0x92000a, 0x08457e, 0x3b5998,
-            1.2, api.localization.record/*"Рекорд"*/,
+                /*"KioArial", true, //*/"EskizOne-Regular", true,
+                18, 0x92000a, 0x08457e, 0x3b5998,
+                1.2, api.localization.record/*"Рекорд"*/,
                 ["Пересечения", "Правильных созвездий",
                     "Различных созвездий", "Длина линий"], 250
         );
@@ -102,11 +111,25 @@ public class StarsWorkspace extends Sprite {
         infoPanelRecord.y = 480;
     }
 
-    private static function loadStars():Array {
+    private function loadStars():void {
+        fileReference = new FileReference();
+
+        fileReference.addEventListener(Event.SELECT, fileSelected);
+        fileReference.browse([new FileFilter("PNG Files (*.png)","*.png"), new FileFilter("PNG Files (*.bmp)","*.bmp")]);
+    }
+
+    private function fileSelected(event:Event):void {
+        fileReference.addEventListener(Event.COMPLETE, fileLoaded);
+        fileReference.load();
+    }
+
+    private function fileLoaded(event:Event):void {
+        var BMP:BitmapData = Bitmap(fileReference.data).bitmapData;
+
         var starsArr:Array = [];
-        for (var i:int = 0; i < STARS_LOADING_BMP.width; i++) {
-            for (var j:int = 0; j < STARS_LOADING_BMP.height; j++) {
-                var pixel:uint = STARS_LOADING_BMP.getPixel(i, j);
+        for (var i:int = 0; i < BMP.width; i++) {
+            for (var j:int = 0; j < BMP.height; j++) {
+                var pixel:uint = BMP.getPixel(i, j);
                 switch (pixel) {
                     case 0x00FF0000:
                         var star:Star = new Star(i, j, 3);
@@ -158,7 +181,8 @@ public class StarsWorkspace extends Sprite {
                 }
             }
         }
-        return starsArr;
+
+        loadWorkspace(starsArr);
     }
 
     private function recordChanged(event:Event):void {
