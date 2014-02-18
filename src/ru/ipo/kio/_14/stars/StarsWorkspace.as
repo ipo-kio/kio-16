@@ -25,7 +25,8 @@ public class StarsWorkspace extends Sprite {
     [Embed(source='resources/EskizOne-Regular.ttf', embedAsCFF="false", fontName="EskizOne-Regular", mimeType='application/x-font-truetype')]
     private static var MyFont:Class;
 
-    [Embed(source="resources/stars_load_example.png")]
+//    [Embed(source="resources/stars_load_example.png")]
+    [Embed(source="resources/example_loading.png")]
     private static const STARS_LOADING:Class;
     private static const STARS_LOADING_BMP:BitmapData = new STARS_LOADING().bitmapData;
 
@@ -108,13 +109,51 @@ public class StarsWorkspace extends Sprite {
                 var pixel:uint = STARS_LOADING_BMP.getPixel(i, j);
                 switch (pixel) {
                     case 0x00FF0000:
-                        starsArr.push(new Star(i, j, 1));
+                        var star:Star = new Star(i, j, 3);
+                        var len:Boolean = true;
+
+                        for each (var s:Star in starsArr) {
+                            var dx:Number = star.x - s.x;
+                            var dy:Number = star.y - s.y;
+                            if (Math.sqrt(dx * dx + dy * dy) <= 15) {
+                                len = false;
+                                break;
+                            } else
+                                len = true;
+                        }
+
+                        if (len)
+                            starsArr.push(star);
                         break;
                     case 0x0000FF00:
-                        starsArr.push(new Star(i, j, 2));
+                        var star1:Star = new Star(i, j, 1);
+                        var len1:Boolean = false;
+                        for each (var s1:Star in starsArr) {
+                            var dx1:Number = star1.x - s1.x;
+                            var dy1:Number = star1.y - s1.y;
+                            if (Math.sqrt(dx1 * dx1 + dy1 * dy1) <= 5) {
+                                len1 = false;
+                                break;
+                            } else
+                                len1 = true;
+                        }
+                        if (len1)
+                            starsArr.push(star1);
                         break;
                     case 0x000000FF:
-                        starsArr.push(new Star(i, j, 3));
+                        var star2:Star = new Star(i, j, 2);
+                        var len2:Boolean = false;
+                        for each (var s2:Star in starsArr) {
+                            var dx2:Number = star2.x - s2.x;
+                            var dy2:Number = star2.y - s2.y;
+                            if (Math.sqrt(dx2 * dx2 + dy2 * dy2) <= 5) {
+                                len2 = false;
+                                break;
+                            } else
+                                len2 = true;
+                        }
+                        if (len2)
+                            starsArr.push(star2);
                         break;
                 }
             }
@@ -137,7 +176,7 @@ public class StarsWorkspace extends Sprite {
             infoPanel.setValue(3, "-");
         } else {
             infoPanel.setValue(1, "" + sky.countOfRightGraphs(level));
-            infoPanel.setValue(2, "" + sky.countDifferentGraphs()); //todo correct algorithm
+            infoPanel.setValue(2, "" + sky.countDifferentGraphs());
             infoPanel.setValue(3, "" + sky.sumOfLines.toFixed(3));
         }
 
