@@ -4,6 +4,8 @@
 package ru.ipo.kio._14.stars {
 import flash.display.Bitmap;
 import flash.display.BitmapData;
+import flash.display.Loader;
+import flash.display.LoaderInfo;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.net.FileFilter;
@@ -124,7 +126,22 @@ public class StarsWorkspace extends Sprite {
     }
 
     private function fileLoaded(event:Event):void {
-        var BMP:BitmapData = Bitmap(fileReference.data).bitmapData;
+
+        fileReference.removeEventListener(Event.COMPLETE, fileLoaded);
+
+        var loader:Loader = new Loader();
+
+        // ... display the progress bar for converting the image data to a display object ...
+
+        loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadBytesHandler);
+        loader.loadBytes(fileReference.data);
+    }
+
+    private function loadBytesHandler(event:Event):void {
+        var loaderInfo:LoaderInfo = (event.target as LoaderInfo);
+        loaderInfo.removeEventListener(Event.COMPLETE, loadBytesHandler);
+
+        var BMP:BitmapData = Bitmap(loaderInfo.content).bitmapData;
 
         var starsArr:Array = [];
         for (var i:int = 0; i < BMP.width; i++) {
