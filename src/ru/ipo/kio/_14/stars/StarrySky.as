@@ -11,7 +11,7 @@ import ru.ipo.kio._14.stars.graphs.IsomorphismChecker;
 
 public class StarrySky extends EventDispatcher {
 
-    private var level:int;
+    private var _level:int;
 
     private var _stars:Array/*<Star>*/;
     private var _starsLines:Array/*<Line>*/;
@@ -24,7 +24,7 @@ public class StarrySky extends EventDispatcher {
 
     public function StarrySky(level:int, stars:Array) {
 
-        this.level = level;
+        this._level = level;
 
         _stars = stars;
         _starsLines = [];
@@ -55,7 +55,7 @@ public class StarrySky extends EventDispatcher {
         _sumOfLines = 0;
         if (_connectedComponents != null) {
             for each (var g:Graph in _connectedComponents)
-                if (g.isCorrect(level))
+                if (g.isCorrect(_level))
                     _sumOfLines += g.sumOfEdges();
         }
         return _sumOfLines;
@@ -110,7 +110,7 @@ public class StarrySky extends EventDispatcher {
         if (_connectedComponents != null) {
             var correctGraphs:Vector.<Graph> = new Vector.<Graph>();
             for each (var graph:Graph in _connectedComponents)
-                if (graph.isCorrect(level))
+                if (graph.isCorrect(_level))
                     correctGraphs.push(graph);
 
             if (correctGraphs.length == 0)
@@ -183,7 +183,7 @@ public class StarrySky extends EventDispatcher {
             neighbours[line.s2].push(line.s1);
         }
 
-        _graph = new Graph(neighbours, level);
+        _graph = new Graph(neighbours, _level);
         _connectedComponents = _graph.findConnectedComponents();
     }
 
@@ -209,14 +209,14 @@ public class StarrySky extends EventDispatcher {
         return 0;
     }
 
-    public function countOfRightGraphs(level:int):String {
+    public function countOfRightGraphs(level:int):int {
         var count:int = 0;
         if (_connectedComponents != null) {
             for each (var g:Graph in _connectedComponents)
                 if (g.isCorrect(level))
                     count++;
         }
-        return "" + count;
+        return count;
     }
 
     public function hasIntersectedAnswer():String {
@@ -228,6 +228,14 @@ public class StarrySky extends EventDispatcher {
     public function hasIntersected():Boolean {
         return hasIntersectedLines();
 
+    }
+
+    public function get connectedComponents():Vector.<Graph> {
+        return _connectedComponents;
+    }
+
+    public function get level():int {
+        return _level;
     }
 }
 }

@@ -74,7 +74,7 @@ public class StarsProblem implements KioProblem {
         if (solution1.has_intersected_lines && solution2.has_intersected_lines)
             return 0;
         else if (solution1.has_intersected_lines && !solution2.has_intersected_line)
-            return 0;
+            return -1;
         else if (!solution1.has_intersected_lines && solution2.has_intersected_lines)
             return 1;
         else {

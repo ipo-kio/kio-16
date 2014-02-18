@@ -3,10 +3,15 @@
  */
 package ru.ipo.kio._14.stars {
 import flash.display.BitmapData;
+import flash.display.BlendMode;
+import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Matrix;
+
+import ru.ipo.kio._14.stars.graphs.Graph;
+import ru.ipo.kio.api.DataUtils;
 
 public class StarrySkyView extends Sprite {
 
@@ -26,11 +31,14 @@ public class StarrySkyView extends Sprite {
 
         private var sky:StarrySky;
 
+        private var constellationsLayer:Sprite = new Sprite();
         private var drawingLinesLayer:Sprite = new Sprite();
 
         public function StarrySkyView(starrySky:StarrySky, workspace:StarsWorkspace) {
 
             _workspace = workspace;
+            addChild(constellationsLayer);
+            constellationsLayer.alpha = 0.2;
             addChild(drawingLinesLayer);
 
             starViews = [];
@@ -114,6 +122,7 @@ public class StarrySkyView extends Sprite {
             var m:Matrix = new Matrix();
             m.scale(2, 2);
             graphics.beginBitmapFill(BACKGROUND_BMP, m);
+//            graphics.beginFill(0);
             graphics.drawRect(0, 0, 780, 480);
             graphics.endFill();
 
@@ -171,6 +180,34 @@ public class StarrySkyView extends Sprite {
     public function starrySky_changeHandler(event:Event):void {
         for each (var lineView:LineView in lines)
             lineView.error = sky.isLineIntersected(lineView.line);
+
+        //prepare a shape to draw constellations on
+        var tempLayer:Shape = new Shape();
+
+        var countOfRightGraphs:int = sky.countOfRightGraphs(sky.level);
+        var cc_ind:int = 0;
+        for each (var graph:Graph in sky.connectedComponents) {
+            if (graph.isCorrect(sky.level)) {
+                var color:uint = DataUtils.hsv(cc_ind * 360 / countOfRightGraphs, 100, 100);
+                cc_ind++;
+
+                tempLayer.graphics.lineStyle(60, color);
+                for (var s1:* in graph.graph) {
+                    for each (var s2:Star in graph.graph[s1]) {
+                        tempLayer.graphics.moveTo(s1.x, s1.y);
+                        tempLayer.graphics.lineTo(s2.x, s2.y);
+                    }
+                }
+            }
+        }
+
+        //draw constellations on a bitmap, and then move draw that bitmap on the screen.
+        var bd:BitmapData = new BitmapData(width, height, true, 0x00000000);
+        bd.draw(tempLayer);
+        constellationsLayer.graphics.clear();
+        constellationsLayer.graphics.beginBitmapFill(bd);
+        constellationsLayer.graphics.drawRect(0, 0, width, height);
+        constellationsLayer.graphics.endFill();
     }
 }
 }
