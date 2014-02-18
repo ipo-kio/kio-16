@@ -25,6 +25,10 @@ public class StarsWorkspace extends Sprite {
     [Embed(source='resources/EskizOne-Regular.ttf', embedAsCFF="false", fontName="EskizOne-Regular", mimeType='application/x-font-truetype')]
     private static var MyFont:Class;
 
+    [Embed(source="resources/stars_load.png")]
+    private static const STARS_LOADING:Class;
+    private static const STARS_LOADING_BMP:BitmapData = new STARS_LOADING().bitmapData;
+
     public function StarsWorkspace(problem:StarsProblem) {
 
         graphics.beginFill(0, 1);
@@ -37,7 +41,9 @@ public class StarsWorkspace extends Sprite {
 
 //        trace(api.localization.statement0);
 
-        var stars:Array = [new Star(43, 45, 1), new Star(63, 55, 3), new Star(64, 105, 2),
+        var stars:Array = loadStars();
+
+        /*var stars:Array = [new Star(43, 45, 1), new Star(63, 55, 3), new Star(64, 105, 2),
             new Star(70, 145, 2), new Star(238, 55, 1), new Star(163, 60, 3), new Star(103, 98, 1),
             new Star(203, 98, 3), new Star(211, 160, 2), new Star(277, 226, 1), new Star(274, 95, 2),
             new Star(333, 145, 1), new Star(463, 255, 3), new Star(304, 305, 2),
@@ -45,7 +51,7 @@ public class StarsWorkspace extends Sprite {
             new Star(503, 98, 3), new Star(411, 160, 2), new Star(357, 66, 1), new Star(574, 145, 2),
             new Star(70, 245, 2), new Star(93, 315, 1), new Star(128, 380, 3), new Star(193, 398, 1),
             new Star(93, 198, 3), new Star(171, 260, 2), new Star(197, 319, 1), new Star(374, 345, 2)
-        ];
+        ];*/
 
 //        var b:BitmapData;
 //        b.getPixel
@@ -96,6 +102,27 @@ public class StarsWorkspace extends Sprite {
         infoPanel.y = 480;
         infoPanelRecord.x = 360;
         infoPanelRecord.y = 480;
+    }
+
+    private static function loadStars():Array {
+        var starsArr:Array = [];
+        for (var i:int = 0; i < STARS_LOADING_BMP.width; i++) {
+            for (var j:int = 0; j < STARS_LOADING_BMP.height; j++) {
+                var pixel:uint = STARS_LOADING_BMP.getPixel(i, j);
+                switch (pixel) {
+                    case 0x00FF0000:
+                        starsArr.push(new Star(i, j, 1));
+                        break;
+                    case 0x0000FF00:
+                        starsArr.push(new Star(i, j, 2));
+                        break;
+                    case 0x000000FF:
+                        starsArr.push(new Star(i, j, 3));
+                        break;
+                }
+            }
+        }
+        return starsArr;
     }
 
     private function recordChanged(event:Event):void {
