@@ -36,14 +36,14 @@ public class PhysicsPanel extends Sprite {
         to3.y = to2.y + to2.height;
         eta_editor.addEventListener(Event.CHANGE, eta_editor_changeHandler);
 
-        var to4:TitledObject = new TitledObject("Ускорение свободного падения", 14, 0xaaaaff, g_editor, skip);
+        /*var to4:TitledObject = new TitledObject("Ускорение свободного падения", 14, 0xaaaaff, g_editor, skip);
         addChild(to4);
         to4.y = to3.y + to3.height;
-        g_editor.addEventListener(Event.CHANGE, g_editor_changeHandler);
+        g_editor.addEventListener(Event.CHANGE, g_editor_changeHandler);*/
 
         var to5:TitledObject = new TitledObject("Сопротивление воздуха", 14, 0xaaaaff, k_editor, skip);
         addChild(to5);
-        to5.y = to4.y + to4.height;
+        to5.y = to3.y + to3.height;
         k_editor.addEventListener(Event.CHANGE, k_editor_changeHandler);
     }
 
