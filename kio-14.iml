@@ -26,7 +26,7 @@
             <entry key="compiler.define" value="KIO::level&#9;-1&#10;KIO::language&#9;&quot;&quot;" />
             <entry key="compiler.keep-as3-metadata" value="" />
           </map>
-          <option name="additionalOptions" value="-static-link-runtime-shared-libraries" />
+          <option name="additionalOptions" value="-static-link-runtime-shared-libraries -use-network=false" />
         </compiler-options>
         <packaging-air-desktop />
         <packaging-android />
@@ -56,7 +56,7 @@
             <entry key="compiler.define" value="KIO::level&#9;-1&#10;KIO::language&#9;&quot;&quot;" />
             <entry key="compiler.keep-as3-metadata" value="" />
           </map>
-          <option name="additionalOptions" value="-static-link-runtime-shared-libraries" />
+          <option name="additionalOptions" value="-static-link-runtime-shared-libraries -use-network=false" />
         </compiler-options>
         <packaging-air-desktop />
         <packaging-android />

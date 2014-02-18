@@ -4,10 +4,13 @@
 package ru.ipo.kio._14.stars {
 import flash.display.Bitmap;
 import flash.display.BitmapData;
+import flash.display.Loader;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.MouseEvent;
 import flash.net.FileFilter;
 import flash.net.FileReference;
+import flash.utils.ByteArray;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.controls.InfoPanel;
@@ -30,6 +33,8 @@ public class StarsWorkspace extends Sprite {
     [Embed(source='resources/EskizOne-Regular.ttf', embedAsCFF="false", fontName="EskizOne-Regular", mimeType='application/x-font-truetype')]
     private static var MyFont:Class;
 
+    private var workspaceLoaded:Boolean = false;
+
 //    [Embed(source="resources/stars_load_example.png")]
 //    [Embed(source="resources/example_loading.png")]
 //    private static const STARS_LOADING:Class;
@@ -45,11 +50,18 @@ public class StarsWorkspace extends Sprite {
         api = KioApi.instance(problem);
         level = problem.level;
 
-//        trace(api.localization.statement0);
+        var g:Sprite = new Sprite();
+        g.graphics.beginFill(0xFFFFFF);
+        g.graphics.drawRect(100, 100, 200, 200);
+        g.graphics.endFill();
+        addChild(g);
 
-        loadStars();
+        g.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            loadStars();
+        });
 
-        /*var stars:Array = [new Star(43, 45, 1), new Star(63, 55, 3), new Star(64, 105, 2),
+        /*
+        var stars:Array = [new Star(43, 45, 1), new Star(63, 55, 3), new Star(64, 105, 2),
             new Star(70, 145, 2), new Star(238, 55, 1), new Star(163, 60, 3), new Star(103, 98, 1),
             new Star(203, 98, 3), new Star(211, 160, 2), new Star(277, 226, 1), new Star(274, 95, 2),
             new Star(333, 145, 1), new Star(463, 255, 3), new Star(304, 305, 2),
@@ -57,9 +69,10 @@ public class StarsWorkspace extends Sprite {
             new Star(503, 98, 3), new Star(411, 160, 2), new Star(357, 66, 1), new Star(574, 145, 2),
             new Star(70, 245, 2), new Star(93, 315, 1), new Star(128, 380, 3), new Star(193, 398, 1),
             new Star(93, 198, 3), new Star(171, 260, 2), new Star(197, 319, 1), new Star(374, 345, 2)
-        ];*/
+        ];
 
-        //loadWorkspace()
+        loadWorkspace(stars);
+        */
     }
 
     public function loadWorkspace(stars:Array):void {
@@ -109,6 +122,8 @@ public class StarsWorkspace extends Sprite {
         infoPanel.y = 480;
         infoPanelRecord.x = 360;
         infoPanelRecord.y = 480;
+
+        workspaceLoaded = true;
     }
 
     private function loadStars():void {
@@ -119,65 +134,56 @@ public class StarsWorkspace extends Sprite {
     }
 
     private function fileSelected(event:Event):void {
-        fileReference.addEventListener(Event.COMPLETE, fileLoaded);
+        fileReference.addEventListener(Event.COMPLETE, bitmapFileLoaded);
         fileReference.load();
     }
 
-    private function fileLoaded(event:Event):void {
-        var BMP:BitmapData = Bitmap(fileReference.data).bitmapData;
+    var lloader:Loader;
+    private function bitmapFileLoaded(event:Event):void {
+        lloader = new Loader();
+        lloader.contentLoaderInfo.addEventListener(Event.COMPLETE, starsBitmapLoaded);
+        var bytes:ByteArray = fileReference.data;
+        lloader.loadBytes(bytes);
+    }
+
+    private function starsBitmapLoaded(event:Event):void {
+        var content:* = lloader.content;
+        var BMP:BitmapData = Bitmap(content).bitmapData;
 
         var starsArr:Array = [];
         for (var i:int = 0; i < BMP.width; i++) {
             for (var j:int = 0; j < BMP.height; j++) {
                 var pixel:uint = BMP.getPixel(i, j);
+                var star:Star = null;
                 switch (pixel) {
                     case 0x00FF0000:
-                        var star:Star = new Star(i, j, 3);
-                        var len:Boolean = true;
-
-                        for each (var s:Star in starsArr) {
-                            var dx:Number = star.x - s.x;
-                            var dy:Number = star.y - s.y;
-                            if (Math.sqrt(dx * dx + dy * dy) <= 15) {
-                                len = false;
-                                break;
-                            } else
-                                len = true;
-                        }
-
-                        if (len)
-                            starsArr.push(star);
+                        star = new Star(i, j, 3);
                         break;
                     case 0x0000FF00:
-                        var star1:Star = new Star(i, j, 1);
-                        var len1:Boolean = false;
-                        for each (var s1:Star in starsArr) {
-                            var dx1:Number = star1.x - s1.x;
-                            var dy1:Number = star1.y - s1.y;
-                            if (Math.sqrt(dx1 * dx1 + dy1 * dy1) <= 5) {
-                                len1 = false;
-                                break;
-                            } else
-                                len1 = true;
-                        }
-                        if (len1)
-                            starsArr.push(star1);
+                        star = new Star(i, j, 1);
                         break;
                     case 0x000000FF:
-                        var star2:Star = new Star(i, j, 2);
-                        var len2:Boolean = false;
-                        for each (var s2:Star in starsArr) {
-                            var dx2:Number = star2.x - s2.x;
-                            var dy2:Number = star2.y - s2.y;
-                            if (Math.sqrt(dx2 * dx2 + dy2 * dy2) <= 5) {
-                                len2 = false;
-                                break;
-                            } else
-                                len2 = true;
-                        }
-                        if (len2)
-                            starsArr.push(star2);
+                        star = new Star(i, j, 2);
                         break;
+                }
+
+                if (star != null) {
+                    //test that this star is new
+
+                    var len:Boolean = true;
+
+                    for each (var s:Star in starsArr) {
+                        var dx:Number = star.x - s.x;
+                        var dy:Number = star.y - s.y;
+                        if (Math.sqrt(dx * dx + dy * dy) <= 20) {
+                            len = false;
+                            break;
+                        } else
+                            len = true;
+                    }
+
+                    if (len)
+                        starsArr.push(star);
                 }
             }
         }
@@ -225,6 +231,9 @@ public class StarsWorkspace extends Sprite {
     }
 
     public function load(solution:Object):Boolean {
+        if (!workspaceLoaded)
+            return false;
+
         var starsIndexLines:Array = solution.lines;
 
         skyView.clearLines();
