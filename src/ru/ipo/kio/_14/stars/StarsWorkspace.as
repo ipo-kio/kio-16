@@ -53,9 +53,6 @@ public class StarsWorkspace extends Sprite {
             new Star(93, 198, 3), new Star(171, 260, 2), new Star(197, 319, 1), new Star(374, 345, 2)
         ];*/
 
-//        var b:BitmapData;
-//        b.getPixel
-
         sky = new StarrySky(level, stars);
         skyView = new StarrySkyView(sky, this);
         addChild(skyView);
