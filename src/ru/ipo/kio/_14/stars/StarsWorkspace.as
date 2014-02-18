@@ -138,16 +138,15 @@ public class StarsWorkspace extends Sprite {
         fileReference.load();
     }
 
-    var lloader:Loader;
     private function bitmapFileLoaded(event:Event):void {
-        lloader = new Loader();
-        lloader.contentLoaderInfo.addEventListener(Event.COMPLETE, starsBitmapLoaded);
+        var loader:Loader = new Loader();
+        loader.contentLoaderInfo.addEventListener(Event.COMPLETE, starsBitmapLoaded);
         var bytes:ByteArray = fileReference.data;
-        lloader.loadBytes(bytes);
+        loader.loadBytes(bytes);
     }
 
     private function starsBitmapLoaded(event:Event):void {
-        var content:* = lloader.content;
+        var content:* = event.target.content;
         var BMP:BitmapData = Bitmap(content).bitmapData;
 
         var starsArr:Array = [];
@@ -225,7 +224,7 @@ public class StarsWorkspace extends Sprite {
         return {
             has_intersected_lines : sky.hasIntersected(),
             total_number_of_right_graphs : sky.countOfRightGraphs(level),
-            total_number_of_difference_graphs : 0,
+            total_number_of_difference_graphs : sky.countDifferentGraphs(),
             sum_of_lines : sky.sumOfLines.toFixed(3)
         }
     }

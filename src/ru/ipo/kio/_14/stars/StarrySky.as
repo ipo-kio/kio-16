@@ -21,6 +21,7 @@ public class StarrySky extends EventDispatcher {
     private var intersectedLines:Dictionary; // Line -> true/nothing
     private var _graph:Graph;
     private var _connectedComponents:Vector.<Graph>;
+    private var _differentGraphs:int = 0;
 
     public function StarrySky(level:int, stars:Array) {
 
@@ -95,7 +96,7 @@ public class StarrySky extends EventDispatcher {
         if (!hasIntersectedLines()) {
             createGraph();
 
-//            countDifferentGraphs();
+            updateNumberOfDifferentGraphs();
 
             computeSumOfLines();
         } else {
@@ -107,15 +108,20 @@ public class StarrySky extends EventDispatcher {
     }
 
     public function countDifferentGraphs():int {
+        return _differentGraphs;
+    }
+
+    private function updateNumberOfDifferentGraphs():void {
         if (_connectedComponents != null) {
             var correctGraphs:Vector.<Graph> = new Vector.<Graph>();
             for each (var graph:Graph in _connectedComponents)
                 if (graph.isCorrect(_level))
                     correctGraphs.push(graph);
 
-            if (correctGraphs.length == 0)
-                return 0;
-            else {
+            if (correctGraphs.length == 0) {
+                _differentGraphs = 0;
+                return;
+            } else {
                 var count:int = 1;
                 for (var g1:int = 1; g1 < correctGraphs.length; g1++) {
                     var graph1:Graph = correctGraphs[g1];
@@ -134,7 +140,7 @@ public class StarrySky extends EventDispatcher {
 
         }
 
-        return count;
+        _differentGraphs = count;
     }
 
     public function hasIntersectedLines():Boolean {
