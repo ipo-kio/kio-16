@@ -144,5 +144,23 @@ public class Hill extends EventDispatcher {
         for each (var fountain:Fountain in _fountains)
             fountain.invalidate_stream();
     }
+
+    public function serialize():Object {
+        var result:Array = [];
+
+        for each (var fountain:Fountain in fountains)
+            result.push(fountain.serialize());
+
+        return result;
+    }
+
+    public function deserialize(a:Object):void {
+        if (a == null)
+            return;
+        if (a.length != _fountains.length)
+            return;
+        for (var i:int = 0; i < _fountains.length; i++)
+            _fountains[i].deserialize(a[i]);
+    }
 }
 }

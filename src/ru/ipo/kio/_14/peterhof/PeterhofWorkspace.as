@@ -31,7 +31,7 @@ public class PeterhofWorkspace extends Sprite {
         _api = KioApi.instance(problem);
 
         _problem = problem;
-        _fountainsView = new Fountains3DView();
+        _fountainsView = new Fountains3DView(problem);
         _fountainsView.hillView.addEventListener(FountainEvent.SELECTION_CHANGED, hillView_selection_changedHandler);
         _fountainsView.antiAlias = 0;
 
@@ -40,7 +40,7 @@ public class PeterhofWorkspace extends Sprite {
         addChild(bottomPanel);
         bottomPanel.y = _3D_HEIGHT;
 
-        _fountainPanel = new FountainPanel(100);
+        _fountainPanel = new FountainPanel(100, _api);
 
         fillBottomPanel(bottomPanel);
 
@@ -125,6 +125,15 @@ public class PeterhofWorkspace extends Sprite {
 
     private function hillView_selection_changedHandler(event:FountainEvent):void {
         _fountainPanel.fountain = event.fountain;
+    }
+
+    public function load(solution:Object):Boolean {
+        _fountainsView.hill.deserialize(solution);
+        return true;
+    }
+
+    public function get currentSolution():Object {
+        return _fountainsView.hill.serialize();
     }
 }
 }

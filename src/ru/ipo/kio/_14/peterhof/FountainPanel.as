@@ -12,6 +12,7 @@ import ru.ipo.kio._14.peterhof.model.Consts;
 
 import ru.ipo.kio._14.peterhof.model.Fountain;
 import ru.ipo.kio._14.peterhof.view.Sprayer;
+import ru.ipo.kio.api.KioApi;
 
 public class FountainPanel extends Sprite {
 
@@ -26,7 +27,11 @@ public class FountainPanel extends Sprite {
 
     private var _sprayer:Sprayer;
 
-    public function FountainPanel(width:int) {
+    private var _api:KioApi;
+
+    public function FountainPanel(width:int, api:KioApi) {
+        _api = api;
+
         const skip:int = 200;
 
         _alphaEditor = new NumberEditor(width, 18, 0, 90, 45, "°", 0);
@@ -118,12 +123,15 @@ public class FountainPanel extends Sprite {
         if (_fountain != null && !_alphaEditor.has_error()) {
             _fountain.alphaGr = _alphaEditor.value;
             _sprayer.rotate(_alphaEditor.value * Math.PI / 180);
+            _api.autoSaveSolution();
         }
     }
 
     private function phiEditor_changeHandler(event:Event):void {
-        if (_fountain != null && !_phiEditor.has_error())
+        if (_fountain != null && !_phiEditor.has_error()) {
             _fountain.phiGr = _phiEditor.value;
+            _api.autoSaveSolution();
+        }
     }
 
     private function sprayerWidthEditor_changeHandler(event:Event):void {
@@ -132,6 +140,7 @@ public class FountainPanel extends Sprite {
 
             _sprayer.f_width = newValue;
             _fountain.d = newValue;
+            _api.autoSaveSolution();
         }
     }
 
@@ -141,6 +150,7 @@ public class FountainPanel extends Sprite {
 
             _sprayer.f_length = newValue;
             _fountain.l = newValue;
+            _api.autoSaveSolution();
         }
     }
 }

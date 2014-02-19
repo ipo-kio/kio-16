@@ -38,5 +38,7 @@ public class Consts {
     public static const SKIN_HEIGHT:int = 768;
 
     public static const QUALITY:Boolean = true;
+
+    public static const SKIP_DROPS:int = 7;
 }
 }

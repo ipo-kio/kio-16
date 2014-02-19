@@ -3,26 +3,23 @@
  */
 package ru.ipo.kio._14.peterhof.view {
 
+import away3d.cameras.lenses.PerspectiveLens;
+import away3d.containers.View3D;
 import away3d.lights.DirectionalLight;
 import away3d.materials.lightpickers.StaticLightPicker;
-import away3d.textures.BitmapTexture;
 
+import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 import flash.geom.Point;
-
-import ru.ipo.kio._14.peterhof.*;
-
-import away3d.cameras.lenses.PerspectiveLens;
-import away3d.containers.View3D;
-
-import flash.events.Event;
 import flash.geom.Vector3D;
 
+import ru.ipo.kio._14.peterhof.*;
 import ru.ipo.kio._14.peterhof.model.Consts;
 import ru.ipo.kio._14.peterhof.model.Fountain;
-
 import ru.ipo.kio._14.peterhof.model.Hill;
+import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.api.KioProblem;
 
 public class Fountains3DView extends View3D {
 
@@ -47,8 +44,10 @@ public class Fountains3DView extends View3D {
 
     private var _hill:Hill;
     private var _hillView:HillView;
+    private var _api:KioApi;
 
-    public function Fountains3DView() {
+    public function Fountains3DView(problem:KioProblem) {
+        _api = KioApi.instance(problem);
         _hill = new Hill();
 
         var sun:DirectionalLight = new DirectionalLight(-1, -1, 0);
@@ -284,6 +283,8 @@ public class Fountains3DView extends View3D {
         move = false;
         moveFountain = false;
         stage.removeEventListener(Event.MOUSE_LEAVE, onStageMouseLeave);
+
+        _api.autoSaveSolution();
     }
 
     private function onStageMouseLeave(event:Event):void {
@@ -358,6 +359,7 @@ public class Fountains3DView extends View3D {
         }
 
         if (_reRender) {
+            _hillView.updateFountains();
             render();
             _reRender = true;
         }

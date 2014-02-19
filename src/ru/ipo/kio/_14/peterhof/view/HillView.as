@@ -183,5 +183,10 @@ public class HillView extends ObjectContainer3D {
     public function get lightPicker():StaticLightPicker {
         return _lightPicker;
     }
+
+    public function updateFountains():void {
+        for each (var fountainView:FountainView in _fountains)
+            fountainView.updateDrops();
+    }
 }
 }

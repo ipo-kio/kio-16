@@ -2,6 +2,8 @@
  * Created by ilya on 11.01.14.
  */
 package ru.ipo.kio._14.peterhof {
+import com.adobe.serialization.json.JSON_k;
+
 import flash.display.DisplayObject;
 
 import ru.ipo.kio.api.KioApi;
@@ -46,7 +48,7 @@ public class PeterhofProblem implements KioProblem {
     }
 
     public function get solution():Object {
-        return {};
+        return workspace.currentSolution;
     }
 
     public function get best():Object {
@@ -54,7 +56,7 @@ public class PeterhofProblem implements KioProblem {
     }
 
     public function loadSolution(solution:Object):Boolean {
-        return false;
+        return workspace.load(solution);
     }
 
     public function check(solution:Object):Object {
@@ -62,7 +64,7 @@ public class PeterhofProblem implements KioProblem {
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        return 0;
+        return solution1.total_length - solution2.total_length;
     }
 
     public function get icon():Class {

@@ -42,6 +42,9 @@ public class FountainView extends ObjectContainer3D {
 
     private var _selected:Boolean = false;
 
+    private var drops:Vector.<Sprite3D>;
+    private var dropsIndices:Vector.<int> = new <int>[];
+
     public function FountainView(fountain:Fountain, hillView:HillView) {
         _fountain = fountain;
         _hillView = hillView;
@@ -138,11 +141,15 @@ public class FountainView extends ObjectContainer3D {
 
         var waterMaterial:ColorMaterial = new ColorMaterial(waterColor);
 
+        drops = new <Sprite3D>[];
+        dropsIndices = new <int>[];
+
         var ind:int = 0;
         for each (var point3D:Point3D in stream.points) {
-            ind++;
-            if (ind % 7 != 1 && ind != stream.points.length) //draw every seventh and the last
+            if (ind % Consts.SKIP_DROPS != 0) {//draw every seventh and the last
+                ind++;
                 continue;
+            }
 
             var size:Number = WATER_SIZE;// * Math.exp(2 * ind / points);
             var newSprite:Sprite3D = new Sprite3D(waterMaterial, size, size);
@@ -151,6 +158,28 @@ public class FountainView extends ObjectContainer3D {
             newSprite.y = point3D.y * Consts.PIXELS_IN_METER;
             newSprite.z = point3D.z * Consts.PIXELS_IN_METER;
             addChild(newSprite);
+
+            drops.push(newSprite);
+            dropsIndices.push(ind);
+
+            ind++;
+        }
+    }
+
+    public function updateDrops():void {
+        var points:Vector.<Point3D> = _fountain.stream.points;
+        var pointsN:uint = points.length;
+        var dropsN:uint = drops.length;
+
+        for (var i:int = 0; i < dropsN; i++) {
+            var s:Sprite3D = drops[i];
+            var ind:int = dropsIndices[i];
+            ind = (ind + 1) % pointsN;
+            var p:Point3D = points[ind];
+            s.x = p.x * Consts.PIXELS_IN_METER;
+            s.y = p.y * Consts.PIXELS_IN_METER;
+            s.z = p.z * Consts.PIXELS_IN_METER;
+            dropsIndices[i] = ind;
         }
     }
 

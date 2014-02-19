@@ -26,9 +26,7 @@ public class Fountain extends EventDispatcher {
 
     private function change():void {
         _stream = null;
-        var time_was:Number = new Date().time;
         dispatchEvent(new Event(Event.CHANGE));
-        trace('passed: ', new Date().time - time_was);
     }
 
     public function get x():Number {
@@ -116,6 +114,28 @@ public class Fountain extends EventDispatcher {
 
     public function invalidate_stream():void {
         _stream = null;
+        change();
+    }
+
+    public function serialize():Object {
+        return {
+            x: _x,
+            z: _z,
+            l: _l,
+            d: _d,
+            alphaGr: _alphaGr,
+            phiGr: _phiGr
+        };
+    }
+
+    public function deserialize(o:Object):void {
+        _x = o.x;
+        _z = o.z;
+        _l = o.l;
+        _d = o.d;
+        _alphaGr = o.alphaGr;
+        _phiGr = o.phiGr;
+
         change();
     }
 }
