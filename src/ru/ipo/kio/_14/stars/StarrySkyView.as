@@ -33,6 +33,7 @@ public class StarrySkyView extends Sprite {
 
         private var constellationsLayer:Sprite = new Sprite();
         private var drawingLinesLayer:Sprite = new Sprite();
+        private var shapesOfGraphs:Vector.<Shape>;
 
         public function StarrySkyView(starrySky:StarrySky, workspace:StarsWorkspace) {
 
@@ -184,27 +185,36 @@ public class StarrySkyView extends Sprite {
         //prepare a shape to draw constellations on
         var tempLayer:Shape = new Shape();
 
+        shapesOfGraphs = new Vector.<Shape>();
+
         var countOfRightGraphs:int = sky.countOfRightGraphs(sky.level);
         var cc_ind:int = 0;
         for each (var graph:Graph in sky.connectedComponents) {
             if (graph.isCorrect(sky.level)) {
+                var graphSprite:Shape = new Shape();
 //                var color:uint = DataUtils.hsv(cc_ind * 360 / countOfRightGraphs, 100, 100);
                 var color:uint = 0x00ffffff;
                 cc_ind++;
 
-                tempLayer.graphics.lineStyle(60, color);
+//                tempLayer.graphics.lineStyle(60, color);
+                graphSprite.graphics.lineStyle(60, color);
                 for (var s1:* in graph.graph) {
                     for each (var s2:Star in graph.graph[s1]) {
-                        tempLayer.graphics.moveTo(s1.x, s1.y);
-                        tempLayer.graphics.lineTo(s2.x, s2.y);
+//                        tempLayer.graphics.moveTo(s1.x, s1.y);
+                        graphSprite.graphics.moveTo(s1.x, s1.y);
+//                        tempLayer.graphics.lineTo(s2.x, s2.y);
+                        graphSprite.graphics.lineTo(s2.x, s2.y);
                     }
                 }
+                shapesOfGraphs.push(graphSprite);
             }
         }
 
         //draw constellations on a bitmap, and then move draw that bitmap on the screen.
         var bd:BitmapData = new BitmapData(width, height, true, 0x00000000);
-        bd.draw(tempLayer);
+//        bd.draw(tempLayer);
+        for each (var shape:* in shapesOfGraphs)
+            bd.draw(shape);
         constellationsLayer.graphics.clear();
         constellationsLayer.graphics.beginBitmapFill(bd);
         constellationsLayer.graphics.drawRect(0, 0, width, height);
