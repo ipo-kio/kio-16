@@ -3,8 +3,8 @@
  */
 package ru.ipo.kio._14.stars {
 import flash.display.BitmapData;
-import flash.display.BlendMode;
-import flash.display.Shape;
+import flash.display.Graphics;
+import flash.display.GraphicsPathCommand;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
@@ -33,7 +33,6 @@ public class StarrySkyView extends Sprite {
 
         private var constellationsLayer:Sprite = new Sprite();
         private var drawingLinesLayer:Sprite = new Sprite();
-        private var shapesOfGraphs:Vector.<Shape>;
 
         public function StarrySkyView(starrySky:StarrySky, workspace:StarsWorkspace) {
 
@@ -182,43 +181,33 @@ public class StarrySkyView extends Sprite {
         for each (var lineView:LineView in lines)
             lineView.error = sky.isLineIntersected(lineView.line);
 
-        //prepare a shape to draw constellations on
-        var tempLayer:Shape = new Shape();
+        redrawConstellations();
+    }
 
-        shapesOfGraphs = new Vector.<Shape>();
+    public function redrawConstellations():void {
+        var g:Graphics = constellationsLayer.graphics;
 
-        var countOfRightGraphs:int = sky.countOfRightGraphs(sky.level);
-        var cc_ind:int = 0;
+        g.clear();
+
         for each (var graph:Graph in sky.connectedComponents) {
             if (graph.isCorrect(sky.level)) {
-                var graphSprite:Shape = new Shape();
-//                var color:uint = DataUtils.hsv(cc_ind * 360 / countOfRightGraphs, 100, 100);
-                var color:uint = 0x00ffffff;
-                cc_ind++;
 
-//                tempLayer.graphics.lineStyle(60, color);
-                graphSprite.graphics.lineStyle(60, color);
+                var commands:Vector.<int> = new <int>[];
+                var data:Vector.<Number> = new <Number>[];
+                g.lineStyle(60, 0xFFFFFF);
+
                 for (var s1:* in graph.graph) {
                     for each (var s2:Star in graph.graph[s1]) {
-//                        tempLayer.graphics.moveTo(s1.x, s1.y);
-                        graphSprite.graphics.moveTo(s1.x, s1.y);
-//                        tempLayer.graphics.lineTo(s2.x, s2.y);
-                        graphSprite.graphics.lineTo(s2.x, s2.y);
+                        commands.push(GraphicsPathCommand.MOVE_TO);
+                        data.push(s1.x, s1.y);
+                        commands.push(GraphicsPathCommand.LINE_TO);
+                        data.push(s2.x, s2.y);
                     }
                 }
-                shapesOfGraphs.push(graphSprite);
+
+                g.drawPath(commands, data);
             }
         }
-
-        //draw constellations on a bitmap, and then move draw that bitmap on the screen.
-        var bd:BitmapData = new BitmapData(width, height, true, 0x00000000);
-//        bd.draw(tempLayer);
-        for each (var shape:* in shapesOfGraphs)
-            bd.draw(shape);
-        constellationsLayer.graphics.clear();
-        constellationsLayer.graphics.beginBitmapFill(bd);
-        constellationsLayer.graphics.drawRect(0, 0, width, height);
-        constellationsLayer.graphics.endFill();
     }
 }
 }
