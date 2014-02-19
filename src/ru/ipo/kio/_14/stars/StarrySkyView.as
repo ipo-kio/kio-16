@@ -188,7 +188,8 @@ public class StarrySkyView extends Sprite {
         var cc_ind:int = 0;
         for each (var graph:Graph in sky.connectedComponents) {
             if (graph.isCorrect(sky.level)) {
-                var color:uint = DataUtils.hsv(cc_ind * 360 / countOfRightGraphs, 100, 100);
+//                var color:uint = DataUtils.hsv(cc_ind * 360 / countOfRightGraphs, 100, 100);
+                var color:uint = 0x00ffffff;
                 cc_ind++;
 
                 tempLayer.graphics.lineStyle(60, color);
