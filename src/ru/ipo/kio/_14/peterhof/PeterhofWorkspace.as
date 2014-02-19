@@ -53,6 +53,8 @@ public class PeterhofWorkspace extends Sprite {
         addChild(physicsPanel);
         physicsPanel.x = 400;
         physicsPanel.y = 4;
+
+        _api.addEventListener(KioApi.RECORD_EVENT, api_recordHandler);
     }
 
     public function get currentResult():Object {
@@ -134,6 +136,11 @@ public class PeterhofWorkspace extends Sprite {
 
     public function get currentSolution():Object {
         return _fountainsView.hill.serialize();
+    }
+
+    private function api_recordHandler(event:Event):void {
+        _recordInfo.animateChange();
+        _recordInfo.setValue(0, currentResult.total_length.toFixed(3));
     }
 }
 }
