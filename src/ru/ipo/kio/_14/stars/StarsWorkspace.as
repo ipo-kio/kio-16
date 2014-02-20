@@ -57,14 +57,14 @@ public class StarsWorkspace extends Sprite {
         g.graphics.endFill();
         addChild(g);
 
-        g.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+        /*g.addEventListener(MouseEvent.CLICK, function(e:Event):void {
             loadStars();
-        });
+        });*/
 
-        /*
-        var stars:Array = [new Star(43, 45, 1), new Star(63, 55, 3), new Star(64, 105, 2),
+
+        var stars:Array = [new Star(443, 345, 1), new Star(63, 55, 3), new Star(514, 190, 2),
             new Star(70, 145, 2), new Star(238, 55, 1), new Star(163, 60, 3), new Star(103, 98, 1),
-            new Star(203, 98, 3), new Star(211, 160, 2), new Star(277, 226, 1), new Star(274, 95, 2),
+            new Star(261, 378, 3), new Star(211, 160, 2), new Star(277, 226, 1), new Star(274, 95, 2),
             new Star(333, 145, 1), new Star(463, 255, 3), new Star(304, 305, 2),
             new Star(390, 245, 2), new Star(443, 65, 1), new Star(593, 60, 3), new Star(143, 148, 1),
             new Star(503, 98, 3), new Star(411, 160, 2), new Star(357, 66, 1), new Star(574, 145, 2),
@@ -73,7 +73,7 @@ public class StarsWorkspace extends Sprite {
         ];
 
         loadWorkspace(stars);
-        */
+
     }
 
     public function loadWorkspace(stars:Array):void {
@@ -127,7 +127,7 @@ public class StarsWorkspace extends Sprite {
         workspaceLoaded = true;
     }
 
-    private function loadStars():void {
+    /*private function loadStars():void {
         fileReference = new FileReference();
 
         fileReference.addEventListener(Event.SELECT, fileSelected);
@@ -196,7 +196,7 @@ public class StarsWorkspace extends Sprite {
         }
 
         loadWorkspace(starsArr);
-    }
+    }*/
 
     private function recordChanged(event:Event):void {
         infoPanelRecord.setValue(0, "" + sky.hasIntersectedAnswer());
