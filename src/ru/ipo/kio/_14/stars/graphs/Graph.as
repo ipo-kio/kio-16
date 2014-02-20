@@ -99,24 +99,38 @@ public class Graph {
     }
 
     public function isCorrect(level:int):Boolean {
-        switch (level) {
-            case 0:
-                if (numberOfStars != 1 && numberOfStars == numberOfEdges + 1)
-                    return true;
-                break;
-            case 1:
-                if(numberOfStars != 1 && numberOfStars == numberOfEdges)
-                    return true;
-                break;
-            case 2:
-                if (numberOfStars != 1) {
-                    if (numberOfStars == numberOfEdges + 1)
+        if (numberOfStars == numberOfEdges + 1) {
+            switch (level) {
+                case 0:
+                    if (numberOfStars >= 2)
                         return true;
-                    else if(numberOfStars == numberOfEdges)
+                    break;
+                case 1:
+                    if(numberOfStars >= 4)
                         return true;
-                }
-                break;
+                    break;
+                case 2:
+                    if (numberOfStars >= 5)
+                        return true;
+                    break;
+            }
+        } else if(numberOfStars == numberOfEdges) {
+            switch (level) {
+                case 0:
+                    if (numberOfStars >= 2)
+                        return true;
+                    break;
+                case 1:
+                    if(numberOfStars >= 4)
+                        return true;
+                    break;
+                case 2:
+                    if (numberOfStars >= 5)
+                        return true;
+                    break;
+            }
         }
+
         return false;
     }
 }
