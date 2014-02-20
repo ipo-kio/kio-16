@@ -19,7 +19,7 @@ import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.Settings;
 import ru.ipo.kio.base.*;
 
-[SWF(width=900, height=625)]
+[SWF(width=900, height=625, frameRate=10)]
 public class KIOShell extends Sprite {
 
     [Embed(source="../level-language.json-settings", mimeType="application/octet-stream")]
