@@ -11,7 +11,6 @@ import flash.events.MouseEvent;
 import flash.geom.Matrix;
 
 import ru.ipo.kio._14.stars.graphs.Graph;
-import ru.ipo.kio.api.DataUtils;
 
 public class StarrySkyView extends Sprite {
 
@@ -33,6 +32,7 @@ public class StarrySkyView extends Sprite {
 
         private var constellationsLayer:Sprite = new Sprite();
         private var drawingLinesLayer:Sprite = new Sprite();
+        private var g:Graphics;
 
         public function StarrySkyView(starrySky:StarrySky, workspace:StarsWorkspace) {
 
@@ -59,6 +59,12 @@ public class StarrySkyView extends Sprite {
                 starViews[t].addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
                     currentStar = -1;
                 });
+
+                g = constellationsLayer.graphics;
+                g.clear();
+
+                for each (var graph:Graph in sky.connectedComponents)
+                    redrawConstellations(graph, g, 0xffffffff);
             }
 
             //draw line
@@ -109,6 +115,16 @@ public class StarrySkyView extends Sprite {
         private function createRollOverListener(k:int):Function {
             return function(event:MouseEvent):void {
                 currentStar = starViews[k].index;
+
+                g = constellationsLayer.graphics;
+                g.clear();
+
+                for each (var graph:Graph in sky.connectedComponents) {
+                    for (var s:* in graph.graph)
+                        if (starViews[k].index == s.index)
+                            redrawConstellations(graph, g, 0xffffcc00);
+                    redrawConstellations(graph, g, 0xffffffff);
+                }
             }
         }
 
@@ -181,23 +197,28 @@ public class StarrySkyView extends Sprite {
         for each (var lineView:LineView in lines)
             lineView.error = sky.isLineIntersected(lineView.line);
 
-        redrawConstellations();
-    }
-
-    public function redrawConstellations():void {
-        var g:Graphics = constellationsLayer.graphics;
-
+        g = constellationsLayer.graphics;
         g.clear();
 
-        for each (var graph:Graph in sky.connectedComponents) {
-            if (graph.isCorrect(sky.level)) {
+        for each (var graph:Graph in sky.connectedComponents)
+            if (graph.isCorrect(sky.level))
+                redrawConstellations(graph, g, 0xffffffff/*0xffffcc00*/);
+    }
+
+    public static function redrawConstellations(graph0:Graph, g:Graphics, colour:uint):void {
+
+//        var g:Graphics = constellationsLayer.graphics;
+//        g.clear();
+
+//        for each (var graph:Graph in sky.connectedComponents) {
+//            if (graph.isCorrect(sky.level)) {
 
                 var commands:Vector.<int> = new <int>[];
                 var data:Vector.<Number> = new <Number>[];
-                g.lineStyle(60, 0xFFFFFF);
+                g.lineStyle(60, colour);
 
-                for (var s1:* in graph.graph) {
-                    for each (var s2:Star in graph.graph[s1]) {
+                for (var s1:* in graph0.graph) {
+                    for each (var s2:Star in graph0.graph[s1]) {
                         commands.push(GraphicsPathCommand.MOVE_TO);
                         data.push(s1.x, s1.y);
                         commands.push(GraphicsPathCommand.LINE_TO);
@@ -206,8 +227,8 @@ public class StarrySkyView extends Sprite {
                 }
 
                 g.drawPath(commands, data);
-            }
-        }
+//            }
+//        }
     }
 }
 }
