@@ -92,7 +92,9 @@ public class Sprayer extends Sprite {
         m.translate(-10, 0);
         g.beginBitmapFill(WATER_IMAGE_BITMAP, m);
         g.drawRect(x0, _sprite_height - BOTTOM_HEIGHT, _outer_pixel_width, 10 * BOTTOM_HEIGHT + 2);
-        g.drawRect((_sprite_width - center_width) / 2, -100, center_width, _sprite_height - BOTTOM_HEIGHT + 100);
+        g.endFill();
+        g.beginBitmapFill(WATER_IMAGE_BITMAP, m);
+        g.drawRect((_sprite_width - center_width) / 2, -100, center_width, _sprite_height /*- BOTTOM_HEIGHT*/ + 100);
         g.endFill();
 
         g.lineStyle(2, LINES_COLOR);

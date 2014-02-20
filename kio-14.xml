@@ -153,7 +153,7 @@
         <mkdir dir="${level_lang.output.dir}"/>
 
         <mxmlc
-                file="${module.kio-14.basedir}/src/ru/ipo/kio/_13/KIOShell_cond.as"
+                file="${module.kio-14.basedir}/src/ru/ipo/kio/_14/KIOShell.as"
                 output="${level_lang.output.dir}/KIO.files/${level_lang.output.file_name}.swf"
                 keep-generated-actionscript="false"
                 actionscript-file-encoding="UTF-8"
@@ -161,6 +161,7 @@
                 static-link-runtime-shared-libraries="true"
                 incremental="${flex.build.incremental}"
                 compiler.debug="false"
+                use-network="false"
                 >
             <source-path path-element="${module.kio-14.basedir}/src"/>
             <define name="KIO::language" value="'${language}'"/>
@@ -168,92 +169,41 @@
             <default-size width="900" height="625"/>
             <compiler.library-path dir="${module.kio-14.basedir}/lib/" append="true">
                 <include name="components.swc"/>
-            </compiler.library-path>
-            <compiler.library-path dir="${FLEX_HOME}/frameworks/libs/" append="true">
                 <include name="framework.swc"/>
+                <include name="away3d-core-fp11_4_1_4.swc"/>
             </compiler.library-path>
 
         </mxmlc>
 
-        <html-wrapper
-                width="900"
-                height="625"
-                express-install="true"
-                version-detection="true"
-                bgcolor="#AAAAAA"
-                history="false"
-                application="app"
-                file="KIO_index.html"
-                version-major="10"
-                version-minor="0"
-                version-revision="0"
-                output="${level_lang.output.dir}/KIO.files"
-                swf="${level_lang.output.file_name}"
-                title="KIO ${level} ${language}"
-                />
+        <!-- -->
+        <copy todir="${level_lang.output.dir}/KIO.files">
+            <fileset dir="${module.kio-14.basedir}/html-template"/>
+            <filterchain>
+                <tokenfilter>
+                    <replacestring from="$${title}" to="KIO ${level} ${language}"/>
+                    <replacestring from="$${swf}" to="${level_lang.output.file_name}"/>
+                    <replacestring from="$${width}" to="900"/>
+                    <replacestring from="$${height}" to="625"/>
+                    <replacestring from="$${bgcolor}" to="#AAAAAA"/>
+                    <replacestring from="$${useBrowserHistory}" to="--"/>
+                    <replacestring from="$${version_major}" to="11"/>
+                    <replacestring from="$${version_minor}" to="1"/>
+                    <replacestring from="$${version_revision}" to="0"/>
+                    <replacestring from="$${application}" to="app"/>
+                </tokenfilter>
+            </filterchain>
+        </copy>
+
         <copy
                 file="${module.kio-14.basedir}/src/KIO.html"
                 todir="${level_lang.output.dir}"
                 description="copy index (main) html file to start contest"
                 />
 
+        <move file="${level_lang.output.dir}/KIO.files/index.template.html" tofile="${level_lang.output.dir}/KIO.files/KIO_index.html"/>
+
         <zip destfile="${kio-14.output.dir}/KIO_${level}_${language}.zip" description="zip for ${level} ${language}">
             <fileset dir="${level_lang.output.dir}">
-                <exclude name="**/*.swf.cache"/>
-            </fileset>
-        </zip>
-    </target>
-
-    <target name="compile.module.kio-14.certificate" description="Compile module kio-14 certificate viewer">
-        <property name="cert_view.output.dir" value="${kio-14.output.dir}/kio_cert"/>
-        <property name="cert_view.output.file_name" value="CertificateView"/>
-
-        <mkdir dir="${cert_view.output.dir}"/>
-
-        <mxmlc
-                file="${module.kio-14.basedir}/src/ru/ipo/kio/_13/checker/CertificateView.as"
-                output="${cert_view.output.dir}/KIO.files/${cert_view.output.file_name}.swf"
-                keep-generated-actionscript="false"
-                actionscript-file-encoding="UTF-8"
-                optimize="true"
-                static-link-runtime-shared-libraries="true"
-                incremental="${flex.build.incremental}"
-                compiler.debug="false"
-                >
-            <source-path path-element="${module.kio-14.basedir}/src"/>
-            <default-size width="900" height="625"/>
-            <compiler.library-path dir="${module.kio-14.basedir}/lib/" append="true">
-                <include name="components.swc"/>
-            </compiler.library-path>
-            <compiler.library-path dir="${FLEX_HOME}/frameworks/libs/" append="true">
-                <include name="framework.swc"/>
-            </compiler.library-path>
-        </mxmlc>
-
-        <html-wrapper
-                width="100%"
-                height="100%"
-                express-install="true"
-                version-detection="true"
-                bgcolor="#AAAAAA"
-                history="false"
-                application="app"
-                file="KIO_index.html"
-                version-major="10"
-                version-minor="0"
-                version-revision="0"
-                output="${cert_view.output.dir}/KIO.files"
-                swf="${cert_view.output.file_name}"
-                title="KIO Certificates"
-                />
-        <copy
-                file="${module.kio-14.basedir}/src/KIO.html"
-                tofile="${cert_view.output.dir}/KIO_certs.html"
-                description="copy index (main) html file to start contest"
-                />
-
-        <zip destfile="${kio-14.output.dir}/KIO_certs.zip" description="zip for russian certificates">
-            <fileset dir="${cert_view.output.dir}">
                 <exclude name="**/*.swf.cache"/>
             </fileset>
         </zip>

@@ -41,17 +41,17 @@ public class FountainPanel extends Sprite {
         _phiEditor = new NumberEditor(width, 18, -180, 180, 0, "°", 0);
         var phiEditor:TitledObject = new TitledObject("Поворот", 18, 0x0FFFFF, _phiEditor, skip);
         addChild(phiEditor);
-        phiEditor.y = alphaEditor.height;
+        phiEditor.y = alphaEditor.height - 4;
 
         _sprayerWidthEditor = new NumberEditor(width, 18, 0.1, 5, 0.1, "см", 1);
         var sprayerWidthEditor:TitledObject = new TitledObject("Ширина форсунки", 18, 0x0FFFFF, _sprayerWidthEditor, skip);
         addChild(sprayerWidthEditor);
-        sprayerWidthEditor.y = phiEditor.y + phiEditor.height;
+        sprayerWidthEditor.y = phiEditor.y + phiEditor.height - 4;
 
         _sprayerLengthEditor = new NumberEditor(width, 18, 0.1, 10, 5, "см", 1);
         var sprayerLengthEditor:TitledObject = new TitledObject("Длина форсунки", 18, 0x0FFFFF, _sprayerLengthEditor, skip);
         addChild(sprayerLengthEditor);
-        sprayerLengthEditor.y = sprayerWidthEditor.y + sprayerWidthEditor.height;
+        sprayerLengthEditor.y = sprayerWidthEditor.y + sprayerWidthEditor.height - 4;
 
         _streamLengthInfo = new TextField();
         _streamLengthInfo.selectable = false;
