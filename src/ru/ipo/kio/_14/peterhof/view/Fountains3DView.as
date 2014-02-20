@@ -60,8 +60,6 @@ public class Fountains3DView extends View3D {
         positionCamera();
         camera.lens = _camera_lens;
 
-        addEventListener(Event.ENTER_FRAME, _onEnterFrame);
-
         width = PeterhofWorkspace._3D_WIDTH;
         height = PeterhofWorkspace._3D_HEIGHT;
 
@@ -107,15 +105,20 @@ public class Fountains3DView extends View3D {
     }
 
     private function onMouseWheel(event:MouseEvent):void {
-        var scale:Number = _camera_lens.fieldOfView;
-
         scale -= event.delta * 0.5;
-        if (scale < 5)
-            scale = 5;
-        else if (scale > 30)
-            scale = 30;
+    }
 
-        _camera_lens.fieldOfView = scale;
+    public function get scale():Number {
+        return _camera_lens.fieldOfView;
+    }
+
+    public function set scale(value:Number):void {
+        if (value < 5)
+            value = 5;
+        else if (value > 30)
+            value = 30;
+
+        _camera_lens.fieldOfView = value;
 
         camera.lens = _camera_lens;
 
@@ -371,10 +374,12 @@ public class Fountains3DView extends View3D {
 
     private function addedToStageHandler(event:Event):void {
         stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+        addEventListener(Event.ENTER_FRAME, _onEnterFrame);
     }
 
     private function removedFromStageHandler(event:Event):void {
         stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+        removeEventListener(Event.ENTER_FRAME, _onEnterFrame);
     }
 }
 }

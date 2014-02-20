@@ -11,6 +11,9 @@ import flash.events.Event;
 import ru.ipo.kio._13.blocks.BlocksProblem;
 import ru.ipo.kio._13.clock.ClockProblem;
 import ru.ipo.kio._13.cut.CutProblem;
+import ru.ipo.kio._14.peterhof.PeterhofProblem;
+import ru.ipo.kio._14.stars.StarsProblem;
+import ru.ipo.kio._14.tarski.TarskiProblem;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.Settings;
@@ -47,9 +50,9 @@ public class KIOShell extends Sprite {
 
         KioBase.instance.init(this,
                 [
-                    new CutProblem(level),
-                    new BlocksProblem(level),
-                    new ClockProblem(level)
+                    new StarsProblem(level),
+                    new PeterhofProblem(level),
+                    new TarskiProblem(level)
                 ],
                 2014,
                 level
