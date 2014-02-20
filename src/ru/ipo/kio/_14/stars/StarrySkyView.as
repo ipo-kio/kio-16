@@ -32,7 +32,7 @@ public class StarrySkyView extends Sprite {
 
         private var constellationsLayer:Sprite = new Sprite();
         private var drawingLinesLayer:Sprite = new Sprite();
-        private var g:Graphics;
+        private var g:Graphics = constellationsLayer.graphics;
 
         public function StarrySkyView(starrySky:StarrySky, workspace:StarsWorkspace) {
 
@@ -60,11 +60,10 @@ public class StarrySkyView extends Sprite {
                     currentStar = -1;
                 });
 
-                g = constellationsLayer.graphics;
-                g.clear();
+                /*g.clear();
 
                 for each (var graph:Graph in sky.connectedComponents)
-                    redrawConstellations(graph, g, 0xffffffff);
+                    redrawConstellations(graph, 0xffffffff);*/
             }
 
             //draw line
@@ -116,14 +115,13 @@ public class StarrySkyView extends Sprite {
             return function(event:MouseEvent):void {
                 currentStar = starViews[k].index;
 
-                g = constellationsLayer.graphics;
                 g.clear();
 
                 for each (var graph:Graph in sky.connectedComponents) {
                     for (var s:* in graph.graph)
                         if (starViews[k].index == s.index)
-                            redrawConstellations(graph, g, 0xffffcc00);
-                    redrawConstellations(graph, g, 0xffffffff);
+                            redrawConstellations(graph, 0xffffcc00);
+                    redrawConstellations(graph, 0xffffffff);
                 }
             }
         }
@@ -197,15 +195,14 @@ public class StarrySkyView extends Sprite {
         for each (var lineView:LineView in lines)
             lineView.error = sky.isLineIntersected(lineView.line);
 
-        g = constellationsLayer.graphics;
         g.clear();
 
         for each (var graph:Graph in sky.connectedComponents)
             if (graph.isCorrect(sky.level))
-                redrawConstellations(graph, g, 0xffffffff/*0xffffcc00*/);
+                redrawConstellations(graph, 0xffffffff/*0xffffcc00*/);
     }
 
-    public static function redrawConstellations(graph0:Graph, g:Graphics, colour:uint):void {
+    public function redrawConstellations(graph0:Graph, colour:uint):void {
 
 //        var g:Graphics = constellationsLayer.graphics;
 //        g.clear();
