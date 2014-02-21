@@ -131,12 +131,15 @@ public class StarrySkyView extends Sprite {
     public function findAndRedrawGraph(starInd:int):void {
         g.clear();
         for each (var graph:Graph in sky.connectedComponents) {
-            for (var s:* in graph.graph)
-                if (starInd == s.index) {
-                    redrawConstellations(graph, SELECTED_GRAPHS_COLOR);
-                    findAndDrawIsomorphicGraphs(graph);
-                }
-            redrawConstellations(graph, DEFAULT_GRAPHS_COLOR);
+            if (graph.isCorrect(sky.level)) {
+                for (var s:* in graph.graph)
+                    if (starInd == s.index) {
+                        redrawConstellations(graph, SELECTED_GRAPHS_COLOR);
+                        findAndDrawIsomorphicGraphs(graph);
+                    }
+                redrawConstellations(graph, DEFAULT_GRAPHS_COLOR);
+            }
+
         }
     }
 
@@ -146,9 +149,10 @@ public class StarrySkyView extends Sprite {
             if (neighbourGraph.isCorrect(sky.level)) {
                 if (neighbourGraph == graph)
                     continue;
-                if (IsomorphismChecker.areIsomorphic(graph, neighbourGraph)) {
+                if (IsomorphismChecker.areIsomorphic(graph, neighbourGraph))
                     redrawConstellations(neighbourGraph, ISOMORPHIC_GRAPHS_COLOR);
-                }
+                /*else
+                    redrawConstellations(neighbourGraph, DEFAULT_GRAPHS_COLOR);*/
             }
 
         }
