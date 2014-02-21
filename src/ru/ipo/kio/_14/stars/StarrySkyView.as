@@ -11,6 +11,7 @@ import flash.events.MouseEvent;
 import flash.geom.Matrix;
 
 import ru.ipo.kio._14.stars.graphs.Graph;
+import ru.ipo.kio._14.stars.graphs.IsomorphismChecker;
 
 public class StarrySkyView extends Sprite {
 
@@ -58,12 +59,19 @@ public class StarrySkyView extends Sprite {
             for (var t:int = 0; t < starViews.length; t++) {
                 starViews[t].addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
                     currentStar = -1;
+
+                    g.clear();
+
+                    var correctGraphs:Vector.<Graph> = new Vector.<Graph>();
+                    for each (var graph:Graph in sky.connectedComponents)
+                        if (graph.isCorrect(sky.level)) {
+                            correctGraphs.push(graph);
+                            redrawConstellations(graph, 0xffffffff);
+                            drawIsomorphicGraphs(correctGraphs);
+                        }
                 });
 
-                /*g.clear();
 
-                for each (var graph:Graph in sky.connectedComponents)
-                    redrawConstellations(graph, 0xffffffff);*/
             }
 
             //draw line
@@ -197,9 +205,27 @@ public class StarrySkyView extends Sprite {
 
         g.clear();
 
+        var correctGraphs:Vector.<Graph> = new Vector.<Graph>();
         for each (var graph:Graph in sky.connectedComponents)
-            if (graph.isCorrect(sky.level))
-                redrawConstellations(graph, 0xffffffff/*0xffffcc00*/);
+            if (graph.isCorrect(sky.level)) {
+                correctGraphs.push(graph);
+                redrawConstellations(graph, 0xffffffff);
+                drawIsomorphicGraphs(correctGraphs);
+            }
+    }
+
+    private function drawIsomorphicGraphs(correctGraphs:Vector.<Graph>):void {
+        for (var g1:int = 1; g1 < correctGraphs.length; g1++) {
+            var graph1:Graph = correctGraphs[g1];
+            for (var g2:int = 0; g2 <= g1 - 1; g2++) {
+                var graph2:Graph = correctGraphs[g2];
+                if (IsomorphismChecker.areIsomorphic(graph1, graph2)) {
+                    redrawConstellations(graph1, 0xffff0000/*0xffffcc00*/);
+                    redrawConstellations(graph2, 0xffff0000/*0xffffcc00*/);
+                }
+            }
+        }
+
     }
 
     public function redrawConstellations(graph0:Graph, colour:uint):void {
