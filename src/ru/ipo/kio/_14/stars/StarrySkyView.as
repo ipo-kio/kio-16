@@ -59,16 +59,7 @@ public class StarrySkyView extends Sprite {
         for (var t:int = 0; t < starViews.length; t++) {
             starViews[t].addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
                 currentStar = -1;
-
-                g.clear();
-
-                var correctGraphs:Vector.<Graph> = new Vector.<Graph>();
-                for each (var graph:Graph in sky.connectedComponents)
-                    if (graph.isCorrect(sky.level)) {
-                        correctGraphs.push(graph);
-                        redrawConstellations(graph, 0xffffffff);
-                        drawIsomorphicGraphs(correctGraphs);
-                    }
+                redrawGraphs();
             });
 
 
@@ -115,6 +106,18 @@ public class StarrySkyView extends Sprite {
         });
 
         starrySky.addEventListener(Event.CHANGE, starrySky_changeHandler);
+    }
+
+    public function redrawGraphs():void {
+        g.clear();
+
+        var correctGraphs:Vector.<Graph> = new Vector.<Graph>();
+        for each (var graph:Graph in sky.connectedComponents)
+            if (graph.isCorrect(sky.level)) {
+                correctGraphs.push(graph);
+                redrawConstellations(graph, 0xffffffff);
+                drawIsomorphicGraphs(correctGraphs);
+            }
     }
 
     private function createRollOverListener(k:int):Function {

@@ -69,6 +69,7 @@ public class LineView extends Sprite {
     private function rollOutForLine(e:MouseEvent):void {
         isSelected = false;
         workspace.panel.text = "";
+        workspace.skyView.redrawGraphs();
     }
 
     public function get isSelected():Boolean {
