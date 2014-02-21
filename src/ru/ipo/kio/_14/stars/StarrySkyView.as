@@ -144,7 +144,7 @@ public class StarrySkyView extends Sprite {
                 if (neighbourGraph == graph)
                     continue;
                 if (IsomorphismChecker.areIsomorphic(graph, neighbourGraph)) {
-                    redrawConstellations(neighbourGraph, 0xffff0000/*0xffffcc00*/);
+                    redrawConstellations(neighbourGraph, 0xffff0000);
                 }
             }
 
@@ -220,12 +220,7 @@ public class StarrySkyView extends Sprite {
         for each (var lineView:LineView in lines)
             lineView.error = sky.isLineIntersected(lineView.line);
 
-        g.clear();
-
-        for each (var graph:Graph in sky.connectedComponents)
-            if (graph.isCorrect(sky.level)) {
-                redrawConstellations(graph, 0xffffffff);
-            }
+        redrawGraphs();
     }
 
     public function redrawConstellations(graph0:Graph, colour:uint):void {
