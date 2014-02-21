@@ -97,7 +97,16 @@ public class StarsWorkspace extends Sprite {
             new Star(390, 245, 2), new Star(443, 65, 1), new Star(593, 60, 3), new Star(143, 148, 1),
             new Star(503, 98, 3), new Star(411, 160, 2), new Star(357, 66, 1), new Star(574, 145, 2),
             new Star(70, 245, 2), new Star(93, 315, 1), new Star(128, 380, 3), new Star(193, 398, 1),
-            new Star(93, 198, 3), new Star(171, 260, 2), new Star(197, 319, 1), new Star(374, 345, 2)
+            new Star(93, 198, 3), new Star(171, 260, 2), new Star(197, 319, 1), new Star(374, 345, 2),
+
+            new Star(323, 375, 1), new Star(63, 435, 3), new Star(45, 370, 2), new Star(670, 65, 2),
+            new Star(738, 39, 1), new Star(413, 429, 3), new Star(133, 449, 1), new Star(701, 408, 3),
+            new Star(611, 430, 2), new Star(677, 326, 1), new Star(634, 195, 2), new Star(555, 245, 1),
+            new Star(633, 355, 3), new Star(304, 305, 2), new Star(620, 260, 2), new Star(545, 455, 1),
+            new Star(583, 300, 3), new Star(41, 288, 1), new Star(693, 148, 3), new Star(461, 400, 2),
+            new Star(657, 456, 1), new Star(699, 225, 2), new Star(540, 345, 2), new Star(353, 433, 1)/*,
+            new Star(128, 380, 3), new Star(193, 398, 1),
+            new Star(93, 198, 3), new Star(171, 260, 2), new Star(197, 319, 1), new Star(374, 345, 2)*/
         ];
 
         loadWorkspace(stars);
