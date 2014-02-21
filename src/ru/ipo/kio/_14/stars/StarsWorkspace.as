@@ -61,6 +61,34 @@ public class StarsWorkspace extends Sprite {
             loadStars();
         });*/
 
+        /*var starsArr:Array = [];
+        for (var count:int = 0; count <= 60; count++) {
+
+            var x:Number = Math.random()*780;
+            var y:Number = Math.random()*480;
+            var rad:Number = 1 + Math.random()*3;
+
+            var star:Star = new Star(x, y, rad);
+
+            if (star != null) {
+                //test that this star is new
+
+                var len:Boolean = true;
+
+                for each (var s:Star in starsArr) {
+                    var dx:Number = star.x - s.x;
+                    var dy:Number = star.y - s.y;
+                    if (Math.sqrt(dx * dx + dy * dy) <= 20) {
+                        len = false;
+                        break;
+                    } else
+                        len = true;
+                }
+
+                if (len)
+                    starsArr.push(star);
+            }
+        }*/
 
         var stars:Array = [new Star(443, 345, 1), new Star(63, 55, 3), new Star(514, 190, 2),
             new Star(70, 145, 2), new Star(238, 55, 1), new Star(163, 60, 3), new Star(103, 98, 1),
@@ -73,6 +101,7 @@ public class StarsWorkspace extends Sprite {
         ];
 
         loadWorkspace(stars);
+//        loadWorkspace(starsArr);
 
     }
 
@@ -90,27 +119,27 @@ public class StarsWorkspace extends Sprite {
                 /*"KioArial", true, //*/"EskizOne-Regular", true,
                 18, 0x92000a, 0x08457e, 0x3b5998,
                 1.2, api.localization.result/*"Текущий результат"*/,
-                [/*"Пересечения"*/api.localization.intersections, /*"Правильных созвездий"*/api.localization.right_graphs,
-                    /*"Различных созвездий"*/api.localization.diff_graphs, /*"Длина линий"*/api.localization.length_of_edges], 250
+                [api.localization.intersections, api.localization.right_graphs,
+                    api.localization.diff_graphs, api.localization.length_of_edges], 250
         );
 
         infoPanelRecord = new InfoPanel(
                 /*"KioArial", true, //*/"EskizOne-Regular", true,
                 18, 0x92000a, 0x08457e, 0x3b5998,
                 1.2, api.localization.record/*"Рекорд"*/,
-                [/*"Пересечения"*/api.localization.intersections, /*"Правильных созвездий"*/api.localization.right_graphs,
-                    /*"Различных созвездий"*/api.localization.diff_graphs, /*"Длина линий"*/api.localization.length_of_edges], 250
+                [api.localization.intersections, api.localization.right_graphs,
+                    api.localization.diff_graphs, api.localization.length_of_edges], 250
         );
 
         infoPanel.setValue(0, "НЕТ");
         infoPanel.setValue(1, "" + 0);
         infoPanel.setValue(2, "" + 0);
-        infoPanel.setValue(3, "" + 0);
+        infoPanel.setValue(3, "" + 0 + " с. в.");
 
         infoPanelRecord.setValue(0, "НЕТ");
         infoPanelRecord.setValue(1, "" + 0);
         infoPanelRecord.setValue(2, "" + 0);
-        infoPanelRecord.setValue(3, "" + 0);
+        infoPanelRecord.setValue(3, "" + 0 + " с. в.");
 
         _panel.x = 0;
         _panel.y = _skyView.height - 20;
@@ -202,7 +231,7 @@ public class StarsWorkspace extends Sprite {
         infoPanelRecord.setValue(0, "" + _sky.hasIntersectedAnswer());
         infoPanelRecord.setValue(1, "" + _sky.countOfRightGraphs(level));
         infoPanelRecord.setValue(2, "" + _sky.countDifferentGraphs());
-        infoPanelRecord.setValue(3, "" + _sky.sumOfLines.toFixed(3));
+        infoPanelRecord.setValue(3, "" + _sky.sumOfLines.toFixed(3) + " с. в.");
     }
 
     private function sky_changeHandler(event:Event):void {
@@ -214,7 +243,7 @@ public class StarsWorkspace extends Sprite {
         } else {
             infoPanel.setValue(1, "" + _sky.countOfRightGraphs(level));
             infoPanel.setValue(2, "" + _sky.countDifferentGraphs());
-            infoPanel.setValue(3, "" + _sky.sumOfLines.toFixed(3));
+            infoPanel.setValue(3, "" + _sky.sumOfLines.toFixed(3) + " с. в.");
         }
 
 

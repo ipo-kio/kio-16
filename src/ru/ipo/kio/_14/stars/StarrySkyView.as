@@ -19,6 +19,10 @@ public class StarrySkyView extends Sprite {
     private static const BACKGROUND:Class;
     private static const BACKGROUND_BMP:BitmapData = new BACKGROUND().bitmapData;
 
+    private static const DEFAULT_GRAPHS_COLOR:uint = 0xffffffff;
+    private static const SELECTED_GRAPHS_COLOR:int = 0xffffcc00;
+    private static const ISOMORPHIC_GRAPHS_COLOR:int = 0xffff0000;
+
     private var starViews:Array/*<StarView>*/;
     private var lines:Array/*<LineView>*/;
 
@@ -113,7 +117,7 @@ public class StarrySkyView extends Sprite {
 
         for each (var graph:Graph in sky.connectedComponents)
             if (graph.isCorrect(sky.level)) {
-                redrawConstellations(graph, 0xffffffff);
+                redrawConstellations(graph, DEFAULT_GRAPHS_COLOR);
             }
     }
 
@@ -130,10 +134,10 @@ public class StarrySkyView extends Sprite {
         for each (var graph:Graph in sky.connectedComponents) {
             for (var s:* in graph.graph)
                 if (starInd == s.index) {
-                    redrawConstellations(graph, 0xffffcc00);
+                    redrawConstellations(graph, SELECTED_GRAPHS_COLOR);
                     findAndDrawIsomorphicGraphs(graph);
                 }
-            redrawConstellations(graph, 0xffffffff);
+            redrawConstellations(graph, DEFAULT_GRAPHS_COLOR);
         }
     }
 
@@ -144,7 +148,7 @@ public class StarrySkyView extends Sprite {
                 if (neighbourGraph == graph)
                     continue;
                 if (IsomorphismChecker.areIsomorphic(graph, neighbourGraph)) {
-                    redrawConstellations(neighbourGraph, 0xffff0000);
+                    redrawConstellations(neighbourGraph, ISOMORPHIC_GRAPHS_COLOR);
                 }
             }
 
