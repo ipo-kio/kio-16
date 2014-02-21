@@ -90,16 +90,16 @@ public class StarsWorkspace extends Sprite {
                 /*"KioArial", true, //*/"EskizOne-Regular", true,
                 18, 0x92000a, 0x08457e, 0x3b5998,
                 1.2, api.localization.result/*"Текущий результат"*/,
-                ["Пересечения", "Правильных созвездий",
-                    "Различных созвездий", "Длина линий"], 250
+                [/*"Пересечения"*/api.localization.intersections, /*"Правильных созвездий"*/api.localization.right_graphs,
+                    /*"Различных созвездий"*/api.localization.diff_graphs, /*"Длина линий"*/api.localization.length_of_edges], 250
         );
 
         infoPanelRecord = new InfoPanel(
                 /*"KioArial", true, //*/"EskizOne-Regular", true,
                 18, 0x92000a, 0x08457e, 0x3b5998,
                 1.2, api.localization.record/*"Рекорд"*/,
-                ["Пересечения", "Правильных созвездий",
-                    "Различных созвездий", "Длина линий"], 250
+                [/*"Пересечения"*/api.localization.intersections, /*"Правильных созвездий"*/api.localization.right_graphs,
+                    /*"Различных созвездий"*/api.localization.diff_graphs, /*"Длина линий"*/api.localization.length_of_edges], 250
         );
 
         infoPanel.setValue(0, "НЕТ");
