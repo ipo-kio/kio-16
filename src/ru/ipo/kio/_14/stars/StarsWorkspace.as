@@ -2,15 +2,15 @@
  * Created by user on 06.01.14.
  */
 package ru.ipo.kio._14.stars {
-import flash.display.Bitmap;
-import flash.display.BitmapData;
-import flash.display.Loader;
-import flash.display.LoaderInfo;
+//import flash.display.Bitmap;
+//import flash.display.BitmapData;
+//import flash.display.Loader;
+//import flash.display.LoaderInfo;
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.events.MouseEvent;
-import flash.net.FileFilter;
-import flash.net.FileReference;
+//import flash.events.MouseEvent;
+//import flash.net.FileFilter;
+//import flash.net.FileReference;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.controls.InfoPanel;
@@ -28,7 +28,7 @@ public class StarsWorkspace extends Sprite {
 
     private var _panel:SkyInfoPanel;
 
-    private static var fileReference:FileReference;
+//    private static var fileReference:FileReference;
 
     [Embed(source='resources/EskizOne-Regular.ttf', embedAsCFF="false", fontName="EskizOne-Regular", mimeType='application/x-font-truetype')]
     private static var MyFont:Class;
@@ -134,12 +134,12 @@ public class StarsWorkspace extends Sprite {
         infoPanel.setValue(0, "НЕТ");
         infoPanel.setValue(1, "" + 0);
         infoPanel.setValue(2, "" + 0);
-        infoPanel.setValue(3, "" + 0 + " с. в.");
+        infoPanel.setValue(3, "" + 0 + " св. л.");
 
         infoPanelRecord.setValue(0, "НЕТ");
         infoPanelRecord.setValue(1, "" + 0);
         infoPanelRecord.setValue(2, "" + 0);
-        infoPanelRecord.setValue(3, "" + 0 + " с. в.");
+        infoPanelRecord.setValue(3, "" + 0 + " св. л.");
 
         _panel.x = 0;
         _panel.y = _skyView.height - 20;
@@ -231,7 +231,7 @@ public class StarsWorkspace extends Sprite {
         infoPanelRecord.setValue(0, "" + _sky.hasIntersectedAnswer());
         infoPanelRecord.setValue(1, "" + _sky.countOfRightGraphs(level));
         infoPanelRecord.setValue(2, "" + _sky.countDifferentGraphs());
-        infoPanelRecord.setValue(3, "" + _sky.sumOfLines.toFixed(3) + " с. в.");
+        infoPanelRecord.setValue(3, "" + _sky.sumOfLines.toFixed(3) + " св. л.");
     }
 
     private function sky_changeHandler(event:Event):void {
@@ -243,7 +243,7 @@ public class StarsWorkspace extends Sprite {
         } else {
             infoPanel.setValue(1, "" + _sky.countOfRightGraphs(level));
             infoPanel.setValue(2, "" + _sky.countDifferentGraphs());
-            infoPanel.setValue(3, "" + _sky.sumOfLines.toFixed(3) + " с. в.");
+            infoPanel.setValue(3, "" + _sky.sumOfLines.toFixed(3) + " св. л.");
         }
 
 
