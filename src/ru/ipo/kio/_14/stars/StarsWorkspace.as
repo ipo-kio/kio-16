@@ -21,7 +21,7 @@ public class StarsWorkspace extends Sprite {
     private var level:int;
 
     private var sky:StarrySky;
-    private var skyView:StarrySkyView;
+    private var _skyView:StarrySkyView;
 
     private var infoPanel:InfoPanel;
     private var infoPanelRecord:InfoPanel;
@@ -78,13 +78,13 @@ public class StarsWorkspace extends Sprite {
 
     public function loadWorkspace(stars:Array):void {
         sky = new StarrySky(level, stars);
-        skyView = new StarrySkyView(sky, this);
-        addChild(skyView);
+        _skyView = new StarrySkyView(sky, this);
+        addChild(_skyView);
 
         sky.addEventListener(Event.CHANGE, sky_changeHandler);
         api.addEventListener(KioApi.RECORD_EVENT, recordChanged);
 
-        _panel = new SkyInfoPanel(skyView);
+        _panel = new SkyInfoPanel(_skyView);
 
         infoPanel = new InfoPanel(
                 /*"KioArial", true, //*/"EskizOne-Regular", true,
@@ -113,7 +113,7 @@ public class StarsWorkspace extends Sprite {
         infoPanelRecord.setValue(3, "" + 0);
 
         _panel.x = 0;
-        _panel.y = skyView.height - 20;
+        _panel.y = _skyView.height - 20;
         addChild(_panel);
 
         addChild(infoPanel);
@@ -243,21 +243,25 @@ public class StarsWorkspace extends Sprite {
 
         var starsIndexLines:Array = solution.lines;
 
-        skyView.clearLines();
+        _skyView.clearLines();
 
         for (var i:int = 0; i < starsIndexLines.length; i++) {
             var s1:Star = sky.getStarByIndex(starsIndexLines[i][0]);
             var s2:Star = sky.getStarByIndex(starsIndexLines[i][1]);
             var lineIndex:int = sky.addLine(s1, s2);
 
-            skyView.createLineView(s1.x, s1.y);
-            skyView.drawLineView(s2.x, s2.y);
-            skyView.fixLineView(sky.starsLines[lineIndex]);
+            _skyView.createLineView(s1.x, s1.y);
+            _skyView.drawLineView(s2.x, s2.y);
+            _skyView.fixLineView(sky.starsLines[lineIndex]);
         }
-        skyView.starrySky_changeHandler(null); //TODO get rid of this call
+        _skyView.starrySky_changeHandler(null); //TODO get rid of this call
         return true;
     }
 
+
+    public function get skyView():StarrySkyView {
+        return _skyView;
+    }
 
     public function get panel():SkyInfoPanel {
         return _panel;

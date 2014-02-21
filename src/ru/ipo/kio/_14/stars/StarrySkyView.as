@@ -225,7 +225,6 @@ public class StarrySkyView extends Sprite {
                 }
             }
         }
-
     }
 
     public function redrawConstellations(graph0:Graph, colour:uint):void {
@@ -236,20 +235,20 @@ public class StarrySkyView extends Sprite {
 //        for each (var graph:Graph in sky.connectedComponents) {
 //            if (graph.isCorrect(sky.level)) {
 
-                var commands:Vector.<int> = new <int>[];
-                var data:Vector.<Number> = new <Number>[];
-                g.lineStyle(60, colour);
+        var commands:Vector.<int> = new <int>[];
+        var data:Vector.<Number> = new <Number>[];
+        g.lineStyle(60, colour);
 
-                for (var s1:* in graph0.graph) {
-                    for each (var s2:Star in graph0.graph[s1]) {
-                        commands.push(GraphicsPathCommand.MOVE_TO);
-                        data.push(s1.x, s1.y);
-                        commands.push(GraphicsPathCommand.LINE_TO);
-                        data.push(s2.x, s2.y);
-                    }
-                }
+        for (var s1:* in graph0.graph) {
+            for each (var s2:Star in graph0.graph[s1]) {
+                commands.push(GraphicsPathCommand.MOVE_TO);
+                data.push(s1.x, s1.y);
+                commands.push(GraphicsPathCommand.LINE_TO);
+                data.push(s2.x, s2.y);
+            }
+        }
 
-                g.drawPath(commands, data);
+        g.drawPath(commands, data);
 //            }
 //        }
     }
