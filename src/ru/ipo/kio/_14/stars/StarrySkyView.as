@@ -65,8 +65,6 @@ public class StarrySkyView extends Sprite {
                 currentStar = -1;
                 redrawGraphs();
             });
-
-
         }
 
         //draw line
