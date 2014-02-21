@@ -20,7 +20,7 @@ public class StarsWorkspace extends Sprite {
     private var api:KioApi;
     private var level:int;
 
-    private var sky:StarrySky;
+    private var _sky:StarrySky;
     private var _skyView:StarrySkyView;
 
     private var infoPanel:InfoPanel;
@@ -77,11 +77,11 @@ public class StarsWorkspace extends Sprite {
     }
 
     public function loadWorkspace(stars:Array):void {
-        sky = new StarrySky(level, stars);
-        _skyView = new StarrySkyView(sky, this);
+        _sky = new StarrySky(level, stars);
+        _skyView = new StarrySkyView(_sky, this);
         addChild(_skyView);
 
-        sky.addEventListener(Event.CHANGE, sky_changeHandler);
+        _sky.addEventListener(Event.CHANGE, sky_changeHandler);
         api.addEventListener(KioApi.RECORD_EVENT, recordChanged);
 
         _panel = new SkyInfoPanel(_skyView);
@@ -199,22 +199,22 @@ public class StarsWorkspace extends Sprite {
     }*/
 
     private function recordChanged(event:Event):void {
-        infoPanelRecord.setValue(0, "" + sky.hasIntersectedAnswer());
-        infoPanelRecord.setValue(1, "" + sky.countOfRightGraphs(level));
-        infoPanelRecord.setValue(2, "" + sky.countDifferentGraphs());
-        infoPanelRecord.setValue(3, "" + sky.sumOfLines.toFixed(3));
+        infoPanelRecord.setValue(0, "" + _sky.hasIntersectedAnswer());
+        infoPanelRecord.setValue(1, "" + _sky.countOfRightGraphs(level));
+        infoPanelRecord.setValue(2, "" + _sky.countDifferentGraphs());
+        infoPanelRecord.setValue(3, "" + _sky.sumOfLines.toFixed(3));
     }
 
     private function sky_changeHandler(event:Event):void {
-        infoPanel.setValue(0, "" + sky.hasIntersectedAnswer());
-        if (sky.hasIntersectedLines()) {
+        infoPanel.setValue(0, "" + _sky.hasIntersectedAnswer());
+        if (_sky.hasIntersectedLines()) {
             infoPanel.setValue(1, "-");
             infoPanel.setValue(2, "-");
             infoPanel.setValue(3, "-");
         } else {
-            infoPanel.setValue(1, "" + sky.countOfRightGraphs(level));
-            infoPanel.setValue(2, "" + sky.countDifferentGraphs());
-            infoPanel.setValue(3, "" + sky.sumOfLines.toFixed(3));
+            infoPanel.setValue(1, "" + _sky.countOfRightGraphs(level));
+            infoPanel.setValue(2, "" + _sky.countDifferentGraphs());
+            infoPanel.setValue(3, "" + _sky.sumOfLines.toFixed(3));
         }
 
 
@@ -224,16 +224,16 @@ public class StarsWorkspace extends Sprite {
 
     public function get solution():Object {
         return {
-            lines : sky.serialize()
+            lines : _sky.serialize()
         }
     }
 
     public function currentResult():Object {
         return {
-            has_intersected_lines : sky.hasIntersected(),
-            total_number_of_right_graphs : sky.countOfRightGraphs(level),
-            total_number_of_difference_graphs : sky.countDifferentGraphs(),
-            sum_of_lines : sky.sumOfLines.toFixed(3)
+            has_intersected_lines : _sky.hasIntersected(),
+            total_number_of_right_graphs : _sky.countOfRightGraphs(level),
+            total_number_of_difference_graphs : _sky.countDifferentGraphs(),
+            sum_of_lines : _sky.sumOfLines.toFixed(3)
         }
     }
 
@@ -246,18 +246,17 @@ public class StarsWorkspace extends Sprite {
         _skyView.clearLines();
 
         for (var i:int = 0; i < starsIndexLines.length; i++) {
-            var s1:Star = sky.getStarByIndex(starsIndexLines[i][0]);
-            var s2:Star = sky.getStarByIndex(starsIndexLines[i][1]);
-            var lineIndex:int = sky.addLine(s1, s2);
+            var s1:Star = _sky.getStarByIndex(starsIndexLines[i][0]);
+            var s2:Star = _sky.getStarByIndex(starsIndexLines[i][1]);
+            var lineIndex:int = _sky.addLine(s1, s2);
 
             _skyView.createLineView(s1.x, s1.y);
             _skyView.drawLineView(s2.x, s2.y);
-            _skyView.fixLineView(sky.starsLines[lineIndex]);
+            _skyView.fixLineView(_sky.starsLines[lineIndex]);
         }
         _skyView.starrySky_changeHandler(null); //TODO get rid of this call
         return true;
     }
-
 
     public function get skyView():StarrySkyView {
         return _skyView;

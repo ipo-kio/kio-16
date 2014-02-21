@@ -63,7 +63,7 @@ public class LineView extends Sprite {
     private function rollOverForLine(e:MouseEvent):void {
         isSelected = true;
         workspace.panel.text = "Length of the selected line: " + text;
-//        workspace.skyView.;
+        workspace.skyView.findAndRedrawGraph(line.s1.index);
     }
 
     private function rollOutForLine(e:MouseEvent):void {

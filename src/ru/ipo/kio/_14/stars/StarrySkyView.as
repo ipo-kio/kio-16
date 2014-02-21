@@ -15,126 +15,127 @@ import ru.ipo.kio._14.stars.graphs.IsomorphismChecker;
 
 public class StarrySkyView extends Sprite {
 
-        [Embed(source="resources/Nature-clouds-above-night-resolution-wallpaper-500x400.jpg")]
-        private static const BACKGROUND:Class;
-        private static const BACKGROUND_BMP:BitmapData = new BACKGROUND().bitmapData;
+    [Embed(source="resources/Nature-clouds-above-night-resolution-wallpaper-500x400.jpg")]
+    private static const BACKGROUND:Class;
+    private static const BACKGROUND_BMP:BitmapData = new BACKGROUND().bitmapData;
 
-        private var starViews:Array/*<StarView>*/;
-        private var lines:Array/*<LineView>*/;
+    private var starViews:Array/*<StarView>*/;
+    private var lines:Array/*<LineView>*/;
 
-        private var _workspace:StarsWorkspace;
+    private var _workspace:StarsWorkspace;
 
-        private var currentStar:int = -1;
-        private var saveCurrentStar:int = -1;
-        private var pressed:Boolean;
-        private var currentLineView:LineView = null;
+    private var currentStar:int = -1;
+    private var saveCurrentStar:int = -1;
+    private var pressed:Boolean;
+    private var currentLineView:LineView = null;
 
-        private var sky:StarrySky;
+    private var sky:StarrySky;
 
-        private var constellationsLayer:Sprite = new Sprite();
-        private var drawingLinesLayer:Sprite = new Sprite();
-        private var g:Graphics = constellationsLayer.graphics;
+    private var constellationsLayer:Sprite = new Sprite();
+    private var drawingLinesLayer:Sprite = new Sprite();
+    private var g:Graphics = constellationsLayer.graphics;
 
-        public function StarrySkyView(starrySky:StarrySky, workspace:StarsWorkspace) {
+    public function StarrySkyView(starrySky:StarrySky, workspace:StarsWorkspace) {
 
-            _workspace = workspace;
-            addChild(constellationsLayer);
-            constellationsLayer.alpha = 0.2;
-            addChild(drawingLinesLayer);
+        _workspace = workspace;
+        addChild(constellationsLayer);
+        constellationsLayer.alpha = 0.2;
+        addChild(drawingLinesLayer);
 
-            starViews = [];
-            lines = [];
+        starViews = [];
+        lines = [];
 
-            for (var i:int = 0; i < starrySky.stars.length; i++)
-                starViews[i] = new StarView(starrySky.stars[i]);
+        for (var i:int = 0; i < starrySky.stars.length; i++)
+            starViews[i] = new StarView(starrySky.stars[i]);
 
-            sky = starrySky;
+        sky = starrySky;
 
-            drawSky();
+        drawSky();
 
-            for (var k:int = 0; k < starViews.length; k++) {
-                starViews[k].addEventListener(MouseEvent.ROLL_OVER, createRollOverListener(k));
-            }
-
-            for (var t:int = 0; t < starViews.length; t++) {
-                starViews[t].addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
-                    currentStar = -1;
-
-                    g.clear();
-
-                    var correctGraphs:Vector.<Graph> = new Vector.<Graph>();
-                    for each (var graph:Graph in sky.connectedComponents)
-                        if (graph.isCorrect(sky.level)) {
-                            correctGraphs.push(graph);
-                            redrawConstellations(graph, 0xffffffff);
-                            drawIsomorphicGraphs(correctGraphs);
-                        }
-                });
-
-
-            }
-
-            //draw line
-            addEventListener(MouseEvent.MOUSE_DOWN, function(event:MouseEvent):void {
-                if (currentStar != -1) {
-                    pressed = true;
-                    saveCurrentStar = currentStar;
-                    var star:Star = getStarByIndex(currentStar);
-
-                    createLineView(star.x, star.y);
-                    /*var lineView:LineView = new LineView(star.x, star.y);
-                    drawingLinesLayer.addChild(lineView);
-                    currentLineView = lineView;*/
-                }
-            });
-
-            addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
-                if (pressed) {
-                    drawLineView(event.localX, event.localY);
-                    workspace.panel.text = "Length of the moved line: " + currentLineView.computeDistance(event.localX, event.localY);
-                } //else
-//                    workspace.panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
-            });
-
-            addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
-                if (pressed && currentStar != -1 && currentStar != saveCurrentStar) {
-                    var star1:Star = getStarByIndex(saveCurrentStar);
-                    var star2:Star = getStarByIndex(currentStar);
-                    var lineInd:int = sky.addLine(star1, star2); //TODO sky changed handler called, but we still don't have a line
-                    if (lineInd >= 0)
-                        fixLineView(sky.starsLines[lineInd]);
-                    else
-                        drawingLinesLayer.removeChild(currentLineView);
-                } else if (pressed)
-                    drawingLinesLayer.removeChild(currentLineView);
-//                workspace.panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
-                workspace.panel.text = "";
-
-                pressed = false;
-                saveCurrentStar = -1;
-
-                starrySky_changeHandler(null); //TODO get rid of this call
-            });
-
-            starrySky.addEventListener(Event.CHANGE, starrySky_changeHandler);
+        for (var k:int = 0; k < starViews.length; k++) {
+            starViews[k].addEventListener(MouseEvent.ROLL_OVER, createRollOverListener(k));
         }
 
-        private function createRollOverListener(k:int):Function {
-            return function(event:MouseEvent):void {
-                currentStar = starViews[k].index;
+        for (var t:int = 0; t < starViews.length; t++) {
+            starViews[t].addEventListener(MouseEvent.ROLL_OUT, function(e:MouseEvent):void {
+                currentStar = -1;
 
                 g.clear();
 
-                for each (var graph:Graph in sky.connectedComponents) {
-                    for (var s:* in graph.graph)
-                        if (starViews[k].index == s.index)
-                            redrawConstellations(graph, 0xffffcc00);
-                    redrawConstellations(graph, 0xffffffff);
-                }
-            }
+                var correctGraphs:Vector.<Graph> = new Vector.<Graph>();
+                for each (var graph:Graph in sky.connectedComponents)
+                    if (graph.isCorrect(sky.level)) {
+                        correctGraphs.push(graph);
+                        redrawConstellations(graph, 0xffffffff);
+                        drawIsomorphicGraphs(correctGraphs);
+                    }
+            });
+
+
         }
 
-        private function getStarByIndex(ind:int):Star {
+        //draw line
+        addEventListener(MouseEvent.MOUSE_DOWN, function(event:MouseEvent):void {
+            if (currentStar != -1) {
+                pressed = true;
+                saveCurrentStar = currentStar;
+                var star:Star = getStarByIndex(currentStar);
+
+                createLineView(star.x, star.y);
+                /*var lineView:LineView = new LineView(star.x, star.y);
+                drawingLinesLayer.addChild(lineView);
+                currentLineView = lineView;*/
+            }
+        });
+
+        addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
+            if (pressed) {
+                drawLineView(event.localX, event.localY);
+            }
+        });
+
+        addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
+            if (pressed && currentStar != -1 && currentStar != saveCurrentStar) {
+                var star1:Star = getStarByIndex(saveCurrentStar);
+                var star2:Star = getStarByIndex(currentStar);
+                var lineInd:int = sky.addLine(star1, star2); //TODO sky changed handler called, but we still don't have a line
+                if (lineInd >= 0)
+                    fixLineView(sky.starsLines[lineInd]);
+                else
+                    drawingLinesLayer.removeChild(currentLineView);
+            } else if (pressed)
+                drawingLinesLayer.removeChild(currentLineView);
+//                workspace.panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
+            workspace.panel.text = "";
+
+            pressed = false;
+            saveCurrentStar = -1;
+
+            starrySky_changeHandler(null); //TODO get rid of this call
+        });
+
+        starrySky.addEventListener(Event.CHANGE, starrySky_changeHandler);
+    }
+
+    private function createRollOverListener(k:int):Function {
+        return function(event:MouseEvent):void {
+            currentStar = starViews[k].index;
+
+            findAndRedrawGraph(starViews[k].index);
+        }
+    }
+
+    public function findAndRedrawGraph(starInd:int):void {
+        g.clear();
+        for each (var graph:Graph in sky.connectedComponents) {
+            for (var s:* in graph.graph)
+                if (starInd == s.index)
+                    redrawConstellations(graph, 0xffffcc00);
+            redrawConstellations(graph, 0xffffffff);
+        }
+    }
+
+    private function getStarByIndex(ind:int):Star {
             return sky.stars[ind];
         }
 
