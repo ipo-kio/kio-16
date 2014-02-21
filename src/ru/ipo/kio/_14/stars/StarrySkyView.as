@@ -111,12 +111,9 @@ public class StarrySkyView extends Sprite {
     public function redrawGraphs():void {
         g.clear();
 
-        var correctGraphs:Vector.<Graph> = new Vector.<Graph>();
         for each (var graph:Graph in sky.connectedComponents)
             if (graph.isCorrect(sky.level)) {
-                correctGraphs.push(graph);
                 redrawConstellations(graph, 0xffffffff);
-                drawIsomorphicGraphs(correctGraphs);
             }
     }
 
@@ -132,61 +129,77 @@ public class StarrySkyView extends Sprite {
         g.clear();
         for each (var graph:Graph in sky.connectedComponents) {
             for (var s:* in graph.graph)
-                if (starInd == s.index)
+                if (starInd == s.index) {
                     redrawConstellations(graph, 0xffffcc00);
+                    findAndDrawIsomorphicGraphs(graph);
+                }
             redrawConstellations(graph, 0xffffffff);
+        }
+    }
+
+    private function findAndDrawIsomorphicGraphs(graph:Graph):void {
+        for (var g1:int = 0; g1 < sky.connectedComponents.length; g1++) {
+            var neighbourGraph:Graph = sky.connectedComponents[g1];
+            if (neighbourGraph.isCorrect(sky.level)) {
+                if (neighbourGraph == graph)
+                    continue;
+                if (IsomorphismChecker.areIsomorphic(graph, neighbourGraph)) {
+                    redrawConstellations(neighbourGraph, 0xffff0000/*0xffffcc00*/);
+                }
+            }
+
         }
     }
 
     private function getStarByIndex(ind:int):Star {
             return sky.stars[ind];
-        }
+    }
 
-        private function drawSky():void {
-            graphics.clear();
+    private function drawSky():void {
+        graphics.clear();
 //            graphics.beginFill(0x0047ab);
-            var m:Matrix = new Matrix();
-            m.scale(2, 2);
-            graphics.beginBitmapFill(BACKGROUND_BMP, m);
+        var m:Matrix = new Matrix();
+        m.scale(2, 2);
+        graphics.beginBitmapFill(BACKGROUND_BMP, m);
 //            graphics.beginFill(0);
-            graphics.drawRect(0, 0, 780, 480);
-            graphics.endFill();
+        graphics.drawRect(0, 0, 780, 480);
+        graphics.endFill();
 
-            for (var i:int = 0; i < starViews.length; i++) {
-                addChild(starViews[i]);
-            }
+        for (var i:int = 0; i < starViews.length; i++) {
+            addChild(starViews[i]);
         }
+    }
 
-        public function createLineView(startX:Number, startY:Number):void {
-            var lineView:LineView = new LineView(startX, startY, _workspace);
-            drawingLinesLayer.addChild(lineView);
-            currentLineView = lineView;
-        }
+    public function createLineView(startX:Number, startY:Number):void {
+        var lineView:LineView = new LineView(startX, startY, _workspace);
+        drawingLinesLayer.addChild(lineView);
+        currentLineView = lineView;
+    }
 
-        public function drawLineView(localX:Number, localY:Number):void {
-            currentLineView.drawNewLine(localX, localY);
-        }
+    public function drawLineView(localX:Number, localY:Number):void {
+        currentLineView.drawNewLine(localX, localY);
+    }
 
-        public function fixLineView(line:Line):void {
-            lines.push(currentLineView);
-            currentLineView.fixNewLine(line);
-            currentLineView.addEventListener(MouseEvent.CLICK, lineView_clickHandler);
-        }
+    public function fixLineView(line:Line):void {
+        lines.push(currentLineView);
+        currentLineView.fixNewLine(line);
+        currentLineView.addEventListener(MouseEvent.CLICK, lineView_clickHandler);
+    }
 
-        private function lineView_clickHandler(event:MouseEvent):void {
-            var lineView:LineView = event.target as LineView;
-            if (lineView != null) {
+    private function lineView_clickHandler(event:MouseEvent):void {
+        var lineView:LineView = event.target as LineView;
+        if (lineView != null) {
 //                var line:Line = lineView.line;
-                //remove line from sky._starsLines and from _lines
-                for (var lineViewInd:int = 0; lineViewInd < lines.length; lineViewInd++)
-                    if (lines[lineViewInd] == lineView) {
-                        removeLine(lineViewInd);
-                        return;
-                    }
-                trace("ERROR!! failed to find lineView to remove");
-                throw new Error("ERROR!! failed to find lineView to remove");
-            }
+            //remove line from sky._starsLines and from _lines
+            for (var lineViewInd:int = 0; lineViewInd < lines.length; lineViewInd++)
+                if (lines[lineViewInd] == lineView) {
+                    removeLine(lineViewInd);
+                    return;
+                }
+            trace("ERROR!! failed to find lineView to remove");
+            throw new Error("ERROR!! failed to find lineView to remove");
         }
+    }
 
     private function removeLine(lineViewInd:int):void {
         var lineView:LineView = lines[lineViewInd];
@@ -209,26 +222,10 @@ public class StarrySkyView extends Sprite {
 
         g.clear();
 
-        var correctGraphs:Vector.<Graph> = new Vector.<Graph>();
         for each (var graph:Graph in sky.connectedComponents)
             if (graph.isCorrect(sky.level)) {
-                correctGraphs.push(graph);
                 redrawConstellations(graph, 0xffffffff);
-                drawIsomorphicGraphs(correctGraphs);
             }
-    }
-
-    private function drawIsomorphicGraphs(correctGraphs:Vector.<Graph>):void {
-        for (var g1:int = 1; g1 < correctGraphs.length; g1++) {
-            var graph1:Graph = correctGraphs[g1];
-            for (var g2:int = 0; g2 <= g1 - 1; g2++) {
-                var graph2:Graph = correctGraphs[g2];
-                if (IsomorphismChecker.areIsomorphic(graph1, graph2)) {
-                    redrawConstellations(graph1, 0xffff0000/*0xffffcc00*/);
-                    redrawConstellations(graph2, 0xffff0000/*0xffffcc00*/);
-                }
-            }
-        }
     }
 
     public function redrawConstellations(graph0:Graph, colour:uint):void {
