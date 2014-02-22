@@ -22,6 +22,13 @@ public interface LogicItem {
      */
     function getToolboxText():String;
 
+
+    /**
+     * Текст для тулбокса
+     * @return
+     */
+    function getFormulaText():String;
+
     /**
      * Получить клона сущности
      * @return

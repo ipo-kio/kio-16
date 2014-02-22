@@ -52,7 +52,7 @@ public class NotOperation extends BaseOperation{
 
 
     public override function getToolboxText():String {
-        return "Не верно, что";
+        return "НЕ ВЕРНО, ЧТО";
     }
 
 

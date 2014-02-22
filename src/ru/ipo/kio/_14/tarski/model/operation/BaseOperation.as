@@ -645,5 +645,9 @@ public class BaseOperation extends LogicEvaluatedItem implements LogicItem {
         data[first] = null;
         return false;
     }
+
+    public override function getFormulaText():String {
+        return getToolboxText();
+    }
 }
 }

@@ -28,5 +28,9 @@ public class BasePredicate extends LogicEvaluatedItem implements LogicItem{
     public override function getCloned():LogicItem {
         throw new IllegalOperationError("method must be overridden");
     }
+
+    public override function getFormulaText():String {
+        return getToolboxText();
+    }
 }
 }

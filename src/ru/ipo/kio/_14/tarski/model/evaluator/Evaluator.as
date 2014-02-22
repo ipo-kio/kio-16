@@ -8,6 +8,6 @@ import ru.ipo.kio._14.tarski.model.operation.LogicEvaluatedItem;
 
 public interface Evaluator {
 
-    function checkExample(_logicResulted:LogicEvaluatedItem,configuration:Configuration):void;
+    function checkExample(_logicResulted:LogicEvaluatedItem,configuration:Configuration):Boolean;
 }
 }

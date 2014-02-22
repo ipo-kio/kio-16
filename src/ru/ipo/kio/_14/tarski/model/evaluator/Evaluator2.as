@@ -17,9 +17,9 @@ public class Evaluator2 implements Evaluator{
     public function Evaluator2() {
     }
 
-    public function checkExample(_logicResulted:LogicEvaluatedItem,configuration:Configuration):void {
+    public function checkExample(_logicResulted:LogicEvaluatedItem,configuration:Configuration):Boolean {
         var res:Boolean =  _logicResulted.evaluateWithQuants(new Dictionary(), configuration.getListFigure());
-        configuration.correct = res;
+        return res;
         //firstEvaluatingAttempt(_logicResulted, configuration);
     }
 

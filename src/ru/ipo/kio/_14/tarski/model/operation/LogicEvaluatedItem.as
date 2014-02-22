@@ -19,15 +19,31 @@ import ru.ipo.kio._14.tarski.view.statement.LogicItemView;
 
 public class LogicEvaluatedItem implements LogicItem{
 
+    private var _correct:Boolean;
+
+
+    public function get correct():Boolean {
+        return _correct;
+    }
+
+    public function set correct(value:Boolean):void {
+        _correct = value;
+    }
+
+
+    public function set itemView(value:BasicView):void {
+        _itemView = value;
+    }
+
     private var _quants:Vector.<Quantifier> = new Vector.<Quantifier>();
 
     protected var itemToolboxView:LogicItemToolboxView;
 
-    protected var itemView:LogicItemView;
+    private var _itemView:BasicView;
 
     public function LogicEvaluatedItem() {
         itemToolboxView = new LogicItemToolboxView(this);
-        itemView = new LogicItemView(this);
+        _itemView = new LogicItemView(this);
     }
 
     protected function quantsToSts(): String{
@@ -132,12 +148,15 @@ public class LogicEvaluatedItem implements LogicItem{
     }
 
     public function getView():BasicView {
-        return itemView;
+        return _itemView;
     }
 
     public function getToolboxView():BasicView {
         return itemToolboxView;
     }
 
+    public function getFormulaText():String {
+        return getToolboxText();
+    }
 }
 }

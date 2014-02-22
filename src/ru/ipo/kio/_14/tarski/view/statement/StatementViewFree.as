@@ -3,6 +3,7 @@
  * @since: 05.02.14
  */
 package ru.ipo.kio._14.tarski.view.statement {
+import ru.ipo.kio._14.tarski.TarskiSprite;
 import ru.ipo.kio._14.tarski.view.*;
 
 import flash.display.Sprite;
@@ -21,17 +22,27 @@ public class StatementViewFree extends BasicView {
 
     public override function update():void{
         graphics.clear();
+
+        if(statement.active){
+            graphics.beginFill(0xddddff);
+            graphics.drawRect(0,0,Math.max(width,700),height);
+            graphics.endFill();
+        }
+
         if(statement.finished){
             graphics.lineStyle(2,0x99FF99);
         }else{
             graphics.lineStyle(2,0xFF9999);
         }
-        graphics.drawRect(0,0,700,40);
+
         clearAll();
         var list:Vector.<LogicItem>  = statement.logicItems;
         var predelimiter:Delimiter = new Delimiter(statement);
         var aftdelimiter:Delimiter = new Delimiter(statement);
         var x:int = 0;
+        if(statement.lastItem==null){
+            statement.activeDelimiter=predelimiter;
+        }
         for(var i:int = 0;i<list.length; i++){
             predelimiter.afterItem=list[i];
             aftdelimiter.beforeItem=list[i];
@@ -56,6 +67,14 @@ public class StatementViewFree extends BasicView {
 
         if(list.length==0){
             statement.activeDelimiter=predelimiter;
+        }
+
+        graphics.drawRect(0,0,Math.max(width,700),height);
+
+
+
+        if(TarskiSprite.instance.statementManager!=null){
+            TarskiSprite.instance.statementManager.scrollPane.refreshPane();
         }
     }
 

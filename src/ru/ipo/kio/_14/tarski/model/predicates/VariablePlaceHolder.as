@@ -3,6 +3,7 @@
  * @since: 06.02.14
  */
 package ru.ipo.kio._14.tarski.model.predicates {
+import ru.ipo.kio._14.tarski.model.Statement;
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 import ru.ipo.kio._14.tarski.view.BasicView;
 import ru.ipo.kio._14.tarski.view.statement.PlaceHolderView;
@@ -15,11 +16,21 @@ public class VariablePlaceHolder{
 
     private var _predicate:LogicItem;
 
+    private var _statement:Statement;
+
     public function VariablePlaceHolder(predicate:LogicItem) {
         _predicate = predicate;
         _view= new PlaceHolderView(this);
     }
 
+
+    public function get statement():Statement {
+        return _statement;
+    }
+
+    public function set statement(value:Statement):void {
+        _statement = value;
+    }
 
     public function get predicate():LogicItem {
         return _predicate;

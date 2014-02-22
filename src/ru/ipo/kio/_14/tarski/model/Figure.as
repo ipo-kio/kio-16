@@ -5,6 +5,7 @@
  * @since: 22.01.14
  */
 package ru.ipo.kio._14.tarski.model {
+import ru.ipo.kio._13.clock.view.BasicView;
 import ru.ipo.kio._14.tarski.model.properties.ColorValue;
 import ru.ipo.kio._14.tarski.model.properties.Colorable;
 import ru.ipo.kio._14.tarski.model.properties.PlanePositionable;
@@ -13,6 +14,7 @@ import ru.ipo.kio._14.tarski.model.properties.ShapeValue;
 import ru.ipo.kio._14.tarski.model.properties.Sizable;
 import ru.ipo.kio._14.tarski.model.properties.SizeValue;
 import ru.ipo.kio._14.tarski.model.properties.ValueHolder;
+import ru.ipo.kio._14.tarski.view.FigureView;
 
 public class Figure implements Sizable, Shapable, Colorable, PlanePositionable{
 
@@ -25,6 +27,19 @@ public class Figure implements Sizable, Shapable, Colorable, PlanePositionable{
     private var _size:SizeValue;
 
     private var _shape:ShapeValue;
+
+    private var _view:BasicView;
+
+    private var _active:Boolean =  false;
+
+
+    public function get active():Boolean {
+        return _active;
+    }
+
+    public function set active(value:Boolean):void {
+        _active = value;
+    }
 
     public static function createFigureByCode(x:int, y:int, string:String):Figure{
         var colorCode:String = string.substr(0,1);
@@ -57,7 +72,13 @@ public class Figure implements Sizable, Shapable, Colorable, PlanePositionable{
             sizeValue = ValueHolder.getSize(shapeCode);
             shapeValue = ValueHolder.getShape(shapeCode);
         }
+
         return new Figure(x,y,colorValue,sizeValue,shapeValue);
+    }
+
+
+    public function get view():BasicView {
+        return _view;
     }
 
     public static function createFigure(x:int, y:int, color:String, size:String, shape:String):Figure{
@@ -73,6 +94,7 @@ public class Figure implements Sizable, Shapable, Colorable, PlanePositionable{
         _color = color;
         _size = size;
         _shape = shape;
+        _view = new FigureView(this);
     }
 
     public function get x():int {

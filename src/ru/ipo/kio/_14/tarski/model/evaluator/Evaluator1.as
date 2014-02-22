@@ -13,7 +13,7 @@ public class Evaluator1 implements Evaluator{
     public function Evaluator1() {
     }
 
-    public function checkExample(_logicResulted:LogicEvaluatedItem,configuration:Configuration):void {
+    public function checkExample(_logicResulted:LogicEvaluatedItem,configuration:Configuration):Boolean {
         var dict:Dictionary = _logicResulted.collectFormalOperand();
         var size:int = 0;
         var first:Object = null;
@@ -68,7 +68,7 @@ public class Evaluator1 implements Evaluator{
             }
         }
 
-        configuration.correct=ok;
+        return ok;
 
     }
 }

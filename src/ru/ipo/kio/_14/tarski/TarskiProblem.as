@@ -3,6 +3,8 @@
  * @since: 31.01.14
  */
 package ru.ipo.kio._14.tarski {
+import flash.display.Sprite;
+
 import ru.ipo.kio._13.clock.*;
 
 import flash.display.DisplayObject;
@@ -48,13 +50,17 @@ public class TarskiProblem implements KioProblem{
 
     private var _level:int;
 
-    private var _sprite:TarskiSprite;
+    private var _sprite:Sprite;
 
 
     public function TarskiProblem(level:int) {
         KioApi.initialize(this);
         _level=level;
-        _sprite=new TarskiSprite(level);
+        if(level ==0){
+            _sprite = new TarskiSpriteLevel0();
+        }else{
+            _sprite=new TarskiSprite(level);
+        }
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(TARSKI_RU).data);
         KioApi.registerLocalization(ID, KioApi.L_ES, new Settings(TARSKI_ES).data);
         KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(TARSKI_EN).data);

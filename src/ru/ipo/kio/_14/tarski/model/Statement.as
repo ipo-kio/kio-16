@@ -6,11 +6,15 @@
  */
 package ru.ipo.kio._14.tarski.model {
 
+import flash.system.SystemUpdater;
 import flash.utils.Dictionary;
+
+import ru.ipo.kio._14.tarski.TarskiSprite;
 
 import ru.ipo.kio._14.tarski.TarskiSprite;
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 import ru.ipo.kio._14.tarski.model.evaluator.Evaluator;
+import ru.ipo.kio._14.tarski.model.operation.ImplicationOperation;
 import ru.ipo.kio._14.tarski.model.parser.StatementParser;
 import ru.ipo.kio._14.tarski.model.predicates.Variable;
 import ru.ipo.kio._14.tarski.model.predicates.VariablePlaceHolder;
@@ -22,6 +26,7 @@ import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
 import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
 import ru.ipo.kio._14.tarski.view.BasicView;
 import ru.ipo.kio._14.tarski.view.statement.Delimiter;
+import ru.ipo.kio._14.tarski.view.statement.FictiveLogicItem;
 import ru.ipo.kio._14.tarski.view.statement.StatementViewFree;
 
 public class Statement {
@@ -46,6 +51,17 @@ public class Statement {
 
     private var _lastItem:LogicItem;
 
+    private var _active:Boolean=false;
+
+
+    public function set active(value:Boolean):void {
+        _active = value;
+    }
+
+    public function get active():Boolean {
+        return _active;
+    }
+
     public function Statement(parser:StatementParser, checker:Evaluator) {
         this.parser=parser;
         this.checker=checker;
@@ -57,22 +73,62 @@ public class Statement {
         return _finished;
     }
 
+
+    public function setLastItemBefore(value:Delimiter):void {
+        clearActive();
+        if(value.beforeItem==null){
+            _lastItem = null;
+        }else{
+            _lastItem = value.beforeItem;
+        }
+        view.update();
+
+    }
+
     public function addLogicItem(logicItem:LogicItem):void{
 
         if(_activeDelimiter!=null){
+
             if(_activeDelimiter.beforeItem==null){
-                logicItems.unshift(logicItem);
+                if(logicItem is ImplicationOperation){
+                    var ifOp:FictiveLogicItem = new FictiveLogicItem(FictiveLogicItem.IF, null);
+                    var thenOp:FictiveLogicItem = new FictiveLogicItem(FictiveLogicItem.THEN, null);
+                    ifOp.couple=thenOp;
+                    thenOp.couple=ifOp;
+                    logicItems.unshift(thenOp);
+                    logicItems.unshift(ifOp);
+                    _lastItem=ifOp;
+                }else{
+                    logicItems.unshift(logicItem);
+                    _lastItem=logicItem;
+                }
+
             }else{
-                logicItems.splice(logicItems.indexOf(_activeDelimiter.beforeItem)+1, 0, logicItem);
+                if(logicItem is ImplicationOperation){
+                    var ifOp:FictiveLogicItem = new FictiveLogicItem(FictiveLogicItem.IF, null);
+                    var thenOp:FictiveLogicItem = new FictiveLogicItem(FictiveLogicItem.THEN, null);
+                    ifOp.couple=thenOp;
+                    thenOp.couple=ifOp;
+                    logicItems.splice(logicItems.indexOf(_activeDelimiter.beforeItem)+1, 0, thenOp);
+                    logicItems.splice(logicItems.indexOf(_activeDelimiter.beforeItem)+1, 0, ifOp);
+                    _lastItem=ifOp;
+                }else{
+                    logicItems.splice(logicItems.indexOf(_activeDelimiter.beforeItem)+1, 0, logicItem);
+                    _lastItem=logicItem;
+                }
             }
-            _lastItem=logicItem;
+
             if(logicItem is Variable){
                 activeVariable = Variable(logicItem);
             }else if(logicItem is OnePlacePredicate){
+                (OnePlacePredicate(logicItem)).placeHolder.statement=this;
                 activePlaceHolder = (OnePlacePredicate(logicItem)).placeHolder;
             }else if(logicItem is TwoPlacePredicate){
+                (TwoPlacePredicate(logicItem)).placeHolder1.statement=this;
+                (TwoPlacePredicate(logicItem)).placeHolder2.statement=this;
                 activePlaceHolder = (TwoPlacePredicate(logicItem)).placeHolder1;
             }else if(logicItem is Quantifier){
+                (Quantifier(logicItem)).placeHolder.statement=this;
                 activePlaceHolder = (Quantifier(logicItem)).placeHolder;
             }
 
@@ -113,25 +169,28 @@ public class Statement {
             }
         }
 
-        _logicResulted=null;
+        TarskiSprite.instance.statementManager.perseAndCheckAll();
+    }
 
-        try{
-            _logicResulted=parser.parse(logicItems);
-        }catch (e:Error){
+    public function parse():void {
+        _logicResulted = null;
+
+        try {
+            _logicResulted = parser.parse(logicItems);
+        } catch (e:Error) {
             //не распарсили и фиг с ним
         }
 
-        _finished=false;
+        _finished = false;
 
-        if(_logicResulted!=null){
+        if (_logicResulted != null) {
             _logicResulted.commit();
-            if(_logicResulted.canBeEvaluated()){
-                _finished=true;
-                check();
+            if (_logicResulted.canBeEvaluated()) {
+                _finished = true;
+
             }
         }
         _view.update();
-
     }
 
 
@@ -186,30 +245,22 @@ public class Statement {
         if(_activeDelimiter!=null && _activeDelimiter.beforeItem!=null){
             var index:int = logicItems.indexOf(_activeDelimiter.beforeItem);
             logicItems.splice(index, 1);
-            if(index>0){
+
+            if(_activeDelimiter.beforeItem is FictiveLogicItem){
+                var indexCouple:int = logicItems.indexOf(FictiveLogicItem(_activeDelimiter.beforeItem).couple);
+                logicItems.splice(indexCouple, 1);
+            }
+
+            if(index>0 && _logicItems.length>(index-1)){
                 _lastItem=_logicItems[index-1];
             }
 
 
-            _logicResulted=null;
 
-            try{
-                _logicResulted=parser.parse(logicItems);
-            }catch (e:Error){
-                //не распарсили и фиг с ним
-            }
 
-            _finished=false;
 
-            if(_logicResulted!=null){
-                _logicResulted.commit();
-                if(_logicResulted.canBeEvaluated()){
-                    _finished=true;
-                    check();
-                }
-            }
 
-            _view.update();
+            TarskiSprite.instance.statementManager.perseAndCheckAll();
         }
     }
 
@@ -224,18 +275,12 @@ public class Statement {
 
 
 
-    public function check():void{
+    public function check(configuration:Configuration):Boolean{
         if(_logicResulted!=null){
-            for(var i:int = 0; i<ConfigurationHolder.instance.rightExamples.length; i++){
-                var rightConfiguration:Configuration = ConfigurationHolder.instance.rightExamples[i];
-                checker.checkExample(_logicResulted, rightConfiguration);
-            }
-            for(var j:int = 0; j<ConfigurationHolder.instance.wrongExamples.length; j++){
-                var wrongConfiguration:Configuration = ConfigurationHolder.instance.wrongExamples[j];
-                checker.checkExample(_logicResulted, wrongConfiguration);
-            }
+                return checker.checkExample(_logicResulted, configuration);
         }
-        TarskiSprite.instance.update();
+        return false;
+
     }
 
 

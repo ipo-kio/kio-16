@@ -5,6 +5,9 @@
  * @since: 22.01.14
  */
 package ru.ipo.kio._14.tarski.model {
+import ru.ipo.kio._14.tarski.view.BasicView;
+import ru.ipo.kio._14.tarski.view.ConfigurationView;
+
 public class Configuration {
 
     private var _figures:Vector.<Figure> = new Vector.<Figure>();
@@ -15,12 +18,19 @@ public class Configuration {
 
     private var _correct:Boolean=false;
 
+    private var _view:BasicView;
+
 
     public function Configuration(width:int, depth:int) {
         _width = width;
         _depth = depth;
+        _view = new ConfigurationView(this);
     }
 
+
+    public function get view():BasicView {
+        return _view;
+    }
 
     public function set correct(value:Boolean):void {
         _correct = value;
@@ -46,6 +56,15 @@ public class Configuration {
 
     public function getListFigure():Vector.<Figure>{
         return _figures;
+    }
+
+    public function removeFigure(figure:Figure):void{
+        for(var i:int=0; i<_figures.length; i++){
+            if(_figures[i]==figure){
+                _figures.splice(i,1);
+                return;
+            }
+        }
     }
 
     public function getFigure(x:int,y:int):Figure{

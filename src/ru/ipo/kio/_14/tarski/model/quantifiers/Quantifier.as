@@ -81,7 +81,11 @@ public class Quantifier implements LogicItem {
     }
 
     public function getToolboxText():String {
-        return _code==EXIST?"Существует ":"Каждый";
+        return _code==EXIST?"СУЩЕСТВУЕТ ":"ДЛЯ ВСЕХ ";
+    }
+
+    public function getFormulaText():String {
+        return _code==EXIST?"СУЩЕСТВУЕТ_ТАКОЙ ЧТО":"ДЛЯ ВСЕХ_";
     }
 
     public function getCloned():LogicItem {
@@ -97,5 +101,7 @@ public class Quantifier implements LogicItem {
             _formalOperand=_placeHolder.variable.code;
         }
     }
+
+
 }
 }

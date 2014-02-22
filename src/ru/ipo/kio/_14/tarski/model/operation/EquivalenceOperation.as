@@ -44,5 +44,9 @@ public class EquivalenceOperation extends TwoPositionOperation{
     public override function getCloned():LogicItem {
         return new EquivalenceOperation();
     }
+
+    public override function getFormulaText():String {
+        return "ТОГДА И ТОЛЬКО ТОГДА";
+    }
 }
 }

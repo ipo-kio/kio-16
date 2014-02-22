@@ -6,6 +6,8 @@ package ru.ipo.kio._14.tarski.model.parser {
 import flash.sampler.isGetterSetter;
 import flash.utils.Dictionary;
 
+import mx.controls.ProgressBarLabelPlacement;
+
 import mx.logging.LogLogger;
 
 import ru.ipo.kio._14.tarski.TarskiRunner;
@@ -24,9 +26,9 @@ import ru.ipo.kio._14.tarski.model.operation.TwoPositionOperation;
 import ru.ipo.kio._14.tarski.model.predicates.BasePredicate;
 import ru.ipo.kio._14.tarski.model.predicates.OnePlacePredicate;
 import ru.ipo.kio._14.tarski.model.predicates.TwoPlacePredicate;
-import ru.ipo.kio._14.tarski.model.predicates.Variable;
+
 import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
-import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
+import ru.ipo.kio._14.tarski.view.statement.FictiveLogicItem;
 
 public class StatementParser2 extends StatementParser1{
     public function StatementParser2() {
@@ -37,6 +39,8 @@ public class StatementParser2 extends StatementParser1{
         for(var i:int=0; i<logicItemsInit.length; i++){
             logicItems.push(logicItemsInit[i]);
         }
+
+        processIfThen(logicItems);
 
         var correctBraces:Boolean = setPrioirtiesAndCheckBraces(logicItems);
         if(!correctBraces){
@@ -88,6 +92,37 @@ public class StatementParser2 extends StatementParser1{
 //            }
         }
         return result;
+    }
+
+    /**
+     * заменяем если ... то ...
+     * на ((...)<=> ...)#, где # - первая операция => или <=> вне скобок
+     * @param logicItems
+     */
+    public function  processIfThen(logicItems:Vector.<LogicItem>){
+        for(var i:int=0; i<logicItems.length; i++){
+            if(logicItems[i] is FictiveLogicItem && FictiveLogicItem(logicItems[i]).getFormulaText()==FictiveLogicItem.IF){
+                logicItems.splice(i, 1, new Brace(true), new Brace(true));
+            }else if(logicItems[i] is FictiveLogicItem && FictiveLogicItem(logicItems[i]).getFormulaText()==FictiveLogicItem.THEN){
+                logicItems.splice(i, 1, new Brace(false), new ImplicationOperation());
+                i++;
+                var braceCount:int = 0 ;
+                for(var j:int = i+1; j<logicItems.length; j++){
+                    if(logicItems[j] is Brace){
+                        braceCount=Brace(logicItems[j]).open?(braceCount+1):(braceCount-1);
+                    }else if(braceCount==0 && (logicItems[j] is ImplicationOperation || logicItems[j] is EquivalenceOperation)){
+                        logicItems.splice(j, 0, new Brace(false));
+                        break;
+                    }
+
+                    if(j==logicItems.length-1){
+                        logicItems.splice(j+1, 0, new Brace(false));
+                        break;
+                    }
+                }
+            }
+        }
+
     }
 
     public static function countKeys(myDictionary:flash.utils.Dictionary):int

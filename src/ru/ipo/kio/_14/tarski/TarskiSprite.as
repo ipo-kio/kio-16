@@ -5,12 +5,16 @@
 package ru.ipo.kio._14.tarski {
 import com.adobe.serialization.json.JSON_k;
 
+import fl.containers.ScrollPane;
+
 import flash.net.FileReference;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.text.engine.TabAlignment;
 import flash.utils.ByteArray;
+
+import flashx.textLayout.container.ScrollPolicy;
 
 import mx.states.State;
 
@@ -43,16 +47,15 @@ public class TarskiSprite extends Sprite {
         return _instance;
     }
 
-
     private var _variableToolboxView:ToolboxView;
 
     private var _predicateToolboxView:ToolboxView;
 
     private var _operationToolboxView:ToolboxView;
 
-    private var _statement:Statement;
-
     private var _logicItemProvider:LogicItemProvider;
+
+    private var _statementManager:StatamentManager;
 
     public function TarskiSprite(level:int) {
         _instance=this;
@@ -61,15 +64,15 @@ public class TarskiSprite extends Sprite {
         graphics.drawRect(0,0,800,600);
         graphics.endFill();
 
+        _statementManager=new StatamentManager(level);
+
         if(level==1){
-            _statement=new Statement(new StatementParser1(), new Evaluator1());
             _logicItemProvider = new LogicItemProvider1();
         }else if (level==2){
-            _statement=new Statement(new StatementParser2(), new Evaluator2());
             _logicItemProvider = new LogicItemProvider2();
         }
 
-        _variableToolboxView = new ToolboxView(_logicItemProvider.variables, 200);
+        _variableToolboxView = new ToolboxView(_logicItemProvider.variables, 100);
         _predicateToolboxView = new ToolboxView(_logicItemProvider.predicates, 300);
         _operationToolboxView = new ToolboxView(_logicItemProvider.operations, 150);
 
@@ -86,11 +89,7 @@ public class TarskiSprite extends Sprite {
         addChild(_operationToolboxView);
 
 
-
-        _statement.view.x=20;
-        _statement.view.y=530;
-        addChild(_statement.view);
-        _statement.view.update();
+        addChild(_statementManager.view);
 
         var loadButton:ShellButton = new ShellButton("Загрузить");
         loadButton.x = 10;
@@ -114,27 +113,49 @@ public class TarskiSprite extends Sprite {
         clearButton.y = 5;
         addChild(clearButton);
         clearButton.addEventListener(MouseEvent.CLICK, function(e:Event):void{
-            _statement.clear();
+            statement.clear();
         });
 
 
         var backspaceButton:ShellButton = new ShellButton("<- Стереть");
         backspaceButton.x = 650;
-        backspaceButton.y = 500;
+        backspaceButton.y = 450;
         addChild(backspaceButton);
         backspaceButton.addEventListener(MouseEvent.CLICK, function(e:Event):void{
-            _statement.backspace();
+            statement.backspace();
+        });
+
+        var addButton:ShellButton = new ShellButton("Создать");
+        addButton.x = 650;
+        addButton.y = 500;
+        addChild(addButton);
+        addButton.addEventListener(MouseEvent.CLICK, function(e:Event):void{
+            _statementManager.addStatement();
+        });
+
+
+        var removeButton:ShellButton = new ShellButton("Удалить");
+        removeButton.x = 650;
+        removeButton.y = 550;
+        addChild(removeButton);
+        removeButton.addEventListener(MouseEvent.CLICK, function(e:Event):void{
+            _statementManager.removeStatement();
         });
 
     }
 
 
+    public function get statementManager():StatamentManager {
+        return _statementManager;
+    }
+
     public function get statement():Statement {
-        return _statement;
+        return _statementManager.statement;
     }
 
     public function update():void{
-        _statement.view.update();
+        _statementManager.update();
+
         _variableToolboxView.update();
 
         graphics.clear();

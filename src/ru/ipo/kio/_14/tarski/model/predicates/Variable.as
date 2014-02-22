@@ -71,7 +71,8 @@ public class Variable implements LogicItem{
     }
 
 
-
-
+    public function getFormulaText():String {
+        return getToolboxText();
+    }
 }
 }

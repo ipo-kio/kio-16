@@ -27,7 +27,12 @@ public class PlaceHolderView extends BasicView {
          textField = createField("_");
         addChild(textField);
         addEventListener(MouseEvent.CLICK, function(e:Event):void{
-            TarskiSprite.instance.statement.activePlaceHolder=placeHolder;
+            if(placeHolder.statement!=TarskiSprite.instance.statementManager.statement){
+                TarskiSprite.instance.statementManager.activate(placeHolder.statement);
+                TarskiSprite.instance.statement.activePlaceHolder=placeHolder;
+            }else{
+                TarskiSprite.instance.statement.activePlaceHolder=placeHolder;
+            }
         });
 
         addEventListener(MouseEvent.ROLL_OVER, function(e:MouseEvent):void{
@@ -47,12 +52,12 @@ public class PlaceHolderView extends BasicView {
         }else{
             textField.text="_";
         }
-        if(placeHolder.active){
+        if(placeHolder.active && placeHolder.statement.active){
             graphics.beginFill(0X7DE8E4);
         }else if(overed){
             graphics.beginFill(0xD7EDFF);
         }else{
-            graphics.beginFill(0xFFFFFF);
+            graphics.beginFill(0xFFFFFF,0);
         }
         graphics.drawRect(0,0,20,20);
     }
