@@ -9,6 +9,15 @@ public class BottomPanel extends Sprite {
     public static const BOTTOM_BG:Class;
     public static const BOTTOM_BG_IMG:BitmapData = (new BOTTOM_BG).bitmapData;
 
+    [Embed(
+            source='resources/Ekaterina Velikaya One.ttf',
+            embedAsCFF = "false",
+            fontName="KioEkaterina",
+            mimeType="application/x-font-truetype",
+            unicodeRange = "U+0000-U+FFFF"
+            )]
+    private static var EKATERINA_FONT:Class;
+
     public function BottomPanel() {
         graphics.beginBitmapFill(BOTTOM_BG_IMG);
         graphics.drawRect(0, 0, GlobalMetrics.WORKSPACE_WIDTH, GlobalMetrics.WORKSPACE_HEIGHT - PeterhofWorkspace._3D_HEIGHT);

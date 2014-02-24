@@ -119,6 +119,7 @@ public class PeterhofWorkspace extends Sprite {
     private function fillBottomPanel(bottomPanel:BottomPanel):void {
         bottomPanel.addChild(_fountainPanel);
         _fountainPanel.x = 10;
+        _fountainPanel.y = -15;
 
         _resultInfo = new InfoPanel("KioArial", true, 14, 0xFFFFFF, 0xFFFFFF, 0xFF8888, 1.2, "Результат", [
             "Общая длина"

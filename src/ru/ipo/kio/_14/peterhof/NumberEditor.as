@@ -58,8 +58,8 @@ public class NumberEditor extends Sprite {
     private var _buttonPlus:SimpleButton;
     private var _buttonMinus:SimpleButton;
 
-    private static const NORMAL_COLOR:uint = 0xFFFFFF;
-    private static const ERROR_COLOR:uint = 0xFF8888;
+    private static const NORMAL_COLOR:uint = 0x000000;
+    private static const ERROR_COLOR:uint = 0xaa2222;
 
     public function NumberEditor(width:int, height:int, min:Number, max:Number, initial_value:Number, units:String, places:int) {
         _width = width;
@@ -105,7 +105,7 @@ public class NumberEditor extends Sprite {
         _textFieldUnits.autoSize = TextFieldAutoSize.RIGHT;
         _textFieldUnits.x = _width - _buttonPlus.width - 4;
         _textFieldUnits.text = _units;
-        _textFieldUnits.textColor = 0xFFFFFF;
+        _textFieldUnits.textColor = 0x000000;
         _textFieldUnits.selectable = false;
         _textFieldUnits.y = (_height - _textFieldUnits.height) / 2;
 
@@ -115,7 +115,7 @@ public class NumberEditor extends Sprite {
         _textField.autoSize = TextFieldAutoSize.LEFT;
         _textField.borderColor = 0xFF0000;
         _textField.x = _buttonPlus.width + 4;
-        _textField.textColor = 0xFFFFFF;
+        _textField.textColor = 0x000000;
 
         _textField.y = _textFieldUnits.y;
         _textField.height = _height - _textField.y;
