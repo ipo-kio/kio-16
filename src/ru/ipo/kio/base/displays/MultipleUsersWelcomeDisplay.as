@@ -56,7 +56,7 @@ public class MultipleUsersWelcomeDisplay extends Sprite {
 
         if (userCount > COLUMN_SIZE) {
             for (var user:int = 0; user < userCount; user++) {
-                var go_user_button:SimpleButton = new ShellButton(KioBase.instance.lsoProxy.getUserInfo(user,  false, true), true);
+                var go_user_button:SimpleButton = new ShellButton(KioBase.instance.lsoProxy.getUserInfo(user,  false, false), true);
                 
                 var col:int = user / COLUMN_SIZE;
                 var line:int = user % COLUMN_SIZE;
