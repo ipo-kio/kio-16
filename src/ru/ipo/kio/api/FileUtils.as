@@ -75,7 +75,9 @@ public class FileUtils {
     public static function saveAll():void {
         var fr:FileReference = new FileReference();
         var sol:Object = KioBase.instance.lsoProxy.userData;
+        sol.save_id = DataUtils.convertByteArrayToString(generateRandomBytes(10));
         fr.save(JSON_k.encode(sol), RESULTS_FILE_NAME + inventDate() + ".kio-" + KioBase.instance.level);
+        KioBase.instance.log("All solutions saved@tt", [sol.save_id, KioBase.instance.logId]);
     }
 
     public static function saveLog():void {
@@ -146,8 +148,10 @@ public class FileUtils {
                 var data:ByteArray = fr.data;
                 var solUTF:String = data.readUTFBytes(data.length);
 //                try {
-                    var allData:* = JSON_k.decode(solUTF);
-                    KioBase.instance.loadAllData(allData);
+                var allData:* = JSON_k.decode(solUTF);
+                KioBase.instance.loadAllData(allData);
+                var save_id:String = allData.save_id;
+                KioBase.instance.log("Loaded all solutions solution@t", [save_id]);
                 /*} catch (error:Error) {
                     //TODO show error message
                     trace('failed to load all data');
