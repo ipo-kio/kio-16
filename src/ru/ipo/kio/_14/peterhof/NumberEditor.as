@@ -16,27 +16,27 @@ import ru.ipo.kio.api.controls.GraphicsButton;
 
 public class NumberEditor extends Sprite {
 
-    [Embed(source="resources/num_pl.png")]
+    [Embed(source="resources/plus.png")]
     public static const NUM_PL_CLS:Class;
     public static const NUM_PL_CLS_IMG:BitmapData = (new NUM_PL_CLS).bitmapData;
 
-    [Embed(source="resources/num_pl_d.png")]
+    [Embed(source="resources/plus_down.png")]
     public static const NUM_PL_D_CLS:Class;
     public static const NUM_PL_CLS_D_IMG:BitmapData = (new NUM_PL_D_CLS).bitmapData;
 
-    [Embed(source="resources/num_pl_o.png")]
+    [Embed(source="resources/plus_over.png")]
     public static const NUM_PL_O_CLS:Class;
     public static const NUM_PL_CLS_O_IMG:BitmapData = (new NUM_PL_O_CLS).bitmapData;
 
-    [Embed(source="resources/num_mn.png")]
+    [Embed(source="resources/minus.png")]
     public static const NUM_MN_CLS:Class;
     public static const NUM_MN_CLS_IMG:BitmapData = (new NUM_MN_CLS).bitmapData;
 
-    [Embed(source="resources/num_mn_d.png")]
+    [Embed(source="resources/minus_down.png")]
     public static const NUM_MN_D_CLS:Class;
     public static const NUM_MN_CLS_D_IMG:BitmapData = (new NUM_MN_D_CLS).bitmapData;
 
-    [Embed(source="resources/num_mn_o.png")]
+    [Embed(source="resources/minus_over.png")]
     public static const NUM_MN_O_CLS:Class;
     public static const NUM_MN_CLS_O_IMG:BitmapData = (new NUM_MN_O_CLS).bitmapData;
 

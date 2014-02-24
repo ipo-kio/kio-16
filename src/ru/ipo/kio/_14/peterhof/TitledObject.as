@@ -3,6 +3,7 @@
  */
 package ru.ipo.kio._14.peterhof {
 import flash.display.Sprite;
+import flash.text.AntiAliasType;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
@@ -21,9 +22,10 @@ public class TitledObject extends Sprite {
         tf.autoSize = TextFieldAutoSize.LEFT;
         addChild(tf);
         tf.text = title;
+        tf.antiAliasType = AntiAliasType.ADVANCED;
 
         sprite.x = skip == 0 ? tf.width : skip;
-        sprite.y = 2 * size - sprite.height;
+        sprite.y = 25;
         addChild(sprite);
     }
 

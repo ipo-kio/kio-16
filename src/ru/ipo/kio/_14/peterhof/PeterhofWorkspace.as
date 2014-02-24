@@ -19,15 +19,15 @@ import ru.ipo.kio.api.controls.InfoPanel;
 
 public class PeterhofWorkspace extends Sprite {
 
-    [Embed(source="resources/num_pl.png")]
+    [Embed(source="resources/plus.png")]
     public static const NUM_PL_CLS:Class;
     public static const NUM_PL_CLS_IMG:BitmapData = (new NUM_PL_CLS).bitmapData;
 
-    [Embed(source="resources/num_pl_d.png")]
+    [Embed(source="resources/plus_down.png")]
     public static const NUM_PL_D_CLS:Class;
     public static const NUM_PL_CLS_D_IMG:BitmapData = (new NUM_PL_D_CLS).bitmapData;
 
-    [Embed(source="resources/num_pl_o.png")]
+    [Embed(source="resources/plus_over.png")]
     public static const NUM_PL_O_CLS:Class;
     public static const NUM_PL_CLS_O_IMG:BitmapData = (new NUM_PL_O_CLS).bitmapData;
 
@@ -68,7 +68,7 @@ public class PeterhofWorkspace extends Sprite {
         addChild(bottomPanel);
         bottomPanel.y = _3D_HEIGHT;
 
-        _fountainPanel = new FountainPanel(100, _api, problem.level == 2);
+        _fountainPanel = new FountainPanel(123, _api, problem.level == 2);
 
         fillBottomPanel(bottomPanel);
 

@@ -34,7 +34,7 @@ public class FountainPanel extends Sprite {
         _api = api;
         _showSprayer = showSprayer;
 
-        const skip:int = 200;
+        const skip:int = 206;
 
         _alphaEditor = new NumberEditor(width, 18, 0, 90, 45, "°", 0);
         var alphaEditor:TitledObject = new TitledObject("Наклон", 24, 0x000000, _alphaEditor, skip);
