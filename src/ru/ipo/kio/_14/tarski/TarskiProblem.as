@@ -3,7 +3,10 @@
  * @since: 31.01.14
  */
 package ru.ipo.kio._14.tarski {
+import com.nerdbucket.ToolTip;
+
 import flash.display.Sprite;
+import flash.display.Stage;
 
 import ru.ipo.kio._13.clock.*;
 
@@ -21,6 +24,7 @@ import ru.ipo.kio._13.clock.model.level.LevelCreator;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.Settings;
+import ru.ipo.kio.base.KioBase;
 
 public class TarskiProblem implements KioProblem{
 
@@ -53,13 +57,13 @@ public class TarskiProblem implements KioProblem{
     private var _sprite:Sprite;
 
 
-    public function TarskiProblem(level:int) {
+    public function TarskiProblem(level:int, stage:Stage) {
         KioApi.initialize(this);
         _level=level;
         if(level ==0){
-            _sprite = new TarskiSpriteLevel0();
+            _sprite = new TarskiProblemZero(this);
         }else{
-            _sprite=new TarskiSprite(level);
+            _sprite=new TarskiProblemFirst(level, stage);
         }
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(TARSKI_RU).data);
         KioApi.registerLocalization(ID, KioApi.L_ES, new Settings(TARSKI_ES).data);
@@ -84,14 +88,24 @@ public class TarskiProblem implements KioProblem{
         return _sprite;
     }
 
-    public function get solution():Object {       
-        var result:Object = {gears:[]};
-        return result;
+    public function get solution():Object {
+        if(level==0){
+            var result:Object = {config:TarskiProblemZero.instance.configuration.toString()};
+            return result;
+        }else{
+            var result:Object = {statement:TarskiProblemFirst.instance.statementManager.getStatementAsJson()};
+            return result;
+        }
     }
 
-
-
     public function loadSolution(solution:Object):Boolean {
+        if(level==0){
+            var config:String = solution.config;
+            TarskiProblemZero.instance.configuration.loadFigures(config);
+            TarskiProblemZero.instance.update();
+        }else{
+            //TODO
+        }
         return true;
     }
 
@@ -100,12 +114,37 @@ public class TarskiProblem implements KioProblem{
     }
 
     public function get best():Object {
-        var result:Object = {gears:[]};
-        return result;
+        if(level==0){
+        return {
+            statements: TarskiProblemZero.instance.getAmountOfCorrectStatements(),
+            figures: TarskiProblemZero.instance.configuration.figures.length
+        };
+        }else{//TODO
+            return null
+        }
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-       return 0;
+        if (!solution1){
+            return solution2 ? -1 : 0;
+        } else if (!solution2){
+            return 1;
+        }
+         if(level==0){
+            if(solution1.statements!=solution2.statements){
+                return getSign(solution1.statements-solution2.statements);
+            }else{
+                return getSign(solution1.figures-solution2.figures);
+            }
+         }else{
+             //TODO
+             return 0;
+         }
+
+    }
+
+    private function getSign(i:Number):int {
+        return i>0?1:i<0?-1:0;
     }
 
 
@@ -120,5 +159,12 @@ public class TarskiProblem implements KioProblem{
     public function get icon_statement():Class {
         return ICON_STATEMENT;
     }
+
+    public function clearAll():void{
+      if(level==0){
+          TarskiProblemZero.instance.clearFigures();
+      }
+    }
+
 }
 }

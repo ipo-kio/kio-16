@@ -10,12 +10,10 @@ import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
 public class LogicItemProvider2 extends LogicItemProvider1{
     public function LogicItemProvider2() {
         super();
-        _operations.push(new NotOperation());
-        _operations.push(new Brace(true));
-        _operations.push(new Brace(false));
+//        _operations.push(new NotOperation());
 
-        _variables.push(new Quantifier(Quantifier.EXIST));
-        _variables.push(new Quantifier(Quantifier.ALL));
+//        _variables.push(new Quantifier(Quantifier.EXIST));
+//        _variables.push(new Quantifier(Quantifier.ALL));
     }
 }
 }

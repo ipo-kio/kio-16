@@ -4,8 +4,11 @@
  */
 package ru.ipo.kio._14.tarski {
 import com.adobe.serialization.json.JSON_k;
+import com.nerdbucket.ToolTip;
 
 import fl.containers.ScrollPane;
+
+import flash.display.Stage;
 
 import flash.net.FileReference;
 import flash.display.Sprite;
@@ -38,12 +41,12 @@ import ru.ipo.kio._14.tarski.view.toolbox.ToolboxView;
 import ru.ipo.kio.api.controls.TextButton;
 import ru.ipo.kio.base.displays.ShellButton;
 
-public class TarskiSprite extends Sprite {
+public class TarskiProblemFirst extends Sprite {
 
-    private static var _instance:TarskiSprite;
+    private static var _instance:TarskiProblemFirst;
 
 
-    public static function get instance():TarskiSprite {
+    public static function get instance():TarskiProblemFirst {
         return _instance;
     }
 
@@ -57,20 +60,19 @@ public class TarskiSprite extends Sprite {
 
     private var _statementManager:StatamentManager;
 
-    public function TarskiSprite(level:int) {
-        _instance=this;
+    private var _stage:Stage;
 
+    public function TarskiProblemFirst(level:int, stage:Stage) {
+        _instance=this;
+        _stage=stage;
+        ToolTip.init(stage, {textalign: 'center', opacity: 80, defaultdelay: 500});
         graphics.beginFill(0xFFFFFF);
         graphics.drawRect(0,0,800,600);
         graphics.endFill();
 
         _statementManager=new StatamentManager(level);
 
-        if(level==1){
-            _logicItemProvider = new LogicItemProvider1();
-        }else if (level==2){
-            _logicItemProvider = new LogicItemProvider2();
-        }
+        _logicItemProvider = new LogicItemProvider1();
 
         _variableToolboxView = new ToolboxView(_logicItemProvider.variables, 100);
         _predicateToolboxView = new ToolboxView(_logicItemProvider.predicates, 300);
@@ -143,6 +145,11 @@ public class TarskiSprite extends Sprite {
         });
 
     }
+
+    public function getStage():Stage {
+        return _stage;
+    }
+
 
 
     public function get statementManager():StatamentManager {

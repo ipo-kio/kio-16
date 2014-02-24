@@ -25,7 +25,7 @@ import ru.ipo.kio._14.tarski.model.operation.LogicEvaluatedItem;
 import ru.ipo.kio._14.tarski.model.predicates.OnePlacePredicate;
 import ru.ipo.kio._14.tarski.model.predicates.OnePlacePredicate;
 import ru.ipo.kio._14.tarski.model.predicates.TwoPlacePredicate;
-import ru.ipo.kio._14.tarski.TarskiSprite;
+import ru.ipo.kio._14.tarski.TarskiProblemFirst;
 
 public class LogicItemView extends BasicView{
 
@@ -37,7 +37,7 @@ public class LogicItemView extends BasicView{
         this.logicItem = logicItem;
         if(logicItem is Variable){
             addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{
-                TarskiSprite.instance.statement.activeVariable= Variable(logicItem);
+                TarskiProblemFirst.instance.statement.activeVariable= Variable(logicItem);
             })
         }
 

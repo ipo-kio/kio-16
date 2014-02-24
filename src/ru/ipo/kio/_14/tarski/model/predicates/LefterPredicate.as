@@ -27,9 +27,11 @@ public class LefterPredicate extends TwoPlacePredicate{
         return operand1.x<operand2.x;
     }
 
-    public function toString():String {
-        return quantsToSts()+"[lefter:"+formalOperand1 +";"+formalOperand2+"]";
+    public override function toString():String {
+        return quantsToSts()+"left-"+formalOperand1+"-"+formalOperand2+"";
     }
+
+
 
     public override function getToolboxText():String {
         return "стоит левее";

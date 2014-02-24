@@ -6,6 +6,7 @@ package ru.ipo.kio._14.tarski {
 import fl.containers.ScrollPane;
 
 import flash.display.Sprite;
+import flash.utils.ByteArray;
 
 import ru.ipo.kio._14.tarski.model.Configuration;
 
@@ -17,6 +18,8 @@ import ru.ipo.kio._14.tarski.model.evaluator.Evaluator2;
 import ru.ipo.kio._14.tarski.model.parser.StatementParser1;
 import ru.ipo.kio._14.tarski.model.parser.StatementParser2;
 import flashx.textLayout.container.ScrollPolicy;
+
+import ru.ipo.kio._14.tarski.utils.LogicItemUtils;
 
 public class StatamentManager {
 
@@ -67,12 +70,7 @@ public class StatamentManager {
 
 
     public function addStatement(){
-        var statementNew:Statement;
-        if(_level==1){
-            statementNew=new Statement(new StatementParser1(), new Evaluator1());
-        }else if (_level==2){
-            statementNew=new Statement(new StatementParser2(), new Evaluator2());
-        }
+        var statementNew:Statement=new Statement(new StatementParser2(true), new Evaluator2());
 
 
         statementNew.view.x=0;
@@ -121,7 +119,16 @@ public class StatamentManager {
             wrongConfiguration.correct=checkAll(wrongConfiguration);
         }
 
-        TarskiSprite.instance.update();
+        TarskiProblemFirst.instance.update();
+    }
+
+    public function getStatementAsJson():Object{
+      var result:Array = new Array();
+        for(var i:int=0; i<_statementList.length; i++){
+            result.push(LogicItemUtils.createString(_statementList[i].logicItems));
+        }
+      return result;
+
     }
 
     private function checkAll(rightConfiguration:Configuration):Boolean {

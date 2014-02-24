@@ -6,8 +6,12 @@
  * @since: 21.01.14
  */
 package ru.ipo.kio._14.tarski.model.operation {
+import com.nerdbucket.ToolTip;
+
 import flash.errors.IllegalOperationError;
 import flash.utils.Dictionary;
+
+import ru.ipo.kio._14.tarski.TarskiProblemFirst;
 
 import ru.ipo.kio._14.tarski.model.Figure;
 

@@ -4,8 +4,17 @@
  * @since: 31.01.14
  */
 package ru.ipo.kio._14.tarski.view.toolbox {
+import com.nerdbucket.ToolTip;
+
+import fl.controls.Button;
+
+import flash.events.MouseEvent;
+
+import ru.ipo.kio._14.tarski.TarskiProblemFirst;
+
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 import ru.ipo.kio._14.tarski.view.BasicView;
+import ru.ipo.kio.base.KioBase;
 
 public class ToolboxView extends BasicView {
 
@@ -31,23 +40,35 @@ public class ToolboxView extends BasicView {
 
         var maxY:int = 0;
 
-        for(var i:int=0; i<items.length; i++){
-            addChild(items[i].getToolboxView());
-            items[i].getToolboxView().x=x;
-            items[i].getToolboxView().y=y;
-            x+=items[i].getToolboxView().width+X_SPACE;
-            maxY = Math.max(maxY, items[i].getToolboxView().height);
-            if(x>preferredWidth){
-                x=X_SPACE;
-                y+=maxY+Y_SPACE;
+        for(var i:int=0; i<items.length; i++) {
+            var button = createButton(items[i], x, y);
+            x += button.width + X_SPACE;
+            maxY = Math.max(maxY, button.height);
+            if (x > preferredWidth) {
+                x = X_SPACE;
+                y += maxY + Y_SPACE;
                 maxY = 0;
             }
+            ToolTip.attach(button, items[i].getToolboxText());
+
         }
 
         graphics.clear();
         graphics.lineStyle(2,0x999999);
         graphics.drawRect(0,0,width+X_SPACE*2,height+Y_SPACE*2);
 
+    }
+
+    private function createButton(item:LogicItem, x:int, y:int):Object {
+        var button:Button = new Button();
+        button.label = item.getToolboxText();
+        addChild(button);
+        button.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
+            TarskiProblemFirst.instance.statement.addLogicItem(item.getCloned());
+        });
+        button.x = x;
+        button.y = y;
+        return button;
     }
 }
 }

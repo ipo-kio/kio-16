@@ -5,7 +5,6 @@
  * @since: 22.01.14
  */
 package ru.ipo.kio._14.tarski.model {
-import ru.ipo.kio._13.clock.view.BasicView;
 import ru.ipo.kio._14.tarski.model.properties.ColorValue;
 import ru.ipo.kio._14.tarski.model.properties.Colorable;
 import ru.ipo.kio._14.tarski.model.properties.PlanePositionable;
@@ -14,7 +13,8 @@ import ru.ipo.kio._14.tarski.model.properties.ShapeValue;
 import ru.ipo.kio._14.tarski.model.properties.Sizable;
 import ru.ipo.kio._14.tarski.model.properties.SizeValue;
 import ru.ipo.kio._14.tarski.model.properties.ValueHolder;
-import ru.ipo.kio._14.tarski.view.FigureView;
+import ru.ipo.kio._14.tarski.view.BasicView;
+import ru.ipo.kio._14.tarski.view.construct.FigureView;
 
 public class Figure implements Sizable, Shapable, Colorable, PlanePositionable{
 
@@ -142,7 +142,7 @@ public class Figure implements Sizable, Shapable, Colorable, PlanePositionable{
         return _color.code.substr(0,1)+
                 (_size.code==SizeValue.BIG?
                         _shape.code.substr(0,1).toUpperCase():
-                        _shape.code.substr(0,1).toUpperCase());
+                        _shape.code.substr(0,1).toLowerCase());
     }
 }
 }

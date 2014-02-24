@@ -9,9 +9,9 @@ package ru.ipo.kio._14.tarski.model {
 import flash.system.SystemUpdater;
 import flash.utils.Dictionary;
 
-import ru.ipo.kio._14.tarski.TarskiSprite;
+import ru.ipo.kio._14.tarski.TarskiProblemFirst;
 
-import ru.ipo.kio._14.tarski.TarskiSprite;
+import ru.ipo.kio._14.tarski.TarskiProblemFirst;
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 import ru.ipo.kio._14.tarski.model.evaluator.Evaluator;
 import ru.ipo.kio._14.tarski.model.operation.ImplicationOperation;
@@ -90,32 +90,32 @@ public class Statement {
         if(_activeDelimiter!=null){
 
             if(_activeDelimiter.beforeItem==null){
-                if(logicItem is ImplicationOperation){
-                    var ifOp:FictiveLogicItem = new FictiveLogicItem(FictiveLogicItem.IF, null);
-                    var thenOp:FictiveLogicItem = new FictiveLogicItem(FictiveLogicItem.THEN, null);
-                    ifOp.couple=thenOp;
-                    thenOp.couple=ifOp;
-                    logicItems.unshift(thenOp);
-                    logicItems.unshift(ifOp);
-                    _lastItem=ifOp;
-                }else{
+//                if(logicItem is ImplicationOperation){
+//                    var ifOp:FictiveLogicItem = new FictiveLogicItem(FictiveLogicItem.IF, null);
+//                    var thenOp:FictiveLogicItem = new FictiveLogicItem(FictiveLogicItem.THEN, null);
+//                    ifOp.couple=thenOp;
+//                    thenOp.couple=ifOp;
+//                    logicItems.unshift(thenOp);
+//                    logicItems.unshift(ifOp);
+//                    _lastItem=ifOp;
+//                }else{
                     logicItems.unshift(logicItem);
                     _lastItem=logicItem;
-                }
+//                }
 
             }else{
-                if(logicItem is ImplicationOperation){
-                    var ifOp:FictiveLogicItem = new FictiveLogicItem(FictiveLogicItem.IF, null);
-                    var thenOp:FictiveLogicItem = new FictiveLogicItem(FictiveLogicItem.THEN, null);
-                    ifOp.couple=thenOp;
-                    thenOp.couple=ifOp;
-                    logicItems.splice(logicItems.indexOf(_activeDelimiter.beforeItem)+1, 0, thenOp);
-                    logicItems.splice(logicItems.indexOf(_activeDelimiter.beforeItem)+1, 0, ifOp);
-                    _lastItem=ifOp;
-                }else{
+//                if(logicItem is ImplicationOperation){
+//                    var ifOp:FictiveLogicItem = new FictiveLogicItem(FictiveLogicItem.IF, null);
+//                    var thenOp:FictiveLogicItem = new FictiveLogicItem(FictiveLogicItem.THEN, null);
+//                    ifOp.couple=thenOp;
+//                    thenOp.couple=ifOp;
+//                    logicItems.splice(logicItems.indexOf(_activeDelimiter.beforeItem)+1, 0, thenOp);
+//                    logicItems.splice(logicItems.indexOf(_activeDelimiter.beforeItem)+1, 0, ifOp);
+//                    _lastItem=ifOp;
+//                }else{
                     logicItems.splice(logicItems.indexOf(_activeDelimiter.beforeItem)+1, 0, logicItem);
                     _lastItem=logicItem;
-                }
+//                }
             }
 
             if(logicItem is Variable){
@@ -134,11 +134,14 @@ public class Statement {
 
         }else if(_activeVariable!=null && (logicItem is BasePredicate || logicItem is Quantifier)){
             if(logicItem is OnePlacePredicate){
+                (OnePlacePredicate(logicItem)).placeHolder.statement=this;
                 (OnePlacePredicate(logicItem)).placeHolder.variable=_activeVariable;
                 logicItems.splice(logicItems.indexOf(_activeVariable), 1, logicItem);
                 activeVariable=null;
             }
             if(logicItem is TwoPlacePredicate){
+                (TwoPlacePredicate(logicItem)).placeHolder1.statement=this;
+                (TwoPlacePredicate(logicItem)).placeHolder2.statement=this;
                 (TwoPlacePredicate(logicItem)).placeHolder1.variable=_activeVariable;
                 logicItems.splice(logicItems.indexOf(_activeVariable), 1, logicItem);
                 activePlaceHolder=(TwoPlacePredicate(logicItem)).placeHolder2;
@@ -169,7 +172,7 @@ public class Statement {
             }
         }
 
-        TarskiSprite.instance.statementManager.perseAndCheckAll();
+        TarskiProblemFirst.instance.statementManager.perseAndCheckAll();
     }
 
     public function parse():void {
@@ -260,7 +263,7 @@ public class Statement {
 
 
 
-            TarskiSprite.instance.statementManager.perseAndCheckAll();
+            TarskiProblemFirst.instance.statementManager.perseAndCheckAll();
         }
     }
 

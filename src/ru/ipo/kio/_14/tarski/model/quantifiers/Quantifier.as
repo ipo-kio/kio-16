@@ -4,6 +4,7 @@
  */
 package ru.ipo.kio._14.tarski.model.quantifiers {
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
+import ru.ipo.kio._14.tarski.model.predicates.Variable;
 import ru.ipo.kio._14.tarski.model.predicates.VariablePlaceHolder;
 import ru.ipo.kio._14.tarski.view.BasicView;
 import ru.ipo.kio._14.tarski.view.statement.LogicItemView;
@@ -43,6 +44,13 @@ public class Quantifier implements LogicItem {
 
     public function toString():String {
         return (_code==EXIST?"E":"A") + (placeHolder.variable!=null?placeHolder.variable.code:"_");
+    }
+
+    public function parse(res:String):Quantifier{
+        _code=res.charAt(0)=="E"?EXIST:ALL;
+        _placeHolder.variable=new Variable(res.charAt(1));
+        _formalOperand=res.charAt(1);
+        return this;
     }
 
     public function Quantifier(code:String) {

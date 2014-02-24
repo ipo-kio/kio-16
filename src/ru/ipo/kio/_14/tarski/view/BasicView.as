@@ -7,8 +7,13 @@ package ru.ipo.kio._14.tarski.view {
 import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
+import flash.text.TextFormat;
 
 public class BasicView extends Sprite {
+    private static const FIELD_MARGIN:int = 10;
+
+
     public function BasicView() {
     }
 
@@ -23,6 +28,12 @@ public class BasicView extends Sprite {
         }
     }
 
+    protected function addChildTo(field:DisplayObject, x:int, y:int):void {
+        addChild(field);
+        field.x = x;
+        field.y = y;
+    }
+
     protected function addChildAndShift(field:DisplayObject, x:int):int {
         addChild(field);
         field.x = x;
@@ -30,13 +41,17 @@ public class BasicView extends Sprite {
         return x;
     }
 
-    protected function createField(text:String):TextField {
+    protected function createField(text:String, size:int=12):TextField {
         var field:TextField = new TextField();
         field.background = false;
         field.selectable = false;
         field.text = text;
-        field.width = field.textWidth + 10;
-        field.height = field.textHeight + 10;
+        var format:TextFormat = field.getTextFormat();
+        format.size = size;
+        field.setTextFormat(format);
+        field.width = field.textWidth + FIELD_MARGIN;
+        field.height = field.textHeight + FIELD_MARGIN;
+
         return field;
     }
 
