@@ -8,6 +8,8 @@ package ru.ipo.kio._14.stars {
 //import flash.display.LoaderInfo;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.MouseEvent;
+
 //import flash.events.MouseEvent;
 //import flash.net.FileFilter;
 //import flash.net.FileReference;
@@ -57,6 +59,10 @@ public class StarsWorkspace extends Sprite {
         g.graphics.endFill();
         addChild(g);
 
+        addEventListener(MouseEvent.MOUSE_MOVE, function (e:MouseEvent):void {
+            trace(e.localX, e.localY);
+        });
+
         /*g.addEventListener(MouseEvent.CLICK, function(e:Event):void {
             loadStars();
         });*/
@@ -104,10 +110,17 @@ public class StarsWorkspace extends Sprite {
             new Star(611, 430, 2), new Star(677, 326, 1), new Star(634, 195, 2), new Star(555, 245, 1),
             new Star(633, 355, 3), new Star(304, 305, 2), new Star(620, 260, 2), new Star(545, 455, 1),
             new Star(583, 300, 3), new Star(41, 288, 1), new Star(693, 148, 3), new Star(461, 400, 2),
-            new Star(657, 456, 1), new Star(699, 225, 2), new Star(540, 345, 2), new Star(353, 433, 1)/*,
-            new Star(128, 380, 3), new Star(193, 398, 1),
-            new Star(93, 198, 3), new Star(171, 260, 2), new Star(197, 319, 1), new Star(374, 345, 2)*/
+            new Star(657, 456, 1), new Star(699, 225, 2), new Star(540, 345, 2), new Star(353, 433, 1),
+
+            new Star(505, 27, 1), new Star(405, 20, 1), new Star(555, 405, 1), new Star(755, 324, 1),
+            new Star(258, 449, 1), new Star(326, 455, 1), new Star(303, 406, 1), new Star(537, 66, 1),
+            new Star(232, 18, 1), new Star(28, 95, 1)
         ];
+
+        if (problem.level == 0)
+            stars = stars.slice(0, 52);
+        if (problem.level == 1)
+            stars = stars.slice(0, 58);
 
         loadWorkspace(stars);
 //        loadWorkspace(starsArr);
