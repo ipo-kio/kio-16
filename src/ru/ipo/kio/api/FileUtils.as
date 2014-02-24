@@ -76,8 +76,10 @@ public class FileUtils {
         var fr:FileReference = new FileReference();
         var sol:Object = KioBase.instance.lsoProxy.userData;
         sol.save_id = DataUtils.convertByteArrayToString(generateRandomBytes(10));
-        fr.save(JSON_k.encode(sol), RESULTS_FILE_NAME + inventDate() + ".kio-" + KioBase.instance.level);
+
         KioBase.instance.log("All solutions saved@tt", [sol.save_id, KioBase.instance.logId]);
+
+        fr.save(JSON_k.encode(sol), RESULTS_FILE_NAME + inventDate() + ".kio-" + KioBase.instance.level);
     }
 
     public static function saveLog():void {
