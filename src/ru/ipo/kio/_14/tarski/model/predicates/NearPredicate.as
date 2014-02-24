@@ -34,9 +34,10 @@ public class NearPredicate extends TwoPlacePredicate{
         return Math.abs(operand1.x-operand2.x)<=step && Math.abs(operand1.y-operand2.y)<=step;
     }
 
-    public function toString():String {
-        return quantsToSts()+"[near:"+formalOperand1+ ";"+formalOperand2+"]";
+    public override function toString():String {
+        return quantsToSts()+"near-"+formalOperand1+"-"+formalOperand2+"";
     }
+
 
     public override function getToolboxText():String {
         return "стоит рядом с";

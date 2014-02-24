@@ -2,15 +2,16 @@
  * @author: Vasily Akimushkin
  * @since: 31.01.14
  */
-package ru.ipo.kio._14.tarski.view {
+package ru.ipo.kio._14.tarski.view.construct {
+import avmplus.parameterXml;
+
+import ru.ipo.kio._14.tarski.view.*;
+
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 import flash.geom.Rectangle;
 
-import ru.ipo.kio._13.checker.KioChecker;
-import ru.ipo.kio._14.tarski.FigureToolbox;
-import ru.ipo.kio._14.tarski.TarskiSprite;
-import ru.ipo.kio._14.tarski.TarskiSpriteLevel0;
+import ru.ipo.kio._14.tarski.TarskiProblemZero;
 
 import ru.ipo.kio._14.tarski.model.Configuration;
 import ru.ipo.kio._14.tarski.model.Figure;
@@ -49,10 +50,7 @@ public class ConfigurationView extends BasicView{
         figure.view.stopDrag();
         deactivateAll();
 
-
-
-        update();
-        TarskiSpriteLevel0.instance.check();
+        TarskiProblemZero.instance.update();
     }
 
     private function checkPoint(sprite:Sprite, x:int, y:int):Boolean{
@@ -85,18 +83,16 @@ public class ConfigurationView extends BasicView{
     public override function update():void{
         clearAll();
         graphics.clear();
-
         addChild(_bin);
-        _bin.x = FigureView.CELL_SIZE*8;
-        _bin.y = FigureView.CELL_SIZE*4;
+        _bin.x = FigureView.CELL_SIZE*8+15;
+        _bin.y = FigureView.CELL_SIZE*4+30;
         _bin.update();
 
         for(var x:int = 0; x<configuration.width; x++){
             for(var y:int = 0; y<configuration.depth; y++){
-                graphics.beginFill(0xFFFFFF,1);
-                graphics.lineStyle(1,0X666666);
+                graphics.lineStyle(1,0X666666,0);
                 graphics.drawRect(x*FigureView.CELL_SIZE, y*FigureView.CELL_SIZE, FigureView.CELL_SIZE, FigureView.CELL_SIZE);
-                graphics.endFill();
+
                 var figure:Figure = configuration.getFigure(x, y);
                 if(figure!=null){
                     addChild(figure.view);
@@ -107,19 +103,17 @@ public class ConfigurationView extends BasicView{
             }
         }
 
-        addChild(createTool("bC",8 * FigureView.CELL_SIZE, (3-0) * FigureView.CELL_SIZE));
-        addChild(createTool("bS",9 * FigureView.CELL_SIZE, (3-0) * FigureView.CELL_SIZE));
-        addChild(createTool("rC",8 * FigureView.CELL_SIZE, (3-1) * FigureView.CELL_SIZE));
-        addChild(createTool("rS",9 * FigureView.CELL_SIZE, (3-1) * FigureView.CELL_SIZE));
-        addChild(createTool("bc",8 * FigureView.CELL_SIZE, (3-2) * FigureView.CELL_SIZE));
-        addChild(createTool("bs",9 * FigureView.CELL_SIZE, (3-2) * FigureView.CELL_SIZE));
-        addChild(createTool("rc",8 * FigureView.CELL_SIZE, (3-3) * FigureView.CELL_SIZE));
-        addChild(createTool("rs",9 * FigureView.CELL_SIZE, (3-3) * FigureView.CELL_SIZE));
-
-
-
+        var shiftX:int=31;
+        var shiftY:int=14;
+        addChild(createTool("bc",shiftX+8 * FigureView.CELL_SIZE, shiftY+(3-0) * FigureView.CELL_SIZE));
+        addChild(createTool("rc",shiftX+9 * FigureView.CELL_SIZE, shiftY+(3-0) * FigureView.CELL_SIZE));
+        addChild(createTool("bs",shiftX+8 * FigureView.CELL_SIZE, shiftY+(3-1) * FigureView.CELL_SIZE));
+        addChild(createTool("rs",shiftX+9 * FigureView.CELL_SIZE, shiftY+(3-1) * FigureView.CELL_SIZE));
+        addChild(createTool("bC",shiftX+8 * FigureView.CELL_SIZE, shiftY+(3-2) * FigureView.CELL_SIZE));
+        addChild(createTool("rC",shiftX+9 * FigureView.CELL_SIZE, shiftY+(3-2) * FigureView.CELL_SIZE));
+        addChild(createTool("bS",shiftX+8 * FigureView.CELL_SIZE, shiftY+(3-3) * FigureView.CELL_SIZE));
+        addChild(createTool("rS",shiftX+9 * FigureView.CELL_SIZE, shiftY+(3-3) * FigureView.CELL_SIZE));
     }
-
 
     private function createTool(code:String, x:int, y:int):FigureView {
         var _figure:Figure = Figure.createFigureByCode(0, 0, code);
@@ -128,10 +122,6 @@ public class ConfigurationView extends BasicView{
         _figure.view.y=y;
         return FigureView(_figure.view);
     }
-
-
-
-
 
 }
 }

@@ -12,7 +12,7 @@ import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 
 import ru.ipo.kio._14.tarski.model.properties.PlanePositionable;
 
-public class CloserPredicate extends TwoPlacePredicate{
+public class UpperPredicate extends TwoPlacePredicate{
 
     override public function canBeEvaluated():Boolean {
         return formalOperand1!=null && formalOperand2!=null;
@@ -24,20 +24,22 @@ public class CloserPredicate extends TwoPlacePredicate{
         if(operand1==null || operand2==null){
             throw new IllegalOperationError("operand must be not null");
         }
-        return operand1.y<operand2.y;
+        return operand1.y>operand2.y;
     }
 
 
     public override function toString():String {
-        return quantsToSts()+"closer-"+formalOperand1 +"-"+formalOperand2+"";
+        return quantsToSts()+"up-"+formalOperand1 +"-"+formalOperand2+"";
     }
 
+
+
     public override function getToolboxText():String {
-        return "стоит ближе";
+        return "стоит выше";
     }
 
     public override function getCloned():LogicItem {
-        return new CloserPredicate();
+        return new UpperPredicate();
     }
 }
 }

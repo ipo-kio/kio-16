@@ -5,8 +5,10 @@
  * @since: 22.01.14
  */
 package ru.ipo.kio._14.tarski.model {
+import mx.utils.StringUtil;
+
 import ru.ipo.kio._14.tarski.view.BasicView;
-import ru.ipo.kio._14.tarski.view.ConfigurationView;
+import ru.ipo.kio._14.tarski.view.construct.ConfigurationView;
 
 public class Configuration {
 
@@ -67,6 +69,10 @@ public class Configuration {
         }
     }
 
+    public function clear():void{
+        _figures = new Vector.<Figure>();
+    }
+
     public function getFigure(x:int,y:int):Figure{
         for(var i:int=0; i<_figures.length; i++){
             if(_figures[i].x==x && _figures[i].y==y){
@@ -79,13 +85,33 @@ public class Configuration {
     public function toString():String {
         var result:String="";
         for(var j:int=_depth-1;j>=0;j--){
-            result+="[";
+            result+="";
             for(var i:int=0; i<_width; i++){
-                result+=(getFigure(i,j)==null?"  ;":getFigure(i,j).toString()+";");
+                result+=(getFigure(i,j)==null?"__ ":getFigure(i,j).toString()+" ");
             }
-            result+="]\n";
+            result+="\n";
         }
         return result;
+    }
+
+    public function loadFigures(result:String){
+        _figures = new Vector.<Figure>();
+        var lines:Array = result.split("\n");
+        var figures:Array = result.split(" ");
+        for(var i:int=0; i<lines.length; i++){
+            lines[i] = StringUtil.trim(lines[i]);
+            if(lines[i]==""){
+                continue;
+            }
+            var figures:Array = lines[i].split(" ");
+            for(var j:int=0; j<figures.length; j++){
+                if(figures[j]!='__'){
+                    addFigure(Figure.createFigureByCode(j, depth-i-1, figures[j]));
+                }
+            }
+        }
+
+
     }
 
 
@@ -96,5 +122,7 @@ public class Configuration {
     public function get depth():int {
         return _depth;
     }
+
+
 }
 }

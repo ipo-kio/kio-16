@@ -4,10 +4,11 @@
  */
 package ru.ipo.kio._14.tarski.model.editor {
 import ru.ipo.kio._14.tarski.model.operation.AndOperation;
+import ru.ipo.kio._14.tarski.model.operation.Brace;
 import ru.ipo.kio._14.tarski.model.operation.EquivalenceOperation;
 import ru.ipo.kio._14.tarski.model.operation.ImplicationOperation;
 import ru.ipo.kio._14.tarski.model.operation.OrOperation;
-import ru.ipo.kio._14.tarski.model.predicates.CloserPredicate;
+import ru.ipo.kio._14.tarski.model.predicates.UpperPredicate;
 import ru.ipo.kio._14.tarski.model.predicates.ColorPredicate;
 import ru.ipo.kio._14.tarski.model.predicates.LefterPredicate;
 import ru.ipo.kio._14.tarski.model.predicates.NearPredicate;
@@ -37,13 +38,16 @@ public class LogicItemProvider1 implements LogicItemProvider{
         _predicates.push(new SizePredicate(ValueHolder.getSize(SizeValue.BIG)));
         _predicates.push(new SizePredicate(ValueHolder.getSize(SizeValue.SMALL)));
         _predicates.push(new LefterPredicate());
-        _predicates.push(new CloserPredicate());
+        _predicates.push(new UpperPredicate());
         _predicates.push(new NearPredicate());
 
         _operations.push(new AndOperation());
         _operations.push(new OrOperation());
         _operations.push(new ImplicationOperation());
         _operations.push(new EquivalenceOperation());
+        _operations.push(new Brace(true));
+        _operations.push(new Brace(false));
+
 
         _variables.push(new Variable("X"));
         _variables.push(new Variable("Y"));

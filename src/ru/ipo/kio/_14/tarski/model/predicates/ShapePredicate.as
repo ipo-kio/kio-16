@@ -12,6 +12,7 @@ import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 
 import ru.ipo.kio._14.tarski.model.properties.Shapable;
 import ru.ipo.kio._14.tarski.model.properties.ShapeValue;
+import ru.ipo.kio._14.tarski.model.properties.ValueHolder;
 
 public class ShapePredicate extends OnePlacePredicate{
 
@@ -38,8 +39,16 @@ public class ShapePredicate extends OnePlacePredicate{
         return shape.code==operand.shape.code;
     }
 
-    public function toString():String {
-        return quantsToSts()+"[shape-"+shape.code+":"+formalOperand+"]";
+    public override function toString():String {
+        return quantsToSts()+"shape-"+shape.code+"-"+formalOperand+"";
+    }
+
+    public function parseString(str:String):ShapePredicate {
+        var items:Array = str.split("-");
+        shape = ValueHolder.getShape(items[1]);
+        operand = items[2];
+        placeHolder.variable = new Variable(formalOperand);
+        return this;
     }
 
     public override function getToolboxText():String {

@@ -25,6 +25,15 @@ public class TwoPlacePredicate extends BasePredicate {
         return _placeHolder1;
     }
 
+    public function parseString(str:String):TwoPlacePredicate {
+        var items:Array = str.split("-");
+        formalOperand1 = items[1];
+        formalOperand2 = items[2];
+        placeHolder1.variable = new Variable(formalOperand1);
+        placeHolder2.variable = new Variable(formalOperand2);
+        return this;
+    }
+
     public function get placeHolder2():VariablePlaceHolder {
         return _placeHolder2;
     }

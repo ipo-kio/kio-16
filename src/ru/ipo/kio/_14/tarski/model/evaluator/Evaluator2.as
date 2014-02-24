@@ -5,7 +5,7 @@
 package ru.ipo.kio._14.tarski.model.evaluator {
 import flash.utils.Dictionary;
 
-import ru.ipo.kio._14.tarski.TarskiSprite;
+import ru.ipo.kio._14.tarski.TarskiProblemFirst;
 
 import ru.ipo.kio._14.tarski.model.Configuration;
 import ru.ipo.kio._14.tarski.model.Figure;
@@ -266,7 +266,7 @@ public class Evaluator2 implements Evaluator{
 
 
     private function isOnlyExists(code:String):Boolean {
-        var logicItems:Vector.<LogicItem> = TarskiSprite.instance.statement.logicItems;
+        var logicItems:Vector.<LogicItem> = TarskiProblemFirst.instance.statement.logicItems;
         for (var i:int = 0; i < logicItems.length; i++) {
             if (logicItems[i] is Quantifier) {
                 if (Quantifier(logicItems[i]).placeHolder.variable.code == code) {

@@ -6,7 +6,7 @@
 package ru.ipo.kio._14.tarski.model {
 import mx.utils.StringUtil;
 
-import ru.ipo.kio._14.tarski.TarskiSprite;
+import ru.ipo.kio._14.tarski.TarskiProblemFirst;
 
 public class ConfigurationHolder {
 
@@ -71,7 +71,7 @@ public class ConfigurationHolder {
                 rowCounter++;
             }
         }
-        TarskiSprite.instance.update();
+        TarskiProblemFirst.instance.update();
     }
 }
 }

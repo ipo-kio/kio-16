@@ -4,7 +4,7 @@
  * @date: 09.02.14
  */
 package ru.ipo.kio._14.tarski.view.statement {
-import ru.ipo.kio._14.tarski.TarskiSprite;
+import ru.ipo.kio._14.tarski.TarskiProblemFirst;
 import ru.ipo.kio._14.tarski.view.*;
 
 import flash.events.MouseEvent;
@@ -35,8 +35,8 @@ public class Delimiter extends BasicView {
         this.statement=statement;
 
         addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{
-            if(statement!=TarskiSprite.instance.statementManager.statement){
-                TarskiSprite.instance.statementManager.activate(statement);
+            if(statement!=TarskiProblemFirst.instance.statementManager.statement){
+                TarskiProblemFirst.instance.statementManager.activate(statement);
                 statement.setLastItemBefore(_self);
             }else{
                 statement.activeDelimiter=_self;
