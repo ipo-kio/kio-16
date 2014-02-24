@@ -22,6 +22,7 @@ public class StarrySky extends EventDispatcher {
     private var _graph:Graph;
     private var _connectedComponents:Vector.<Graph>;
     private var _differentGraphs:int = 0;
+    private var _disable_change_event:Boolean = false;
 
     public function StarrySky(level:int, stars:Array) {
 
@@ -88,6 +89,8 @@ public class StarrySky extends EventDispatcher {
     }
 
     private function skyChanged():void {
+        if (_disable_change_event)
+            return;
         //evaluate, count, compute
         //for output.     var n:Number = 1.123123123;    n.toFixed(3) -> converts to String with 3 digits after a point
 
@@ -242,6 +245,12 @@ public class StarrySky extends EventDispatcher {
 
     public function get level():int {
         return _level;
+    }
+
+    public function set disable_change_event(disable_change_event:Boolean):void {
+        _disable_change_event = disable_change_event;
+
+        skyChanged();
     }
 }
 }

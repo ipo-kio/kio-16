@@ -281,6 +281,7 @@ public class StarsWorkspace extends Sprite {
 
         var starsIndexLines:Array = solution.lines;
 
+        _sky.disable_change_event = true;
         _skyView.clearLines();
 
         for (var i:int = 0; i < starsIndexLines.length; i++) {
@@ -292,7 +293,7 @@ public class StarsWorkspace extends Sprite {
             _skyView.drawLineView(s2.x, s2.y);
             _skyView.fixLineView(_sky.starsLines[lineIndex]);
         }
-        _skyView.starrySky_changeHandler(null); //TODO get rid of this call
+        _sky.disable_change_event = false;
         return true;
     }
 
