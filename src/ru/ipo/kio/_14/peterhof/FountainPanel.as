@@ -50,7 +50,7 @@ public class FountainPanel extends Sprite {
         addChild(sprayerWidthEditor);
         sprayerWidthEditor.y = phiEditor.y + phiEditor.height - 4;
 
-        _sprayerLengthEditor = new NumberEditor(width, 18, 0.1, 10, 5, "см", 1);
+        _sprayerLengthEditor = new NumberEditor(width, 18, 5, 10, 5, "см", 1);
         var sprayerLengthEditor:TitledObject = new TitledObject(showSprayer ? "Длина форсунки" : "", 18, 0x0FFFFF, _sprayerLengthEditor, skip);
         addChild(sprayerLengthEditor);
         sprayerLengthEditor.y = sprayerWidthEditor.y + sprayerWidthEditor.height - 4;

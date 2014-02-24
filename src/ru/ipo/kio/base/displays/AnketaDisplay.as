@@ -73,59 +73,8 @@ public class AnketaDisplay extends Sprite {
         fio.y = header.y + header.textHeight + GlobalMetrics.ANKETA_BLOCK_SKIP;
         addChild(fio);
 
-        for (var bi:int = 0; bi < 3; bi++)
-            fio.restrict(bi, loc.form.name_restriction);
-
-        var connection:InputBlock = new InputBlock(
-                loc.form.connection,
-                [
-//                    "Телефон",
-            loc.form.e_mail
-        ],
-                [
-                    must_be_filled
-                ],
-                ['email'],
-                captionWidth,
-                labelWidth,
-                inputWidth
-                );
-
-        connection.x = GlobalMetrics.ANKETA_LEFT;
-        connection.y = fio.y + fio.height + GlobalMetrics.ANKETA_BLOCK_SKIP;
-        addChild(connection);
-
-        var school:InputBlock = new InputBlock(
-                loc.form.institution,
-                [
-                    loc.form.institution_name,
-                    loc.form.grade,
-                    loc.form.address
-                    /*"Город",
-                     "Улица",
-                     "Дом",
-                     "Корпус"*/
-                ],
-                [
-                    must_be_filled,
-                    must_be_filled,
-                    must_be_filled
-                ],
-                ['inst_name', 'grade', 'address'],
-                captionWidth,
-                labelWidth,
-                inputWidth,
-                [1, 1, 3]
-                );
-
-        school.x = GlobalMetrics.ANKETA_LEFT;
-        school.y = connection.y + connection.height + GlobalMetrics.ANKETA_BLOCK_SKIP;
-        addChild(school);
-
         inputTextFields = [];
         inputTextFields = inputTextFields.concat(fio.inputs);
-        inputTextFields = inputTextFields.concat(connection.inputs);
-        inputTextFields = inputTextFields.concat(school.inputs);
 
         //load values, add listeners
         var anketa:Object = KioBase.instance.lsoProxy.getAnketa();
@@ -173,8 +122,8 @@ public class AnketaDisplay extends Sprite {
     private function continueButtonClicked(event:Event):void {
         KioBase.instance.log('BTN continue in anketa', []);
         var anketa:Object = KioBase.instance.lsoProxy.getAnketa();
-        KioBase.instance.log('Entered name and surname@tt', [anketa.name, anketa.surname]);
         if (continueButton.enabled) {
+            KioBase.instance.log('Entered name and surname@tt', [anketa.name, anketa.surname]);
             KioBase.instance.currentDisplay = new ProblemsDisplay;
             var lso:LsoProxy = KioBase.instance.lsoProxy;
             lso.getGlobalData().anketa_filled = true;
