@@ -4,7 +4,6 @@
 package ru.ipo.kio._14.peterhof {
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.system.Capabilities;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.base.KioBase;
@@ -23,7 +22,7 @@ public class PeterhofRunner extends Sprite {
 
         KioApi.language = KioApi.L_RU; //устанавливаем язык, используемый в программе
 
-        KioBase.instance.initOneProblem(this, new PeterhofProblem(1));
+        KioBase.instance.initOneProblem(this, new PeterhofProblem(0));
 
 //        var s:Sprite = new Sprite();
 //        s.graphics.beginFill(0xFF0000);

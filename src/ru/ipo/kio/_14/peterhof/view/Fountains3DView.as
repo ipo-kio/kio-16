@@ -48,7 +48,7 @@ public class Fountains3DView extends View3D {
 
     public function Fountains3DView(problem:KioProblem) {
         _api = KioApi.instance(problem);
-        _hill = new Hill();
+        _hill = new Hill(problem.level);
 
         var sun:DirectionalLight = new DirectionalLight(-1, -1, 0);
         scene.addChild(sun);

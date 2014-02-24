@@ -28,9 +28,11 @@ public class FountainPanel extends Sprite {
     private var _sprayer:Sprayer;
 
     private var _api:KioApi;
+    private var _showSprayer:Boolean;
 
-    public function FountainPanel(width:int, api:KioApi) {
+    public function FountainPanel(width:int, api:KioApi, showSprayer:Boolean) {
         _api = api;
+        _showSprayer = showSprayer;
 
         const skip:int = 200;
 
@@ -44,12 +46,12 @@ public class FountainPanel extends Sprite {
         phiEditor.y = alphaEditor.height - 4;
 
         _sprayerWidthEditor = new NumberEditor(width, 18, 0.1, 5, 0.1, "см", 1);
-        var sprayerWidthEditor:TitledObject = new TitledObject("Ширина форсунки", 18, 0x0FFFFF, _sprayerWidthEditor, skip);
+        var sprayerWidthEditor:TitledObject = new TitledObject(showSprayer ? "Ширина форсунки" : "", 18, 0x0FFFFF, _sprayerWidthEditor, skip);
         addChild(sprayerWidthEditor);
         sprayerWidthEditor.y = phiEditor.y + phiEditor.height - 4;
 
         _sprayerLengthEditor = new NumberEditor(width, 18, 0.1, 10, 5, "см", 1);
-        var sprayerLengthEditor:TitledObject = new TitledObject("Длина форсунки", 18, 0x0FFFFF, _sprayerLengthEditor, skip);
+        var sprayerLengthEditor:TitledObject = new TitledObject(showSprayer ? "Длина форсунки" : "", 18, 0x0FFFFF, _sprayerLengthEditor, skip);
         addChild(sprayerLengthEditor);
         sprayerLengthEditor.y = sprayerWidthEditor.y + sprayerWidthEditor.height - 4;
 
@@ -100,8 +102,8 @@ public class FountainPanel extends Sprite {
 
         _alphaEditor.visible = show;
         _phiEditor.visible = show;
-        _sprayerWidthEditor.visible = show;
-        _sprayerLengthEditor.visible = show;
+        _sprayerWidthEditor.visible = show && _showSprayer;
+        _sprayerLengthEditor.visible = show && _showSprayer;
         _streamLengthInfo.visible = show;
         _sprayer.visible = show;
 

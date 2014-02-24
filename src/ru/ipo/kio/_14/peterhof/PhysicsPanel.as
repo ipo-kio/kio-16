@@ -13,7 +13,7 @@ public class PhysicsPanel extends Sprite {
 
     private const editor_width:int = 150;
     private var ds_editor:NumberEditor = new NumberEditor(editor_width, 0, 0.001, 10, Consts.D, "м", 3);
-    private var min_dist_editor:NumberEditor = new NumberEditor(editor_width, 0, 10, 200, Consts.MIN_DIST, "м", 0);
+    private var min_dist_editor:NumberEditor = new NumberEditor(editor_width, 0, 10, 200, Consts.MIN_DIST[0], "м", 0);
     private var eta_editor:NumberEditor = new NumberEditor(editor_width, 0, 0.0001, 100, 1000 * Consts.ETA, "г/м с", 4);
     private var g_editor:NumberEditor = new NumberEditor(editor_width, 0, 0, 1000, Consts.G, "м/c^2", 3);
     private var k_editor:NumberEditor = new NumberEditor(editor_width, 0, 0, 100, Consts.K, "*", 6);
@@ -54,7 +54,7 @@ public class PhysicsPanel extends Sprite {
     }
 
     private function min_dist_editor_changeHandler(event:Event):void {
-        Consts.MIN_DIST = min_dist_editor.value;
+        Consts.MIN_DIST[0] = min_dist_editor.value;
         _hill.invalidate_streams();
     }
 

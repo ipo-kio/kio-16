@@ -65,7 +65,7 @@ public class PeterhofWorkspace extends Sprite {
         addChild(bottomPanel);
         bottomPanel.y = _3D_HEIGHT;
 
-        _fountainPanel = new FountainPanel(100, _api);
+        _fountainPanel = new FountainPanel(100, _api, problem.level == 2);
 
         fillBottomPanel(bottomPanel);
 

@@ -12,26 +12,29 @@ public class Hill extends EventDispatcher {
     private var _total_stream_length:Number;
     private var _close_fountains:Array = []; //array of pairs
     private var _fountains_in_close_pairs:Dictionary = new Dictionary(); //array of fountains
+    private var _level:int;
 
-    public function Hill() {
+    public function Hill(level:int) {
+        _level = level;
+
         var f1:Fountain = new Fountain(this);
-        f1.x = 10;
-        f1.z = 25;
+        f1.x = 5;
+        f1.z = 5;
         f1.l = 0.1;
         f1.d = 0.04;
         f1.phiGr = -20;
         f1.alphaGr = 70;
 
         var f2:Fountain = new Fountain(this);
-        f2.x = 35;
-        f2.z = 60;
+        f2.x = 20;
+        f2.z = 95;
         f2.l = 0.1;
         f2.d = 0.04;
         f2.phiGr = 0;
         f2.alphaGr = 70;
 
         var f3:Fountain = new Fountain(this);
-        f3.x = 55;
+        f3.x = 35;
         f3.z = 30;
         f3.l = 0.1;
         f3.d = 0.04;
@@ -39,26 +42,56 @@ public class Hill extends EventDispatcher {
         f3.alphaGr = 70;
 
         var f4:Fountain = new Fountain(this);
-        f4.x = 75;
-        f4.z = 65;
+        f4.x = 50;
+        f4.z = 70;
         f4.l = 0.1;
         f4.d = 0.04;
         f4.phiGr = 160;
         f4.alphaGr = 70;
 
         var f5:Fountain = new Fountain(this);
-        f5.x = 100;
-        f5.z = 40;
+        f5.x = 65;
+        f5.z = 5;
         f5.l = 0.1;
         f5.d = 0.04;
-        f5.phiGr = -140;
+        f5.phiGr = 90;
         f5.alphaGr = 71;
+
+        var f6:Fountain = new Fountain(this);
+        f6.x = 80;
+        f6.z = 95;
+        f6.l = 0.1;
+        f6.d = 0.04;
+        f6.phiGr = -140;
+        f6.alphaGr = 71;
 
         _fountains.push(f1);
         _fountains.push(f2);
         _fountains.push(f3);
         _fountains.push(f4);
         _fountains.push(f5);
+        _fountains.push(f6);
+
+        if (level > 0) {
+            var f7:Fountain = new Fountain(this);
+            f7.x = 95;
+            f7.z = 30;
+            f7.l = 0.1;
+            f7.d = 0.04;
+            f7.phiGr = 160;
+            f7.alphaGr = 70;
+
+            var f8:Fountain = new Fountain(this);
+            f8.x = 110;
+            f8.z = 70;
+            f8.l = 0.1;
+            f8.d = 0.04;
+            f8.phiGr = 160;
+            f8.alphaGr = 70;
+
+            _fountains.push(f7);
+            _fountains.push(f8);
+        }
 
         addChangeListeners();
         updateLengthInfo();
@@ -94,7 +127,7 @@ public class Hill extends EventDispatcher {
                 var dz:Number = fi.z - fj.z;
                 var dist:Number = dx * dx + dy * dy + dz * dz;
 
-                if (dist < Consts.MIN_DIST * Consts.MIN_DIST) {
+                if (dist <= min_dist * min_dist) {
                     _close_fountains.push([fi, fj, Math.sqrt(dist)]);
                     _fountains_in_close_pairs[fi] = true;
                     _fountains_in_close_pairs[fj] = true;
@@ -161,6 +194,10 @@ public class Hill extends EventDispatcher {
             return;
         for (var i:int = 0; i < _fountains.length; i++)
             _fountains[i].deserialize(a[i]);
+    }
+
+    public function get min_dist():Number {
+        return Consts.MIN_DIST[_level];
     }
 }
 }
