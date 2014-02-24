@@ -9,7 +9,7 @@ import ru.ipo.kio._14.tarski.view.*;
 
 import flash.events.Event;
 import flash.events.MouseEvent;
-import ru.ipo.kio._14.tarski.TarskiSprite;
+import ru.ipo.kio._14.tarski.TarskiProblemFirst;
 
 import ru.ipo.kio._14.tarski.model.predicates.VariablePlaceHolder;
 
@@ -27,11 +27,11 @@ public class PlaceHolderView extends BasicView {
          textField = createField("_");
         addChild(textField);
         addEventListener(MouseEvent.CLICK, function(e:Event):void{
-            if(placeHolder.statement!=TarskiSprite.instance.statementManager.statement){
-                TarskiSprite.instance.statementManager.activate(placeHolder.statement);
-                TarskiSprite.instance.statement.activePlaceHolder=placeHolder;
+            if(placeHolder.statement!=TarskiProblemFirst.instance.statementManager.statement){
+                TarskiProblemFirst.instance.statementManager.activate(placeHolder.statement);
+                TarskiProblemFirst.instance.statement.activePlaceHolder=placeHolder;
             }else{
-                TarskiSprite.instance.statement.activePlaceHolder=placeHolder;
+                TarskiProblemFirst.instance.statement.activePlaceHolder=placeHolder;
             }
         });
 

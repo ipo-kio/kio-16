@@ -32,5 +32,10 @@ public class BasePredicate extends LogicEvaluatedItem implements LogicItem{
     public override function getFormulaText():String {
         return getToolboxText();
     }
+
+    public function toString():String{
+        return "";
+    }
+
 }
 }

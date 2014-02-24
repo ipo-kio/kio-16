@@ -11,7 +11,7 @@ import mx.controls.ProgressBarLabelPlacement;
 import mx.logging.LogLogger;
 
 import ru.ipo.kio._14.tarski.TarskiRunner;
-import ru.ipo.kio._14.tarski.TarskiSprite;
+import ru.ipo.kio._14.tarski.TarskiProblemFirst;
 
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 import ru.ipo.kio._14.tarski.model.operation.AndOperation;
@@ -26,12 +26,16 @@ import ru.ipo.kio._14.tarski.model.operation.TwoPositionOperation;
 import ru.ipo.kio._14.tarski.model.predicates.BasePredicate;
 import ru.ipo.kio._14.tarski.model.predicates.OnePlacePredicate;
 import ru.ipo.kio._14.tarski.model.predicates.TwoPlacePredicate;
+import ru.ipo.kio._14.tarski.model.predicates.Variable;
 
 import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
 import ru.ipo.kio._14.tarski.view.statement.FictiveLogicItem;
 
 public class StatementParser2 extends StatementParser1{
-    public function StatementParser2() {
+    private var autoQuantors:Boolean = false;
+
+    public function StatementParser2(autoQuantors:Boolean=false) {
+       this.autoQuantors=autoQuantors;
     }
 
     public override function parse(logicItemsInit:Vector.<LogicItem>):LogicEvaluatedItem {
@@ -40,13 +44,14 @@ public class StatementParser2 extends StatementParser1{
             logicItems.push(logicItemsInit[i]);
         }
 
-        processIfThen(logicItems);
+//        processIfThen(logicItems);
 
         var correctBraces:Boolean = setPrioirtiesAndCheckBraces(logicItems);
         if(!correctBraces){
             return null;
         }
 
+        if(!autoQuantors){
         var quantOperand:Vector.<String> = new Vector.<String>();
         for(var i:int=0; i<logicItems.length; i++){
             if(logicItems[i] is Quantifier) {
@@ -70,18 +75,34 @@ public class StatementParser2 extends StatementParser1{
                 quantOperand.push(Quantifier(logicItems[i]).placeHolder.variable.code);
             }
         }
+        }
 
         logicItems = removeBracesAndClearQuantifiers(logicItems);
         var result:LogicEvaluatedItem = parseByPriority(logicItems);
+        if(autoQuantors && result!=null){
+            result.commit();
+            var dict:Dictionary = result.collectFormalOperand();
+            for (var k:Object in dict) {
+                var quant:Quantifier = new Quantifier(Quantifier.ALL);
+                quant.operand=dict[k];
+                quant.placeHolder.variable=new Variable(dict[k]);
+                result.quants.push(quant);
+
+            }
+        }
         trace(result);
         if(result!=null){
             result.commit();
+
+            if(!autoQuantors){
+
             if(countKeys(result.collectFormalOperand())!=quantOperand.length){
                 return null;
             }
 
             if(!result.checkQuantors(new Vector.<Quantifier>())){
                 return null;
+            }
             }
 
 //            for(var i:int=0; i<quantOperand.length; i++){

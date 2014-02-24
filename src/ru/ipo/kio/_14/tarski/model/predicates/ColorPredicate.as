@@ -14,6 +14,7 @@ import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 
 import ru.ipo.kio._14.tarski.model.properties.ColorValue;
 import ru.ipo.kio._14.tarski.model.properties.Colorable;
+import ru.ipo.kio._14.tarski.model.properties.ValueHolder;
 
 public class ColorPredicate extends OnePlacePredicate{
 
@@ -43,8 +44,16 @@ public class ColorPredicate extends OnePlacePredicate{
     }
 
 
-    public function toString():String {
-        return quantsToSts()+"[color-"+color.code+":"+formalOperand+"]";
+    public override function toString():String {
+        return quantsToSts()+"color-"+color.code+"-"+formalOperand+"";
+    }
+
+    public function parseString(str:String):ColorPredicate {
+        var items:Array = str.split("-");
+        color = ValueHolder.getColor(items[1]);
+        operand = items[2];
+        placeHolder.variable = new Variable(formalOperand);
+        return this;
     }
 
     public override function getToolboxText():String {

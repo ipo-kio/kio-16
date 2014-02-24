@@ -12,6 +12,7 @@ import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 
 import ru.ipo.kio._14.tarski.model.properties.Sizable;
 import ru.ipo.kio._14.tarski.model.properties.SizeValue;
+import ru.ipo.kio._14.tarski.model.properties.ValueHolder;
 
 public class SizePredicate extends OnePlacePredicate{
 
@@ -40,8 +41,17 @@ public class SizePredicate extends OnePlacePredicate{
         return size.code==operand.size.code;
     }
 
-    public function toString():String {
-        return quantsToSts()+"[size-"+size.code+":"+formalOperand+"]";
+    public override function toString():String {
+        return quantsToSts()+"size-"+size.code+"-"+formalOperand+"";
+    }
+
+
+    public function parseString(str:String):SizePredicate {
+        var items:Array = str.split("-");
+        size = ValueHolder.getSize(items[1]);
+        operand = items[2];
+        placeHolder.variable = new Variable(formalOperand);
+        return this;
     }
 
     public override function getToolboxText():String {

@@ -3,7 +3,7 @@
  * @since: 05.02.14
  */
 package ru.ipo.kio._14.tarski.view.statement {
-import ru.ipo.kio._14.tarski.TarskiSprite;
+import ru.ipo.kio._14.tarski.TarskiProblemFirst;
 import ru.ipo.kio._14.tarski.view.*;
 
 import flash.display.Sprite;
@@ -73,8 +73,8 @@ public class StatementViewFree extends BasicView {
 
 
 
-        if(TarskiSprite.instance.statementManager!=null){
-            TarskiSprite.instance.statementManager.scrollPane.refreshPane();
+        if(TarskiProblemFirst.instance.statementManager!=null){
+            TarskiProblemFirst.instance.statementManager.scrollPane.refreshPane();
         }
     }
 
