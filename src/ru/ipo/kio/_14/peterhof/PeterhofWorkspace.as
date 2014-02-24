@@ -43,8 +43,11 @@ public class PeterhofWorkspace extends Sprite {
     public static const NUM_MN_O_CLS:Class;
     public static const NUM_MN_CLS_O_IMG:BitmapData = (new NUM_MN_O_CLS).bitmapData;
 
+    [Embed(source="resources/border.png")]
+    public static const BORDER:Class;
+
     public static const _3D_WIDTH:int = 780;
-    public static const _3D_HEIGHT:int = 480;
+    public static const _3D_HEIGHT:int = 450;
 
     private var _fountainsView:Fountains3DView;
     private var _fountainPanel:FountainPanel;
@@ -80,6 +83,8 @@ public class PeterhofWorkspace extends Sprite {
 //        physicsPanel.y = 4;
 
         _api.addEventListener(KioApi.RECORD_EVENT, api_recordHandler);
+
+        addChild(new BORDER);
     }
 
     public function get currentResult():Object {
