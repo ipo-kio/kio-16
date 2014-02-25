@@ -7,8 +7,9 @@ package ru.ipo.kio._14.tarski.view.construct {
 import flash.events.MouseEvent;
 import flash.text.TextField;
 
-import ru.ipo.kio._13.clock.view.BasicView;
+
 import ru.ipo.kio._14.tarski.utils.FormUtils;
+import ru.ipo.kio._14.tarski.view.BasicView;
 
 public class ResultPanel extends BasicView {
 
@@ -22,21 +23,21 @@ public class ResultPanel extends BasicView {
 
 
     public function ResultPanel() {
-        addChild(FormUtils.createLabel("Рекорд:",20,10));
-        addChild(FormUtils.createLabel("Выполнено условий:",20,40));
-        addChild(FormUtils.createLabel("Количество фигур:",20,80));
-
-        statementsFieldRecord = FormUtils.createLabel("",180,40);
-        figuresFieldRecord = FormUtils.createLabel("",180,80);
-        addChild(statementsFieldRecord);
-        addChild(figuresFieldRecord);
-
-        addChild(FormUtils.createLabel("Текущий:",20,135));
+        addChild(FormUtils.createLabel("Рекорд:",20,135,20,true));
         addChild(FormUtils.createLabel("Выполнено условий:",20,165));
         addChild(FormUtils.createLabel("Количество фигур:",20,205));
 
-        statementsField = FormUtils.createLabel("",180,165);
-        figuresField = FormUtils.createLabel("",180,205);
+        statementsFieldRecord = FormUtils.createLabel("",180,165);
+        figuresFieldRecord = FormUtils.createLabel("",180,205);
+        addChild(statementsFieldRecord);
+        addChild(figuresFieldRecord);
+
+        addChild(FormUtils.createLabel("Текущий:",20,10,20,true));
+        addChild(FormUtils.createLabel("Выполнено условий:",20,40));
+        addChild(FormUtils.createLabel("Количество фигур:",20,80));
+
+        statementsField = FormUtils.createLabel("",180,40);
+        figuresField = FormUtils.createLabel("",180,80);
         addChild(statementsField);
         addChild(figuresField);
 

@@ -85,7 +85,7 @@ public class TarskiProblemZero extends BasicView {
         update();
 
         var loadButton:ShellButton = new ShellButton("load");
-        addChildTo(loadButton,600,200);
+//        addChildTo(loadButton,600,200);
         loadButton.addEventListener(MouseEvent.CLICK, function(e:Event):void{
             var fileRef:FileReference = new FileReference();
             fileRef.browse();
@@ -122,7 +122,7 @@ public class TarskiProblemZero extends BasicView {
         }
 
         for(var i:int=0; i<_statements.length; i++){
-            _statements[i].getView().y = 10+i*19;
+            _statements[i].getView().y = 10+i*18;
             _statements[i].getView().x = 20;
             addChild(_statements[i].getView());
             _statements[i].getView().update();

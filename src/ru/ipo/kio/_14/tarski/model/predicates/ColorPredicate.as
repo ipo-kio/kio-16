@@ -51,8 +51,10 @@ public class ColorPredicate extends OnePlacePredicate{
     public function parseString(str:String):ColorPredicate {
         var items:Array = str.split("-");
         color = ValueHolder.getColor(items[1]);
-        operand = items[2];
-        placeHolder.variable = new Variable(formalOperand);
+        if(items[2]!="null"){
+            operand = items[2];
+            placeHolder.variable = new Variable(formalOperand);
+        }
         return this;
     }
 
