@@ -103,7 +103,7 @@ public class StarsProblem implements KioProblem {
     }
 
     public function clear():void {
-        //do nothing
+        loadSolution({lines: []});
     }
 }
 }

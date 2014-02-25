@@ -34,7 +34,7 @@ public interface KioProblem {
 
     function get icon_statement():Class;
 
-    function clear():void;
+    function clear():void; //TODO remove this method. Make KioBase save the first solution when the program is first loaded
 
     //function get help_icon():Class;
 }
