@@ -48,8 +48,9 @@ public class BasicView extends Sprite {
         field.text = text;
         var format:TextFormat = field.getTextFormat();
         format.size = size;
+        format.font="Arial";
         field.setTextFormat(format);
-        field.width = field.textWidth + FIELD_MARGIN;
+        field.width = field.textWidth+6;
         field.height = field.textHeight + FIELD_MARGIN;
 
         return field;

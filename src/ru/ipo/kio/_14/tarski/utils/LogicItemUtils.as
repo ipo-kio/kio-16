@@ -32,6 +32,9 @@ public class LogicItemUtils {
         var parts:Array = part.split(" ");
         for(var i:int=0;i<parts.length;i++){
             var ch:String=parts[i];
+            if(ch==""){
+                continue;
+            }
             if(ch=="&"){
                 items.push(new AndOperation());
             }else if(ch=="=>"){

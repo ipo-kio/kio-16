@@ -81,7 +81,7 @@ public class TarskiProblemFirst extends BasicView {
 
     private var configView:ConfigsView = new ConfigsView();
 
-    private var resultPanel:ResultPanel = new ResultPanel();
+    private var resultPanel:ResultPanel;
 
 
     public function get level():int {
@@ -94,13 +94,15 @@ public class TarskiProblemFirst extends BasicView {
         _instance=this;
         _stage=stage;
         _problem=problem;
+        ToolTip.init(stage, {textalign: 'center', opacity: 80, defaultdelay: 500});
+        resultPanel= new ResultPanel();
         var bg = new BACKGROUND;
         addChild(bg);
         addChild(configView);
         addChildTo(resultPanel,0,0);
 
         this._level = level;
-        ToolTip.init(stage, {textalign: 'center', opacity: 80, defaultdelay: 500});
+
 
         ConfigurationHolder.instance.init();
 
@@ -162,7 +164,7 @@ public class TarskiProblemFirst extends BasicView {
 
         configView.update();
 
-
+        KioApi.instance(problem).addEventListener(KioApi.RECORD_EVENT, recordChanged);
     }
 
     private function createPlainButton(label:String, x:int, y:int, f):SimpleButton{

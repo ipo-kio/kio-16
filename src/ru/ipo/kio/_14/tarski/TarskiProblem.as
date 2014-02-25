@@ -133,6 +133,11 @@ public class TarskiProblem implements KioProblem{
                 return getSign(solution1.figures-solution2.figures);
             }
          }else{
+             if(solution1.length==0){
+                 return solution2.length==0?0:-1;
+             }else if (solution2.length==0){
+                 return 1;
+             }
              if(solution1.statements!=solution2.statements){
                  return getSign(solution1.statements-solution2.statements);
              }else{

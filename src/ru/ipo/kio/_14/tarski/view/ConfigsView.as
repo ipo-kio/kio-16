@@ -4,6 +4,7 @@
  * @date: 25.02.14
  */
 package ru.ipo.kio._14.tarski.view {
+import flash.display.Sprite;
 import flash.events.MouseEvent;
 
 import org.osmf.events.ContainerChangeEvent;
@@ -100,7 +101,7 @@ public class ConfigsView extends BasicView {
 
 
             if (config.correct) {
-                graphics.lineStyle(5,0x21753A);
+                graphics.lineStyle(5,0x3A880F);
                 graphics.drawRect(figX-2,figY+2,figH,figH+22);
             }
 
@@ -110,6 +111,7 @@ public class ConfigsView extends BasicView {
                     drawFigure(figure, figX + cellSize * x, figY + figH - (y + 1) * cellSize, cellSize, right);
                 }
             }
+
         }
     }
 
