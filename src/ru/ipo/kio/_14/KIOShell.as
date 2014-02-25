@@ -52,7 +52,7 @@ public class KIOShell extends Sprite {
                 [
                     new StarsProblem(level),
                     new PeterhofProblem(level),
-                    new TarskiProblem(level)
+                    new TarskiProblem(level, stage)
                 ],
                 2014,
                 level
