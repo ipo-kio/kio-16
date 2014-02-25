@@ -9,24 +9,24 @@ import flash.geom.Matrix;
 
     public class StarView extends Sprite {
 
-        [Embed(source="resources/default_star_r1.png")]
+        [Embed(source="resources/1_0.png")]
         private static const DEFAULT_STAR_RADIUS_1:Class;
         private static const DEFAULT_STAR_RADIUS_1_BMP:BitmapData = new DEFAULT_STAR_RADIUS_1().bitmapData;
-        [Embed(source="resources/selected_star_r1.png")]
+        [Embed(source="resources/1_over_0.png")]
         private static const SELECTED_STAR_RADIUS_1:Class;
         private static const SELECTED_STAR_RADIUS_1_BMP:BitmapData = new SELECTED_STAR_RADIUS_1().bitmapData;
 
-        [Embed(source="resources/default_star_r2.png")]
+        [Embed(source="resources/2_0.png")]
         private static const DEFAULT_STAR_RADIUS_2:Class;
         private static const DEFAULT_STAR_RADIUS_2_BMP:BitmapData = new DEFAULT_STAR_RADIUS_2().bitmapData;
-        [Embed(source="resources/selected_star_r2.png")]
+        [Embed(source="resources/2_over_0.png")]
         private static const SELECTED_STAR_RADIUS_2:Class;
         private static const SELECTED_STAR_RADIUS_2_BMP:BitmapData = new SELECTED_STAR_RADIUS_2().bitmapData;
 
-        [Embed(source="resources/default_star.png")]
+        [Embed(source="resources/3_0.png")]
         private static const DEFAULT_STAR_RADIUS_3:Class;
         private static const DEFAULT_STAR_RADIUS_3_BMP:BitmapData = new DEFAULT_STAR_RADIUS_3().bitmapData;
-        [Embed(source="resources/selected_star.png")]
+        [Embed(source="resources/3_over_0.png")]
         private static const SELECTED_STAR_RADIUS_3:Class;
         private static const SELECTED_STAR_RADIUS_3_BMP:BitmapData = new SELECTED_STAR_RADIUS_3().bitmapData;
 
