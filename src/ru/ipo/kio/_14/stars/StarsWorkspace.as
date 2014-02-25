@@ -6,6 +6,7 @@ package ru.ipo.kio._14.stars {
 //import flash.display.BitmapData;
 //import flash.display.Loader;
 //import flash.display.LoaderInfo;
+import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
@@ -32,8 +33,12 @@ public class StarsWorkspace extends Sprite {
 
 //    private static var fileReference:FileReference;
 
-    [Embed(source='resources/EskizOne-Regular.ttf', embedAsCFF="false", fontName="EskizOne-Regular", mimeType='application/x-font-truetype')]
+    [Embed(source='resources/segoepr.ttf', embedAsCFF="false", fontName="Segoe Print", mimeType='application/x-font-truetype')]
     private static var MyFont:Class;
+
+    [Embed(source="resources/bottom.png")]
+    private static const BOTTOM:Class;
+    private static const BOTTOM_BMP:BitmapData = new BOTTOM().bitmapData;
 
     private var workspaceLoaded:Boolean = false;
 
@@ -138,19 +143,19 @@ public class StarsWorkspace extends Sprite {
         _panel = new SkyInfoPanel(_skyView);
 
         infoPanel = new InfoPanel(
-                /*"KioArial", true, //*/"EskizOne-Regular", true,
-                18, 0x92000a, 0x08457e, 0x3b5998,
-                1.2, api.localization.result/*"Текущий результат"*/,
-                [api.localization.intersections, api.localization.right_graphs,
-                    api.localization.diff_graphs, api.localization.length_of_edges], 250
+                /*"KioArial", true, //*/"Segoe Print", true,
+                15, 0xff0000, 0xffffff, 0xffffff,
+                1.5, /*api.localization.result*/"",
+                ["", "", "", ""/*api.localization.intersections, api.localization.right_graphs,
+                    api.localization.diff_graphs, api.localization.length_of_edges*/], 360
         );
 
         infoPanelRecord = new InfoPanel(
-                /*"KioArial", true, //*/"EskizOne-Regular", true,
-                18, 0x92000a, 0x08457e, 0x3b5998,
-                1.2, api.localization.record/*"Рекорд"*/,
-                [api.localization.intersections, api.localization.right_graphs,
-                    api.localization.diff_graphs, api.localization.length_of_edges], 250
+                /*"KioArial", true, //*/"Segoe Print", true,
+                15, 0xff0000, 0xffffff, 0xffffff,
+                1.5, /*api.localization.record*/"",
+                ["", "", "", ""/*api.localization.intersections, api.localization.right_graphs,
+                    api.localization.diff_graphs, api.localization.length_of_edges*/], 360
         );
 
         infoPanel.setValue(0, "НЕТ");
@@ -163,6 +168,10 @@ public class StarsWorkspace extends Sprite {
         infoPanelRecord.setValue(2, "" + 0);
         infoPanelRecord.setValue(3, "" + 0 + " св. л.");
 
+        graphics.beginBitmapFill(BOTTOM_BMP);
+        graphics.drawRect(0, 450, 780, 150);
+        graphics.endFill();
+
         _panel.x = 0;
         _panel.y = _skyView.height - 20;
         addChild(_panel);
@@ -171,9 +180,9 @@ public class StarsWorkspace extends Sprite {
         addChild(infoPanelRecord);
 
         infoPanel.x = 0;
-        infoPanel.y = 480;
-        infoPanelRecord.x = 360;
-        infoPanelRecord.y = 480;
+        infoPanel.y = 470;
+        infoPanelRecord.x = 390;
+        infoPanelRecord.y = 470;
 
         workspaceLoaded = true;
     }
