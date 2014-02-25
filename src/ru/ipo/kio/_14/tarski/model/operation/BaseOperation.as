@@ -454,7 +454,7 @@ public class BaseOperation extends LogicEvaluatedItem implements LogicItem {
                         }
                         data[third]=figures[k];
                         var currentCheck:Boolean = evaluateWithQuantsFinal(data, figures);
-                        data[first]=null;
+                        data[third]=null;
                         allCheck=allCheck&&currentCheck;
 
                     }

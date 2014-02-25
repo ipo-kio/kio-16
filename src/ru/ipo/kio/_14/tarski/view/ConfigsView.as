@@ -16,6 +16,55 @@ import ru.ipo.kio._14.tarski.model.properties.ShapeValue;
 import ru.ipo.kio._14.tarski.model.properties.SizeValue;
 
 public class ConfigsView extends BasicView {
+
+    [Embed(source="../_resources/level1/blue_big_ball.png")]
+    private static const BLUE_BIG_BALL:Class;
+
+    [Embed(source="../_resources/level1/red_big_ball.png")]
+    private static const RED_BIG_BALL:Class;
+
+    [Embed(source="../_resources/level1/blue_small_ball.png")]
+    private static const BLUE_SMALL_BALL:Class;
+
+    [Embed(source="../_resources/level1/red_small_ball.png")]
+    private static const RED_SMALL_BALL:Class;
+
+    [Embed(source="../_resources/level1/blue_big_rec.png")]
+    private static const BLUE_BIG_REC:Class;
+
+    [Embed(source="../_resources/level1/red_big_rec.png")]
+    private static const RED_BIG_REC:Class;
+
+    [Embed(source="../_resources/level1/blue_small_rec.png")]
+    private static const BLUE_SMALL_REC:Class;
+
+    [Embed(source="../_resources/level1/red_small_rec.png")]
+    private static const RED_SMALL_REC:Class;
+
+    [Embed(source="../_resources/level1/blue_big_ball_cry.png")]
+    private static const BLUE_BIG_BALL_CRY:Class;
+
+    [Embed(source="../_resources/level1/red_big_ball_cry.png")]
+    private static const RED_BIG_BALL_CRY:Class;
+
+    [Embed(source="../_resources/level1/blue_small_ball_cry.png")]
+    private static const BLUE_SMALL_BALL_CRY:Class;
+
+    [Embed(source="../_resources/level1/red_small_ball_cry.png")]
+    private static const RED_SMALL_BALL_CRY:Class;
+
+    [Embed(source="../_resources/level1/blue_big_rec_cry.png")]
+    private static const BLUE_BIG_REC_CRY:Class;
+
+    [Embed(source="../_resources/level1/red_big_rec_cry.png")]
+    private static const RED_BIG_REC_CRY:Class;
+
+    [Embed(source="../_resources/level1/blue_small_rec_cry.png")]
+    private static const BLUE_SMALL_REC_CRY:Class;
+
+    [Embed(source="../_resources/level1/red_small_rec_cry.png")]
+    private static const RED_SMALL_REC_CRY:Class;
+
     public function ConfigsView() {
 
     }
@@ -30,12 +79,12 @@ public class ConfigsView extends BasicView {
         var spaceY:int=150;
         var figH:int=120;
 
-        drawConfigs(ConfigurationHolder.instance.rightExamples, 14, spaceX, 60, spaceY, cellSize, figH);
-        drawConfigs(ConfigurationHolder.instance.wrongExamples, 405, spaceX, 60, spaceY, cellSize, figH);
+        drawConfigs(ConfigurationHolder.instance.rightExamples, 14, spaceX, 60, spaceY, cellSize, figH, true);
+        drawConfigs(ConfigurationHolder.instance.wrongExamples, 405, spaceX, 60, spaceY, cellSize, figH, false);
 
     }
 
-    private function drawConfigs(configs:Vector.<Configuration>, startX:int, spaceX:int, startY:int, spaceY:int, cellSize:int, figH:int):void {
+    private function drawConfigs(configs:Vector.<Configuration>, startX:int, spaceX:int, startY:int, spaceY:int, cellSize:int, figH:int, right:Boolean):void {
 
         for (var i:int = 0; i < configs.length; i++) {
             var config:Configuration = configs[i];
@@ -58,7 +107,7 @@ public class ConfigsView extends BasicView {
             for (var x:int = 0; x < config.width; x++) {
                 for (var y:int = 0; y < config.depth; y++) {
                     var figure:Figure = config.getFigure(x, y);
-                    drawFigure(figure, figX + cellSize * x, figY + figH - (y + 1) * cellSize, cellSize);
+                    drawFigure(figure, figX + cellSize * x, figY + figH - (y + 1) * cellSize, cellSize, right);
                 }
             }
         }
@@ -74,30 +123,52 @@ public class ConfigsView extends BasicView {
         return maxSize;
     }
 
-    private function drawFigure(figure:Figure, x:int, y:int, cellSize:int):void {
+    private function drawFigure(figure:Figure, x:int, y:int, cellSize:int, right:Boolean):void {
         if (figure == null) {
-
+            //graphics.lineStyle(1,0X666666);
+            //graphics.drawRect(0, 0, CELL_SIZE, CELL_SIZE);
         } else {
-            graphics.lineStyle(0,0X000000);
+            //graphics.lineStyle(0,0X000000);
             if (figure.color.code == ColorValue.RED) {
-                graphics.beginFill(0xFF3366);
+                //graphics.beginFill(0xFF3366);
             } else {
-                graphics.beginFill(0x3366FF);
+                //graphics.beginFill(0x3366FF);
             }
             if (figure.shape.code == ShapeValue.SPHERE) {
                 if (figure.size.code == SizeValue.BIG) {
-                    graphics.drawCircle(x+cellSize/2, y+cellSize/2, cellSize/2);
+                    if (figure.color.code == ColorValue.RED) {
+                        addChildTo(right?new RED_BIG_BALL:new RED_BIG_BALL_CRY,x,y);
+                    } else {
+                        addChildTo(right?new BLUE_BIG_BALL:new BLUE_BIG_BALL_CRY,x,y);
+                    }
+                    //graphics.drawCircle(CELL_SIZE/2, CELL_SIZE/2, CELL_SIZE/2);
                 } else {
-                    graphics.drawCircle(x+cellSize/2, y+cellSize/2, cellSize/2 * 0.7);
+                    if (figure.color.code == ColorValue.RED) {
+                        addChildTo(right?new RED_SMALL_BALL:new RED_SMALL_BALL_CRY,x,y);
+                    } else {
+                        addChildTo(right?new BLUE_SMALL_BALL:new BLUE_SMALL_BALL_CRY,x,y);
+                    }
+
+                    // graphics.drawCircle(CELL_SIZE/2, CELL_SIZE/2, CELL_SIZE/2 * 0.7);
                 }
             } else {
                 if (figure.size.code == SizeValue.BIG) {
-                    graphics.drawRect(x, y, cellSize, cellSize);
+                    if (figure.color.code == ColorValue.RED) {
+                        addChildTo(right?new RED_BIG_REC:new RED_BIG_REC_CRY,x,y);
+                    } else {
+                        addChildTo(right?new BLUE_BIG_REC:new BLUE_BIG_REC_CRY,x, y);
+                    }
+                    //graphics.drawRect(0, 0, CELL_SIZE, CELL_SIZE);
                 } else {
-                    graphics.drawRect(x+cellSize*0.15 , y+cellSize*0.15, cellSize * 0.7, cellSize * 0.7);
+                    if (figure.color.code == ColorValue.RED) {
+                        addChildTo(right?new RED_SMALL_REC:new RED_SMALL_REC_CRY,x,y);
+                    } else {
+                        addChildTo(right?new BLUE_SMALL_REC:new BLUE_SMALL_REC_CRY,x,y);
+                    }
+                    //graphics.drawRect(CELL_SIZE*0.15 , CELL_SIZE*0.15, CELL_SIZE * 0.7, CELL_SIZE * 0.7);
                 }
             }
-            graphics.endFill();
+            //graphics.endFill();
         }
     }
 }
