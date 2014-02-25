@@ -33,7 +33,7 @@ public class SkyInfoPanel extends Sprite {
         }
 
         private function drawPanel():void {
-            txt.width = 250;
+            txt.width = 300;
             txt.height = 100;
             txt.selectable = false;
         }
