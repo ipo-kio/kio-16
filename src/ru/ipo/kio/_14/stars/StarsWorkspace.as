@@ -96,24 +96,24 @@ public class StarsWorkspace extends Sprite {
             }
         }*/
 
-        var stars:Array = [new Star(443, 345, 1), new Star(63, 55, 3), new Star(514, 190, 2),
-            new Star(70, 145, 2), new Star(238, 55, 1), new Star(163, 60, 3), new Star(103, 98, 1),
-            new Star(261, 378, 3), new Star(211, 160, 2), new Star(277, 226, 1), new Star(274, 95, 2),
-            new Star(333, 145, 1), new Star(463, 255, 3), new Star(304, 305, 2),
+        var stars:Array = [new Star(443, 345, 1), new Star(63, 45, 3), new Star(514, 190, 2),
+            new Star(70, 140, 2), new Star(238, 45, 1), new Star(163, 50, 3), new Star(103, 98, 1),
+            new Star(261, 373, 3), new Star(211, 154, 2), new Star(277, 221, 1), new Star(274, 95, 2),
+            new Star(333, 145, 1), new Star(463, 255, 3), new Star(504, 317, 2),
             new Star(390, 245, 2), new Star(443, 65, 1), new Star(593, 60, 3), new Star(143, 148, 1),
             new Star(503, 98, 3), new Star(411, 160, 2), new Star(357, 66, 1), new Star(574, 145, 2),
-            new Star(70, 245, 2), new Star(93, 315, 1), new Star(128, 380, 3), new Star(193, 398, 1),
-            new Star(93, 198, 3), new Star(171, 260, 2), new Star(197, 319, 1), new Star(374, 345, 2),
+            new Star(70, 245, 2), new Star(93, 315, 1), new Star(128, 380, 3), new Star(193, 390, 1),
+            new Star(93, 198, 3), new Star(171, 241, 2), new Star(194, 299, 1), new Star(374, 345, 2),
 
-            new Star(323, 375, 1), new Star(63, 435, 3), new Star(45, 370, 2), new Star(670, 65, 2),
-            new Star(738, 39, 1), new Star(413, 429, 3), new Star(133, 449, 1), new Star(701, 408, 3),
-            new Star(611, 430, 2), new Star(677, 326, 1), new Star(634, 195, 2), new Star(555, 245, 1),
-            new Star(633, 355, 3), new Star(304, 305, 2), new Star(620, 260, 2), new Star(545, 455, 1),
-            new Star(583, 300, 3), new Star(41, 288, 1), new Star(693, 148, 3), new Star(461, 400, 2),
-            new Star(657, 456, 1), new Star(699, 225, 2), new Star(540, 345, 2), new Star(353, 433, 1),
+            new Star(323, 375, 1), new Star(63, 415, 3), new Star(45, 366, 2), new Star(670, 65, 2),
+            new Star(733, 49, 1), new Star(413, 419, 3), new Star(133, 412, 1), new Star(701, 408, 3),
+            new Star(611, 400, 2), new Star(677, 326, 1), new Star(634, 195, 2), new Star(555, 245, 1),
+            new Star(633, 349, 3), new Star(294, 305, 2), new Star(620, 260, 2), new Star(545, 415, 1),
+            new Star(583, 300, 3), new Star(41, 279, 1), new Star(693, 148, 3), new Star(461, 394, 2),
+            new Star(657, 416, 1), new Star(699, 225, 2), new Star(540, 345, 2), new Star(353, 408, 1),
 
             new Star(505, 27, 1), new Star(405, 20, 1), new Star(555, 405, 1), new Star(755, 324, 1),
-            new Star(258, 449, 1), new Star(326, 455, 1), new Star(303, 406, 1), new Star(537, 66, 1),
+            new Star(258, 419, 1), new Star(326, 415, 1), new Star(303, 406, 1), new Star(537, 66, 1),
             new Star(232, 18, 1), new Star(28, 95, 1)
         ];
 
