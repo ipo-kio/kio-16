@@ -26,14 +26,14 @@ public class TarskiProblem implements KioProblem{
 
     public static const YEAR:int = 2014;
 
-    [Embed(source='_resources/intro.png')]
+    [Embed(source='_resources/icon.png')]
     public static var INTRO:Class;
 
-    [Embed(source='_resources/Level_1-Statement-1.jpg')]
-    private static var ICON_STATEMENT:Class;
+    [Embed(source='_resources/about.jpg')]
+    private static var ABOUT:Class;
 
-    [Embed(source='_resources/Level_1-Help-1.jpg')]
-    private static var ICON_HELP:Class;
+    [Embed(source='_resources/help.png')]
+    private static var HELP:Class;
 
     [Embed(source="loc/Tarski.ru.json-settings",mimeType="application/octet-stream")]
     public static var TARSKI_RU:Class;
@@ -157,11 +157,11 @@ public class TarskiProblem implements KioProblem{
     }
 
     public function get icon_help():Class {
-       return ICON_HELP;
+       return HELP;
     }
 
     public function get icon_statement():Class {
-        return ICON_STATEMENT;
+        return ABOUT;
     }
 
     public function clear():void{
