@@ -1,4 +1,6 @@
 package ru.ipo.kio.base {
+import com.adobe.serialization.json.JSON_k;
+
 import flash.display.SimpleButton;
 import flash.display.Sprite;
 import flash.events.Event;
@@ -73,8 +75,10 @@ public class ContestPanel extends Sprite {
             KioBase.instance.log('BTN record in contest', []);
             var problem:KioProblem = KioBase.instance.currentProblem;
             var pd:Object = KioBase.instance.lsoProxy.getProblemData(problem.id);
-            if (pd.best)
+            if (pd.best) {
+                KioApi.instance(problem).log("Loading best solution@t", JSON_k.encode(pd.best));
                 problem.loadSolution(pd.best);
+            }
         });
 
         saveAllDataButton.addEventListener(MouseEvent.CLICK, function(e:Event):void {

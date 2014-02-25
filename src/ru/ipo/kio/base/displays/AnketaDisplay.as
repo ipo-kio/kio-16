@@ -123,7 +123,7 @@ public class AnketaDisplay extends Sprite {
         KioBase.instance.log('BTN continue in anketa', []);
         var anketa:Object = KioBase.instance.lsoProxy.getAnketa();
         if (continueButton.enabled) {
-            KioBase.instance.log('Entered name and surname@tt', [anketa.name, anketa.surname]);
+            KioBase.instance.log('Entered name and surname@ttt', [anketa.name, anketa.surname, anketa.second_name]);
             KioBase.instance.currentDisplay = new ProblemsDisplay;
             var lso:LsoProxy = KioBase.instance.lsoProxy;
             lso.getGlobalData().anketa_filled = true;

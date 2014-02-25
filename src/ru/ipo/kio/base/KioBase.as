@@ -1,4 +1,6 @@
 package ru.ipo.kio.base {
+import com.adobe.serialization.json.JSON_k;
+
 import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
@@ -50,6 +52,8 @@ public class KioBase {
 
     private var logDebugger:LogDebugger = new LogDebugger();
     private var logDebuggerDisplay:Sprite = null;
+
+    private var _baseIsPreparingAProblem:Boolean = false;
 
     [Embed(source="../version-config.json-settings", mimeType="application/octet-stream")]
     public static var VERSION_CONFIG:Class;
@@ -271,11 +275,19 @@ public class KioBase {
         var best:Object = problemData.best;
         var autoSave:Object = problemData.autoSave;
 
-        if (best)
-            problem.loadSolution(best);
+        _baseIsPreparingAProblem = true;
 
-        if (autoSave)
+        if (best) {
+            KioApi.instance(problem).log('Loading best before opening@t', JSON_k.encode(best));
+            problem.loadSolution(best);
+        }
+
+        if (autoSave) {
+            KioApi.instance(problem).log('Loading autosave before opening@t', JSON_k.encode(autoSave));
             problem.loadSolution(autoSave);
+        }
+
+        _baseIsPreparingAProblem = false;
     }
 
     public function set currentDisplay(display:Sprite):void {
@@ -435,7 +447,7 @@ public class KioBase {
         var logger:Object = getLogger();
         var log:ByteArray = logger.data;
 
-        if (log.length > 2 * 1024 * 1024) //don't log more than 2 mbs
+        if (log.length > 4 * 1024 * 1024) //don't log more than 4 mbs
             return;
 
         var now:Number = new Date().getTime();
@@ -653,9 +665,12 @@ public class KioBase {
         return _version_config;
     }
 
-
     public function get allowLogDebugger():Boolean {
         return "log_debugger" in version_config && version_config.log_debugger;
+    }
+
+    public function get baseIsPreparingAProblem():Boolean {
+        return _baseIsPreparingAProblem;
     }
 }
 }

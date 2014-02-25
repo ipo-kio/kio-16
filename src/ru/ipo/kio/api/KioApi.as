@@ -5,6 +5,8 @@
  * Time: 15:48
  */
 package ru.ipo.kio.api {
+import com.adobe.serialization.json.JSON_k;
+
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.utils.Dictionary;
@@ -161,12 +163,23 @@ public class KioApi extends EventDispatcher {
         if (! _problem.display || ! _problem.display.stage)
             return;
 
-        if (result == null)
-            result = _problem.check(_problem.solution); //TODO change to get current result
+        var solution:Object = null;
+        if (result == null) {
+            solution = _problem.solution;
+            result = _problem.check(solution); //TODO change to get current result
+        }
 
         if (_record_result == null || _problem.compare(result, _record_result) > 0) {
             _record_result = result;
             saveBestSolution();
+
+            //log record if needed
+            if (!KioBase.instance.baseIsPreparingAProblem) {
+                if (solution == null)
+                    solution = _problem.solution;
+                log('New record!@t', JSON_k.encode(solution));
+            }
+
             dispatchEvent(new Event(RECORD_EVENT));
         }
     }

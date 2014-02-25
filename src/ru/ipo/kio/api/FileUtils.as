@@ -34,7 +34,6 @@ public class FileUtils {
                 var solUTF:String = data.readUTFBytes(data.length);
                 try {
                     var sol:Object = JSON_k.decode(solUTF);
-                    problem.loadSolution(sol.solution);
 
                     var allLogs:Object = sol.logs;
                     var allIds:Array = [];
@@ -43,7 +42,9 @@ public class FileUtils {
                             KioBase.instance.updateLog(machine_id, allLogs[machine_id]);
                             allIds.push(machine_id);
                         }
-                    KioBase.instance.log("Loaded solution@tt", [sol.save_id, allIds.join(", ")]);
+                    KioApi.instance(problem).log("Loading solution from file@ttt", sol.save_id, allIds.join(", "), JSON_k.encode(sol.solution));
+
+                    problem.loadSolution(sol.solution);
                 } catch (error:Error) {
                     //TODO show error message
                 }
@@ -54,11 +55,12 @@ public class FileUtils {
 
     public static function saveSolution(problem:KioProblem):void {
         var fr:FileReference = new FileReference();
-        var sol:Object = wrapSolutionToSave(problem.solution);
+        var problem_solution:Object = problem.solution;
+        var sol:Object = wrapSolutionToSave(problem_solution);
+
+        KioApi.instance(problem).log("Saving solution to file@ttt", sol.save_id, KioBase.instance.logId, JSON_k.encode(problem_solution));
 
         fr.save(JSON_k.encode(sol), SOLUTION_FILE_NAME + inventDate() + ".kio-" + problem.id + "-" + KioBase.instance.level);
-
-        KioBase.instance.log("Solution saved@tt", [sol.save_id, KioBase.instance.logId]);
     }
 
     private static function wrapSolutionToSave(solution:Object):Object {
@@ -77,7 +79,7 @@ public class FileUtils {
         var sol:Object = KioBase.instance.lsoProxy.userData;
         sol.save_id = DataUtils.convertByteArrayToString(generateRandomBytes(10));
 
-        KioBase.instance.log("All solutions saved@tt", [sol.save_id, KioBase.instance.logId]);
+        KioBase.instance.log("Saving all solutions to file@tt", [sol.save_id, KioBase.instance.logId]);
 
         fr.save(JSON_k.encode(sol), RESULTS_FILE_NAME + inventDate() + ".kio-" + KioBase.instance.level);
     }
@@ -151,13 +153,13 @@ public class FileUtils {
                 var solUTF:String = data.readUTFBytes(data.length);
 //                try {
                 var allData:* = JSON_k.decode(solUTF);
-                KioBase.instance.loadAllData(allData);
                 var save_id:String = allData.save_id;
-                KioBase.instance.log("Loaded all solutions solution@t", [save_id]);
+                KioBase.instance.log("Loading all solutions from file@t", [save_id]);
                 /*} catch (error:Error) {
                     //TODO show error message
                     trace('failed to load all data');
                 }*/
+                KioBase.instance.loadAllData(allData);
             });
             fr.load();
         });
