@@ -110,12 +110,12 @@ public class TarskiProblemFirst extends BasicView {
 
 
 
-        placeButtons(_logicItemProvider.variables, 24, 383, 28);
-        placeButtons(list(_logicItemProvider.predicates,0,2), 131, 383, 28);
-        placeButtons(list(_logicItemProvider.predicates,3,5), 243, 383, 28);
-        placeButtons(list(_logicItemProvider.predicates,6,8), 351, 383, 28);
+        placeButtons(_logicItemProvider.variables, 16, 383, 28);
+        placeButtons(list(_logicItemProvider.predicates,0,2), 136, 383, 28);
+        placeButtons(list(_logicItemProvider.predicates,3,5), 240, 383, 28);
+        placeButtons(list(_logicItemProvider.predicates,6,8), 344, 383, 28);
         placeButtons(list(_logicItemProvider.operations,0,2), 468, 383, 28);
-        placeButtons(list(_logicItemProvider.operations,3,5), 583, 383, 28);
+        placeButtons(list(_logicItemProvider.operations,3,5), 570, 383, 28);
 //        _variableToolboxView = new ToolboxView(_logicItemProvider.variables, 100);
 //        _predicateToolboxView = new ToolboxView(_logicItemProvider.predicates, 300);
 //        _operationToolboxView = new ToolboxView(_logicItemProvider.operations, 150);
@@ -140,7 +140,7 @@ public class TarskiProblemFirst extends BasicView {
         var loadButton:ShellButton = new ShellButton("Загрузить");
         loadButton.x = 10;
         loadButton.y = 5;
-        addChild(loadButton);
+//        addChild(loadButton);
         loadButton.addEventListener(MouseEvent.CLICK, function(e:Event):void{
             var fileRef:FileReference = new FileReference();
             fileRef.browse();
@@ -162,7 +162,6 @@ public class TarskiProblemFirst extends BasicView {
 
         configView.update();
 
-        KioApi.instance(problem).addEventListener(KioApi.RECORD_EVENT, recordChanged);
 
     }
 
@@ -201,7 +200,7 @@ public class TarskiProblemFirst extends BasicView {
         });
         button.x = x;
         button.y = y;
-        button.width=80;
+        button.width=93;
         return button;
     }
 

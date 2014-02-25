@@ -49,8 +49,10 @@ public class SizePredicate extends OnePlacePredicate{
     public function parseString(str:String):SizePredicate {
         var items:Array = str.split("-");
         size = ValueHolder.getSize(items[1]);
+        if(items[2]!="null"){
         operand = items[2];
         placeHolder.variable = new Variable(formalOperand);
+        }
         return this;
     }
 

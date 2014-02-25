@@ -5,6 +5,8 @@
 package ru.ipo.kio._14.tarski.view.construct {
 import avmplus.parameterXml;
 
+import ru.ipo.kio._14.tarski.TarskiProblem;
+
 import ru.ipo.kio._14.tarski.view.*;
 
 import flash.display.Sprite;
@@ -15,6 +17,7 @@ import ru.ipo.kio._14.tarski.TarskiProblemZero;
 
 import ru.ipo.kio._14.tarski.model.Configuration;
 import ru.ipo.kio._14.tarski.model.Figure;
+import ru.ipo.kio.api.KioApi;
 
 public class ConfigurationView extends BasicView{
 
@@ -33,15 +36,21 @@ public class ConfigurationView extends BasicView{
 
     public  function stopActivate(figure:Figure, x:int, y:int){
         if(checkPoint(_bin, x+figure.view.x, y+figure.view.y)){
+            KioApi.log(TarskiProblem.ID, "DELETE @SSS", figure.toString(), figure.x, figure.y);
             configuration.removeFigure(figure);
         }else{
             var xc:int = Math.floor((x+figure.view.x)/FigureView.CELL_SIZE);
             var yc:int = 7-Math.floor((y+figure.view.y)/FigureView.CELL_SIZE);
             if(xc<8 && yc<8&&yc>=0&&xc>=0 && configuration.getFigure(xc, yc)==null){
+                var lastX:int = figure.x;
+                var lastY:int = figure.y;
                 figure.x = xc;
                 figure.y = yc;
                 if(configuration.figures.indexOf(figure)<0){
+                    KioApi.log(TarskiProblem.ID, "ADD @SSS", figure.toString(), figure.x, figure.y);
                     configuration.addFigure(figure);
+                }else{
+                    KioApi.log(TarskiProblem.ID, "MOVE TO @SSSSS", lastX, lastY, figure.toString(), figure.x, figure.y);
                 }
 
             }

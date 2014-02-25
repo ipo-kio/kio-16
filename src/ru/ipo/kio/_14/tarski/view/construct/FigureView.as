@@ -111,11 +111,11 @@ public class FigureView extends BasicView{
             //graphics.endFill();
         }
 
-        if(_figure.active){
-            graphics.beginFill(0x9999FF, 0.2);
-            graphics.drawRect(0, 0, CELL_SIZE, CELL_SIZE);
-            graphics.endFill();
-        }
+//        if(_figure.active){
+//            graphics.beginFill(0x9999FF, 0.2);
+//            graphics.drawRect(0, 0, CELL_SIZE, CELL_SIZE);
+//            graphics.endFill();
+//        }
     }
 }
 }
