@@ -162,6 +162,10 @@ public class ExampleProblem implements KioProblem {
     public function get best():Object {
         return null;
     }
+
+    public function clear():void {
+        //do nothing
+    }
 }
 
 }

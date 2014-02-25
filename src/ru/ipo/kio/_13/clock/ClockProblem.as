@@ -149,5 +149,9 @@ public class ClockProblem implements KioProblem{
     public function get icon_statement():Class {
         return levelImpl.icon_statement;
     }
+
+    public function clear():void {
+        //do nothing
+    }
 }
 }

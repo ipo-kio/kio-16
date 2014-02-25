@@ -47,7 +47,7 @@ public class ContestPanel extends Sprite {
         placeText(loc.current_solution_caption);
         var loadButton:SimpleButton = placeButton(loc.buttons.load);
         var saveButton:SimpleButton = placeButton(loc.buttons.save);
-        //TODO clear button
+        var clearButton:SimpleButton = placeButton(loc.buttons.clear);
 
         __y0 = 590;
 
@@ -63,6 +63,14 @@ public class ContestPanel extends Sprite {
         saveButton.addEventListener(MouseEvent.CLICK, function(e:Event):void {
             KioBase.instance.log('BTN save in contest', []);
             FileUtils.saveSolution(KioBase.instance.currentProblem);
+        });
+
+        clearButton.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void {
+            trace('here!!1');
+            if (!e.ctrlKey)
+                return;
+            KioBase.instance.log('BTN clear in contest', []);
+            KioBase.instance.currentProblem.clear();
         });
 
 

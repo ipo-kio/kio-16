@@ -34,6 +34,8 @@ public interface KioProblem {
 
     function get icon_statement():Class;
 
+    function clear():void;
+
     //function get help_icon():Class;
 }
 }

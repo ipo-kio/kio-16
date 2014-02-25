@@ -17,6 +17,16 @@ public class Hill extends EventDispatcher {
     public function Hill(level:int) {
         _level = level;
 
+        _fountains = initialFountainsList();
+
+        addChangeListeners();
+        updateLengthInfo();
+        updateDistanceInfo();
+    }
+    
+    private function initialFountainsList():Vector.<Fountain> {
+        var fountains_set:Vector.<Fountain> = new <Fountain>[];
+
         var f1:Fountain = new Fountain(this);
         f1.x = 5;
         f1.z = 5;
@@ -65,14 +75,14 @@ public class Hill extends EventDispatcher {
         f6.phiGr = -140;
         f6.alphaGr = 71;
 
-        _fountains.push(f1);
-        _fountains.push(f2);
-        _fountains.push(f3);
-        _fountains.push(f4);
-        _fountains.push(f5);
-        _fountains.push(f6);
+        fountains_set.push(f1);
+        fountains_set.push(f2);
+        fountains_set.push(f3);
+        fountains_set.push(f4);
+        fountains_set.push(f5);
+        fountains_set.push(f6);
 
-        if (level > 0) {
+        if (_level > 0) {
             var f7:Fountain = new Fountain(this);
             f7.x = 95;
             f7.z = 30;
@@ -89,13 +99,11 @@ public class Hill extends EventDispatcher {
             f8.phiGr = 160;
             f8.alphaGr = 70;
 
-            _fountains.push(f7);
-            _fountains.push(f8);
+            fountains_set.push(f7);
+            fountains_set.push(f8);
         }
-
-        addChangeListeners();
-        updateLengthInfo();
-        updateDistanceInfo();
+        
+        return fountains_set;
     }
 
     private function addChangeListeners():void {
@@ -104,6 +112,7 @@ public class Hill extends EventDispatcher {
     }
 
     private function fountainChanged(event:Event):void {
+        trace('fountain changed');
         var f:Fountain = event.target as Fountain;
 
         updateLengthInfo();
@@ -198,6 +207,19 @@ public class Hill extends EventDispatcher {
 
     public function get min_dist():Number {
         return Consts.MIN_DIST[_level];
+    }
+
+    public function clear():void {
+        var f:Vector.<Fountain> = initialFountainsList();
+        for (var i:int = 0; i < f.length; i++) {
+            _fountains[i].alphaGr = f[i].alphaGr;
+            _fountains[i].phiGr = f[i].phiGr;
+            _fountains[i].d = f[i].d;
+            _fountains[i].l = f[i].l;
+            _fountains[i].x = f[i].x;
+            _fountains[i].z = f[i].z;
+        }
+
     }
 }
 }

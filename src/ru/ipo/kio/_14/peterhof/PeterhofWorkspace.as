@@ -175,5 +175,9 @@ public class PeterhofWorkspace extends Sprite {
     override public function get height():Number {
         return 600;
     }
+
+    public function clear():void {
+        _fountainsView.hill.clear();
+    }
 }
 }

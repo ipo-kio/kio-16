@@ -161,7 +161,7 @@ public class TarskiProblem implements KioProblem{
         return ICON_STATEMENT;
     }
 
-    public function clearAll():void{
+    public function clear():void{
       if(level==0){
           TarskiProblemZero.instance.clearFigures();
       } else{

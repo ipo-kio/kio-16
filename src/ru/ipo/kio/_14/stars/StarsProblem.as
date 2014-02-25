@@ -101,5 +101,9 @@ public class StarsProblem implements KioProblem {
     public function get icon_statement():Class {
         return null;
     }
+
+    public function clear():void {
+        //do nothing
+    }
 }
 }
