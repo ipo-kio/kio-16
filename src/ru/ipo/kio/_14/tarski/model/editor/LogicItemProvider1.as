@@ -3,6 +3,7 @@
  * @since: 11.02.14
  */
 package ru.ipo.kio._14.tarski.model.editor {
+import ru.ipo.kio._14.tarski.TarskiProblemFirst;
 import ru.ipo.kio._14.tarski.model.operation.AndOperation;
 import ru.ipo.kio._14.tarski.model.operation.Brace;
 import ru.ipo.kio._14.tarski.model.operation.EquivalenceOperation;
@@ -40,11 +41,19 @@ public class LogicItemProvider1 implements LogicItemProvider{
 
         _predicates.push(new ColorPredicate(ValueHolder.getColor(ColorValue.RED)));
         _predicates.push(new ColorPredicate(ValueHolder.getColor(ColorValue.BLUE)));
-        _predicates.push(new UpperPredicateOneRow());
+        if(TarskiProblemFirst.instance.level==1){
+            _predicates.push(new UpperPredicateOneRow());
+        }else{
+            _predicates.push(new UpperPredicate());
+        }
 
         _predicates.push(new SizePredicate(ValueHolder.getSize(SizeValue.BIG)));
         _predicates.push(new SizePredicate(ValueHolder.getSize(SizeValue.SMALL)));
-        _predicates.push(new LefterPredicateOneRow());
+        if(TarskiProblemFirst.instance.level==1){
+            _predicates.push(new LefterPredicateOneRow());
+        }else{
+            _predicates.push(new LefterPredicate());
+        }
 
         _operations.push(new AndOperation());
         _operations.push(new OrOperation());
