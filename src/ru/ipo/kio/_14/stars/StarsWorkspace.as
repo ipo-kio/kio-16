@@ -102,8 +102,8 @@ public class StarsWorkspace extends Sprite {
         }*/
 
         var stars:Array = [new Star(443, 345, 1), new Star(63, 45, 3), new Star(514, 190, 2),
-            new Star(70, 140, 2), new Star(238, 45, 1), new Star(163, 50, 3), new Star(103, 98, 1),
-            new Star(261, 373, 3), new Star(211, 154, 2), new Star(260, 221, 1), new Star(274, 95, 2),
+            new Star(70, 140, 2), new Star(238, 45, 1), new Star(275, 95, 3), new Star(103, 98, 1),
+            new Star(261, 373, 3), new Star(211, 154, 2), new Star(260, 221, 1), new Star(164, 75, 2),
             new Star(333, 145, 1), new Star(463, 255, 3), new Star(504, 317, 2),
             new Star(390, 245, 2), new Star(443, 65, 1), new Star(593, 60, 3), new Star(143, 148, 1),
             new Star(503, 98, 3), new Star(411, 160, 2), new Star(357, 66, 1), new Star(574, 145, 2),
@@ -112,13 +112,13 @@ public class StarsWorkspace extends Sprite {
 
             new Star(627, 119, 1), new Star(63, 415, 3), new Star(45, 366, 2), new Star(670, 65, 2),
             new Star(733, 49, 1), new Star(413, 419, 3), new Star(133, 412, 1), new Star(701, 388, 3),
-            new Star(581, 370, 2), new Star(677, 306, 1), new Star(634, 195, 2), new Star(555, 245, 1),
-            new Star(633, 349, 3), new Star(294, 305, 2), new Star(620, 260, 2), new Star(469, 142, 1),
+            new Star(581, 370, 2), new Star(677, 306, 1), new Star(634, 195, 1), new Star(555, 245, 1),
+            new Star(633, 349, 2), new Star(294, 305, 2), new Star(620, 260, 2), new Star(469, 142, 1),
             new Star(583, 300, 3), new Star(41, 279, 1), new Star(693, 148, 3), new Star(461, 394, 2),
             new Star(657, 416, 1), new Star(699, 225, 2), new Star(329, 202, 2), new Star(353, 408, 1),
 
             new Star(133, 250, 1), new Star(267, 161, 1), new Star(555, 405, 1), new Star(755, 324, 1),
-            new Star(258, 419, 1), new Star(412, 298, 1), new Star(303, 406, 1), new Star(537, 66, 1),
+            new Star(258, 419, 1), new Star(412, 298, 1), new Star(303, 406, 2), new Star(537, 66, 1),
             new Star(334, 271, 1), new Star(28, 95, 1)
         ];
 
