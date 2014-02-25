@@ -111,5 +111,8 @@ public class Quantifier implements LogicItem {
     }
 
 
+    public function getTooltipText():String {
+        return "";
+    }
 }
 }

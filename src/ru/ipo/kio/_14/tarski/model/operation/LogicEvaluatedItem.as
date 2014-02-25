@@ -143,6 +143,10 @@ public class LogicEvaluatedItem implements LogicItem{
         throw new IllegalOperationError("method must be overridden");
     }
 
+    public  function getTooltipText():String {
+        return getToolboxText();
+    }
+
     public function commit():void {
         throw new IllegalOperationError("method must be overridden");
     }

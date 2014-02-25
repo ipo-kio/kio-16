@@ -104,7 +104,8 @@ public class TarskiProblem implements KioProblem{
             TarskiProblemZero.instance.configuration.loadFigures(config);
             TarskiProblemZero.instance.update();
         }else{
-            //TODO
+            var statements:Array = solution.statement;
+            TarskiProblemFirst.instance.statementManager.load(statements);
         }
         return true;
     }
@@ -163,6 +164,8 @@ public class TarskiProblem implements KioProblem{
     public function clearAll():void{
       if(level==0){
           TarskiProblemZero.instance.clearFigures();
+      } else{
+          TarskiProblemFirst.instance.statementManager.clearAll();
       }
     }
 

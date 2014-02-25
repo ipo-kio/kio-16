@@ -318,5 +318,9 @@ public class Statement {
     public function get activeVariable():Variable {
         return _activeVariable;
     }
+
+    public function load(logicItems:Vector.<LogicItem>):void {
+        _logicItems = logicItems;
+    }
 }
 }

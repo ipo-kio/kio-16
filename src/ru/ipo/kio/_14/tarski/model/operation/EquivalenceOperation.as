@@ -45,8 +45,12 @@ public class EquivalenceOperation extends TwoPositionOperation{
         return new EquivalenceOperation();
     }
 
-    public override function getFormulaText():String {
+    public override function getTooltipText():String {
         return "ТОГДА И ТОЛЬКО ТОГДА";
+    }
+
+    public override function getFormulaText():String {
+        return "<=>";
     }
 }
 }

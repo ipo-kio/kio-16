@@ -55,5 +55,9 @@ public class FictiveLogicItem  implements LogicItem{
 
     public function commit():void {
     }
+
+    public function getTooltipText():String {
+        return "";
+    }
 }
 }
