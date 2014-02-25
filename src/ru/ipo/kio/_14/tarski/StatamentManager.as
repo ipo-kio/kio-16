@@ -21,6 +21,7 @@ import ru.ipo.kio._14.tarski.model.parser.StatementParser2;
 import flashx.textLayout.container.ScrollPolicy;
 
 import ru.ipo.kio._14.tarski.utils.LogicItemUtils;
+import ru.ipo.kio._14.tarski.view.MyScrollPane;
 import ru.ipo.kio.api.KioApi;
 
 public class StatamentManager {
@@ -29,7 +30,7 @@ public class StatamentManager {
 
     private var _statement:Statement;
 
-    private var _scrollPane:ScrollPane = new ScrollPane();
+    private var _scrollPane:ScrollPane = new MyScrollPane();
 
     private var _canvas:Sprite = new Sprite();
 
