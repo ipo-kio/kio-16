@@ -22,7 +22,7 @@ public class PeterhofRunner extends Sprite {
 
         KioApi.language = KioApi.L_RU; //устанавливаем язык, используемый в программе
 
-        KioBase.instance.initOneProblem(this, new PeterhofProblem(0));
+        KioBase.instance.initOneProblem(this, new PeterhofProblem(1));
 
 //        var s:Sprite = new Sprite();
 //        s.graphics.beginFill(0xFF0000);

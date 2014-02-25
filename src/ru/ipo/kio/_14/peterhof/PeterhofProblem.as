@@ -15,7 +15,7 @@ public class PeterhofProblem implements KioProblem {
 
     public static const ID:String = 'peterhof';
 
-    [Embed(source="loc/example.ru.json-settings",mimeType="application/octet-stream")]
+    [Embed(source="loc/peterhof.ru.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
 
     private var _level:int;

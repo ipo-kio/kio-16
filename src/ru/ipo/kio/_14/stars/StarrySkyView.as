@@ -8,7 +8,6 @@ import flash.display.GraphicsPathCommand;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
-import flash.geom.Matrix;
 
 import ru.ipo.kio._14.stars.graphs.Graph;
 import ru.ipo.kio._14.stars.graphs.IsomorphismChecker;
