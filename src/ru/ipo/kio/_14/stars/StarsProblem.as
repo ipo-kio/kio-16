@@ -15,6 +15,15 @@ public class StarsProblem implements KioProblem {
     [Embed(source="loc/stars.ru.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
 
+    [Embed(source="resources/about.jpg")]
+    public static const ABOUT:Class;
+
+    [Embed(source="resources/help.png")]
+    public static const HELP:Class;
+
+    [Embed(source="resources/icon.png")]
+    public static const ICON:Class;
+
     public static const ID:String = "stars";
 
     private var _workspace:StarsWorkspace;
@@ -91,15 +100,15 @@ public class StarsProblem implements KioProblem {
     }
 
     public function get icon():Class {
-        return null;
+        return ICON;
     }
 
     public function get icon_help():Class {
-        return null;
+        return HELP;
     }
 
     public function get icon_statement():Class {
-        return null;
+        return ABOUT;
     }
 
     public function clear():void {
