@@ -35,17 +35,23 @@ public class StatementViewFree extends BasicView {
         graphics.clear();
 
         if(statement.active){
-            graphics.beginFill(0xddddff);
-            graphics.drawRect(100,0,Math.max(width,568),height);
+            graphics.beginFill(0xDCECF9);
+            graphics.lineStyle(1,0xB8B8B8);
+            graphics.drawRect(100,0,Math.max(width,565),20);
+            graphics.endFill();
+        }else{
+            graphics.beginFill(0xFFFFFF);
+            graphics.lineStyle(1,0xB8B8B8);
+            graphics.drawRect(100,0,Math.max(width,565),20);
             graphics.endFill();
         }
 
         clearAll();
 
         if(statement.finished){
-            addChildTo(new OK, 2,7);
+            addChildTo(new OK, 2,5);
         }else{
-            addChildTo(new NOTOK, 2,7);
+            addChildTo(new NOTOK, 2,5);
         }
 
         var dict:Dictionary = new Dictionary();
@@ -73,7 +79,7 @@ public class StatementViewFree extends BasicView {
         }
 
         if(vars!=""){
-            addChildTo(createField("Для всех "+vars),18,5);
+            addChildTo(createField("Для всех "+vars),18,0);
         }
 
 

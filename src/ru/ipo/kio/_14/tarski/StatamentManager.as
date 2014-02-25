@@ -55,7 +55,7 @@ public class StatamentManager {
         _scrollPane.source=_canvas;
         _scrollPane.refreshPane();
 
-        addStatement();
+        addStatement(false);
 
     }
 
@@ -77,19 +77,21 @@ public class StatamentManager {
     }
 
 
-    public function addStatement(){
+    public function addStatement(writeLog:Boolean = true){
         var statementNew:Statement=new Statement(new StatementParser2(true), new Evaluator2());
 
 
         statementNew.view.x=0;
-        statementNew.view.y=_statementList.length*40;
+        statementNew.view.y=10+_statementList.length*30;
 
 
         _statementList.push(statementNew);
 
         activate(statementNew);
 
-        KioApi.log(TarskiProblem.ID, "ADD STATEMENT @S", statement.id);
+        if(writeLog){
+            KioApi.log(TarskiProblem.ID, "ADD STATEMENT @S", statement.id);
+        }
 
         _canvas.addChild(statementNew.view);
         statementNew.view.update();
@@ -121,7 +123,7 @@ public class StatamentManager {
         return _scrollPane;
     }
 
-    public function perseAndCheckAll():void {
+    public function parseAndCheckAll():void {
         for(var i:int=0; i<_statementList.length; i++){
             _statementList[i].parse();
         }
@@ -157,12 +159,13 @@ public class StatamentManager {
 
     public function load(statements:Array):void {
         clearAll();
-        for(var i:int=0; i<statements.items.length; i++){
+        for(var i:int=0; i<statements.length; i++){
            addStatement();
-           statement.id = statements.id;
-           statement.load(LogicItemUtils.createItemList(statements.items[i]));
+           statement.id = statements[i].id;
+           statement.load(LogicItemUtils.createItemList(statements[i].items));
+            statement.view.update();
        }
-        perseAndCheckAll();
+        parseAndCheckAll();
     }
 
     private function checkAll(rightConfiguration:Configuration):Boolean {
@@ -188,7 +191,7 @@ public class StatamentManager {
                     _canvas.removeChildAt(0);
                 }
             for(var i:int=0; i<_statementList.length; i++){
-                _statementList[i].view.y=i*40;
+                _statementList[i].view.y=10+i*30;
                 _canvas.addChild(_statementList[i].view);
             }
 
@@ -199,7 +202,7 @@ public class StatamentManager {
             activate(_statementList[index]);
 
         }
-        perseAndCheckAll();
+        parseAndCheckAll();
         TarskiProblemFirst.instance.update();
     }
 

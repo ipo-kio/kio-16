@@ -55,11 +55,11 @@ public class PlaceHolderView extends BasicView {
         if(placeHolder.active && placeHolder.statement.active){
             graphics.beginFill(0X7DE8E4);
         }else if(overed){
-            graphics.beginFill(0xD7EDFF);
+            graphics.beginFill(0xABD1F1);
         }else{
             graphics.beginFill(0xFFFFFF,0);
         }
-        graphics.drawRect(0,0,20,20);
+        graphics.drawRect(0,0,width,height);
     }
 
 

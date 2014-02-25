@@ -6,13 +6,8 @@
  */
 package ru.ipo.kio._14.tarski.model {
 
-import fl.controls.listClasses.ListData;
 
-import flash.system.SystemUpdater;
-import flash.utils.Dictionary;
-
-import ru.ipo.kio._14.tarski.TarskiProblemFirst;
-
+import ru.ipo.kio._14.tarski.TarskiProblem;
 import ru.ipo.kio._14.tarski.TarskiProblemFirst;
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 import ru.ipo.kio._14.tarski.model.evaluator.Evaluator;
@@ -31,6 +26,7 @@ import ru.ipo.kio._14.tarski.view.BasicView;
 import ru.ipo.kio._14.tarski.view.statement.Delimiter;
 import ru.ipo.kio._14.tarski.view.statement.FictiveLogicItem;
 import ru.ipo.kio._14.tarski.view.statement.StatementViewFree;
+import ru.ipo.kio.api.KioApi;
 
 public class Statement {
 
@@ -112,6 +108,7 @@ public class Statement {
 //                    _lastItem=ifOp;
 //                }else{
                     logicItems.unshift(logicItem);
+                    KioApi.log(TarskiProblem.ID, "INSERT_ITEM @SSS", id, logicItem.getToolboxText(), 0);
                     _lastItem=logicItem;
 //                }
 
@@ -126,6 +123,7 @@ public class Statement {
 //                    _lastItem=ifOp;
 //                }else{
                     logicItems.splice(logicItems.indexOf(_activeDelimiter.beforeItem)+1, 0, logicItem);
+                    KioApi.log(TarskiProblem.ID, "INSERT_ITEM @SSS", id, logicItem.getToolboxText(), logicItems.indexOf(logicItem));
                     _lastItem=logicItem;
 //                }
             }
@@ -149,6 +147,7 @@ public class Statement {
                 (OnePlacePredicate(logicItem)).placeHolder.statement=this;
                 (OnePlacePredicate(logicItem)).placeHolder.variable=_activeVariable;
                 logicItems.splice(logicItems.indexOf(_activeVariable), 1, logicItem);
+                KioApi.log(TarskiProblem.ID, "REPLACE_ITEM @SSSS", id, _activeVariable.code, logicItem.getToolboxText(), logicItems.indexOf(logicItem));
                 activeVariable=null;
             }
             if(logicItem is TwoPlacePredicate){
@@ -156,6 +155,7 @@ public class Statement {
                 (TwoPlacePredicate(logicItem)).placeHolder2.statement=this;
                 (TwoPlacePredicate(logicItem)).placeHolder1.variable=_activeVariable;
                 logicItems.splice(logicItems.indexOf(_activeVariable), 1, logicItem);
+                KioApi.log(TarskiProblem.ID, "REPLACE_ITEM @SSSS", id, _activeVariable.code, logicItem.getToolboxText(), logicItems.indexOf(logicItem));
                 activePlaceHolder=(TwoPlacePredicate(logicItem)).placeHolder2;
             }
             if(logicItem is Quantifier){
@@ -168,6 +168,7 @@ public class Statement {
             if(_activePlaceHolder.predicate is OnePlacePredicate){
                 _activePlaceHolder.variable= Variable(logicItem);
                 _lastItem=_activePlaceHolder.predicate;
+                KioApi.log(TarskiProblem.ID, "SETVAR_ITEM @SSSS", id, Variable(logicItem), _activePlaceHolder.predicate.getToolboxText(), logicItems.indexOf(_activePlaceHolder.predicate));
                 activePlaceHolder=null;
             }else if (_activePlaceHolder.predicate is Quantifier){
                 _activePlaceHolder.variable= Variable(logicItem);
@@ -176,15 +177,17 @@ public class Statement {
             }else if(_activePlaceHolder.predicate is TwoPlacePredicate){
                 _activePlaceHolder.variable= Variable(logicItem);
                 if(((TwoPlacePredicate)(_activePlaceHolder.predicate)).placeHolder1==_activePlaceHolder){
+                    KioApi.log(TarskiProblem.ID, "SETVAR1_ITEM @SSSS", id, Variable(logicItem), _activePlaceHolder.predicate.getToolboxText(), logicItems.indexOf(_activePlaceHolder.predicate));
                     activePlaceHolder=((TwoPlacePredicate)(_activePlaceHolder.predicate)).placeHolder2;
                 }else{
+                    KioApi.log(TarskiProblem.ID, "SETVAR2_ITEM @SSSS", id, Variable(logicItem), _activePlaceHolder.predicate.getToolboxText(), logicItems.indexOf(_activePlaceHolder.predicate));
                     _lastItem=_activePlaceHolder.predicate;
                     activePlaceHolder=null;
                 }
             }
         }
 
-        TarskiProblemFirst.instance.statementManager.perseAndCheckAll();
+        TarskiProblemFirst.instance.statementManager.parseAndCheckAll();
     }
 
     public function parse():void {
@@ -257,8 +260,14 @@ public class Statement {
     }
 
     public function backspace():void{
+        if(_activeDelimiter!=null && _activeDelimiter.beforeItem==null && _logicItems.length==0){
+            TarskiProblemFirst.instance.statementManager.removeStatement();
+            return;
+        }
+
         if(_activeDelimiter!=null && _activeDelimiter.beforeItem!=null){
             var index:int = logicItems.indexOf(_activeDelimiter.beforeItem);
+            KioApi.log(TarskiProblem.ID, "DELETE_ITEM @SS", id, index);
             logicItems.splice(index, 1);
 
             if(_activeDelimiter.beforeItem is FictiveLogicItem){
@@ -275,7 +284,7 @@ public class Statement {
 
 
 
-            TarskiProblemFirst.instance.statementManager.perseAndCheckAll();
+            TarskiProblemFirst.instance.statementManager.parseAndCheckAll();
         }
     }
 

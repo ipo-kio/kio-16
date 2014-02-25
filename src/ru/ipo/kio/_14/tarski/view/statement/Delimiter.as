@@ -58,17 +58,17 @@ public class Delimiter extends BasicView {
         graphics.clear();
         graphics.lineStyle(0,0xFFFFFF,0);
         if(overed){
-            graphics.beginFill(0xD7EDFF);
+            graphics.beginFill(0xABD1F1);
         }else{
             graphics.beginFill(0xffffff,0);
         }
-        graphics.drawRect(0,0,10,30);
+        graphics.drawRect(0,0,8,20);
         graphics.endFill();
 
         if(active && statement.active){
             graphics.lineStyle(2,0x000000);
-            graphics.moveTo(5,0);
-            graphics.lineTo(5,30);
+            graphics.moveTo(4,0);
+            graphics.lineTo(4,20);
         }
     }
 
