@@ -81,6 +81,17 @@ public class ConfigsView extends BasicView {
         var spaceY:int=150;
         var figH:int=120;
 
+
+
+//        graphics.beginFill(0x3A880F);
+//        graphics.drawRect(10,208,760,5);
+//        graphics.drawRect(10,358,760,5);
+//        graphics.endFill();
+
+        graphics.beginFill(0x666666);
+        graphics.drawRect(385,60,10,300);
+        graphics.endFill();
+
         drawConfigs(ConfigurationHolder.instance.rightExamples, 14, spaceX, 60, spaceY, cellSize, figH, true);
         drawConfigs(ConfigurationHolder.instance.wrongExamples, 405, spaceX, 60, spaceY, cellSize, figH, false);
 
@@ -103,7 +114,7 @@ public class ConfigsView extends BasicView {
 
             if (config.correct) {
                 graphics.lineStyle(5,0x3A880F);
-                graphics.drawRect(figX-2,figY+2,figH,figH+22);
+                graphics.drawRect(figX-2,figY+2,figH,figH+24);
             }
 
             for (var x:int = 0; x < config.width; x++) {
@@ -111,6 +122,16 @@ public class ConfigsView extends BasicView {
                     var figure:Figure = config.getFigure(x, y);
                     drawFigure(figure, figX + cellSize * x, figY + figH - (y + 1) * cellSize, cellSize, right);
                 }
+            }
+
+            if(!config.correct){
+                var sp:Sprite = new Sprite();
+                addChild(sp);
+                sp.x = figX;
+                sp.y = figY+2;
+                sp.graphics.beginFill(0xFFFFFF, 0.3);
+                sp.graphics.drawRect(0,0,116,140);
+                sp.graphics.endFill();
             }
 
         }
