@@ -22,6 +22,7 @@ public interface LogicItem {
      */
     function getToolboxText():String;
 
+    function getTooltipText():String;
 
     /**
      * Текст для тулбокса

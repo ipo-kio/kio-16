@@ -47,6 +47,9 @@ public class ImplicationOperation extends TwoPositionOperation{
     public override function getFormulaText():String {
         return "=>";
     }
+    public override function getTooltipText():String {
+        return "ЕСЛИ ТО";
+    }
 
 }
 }

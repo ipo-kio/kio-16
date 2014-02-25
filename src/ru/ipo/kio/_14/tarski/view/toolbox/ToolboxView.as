@@ -49,7 +49,7 @@ public class ToolboxView extends BasicView {
                 y += maxY + Y_SPACE;
                 maxY = 0;
             }
-            ToolTip.attach(button, items[i].getToolboxText());
+            ToolTip.attach(button, items[i].getTooltipText());
 
         }
 

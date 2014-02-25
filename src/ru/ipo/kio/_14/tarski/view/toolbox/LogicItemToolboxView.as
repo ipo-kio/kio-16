@@ -36,7 +36,7 @@ public class LogicItemToolboxView extends BasicView{
         field.height=field.textHeight+7;
 
         var button:Button = new Button();
-        button.label=logicItem.getToolboxText();
+        button.label=logicItem.getTooltipText();
         button.width=field.width;
         button.x = 0;
         button.y = 0;

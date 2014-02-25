@@ -31,15 +31,18 @@ public class LogicItemProvider1 implements LogicItemProvider{
 
 
     public function LogicItemProvider1() {
-        _predicates.push(new ColorPredicate(ValueHolder.getColor(ColorValue.RED)));
-        _predicates.push(new ColorPredicate(ValueHolder.getColor(ColorValue.BLUE)));
         _predicates.push(new ShapePredicate(ValueHolder.getShape(ShapeValue.CUBE)));
         _predicates.push(new ShapePredicate(ValueHolder.getShape(ShapeValue.SPHERE)));
+        _predicates.push(new NearPredicate());
+
+
+        _predicates.push(new ColorPredicate(ValueHolder.getColor(ColorValue.RED)));
+        _predicates.push(new ColorPredicate(ValueHolder.getColor(ColorValue.BLUE)));
+        _predicates.push(new UpperPredicate());
+
         _predicates.push(new SizePredicate(ValueHolder.getSize(SizeValue.BIG)));
         _predicates.push(new SizePredicate(ValueHolder.getSize(SizeValue.SMALL)));
         _predicates.push(new LefterPredicate());
-        _predicates.push(new UpperPredicate());
-        _predicates.push(new NearPredicate());
 
         _operations.push(new AndOperation());
         _operations.push(new OrOperation());

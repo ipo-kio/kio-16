@@ -34,7 +34,11 @@ public class LefterPredicate extends TwoPlacePredicate{
 
 
     public override function getToolboxText():String {
-        return "стоит левее";
+        return "левее";
+    }
+
+    public override function getTooltipText():String {
+        return "живет в подъезде, расположенном левее";
     }
 
     public override function getCloned():LogicItem {

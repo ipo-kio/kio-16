@@ -32,10 +32,13 @@ public class UpperPredicate extends TwoPlacePredicate{
         return quantsToSts()+"up-"+formalOperand1 +"-"+formalOperand2+"";
     }
 
+    public override function getTooltipText():String {
+        return "живет на одном из более высоких этажей";
+    }
 
 
     public override function getToolboxText():String {
-        return "стоит выше";
+        return "выше";
     }
 
     public override function getCloned():LogicItem {

@@ -13,6 +13,7 @@ import ru.ipo.kio._14.tarski.model.Configuration;
 import ru.ipo.kio._14.tarski.model.ConfigurationHolder;
 
 import ru.ipo.kio._14.tarski.model.Statement;
+import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 import ru.ipo.kio._14.tarski.model.evaluator.Evaluator1;
 import ru.ipo.kio._14.tarski.model.evaluator.Evaluator2;
 import ru.ipo.kio._14.tarski.model.parser.StatementParser1;
@@ -131,6 +132,24 @@ public class StatamentManager {
 
     }
 
+    public function clearAll():void{
+        while (_canvas.numChildren > 0) {
+            _canvas.removeChildAt(0);
+        }
+        _statementList = new Vector.<Statement>();
+        _statement=null;
+         update();
+    }
+
+    public function load(statements:Array):void {
+        clearAll();
+       for(var i:int=0; i<statements.length; i++){
+           addStatement();
+           statement.load(LogicItemUtils.createItemList(statements[i]));
+       }
+        update();
+    }
+
     private function checkAll(rightConfiguration:Configuration):Boolean {
         var result:Boolean = true;
         for(var i:int=0; i<_statementList.length; i++){
@@ -157,5 +176,7 @@ public class StatamentManager {
         }
         perseAndCheckAll();
     }
+
+
 }
 }

@@ -40,7 +40,11 @@ public class NearPredicate extends TwoPlacePredicate{
 
 
     public override function getToolboxText():String {
-        return "стоит рядом с";
+        return "рядом с";
+    }
+
+    public override function getTooltipText():String {
+        return "живет в квартире рядом (по вертикали, горизонтали или диагонали)";
     }
 
     public override function getCloned():LogicItem {
