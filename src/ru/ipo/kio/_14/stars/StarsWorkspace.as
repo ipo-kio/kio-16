@@ -173,7 +173,7 @@ public class StarsWorkspace extends Sprite {
         graphics.endFill();
 
         _panel.x = 0;
-        _panel.y = _skyView.height - 20;
+        _panel.y = _skyView.height - 24;
         addChild(_panel);
 
         addChild(infoPanel);
