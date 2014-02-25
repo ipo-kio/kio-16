@@ -57,11 +57,11 @@ public class FountainPanel extends Sprite {
 
         _streamLengthInfo = new TextField();
         _streamLengthInfo.selectable = false;
-        _streamLengthInfo.defaultTextFormat = new TextFormat("KioArial", 18, 0xFFFFFF);
+        _streamLengthInfo.defaultTextFormat = new TextFormat("KioTahoma", 18, 0x000000);
         _streamLengthInfo.autoSize = TextFieldAutoSize.LEFT;
         _streamLengthInfo.multiline = true;
-        addChild(_streamLengthInfo);
-        _streamLengthInfo.x = sprayerWidthEditor.x + sprayerWidthEditor.width + 20;
+        _streamLengthInfo.x = sprayerWidthEditor.x + sprayerWidthEditor.width + 12;
+        _streamLengthInfo.y = 14;
 
         _alphaEditor.addEventListener(Event.CHANGE, alphaEditor_changeHandler);
         _phiEditor.addEventListener(Event.CHANGE, phiEditor_changeHandler);
@@ -69,11 +69,12 @@ public class FountainPanel extends Sprite {
         _sprayerLengthEditor.addEventListener(Event.CHANGE, sprayerLengthEditor_changeHandler);
 
         //setup sprayer
-        _sprayer = new Sprayer(100, 90, Consts.D, 60);
+        _sprayer = new Sprayer(Consts.D, 60);
         addChild(_sprayer);
+        addChild(_streamLengthInfo);
 
-        _sprayer.x = _streamLengthInfo.x;
-        _sprayer.y = 25;
+        _sprayer.x = _streamLengthInfo.x + 8;
+        _sprayer.y = 64;
 
         //hide all initially
         _alphaEditor.visible = false;
@@ -117,8 +118,14 @@ public class FountainPanel extends Sprite {
         _sprayerLengthEditor.value = _fountain.l * 100;
 
         _streamLengthInfo.text = _fountain.stream.goes_out ?
-                "Длина: выходит наружу" :
-                "Длина: " + _fountain.stream.length.toFixed(3);
+                "Струя:\nмимо" :
+                "Струя:\n" + _fountain.stream.length.toFixed(3) + ' м';
+
+        if (_fountain != null) {
+            _sprayer.f_length = _fountain.l;
+            _sprayer.f_width = _fountain.d;
+            _sprayer.rotate(_fountain.alphaGr * Math.PI / 180);
+        }
     }
 
     private function alphaEditor_changeHandler(event:Event):void {

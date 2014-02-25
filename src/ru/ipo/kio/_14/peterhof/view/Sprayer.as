@@ -14,7 +14,11 @@ public class Sprayer extends Sprite {
     public static const WATER_IMAGE:Class;
     public static const WATER_IMAGE_BITMAP:BitmapData = (new WATER_IMAGE).bitmapData;
 
-    private static const LINES_COLOR:uint = 0xFF0000;
+    [Embed(source="../resources/sprayer.png")]
+    public static const BG_IMAGE:Class;
+    public static const BG_IMAGE_BITMAP:BitmapData = (new BG_IMAGE).bitmapData;
+
+    private static const LINES_COLOR:uint = 0xFF9900;
     private static const BOTTOM_HEIGHT:int = 20;
 
     private var _sprite_width:Number;
@@ -27,9 +31,9 @@ public class Sprayer extends Sprite {
 
     private var innerSprite:Sprite = new Sprite();
 
-    public function Sprayer(sprite_width:Number, sprite_height:Number, outer_width:Number, outer_pixel_width:Number) {
-        _sprite_width = sprite_width;
-        _sprite_height = sprite_height;
+    public function Sprayer(outer_width:Number, outer_pixel_width:Number) {
+        _sprite_width = 89;
+        _sprite_height = 82;
         _outer_width = outer_width;
         _outer_pixel_width = outer_pixel_width;
 
@@ -42,9 +46,12 @@ public class Sprayer extends Sprite {
         mask.visible = false;
         innerSprite.mask = mask;
 
-        //draw border
-        graphics.lineStyle(1, 0xFFFFFF);
-        graphics.drawRect(0, 0, sprite_width, sprite_height);
+        //draw bg
+        var m:Matrix = new Matrix();
+        m.translate(-16, -15);
+        graphics.beginBitmapFill(BG_IMAGE_BITMAP, m);
+        graphics.drawRect(-16, -15, BG_IMAGE_BITMAP.width, BG_IMAGE_BITMAP.height);
+        graphics.endFill();
     }
 
     public function rotate(angle:Number):void {
