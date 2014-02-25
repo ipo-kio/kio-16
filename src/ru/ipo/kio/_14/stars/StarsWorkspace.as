@@ -64,9 +64,9 @@ public class StarsWorkspace extends Sprite {
         g.graphics.endFill();
         addChild(g);
 
-        addEventListener(MouseEvent.MOUSE_MOVE, function (e:MouseEvent):void {
-            trace(e.localX, e.localY);
-        });
+//        addEventListener(MouseEvent.MOUSE_MOVE, function (e:MouseEvent):void {
+//            trace(e.localX, e.localY);
+//        });
 
         /*g.addEventListener(MouseEvent.CLICK, function(e:Event):void {
             loadStars();
