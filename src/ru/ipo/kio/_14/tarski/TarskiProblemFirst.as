@@ -7,6 +7,9 @@ import com.adobe.serialization.json.JSON_k;
 import com.nerdbucket.ToolTip;
 
 import fl.containers.ScrollPane;
+import fl.controls.Button;
+
+import flash.display.SimpleButton;
 
 import flash.display.Stage;
 
@@ -14,10 +17,13 @@ import flash.net.FileReference;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
+import flash.sampler.getSavedThis;
 import flash.text.engine.TabAlignment;
 import flash.utils.ByteArray;
 
 import flashx.textLayout.container.ScrollPolicy;
+
+import mx.controls.listClasses.BaseListData;
 
 import mx.states.State;
 
@@ -26,6 +32,7 @@ import ru.ipo.kio._14.tarski.model.Configuration;
 import ru.ipo.kio._14.tarski.model.ConfigurationHolder;
 import ru.ipo.kio._14.tarski.model.Figure;
 import ru.ipo.kio._14.tarski.model.Statement;
+import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 import ru.ipo.kio._14.tarski.model.editor.LogicItemProvider;
 import ru.ipo.kio._14.tarski.model.editor.LogicItemProvider1;
 import ru.ipo.kio._14.tarski.model.editor.LogicItemProvider2;
@@ -36,12 +43,17 @@ import ru.ipo.kio._14.tarski.model.parser.StatementParser2;
 import ru.ipo.kio._14.tarski.model.properties.ColorValue;
 import ru.ipo.kio._14.tarski.model.properties.ShapeValue;
 import ru.ipo.kio._14.tarski.model.properties.SizeValue;
+import ru.ipo.kio._14.tarski.view.BasicView;
+import ru.ipo.kio._14.tarski.view.ConfigsView;
+import ru.ipo.kio._14.tarski.view.toolbox.ResultPanel;
 import ru.ipo.kio._14.tarski.view.toolbox.ToolboxView;
+import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.api.KioProblem;
 
 import ru.ipo.kio.api.controls.TextButton;
 import ru.ipo.kio.base.displays.ShellButton;
 
-public class TarskiProblemFirst extends Sprite {
+public class TarskiProblemFirst extends BasicView {
 
     private static var _instance:TarskiProblemFirst;
 
@@ -49,6 +61,9 @@ public class TarskiProblemFirst extends Sprite {
     public static function get instance():TarskiProblemFirst {
         return _instance;
     }
+
+    [Embed(source="_resources/level1/bg.png")]
+    private static const BACKGROUND:Class;
 
     private var _variableToolboxView:ToolboxView;
 
@@ -62,33 +77,62 @@ public class TarskiProblemFirst extends Sprite {
 
     private var _stage:Stage;
 
-    public function TarskiProblemFirst(level:int, stage:Stage) {
+    private var _level:int;
+
+    private var configView:ConfigsView = new ConfigsView();
+
+    private var resultPanel:ResultPanel = new ResultPanel();
+
+
+    public function get level():int {
+        return _level;
+    }
+
+    private var _problem:KioProblem;
+
+    public function TarskiProblemFirst(level:int, stage:Stage, problem:KioProblem) {
         _instance=this;
         _stage=stage;
+        _problem=problem;
+        var bg = new BACKGROUND;
+        addChild(bg);
+        addChild(configView);
+        addChildTo(resultPanel,0,0);
+
+        this._level = level;
         ToolTip.init(stage, {textalign: 'center', opacity: 80, defaultdelay: 500});
-        graphics.beginFill(0xFFFFFF);
-        graphics.drawRect(0,0,800,600);
-        graphics.endFill();
+
+        ConfigurationHolder.instance.init();
 
         _statementManager=new StatamentManager(level);
 
         _logicItemProvider = new LogicItemProvider1();
 
-        _variableToolboxView = new ToolboxView(_logicItemProvider.variables, 100);
-        _predicateToolboxView = new ToolboxView(_logicItemProvider.predicates, 300);
-        _operationToolboxView = new ToolboxView(_logicItemProvider.operations, 150);
 
-        _variableToolboxView.x=20;
-        _variableToolboxView.y=370;
-        addChild(_variableToolboxView);
 
-        _predicateToolboxView.x=20+_variableToolboxView.width+20;
-        _predicateToolboxView.y=370;
-        addChild(_predicateToolboxView);
+        placeButtons(_logicItemProvider.variables, 24, 383, 28);
+        placeButtons(list(_logicItemProvider.predicates,0,2), 131, 383, 28);
+        placeButtons(list(_logicItemProvider.predicates,3,5), 243, 383, 28);
+        placeButtons(list(_logicItemProvider.predicates,6,8), 351, 383, 28);
+        placeButtons(list(_logicItemProvider.operations,0,2), 468, 383, 28);
+        placeButtons(list(_logicItemProvider.operations,3,5), 583, 383, 28);
+//        _variableToolboxView = new ToolboxView(_logicItemProvider.variables, 100);
+//        _predicateToolboxView = new ToolboxView(_logicItemProvider.predicates, 300);
+//        _operationToolboxView = new ToolboxView(_logicItemProvider.operations, 150);
+//
+//        _variableToolboxView.x=20;
+//        _variableToolboxView.y=370;
+//        addChild(_variableToolboxView);
+//
+//        _predicateToolboxView.x=20+_variableToolboxView.width+20;
+//        _predicateToolboxView.y=370;
+//        addChild(_predicateToolboxView);
+//
+//        _operationToolboxView.x=20+_variableToolboxView.width+20+_predicateToolboxView.width+20;
+//        _operationToolboxView.y=370;
+//        addChild(_operationToolboxView);
 
-        _operationToolboxView.x=20+_variableToolboxView.width+20+_predicateToolboxView.width+20;
-        _operationToolboxView.y=370;
-        addChild(_operationToolboxView);
+
 
 
         addChild(_statementManager.view);
@@ -110,40 +154,55 @@ public class TarskiProblemFirst extends Sprite {
             });
         });
 
-        var clearButton:ShellButton = new ShellButton("Очистить");
-        clearButton.x = 100;
-        clearButton.y = 5;
-        addChild(clearButton);
-        clearButton.addEventListener(MouseEvent.CLICK, function(e:Event):void{
-            statement.clear();
+        addChild(createPlainButton("Стереть", 678, 100+383, function(e:Event):void{statement.backspace();}));
+        addChild(createPlainButton("Создать", 678, 100+383+28, function(e:Event):void{_statementManager.addStatement();}));
+        addChild(createPlainButton("Удалить", 678, 100+383+28+28, function(e:Event):void{_statementManager.removeStatement();}));
+
+
+
+        configView.update();
+
+        KioApi.instance(problem).addEventListener(KioApi.RECORD_EVENT, recordChanged);
+
+    }
+
+    private function createPlainButton(label:String, x:int, y:int, f):SimpleButton{
+        var removeButton:SimpleButton = new ShellButton(label);
+        removeButton.x = x;
+        removeButton.y = y;
+        removeButton.addEventListener(MouseEvent.CLICK, f);
+        return removeButton;
+    }
+
+    private function list(predicates:Vector.<LogicItem>, istart:int, iend:int):Vector.<LogicItem> {
+        var list:Vector.<LogicItem> = new Vector.<LogicItem>();
+        for(var i:int=istart; i<=iend; i++){
+            list.push(predicates[i]);
+        }
+        return list;
+    }
+
+    private function placeButtons(items:Vector.<LogicItem>, xS:int, yS:int, ySpace:int):void {
+        for (var i:int = 0; i < items.length; i++) {
+            var button = createButton(items[i], xS, yS);
+            yS += ySpace;
+            ToolTip.attach(button, items[i].getTooltipText());
+        }
+    }
+
+
+
+    private function createButton(item:LogicItem, x:int, y:int):Object {
+        var button:Button = new Button();
+        button.label = item.getToolboxText();
+        addChild(button);
+        button.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
+            TarskiProblemFirst.instance.statement.addLogicItem(item.getCloned());
         });
-
-
-        var backspaceButton:ShellButton = new ShellButton("<- Стереть");
-        backspaceButton.x = 650;
-        backspaceButton.y = 450;
-        addChild(backspaceButton);
-        backspaceButton.addEventListener(MouseEvent.CLICK, function(e:Event):void{
-            statement.backspace();
-        });
-
-        var addButton:ShellButton = new ShellButton("Создать");
-        addButton.x = 650;
-        addButton.y = 500;
-        addChild(addButton);
-        addButton.addEventListener(MouseEvent.CLICK, function(e:Event):void{
-            _statementManager.addStatement();
-        });
-
-
-        var removeButton:ShellButton = new ShellButton("Удалить");
-        removeButton.x = 650;
-        removeButton.y = 550;
-        addChild(removeButton);
-        removeButton.addEventListener(MouseEvent.CLICK, function(e:Event):void{
-            _statementManager.removeStatement();
-        });
-
+        button.x = x;
+        button.y = y;
+        button.width=80;
+        return button;
     }
 
     public function getStage():Stage {
@@ -160,106 +219,30 @@ public class TarskiProblemFirst extends Sprite {
         return _statementManager.statement;
     }
 
-    public function update():void{
-        _statementManager.update();
-
-        _variableToolboxView.update();
-
-        graphics.clear();
-
-        graphics.beginFill(0xFFFFFF);
-        graphics.drawRect(0,0,800,600);
-        graphics.endFill();
-
-        var maxSize:int=0;
-        maxSize = calcMaxSize(ConfigurationHolder.instance.rightExamples, maxSize);
-        maxSize = calcMaxSize(ConfigurationHolder.instance.wrongExamples, maxSize);
-
-        var cellSize:int = 150/maxSize;
-        var shiftX:int=30;
-        var shiftY:int=30;
-
-        for(var i:int = 0; i<ConfigurationHolder.instance.rightExamples.length; i++){
-            var rightConfiguration:Configuration = ConfigurationHolder.instance.rightExamples[i];
-            if(rightConfiguration.correct){
-                graphics.lineStyle(3,0x66FF33);
-                graphics.moveTo(shiftX+i * 200, shiftX);
-                graphics.lineTo(shiftX+i * 200+70, shiftY+150);
-                graphics.lineTo(shiftX+i * 200+120, shiftY+70);
-            }else{
-                graphics.lineStyle(3,0xFF6600);
-                graphics.moveTo(shiftX+i * 200, shiftY);
-                graphics.lineTo(shiftX+i * 200+150, shiftX+150);
-            }
-            for(var x:int = 0; x<rightConfiguration.width; x++){
-                for(var y:int = 0; y<rightConfiguration.depth; y++){
-                    var figure:Figure = rightConfiguration.getFigure(x, y);
-                    drawFigure(figure, shiftX+x * cellSize + i * 200, shiftY+150 - (y+1) * cellSize, cellSize);
-                }
+    public override function update():void{
+        if(_statementManager!=null){
+            _statementManager.update();
+            configView.update();
+            if(resultPanel!=null){
+                resultPanel.updateResult(ConfigurationHolder.instance.getRightSelectionAmount()+"",TarskiProblemFirst.instance.statementManager.getLength()+"");
+                KioApi.instance(_problem).autoSaveSolution();
+                KioApi.instance(_problem).submitResult(KioApi.instance(_problem).problem.best);
             }
         }
-
-        for(var j:int = 0; j<ConfigurationHolder.instance.wrongExamples.length; j++){
-            var wrongConfiguration:Configuration = ConfigurationHolder.instance.wrongExamples[j];
-            if(wrongConfiguration.correct){
-                graphics.lineStyle(3,0x66FF33);
-                graphics.moveTo(shiftX+j * 200, shiftY*2+150);
-                graphics.lineTo(shiftX+j * 200+70, shiftY*2+300);
-                graphics.lineTo(shiftX+j * 200+120, shiftY*2+70+150);
-            }else{
-                graphics.lineStyle(3,0xFF6600);
-                graphics.moveTo(shiftX+j * 200, shiftY*2+150);
-                graphics.lineTo(shiftX+j * 200+150, shiftX*2+300);
-            }
-            for(var x1:int = 0; x1<wrongConfiguration.width; x1++){
-                for(var y1:int = 0; y1<wrongConfiguration.depth; y1++){
-                    var figure:Figure = wrongConfiguration.getFigure(x1, y1);
-                    drawFigure(figure, shiftX+x1 * cellSize + j * 200, shiftY*2+300 - (y1+1) * cellSize, cellSize);
-                }
-            }
-        }
-
 
     }
 
-    private function calcMaxSize(list:Vector.<Configuration>, maxSize:int):int {
-        for (var i:int = 0; i < list.length; i++) {
-            var configuration:Configuration = list[i];
-            maxSize = Math.max(configuration.width, maxSize);
-            maxSize = Math.max(configuration.depth, maxSize);
-        }
-        return maxSize;
+    private function recordChanged(event:Event):void {
+        updateBest(KioApi.instance(_problem).record_result);
     }
 
-    private function drawFigure(figure:Figure, x:int, y:int, cellSize:int):void {
-        graphics.lineStyle(1,0X666666);
-        graphics.drawRect(x, y, cellSize, cellSize);
-        if (figure == null) {
-            graphics.lineStyle(1,0X666666);
-            graphics.drawRect(x, y, cellSize, cellSize);
-        } else {
-            graphics.lineStyle(0,0X000000);
-            if (figure.color.code == ColorValue.RED) {
-                graphics.beginFill(0xFF3366);
-            } else {
-                graphics.beginFill(0x3366FF);
-            }
-            if (figure.shape.code == ShapeValue.SPHERE) {
-                if (figure.size.code == SizeValue.BIG) {
-                    graphics.drawCircle(x+cellSize/2, y+cellSize/2, cellSize/2);
-                } else {
-                    graphics.drawCircle(x+cellSize/2, y+cellSize/2, cellSize/2 * 0.7);
-                }
-            } else {
-                if (figure.size.code == SizeValue.BIG) {
-                    graphics.drawRect(x, y, cellSize, cellSize);
-                } else {
-                    graphics.drawRect(x+cellSize*0.15 , y+cellSize*0.15, cellSize * 0.7, cellSize * 0.7);
-                }
-            }
-            graphics.endFill();
+
+    private function updateBest(result:Object):void {
+        if(result!=null){
+            resultPanel.updateBest(ConfigurationHolder.instance.getRightSelectionAmount()+"",TarskiProblemFirst.instance.statementManager.getLength()+"");
         }
     }
+
 
 
 }

@@ -37,11 +37,12 @@ public class StatamentManager {
     public function StatamentManager(level:int) {
         _level=level;
 
+
         _scrollPane.verticalScrollPolicy = ScrollPolicy.AUTO;
-        _scrollPane.x=20;
-        _scrollPane.y=460;
-        _scrollPane.width=600;
-        _scrollPane.height=120;
+        _scrollPane.x=6;
+        _scrollPane.y=472;
+        _scrollPane.width=670;
+        _scrollPane.height=128;
         _scrollPane.scrollDrag=true;
         _scrollPane.source=_canvas;
 
@@ -56,7 +57,9 @@ public class StatamentManager {
 
     public function activate(statement:Statement):void{
         deactivateAll();
+        if(statement!=null){
         statement.active=true;
+        }
         _statement=statement;
         statement.view.update();
     }
@@ -93,6 +96,11 @@ public class StatamentManager {
     }
 
     public function update():void{
+        _canvas.graphics.beginFill(0xFFFFFF);
+        _canvas.graphics.drawRect(0,0,_canvas.width,_canvas.height);
+        _canvas.graphics.endFill();
+
+
         for(var i:int=0; i<_statementList.length; i++){
             _statementList[i].view.update();
         }
@@ -138,7 +146,7 @@ public class StatamentManager {
         }
         _statementList = new Vector.<Statement>();
         _statement=null;
-         update();
+         TarskiProblemFirst.instance.update();
     }
 
     public function load(statements:Array):void {
@@ -147,7 +155,7 @@ public class StatamentManager {
            addStatement();
            statement.load(LogicItemUtils.createItemList(statements[i]));
        }
-        update();
+        perseAndCheckAll();
     }
 
     private function checkAll(rightConfiguration:Configuration):Boolean {
@@ -172,9 +180,17 @@ public class StatamentManager {
                 _canvas.addChild(_statementList[i].view);
             }
 
-            update();
         }
         perseAndCheckAll();
+        TarskiProblemFirst.instance.update();
+    }
+
+    public function getLength():int{
+        var result:int = 0;
+        for(var i:int=0; i<_statementList.length; i++){
+            result+= _statementList[i].logicItems.length;
+        }
+        return result;
     }
 
 
