@@ -16,27 +16,27 @@ import ru.ipo.kio.api.controls.GraphicsButton;
 
 public class NumberEditor extends Sprite {
 
-    [Embed(source="resources/num_pl.png")]
+    [Embed(source="resources/plus.png")]
     public static const NUM_PL_CLS:Class;
     public static const NUM_PL_CLS_IMG:BitmapData = (new NUM_PL_CLS).bitmapData;
 
-    [Embed(source="resources/num_pl_d.png")]
+    [Embed(source="resources/plus_down.png")]
     public static const NUM_PL_D_CLS:Class;
     public static const NUM_PL_CLS_D_IMG:BitmapData = (new NUM_PL_D_CLS).bitmapData;
 
-    [Embed(source="resources/num_pl_o.png")]
+    [Embed(source="resources/plus_over.png")]
     public static const NUM_PL_O_CLS:Class;
     public static const NUM_PL_CLS_O_IMG:BitmapData = (new NUM_PL_O_CLS).bitmapData;
 
-    [Embed(source="resources/num_mn.png")]
+    [Embed(source="resources/minus.png")]
     public static const NUM_MN_CLS:Class;
     public static const NUM_MN_CLS_IMG:BitmapData = (new NUM_MN_CLS).bitmapData;
 
-    [Embed(source="resources/num_mn_d.png")]
+    [Embed(source="resources/minus_down.png")]
     public static const NUM_MN_D_CLS:Class;
     public static const NUM_MN_CLS_D_IMG:BitmapData = (new NUM_MN_D_CLS).bitmapData;
 
-    [Embed(source="resources/num_mn_o.png")]
+    [Embed(source="resources/minus_over.png")]
     public static const NUM_MN_O_CLS:Class;
     public static const NUM_MN_CLS_O_IMG:BitmapData = (new NUM_MN_O_CLS).bitmapData;
 
@@ -58,8 +58,8 @@ public class NumberEditor extends Sprite {
     private var _buttonPlus:SimpleButton;
     private var _buttonMinus:SimpleButton;
 
-    private static const NORMAL_COLOR:uint = 0xFFFFFF;
-    private static const ERROR_COLOR:uint = 0xFF8888;
+    private static const NORMAL_COLOR:uint = 0x000000;
+    private static const ERROR_COLOR:uint = 0xaa2222;
 
     public function NumberEditor(width:int, height:int, min:Number, max:Number, initial_value:Number, units:String, places:int) {
         _width = width;
@@ -105,7 +105,7 @@ public class NumberEditor extends Sprite {
         _textFieldUnits.autoSize = TextFieldAutoSize.RIGHT;
         _textFieldUnits.x = _width - _buttonPlus.width - 4;
         _textFieldUnits.text = _units;
-        _textFieldUnits.textColor = 0xFFFFFF;
+        _textFieldUnits.textColor = 0x000000;
         _textFieldUnits.selectable = false;
         _textFieldUnits.y = (_height - _textFieldUnits.height) / 2;
 
@@ -115,7 +115,7 @@ public class NumberEditor extends Sprite {
         _textField.autoSize = TextFieldAutoSize.LEFT;
         _textField.borderColor = 0xFF0000;
         _textField.x = _buttonPlus.width + 4;
-        _textField.textColor = 0xFFFFFF;
+        _textField.textColor = 0x000000;
 
         _textField.y = _textFieldUnits.y;
         _textField.height = _height - _textField.y;

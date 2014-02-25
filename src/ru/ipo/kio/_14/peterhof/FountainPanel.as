@@ -34,34 +34,34 @@ public class FountainPanel extends Sprite {
         _api = api;
         _showSprayer = showSprayer;
 
-        const skip:int = 200;
+        const skip:int = 206;
 
         _alphaEditor = new NumberEditor(width, 18, 0, 90, 45, "°", 0);
-        var alphaEditor:TitledObject = new TitledObject("Наклон", 18, 0x0FFFFF, _alphaEditor, skip);
+        var alphaEditor:TitledObject = new TitledObject("Наклон", 24, 0x000000, _alphaEditor, skip);
         addChild(alphaEditor);
 
         _phiEditor = new NumberEditor(width, 18, -180, 180, 0, "°", 0);
-        var phiEditor:TitledObject = new TitledObject("Поворот", 18, 0x0FFFFF, _phiEditor, skip);
+        var phiEditor:TitledObject = new TitledObject("Поворот", 24, 0x000000, _phiEditor, skip);
         addChild(phiEditor);
         phiEditor.y = alphaEditor.height - 4;
 
         _sprayerWidthEditor = new NumberEditor(width, 18, 0.1, 5, 0.1, "см", 1);
-        var sprayerWidthEditor:TitledObject = new TitledObject(showSprayer ? "Ширина форсунки" : "", 18, 0x0FFFFF, _sprayerWidthEditor, skip);
+        var sprayerWidthEditor:TitledObject = new TitledObject(showSprayer ? "Диаметр форсунки" : "", 24, 0x000000, _sprayerWidthEditor, skip);
         addChild(sprayerWidthEditor);
         sprayerWidthEditor.y = phiEditor.y + phiEditor.height - 4;
 
         _sprayerLengthEditor = new NumberEditor(width, 18, 5, 10, 5, "см", 1);
-        var sprayerLengthEditor:TitledObject = new TitledObject(showSprayer ? "Длина форсунки" : "", 18, 0x0FFFFF, _sprayerLengthEditor, skip);
+        var sprayerLengthEditor:TitledObject = new TitledObject(showSprayer ? "Длина форсунки" : "", 24, 0x000000, _sprayerLengthEditor, skip);
         addChild(sprayerLengthEditor);
         sprayerLengthEditor.y = sprayerWidthEditor.y + sprayerWidthEditor.height - 4;
 
         _streamLengthInfo = new TextField();
         _streamLengthInfo.selectable = false;
-        _streamLengthInfo.defaultTextFormat = new TextFormat("KioArial", 18, 0xFFFFFF);
+        _streamLengthInfo.defaultTextFormat = new TextFormat("KioTahoma", 18, 0x000000);
         _streamLengthInfo.autoSize = TextFieldAutoSize.LEFT;
         _streamLengthInfo.multiline = true;
-        addChild(_streamLengthInfo);
-        _streamLengthInfo.x = sprayerWidthEditor.x + sprayerWidthEditor.width + 20;
+        _streamLengthInfo.x = sprayerWidthEditor.x + sprayerWidthEditor.width + 12;
+        _streamLengthInfo.y = 14;
 
         _alphaEditor.addEventListener(Event.CHANGE, alphaEditor_changeHandler);
         _phiEditor.addEventListener(Event.CHANGE, phiEditor_changeHandler);
@@ -69,11 +69,12 @@ public class FountainPanel extends Sprite {
         _sprayerLengthEditor.addEventListener(Event.CHANGE, sprayerLengthEditor_changeHandler);
 
         //setup sprayer
-        _sprayer = new Sprayer(100, 90, Consts.D, 60);
+        _sprayer = new Sprayer(Consts.D, 60);
         addChild(_sprayer);
+        addChild(_streamLengthInfo);
 
-        _sprayer.x = _streamLengthInfo.x;
-        _sprayer.y = 25;
+        _sprayer.x = _streamLengthInfo.x + 8;
+        _sprayer.y = 64;
 
         //hide all initially
         _alphaEditor.visible = false;
@@ -117,8 +118,14 @@ public class FountainPanel extends Sprite {
         _sprayerLengthEditor.value = _fountain.l * 100;
 
         _streamLengthInfo.text = _fountain.stream.goes_out ?
-                "Длина: выходит наружу" :
-                "Длина: " + _fountain.stream.length.toFixed(3);
+                "Струя:\nмимо" :
+                "Струя:\n" + _fountain.stream.length.toFixed(3) + ' м';
+
+        if (_fountain != null) {
+            _sprayer.f_length = _fountain.l;
+            _sprayer.f_width = _fountain.d;
+            _sprayer.rotate(_fountain.alphaGr * Math.PI / 180);
+        }
     }
 
     private function alphaEditor_changeHandler(event:Event):void {

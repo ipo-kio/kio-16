@@ -15,41 +15,27 @@ import ru.ipo.kio._14.peterhof.view.Fountains3DView;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.controls.GraphicsButton;
-import ru.ipo.kio.api.controls.InfoPanel;
 
 public class PeterhofWorkspace extends Sprite {
 
-    [Embed(source="resources/num_pl.png")]
-    public static const NUM_PL_CLS:Class;
-    public static const NUM_PL_CLS_IMG:BitmapData = (new NUM_PL_CLS).bitmapData;
+    [Embed(source="resources/zoom_in.png")]
+    public static const ZOOM_IN_CLS:Class;
+    public static const ZOOM_IN_CLS_IMG:BitmapData = (new ZOOM_IN_CLS).bitmapData;
 
-    [Embed(source="resources/num_pl_d.png")]
-    public static const NUM_PL_D_CLS:Class;
-    public static const NUM_PL_CLS_D_IMG:BitmapData = (new NUM_PL_D_CLS).bitmapData;
+    [Embed(source="resources/zoom_out.png")]
+    public static const ZOOM_OUT_CLS:Class;
+    public static const ZOOM_OUT_CLS_IMG:BitmapData = (new ZOOM_OUT_CLS).bitmapData;
 
-    [Embed(source="resources/num_pl_o.png")]
-    public static const NUM_PL_O_CLS:Class;
-    public static const NUM_PL_CLS_O_IMG:BitmapData = (new NUM_PL_O_CLS).bitmapData;
-
-    [Embed(source="resources/num_mn.png")]
-    public static const NUM_MN_CLS:Class;
-    public static const NUM_MN_CLS_IMG:BitmapData = (new NUM_MN_CLS).bitmapData;
-
-    [Embed(source="resources/num_mn_d.png")]
-    public static const NUM_MN_D_CLS:Class;
-    public static const NUM_MN_CLS_D_IMG:BitmapData = (new NUM_MN_D_CLS).bitmapData;
-
-    [Embed(source="resources/num_mn_o.png")]
-    public static const NUM_MN_O_CLS:Class;
-    public static const NUM_MN_CLS_O_IMG:BitmapData = (new NUM_MN_O_CLS).bitmapData;
+    [Embed(source="resources/border.png")]
+    public static const BORDER:Class;
 
     public static const _3D_WIDTH:int = 780;
-    public static const _3D_HEIGHT:int = 480;
+    public static const _3D_HEIGHT:int = 450;
 
     private var _fountainsView:Fountains3DView;
     private var _fountainPanel:FountainPanel;
-    private var _resultInfo:InfoPanel;
-    private var _recordInfo:InfoPanel;
+    private var _resultInfo:FountainsInfoPanel;
+    private var _recordInfo:FountainsInfoPanel;
 
     private var _api:KioApi;
 
@@ -65,7 +51,7 @@ public class PeterhofWorkspace extends Sprite {
         addChild(bottomPanel);
         bottomPanel.y = _3D_HEIGHT;
 
-        _fountainPanel = new FountainPanel(100, _api, problem.level == 2);
+        _fountainPanel = new FountainPanel(123, _api, problem.level == 2);
 
         fillBottomPanel(bottomPanel);
 
@@ -80,6 +66,8 @@ public class PeterhofWorkspace extends Sprite {
 //        physicsPanel.y = 4;
 
         _api.addEventListener(KioApi.RECORD_EVENT, api_recordHandler);
+
+        addChild(new BORDER);
     }
 
     public function get currentResult():Object {
@@ -108,42 +96,43 @@ public class PeterhofWorkspace extends Sprite {
     private function hill_changedHandler(event:FountainEvent):void {
         var currentResult:Object = currentResult;
         _api.submitResult(currentResult);
-        _resultInfo.setValue(0, currentResult.total_length.toFixed(3));
+        _resultInfo.setValue(0, currentResult.total_length.toFixed(3) + ' м');
     }
 
     private function fillBottomPanel(bottomPanel:BottomPanel):void {
         bottomPanel.addChild(_fountainPanel);
         _fountainPanel.x = 10;
+        _fountainPanel.y = -15;
 
-        _resultInfo = new InfoPanel("KioArial", true, 14, 0xFFFFFF, 0xFFFFFF, 0xFF8888, 1.2, "Результат", [
+        _resultInfo = new FountainsInfoPanel(0, 0x000000, 0x000000, 0x000000, "Результат", [
             "Общая длина"
-        ], 200);
-        _recordInfo = new InfoPanel("KioArial", true, 14, 0xFFFFFF, 0xFFFFFF, 0xFF8888, 1.2, "Рекорд", [
+        ], 220);
+        _recordInfo = new FountainsInfoPanel(30, 0x000000, 0x000000, 0x000000, "Рекорд", [
             "Общая длина"
-        ], 200);
+        ], 220);
 
         bottomPanel.addChild(_resultInfo);
         bottomPanel.addChild(_recordInfo);
 
-        _resultInfo.x = 500;
-        _resultInfo.y = 25;
-        _recordInfo.x = 500;
-        _recordInfo.y = 60;
+        _resultInfo.x = 480;
+        _resultInfo.y = -10;
+        _recordInfo.x = 480;
+        _recordInfo.y = 55;
 
         //add zoom buttons
-        var zoom_in:GraphicsButton = new GraphicsButton("", NUM_PL_CLS_IMG, NUM_PL_CLS_O_IMG, NUM_PL_CLS_D_IMG, "KioTahoma", 12, 12);
-        var zoom_out:GraphicsButton = new GraphicsButton("", NUM_MN_CLS_IMG, NUM_MN_CLS_O_IMG, NUM_MN_CLS_D_IMG, "KioTahoma", 12, 12);
+        var zoom_in:GraphicsButton = new GraphicsButton("", ZOOM_IN_CLS_IMG, ZOOM_IN_CLS_IMG, ZOOM_IN_CLS_IMG, "KioTahoma", 12, 12);
+        var zoom_out:GraphicsButton = new GraphicsButton("", ZOOM_OUT_CLS_IMG, ZOOM_OUT_CLS_IMG, ZOOM_OUT_CLS_IMG, "KioTahoma", 12, 12);
         zoom_in.addEventListener(MouseEvent.CLICK, function (e:Event):void {
             _fountainsView.scale -= 0.5;
         });
         zoom_out.addEventListener(MouseEvent.CLICK, function (e:Event):void {
             _fountainsView.scale += 0.5;
         });
-        zoom_in.x = 700;
-        zoom_in.y = 100;
+        zoom_in.x = 694;
+        zoom_in.y = 6;
         bottomPanel.addChild(zoom_in);
-        zoom_out.x = 720;
-        zoom_out.y = 100;
+        zoom_out.x = 734;
+        zoom_out.y = 6;
         bottomPanel.addChild(zoom_out);
     }
 
@@ -176,7 +165,7 @@ public class PeterhofWorkspace extends Sprite {
 
     private function api_recordHandler(event:Event):void {
         _recordInfo.animateChange();
-        _recordInfo.setValue(0, currentResult.total_length.toFixed(3));
+        _recordInfo.setValue(0, currentResult.total_length.toFixed(3) + ' м');
     }
 
     override public function get width():Number {

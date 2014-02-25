@@ -7,6 +7,7 @@ import away3d.cameras.lenses.PerspectiveLens;
 import away3d.containers.View3D;
 import away3d.lights.DirectionalLight;
 import away3d.materials.lightpickers.StaticLightPicker;
+import away3d.textures.BitmapTexture;
 
 import flash.events.Event;
 import flash.events.KeyboardEvent;
@@ -23,7 +24,7 @@ import ru.ipo.kio.api.KioProblem;
 
 public class Fountains3DView extends View3D {
 
-    [Embed(source="../resources/sky_texture.jpg")]
+    [Embed(source="../resources/top_zoomed.jpg")]
     public static const SKY_TEXTURE:Class;
 
     public static const CAMERA_RADIUS:Number = 900;
@@ -68,8 +69,8 @@ public class Fountains3DView extends View3D {
         addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
 
 //        draw();
-//        if (Consts.QUALITY)
-//            background = new BitmapTexture((new SKY_TEXTURE).bitmapData);
+        if (Consts.QUALITY)
+            background = new BitmapTexture((new SKY_TEXTURE).bitmapData);
 
         addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
         addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
