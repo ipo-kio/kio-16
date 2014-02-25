@@ -6,6 +6,8 @@
  */
 package ru.ipo.kio._14.tarski.model {
 
+import fl.controls.listClasses.ListData;
+
 import flash.system.SystemUpdater;
 import flash.utils.Dictionary;
 
@@ -32,6 +34,8 @@ import ru.ipo.kio._14.tarski.view.statement.StatementViewFree;
 
 public class Statement {
 
+    private static var counter:int;
+
     private var parser:StatementParser;
 
     private var checker:Evaluator;
@@ -54,6 +58,11 @@ public class Statement {
 
     private var _active:Boolean=false;
 
+    private var _id:int;
+
+    public function get id():int {
+        return _id;
+    }
 
     public function set active(value:Boolean):void {
         _active = value;
@@ -67,6 +76,8 @@ public class Statement {
         this.parser=parser;
         this.checker=checker;
         _view=  new StatementViewFree(this);
+        _id = counter;
+        counter++;
     }
 
 
@@ -332,6 +343,10 @@ public class Statement {
             }
         }
 
+    }
+
+    public function set id(id:int):void {
+        _id = id;
     }
 }
 }

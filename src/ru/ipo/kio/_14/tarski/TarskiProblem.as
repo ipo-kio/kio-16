@@ -8,18 +8,11 @@ import com.nerdbucket.ToolTip;
 import flash.display.Sprite;
 import flash.display.Stage;
 
-import ru.ipo.kio._13.clock.*;
+
 
 import flash.display.DisplayObject;
 import flash.events.Event;
 
-import ru.ipo.kio._13.clock.model.SettingsHolder;
-
-import ru.ipo.kio._13.clock.model.TransferGear;
-
-import ru.ipo.kio._13.clock.model.TransmissionMechanism;
-import ru.ipo.kio._13.clock.model.level.ITaskLevel;
-import ru.ipo.kio._13.clock.model.level.LevelCreator;
 import ru.ipo.kio._14.tarski.model.ConfigurationHolder;
 
 import ru.ipo.kio.api.KioApi;
@@ -59,8 +52,8 @@ public class TarskiProblem implements KioProblem{
 
 
     public function TarskiProblem(level:int, stage:Stage) {
-        KioApi.initialize(this);
         _level=level;
+        KioApi.initialize(this);
         if(level ==0){
             _sprite = new TarskiProblemZero(this);
         }else{
@@ -91,11 +84,9 @@ public class TarskiProblem implements KioProblem{
 
     public function get solution():Object {
         if(level==0){
-            var result:Object = {config:TarskiProblemZero.instance.configuration.toString()};
-            return result;
+            return {config:TarskiProblemZero.instance.configuration.toString()};
         }else{
-            var result:Object = {statement:TarskiProblemFirst.instance.statementManager.getStatementAsJson()};
-            return result;
+            return {statement:TarskiProblemFirst.instance.statementManager.getStatementAsJson()};
         }
     }
 

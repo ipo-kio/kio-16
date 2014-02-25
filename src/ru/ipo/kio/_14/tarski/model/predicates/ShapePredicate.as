@@ -46,8 +46,10 @@ public class ShapePredicate extends OnePlacePredicate{
     public function parseString(str:String):ShapePredicate {
         var items:Array = str.split("-");
         shape = ValueHolder.getShape(items[1]);
-        operand = items[2];
-        placeHolder.variable = new Variable(formalOperand);
+        if(items[2]!="null"){
+            operand = items[2];
+            placeHolder.variable = new Variable(formalOperand);
+        }
         return this;
     }
 

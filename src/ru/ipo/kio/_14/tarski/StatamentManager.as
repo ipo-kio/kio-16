@@ -21,6 +21,7 @@ import ru.ipo.kio._14.tarski.model.parser.StatementParser2;
 import flashx.textLayout.container.ScrollPolicy;
 
 import ru.ipo.kio._14.tarski.utils.LogicItemUtils;
+import ru.ipo.kio.api.KioApi;
 
 public class StatamentManager {
 
@@ -33,6 +34,9 @@ public class StatamentManager {
     private var _canvas:Sprite = new Sprite();
 
     private var _level:int;
+
+
+
 
     public function StatamentManager(level:int) {
         _level=level;
@@ -85,6 +89,8 @@ public class StatamentManager {
 
         activate(statementNew);
 
+        KioApi.log(TarskiProblem.ID, "ADD STATEMENT @S", statement.id);
+
         _canvas.addChild(statementNew.view);
         statementNew.view.update();
         _scrollPane.refreshPane();
@@ -134,7 +140,7 @@ public class StatamentManager {
     public function getStatementAsJson():Object{
       var result:Array = new Array();
         for(var i:int=0; i<_statementList.length; i++){
-            result.push(LogicItemUtils.createString(_statementList[i].logicItems));
+            result.push({id:_statementList[i].id, items:LogicItemUtils.createString(_statementList[i].logicItems)});
         }
       return result;
 
@@ -151,9 +157,10 @@ public class StatamentManager {
 
     public function load(statements:Array):void {
         clearAll();
-       for(var i:int=0; i<statements.length; i++){
+        for(var i:int=0; i<statements.items.length; i++){
            addStatement();
-           statement.load(LogicItemUtils.createItemList(statements[i]));
+           statement.id = statements.id;
+           statement.load(LogicItemUtils.createItemList(statements.items[i]));
        }
         perseAndCheckAll();
     }
@@ -167,8 +174,13 @@ public class StatamentManager {
     }
 
     public function removeStatement(){
+        if(_statementList.length==1){
+            return;
+        }
+
         if(statement!=null){
             var i:int = _statementList.indexOf(statement);
+            KioApi.log(TarskiProblem.ID, "DELETE STATEMENT @S", statement.id);
             _statementList.splice(i,1);
 
 
@@ -179,6 +191,12 @@ public class StatamentManager {
                 _statementList[i].view.y=i*40;
                 _canvas.addChild(_statementList[i].view);
             }
+
+            var index:int = i-1;
+            if(index<0){
+                index=0;
+            }
+            activate(_statementList[index]);
 
         }
         perseAndCheckAll();

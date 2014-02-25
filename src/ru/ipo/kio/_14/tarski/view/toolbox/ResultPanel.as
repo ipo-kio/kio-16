@@ -7,8 +7,8 @@ package ru.ipo.kio._14.tarski.view.toolbox {
 import flash.events.MouseEvent;
 import flash.text.TextField;
 
-import ru.ipo.kio._13.clock.view.BasicView;
 import ru.ipo.kio._14.tarski.utils.FormUtils;
+import ru.ipo.kio._14.tarski.view.BasicView;
 
 public class ResultPanel extends BasicView {
 

@@ -21,6 +21,7 @@ import ru.ipo.kio._14.tarski.model.predicates.ShapePredicate;
 import ru.ipo.kio._14.tarski.model.predicates.SizePredicate;
 import ru.ipo.kio._14.tarski.model.predicates.UpperPredicate;
 import ru.ipo.kio._14.tarski.model.predicates.UpperPredicateOneRow;
+import ru.ipo.kio._14.tarski.model.predicates.Variable;
 import ru.ipo.kio._14.tarski.model.properties.ValueHolder;
 import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
 
@@ -61,6 +62,12 @@ public class LogicItemUtils {
                 items.push(new UpperPredicate().parseString(ch));
             }else if(ch.indexOf("near")>=0){
                 items.push(new NearPredicate().parseString(ch));
+            }else if(ch=="X"){
+                items.push(new Variable("X"));
+            }else if(ch=="Y"){
+                items.push(new Variable("Y"));
+            }else if(ch=="Z"){
+                items.push(new Variable("Z"));
             }else{
                 items.push(new Quantifier("exist").parse(ch));
             }
@@ -90,6 +97,8 @@ public class LogicItemUtils {
                 result+=Brace(item).open?"(":")";
             }else if(item is BasePredicate){
                 result+=BasePredicate(item).toString();
+            }else if(item is Variable){
+                result+=Variable(item).code;
             }
         }
         return result;
