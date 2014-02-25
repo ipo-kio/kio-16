@@ -162,6 +162,7 @@
                 incremental="${flex.build.incremental}"
                 compiler.debug="false"
                 use-network="false"
+                default-frame-rate="10"
                 >
             <source-path path-element="${module.kio-14.basedir}/src"/>
             <define name="KIO::language" value="'${language}'"/>

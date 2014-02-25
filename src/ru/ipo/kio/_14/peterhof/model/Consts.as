@@ -11,7 +11,7 @@ public class Consts {
     public static const HILL_WIDTH:int = 100;
     public static const HILL_HEIGHT:int = 50;
     public static const WATER_EXTRA_HEIGHT:int = 0;
-    public static var MIN_DIST:Array = [25, 30, 35];
+    public static var MIN_DIST:Array = [35, 40, 40];
 
     public static const HILL_LENGTH1_ANGLE:Number = Math.sqrt(HILL_LENGTH1 * HILL_LENGTH1 + HILL_HEIGHT * HILL_HEIGHT);
 

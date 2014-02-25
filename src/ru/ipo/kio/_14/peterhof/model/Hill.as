@@ -28,52 +28,68 @@ public class Hill extends EventDispatcher {
         var fountains_set:Vector.<Fountain> = new <Fountain>[];
 
         var f1:Fountain = new Fountain(this);
-        f1.x = 5;
+        f1.x = 15;
         f1.z = 5;
         f1.l = 0.1;
         f1.d = 0.04;
-        f1.phiGr = -20;
-        f1.alphaGr = 70;
+        f1.phiGr = 20;
+        f1.alphaGr = 0;
 
         var f2:Fountain = new Fountain(this);
         f2.x = 20;
-        f2.z = 95;
+        f2.z = 100;
         f2.l = 0.1;
         f2.d = 0.04;
-        f2.phiGr = 0;
-        f2.alphaGr = 70;
+        f2.phiGr = -42;
+        f2.alphaGr = 20;
 
         var f3:Fountain = new Fountain(this);
-        f3.x = 35;
-        f3.z = 30;
+        f3.x = 40;
+        f3.z = 45;
         f3.l = 0.1;
         f3.d = 0.04;
-        f3.phiGr = 160;
+        f3.phiGr = 140;
         f3.alphaGr = 70;
 
         var f4:Fountain = new Fountain(this);
         f4.x = 50;
-        f4.z = 70;
+        f4.z = 100;
         f4.l = 0.1;
         f4.d = 0.04;
         f4.phiGr = 160;
         f4.alphaGr = 70;
 
         var f5:Fountain = new Fountain(this);
-        f5.x = 65;
-        f5.z = 5;
+        f5.x = 50;
+        f5.z = 0;
         f5.l = 0.1;
         f5.d = 0.04;
         f5.phiGr = 90;
-        f5.alphaGr = 71;
+        f5.alphaGr = 20;
 
         var f6:Fountain = new Fountain(this);
         f6.x = 80;
-        f6.z = 95;
+        f6.z = 50;
         f6.l = 0.1;
         f6.d = 0.04;
-        f6.phiGr = -140;
-        f6.alphaGr = 71;
+        f6.phiGr = 140;
+        f6.alphaGr = 20;
+
+        var f7:Fountain = new Fountain(this);
+        f7.x = 10;
+        f7.z = 55;
+        f7.l = 0.1;
+        f7.d = 0.04;
+        f7.phiGr = -140;
+        f7.alphaGr = 70;
+
+        var f8:Fountain = new Fountain(this);
+        f8.x = 125;
+        f8.z = 50;
+        f8.l = 0.1;
+        f8.d = 0.04;
+        f8.phiGr = 160;
+        f8.alphaGr = 70;
 
         fountains_set.push(f1);
         fountains_set.push(f2);
@@ -81,26 +97,28 @@ public class Hill extends EventDispatcher {
         fountains_set.push(f4);
         fountains_set.push(f5);
         fountains_set.push(f6);
+        fountains_set.push(f7);
+        fountains_set.push(f8);
 
         if (_level > 0) {
-            var f7:Fountain = new Fountain(this);
-            f7.x = 95;
-            f7.z = 30;
-            f7.l = 0.1;
-            f7.d = 0.04;
-            f7.phiGr = 160;
-            f7.alphaGr = 70;
+            var f9:Fountain = new Fountain(this);
+            f9.x = 125;
+            f9.z = 100;
+            f9.l = 0.1;
+            f9.d = 0.04;
+            f9.phiGr = -120;
+            f9.alphaGr = 10;
 
-            var f8:Fountain = new Fountain(this);
-            f8.x = 110;
-            f8.z = 70;
-            f8.l = 0.1;
-            f8.d = 0.04;
-            f8.phiGr = 160;
-            f8.alphaGr = 70;
+            var f10:Fountain = new Fountain(this);
+            f10.x = 125;
+            f10.z = 0;
+            f10.l = 0.1;
+            f10.d = 0.04;
+            f10.phiGr = 160;
+            f10.alphaGr = 43;
 
-            fountains_set.push(f7);
-            fountains_set.push(f8);
+            fountains_set.push(f9);
+            fountains_set.push(f10);
         }
         
         return fountains_set;

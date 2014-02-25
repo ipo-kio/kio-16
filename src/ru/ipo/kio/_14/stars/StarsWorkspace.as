@@ -2,18 +2,9 @@
  * Created by user on 06.01.14.
  */
 package ru.ipo.kio._14.stars {
-//import flash.display.Bitmap;
-//import flash.display.BitmapData;
-//import flash.display.Loader;
-//import flash.display.LoaderInfo;
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.events.MouseEvent;
-
-//import flash.events.MouseEvent;
-//import flash.net.FileFilter;
-//import flash.net.FileReference;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.controls.InfoPanel;
@@ -141,17 +132,17 @@ public class StarsWorkspace extends Sprite {
         infoPanel = new InfoPanel(
                 /*"KioArial", true, //*/"Segoe Print", true,
                 15, 0xff0000, 0xffffff, 0xffffff,
-                1.7, /*api.localization.result*/"",
+                1.8, /*api.localization.result*/"",
                 ["", "", "", ""/*api.localization.intersections, api.localization.right_graphs,
-                    api.localization.diff_graphs, api.localization.length_of_edges*/], 374
+                    api.localization.diff_graphs, api.localization.length_of_edges*/], 365
         );
 
         infoPanelRecord = new InfoPanel(
                 /*"KioArial", true, //*/"Segoe Print", true,
                 15, 0xff0000, 0xffffff, 0xffffff,
-                1.7, /*api.localization.record*/"",
+                1.8, /*api.localization.record*/"",
                 ["", "", "", ""/*api.localization.intersections, api.localization.right_graphs,
-                    api.localization.diff_graphs, api.localization.length_of_edges*/], 360
+                    api.localization.diff_graphs, api.localization.length_of_edges*/], 365
         );
 
         infoPanel.setValue(0, "НЕТ");
@@ -168,16 +159,16 @@ public class StarsWorkspace extends Sprite {
         graphics.drawRect(0, 450, 780, 150);
         graphics.endFill();
 
-        _panel.x = 0;
-        _panel.y = _skyView.height - 30;
+        _panel.x = 90;
+        _panel.y = _skyView.height - 34;
         addChild(_panel);
 
         addChild(infoPanel);
         addChild(infoPanelRecord);
 
-        infoPanel.x = 0;
+        infoPanel.x = 10;
         infoPanel.y = 463;
-        infoPanelRecord.x = 390;
+        infoPanelRecord.x = 386;
         infoPanelRecord.y = 460;
 
         workspaceLoaded = true;
