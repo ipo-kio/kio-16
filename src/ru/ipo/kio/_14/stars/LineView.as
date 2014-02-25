@@ -7,6 +7,9 @@ import flash.events.MouseEvent;
 
 public class LineView extends Sprite {
 
+    private static const LINE_COLOR:uint = 0xffff66;
+    private static const ERROR_LINE_COLOR:int = 0xff0000;
+
     private var x1:Number;
     private var y1:Number;
     private var x2:Number;
@@ -103,28 +106,28 @@ public class LineView extends Sprite {
 
     private function drawErrorLine():void {
         graphics.clear();
-        graphics.lineStyle(2, 0xff0000, 0.7);
+        graphics.lineStyle(4, ERROR_LINE_COLOR, 0.45);
         graphics.moveTo(x1, y1);
         graphics.lineTo(x2, y2);
     }
 
     public function drawNewLine(x2:Number, y2:Number):void {
         graphics.clear();
-        graphics.lineStyle(2, 0xffffff, 0.7);
+        graphics.lineStyle(2, LINE_COLOR, 1);
         graphics.moveTo(x1, y1);
         graphics.lineTo(x2, y2);
     }
 
     private function drawDefaultLine():void {
         graphics.clear();
-        graphics.lineStyle(2, 0xffffff, 0.7);
+        graphics.lineStyle(3, LINE_COLOR, 0.45);
         graphics.moveTo(x1, y1);
         graphics.lineTo(x2, y2);
     }
 
     private function drawSelectedLine():void {
         graphics.clear();
-        graphics.lineStyle(3, 0xffffff, 1);
+        graphics.lineStyle(3, LINE_COLOR, 1);
         graphics.moveTo(x1, y1);
         graphics.lineTo(x2, y2);
     }
