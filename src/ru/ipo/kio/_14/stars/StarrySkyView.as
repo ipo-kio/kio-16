@@ -15,7 +15,7 @@ import ru.ipo.kio._14.stars.graphs.IsomorphismChecker;
 
 public class StarrySkyView extends Sprite {
 
-    [Embed(source="resources/Nature-clouds-above-night-resolution-wallpaper-500x400.jpg")]
+    [Embed(source="resources/top.png")]
     private static const BACKGROUND:Class;
     private static const BACKGROUND_BMP:BitmapData = new BACKGROUND().bitmapData;
 
@@ -165,11 +165,11 @@ public class StarrySkyView extends Sprite {
     private function drawSky():void {
         graphics.clear();
 //            graphics.beginFill(0x0047ab);
-        var m:Matrix = new Matrix();
-        m.scale(2, 2);
-        graphics.beginBitmapFill(BACKGROUND_BMP, m);
+//        var m:Matrix = new Matrix();
+//        m.scale(2, 2);
+        graphics.beginBitmapFill(BACKGROUND_BMP/*, m*/);
 //            graphics.beginFill(0);
-        graphics.drawRect(0, 0, 780, 480);
+        graphics.drawRect(0, 0, 780, 450);
         graphics.endFill();
 
         for (var i:int = 0; i < starViews.length; i++) {
