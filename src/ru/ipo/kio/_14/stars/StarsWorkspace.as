@@ -141,15 +141,15 @@ public class StarsWorkspace extends Sprite {
         infoPanel = new InfoPanel(
                 /*"KioArial", true, //*/"Segoe Print", true,
                 15, 0xff0000, 0xffffff, 0xffffff,
-                1.5, /*api.localization.result*/"",
+                1.7, /*api.localization.result*/"",
                 ["", "", "", ""/*api.localization.intersections, api.localization.right_graphs,
-                    api.localization.diff_graphs, api.localization.length_of_edges*/], 360
+                    api.localization.diff_graphs, api.localization.length_of_edges*/], 374
         );
 
         infoPanelRecord = new InfoPanel(
                 /*"KioArial", true, //*/"Segoe Print", true,
                 15, 0xff0000, 0xffffff, 0xffffff,
-                1.5, /*api.localization.record*/"",
+                1.7, /*api.localization.record*/"",
                 ["", "", "", ""/*api.localization.intersections, api.localization.right_graphs,
                     api.localization.diff_graphs, api.localization.length_of_edges*/], 360
         );
@@ -176,9 +176,9 @@ public class StarsWorkspace extends Sprite {
         addChild(infoPanelRecord);
 
         infoPanel.x = 0;
-        infoPanel.y = 470;
+        infoPanel.y = 463;
         infoPanelRecord.x = 390;
-        infoPanelRecord.y = 470;
+        infoPanelRecord.y = 460;
 
         workspaceLoaded = true;
     }
