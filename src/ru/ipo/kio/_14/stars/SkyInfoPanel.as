@@ -4,6 +4,7 @@
 package ru.ipo.kio._14.stars {
 import flash.display.Sprite;
 import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
 
 public class SkyInfoPanel extends Sprite {
@@ -16,12 +17,16 @@ public class SkyInfoPanel extends Sprite {
 
         public function SkyInfoPanel(sky:StarrySkyView) {
             this._skyView = sky;
-            var tf:TextFormat = new TextFormat("Segoe Print", 13, 0xfffff);
+            var tf:TextFormat = new TextFormat("Segoe Print", 16, 0xfffff);
             txt = new TextField();
             txt.embedFonts = true;
             txt.defaultTextFormat = tf;
             drawPanel();
             addChild(txt);
+            txt.autoSize = TextFieldAutoSize.LEFT;
+
+            mouseEnabled = false;
+            mouseChildren = false;
         }
 
         public function set text(value:String):void {
