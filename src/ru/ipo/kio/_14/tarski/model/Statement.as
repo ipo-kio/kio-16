@@ -17,6 +17,7 @@ import ru.ipo.kio._14.tarski.model.evaluator.Evaluator;
 import ru.ipo.kio._14.tarski.model.operation.ImplicationOperation;
 import ru.ipo.kio._14.tarski.model.parser.StatementParser;
 import ru.ipo.kio._14.tarski.model.predicates.Variable;
+import ru.ipo.kio._14.tarski.model.predicates.Variable;
 import ru.ipo.kio._14.tarski.model.predicates.VariablePlaceHolder;
 import ru.ipo.kio._14.tarski.model.operation.LogicEvaluatedItem;
 import ru.ipo.kio._14.tarski.model.predicates.BasePredicate;
@@ -321,6 +322,16 @@ public class Statement {
 
     public function load(logicItems:Vector.<LogicItem>):void {
         _logicItems = logicItems;
+        for(var i:int=0; i<_logicItems.length; i++){
+            var logicItem:LogicItem = logicItems[i];
+            if(logicItem is OnePlacePredicate){
+                (OnePlacePredicate(logicItem)).placeHolder.statement=this;
+            }else if(logicItem is TwoPlacePredicate){
+                (TwoPlacePredicate(logicItem)).placeHolder1.statement=this;
+                (TwoPlacePredicate(logicItem)).placeHolder2.statement=this;
+            }
+        }
+
     }
 }
 }

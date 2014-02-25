@@ -20,6 +20,7 @@ import ru.ipo.kio._13.clock.model.TransferGear;
 import ru.ipo.kio._13.clock.model.TransmissionMechanism;
 import ru.ipo.kio._13.clock.model.level.ITaskLevel;
 import ru.ipo.kio._13.clock.model.level.LevelCreator;
+import ru.ipo.kio._14.tarski.model.ConfigurationHolder;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
@@ -63,7 +64,7 @@ public class TarskiProblem implements KioProblem{
         if(level ==0){
             _sprite = new TarskiProblemZero(this);
         }else{
-            _sprite=new TarskiProblemFirst(level, stage);
+            _sprite=new TarskiProblemFirst(level, stage, this);
         }
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(TARSKI_RU).data);
         KioApi.registerLocalization(ID, KioApi.L_ES, new Settings(TARSKI_ES).data);
@@ -106,6 +107,7 @@ public class TarskiProblem implements KioProblem{
         }else{
             var statements:Array = solution.statement;
             TarskiProblemFirst.instance.statementManager.load(statements);
+            TarskiProblemFirst.instance.update();
         }
         return true;
     }
@@ -120,8 +122,10 @@ public class TarskiProblem implements KioProblem{
             statements: TarskiProblemZero.instance.getAmountOfCorrectStatements(),
             figures: TarskiProblemZero.instance.configuration.figures.length
         };
-        }else{//TODO
-            return null
+        }else{ return {
+            statements: ConfigurationHolder.instance.getRightSelectionAmount(),
+            length: TarskiProblemFirst.instance.statementManager.getLength()
+        };
         }
     }
 
@@ -138,8 +142,11 @@ public class TarskiProblem implements KioProblem{
                 return getSign(solution1.figures-solution2.figures);
             }
          }else{
-             //TODO
-             return 0;
+             if(solution1.statements!=solution2.statements){
+                 return getSign(solution1.statements-solution2.statements);
+             }else{
+                 return getSign(solution2.length-solution1.length);
+             }
          }
 
     }

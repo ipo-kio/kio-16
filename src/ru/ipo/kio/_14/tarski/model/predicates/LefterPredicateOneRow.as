@@ -38,7 +38,7 @@ public class LefterPredicateOneRow extends TwoPlacePredicate{
     }
 
     public override function getCloned():LogicItem {
-        return new LefterPredicate();
+        return new LefterPredicateOneRow();
     }
 
 }
