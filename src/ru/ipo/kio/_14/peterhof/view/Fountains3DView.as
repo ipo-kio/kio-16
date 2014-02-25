@@ -131,6 +131,9 @@ public class Fountains3DView extends View3D {
         if (fountainBeingMoved) {
             //move fountain
             moveFountain = true;
+
+            var f:Fountain = fountainBeingMoved.fountain;
+            KioApi.log(PeterhofProblem.ID, 'Start moving fountain@ss', f.x, f.z);
         } else {
             //rotate camera
 
@@ -284,6 +287,11 @@ public class Fountains3DView extends View3D {
     }
 
     private function onMouseUp(event:MouseEvent):void {
+        if (moveFountain) {
+            var f:Fountain = fountainBeingMoved.fountain;
+            KioApi.log(PeterhofProblem.ID, 'Stop moving fountain@ss', f.x, f.z);
+        }
+
         move = false;
         moveFountain = false;
         stage.removeEventListener(Event.MOUSE_LEAVE, onStageMouseLeave);

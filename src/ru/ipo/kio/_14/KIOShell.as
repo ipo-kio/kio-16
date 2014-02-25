@@ -11,6 +11,7 @@ import flash.events.Event;
 import ru.ipo.kio._13.blocks.BlocksProblem;
 import ru.ipo.kio._13.clock.ClockProblem;
 import ru.ipo.kio._13.cut.CutProblem;
+import ru.ipo.kio._13.cut.view.CutPoint;
 import ru.ipo.kio._14.peterhof.PeterhofProblem;
 import ru.ipo.kio._14.stars.StarsProblem;
 import ru.ipo.kio._14.tarski.TarskiProblem;
@@ -52,7 +53,8 @@ public class KIOShell extends Sprite {
                 [
                     new StarsProblem(level),
                     new PeterhofProblem(level),
-                    new TarskiProblem(level, stage)
+//                    new TarskiProblem(level, stage)
+                        new CutProblem(level)
                 ],
                 2014,
                 level

@@ -12,6 +12,7 @@ import flash.geom.Matrix;
 
 import ru.ipo.kio._14.stars.graphs.Graph;
 import ru.ipo.kio._14.stars.graphs.IsomorphismChecker;
+import ru.ipo.kio.api.KioApi;
 
 public class StarrySkyView extends Sprite {
 
@@ -90,6 +91,7 @@ public class StarrySkyView extends Sprite {
 
         addEventListener(MouseEvent.MOUSE_UP, function(event:MouseEvent):void {
             if (pressed && currentStar != -1 && currentStar != saveCurrentStar) {
+                KioApi.log(StarsProblem.ID, 'line added@ss', saveCurrentStar, currentStar);
                 var star1:Star = getStarByIndex(saveCurrentStar);
                 var star2:Star = getStarByIndex(currentStar);
                 var lineInd:int = sky.addLine(star1, star2); //TODO sky changed handler called, but we still don't have a line
@@ -97,7 +99,7 @@ public class StarrySkyView extends Sprite {
                     fixLineView(sky.starsLines[lineInd]);
                 else
                     drawingLinesLayer.removeChild(currentLineView);
-            } else if (pressed)
+            } else if (pressed && currentLineView != null)
                 drawingLinesLayer.removeChild(currentLineView);
 //                workspace.panel.text = "X coordinates: " + mouseX + "\n" + "Y coordinates: " + mouseY;
             workspace.panel.text = "";
@@ -200,6 +202,7 @@ public class StarrySkyView extends Sprite {
             //remove line from sky._starsLines and from _lines
             for (var lineViewInd:int = 0; lineViewInd < lines.length; lineViewInd++)
                 if (lines[lineViewInd] == lineView) {
+                    KioApi.log(StarsProblem.ID, 'line removed@ss', lineView.line.s1.index, lineView.line.s2.index);
                     removeLine(lineViewInd);
                     return;
                 }
