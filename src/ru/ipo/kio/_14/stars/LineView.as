@@ -65,7 +65,7 @@ public class LineView extends Sprite {
 
     private function rollOverForLine(e:MouseEvent):void {
         isSelected = true;
-        workspace.panel.text = "Length of the selected line: " + text;
+        workspace.panel.text = "Длина выбранной линии: " + text + " св. л.";
         workspace.skyView.findAndRedrawGraph(line.s1.index);
     }
 
@@ -152,11 +152,11 @@ public class LineView extends Sprite {
     public function computeDistance(localX:Number, localY:Number):String {
         var dx:Number = x1 - localX;
         var dy:Number = y1 - localY;
-        return "" + Math.sqrt(dx * dx + dy * dy).toFixed(3);
+        return "" + Math.sqrt(dx * dx + dy * dy).toFixed(1);
     }
 
     public function get text():String {
-        return "" + _line.distance.toFixed(3);
+        return "" + _line.distance.toFixed(1);
     }
 }
 }
