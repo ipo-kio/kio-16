@@ -96,17 +96,29 @@ public class LineView extends Sprite {
     }
 
     private function redraw():void {
-        if (_isSelected)
-            drawSelectedLine();
-        else if (_error)
-            drawErrorLine();
-        else
-            drawDefaultLine();
+        if (_error) {
+            if (_isSelected)
+                drawSelectedErrorLine();
+            else
+                drawErrorLine();
+        } else {
+            if (_isSelected)
+                drawSelectedLine();
+            else
+                drawDefaultLine();
+        }
     }
 
     private function drawErrorLine():void {
         graphics.clear();
-        graphics.lineStyle(4, ERROR_LINE_COLOR, 0.45);
+        graphics.lineStyle(3, ERROR_LINE_COLOR, 0.45);
+        graphics.moveTo(x1, y1);
+        graphics.lineTo(x2, y2);
+    }
+
+    private function drawSelectedErrorLine():void {
+        graphics.clear();
+        graphics.lineStyle(4, ERROR_LINE_COLOR, 1);
         graphics.moveTo(x1, y1);
         graphics.lineTo(x2, y2);
     }
