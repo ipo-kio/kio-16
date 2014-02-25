@@ -39,7 +39,7 @@ public class UpperPredicateOneRow extends TwoPlacePredicate{
     }
 
     public override function getCloned():LogicItem {
-        return new UpperPredicate();
+        return new UpperPredicateOneRow();
     }
 }
 }

@@ -3,7 +3,12 @@
  * @since: 05.02.14
  */
 package ru.ipo.kio._14.tarski.view.statement {
+import flash.utils.Dictionary;
+
 import ru.ipo.kio._14.tarski.TarskiProblemFirst;
+import ru.ipo.kio._14.tarski.model.predicates.OnePlacePredicate;
+import ru.ipo.kio._14.tarski.model.predicates.TwoPlacePredicate;
+import ru.ipo.kio._14.tarski.model.predicates.Variable;
 import ru.ipo.kio._14.tarski.view.*;
 
 import flash.display.Sprite;
@@ -13,6 +18,12 @@ import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 import ru.ipo.kio._14.tarski.view.statement.Delimiter;
 
 public class StatementViewFree extends BasicView {
+
+    [Embed(source="../../_resources/level0/ok.png")]
+    private static const OK:Class;
+
+    [Embed(source="../../_resources/level0/not_ok.png")]
+    private static const NOTOK:Class;
 
     private var statement:Statement;
 
@@ -25,21 +36,53 @@ public class StatementViewFree extends BasicView {
 
         if(statement.active){
             graphics.beginFill(0xddddff);
-            graphics.drawRect(0,0,Math.max(width,700),height);
+            graphics.drawRect(100,0,Math.max(width,568),height);
             graphics.endFill();
         }
 
+        clearAll();
+
         if(statement.finished){
-            graphics.lineStyle(2,0x99FF99);
+            addChildTo(new OK, 2,7);
         }else{
-            graphics.lineStyle(2,0xFF9999);
+            addChildTo(new NOTOK, 2,7);
         }
 
-        clearAll();
+        var dict:Dictionary = new Dictionary();
+        for(var i:int=0; i<statement.logicItems.length; i++){
+            if(statement.logicItems[i] is OnePlacePredicate && OnePlacePredicate(statement.logicItems[i]).placeHolder.variable!=null){
+                dict[(OnePlacePredicate(statement.logicItems[i]).placeHolder.variable.code)]=(OnePlacePredicate(statement.logicItems[i]).placeHolder.variable.code);
+            }
+            if(statement.logicItems[i] is TwoPlacePredicate && TwoPlacePredicate(statement.logicItems[i]).placeHolder1.variable!=null){
+                dict[(TwoPlacePredicate(statement.logicItems[i]).placeHolder1.variable.code)]=(TwoPlacePredicate(statement.logicItems[i]).placeHolder1.variable.code);
+            }
+            if(statement.logicItems[i] is TwoPlacePredicate && TwoPlacePredicate(statement.logicItems[i]).placeHolder2.variable!=null){
+                dict[(TwoPlacePredicate(statement.logicItems[i]).placeHolder2.variable.code)]=(TwoPlacePredicate(statement.logicItems[i]).placeHolder2.variable.code);
+            }
+            if(statement.logicItems[i] is Variable){
+                dict[(Variable(statement.logicItems[i]).code)]=(Variable(statement.logicItems[i]).code);
+            }
+        }
+
+        var vars:String = "";
+        for (var k:Object in dict) {
+            if(vars != "" ){
+                vars +=",";
+            }
+            vars+=dict[k];
+        }
+
+        if(vars!=""){
+            addChildTo(createField("Для всех "+vars),18,5);
+        }
+
+
+
+
         var list:Vector.<LogicItem>  = statement.logicItems;
         var predelimiter:Delimiter = new Delimiter(statement);
         var aftdelimiter:Delimiter = new Delimiter(statement);
-        var x:int = 0;
+        var x:int = 100;
         if(statement.lastItem==null){
             statement.activeDelimiter=predelimiter;
         }
@@ -69,7 +112,7 @@ public class StatementViewFree extends BasicView {
             statement.activeDelimiter=predelimiter;
         }
 
-        graphics.drawRect(0,0,Math.max(width,700),height);
+
 
 
 
