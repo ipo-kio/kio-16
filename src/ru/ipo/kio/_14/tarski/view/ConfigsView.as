@@ -72,6 +72,7 @@ public class ConfigsView extends BasicView {
 
     public override function update():void{
         graphics.clear();
+        clearAll();
 
 
         var cellSize:int = 23;

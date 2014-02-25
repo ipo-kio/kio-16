@@ -1,0 +1,9 @@
+EX ( color-red-X & size-big-X & shape-sphere-X ):В доме живет по крайней мере один большой красный шарик
+AX AY ( shape-sphere-X & color-red-X & up-X-Y => shape-sphere-Y ):Ниже красных шариков могут жить только шарики
+AX ( color-red-X => EY ( near-X-Y & shape-cube-Y ) ):Рядом с каждым красным жителем живет по крайней мере один кубик
+AX ( shape-cube-X => EY ( near-X-Y & color-blue-Y ) ):Рядом с каждым кубиком живет по крайней мере один синий житель
+AX ( shape-cube-X => EY ( up-Y-X & shape-sphere-Y & color-blue-Y ) ):Над каждым кубиком живет по крайней мере один синий шарик
+AX AY ( size-big-X & left-Y-X => size-small-Y ):Если житель большой, то левее его могут жить только маленькие жители
+AX AY ( size-small-X & up-X-Y => size-big-Y & shape-sphere-Y ):Если житель маленький, то ниже его могут жить только большие шарики
+AX ( shape-sphere-X => ! ( EY ( left-X-Y & color-blue-Y & size-small-Y ) ) ):Правее шариков нет маленьких синих жителей
+
