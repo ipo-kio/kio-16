@@ -18,6 +18,15 @@ public class PeterhofProblem implements KioProblem {
     [Embed(source="loc/peterhof.ru.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
 
+    [Embed(source="resources/icon.png")]
+    public static var ICON:Class;
+
+    [Embed(source="resources/about.png")]
+    public static var ABOUT:Class;
+
+    [Embed(source="resources/help.png")]
+    public static var HELP:Class;
+
     private var _level:int;
     private var workspace:PeterhofWorkspace;
 
@@ -68,15 +77,15 @@ public class PeterhofProblem implements KioProblem {
     }
 
     public function get icon():Class {
-        return null;
+        return ICON;
     }
 
     public function get icon_help():Class {
-        return null;
+        return HELP;
     }
 
     public function get icon_statement():Class {
-        return null;
+        return ABOUT;
     }
 
     public function clear():void {

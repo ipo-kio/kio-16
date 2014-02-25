@@ -56,7 +56,7 @@ public class Hill extends EventDispatcher {
         f4.z = 100;
         f4.l = 0.1;
         f4.d = 0.04;
-        f4.phiGr = 160;
+        f4.phiGr = -30;
         f4.alphaGr = 70;
 
         var f5:Fountain = new Fountain(this);
