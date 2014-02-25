@@ -11,10 +11,14 @@ public class SkyInfoPanel extends Sprite {
         private var txt:TextField;
         private var _skyView:StarrySkyView;
 
+        [Embed(source='resources/segoepr.ttf', embedAsCFF="false", fontName="Segoe Print", mimeType='application/x-font-truetype')]
+        private static var MyFont:Class;
+
         public function SkyInfoPanel(sky:StarrySkyView) {
             this._skyView = sky;
-            var tf:TextFormat = new TextFormat("Arial", 13, 0xfffff);
+            var tf:TextFormat = new TextFormat("Segoe Print", 13, 0xfffff);
             txt = new TextField();
+            txt.embedFonts = true;
             txt.defaultTextFormat = tf;
             drawPanel();
             addChild(txt);
