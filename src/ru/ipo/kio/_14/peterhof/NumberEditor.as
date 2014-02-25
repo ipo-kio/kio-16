@@ -12,6 +12,8 @@ import flash.text.TextFieldAutoSize;
 import flash.text.TextFieldType;
 import flash.text.TextFormat;
 
+import ru.ipo.kio.api.KioApi;
+
 import ru.ipo.kio.api.controls.GraphicsButton;
 
 public class NumberEditor extends Sprite {
@@ -60,10 +62,12 @@ public class NumberEditor extends Sprite {
 
     private static const NORMAL_COLOR:uint = 0x000000;
     private static const ERROR_COLOR:uint = 0xaa2222;
+    private var _logName:String;
 
-    public function NumberEditor(width:int, height:int, min:Number, max:Number, initial_value:Number, units:String, places:int) {
+    public function NumberEditor(width:int, height:int, min:Number, max:Number, initial_value:Number, units:String, places:int, logName:String = "") {
         _width = width;
         _height = NUM_PL_CLS_IMG.height;
+        _logName = logName;
 
         _min = min;
         _max = max;
@@ -162,8 +166,11 @@ public class NumberEditor extends Sprite {
     private function textField_changeHandler(event:Event):void {
         var new_value:Number = Number(_textField.text);
 
-        if (!isNaN(new_value))
+        if (!isNaN(new_value)) {
             setValue(new_value);
+            if (event != null) //event by user
+                KioApi.log(PeterhofProblem.ID, _logName + ' editor changed@s', int(value * _ten));
+        }
 
         textValueUpdated();
     }
@@ -180,10 +187,12 @@ public class NumberEditor extends Sprite {
 
     private function buttonPlus_clickHandler(event:MouseEvent):void {
         value += _delta;
+        KioApi.log(PeterhofProblem.ID, _logName + ' editor changed@s', int(value * _ten));
     }
 
     private function buttonMinus_clickHandler(event:MouseEvent):void {
         value -= _delta;
+        KioApi.log(PeterhofProblem.ID, _logName + ' editor changed@s', int(value * _ten));
     }
 }
 }

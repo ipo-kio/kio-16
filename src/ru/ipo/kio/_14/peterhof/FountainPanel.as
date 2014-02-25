@@ -36,21 +36,21 @@ public class FountainPanel extends Sprite {
 
         const skip:int = 206;
 
-        _alphaEditor = new NumberEditor(width, 18, 0, 90, 45, "°", 0);
+        _alphaEditor = new NumberEditor(width, 18, 0, 90, 45, "°", 0, "alpha");
         var alphaEditor:TitledObject = new TitledObject("Наклон", 24, 0x000000, _alphaEditor, skip);
         addChild(alphaEditor);
 
-        _phiEditor = new NumberEditor(width, 18, -180, 180, 0, "°", 0);
+        _phiEditor = new NumberEditor(width, 18, -180, 180, 0, "°", 0, "phi");
         var phiEditor:TitledObject = new TitledObject("Поворот", 24, 0x000000, _phiEditor, skip);
         addChild(phiEditor);
         phiEditor.y = alphaEditor.height - 4;
 
-        _sprayerWidthEditor = new NumberEditor(width, 18, 0.1, 5, 0.1, "см", 1);
+        _sprayerWidthEditor = new NumberEditor(width, 18, 0.1, 5, 0.1, "см", 1, "diam");
         var sprayerWidthEditor:TitledObject = new TitledObject(showSprayer ? "Диаметр форсунки" : "", 24, 0x000000, _sprayerWidthEditor, skip);
         addChild(sprayerWidthEditor);
         sprayerWidthEditor.y = phiEditor.y + phiEditor.height - 4;
 
-        _sprayerLengthEditor = new NumberEditor(width, 18, 5, 10, 5, "см", 1);
+        _sprayerLengthEditor = new NumberEditor(width, 18, 5, 10, 5, "см", 1, "len");
         var sprayerLengthEditor:TitledObject = new TitledObject(showSprayer ? "Длина форсунки" : "", 24, 0x000000, _sprayerLengthEditor, skip);
         addChild(sprayerLengthEditor);
         sprayerLengthEditor.y = sprayerWidthEditor.y + sprayerWidthEditor.height - 4;
