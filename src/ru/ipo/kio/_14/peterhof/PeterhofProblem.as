@@ -2,7 +2,6 @@
  * Created by ilya on 11.01.14.
  */
 package ru.ipo.kio._14.peterhof {
-import com.adobe.serialization.json.JSON_k;
 
 import flash.display.DisplayObject;
 
@@ -73,7 +72,12 @@ public class PeterhofProblem implements KioProblem {
     }
 
     public function compare(solution1:Object, solution2:Object):int {
-        return solution1.total_length - solution2.total_length;
+        if (solution1.total_length > solution2.total_length)
+            return 1;
+        else if (solution1.total_length < solution2.total_length)
+            return -1;
+        else
+            return 0;
     }
 
     public function get icon():Class {
