@@ -132,8 +132,8 @@ public class Hill extends EventDispatcher {
     private function fountainChanged(event:Event):void {
         var f:Fountain = event.target as Fountain;
 
-        updateLengthInfo();
         updateDistanceInfo();
+        updateLengthInfo();
 
         dispatchEvent(new FountainEvent(FountainEvent.CHANGED, f));
     }
