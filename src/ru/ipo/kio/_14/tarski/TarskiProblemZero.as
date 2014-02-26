@@ -33,7 +33,7 @@ public class TarskiProblemZero extends BasicView {
     [Embed(source="_resources/level0/bg_2.png")]
     private static const BACKGROUND:Class;
 
-    [Embed(source="_resources/examples/statements1.txt", mimeType="application/octet-stream")]
+    [Embed(source="_resources/examples/statements2.txt", mimeType="application/octet-stream")]
     private static const STATEMENTS:Class;
 
 
