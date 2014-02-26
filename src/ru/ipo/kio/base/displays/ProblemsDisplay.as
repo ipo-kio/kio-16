@@ -28,7 +28,7 @@ public class ProblemsDisplay extends Sprite {
 
     public function ProblemsDisplay() {
         if (!firstTimeInitialized) {
-            KioBase.instance.log('Program started', []);
+            KioBase.instance.log('Program started ' + KioBase.instance.version_config.version, []);
             firstTimeInitialized = true;
         }
 
