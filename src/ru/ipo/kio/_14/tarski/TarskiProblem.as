@@ -35,6 +35,12 @@ public class TarskiProblem implements KioProblem{
     [Embed(source='_resources/help.png')]
     private static var HELP:Class;
 
+    [Embed(source='_resources/about0.jpg')]
+    private static var ABOUT0:Class;
+
+    [Embed(source='_resources/help0.png')]
+    private static var HELP0:Class;
+
     [Embed(source="loc/Tarski.ru.json-settings",mimeType="application/octet-stream")]
     public static var TARSKI_RU:Class;
     [Embed(source="loc/Tarski.es.json-settings",mimeType="application/octet-stream")]
@@ -157,11 +163,11 @@ public class TarskiProblem implements KioProblem{
     }
 
     public function get icon_help():Class {
-       return HELP;
+       return level == 0 ? HELP0 : HELP;
     }
 
     public function get icon_statement():Class {
-        return ABOUT;
+        return level == 0 ? ABOUT0 : ABOUT;
     }
 
     public function clear():void{
