@@ -356,6 +356,7 @@ public class Statement {
 
     public function set id(id:int):void {
         _id = id;
+        counter=Math.max(counter, _id)+1;
     }
 }
 }
