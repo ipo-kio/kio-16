@@ -89,9 +89,16 @@ public class StarsProblem implements KioProblem {
         else {
             var res:int = 0;
             if (solution1.total_number_of_difference_graphs == solution2.total_number_of_difference_graphs) {
-                if (solution1.total_number_of_right_graphs == solution2.total_number_of_right_graphs)
-                    res = solution2.sum_of_lines - solution1.sum_of_lines;
-                else
+                if (solution1.total_number_of_right_graphs == solution2.total_number_of_right_graphs) {
+
+                    if (solution2.sum_of_lines > solution1.sum_of_lines)
+                        return 1;
+                    else if (solution2.sum_of_lines < solution1.sum_of_lines)
+                        return -1;
+                    else
+                        return 0;
+
+                } else
                     res = solution1.total_number_of_right_graphs - solution2.total_number_of_right_graphs;
             } else
                 res = solution1.total_number_of_difference_graphs - solution2.total_number_of_difference_graphs;
