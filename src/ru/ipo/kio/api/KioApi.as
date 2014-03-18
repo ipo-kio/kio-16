@@ -163,11 +163,8 @@ public class KioApi extends EventDispatcher {
         if (! _problem.display || ! _problem.display.stage)
             return;
 
-        var solution:Object = null;
-        if (result == null) {
-            solution = _problem.solution;
-            result = _problem.check(solution); //TODO change to get current result
-        }
+        if (result == null)
+            throw new Error("Result in submit result can not be null");
 
         if (_record_result == null || _problem.compare(result, _record_result) > 0) {
             _record_result = result;
@@ -175,9 +172,7 @@ public class KioApi extends EventDispatcher {
 
             //log record if needed
             if (!KioBase.instance.baseIsPreparingAProblem) {
-                if (solution == null)
-                    solution = _problem.solution;
-                log('New record!@t', JSON_k.encode(solution));
+                log('New record!@t', JSON_k.encode(_problem.solution));
             }
 
             dispatchEvent(new Event(RECORD_EVENT));

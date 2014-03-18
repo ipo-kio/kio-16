@@ -20,11 +20,7 @@ public interface KioProblem {
 
     function get solution():Object;
 
-    function get best():Object;
-
     function loadSolution(solution:Object):Boolean;
-
-    function check(solution:Object):Object;
 
     function compare(solution1:Object, solution2:Object):int;
 

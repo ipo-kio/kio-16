@@ -59,10 +59,6 @@ public class PeterhofProblem implements KioProblem {
         return workspace.currentSolution;
     }
 
-    public function get best():Object {
-        return null;
-    }
-
     public function loadSolution(solution:Object):Boolean {
         return workspace.load(solution);
     }

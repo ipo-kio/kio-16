@@ -92,11 +92,6 @@ public class BlocksProblem implements KioProblem {
             return false;
     }
 
-    public function check(solution:Object):Object {
-        loadSolution(solution);
-        return {}; //TODO implement
-    }
-
     public function compare(solution1:Object, solution2:Object):int {
         if (level == 0) {
             var res:int = solution1.in_place - solution2.in_place;
