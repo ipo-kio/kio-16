@@ -86,16 +86,27 @@ public class FileUtils {
 
     public static function saveLog():void {
         var fr:FileReference = new FileReference();
-        var log:String = 'total memory ' + KioBase.instance.lsoProxy.usedBytes + "\n";
 
         var all_logs:Object = KioBase.instance.allLogs;
-        for (var log_id:String in all_logs) {
-            if (!all_logs.hasOwnProperty(log_id))
+
+        var log:String = prettyPrintLog(all_logs);
+        fr.save(log, "kio" + inventDate() + ".log");
+    }
+
+    public static function prettyPrintLog(logsList:Object):String {
+        var lsoProxy:LsoProxy = KioBase.instance.lsoProxy;
+        if (lsoProxy != null)
+            var log:String = 'total memory ' + lsoProxy.usedBytes + "\n";
+        else
+            log = '';
+
+        for (var log_id:String in logsList) {
+            if (!logsList.hasOwnProperty(log_id))
                 continue;
 
-            var logData:Object = all_logs[log_id];
+            var logData:Object = logsList[log_id];
 
-            log += "--------------------------------------------------------------\n";
+            log  += "--------------------------------------------------------------\n";
 //          log += "fadaa129-14422533008-70dda1-1442253281b-68\n"
             log += "        Machine  Time        RND    Time(user)  RND\n";
             log += "log id: " + log_id + "\n";
@@ -123,7 +134,8 @@ public class FileUtils {
                 log += "\n";
             }, logData);
         }
-        fr.save(log, "kio" + inventDate() + ".log");
+
+        return log;
     }
 
     private static function inventDate():String {
