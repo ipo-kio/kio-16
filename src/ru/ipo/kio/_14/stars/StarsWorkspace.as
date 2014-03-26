@@ -27,7 +27,7 @@ public class StarsWorkspace extends Sprite {
     [Embed(source='resources/segoepr.ttf', embedAsCFF="false", fontName="Segoe Print", mimeType='application/x-font-truetype')]
     private static var MyFont:Class;
 
-    [Embed(source="resources/bottom.png")]
+    [Embed(source="resources/bottom0.png")]
     private static const BOTTOM:Class;
     private static const BOTTOM_BMP:BitmapData = new BOTTOM().bitmapData;
 
@@ -132,17 +132,17 @@ public class StarsWorkspace extends Sprite {
         infoPanel = new InfoPanel(
                 /*"KioArial", true, //*/"Segoe Print", true,
                 15, 0xff0000, 0xffffff, 0xffffff,
-                1.8, /*api.localization.result*/"",
-                ["", "", "", ""/*api.localization.intersections, api.localization.right_graphs,
-                    api.localization.diff_graphs, api.localization.length_of_edges*/], 365
+                1.7, api.localization.result,
+                [api.localization.intersections, api.localization.right_graphs,
+                    api.localization.diff_graphs, api.localization.length_of_edges], 310
         );
 
         infoPanelRecord = new InfoPanel(
                 /*"KioArial", true, //*/"Segoe Print", true,
                 15, 0xff0000, 0xffffff, 0xffffff,
-                1.8, /*api.localization.record*/"",
-                ["", "", "", ""/*api.localization.intersections, api.localization.right_graphs,
-                    api.localization.diff_graphs, api.localization.length_of_edges*/], 365
+                1.7, api.localization.record,
+                [api.localization.intersections, api.localization.right_graphs,
+                    api.localization.diff_graphs, api.localization.length_of_edges], 310
         );
 
         infoPanel.setValue(0, "НЕТ");
@@ -166,10 +166,10 @@ public class StarsWorkspace extends Sprite {
         addChild(infoPanel);
         addChild(infoPanelRecord);
 
-        infoPanel.x = 10;
-        infoPanel.y = 463;
-        infoPanelRecord.x = 386;
-        infoPanelRecord.y = 460;
+        infoPanel.x = 60;
+        infoPanel.y = 460;
+        infoPanelRecord.x = 436;
+        infoPanelRecord.y = 457;
 
         workspaceLoaded = true;
     }
