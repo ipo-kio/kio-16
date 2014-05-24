@@ -28,30 +28,32 @@ public class FountainPanel extends Sprite {
     private var _sprayer:Sprayer;
 
     private var _api:KioApi;
+    private var _loc:Object;
     private var _showSprayer:Boolean;
 
     public function FountainPanel(width:int, api:KioApi, showSprayer:Boolean) {
         _api = api;
+        _loc = api.localization;
         _showSprayer = showSprayer;
 
         const skip:int = 206;
 
         _alphaEditor = new NumberEditor(width, 18, 0, 90, 45, "°", 0, "alpha");
-        var alphaEditor:TitledObject = new TitledObject("Наклон", 24, 0x000000, _alphaEditor, skip);
+        var alphaEditor:TitledObject = new TitledObject(_loc.f_tilt, 24, 0x000000, _alphaEditor, skip);
         addChild(alphaEditor);
 
         _phiEditor = new NumberEditor(width, 18, -180, 180, 0, "°", 0, "phi");
-        var phiEditor:TitledObject = new TitledObject("Поворот", 24, 0x000000, _phiEditor, skip);
+        var phiEditor:TitledObject = new TitledObject(_loc.f_rotation, 24, 0x000000, _phiEditor, skip);
         addChild(phiEditor);
         phiEditor.y = alphaEditor.height - 4;
 
-        _sprayerWidthEditor = new NumberEditor(width, 18, 0.1, 5, 0.1, "см", 1, "diam");
-        var sprayerWidthEditor:TitledObject = new TitledObject(showSprayer ? "Диаметр форсунки" : "", 24, 0x000000, _sprayerWidthEditor, skip);
+        _sprayerWidthEditor = new NumberEditor(width, 18, 0.1, 5, 0.1, _loc.centimeters, 1, "diam");
+        var sprayerWidthEditor:TitledObject = new TitledObject(showSprayer ? _loc.f_diameter : "", 24, 0x000000, _sprayerWidthEditor, skip);
         addChild(sprayerWidthEditor);
         sprayerWidthEditor.y = phiEditor.y + phiEditor.height - 4;
 
-        _sprayerLengthEditor = new NumberEditor(width, 18, 5, 10, 5, "см", 1, "len");
-        var sprayerLengthEditor:TitledObject = new TitledObject(showSprayer ? "Длина форсунки" : "", 24, 0x000000, _sprayerLengthEditor, skip);
+        _sprayerLengthEditor = new NumberEditor(width, 18, 5, 10, 5, _loc.centimeters, 1, "len");
+        var sprayerLengthEditor:TitledObject = new TitledObject(showSprayer ? _loc.f_length : "", 24, 0x000000, _sprayerLengthEditor, skip);
         addChild(sprayerLengthEditor);
         sprayerLengthEditor.y = sprayerWidthEditor.y + sprayerWidthEditor.height - 4;
 
@@ -118,8 +120,8 @@ public class FountainPanel extends Sprite {
         _sprayerLengthEditor.value = _fountain.l * 100;
 
         _streamLengthInfo.text = _fountain.stream.goes_out ?
-                "Струя:\nмимо" :
-                "Струя:\n" + _fountain.stream.length.toFixed(3) + ' м';
+                _loc.stream_header + "\n" + _loc.stream_out :
+                _loc.stream_header + "\n" + _fountain.stream.length.toFixed(3) + ' ' + _loc.meters;
 
         if (_fountain != null) {
             _sprayer.f_length = _fountain.l;

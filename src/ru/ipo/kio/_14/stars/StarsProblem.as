@@ -15,6 +15,9 @@ public class StarsProblem implements KioProblem {
     [Embed(source="loc/stars.ru.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
 
+    [Embed(source="loc/stars.th.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_TH:Class;
+
     [Embed(source="resources/about.jpg")]
     public static const ABOUT:Class;
 
@@ -37,6 +40,7 @@ public class StarsProblem implements KioProblem {
         //Регистрация локализации. Программа должна иметь локализацию для каждого из языков,
         //на котором ее предлагается использовать.
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
+        KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(LOCALIZATION_TH).data);
 
         _workspace = new StarsWorkspace(this);
     }

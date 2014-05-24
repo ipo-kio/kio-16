@@ -8,6 +8,7 @@ import flash.events.Event;
 import ru.ipo.kio._14.peterhof.model.Consts;
 import ru.ipo.kio._14.peterhof.model.Hill;
 
+//TODO move text to localization (not really needed, because this code is not for participants)
 public class PhysicsPanel extends Sprite {
     private var _hill:Hill;
 

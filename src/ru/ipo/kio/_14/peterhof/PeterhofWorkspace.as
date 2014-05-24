@@ -38,9 +38,11 @@ public class PeterhofWorkspace extends Sprite {
     private var _recordInfo:FountainsInfoPanel;
 
     private var _api:KioApi;
+    private var _loc:Object;
 
     public function PeterhofWorkspace(problem:KioProblem) {
         _api = KioApi.instance(problem);
+        _loc = _api.localization;
 
         _fountainsView = new Fountains3DView(problem);
         _fountainsView.hillView.addEventListener(FountainEvent.SELECTION_CHANGED, hillView_selection_changedHandler);
@@ -96,7 +98,7 @@ public class PeterhofWorkspace extends Sprite {
     private function hill_changedHandler(event:FountainEvent):void {
         var currentResult:Object = currentResult;
         _api.submitResult(currentResult);
-        _resultInfo.setValue(0, currentResult.total_length.toFixed(3) + ' м');
+        _resultInfo.setValue(0, currentResult.total_length.toFixed(3) + ' ' + _loc.meters);
     }
 
     private function fillBottomPanel(bottomPanel:BottomPanel):void {
@@ -104,11 +106,11 @@ public class PeterhofWorkspace extends Sprite {
         _fountainPanel.x = 10;
         _fountainPanel.y = -15;
 
-        _resultInfo = new FountainsInfoPanel(0, 0x000000, 0x000000, 0x000000, "Результат", [
-            "Общая длина"
+        _resultInfo = new FountainsInfoPanel(0, 0x000000, 0x000000, 0x000000, _loc.result, [
+            _loc.length
         ], 220);
-        _recordInfo = new FountainsInfoPanel(30, 0x000000, 0x000000, 0x000000, "Рекорд", [
-            "Общая длина"
+        _recordInfo = new FountainsInfoPanel(30, 0x000000, 0x000000, 0x000000, _loc.record, [
+            _loc.length
         ], 220);
 
         bottomPanel.addChild(_resultInfo);
@@ -169,7 +171,7 @@ public class PeterhofWorkspace extends Sprite {
 
     private function api_recordHandler(event:Event):void {
         _recordInfo.animateChange();
-        _recordInfo.setValue(0, currentResult.total_length.toFixed(3) + ' м');
+        _recordInfo.setValue(0, currentResult.total_length.toFixed(3) + ' ' + _loc.meters);
     }
 
     override public function get width():Number {

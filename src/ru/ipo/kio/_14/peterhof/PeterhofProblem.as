@@ -16,6 +16,9 @@ public class PeterhofProblem implements KioProblem {
 
     [Embed(source="loc/peterhof.ru.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
+    [Embed(source="loc/peterhof.th.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_TH:Class;
+
 
     [Embed(source="resources/icon.png")]
     public static var ICON:Class;
@@ -35,6 +38,7 @@ public class PeterhofProblem implements KioProblem {
         KioApi.initialize(this);
 
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
+        KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(LOCALIZATION_TH).data);
 
         workspace = new PeterhofWorkspace(this);
     }

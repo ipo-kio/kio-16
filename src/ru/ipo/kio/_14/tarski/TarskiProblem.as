@@ -43,12 +43,12 @@ public class TarskiProblem implements KioProblem{
 
     [Embed(source="loc/Tarski.ru.json-settings",mimeType="application/octet-stream")]
     public static var TARSKI_RU:Class;
-    [Embed(source="loc/Tarski.es.json-settings",mimeType="application/octet-stream")]
-    public static var TARSKI_ES:Class;
-    [Embed(source="loc/Tarski.en.json-settings",mimeType="application/octet-stream")]
-    public static var TARSKI_EN:Class;
-    [Embed(source="loc/Tarski.bg.json-settings",mimeType="application/octet-stream")]
-    public static var TARSKI_BG:Class;
+//    [Embed(source="loc/Tarski.es.json-settings",mimeType="application/octet-stream")]
+//    public static var TARSKI_ES:Class;
+//    [Embed(source="loc/Tarski.en.json-settings",mimeType="application/octet-stream")]
+//    public static var TARSKI_EN:Class;
+//    [Embed(source="loc/Tarski.bg.json-settings",mimeType="application/octet-stream")]
+//    public static var TARSKI_BG:Class;
     [Embed(source="loc/Tarski.th.json-settings",mimeType="application/octet-stream")]
     public static var TARSKI_TH:Class;
 
@@ -66,9 +66,9 @@ public class TarskiProblem implements KioProblem{
             _sprite=new TarskiProblemFirst(level, stage, this);
         }
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(TARSKI_RU).data);
-        KioApi.registerLocalization(ID, KioApi.L_ES, new Settings(TARSKI_ES).data);
-        KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(TARSKI_EN).data);
-        KioApi.registerLocalization(ID, KioApi.L_BG, new Settings(TARSKI_BG).data);
+//        KioApi.registerLocalization(ID, KioApi.L_ES, new Settings(TARSKI_ES).data);
+//        KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(TARSKI_EN).data);
+//        KioApi.registerLocalization(ID, KioApi.L_BG, new Settings(TARSKI_BG).data);
         KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(TARSKI_TH).data);
     }
 

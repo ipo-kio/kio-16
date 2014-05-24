@@ -43,8 +43,6 @@ public class KIOShell extends Sprite {
     private function init(e:Event = null):void {
         removeEventListener(Event.ADDED_TO_STAGE, init);
 
-        KioApi.localizationSelfTest(KioApi.L_RU);
-
         KioBase.instance.init(this,
                 [
                     new StarsProblem(level),
@@ -54,6 +52,8 @@ public class KIOShell extends Sprite {
                 2014,
                 level
         );
+
+        KioApi.localizationSelfTest(KioApi.L_RU);
     }
 
 }
