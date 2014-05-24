@@ -63,10 +63,6 @@ public class PeterhofProblem implements KioProblem {
         return workspace.load(solution);
     }
 
-    public function check(solution:Object):Object {
-        return null;
-    }
-
     public function compare(solution1:Object, solution2:Object):int {
         if (solution1.total_length > solution2.total_length)
             return 1;

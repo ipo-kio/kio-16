@@ -183,6 +183,12 @@ public class KioChecker extends Sprite {
         //noinspection LoopStatementThatDoesntLoopJS
         while (true) {
             var login:String = entry.name;
+
+            if (login.indexOf(".trash") > 0) {
+                log("skipping entry " + entry.name);
+                break;
+            }
+
             //remove extension, skip entry if there is no extension
             var last_point:int = login.lastIndexOf('.');
             if (last_point == -1) {
@@ -348,7 +354,7 @@ public class KioChecker extends Sprite {
             addText('-', table);
         }
 
-        var anketa_headers:Array = ['surname', 'name', 'second_name', 'grade'];
+        var anketa_headers:Array = ['surname', 'name', 'second_name'];
         for each (header in anketa_headers)
             addText(header, table);
 
@@ -496,8 +502,11 @@ public class KioChecker extends Sprite {
 
 //        for each (var problem:KioProblem in checkerProblems[level]) {
         for each (var problemClass:Class in checkerProblems) {
-            //only for 2013
-            var problem:KioProblem = new problemClass(level);
+            //only for 2014
+            if (problemClass == TarskiProblem)
+                var problem:KioProblem = new problemClass(level, stage);
+            else
+                problem = new problemClass(level);
 
             //get and log problem title
             var problemLocalization:Object = KioApi.getLocalization(problem.id);

@@ -227,7 +227,7 @@ public class TarskiProblemFirst extends BasicView {
             if(resultPanel!=null){
                 resultPanel.updateResult(ConfigurationHolder.instance.getRightSelectionAmount()+"",TarskiProblemFirst.instance.statementManager.getLength()+"");
                 KioApi.instance(_problem).autoSaveSolution();
-                KioApi.instance(_problem).submitResult(KioApi.instance(_problem).problem.best);
+                KioApi.instance(_problem).submitResult(TarskiProblem(KioApi.instance(_problem).problem).best);
             }
         }
 

@@ -134,7 +134,7 @@ public class TarskiProblemZero extends BasicView {
         _resultPanel.updateResult(getAmountOfCorrectStatements()+"",_configuration.figures.length+"");
         configuration.view.update();
         KioApi.instance(_problem).autoSaveSolution();
-        KioApi.instance(_problem).submitResult(KioApi.instance(_problem).problem.best);
+        KioApi.instance(_problem).submitResult(TarskiProblem(KioApi.instance(_problem).problem).best);
     }
 
     private function recordChanged(event:Event):void {

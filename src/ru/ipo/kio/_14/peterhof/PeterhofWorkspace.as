@@ -144,6 +144,10 @@ public class PeterhofWorkspace extends Sprite {
     private function removedFromStageHandler(event:Event):void {
         //remove listeners
         stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
+
+        if (KioApi.isChecker)
+            // http://away3d.com/forum/viewthread/1687/#5510
+            _fountainsView.stage3DProxy.dispose();
     }
 
     private function keyDownHandler(event:KeyboardEvent):void {
