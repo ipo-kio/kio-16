@@ -8,10 +8,6 @@ package ru.ipo.kio._14 {
 import flash.display.Sprite;
 import flash.events.Event;
 
-import ru.ipo.kio._13.blocks.BlocksProblem;
-import ru.ipo.kio._13.clock.ClockProblem;
-import ru.ipo.kio._13.cut.CutProblem;
-import ru.ipo.kio._13.cut.view.CutPoint;
 import ru.ipo.kio._14.peterhof.PeterhofProblem;
 import ru.ipo.kio._14.stars.StarsProblem;
 import ru.ipo.kio._14.tarski.TarskiProblem;
