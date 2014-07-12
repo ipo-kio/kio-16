@@ -313,5 +313,9 @@ public class StarsWorkspace extends Sprite {
     public function get panel():SkyInfoPanel {
         return _panel;
     }
+
+    public function get localization():Object {
+        return api.localization;
+    }
 }
 }

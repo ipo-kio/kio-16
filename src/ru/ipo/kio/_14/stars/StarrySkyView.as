@@ -84,7 +84,10 @@ public class StarrySkyView extends Sprite {
         addEventListener(MouseEvent.MOUSE_MOVE, function(event:MouseEvent):void {
             if (pressed) {
                 drawLineView(event.localX, event.localY);
-                workspace.panel.text = "Длина текущей линии: " + currentLineView.computeDistance(event.localX, event.localY) + " св. л.";
+                workspace.panel.text =
+                        _workspace.localization.current_line_length + ": " +
+                                currentLineView.computeDistance(event.localX, event.localY) + " " +
+                                _workspace.localization.distance;
             }
         });
 

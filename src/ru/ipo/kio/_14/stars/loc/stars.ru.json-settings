@@ -130,5 +130,8 @@
 	"diff_graphs": "Различных созвездий",
 	"length_of_edges": "Длина линий",
 
-	"intersected_lines_message" : "Линии пересекаются!"
+	"intersected_lines_message" : "Линии пересекаются!",
+
+    "current_line_length": "Длина текущей линии",
+    "distance": "св. л." /*Переводчику: это сокращение от "световых лет"*/
 }
