@@ -11,6 +11,8 @@ import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
 
+import ru.ipo.kio.api.KioApi;
+
 public class FountainsInfoPanel extends Sprite {
 
     private var textFieldsValues:Array = []; //array of text fields
@@ -20,9 +22,9 @@ public class FountainsInfoPanel extends Sprite {
     //TODO in sending report end button moves to the end of the text and not to the end of the line
 
     public function FountainsInfoPanel(titleSkip:Number, titleColor:uint, labelColor:uint, valueColor:uint, title:String, labels:Array, right:int) {
-        var titleFormat:TextFormat = new TextFormat('KioEkaterina', 24, titleColor, true);
-        var labelFormat:TextFormat = new TextFormat('KioArial', 18, labelColor, false);
-        var valueFormat:TextFormat = new TextFormat('KioArial', 18, valueColor, true);
+        var titleFormat:TextFormat = new TextFormat(KioApi.language == 'th' ? 'KioTahoma' : 'KioEkaterina', 24, titleColor, true);
+        var labelFormat:TextFormat = new TextFormat(KioApi.language == 'th' ? 'KioTahoma' : 'KioArial', 18, labelColor, false);
+        var valueFormat:TextFormat = new TextFormat(KioApi.language == 'th' ? 'KioTahoma' : 'KioArial', 18, valueColor, true);
 
         var embeddedFonts:Boolean = true;
         var lineSkip:Number = 60;

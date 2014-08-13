@@ -8,6 +8,8 @@ import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
 
+import ru.ipo.kio.api.KioApi;
+
 public class TitledObject extends Sprite {
 
     private var _size:int;
@@ -18,7 +20,7 @@ public class TitledObject extends Sprite {
         var tf:TextField = new TextField();
         tf.selectable = false;
         tf.embedFonts = true;
-        tf.defaultTextFormat = new TextFormat("KioEkaterina", size, color);
+        tf.defaultTextFormat = new TextFormat(KioApi.language == 'th' ? 'KioTahoma' : 'KioEkaterina', size, color);
         tf.autoSize = TextFieldAutoSize.LEFT;
         addChild(tf);
         tf.text = title;

@@ -7,6 +7,11 @@ import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
 
+import ru.ipo.kio.api.KioApi;
+
+import ru.ipo.kio.base.KioBase;
+import ru.ipo.kio.api.TextUtils;
+
 public class SkyInfoPanel extends Sprite {
 
         private var txt:TextField;
@@ -16,8 +21,10 @@ public class SkyInfoPanel extends Sprite {
         private static var MyFont:Class;
 
         public function SkyInfoPanel(sky:StarrySkyView) {
+            TextUtils.embedFonts();
+
             this._skyView = sky;
-            var tf:TextFormat = new TextFormat("Segoe Print", 16, 0xfffff);
+            var tf:TextFormat = new TextFormat(KioApi.language == "th" ? "KioTahoma" : "Segoe Print", 16, 0xfffff);
             txt = new TextField();
             txt.embedFonts = true;
             txt.defaultTextFormat = tf;

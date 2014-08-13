@@ -129,8 +129,10 @@ public class StarsWorkspace extends Sprite {
 
         _panel = new SkyInfoPanel(_skyView);
 
+        var infoPanelFont:String = KioApi.language == "th" ? "KioTahoma" : "Segoe Print";
+
         infoPanel = new InfoPanel(
-                /*"KioArial", true, //*/"Segoe Print", true,
+                infoPanelFont, true,
                 15, 0xff0000, 0xffffff, 0xffffff,
                 1.7, api.localization.result,
                 [api.localization.intersections, api.localization.right_graphs,
@@ -138,7 +140,7 @@ public class StarsWorkspace extends Sprite {
         );
 
         infoPanelRecord = new InfoPanel(
-                /*"KioArial", true, //*/"Segoe Print", true,
+                infoPanelFont, true,
                 15, 0xff0000, 0xffffff, 0xffffff,
                 1.7, api.localization.record,
                 [api.localization.intersections, api.localization.right_graphs,
