@@ -36,7 +36,8 @@ public class TarskiProblemZero extends BasicView {
     [Embed(source="_resources/examples/statements2.txt", mimeType="application/octet-stream")]
     private static const STATEMENTS:Class;
 
-
+    [Embed(source="_resources/examples/statements2th.txt", mimeType="application/octet-stream")]
+    private static const STATEMENTS_TH:Class;
 
     private static var _instance:TarskiProblemZero;
 
