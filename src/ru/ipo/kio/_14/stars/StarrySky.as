@@ -228,12 +228,6 @@ public class StarrySky extends EventDispatcher {
         return count;
     }
 
-    public function hasIntersectedAnswer():String {
-        if (hasIntersectedLines())
-            return "ЕСТЬ";
-        return "НЕТ";
-    }
-
     public function hasIntersected():Boolean {
         return hasIntersectedLines();
 

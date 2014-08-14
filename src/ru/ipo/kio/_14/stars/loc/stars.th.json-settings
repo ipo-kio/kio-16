@@ -102,5 +102,8 @@
 	"intersected_lines_message" : "เส้นถูกตัด!",
 
     "current_line_length": "ความยาวของเส้นปัจจุบัน",
-    "distance": "св. л." /*Переводчику: เป็นคำย่อของคำว่า "ปีแสง"*/
+    "distance": "ปีแสง", /*Переводчику: เป็นคำย่อของคำว่า "ปีแสง"*/
+
+    "intersections_no": "ไม่มี",
+    "intersections_yes": "มี"
 }

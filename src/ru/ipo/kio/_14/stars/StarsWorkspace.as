@@ -147,12 +147,12 @@ public class StarsWorkspace extends Sprite {
                     api.localization.diff_graphs, api.localization.length_of_edges], 310
         );
 
-        infoPanel.setValue(0, "НЕТ");
+        infoPanel.setValue(0, api.localization.intersections_no);
         infoPanel.setValue(1, "" + 0);
         infoPanel.setValue(2, "" + 0);
         infoPanel.setValue(3, "" + 0 + " св. л.");
 
-        infoPanelRecord.setValue(0, "НЕТ");
+        infoPanelRecord.setValue(0, api.localization.intersections_no);
         infoPanelRecord.setValue(1, "" + 0);
         infoPanelRecord.setValue(2, "" + 0);
         infoPanelRecord.setValue(3, "" + 0 + " св. л.");
@@ -177,14 +177,14 @@ public class StarsWorkspace extends Sprite {
     }
 
     private function recordChanged(event:Event):void {
-        infoPanelRecord.setValue(0, "" + _sky.hasIntersectedAnswer());
+        infoPanelRecord.setValue(0, "" + (_sky.hasIntersectedLines() ? api.localization.intersections_yes : api.localization.intersections_no));
         infoPanelRecord.setValue(1, "" + _sky.countOfRightGraphs(level));
         infoPanelRecord.setValue(2, "" + _sky.countDifferentGraphs());
-        infoPanelRecord.setValue(3, "" + _sky.sumOfLines.toFixed(1) + " св. л.");
+        infoPanelRecord.setValue(3, "" + _sky.sumOfLines.toFixed(1) + " " + api.localization.distance);
     }
 
     private function sky_changeHandler(event:Event):void {
-        infoPanel.setValue(0, "" + _sky.hasIntersectedAnswer());
+        infoPanel.setValue(0, "" + (_sky.hasIntersectedLines() ? api.localization.intersections_yes : api.localization.intersections_no));
         if (_sky.hasIntersectedLines()) {
             infoPanel.setValue(1, "-");
             infoPanel.setValue(2, "-");
@@ -192,7 +192,7 @@ public class StarsWorkspace extends Sprite {
         } else {
             infoPanel.setValue(1, "" + _sky.countOfRightGraphs(level));
             infoPanel.setValue(2, "" + _sky.countDifferentGraphs());
-            infoPanel.setValue(3, "" + _sky.sumOfLines.toFixed(1) + " св. л.");
+            infoPanel.setValue(3, "" + _sky.sumOfLines.toFixed(1) + " " + api.localization.distance);
         }
 
 
