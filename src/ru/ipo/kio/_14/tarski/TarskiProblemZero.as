@@ -22,6 +22,7 @@ import ru.ipo.kio._14.tarski.view.construct.ResultPanel;
 import ru.ipo.kio._14.tarski.view.statement.PlainLogicItemView;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
+import ru.ipo.kio.api.Settings;
 import ru.ipo.kio.base.displays.ShellButton;
 
 /**
@@ -62,10 +63,19 @@ public class TarskiProblemZero extends BasicView {
 
     private var _problem:KioProblem;
 
-    private var _resultPanel = new ResultPanel();
+    private var _resultPanel;
+
+    [Embed(source="loc/Tarski.ru.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_RU:Class;
+
+    [Embed(source="loc/Tarski.th.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_TH:Class;
 
     public function TarskiProblemZero(problem:KioProblem) {
         _instance=this;
+        KioApi.registerLocalization(TarskiProblem.ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
+        KioApi.registerLocalization(TarskiProblem.ID, KioApi.L_TH, new Settings(LOCALIZATION_TH).data);
+        _resultPanel = new ResultPanel(problem);
         this._problem=problem;
 
         var bg = new BACKGROUND;
@@ -79,7 +89,12 @@ public class TarskiProblemZero extends BasicView {
         graphics.drawRect(0,0,780,600);
         graphics.endFill();
 
-        var byteArrayAsset:ByteArrayAsset = new STATEMENTS;
+        var byteArrayAsset:ByteArrayAsset;
+        if(KioApi.language==KioApi.L_TH){
+            byteArrayAsset = new STATEMENTS_TH;
+        }else {
+            byteArrayAsset = new STATEMENTS;
+        }
         var text:String = byteArrayAsset.toString();
         load(text);
 
