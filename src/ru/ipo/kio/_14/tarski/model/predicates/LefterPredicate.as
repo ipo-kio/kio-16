@@ -44,7 +44,7 @@ public class LefterPredicate extends TwoPlacePredicate{
     }
 
     public override function getCloned():LogicItem {
-        return new LefterPredicate(lefter, lefter);
+        return new LefterPredicate(lefter, lefter2);
     }
 
     public function LefterPredicate(lefter:String, lefter2:String) {

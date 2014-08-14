@@ -16,7 +16,7 @@ public class ImplicationOperation extends TwoPositionOperation{
     public function ImplicationOperation(impl:String, impl2:String) {
         priority=2;
         this.impl=impl;
-        this.impl2=impl;
+        this.impl2=impl2;
         super();
     }
 
