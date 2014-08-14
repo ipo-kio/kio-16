@@ -10,15 +10,19 @@ import flash.errors.IllegalOperationError;
 import flash.utils.Dictionary;
 
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
-
 import ru.ipo.kio._14.tarski.model.properties.PlanePositionable;
 
 public class NearPredicate extends TwoPlacePredicate{
 
     private var step:int=1;
+    private var near:String;
+    private var near2:String;
 
-    public function NearPredicate(step:int=1) {
+    public function NearPredicate(step:int, near:String, near2:String) {
         this.step = step;
+        this.near=near;
+        this.near2=near2;
+        super();
     }
 
     override public function canBeEvaluated():Boolean {
@@ -40,15 +44,15 @@ public class NearPredicate extends TwoPlacePredicate{
 
 
     public override function getToolboxText():String {
-        return "рядом с";
+        return near;
     }
 
     public override function getTooltipText():String {
-        return "живет в квартире рядом (по вертикали, горизонтали или диагонали)";
+        return near2;
     }
 
     public override function getCloned():LogicItem {
-        return new NearPredicate();
+        return new NearPredicate(1,near, near2);
     }
 
 

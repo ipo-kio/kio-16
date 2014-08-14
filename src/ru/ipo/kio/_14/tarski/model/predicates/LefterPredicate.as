@@ -13,6 +13,8 @@ import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 import ru.ipo.kio._14.tarski.model.properties.PlanePositionable;
 
 public class LefterPredicate extends TwoPlacePredicate{
+    private var lefter:String;
+    private var lefter2:String;
 
     override public function canBeEvaluated():Boolean {
         return formalOperand1!=null && formalOperand2!=null;
@@ -34,16 +36,21 @@ public class LefterPredicate extends TwoPlacePredicate{
 
 
     public override function getToolboxText():String {
-        return "левее";
+        return lefter;
     }
 
     public override function getTooltipText():String {
-        return "живет в подъезде, расположенном левее";
+        return lefter2;
     }
 
     public override function getCloned():LogicItem {
-        return new LefterPredicate();
+        return new LefterPredicate(lefter, lefter);
     }
 
+    public function LefterPredicate(lefter:String, lefter2:String) {
+        this.lefter=lefter;
+        this.lefter2=lefter2;
+        super();
+    }
 }
 }

@@ -13,6 +13,8 @@ import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 import ru.ipo.kio._14.tarski.model.properties.PlanePositionable;
 
 public class UpperPredicate extends TwoPlacePredicate{
+    private var upper:String;
+    private var upper2:String;
 
     override public function canBeEvaluated():Boolean {
         return formalOperand1!=null && formalOperand2!=null;
@@ -33,16 +35,22 @@ public class UpperPredicate extends TwoPlacePredicate{
     }
 
     public override function getTooltipText():String {
-        return "живет на одном из более высоких этажей";
+        return upper2;
     }
 
 
     public override function getToolboxText():String {
-        return "выше";
+        return upper;
     }
 
     public override function getCloned():LogicItem {
-        return new UpperPredicate();
+        return new UpperPredicate(upper, upper2);
+    }
+
+    public function UpperPredicate(upper:String, upper2:String) {
+        this.upper=upper;
+        this.upper2=upper2;
+        super();
     }
 }
 }

@@ -6,11 +6,12 @@
 package ru.ipo.kio._14.tarski.view.toolbox {
 import com.nerdbucket.ToolTip;
 
-import flash.events.MouseEvent;
 import flash.text.TextField;
 
 import ru.ipo.kio._14.tarski.utils.FormUtils;
 import ru.ipo.kio._14.tarski.view.BasicView;
+import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.api.KioProblem;
 
 public class ResultPanel extends BasicView {
 
@@ -23,29 +24,31 @@ public class ResultPanel extends BasicView {
     private var lengthFieldRecord:TextField;
 
 
-    public function ResultPanel() {
+    public function ResultPanel(problem:KioProblem) {
 
-        addChild(FormUtils.createLabel("Текущий:",10,10,20,true));
-        var label2:TextField =FormUtils.createLabel("Выполнено условий:",100-5-5,10)
+        var api:KioApi = KioApi.instance(problem);
+
+        addChild(FormUtils.createLabel(api.localization.labels.current+":",10,10,20,true));
+        var label2:TextField =FormUtils.createLabel(api.localization.labels.satisfiedConditionsAmount+":",100-5-5,10)
         addChild(label2);
-        ToolTip.attach(label2, "число домиков, удовлетворяющих условиям, в поселке слева + число  домиков, не удовлетворяющих условию, в поселке справа");
+        ToolTip.attach(label2, api.localization.hints.satisfiedConditionsAmount);
 
-        var label1:TextField =FormUtils.createLabel("Длина условия:",270-5-5,10);
+        var label1:TextField =FormUtils.createLabel(api.localization.labels.formulaLength+":",270-5-5,10);
         addChild(label1);
-        ToolTip.attach(label1, "суммарное количество использованных логических операций и отношений");
+        ToolTip.attach(label1, api.localization.hints.formulaLength);
 
         configField = FormUtils.createLabel("",250-8-5,10,20,true);
         lengthField = FormUtils.createLabel("",370-5,10,20,true);
         addChild(configField);
         addChild(lengthField);
 
-        addChild(FormUtils.createLabel("Рекорд:",400-5-5,10,20,true));
-        var labelr2:TextField =FormUtils.createLabel("Выполнено условий:",500-15-5,10);
+        addChild(FormUtils.createLabel(api.localization.labels.record+":",400-5-5,10,20,true));
+        var labelr2:TextField =FormUtils.createLabel(api.localization.labels.current+":",500-15-5,10);
         addChild(labelr2);
-        ToolTip.attach(labelr2, "число домиков, удовлетворяющих условиям, в поселке слева + число  домиков, не удовлетворяющих условию, в поселке справа");
-        var labelr1:TextField = FormUtils.createLabel("Длина условия:",670-20-5,10);
+        ToolTip.attach(labelr2, api.localization.hints.satisfiedConditionsAmount);
+        var labelr1:TextField = FormUtils.createLabel(api.localization.labels.formulaLength+":",670-20-5,10);
         addChild(labelr1);
-        ToolTip.attach(labelr1, "суммарное количество использованных логических операций и отношений");
+        ToolTip.attach(labelr1, api.localization.hints.formulaLength);
 
         configFieldRecord = FormUtils.createLabel("",650-23-5,10,20,true);
         lengthFieldRecord = FormUtils.createLabel("",770-20,10,20,true);

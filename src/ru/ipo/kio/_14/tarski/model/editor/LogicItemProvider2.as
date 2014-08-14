@@ -9,7 +9,7 @@ import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
 
 public class LogicItemProvider2 extends LogicItemProvider1{
     public function LogicItemProvider2() {
-        super();
+        super(api);
 //        _operations.push(new NotOperation());
 
 //        _variables.push(new Quantifier(Quantifier.EXIST));

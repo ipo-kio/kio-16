@@ -8,10 +8,7 @@ package ru.ipo.kio._14.tarski.model.predicates {
 import flash.errors.IllegalOperationError;
 import flash.utils.Dictionary;
 
-import ru.ipo.kio._14.tarski.model.Figure;
-
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
-
 import ru.ipo.kio._14.tarski.model.properties.ColorValue;
 import ru.ipo.kio._14.tarski.model.properties.Colorable;
 import ru.ipo.kio._14.tarski.model.properties.ValueHolder;
@@ -22,10 +19,15 @@ public class ColorPredicate extends OnePlacePredicate{
      * Проверяемый цвет
      */
     private var color:ColorValue;
+    private var red:String;
+    private var blue:String;
 
 
-     public function ColorPredicate(color:ColorValue) {
+     public function ColorPredicate(color:ColorValue, red:String, blue:String) {
         this.color = color;
+         this.red =red;
+         this.blue =blue;
+
          super();
     }
 
@@ -59,11 +61,11 @@ public class ColorPredicate extends OnePlacePredicate{
     }
 
     public override function getToolboxText():String {
-        return color.code==ColorValue.RED?"Красный":"Синий";
+        return color.code==ColorValue.RED?red:blue;
     }
 
     public override function getCloned():LogicItem {
-        return new ColorPredicate(color);
+        return new ColorPredicate(color, red, blue);
     }
 }
 }

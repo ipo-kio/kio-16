@@ -9,7 +9,6 @@ import flash.errors.IllegalOperationError;
 import flash.utils.Dictionary;
 
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
-
 import ru.ipo.kio._14.tarski.model.properties.Shapable;
 import ru.ipo.kio._14.tarski.model.properties.ShapeValue;
 import ru.ipo.kio._14.tarski.model.properties.ValueHolder;
@@ -20,9 +19,13 @@ public class ShapePredicate extends OnePlacePredicate{
      * Проверяемая форма
      */
     private var shape:ShapeValue;
+    private var cube:String;
+    private var sphere:String;
 
-     public function ShapePredicate(shape:ShapeValue) {
+     public function ShapePredicate(shape:ShapeValue, cube:String, sphere:String) {
         this.shape = shape;
+         this.cube=cube;
+         this.sphere=sphere;
          super();
     }
 
@@ -54,11 +57,11 @@ public class ShapePredicate extends OnePlacePredicate{
     }
 
     public override function getToolboxText():String {
-        return shape.code==ShapeValue.CUBE?"Куб":"Шар";
+        return shape.code==ShapeValue.CUBE?cube:sphere;
     }
 
     public override function getCloned():LogicItem {
-        return new ShapePredicate(shape);
+        return new ShapePredicate(shape, cube, sphere);
     }
 }
 }

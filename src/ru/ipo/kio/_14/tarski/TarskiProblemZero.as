@@ -132,7 +132,7 @@ public class TarskiProblemZero extends BasicView {
                 continue;
             }
             var parts:Array = lines[i].split(":");
-            var item:LogicEvaluatedItem = new StatementParser2().parse(LogicItemUtils.createItemList(parts[0]));
+            var item:LogicEvaluatedItem = new StatementParser2(KioApi.instance(_problem)).parse(LogicItemUtils.createItemList(parts[0], TarskiProblemZero.instance._problem));
             item.itemView = new PlainLogicItemView(item, parts[1]);
             _statements.push(item);
         }

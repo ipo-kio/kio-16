@@ -6,13 +6,17 @@ package ru.ipo.kio._14.tarski.model.operation {
 import flash.utils.Dictionary;
 
 import ru.ipo.kio._14.tarski.model.Figure;
-
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 
 public class EquivalenceOperation extends TwoPositionOperation{
+    private var eqv2:String;
+    private var eqv:String;
 
-    public function EquivalenceOperation() {
+    public function EquivalenceOperation(eqv:String, eqv2:String) {
         priority=1;
+        this.eqv=eqv;
+        this.eqv2=eqv2;
+        super();
     }
 
     public override function resetPriority():void{
@@ -38,15 +42,15 @@ public class EquivalenceOperation extends TwoPositionOperation{
     }
 
     public override function getToolboxText():String {
-        return "<=>";
+        return eqv;
     }
 
     public override function getCloned():LogicItem {
-        return new EquivalenceOperation();
+        return new EquivalenceOperation(eqv, eqv2);
     }
 
     public override function getTooltipText():String {
-        return "ТОГДА И ТОЛЬКО ТОГДА";
+        return eqv2;
     }
 
     public override function getFormulaText():String {

@@ -30,11 +30,14 @@ import ru.ipo.kio._14.tarski.model.predicates.Variable;
 
 import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
 import ru.ipo.kio._14.tarski.view.statement.FictiveLogicItem;
+import ru.ipo.kio.api.KioApi;
 
 public class StatementParser2 extends StatementParser1{
     private var autoQuantors:Boolean = false;
+    private var api:KioApi;
 
-    public function StatementParser2(autoQuantors:Boolean=false) {
+    public function StatementParser2(api:KioApi, autoQuantors:Boolean=false) {
+       this.api=api;
        this.autoQuantors=autoQuantors;
     }
 
@@ -125,7 +128,7 @@ public class StatementParser2 extends StatementParser1{
             if(logicItems[i] is FictiveLogicItem && FictiveLogicItem(logicItems[i]).getFormulaText()==FictiveLogicItem.IF){
                 logicItems.splice(i, 1, new Brace(true), new Brace(true));
             }else if(logicItems[i] is FictiveLogicItem && FictiveLogicItem(logicItems[i]).getFormulaText()==FictiveLogicItem.THEN){
-                logicItems.splice(i, 1, new Brace(false), new ImplicationOperation());
+                logicItems.splice(i, 1, new Brace(false), new ImplicationOperation(api.localization.buttons.impl, api.localization.hints.impl));
                 i++;
                 var braceCount:int = 0 ;
                 for(var j:int = i+1; j<logicItems.length; j++){
@@ -227,26 +230,27 @@ public class StatementParser2 extends StatementParser1{
 
 
     public function parseByPriority(logicItems:Vector.<LogicItem>):LogicEvaluatedItem {
+
         var index:int = getIndexOfLowest(logicItems);
         if(index>=0){
             var logicItem:LogicItem = logicItems[index];
             if(logicItem is EquivalenceOperation){
-                var equivalence:EquivalenceOperation = new EquivalenceOperation();
+                var equivalence:EquivalenceOperation = new EquivalenceOperation(api.localization.buttons.eqv, api.localization.hints.eqv);
                 equivalence.operand1=parseByPriority(logicItems.slice(0,index));
                 equivalence.operand2=parseByPriority(logicItems.slice(index+1));
                 return equivalence;
             }else if(logicItem is ImplicationOperation){
-                var implication:ImplicationOperation = new ImplicationOperation();
+                var implication:ImplicationOperation = new ImplicationOperation(api.localization.buttons.impl, api.localization.hints.impl);
                 implication.operand1=parseByPriority(logicItems.slice(0,index));
                 implication.operand2=parseByPriority(logicItems.slice(index+1));
                 return implication;
             }else if(logicItem is AndOperation){
-                var andOperation:AndOperation = new AndOperation();
+                var andOperation:AndOperation = new AndOperation(api.localization.buttons.and);
                 andOperation.operand1=parseByPriority(logicItems.slice(0,index));
                 andOperation.operand2=parseByPriority(logicItems.slice(index+1));
                 return andOperation;
             }else if(logicItem is OrOperation){
-                var orOperation:OrOperation = new OrOperation();
+                var orOperation:OrOperation = new OrOperation(api.localization.buttons.or);
                 orOperation.operand1=parseByPriority(logicItems.slice(0,index));
                 orOperation.operand2=parseByPriority(logicItems.slice(index+1));
                 return orOperation;

@@ -49,6 +49,7 @@ import ru.ipo.kio._14.tarski.view.toolbox.ResultPanel;
 import ru.ipo.kio._14.tarski.view.toolbox.ToolboxView;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
+import ru.ipo.kio.api.Settings;
 
 import ru.ipo.kio.api.controls.TextButton;
 import ru.ipo.kio.base.displays.ShellButton;
@@ -90,12 +91,24 @@ public class TarskiProblemFirst extends BasicView {
 
     private var _problem:KioProblem;
 
+    [Embed(source="loc/Tarski.ru.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_RU:Class;
+
+    [Embed(source="loc/Tarski.th.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_TH:Class;
+
+    private var _kioApi:KioApi;
+
     public function TarskiProblemFirst(level:int, stage:Stage, problem:KioProblem) {
         _instance=this;
         _stage=stage;
         _problem=problem;
+        KioApi.registerLocalization(TarskiProblem.ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
+        KioApi.registerLocalization(TarskiProblem.ID, KioApi.L_TH, new Settings(LOCALIZATION_TH).data);
+
+
         ToolTip.init(stage, {textalign: 'center', opacity: 80, defaultdelay: 500});
-        resultPanel= new ResultPanel();
+        resultPanel= new ResultPanel(problem);
         var bg = new BACKGROUND;
         addChild(bg);
         addChild(configView);
@@ -108,7 +121,8 @@ public class TarskiProblemFirst extends BasicView {
 
         _statementManager=new StatamentManager(level);
 
-        _logicItemProvider = new LogicItemProvider1();
+        _kioApi = KioApi.instance(problem);
+        _logicItemProvider = new LogicItemProvider1(_kioApi);
 
 
 
@@ -156,9 +170,11 @@ public class TarskiProblemFirst extends BasicView {
             });
         });
 
-        addChild(createPlainButton("Стереть", 678, 100+383, function(e:Event):void{statement.backspace();}));
-        addChild(createPlainButton("Создать", 678, 100+383+28, function(e:Event):void{_statementManager.addStatement();}));
-        addChild(createPlainButton("Удалить", 678, 100+383+28+28, function(e:Event):void{_statementManager.removeStatement();}));
+
+
+        addChild(createPlainButton(_kioApi.localization.buttons.backspace, 678, 100+383, function(e:Event):void{statement.backspace();}));
+        addChild(createPlainButton(_kioApi.localization.buttons.create, 678, 100+383+28, function(e:Event):void{_statementManager.addStatement();}));
+        addChild(createPlainButton(_kioApi.localization.buttons.remove, 678, 100+383+28+28, function(e:Event):void{_statementManager.removeStatement();}));
 
 
 
@@ -245,6 +261,12 @@ public class TarskiProblemFirst extends BasicView {
     }
 
 
+    public function get kioApi():KioApi {
+        return _kioApi;
+    }
 
+    public function get problem():KioProblem {
+        return _problem;
+    }
 }
 }

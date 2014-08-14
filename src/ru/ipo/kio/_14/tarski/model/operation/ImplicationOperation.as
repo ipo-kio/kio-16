@@ -6,14 +6,18 @@ package ru.ipo.kio._14.tarski.model.operation {
 import flash.utils.Dictionary;
 
 import ru.ipo.kio._14.tarski.model.Figure;
-
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 
 public class ImplicationOperation extends TwoPositionOperation{
+    private var impl:String;
+    private var impl2:String;
 
 
-    public function ImplicationOperation() {
+    public function ImplicationOperation(impl:String, impl2:String) {
         priority=2;
+        this.impl=impl;
+        this.impl2=impl;
+        super();
     }
 
     public override function resetPriority():void{
@@ -37,18 +41,18 @@ public class ImplicationOperation extends TwoPositionOperation{
     }
 
     public override function getToolboxText():String {
-        return "=>";
+        return impl;
     }
 
     public override function getCloned():LogicItem {
-        return new ImplicationOperation();
+        return new ImplicationOperation(impl, impl2);
     }
 
     public override function getFormulaText():String {
-        return "=>";
+        return impl;
     }
     public override function getTooltipText():String {
-        return "ЕСЛИ ТО";
+        return impl2;
     }
 
 }

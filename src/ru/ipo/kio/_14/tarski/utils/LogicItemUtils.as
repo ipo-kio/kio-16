@@ -12,7 +12,6 @@ import ru.ipo.kio._14.tarski.model.operation.ImplicationOperation;
 import ru.ipo.kio._14.tarski.model.operation.NotOperation;
 import ru.ipo.kio._14.tarski.model.operation.OrOperation;
 import ru.ipo.kio._14.tarski.model.predicates.BasePredicate;
-import ru.ipo.kio._14.tarski.model.predicates.BasePredicate;
 import ru.ipo.kio._14.tarski.model.predicates.ColorPredicate;
 import ru.ipo.kio._14.tarski.model.predicates.LefterPredicate;
 import ru.ipo.kio._14.tarski.model.predicates.LefterPredicateOneRow;
@@ -24,10 +23,13 @@ import ru.ipo.kio._14.tarski.model.predicates.UpperPredicateOneRow;
 import ru.ipo.kio._14.tarski.model.predicates.Variable;
 import ru.ipo.kio._14.tarski.model.properties.ValueHolder;
 import ru.ipo.kio._14.tarski.model.quantifiers.Quantifier;
+import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.api.KioProblem;
 
 public class LogicItemUtils {
 
-    public static function createItemList(part:String):Vector.<LogicItem> {
+    public static function createItemList(part:String, problem:KioProblem):Vector.<LogicItem> {
+        var api:KioApi = KioApi.instance(problem);
         var items:Vector.<LogicItem> = new Vector.<LogicItem>();
         var parts:Array = part.split(" ");
         for(var i:int=0;i<parts.length;i++){
@@ -36,13 +38,13 @@ public class LogicItemUtils {
                 continue;
             }
             if(ch=="&"){
-                items.push(new AndOperation());
+                items.push(new AndOperation(api.localization.buttons.and));
             }else if(ch=="=>"){
-                items.push(new ImplicationOperation());
+                items.push(new ImplicationOperation(api.localization.buttons.impl, api.localization.hints.impl));
             }else if(ch=="<=>"){
-                items.push(new EquivalenceOperation());
+                items.push(new EquivalenceOperation(api.localization.buttons.eqv, api.localization.hints.eqv));
             }else if(ch=="|"){
-                items.push(new OrOperation());
+                items.push(new OrOperation(api.localization.buttons.or));
             }else if(ch=="!"){
                 items.push(new NotOperation());
             }else if(ch=="("){
@@ -50,21 +52,21 @@ public class LogicItemUtils {
             }else if(ch==")"){
                 items.push(new Brace(false));
             }else if(ch.indexOf("color")>=0){
-                items.push(new ColorPredicate(ValueHolder.getColor("temp1")).parseString(ch));
+                items.push(new ColorPredicate(ValueHolder.getColor("temp1"), api.localization.buttons.red, api.localization.buttons.blue).parseString(ch));
             }else if(ch.indexOf("shape")>=0){
-                items.push(new ShapePredicate(ValueHolder.getShape("temp2")).parseString(ch));
+                items.push(new ShapePredicate(ValueHolder.getShape("temp2"), api.localization.buttons.cube, api.localization.buttons.sphere).parseString(ch));
             }else if(ch.indexOf("size")>=0){
-                items.push(new SizePredicate(ValueHolder.getSize("temp3")).parseString(ch));
+                items.push(new SizePredicate(ValueHolder.getSize("temp3"), api.localization.buttons.big, api.localization.buttons.small).parseString(ch));
             }else if(ch.indexOf("leftrow")>=0){
                 items.push(new LefterPredicateOneRow().parseString(ch));
             }else if(ch.indexOf("left")>=0){
-                items.push(new LefterPredicate().parseString(ch));
+                items.push(new LefterPredicate(api.localization.buttons.lefter, api.localization.hints.lefter).parseString(ch));
             }else if(ch.indexOf("uprow")>=0){
                 items.push(new UpperPredicateOneRow().parseString(ch));
             }else if(ch.indexOf("up")>=0){
-                items.push(new UpperPredicate().parseString(ch));
+                items.push(new UpperPredicate(api.localization.buttons.upper, api.localization.hints.upper).parseString(ch));
             }else if(ch.indexOf("near")>=0){
-                items.push(new NearPredicate().parseString(ch));
+                items.push(new NearPredicate(1,api.localization.buttons.near,api.localization.hints.near).parseString(ch));
             }else if(ch=="X"){
                 items.push(new Variable("X"));
             }else if(ch=="Y"){

@@ -9,7 +9,6 @@ import flash.errors.IllegalOperationError;
 import flash.utils.Dictionary;
 
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
-
 import ru.ipo.kio._14.tarski.model.properties.Sizable;
 import ru.ipo.kio._14.tarski.model.properties.SizeValue;
 import ru.ipo.kio._14.tarski.model.properties.ValueHolder;
@@ -20,10 +19,14 @@ public class SizePredicate extends OnePlacePredicate{
      * Проверяемый размер
      */
     private var size:SizeValue;
+    private var big:String;
+    private var small:String;
 
 
-     public function SizePredicate(size:SizeValue) {
+     public function SizePredicate(size:SizeValue, big:String, small:String) {
         this.size = size;
+         this.big=big;
+         this.small=small;
          super();
     }
 
@@ -57,11 +60,11 @@ public class SizePredicate extends OnePlacePredicate{
     }
 
     public override function getToolboxText():String {
-        return size.code==SizeValue.BIG?"Большой":"Малый";
+        return size.code==SizeValue.BIG?big:small;
     }
 
     public override function getCloned():LogicItem {
-        return new SizePredicate(size);
+        return new SizePredicate(size, big, small);
     }
 }
 }

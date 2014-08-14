@@ -79,7 +79,7 @@ public class StatamentManager {
 
 
     public function addStatement(writeLog:Boolean = true){
-        var statementNew:Statement=new Statement(new StatementParser2(true), new Evaluator2());
+        var statementNew:Statement=new Statement(new StatementParser2(KioApi.instance(TarskiProblemFirst.instance.problem),true), new Evaluator2());
 
 
         statementNew.view.x=0;
@@ -163,7 +163,7 @@ public class StatamentManager {
         for(var i:int=0; i<statements.length; i++){
            addStatement();
            statement.id = statements[i].id;
-           statement.load(LogicItemUtils.createItemList(statements[i].items));
+           statement.load(LogicItemUtils.createItemList(statements[i].items,TarskiProblemFirst.instance.problem));
             statement.view.update();
        }
         parseAndCheckAll();

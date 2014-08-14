@@ -3,18 +3,19 @@
  * @since: 21.01.14
  */
 package ru.ipo.kio._14.tarski.model.operation {
-import flash.errors.IllegalOperationError;
 import flash.utils.Dictionary;
 
 import ru.ipo.kio._14.tarski.model.Figure;
-
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 
 public class AndOperation extends TwoPositionOperation{
+    private var and:String;
 
 
-    public function AndOperation() {
+    public function AndOperation(and:String) {
+        this.and = and;
         priority=4;
+        super();
     }
 
     public override function resetPriority():void{
@@ -40,11 +41,11 @@ public class AndOperation extends TwoPositionOperation{
 
 
     public override function getToolboxText():String {
-        return "И";
+        return and;
     }
 
     public override function getCloned():LogicItem {
-        return new AndOperation();
+        return new AndOperation(and);
     }
 
 }

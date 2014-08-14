@@ -6,14 +6,16 @@ package ru.ipo.kio._14.tarski.model.operation {
 import flash.utils.Dictionary;
 
 import ru.ipo.kio._14.tarski.model.Figure;
-
 import ru.ipo.kio._14.tarski.model.editor.LogicItem;
 
 public class OrOperation extends TwoPositionOperation{
+    private var or:String;
 
 
-    public function OrOperation() {
+    public function OrOperation(or:String) {
         priority=3;
+        this.or = or;
+        super();
     }
 
     public override function resetPriority():void{
@@ -37,11 +39,11 @@ public class OrOperation extends TwoPositionOperation{
     }
 
     public override function getToolboxText():String {
-        return "ИЛИ";
+        return or;
     }
 
     public override function getCloned():LogicItem {
-        return new OrOperation();
+        return new OrOperation(or);
     }
 
 }
