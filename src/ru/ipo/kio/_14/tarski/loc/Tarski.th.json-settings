@@ -99,11 +99,11 @@
 <p>ผลลัพท์ที่ดีที่สุดจะถูกบันทึกอัตโนมัิตและสามารถโหลดไปยังปุ่ม«โหลดผล» และสามารถบันทึกเองได้ที่ปุ่ม «บันทึกผล»และ«โหลดผล»</p>
 >>>,
 "labels":{
-    		"record": "Рекорд",
-    		"satisfiedConditionsAmount": "Выполнено условий",
-    		"figuresAmount": "Количество фигур",
-            "current": "Текущий",
-            "formulaLength": "Длина условий"
+    		"record": "Record",
+    		"satisfiedConditionsAmount": "Conditions satisfied",
+    		"figuresAmount": "Number of figures",
+            "current": "Current",
+            "formulaLength": "Formulas length"
     	},
 
     "hints":{
