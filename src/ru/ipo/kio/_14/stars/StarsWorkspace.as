@@ -169,9 +169,9 @@ public class StarsWorkspace extends Sprite {
         addChild(infoPanelRecord);
 
         infoPanel.x = 60;
-        infoPanel.y = 460;
+        infoPanel.y = 460 + (KioApi.language == 'th' ? 4 : 0);
         infoPanelRecord.x = 436;
-        infoPanelRecord.y = 457;
+        infoPanelRecord.y = 457 + (KioApi.language == 'th' ? 4 : 0);
 
         workspaceLoaded = true;
     }
