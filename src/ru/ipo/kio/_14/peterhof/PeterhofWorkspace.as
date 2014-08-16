@@ -104,7 +104,7 @@ public class PeterhofWorkspace extends Sprite {
     private function fillBottomPanel(bottomPanel:BottomPanel):void {
         bottomPanel.addChild(_fountainPanel);
         _fountainPanel.x = 10;
-        _fountainPanel.y = -15;
+        _fountainPanel.y = KioApi.language == 'th' ? -4 : -15;
 
         _resultInfo = new FountainsInfoPanel(0, 0x000000, 0x000000, 0x000000, _loc.result, [
             _loc.length

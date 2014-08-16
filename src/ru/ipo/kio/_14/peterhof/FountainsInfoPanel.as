@@ -35,7 +35,8 @@ public class FountainsInfoPanel extends Sprite {
         titleField.autoSize = TextFieldAutoSize.LEFT;
         titleField.text = title;
         titleField.selectable = false;
-        titleField.x = titleSkip;
+        titleField.x = KioApi.language == 'th' ? 20 + titleSkip / 2 : titleSkip;
+        titleField.y = KioApi.language == 'th' ? 21 : 0;
 
         var y0:Number = 0;
 

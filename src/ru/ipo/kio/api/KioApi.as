@@ -174,7 +174,7 @@ public class KioApi extends EventDispatcher {
 
             //log record if needed
             if (!KioBase.instance.baseIsPreparingAProblem) {
-                log('New record!@t', JSON_k.encode(_problem.solution));
+                log('New record!@tt', JSON_k.encode(_problem.solution), JSON_k.encode(_record_result));
             }
 
             dispatchEvent(new Event(RECORD_EVENT));

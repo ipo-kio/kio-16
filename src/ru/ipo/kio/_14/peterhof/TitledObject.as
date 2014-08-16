@@ -27,7 +27,7 @@ public class TitledObject extends Sprite {
         tf.antiAliasType = AntiAliasType.ADVANCED;
 
         sprite.x = skip == 0 ? tf.width : skip;
-        sprite.y = 23;
+        sprite.y = tf.defaultTextFormat.font == 'KioTahoma' ? 8 : 23;
         addChild(sprite);
     }
 
