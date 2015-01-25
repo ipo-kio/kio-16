@@ -8,6 +8,7 @@
 package ru.ipo.kio.api {
 import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
+import flash.display.Sprite;
 import flash.text.StyleSheet;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
