@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="kio-14" type="FlashRunConfigurationType" factoryName="Flash App" nameIsGenerated="true">
-    <option name="BCName" value="kio-14" />
+    <option name="BCName" value="kio-15" />
     <option name="IOSSimulatorSdkPath" value="" />
     <option name="adlOptions" value="" />
     <option name="airProgramParameters" value="" />
@@ -22,7 +22,7 @@
       </LauncherParameters>
     </option>
     <option name="mobileRunTarget" value="Emulator" />
-    <option name="moduleName" value="kio-14" />
+    <option name="moduleName" value="kio-15" />
     <option name="overriddenMainClass" value="" />
     <option name="overriddenOutputFileName" value="" />
     <option name="overrideMainClass" value="false" />

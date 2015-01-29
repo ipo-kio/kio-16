@@ -1,7 +1,9 @@
 /**
  * Created by user on 07.02.14.
  */
-package ru.ipo.kio._14.stars {
+package ru.ipo.kio._15.traincars {
+import ru.ipo.kio._14.stars.*;
+
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.utils.Dictionary;
@@ -13,8 +15,8 @@ import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.base.KioBase;
 
 [SWF(width=900, height=625)]
-public class StarsRunner extends Sprite {
-    public function StarsRunner() {
+public class TrainCarsRunner extends Sprite {
+    public function TrainCarsRunner() {
         //Код в конструкторе рекомендуется всегда писать таким же, как здесь.
         //
         //Пояснение: мы определяем, доступен ли нам объект сцены. На сцене расположены все видимые объекты,
@@ -35,7 +37,7 @@ public class StarsRunner extends Sprite {
 
         //Запускаем задачу. Метод initOneProblem() специально сделан для отладки одной задачи.
         //Первый параметр - текущий спрайт, второй параметр - задача
-        KioBase.instance.initOneProblem(this, new StarsProblem(2));
+        KioBase.instance.initOneProblem(this, new TrainCarsProblem(2));
     }
 }
 }

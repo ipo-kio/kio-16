@@ -25,9 +25,6 @@ public class HillView extends ObjectContainer3D {
     [Embed(source="../resources/hill_texture_plain.jpg")]
     public static var FloorDiffuse:Class;
 
-    [Embed(source="../resources/sky_texture.jpg")]
-    public static var SkyTexture:Class;
-
     private var _fountains:Dictionary = new Dictionary(); //Fountain -> FountainView
     private var _selected_fountain:Fountain = null;
 
