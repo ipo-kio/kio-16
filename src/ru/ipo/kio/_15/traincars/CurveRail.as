@@ -7,44 +7,28 @@ import flash.geom.Point;
 
 public class CurveRail extends Sprite {
 
+    public static const DL:Number = 2;
+    public static const TIE_STEPS:int = 2;
+    public static const TIE_WIDTH:Number = 6;
+
     private var p0:Point, p1:Point, _p2:Point;
 
     private var points:Vector.<Number> = new <Number>[];
     private var _startDistance:Number;
-    private var _tieSteps:int;
-    private var _tieWidth:Number;
     private var _startK:int;
+    private var _length:Number;
 
     // http://en.wikipedia.org/wiki/Bézier_curve
 
-    public function CurveRail(p0:Point, p1:Point, p2:Point, startDistance:Number, dl:Number, tieSteps:int, tieWidth:Number) {
+    public function CurveRail(p0:Point, p1:Point, p2:Point, startDistance:Number) {
         this.p0 = p0;
         this.p1 = p1;
         this._p2 = p2;
         _startDistance = startDistance;
-        _tieSteps = tieSteps;
-        _tieWidth = tieWidth;
 
-        var time0:Number = new Date().getTime();
+        _startK = Math.ceil(startDistance / DL);
 
-        _startK = Math.ceil(startDistance / dl);
-        var k0:int = _startK;
-        var l:Number = startDistance + length;
-        while (true) {
-            var l0:Number = dl * k0;
-            if (l0 > l)
-                break;
-
-            var t:Number = step(l0 - startDistance);
-            if (t != Infinity)
-                points.push(t);
-            else
-                trace('t is null');
-
-            k0++;
-        }
-
-        trace(new Date().getTime() - time0);
+        initializePoints();
 
         draw();
     }
@@ -60,8 +44,8 @@ public class CurveRail extends Sprite {
     private function tiePoints(t:Number):Array {
         var p:Point = parametrize(t);
         var n:Point = parametrizeNorm(t);
-        var p1:Point = new Point(p.x + n.x * _tieWidth / 2, p.y + n.y * _tieWidth / 2);
-        var p2:Point = new Point(p.x - n.x * _tieWidth / 2, p.y - n.y * _tieWidth / 2);
+        var p1:Point = new Point(p.x + n.x * TIE_WIDTH / 2, p.y + n.y * TIE_WIDTH / 2);
+        var p2:Point = new Point(p.x - n.x * TIE_WIDTH / 2, p.y - n.y * TIE_WIDTH / 2);
         return [p1, p2];
     }
 
@@ -87,7 +71,7 @@ public class CurveRail extends Sprite {
         //draw ties
         graphics.lineStyle(1, 0x444444);
         for (var i:int = 0; i < points.length; i++)
-            if ((_startK + i) % _tieSteps == 0) {
+            if ((_startK + i) % TIE_STEPS == 0) {
                 t = points[i];
                 tieP = tiePoints(t);
                 graphics.moveTo(tieP[0].x, tieP[0].y);
@@ -96,7 +80,7 @@ public class CurveRail extends Sprite {
     }
 
     public function get length():Number {
-        return lengthBetween(0, 1);
+        return _length;
     }
 
     public function parametrize(t:Number):Point {
@@ -111,6 +95,23 @@ public class CurveRail extends Sprite {
                 2 * (1 - t) * (p1.x - p0.x) + 2 * t * (_p2.x - p1.x),
                 2 * (1 - t) * (p1.y - p0.y) + 2 * t * (_p2.y - p1.y)
         );
+    }
+
+    public function get tickPointsCount():int {
+        return points.length;
+    }
+
+    public function parametrizeByTick(tick:int):Number {
+        tick -= startK;
+        if (tick < 0 || tick >= points.length)
+            return -1;
+        return points[tick];
+    }
+
+    public function drawDebug():void {
+        graphics.lineStyle(1, 0xFF0000);
+        graphics.moveTo(p0.x, p0.y);
+        graphics.curveTo(p1.x, p1.y, p2.x, p2.y);
     }
 
     public function parametrizeNorm(t:Number):Point {
@@ -159,6 +160,42 @@ public class CurveRail extends Sprite {
         }
 
         return sum * d;
+    }
+
+    private function initializePoints():void {
+        var sum:Number = 0;
+
+        var N:int = 1000;
+        var d:Number = 1 / N;
+
+        var k0:int = _startK;
+        var i:int = 0;
+
+        while (true) {
+
+            var t:Number = i / N;
+
+            if (sum * d + _startDistance >= k0 * DL) {
+                points.push(Math.min(t, 1));
+                k0++;
+            }
+
+            if (i > N)
+                break;
+
+            var item:Number = parametrizeDiff(t).length;
+            if (i == 0 || i == N)
+                item /= 2;
+            sum += item;
+
+            i++;
+        }
+
+        _length = sum * d;
+    }
+
+    public function get startK():int {
+        return _startK;
     }
 }
 }
