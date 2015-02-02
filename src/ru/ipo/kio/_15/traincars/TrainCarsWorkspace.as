@@ -8,50 +8,9 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
 
-import ru.ipo.kio._15.traincars.MovingAction;
-
 import ru.ipo.kio.api.controls.GraphicsButton;
 
 public class TrainCarsWorkspace extends Sprite {
-    
-/*
-    [Embed(source="resources/way0up.png")]
-    public static const WAY_0_UP_CLASS:Class;
-    public static const WAY_0_UP_IMG:BitmapData = (new WAY_0_UP_CLASS).bitmapData;
-    [Embed(source="resources/way0down.png")]
-    public static const WAY_0_DOWN_CLASS:Class;
-    public static const WAY_0_DOWN_IMG:BitmapData = (new WAY_0_UP_CLASS).bitmapData;
-    [Embed(source="resources/way0over.png")]
-    public static const WAY_0_OVER_CLASS:Class;
-    public static const WAY_0_OVER_IMG:BitmapData = (new WAY_0_UP_CLASS).bitmapData;
-    [Embed(source="resources/way1up.png")]
-    public static const WAY_1_UP_CLASS:Class;
-    public static const WAY_1_UP_IMG:BitmapData = (new WAY_1_UP_CLASS).bitmapData;
-    [Embed(source="resources/way1down.png")]
-    public static const WAY_1_DOWN_CLASS:Class;
-    public static const WAY_1_DOWN_IMG:BitmapData = (new WAY_1_UP_CLASS).bitmapData;
-    [Embed(source="resources/way1over.png")]
-    public static const WAY_1_OVER_CLASS:Class;
-    public static const WAY_1_OVER_IMG:BitmapData = (new WAY_1_UP_CLASS).bitmapData;
-    [Embed(source="resources/way2up.png")]
-    public static const WAY_2_UP_CLASS:Class;
-    public static const WAY_2_UP_IMG:BitmapData = (new WAY_2_UP_CLASS).bitmapData;
-    [Embed(source="resources/way2down.png")]
-    public static const WAY_2_DOWN_CLASS:Class;
-    public static const WAY_2_DOWN_IMG:BitmapData = (new WAY_2_UP_CLASS).bitmapData;
-    [Embed(source="resources/way2over.png")]
-    public static const WAY_2_OVER_CLASS:Class;
-    public static const WAY_2_OVER_IMG:BitmapData = (new WAY_2_UP_CLASS).bitmapData;
-    [Embed(source="resources/way3up.png")]
-    public static const WAY_3_UP_CLASS:Class;
-    public static const WAY_3_UP_IMG:BitmapData = (new WAY_3_UP_CLASS).bitmapData;
-    [Embed(source="resources/way3down.png")]
-    public static const WAY_3_DOWN_CLASS:Class;
-    public static const WAY_3_DOWN_IMG:BitmapData = (new WAY_3_UP_CLASS).bitmapData;
-    [Embed(source="resources/way3over.png")]
-    public static const WAY_3_OVER_CLASS:Class;
-    public static const WAY_3_OVER_IMG:BitmapData = (new WAY_3_UP_CLASS).bitmapData;
-*/
 
     [Embed(source="resources/btn.png")]
     public static const WAY_UP_CLASS:Class;
@@ -67,6 +26,8 @@ public class TrainCarsWorkspace extends Sprite {
     public static var WAY_START_TICK:int;
 
     private var _positions:CarsPositions;
+
+    private var _animation:Boolean = true;
 
     private var _undo_list:Vector.<MovingAction> = new <MovingAction>[];
 
@@ -136,6 +97,9 @@ public class TrainCarsWorkspace extends Sprite {
         var b4:GraphicsButton = new GraphicsButton("4", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
         var bu:GraphicsButton = new GraphicsButton("undo", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
 
+        var ba_on:GraphicsButton = new GraphicsButton("A on", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var ba_off:GraphicsButton = new GraphicsButton("A off", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+
         addChild(b01);
         addChild(b02);
         addChild(b03);
@@ -145,34 +109,41 @@ public class TrainCarsWorkspace extends Sprite {
         addChild(b3);
         addChild(b4);
         addChild(bu);
+        addChild(ba_on);
+        addChild(ba_off);
 
-        b1.x = 445;
+        b1.x = 445 + 80;
         b1.y = 300;
-        b2.x = 490;
+        b2.x = 490 + 80;
         b2.y = 300;
-        b3.x = 535;
+        b3.x = 535 + 80;
         b3.y = 300;
-        b4.x = 580;
+        b4.x = 580 + 80;
         b4.y = 300;
 
-        b01.x = 445;
+        b01.x = 445 + 80;
         b01.y = 350;
-        b02.x = 490;
+        b02.x = 490 + 80;
         b02.y = 350;
-        b03.x = 535;
+        b03.x = 535 + 80;
         b03.y = 350;
-        b04.x = 580;
+        b04.x = 580 + 80;
         b04.y = 350;
 
-        bu.x = 445;
+        bu.x = 445 + 80;
         bu.y = 400;
+        ba_on.x = 490 + 80;
+        ba_on.y = 400;
+        ba_off.x = ba_on.x;
+        ba_off.y = ba_on.y;
+        ba_on.visible = false;
 
         function moveFromWay(way_ind:int):Function {
             return function(e:Event):void {
                 if (!_positions.mayMoveToTop(way_ind))
                     return;
                 var ma:MovingAction = new MovingAction(MovingAction.TYP_TO_TOP, _positions, way_ind);
-                ma.execute();
+                ma.execute(_animation);
                 _undo_list.push(ma);
             }
         }
@@ -182,7 +153,7 @@ public class TrainCarsWorkspace extends Sprite {
                 if (!_positions.mayMoveFromTop())
                     return;
                 var ma:MovingAction = new MovingAction(MovingAction.TYP_FROM_TOP, _positions, way_ind);
-                ma.execute();
+                ma.execute(_animation);
                 _undo_list.push(ma);
             }
         }
@@ -204,7 +175,24 @@ public class TrainCarsWorkspace extends Sprite {
         b3.addEventListener(MouseEvent.CLICK, moveToWay(2));
         b4.addEventListener(MouseEvent.CLICK, moveToWay(3));
 
-        bu.addEventListener(MouseEvent.CLICK, undoAction)
+        bu.addEventListener(MouseEvent.CLICK, undoAction);
+
+        ba_on.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            ba_on.visible = false;
+            ba_off.visible = true;
+            _animation = true;
+        });
+
+        ba_off.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            ba_off.visible = false;
+            ba_on.visible = true;
+            _animation = false;
+            _positions.positionCars();
+        });
+
+        _positions.addEventListener(CarsPositions.EVENT_ALL_STOPPED, function (event:Event):void {
+            trace('all stopped ' + Math.random());
+        });
     }
 }
 }

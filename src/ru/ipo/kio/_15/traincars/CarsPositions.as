@@ -2,10 +2,15 @@
  * Created by ilya on 31.01.15.
  */
 package ru.ipo.kio._15.traincars {
-public class CarsPositions {
+import flash.events.Event;
+import flash.events.EventDispatcher;
+
+public class CarsPositions extends EventDispatcher {
 
     public static const STATIONS_COUNT:int = 4;
     public static const WAYS_COUNT:int = 4;
+
+    public static const EVENT_ALL_STOPPED:String = 'all stopped';
 
     private var _top:Vector.<Car>;
     private var _way:Vector.<Vector.<Car>> = new <Vector.<Car>>[]; // way -> number -> int
@@ -43,8 +48,10 @@ public class CarsPositions {
             new Car(3, 1)
         ];
 
-        for each (var c:Car in _top)
+        for each (var c:Car in _top) {
             _railsSet.addChild(c);
+            c.addEventListener(Car.EVENT_STOP_MOVE, carStopHandler);
+        }
 
         for (var wayInd:int = 0; wayInd < WAYS_COUNT; wayInd++)
             _way[wayInd] = new <Car>[];
@@ -82,6 +89,11 @@ public class CarsPositions {
         return _way_loco;
     }
 
+    private function carStopHandler(event:Event):void {
+        if (!isAnythingMoving())
+            dispatchEvent(new Event(EVENT_ALL_STOPPED));
+    }
+
 //   way way way way way             top top top top top top
 
     public function moveToTop(wayInd:int, count:int):Boolean {
@@ -111,11 +123,6 @@ public class CarsPositions {
             way.push(car);
 
         return true;
-    }
-
-
-    public function toString():String {
-        return "CarsPositions{_top=" + String(_top) + ",_way=" + _way.join("+") + "}";
     }
 
     public function positionCars(): void {
@@ -174,18 +181,24 @@ public class CarsPositions {
         if (_way[way_ind].length == 0)
             return false;
 
+        return !isAnythingMoving();
+    }
+
+    public function isAnythingMoving():Boolean {
         for each (var car:Car in _top)
             if (car.isMoving())
-                return false;
+                return true;
         for each (var cars:Vector.<Car> in _way)
             for each (car in cars)
                 if (car.isMoving())
-                    return false;
+                    return true;
         for each (car in _way_loco)
             if (car.isMoving())
-                return false;
+                return true;
+        if (_top_loco.isMoving())
+            return true;
 
-        return true;
+        return false;
     }
 
     public function setCars(top_cars_list:Vector.<Car>, way_ind:int, way_cars_list:Vector.<Car>):void {

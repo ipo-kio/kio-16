@@ -40,14 +40,20 @@ public class MovingAction {
         return _position.railWay[_way_ind];
     }
 
-    public function execute():void {
+    public function execute(animate:Boolean):void {
         storeCars();
         if (_typ == TYP_TO_TOP) {
             _position.moveOperationToTop(_way_ind);
-            executeToTop();
+            if (animate)
+                executeToTop();
+            else
+                _position.positionCars();
         } else if (_typ == TYP_FROM_TOP) {
             _position.moveOperationFromTop(_way_ind);
-            executeFromTop();
+            if (animate)
+                executeFromTop();
+            else
+                _position.positionCars();
         }
     }
 
@@ -76,7 +82,6 @@ public class MovingAction {
         var loco:Car = _position.way_loco[_way_ind];
         loco.subMoveDelta(loco.tick - TrainCarsWorkspace.TOP_END_TICK - Car.CAR_TICKS_LENGTH, way);
         loco.addEventListener(Car.EVENT_PUSH_UP, locoPushUpHandler);
-        loco.addEventListener(Car.EVENT_STOP_MOVE, carStoppedHandler)
     }
 
     private function carStoppedHandler(e:Event):void {
