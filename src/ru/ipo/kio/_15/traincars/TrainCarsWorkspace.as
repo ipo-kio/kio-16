@@ -8,6 +8,8 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
 
+import ru.ipo.kio._15.traincars.MovingAction;
+
 import ru.ipo.kio.api.controls.GraphicsButton;
 
 public class TrainCarsWorkspace extends Sprite {
@@ -65,6 +67,8 @@ public class TrainCarsWorkspace extends Sprite {
     public static var WAY_START_TICK:int;
 
     private var _positions:CarsPositions;
+
+    private var _undo_list:Vector.<MovingAction> = new <MovingAction>[];
 
     public function TrainCarsWorkspace() {
         draw();
@@ -130,6 +134,7 @@ public class TrainCarsWorkspace extends Sprite {
         var b2:GraphicsButton = new GraphicsButton("2", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
         var b3:GraphicsButton = new GraphicsButton("3", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
         var b4:GraphicsButton = new GraphicsButton("4", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var bu:GraphicsButton = new GraphicsButton("undo", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
 
         addChild(b01);
         addChild(b02);
@@ -139,6 +144,7 @@ public class TrainCarsWorkspace extends Sprite {
         addChild(b2);
         addChild(b3);
         addChild(b4);
+        addChild(bu);
 
         b1.x = 445;
         b1.y = 300;
@@ -158,12 +164,16 @@ public class TrainCarsWorkspace extends Sprite {
         b04.x = 580;
         b04.y = 350;
 
+        bu.x = 445;
+        bu.y = 400;
+
         function moveFromWay(way_ind:int):Function {
             return function(e:Event):void {
                 if (!_positions.mayMoveToTop(way_ind))
                     return;
                 var ma:MovingAction = new MovingAction(MovingAction.TYP_TO_TOP, _positions, way_ind);
                 ma.execute();
+                _undo_list.push(ma);
             }
         }
 
@@ -173,6 +183,14 @@ public class TrainCarsWorkspace extends Sprite {
                     return;
                 var ma:MovingAction = new MovingAction(MovingAction.TYP_FROM_TOP, _positions, way_ind);
                 ma.execute();
+                _undo_list.push(ma);
+            }
+        }
+
+        function undoAction(e:Event):void {
+            if (_undo_list.length > 0) {
+                var ma:MovingAction = _undo_list.pop();
+                ma.undo();
             }
         }
 
@@ -185,6 +203,8 @@ public class TrainCarsWorkspace extends Sprite {
         b2.addEventListener(MouseEvent.CLICK, moveToWay(1));
         b3.addEventListener(MouseEvent.CLICK, moveToWay(2));
         b4.addEventListener(MouseEvent.CLICK, moveToWay(3));
+
+        bu.addEventListener(MouseEvent.CLICK, undoAction)
     }
 }
 }

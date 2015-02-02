@@ -121,17 +121,22 @@ public class CarsPositions {
     public function positionCars(): void {
         var topI:int = 0;
         for each (var topCar:Car in _top) {
+            topCar.stopMovement();
+
             topCar.moveTo(_railWay[0], TrainCarsWorkspace.TOP_END_TICK - topI * Car.CAR_TICKS_LENGTH);
             topI++;
         }
+        _top_loco.stopMovement();
         _top_loco.moveTo(_railWay[0], TrainCarsWorkspace.TOP_END_TICK - topI * Car.CAR_TICKS_LENGTH);
 
         for (var way_ind:int = 0; way_ind < WAYS_COUNT; way_ind++) {
             var wayI:int = carsCount(way_ind) - 1;
             for each (var wayCar:Car in _way[way_ind]) {
+                wayCar.stopMovement();
                 wayCar.moveTo(_railWay[way_ind], TrainCarsWorkspace.WAY_START_TICK + wayI * Car.CAR_TICKS_LENGTH);
                 wayI--;
             }
+            _way_loco[way_ind].stopMovement();
             _way_loco[way_ind].moveTo(_railWay[way_ind], TrainCarsWorkspace.WAY_START_TICK + carsCount(way_ind) * Car.CAR_TICKS_LENGTH);
         }
     }
@@ -181,6 +186,11 @@ public class CarsPositions {
                 return false;
 
         return true;
+    }
+
+    public function setCars(top_cars_list:Vector.<Car>, way_ind:int, way_cars_list:Vector.<Car>):void {
+        _top = top_cars_list;
+        _way[way_ind] = way_cars_list;
     }
 }
 }

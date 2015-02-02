@@ -60,6 +60,7 @@ public class MovingAction {
         for each (car in _cars_move) {
             car.addMoveDelta(delta, way);
             car.addEventListener(Car.EVENT_PUSH_DOWN, pushDownHandler);
+            car.addEventListener(Car.EVENT_STOP_MOVE, carStoppedHandler);
         }
 
         _position.top_loco.addMoveDelta(Car.CAR_TICKS_LENGTH, way);
@@ -70,10 +71,20 @@ public class MovingAction {
         for each (var car:Car in _cars_move) {
             car.subMoveDelta(delta, way);
             car.addEventListener(Car.EVENT_PUSH_UP, pushUpHandler);
+            car.addEventListener(Car.EVENT_STOP_MOVE, carStoppedHandler);
         }
         var loco:Car = _position.way_loco[_way_ind];
         loco.subMoveDelta(loco.tick - TrainCarsWorkspace.TOP_END_TICK - Car.CAR_TICKS_LENGTH, way);
         loco.addEventListener(Car.EVENT_PUSH_UP, locoPushUpHandler);
+        loco.addEventListener(Car.EVENT_STOP_MOVE, carStoppedHandler)
+    }
+
+    private function carStoppedHandler(e:Event):void {
+        var car:Car = Car(e.target);
+        car.removeEventListener(Car.EVENT_PUSH_DOWN, pushDownHandler);
+        car.removeEventListener(Car.EVENT_PUSH_UP, pushUpHandler);
+
+        car.removeEventListener(Car.EVENT_STOP_MOVE, carStoppedHandler);
     }
 
     private function pushDownHandler(event:Event):void {
@@ -96,6 +107,25 @@ public class MovingAction {
         var loco:Car = Car(event.target);
         loco.removeEventListener(Car.EVENT_PUSH_UP, locoPushUpHandler);
         loco.addMoveDelta(TrainCarsWorkspace.WAY_START_TICK - loco.tick, way);
+    }
+
+    public function undo():void {
+        _position.positionCars();
+
+        var top_cars_list:Vector.<Car> = new <Car>[];
+        var way_cars_list:Vector.<Car> = new <Car>[];
+
+        if (_typ == TYP_FROM_TOP) {
+            top_cars_list = _cars_move.concat(_cars_top);
+            way_cars_list = _cars_way.slice();
+        } else if (_typ == TYP_TO_TOP) {
+            top_cars_list = _cars_top.slice();
+            way_cars_list = _cars_way.concat(_cars_move);
+        }
+
+        _position.setCars(top_cars_list, _way_ind, way_cars_list);
+
+        _position.positionCars();
     }
 }
 }

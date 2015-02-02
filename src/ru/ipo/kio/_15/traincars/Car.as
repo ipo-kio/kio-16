@@ -25,6 +25,9 @@ public class Car extends Sprite {
 
     public static const EVENT_PUSH_DOWN:String = 'push down';
     public static const EVENT_PUSH_UP:String = 'push up';
+    public static const EVENT_STOP_MOVE:String = 'stop move';
+
+    public static const DT_SPEED:int = 2;
 
     private var _station:int;
     private var _number:int;
@@ -153,19 +156,15 @@ public class Car extends Sprite {
         addEventListener(Event.ENTER_FRAME, doMove);
     }
 
-    private function removeListener():void {
-        _moving = false;
-        removeEventListener(Event.ENTER_FRAME, doMove);
-    }
-
     private function doMove(e:Event):void {
-        var dt:int = 1;
+        var dt:int = Math.min(Math.abs(_moveDelta), DT_SPEED);
+
         if (_moveDelta > 0) {
             _moveDelta -= dt;
             moveTo(_movingWay, tick + dt);
             if (_moveDelta <= 0) {
                 _moveDelta = 0;
-                removeListener();
+                stopMovement();
             }
 
             if (tick >= TrainCarsWorkspace.WAY_START_TICK - CAR_TICKS_LENGTH)
@@ -175,8 +174,8 @@ public class Car extends Sprite {
             _moveDelta += dt;
             moveTo(_movingWay, tick - dt);
             if (_moveDelta >= 0) {
-                _moveDelta = 0; //TODO think ...
-                removeListener();
+                _moveDelta = 0;
+                stopMovement();
             }
 
             if (tick <= TrainCarsWorkspace.TOP_END_TICK + CAR_TICKS_LENGTH)
@@ -200,6 +199,13 @@ public class Car extends Sprite {
 
     public function get way():RailWay {
         return _movingWay;
+    }
+
+    public function stopMovement():void {
+        _moving = false;
+        _moveDelta = 0;
+        removeEventListener(Event.ENTER_FRAME, doMove);
+        dispatchEvent(new Event(EVENT_STOP_MOVE));
     }
 }
 }
