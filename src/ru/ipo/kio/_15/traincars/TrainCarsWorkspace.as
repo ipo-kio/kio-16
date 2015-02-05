@@ -8,7 +8,11 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
 
+import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.api.KioProblem;
+
 import ru.ipo.kio.api.controls.GraphicsButton;
+import ru.ipo.kio.api.controls.InfoPanel;
 
 public class TrainCarsWorkspace extends Sprite {
 
@@ -30,10 +34,27 @@ public class TrainCarsWorkspace extends Sprite {
     private var _animation:Boolean = true;
 
     private var _undo_list:Vector.<MovingAction> = new <MovingAction>[];
+    private var _downhill_steps:int = 0;
+    private var _uphill_steps:int = 0;
 
-    public function TrainCarsWorkspace() {
+    private var _info_current:InfoPanel;
+    private var _info_record:InfoPanel;
+
+    private var _api:KioApi;
+    private var _problem:KioProblem;
+
+    public function TrainCarsWorkspace(problem:KioProblem) {
+        _api = KioApi.instance(problem);
+        _problem = problem;
         draw();
         putButtons();
+
+        _api.addEventListener(KioApi.RECORD_EVENT, function (e:Event):void {
+            update_info(_info_record, result);
+        });
+
+        //TODO will not be needed after loading of solution implemented
+        update_info(_info_current, result);
     }
 
     private function draw():void {
@@ -84,6 +105,35 @@ public class TrainCarsWorkspace extends Sprite {
         _positions = new CarsPositions(rSet, railWays);
 
         _positions.positionCars();
+
+        initInfoPanels();
+
+        //draw bottom
+        for (var e:int = 0; e < CarsPositions.WAYS_COUNT; e++) {
+            rSet.rail(final_way_ind_1[e]).drawBottom(Car.STATION_COLOR[e]);
+            rSet.rail(final_way_ind_2[e]).drawBottom(Car.STATION_COLOR[e]);
+        }
+    }
+
+    private function initInfoPanels():void {
+        _info_current = new InfoPanel(
+                'KioArial', true, 14, 0x000000, 0x222222, 0x880000, 1.2, 'Решение', [
+                        'Едут верно', 'Транспозиций', 'Поднятий вверх', 'Спусков вниз'
+                ], 140
+        );
+
+        _info_record = new InfoPanel(
+                'KioArial', true, 14, 0x000000, 0x222222, 0x880000, 1.2, 'Рекорд', [
+                    'Едут верно', 'Транспозиций', 'Поднятий вверх', 'Спусков вниз'
+                ], 140
+        );
+
+        addChild(_info_current);
+        addChild(_info_record);
+        _info_current.x = 250;
+        _info_current.y = 100;
+        _info_record.x = 250;
+        _info_record.y = 250;
     }
 
     private function putButtons():void {
@@ -99,6 +149,7 @@ public class TrainCarsWorkspace extends Sprite {
 
         var ba_on:GraphicsButton = new GraphicsButton("A on", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
         var ba_off:GraphicsButton = new GraphicsButton("A off", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var b_cl:GraphicsButton = new GraphicsButton("clear", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
 
         addChild(b01);
         addChild(b02);
@@ -111,6 +162,7 @@ public class TrainCarsWorkspace extends Sprite {
         addChild(bu);
         addChild(ba_on);
         addChild(ba_off);
+        addChild(b_cl);
 
         b1.x = 445 + 80;
         b1.y = 300;
@@ -137,14 +189,17 @@ public class TrainCarsWorkspace extends Sprite {
         ba_off.x = ba_on.x;
         ba_off.y = ba_on.y;
         ba_on.visible = false;
+        b_cl.x = 535 + 80;
+        b_cl.y = 400;
 
         function moveFromWay(way_ind:int):Function {
             return function(e:Event):void {
                 if (!_positions.mayMoveToTop(way_ind))
                     return;
                 var ma:MovingAction = new MovingAction(MovingAction.TYP_TO_TOP, _positions, way_ind);
-                ma.execute(_animation);
                 _undo_list.push(ma);
+                _uphill_steps ++;
+                ma.execute(_animation);
             }
         }
 
@@ -153,14 +208,19 @@ public class TrainCarsWorkspace extends Sprite {
                 if (!_positions.mayMoveFromTop())
                     return;
                 var ma:MovingAction = new MovingAction(MovingAction.TYP_FROM_TOP, _positions, way_ind);
-                ma.execute(_animation);
                 _undo_list.push(ma);
+                _downhill_steps ++;
+                ma.execute(_animation);
             }
         }
 
         function undoAction(e:Event):void {
             if (_undo_list.length > 0) {
                 var ma:MovingAction = _undo_list.pop();
+                if (ma.typ == MovingAction.TYP_FROM_TOP)
+                    _downhill_steps --;
+                else
+                    _uphill_steps --;
                 ma.undo();
             }
         }
@@ -190,9 +250,46 @@ public class TrainCarsWorkspace extends Sprite {
             _positions.positionCars();
         });
 
-        _positions.addEventListener(CarsPositions.EVENT_ALL_STOPPED, function (event:Event):void {
-            trace('all stopped ' + Math.random());
+        b_cl.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            clear();
         });
+
+        _positions.addEventListener(CarsPositions.EVENT_ALL_STOPPED, function (event:Event):void {
+            var r:Object = result;
+            update_info(_info_current, r);
+            _api.submitResult(r);
+        });
+    }
+
+    private static function update_info(i:InfoPanel, r:Object):void {
+        i.setValue(0, r.correct);
+        i.setValue(1, r.transpositions);
+        i.setValue(2, r.up_hill);
+        i.setValue(3, r.down_hill);
+    }
+
+    public function get result():Object {
+        return {
+            correct: _positions.correctCarsCount,
+            transpositions: _positions.transpositionsCount,
+            up_hill: uphill_steps,
+            down_hill: downhill_steps
+        };
+    }
+
+    public function get downhill_steps():int {
+        return _downhill_steps;
+    }
+
+    public function get uphill_steps():int {
+        return _uphill_steps;
+    }
+
+    public function clear():void {
+        _undo_list.splice(0, _undo_list.length);
+        _uphill_steps = 0;
+        _downhill_steps = 0;
+        _positions.clear();
     }
 }
 }

@@ -31,7 +31,7 @@ public class TrainCarsProblem implements KioProblem {
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
         KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(LOCALIZATION_TH).data);
 
-        workspace = new TrainCarsWorkspace();
+        workspace = new TrainCarsWorkspace(this);
     }
 
     public function get id():String {
@@ -58,7 +58,27 @@ public class TrainCarsProblem implements KioProblem {
         return false;
     }
 
-    public function compare(solution1:Object, solution2:Object):int {
+    public function compare(r1:Object, r2:Object):int {
+        /*
+         i.setValue(0, r.correct);
+         i.setValue(1, r.transpositions);
+         i.setValue(2, r.up_hill);
+         i.setValue(3, r.down_hill);
+         */
+        var v:int;
+        v = r1.correct - r2.correct;
+        if (v != 0)
+            return v;
+        v = r2.transpositions - r1.transpositions;
+        if (v != 0)
+            return v;
+        v = r2.up_hill - r1.up_hill;
+        if (v != 0)
+            return v;
+        v = r2.down_hill - r1.down_hill;
+        if (v != 0)
+            return v;
+
         return 0;
     }
 
@@ -75,7 +95,7 @@ public class TrainCarsProblem implements KioProblem {
     }
 
     public function clear():void {
-
+        workspace.clear();
     }
 }
 }

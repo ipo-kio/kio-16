@@ -17,6 +17,10 @@ public class MovingAction {
     private var _cars_move:Vector.<Car>;
     private var _cars_way:Vector.<Car>;
 
+    public static function createFromShortRepresentation(repr:int, position:CarsPositions):MovingAction {
+        return new MovingAction(repr < 0 ? TYP_TO_TOP : TYP_FROM_TOP, position, Math.abs(repr) - 1);
+    }
+
     public function MovingAction(typ:int, position:CarsPositions, way_ind:int) {
         _typ = typ;
         _position = position;
@@ -34,6 +38,10 @@ public class MovingAction {
             _cars_move = _position.top.slice(0, 1);
             _cars_way = way_cars.slice();
         }
+    }
+
+    public function get typ():int {
+        return _typ;
     }
 
     public function get way():RailWay {
@@ -131,6 +139,15 @@ public class MovingAction {
         _position.setCars(top_cars_list, _way_ind, way_cars_list);
 
         _position.positionCars();
+    }
+
+    public function get shortRepresentation():int {
+        if (_typ == TYP_FROM_TOP)
+            return _way_ind + 1;
+        else if (_typ == TYP_TO_TOP)
+            return -_way_ind - 1;
+
+        return 0;
     }
 }
 }

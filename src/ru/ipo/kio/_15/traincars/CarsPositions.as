@@ -12,6 +12,7 @@ public class CarsPositions extends EventDispatcher {
 
     public static const EVENT_ALL_STOPPED:String = 'all stopped';
 
+    private var _top_initial:Vector.<Car>;
     private var _top:Vector.<Car>;
     private var _way:Vector.<Vector.<Car>> = new <Vector.<Car>>[]; // way -> number -> int
 
@@ -25,7 +26,7 @@ public class CarsPositions extends EventDispatcher {
         _railsSet = railsSet;
         _railWay = railWay;
 
-        _top = new <Car>[
+        _top_initial = new <Car>[
             new Car(0, 5),
             new Car(0, 4),
             new Car(0, 3),
@@ -48,6 +49,8 @@ public class CarsPositions extends EventDispatcher {
             new Car(3, 1)
         ];
 
+        _top = _top_initial.slice();
+
         for each (var c:Car in _top) {
             _railsSet.addChild(c);
             c.addEventListener(Car.EVENT_STOP_MOVE, carStopHandler);
@@ -57,11 +60,13 @@ public class CarsPositions extends EventDispatcher {
             _way[wayInd] = new <Car>[];
 
         _top_loco = new Car(4, 0);
+        _top_loco.addEventListener(Car.EVENT_STOP_MOVE, carStopHandler);
         _railsSet.addChild(_top_loco);
         for (wayInd = 0; wayInd < WAYS_COUNT; wayInd++) {
             var loco:Car = new Car(4, 0);
             _way_loco.push(loco);
             _railsSet.addChild(loco);
+            loco.addEventListener(Car.EVENT_STOP_MOVE, carStopHandler);
         }
     }
 
@@ -126,6 +131,7 @@ public class CarsPositions extends EventDispatcher {
     }
 
     public function positionCars(): void {
+        //TODO this method fires a lot of 'all stopped' events
         var topI:int = 0;
         for each (var topCar:Car in _top) {
             topCar.stopMovement();
@@ -192,11 +198,12 @@ public class CarsPositions extends EventDispatcher {
             for each (car in cars)
                 if (car.isMoving())
                     return true;
+
+        if (_top_loco.isMoving())
+            return true;
         for each (car in _way_loco)
             if (car.isMoving())
                 return true;
-        if (_top_loco.isMoving())
-            return true;
 
         return false;
     }
@@ -204,6 +211,40 @@ public class CarsPositions extends EventDispatcher {
     public function setCars(top_cars_list:Vector.<Car>, way_ind:int, way_cars_list:Vector.<Car>):void {
         _top = top_cars_list;
         _way[way_ind] = way_cars_list;
+    }
+
+    public function get correctCarsCount():int {
+        var cnt:int = 0;
+        for (var way_ind:int = 0; way_ind < WAYS_COUNT; way_ind++)
+            for each (var car:Car in _way[way_ind])
+                if (car.station == way_ind)
+                    cnt++;
+        return cnt;
+    }
+
+    public function get transpositionsCount():int {
+        var cnt:int = 0;
+        for (var way_ind:int = 0; way_ind < WAYS_COUNT; way_ind++) {
+            var used_ids:Vector.<int> = new <int>[];
+            for each (var car:Car in way[way_ind]) {
+                if (car.station != way_ind)
+                    continue;
+                var n:int = car.number;
+                for each (var k:int in used_ids)
+                    if (k > n)
+                        cnt++;
+                used_ids.push(n);
+            }
+        }
+
+        return cnt;
+    }
+
+    public function clear():void {
+        _top = _top_initial.slice();
+        for (var way_ind:int = 0; way_ind < WAYS_COUNT; way_ind++)
+            _way[way_ind] = new <Car>[];
+        positionCars();
     }
 }
 }
