@@ -2,62 +2,25 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="kio-15">
     <configurations>
-      <configuration name="kio-15" pure-as="true" main-class="ru.ipo.kio._15.KIOShell" output-file="kio_15.swf" output-folder="$USER_HOME$/programming/kio-15/out">
+      <configuration name="kio-15" main-class="ru.ipo.kio._15.KIOShell" output-file="kio-15.swf" output-folder="$MODULE_DIR$/out">
         <dependencies target-player="11.1">
           <entries>
-            <entry library-id="6eca94aa-3b4c-476b-a27d-7f09d0d2d562">
+            <entry library-id="67308f10-b825-48db-90b6-5af2d9bcd649">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="a0b0c4c1-f255-420c-9783-2c7fcbaa2588">
+            <entry library-id="72f3bcbd-f49a-4588-86e5-88a61ceecfff">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="fe9cc6aa-4fe6-448f-93f8-b833de749826">
+            <entry library-id="08616bee-459f-4cb4-9351-2e6786afb7dd">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="ef6b004d-893d-405a-95c1-0565123a3a3e">
+            <entry library-id="8b6b4b6c-df0d-4438-b6c6-0ca55ed3dc68">
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="flex_sdk" />
+          <sdk name="flex_sdk_4.6" />
         </dependencies>
-        <compiler-options>
-          <map>
-            <entry key="compiler.debug.swf" value="true" />
-            <entry key="compiler.define" value="KIO::level&#9;-1&#10;KIO::language&#9;&quot;&quot;" />
-            <entry key="compiler.keep-as3-metadata" value="" />
-          </map>
-          <option name="additionalOptions" value="-static-link-runtime-shared-libraries -use-network=false" />
-        </compiler-options>
-        <packaging-air-desktop />
-        <packaging-android />
-        <packaging-ios />
-      </configuration>
-      <configuration name="kio-15-html" pure-as="true" main-class="ru.ipo.kio._15.KIOShell" output-file="kio-15-html.swf" output-folder="$USER_HOME$/programming/kio-15/out" use-html-wrapper="true" wrapper-template-path="$USER_HOME$/programming/kio-15/html-template">
-        <dependencies target-player="11.1">
-          <entries>
-            <entry library-id="fab99c15-3c85-4197-9bc4-05d06a3dba63">
-              <dependency linkage="Merged" />
-            </entry>
-            <entry library-id="5143b4bd-d59c-4ce7-abcf-0410b27b8e41">
-              <dependency linkage="Merged" />
-            </entry>
-            <entry library-id="7e987fca-5c59-47ba-94f4-732042583f53">
-              <dependency linkage="Merged" />
-            </entry>
-            <entry library-id="7961d00f-d7b2-4e90-9b5a-50f0255f1d3f">
-              <dependency linkage="Merged" />
-            </entry>
-          </entries>
-          <sdk name="flex_sdk" />
-        </dependencies>
-        <compiler-options>
-          <map>
-            <entry key="compiler.debug.swf" value="true" />
-            <entry key="compiler.define" value="KIO::level&#9;-1&#10;KIO::language&#9;&quot;&quot;" />
-            <entry key="compiler.keep-as3-metadata" value="" />
-          </map>
-          <option name="additionalOptions" value="-static-link-runtime-shared-libraries -use-network=false" />
-        </compiler-options>
+        <compiler-options />
         <packaging-air-desktop />
         <packaging-android />
         <packaging-ios />
@@ -71,13 +34,14 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
     </content>
+    <orderEntry type="jdk" jdkName="flex_sdk_4.6" jdkType="Flex SDK Type (new)" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="jdk" jdkName="flex_sdk" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="library" exported="" name="lib" level="project" />
     <orderEntry type="module-library" exported="">
       <library type="flex">
-        <properties id="6eca94aa-3b4c-476b-a27d-7f09d0d2d562" />
+        <properties id="67308f10-b825-48db-90b6-5af2d9bcd649" />
         <CLASSES>
-          <root url="jar://$USER_HOME$/programming/kio-15/lib/components.swc!/" />
+          <root url="jar://$MODULE_DIR$/lib/away3d-core-fp11_4_1_4.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -85,9 +49,9 @@
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library type="flex">
-        <properties id="a0b0c4c1-f255-420c-9783-2c7fcbaa2588" />
+        <properties id="72f3bcbd-f49a-4588-86e5-88a61ceecfff" />
         <CLASSES>
-          <root url="jar://$USER_HOME$/programming/kio-15/lib/flexunit-4.1.0-8-as3_4.1.0.16076.swc!/" />
+          <root url="jar://$MODULE_DIR$/lib/components.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -95,9 +59,9 @@
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library type="flex">
-        <properties id="fe9cc6aa-4fe6-448f-93f8-b833de749826" />
+        <properties id="08616bee-459f-4cb4-9351-2e6786afb7dd" />
         <CLASSES>
-          <root url="jar://$USER_HOME$/programming/kio-15/lib/framework.swc!/" />
+          <root url="jar://$MODULE_DIR$/lib/flexunit-4.1.0-8-as3_4.1.0.16076.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -105,49 +69,9 @@
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library type="flex">
-        <properties id="fab99c15-3c85-4197-9bc4-05d06a3dba63" />
+        <properties id="8b6b4b6c-df0d-4438-b6c6-0ca55ed3dc68" />
         <CLASSES>
-          <root url="jar://$USER_HOME$/programming/kio-15/lib/components.swc!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="5143b4bd-d59c-4ce7-abcf-0410b27b8e41" />
-        <CLASSES>
-          <root url="jar://$USER_HOME$/programming/kio-15/lib/flexunit-4.1.0-8-as3_4.1.0.16076.swc!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="7e987fca-5c59-47ba-94f4-732042583f53" />
-        <CLASSES>
-          <root url="jar://$USER_HOME$/programming/kio-15/lib/framework.swc!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="ef6b004d-893d-405a-95c1-0565123a3a3e" />
-        <CLASSES>
-          <root url="jar://$USER_HOME$/programming/kio-15/lib/away3d-core-fp11_4_1_4.swc!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="7961d00f-d7b2-4e90-9b5a-50f0255f1d3f" />
-        <CLASSES>
-          <root url="jar://$USER_HOME$/programming/kio-15/lib/away3d-core-fp11_4_1_4.swc!/" />
+          <root url="jar://$MODULE_DIR$/lib/framework.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

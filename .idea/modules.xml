@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CertificateCorrector/CertificateCorrector.iml" filepath="$PROJECT_DIR$/CertificateCorrector/CertificateCorrector.iml" />
-      <module fileurl="file:///mnt/ubuntu-home/ilya/programming/kio-15/kio-15.iml" filepath="/mnt/ubuntu-home/ilya/programming/kio-15/kio-15.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kio-15.iml" filepath="$PROJECT_DIR$/kio-15.iml" />
     </modules>
   </component>
 </project>
