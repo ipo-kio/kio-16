@@ -117,7 +117,7 @@ public class CurveRail extends Sprite {
     public function drawBottom(color:uint):void {
         graphics.lineStyle(10, color, 0.4);
         graphics.moveTo(p0.x, p0.y);
-        graphics.curveTo(p1.x, p1.y, p2.x, p2.y);
+        graphics.curveTo(p1.x, p1.y, p2.x - 6, p2.y);
     }
 
     public function parametrizeNorm(t:Number):Point {
