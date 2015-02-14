@@ -113,6 +113,17 @@ public class TrainCarsWorkspace extends Sprite {
             rSet.rail(final_way_ind_1[e]).drawBottom(Car.STATION_COLOR[e]);
             rSet.rail(final_way_ind_2[e]).drawBottom(Car.STATION_COLOR[e]);
         }
+
+        _positions.addEventListener(CarsPositions.EVENT_ALL_STOPPED, updateSemaphores);
+        _positions.addEventListener(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING, updateSemaphores);
+    }
+
+    private function updateSemaphores(event:Event):void {
+        //repaint semaphores
+        //if _animation = false -> all semaphores are greem
+        // else ->
+        //two sprites // first.visible = true; second.visible false;
+        //TODO _positions.mayMoveFromTop / _positions.mayMoveToTop
     }
 
     private function initInfoPanels():void {
