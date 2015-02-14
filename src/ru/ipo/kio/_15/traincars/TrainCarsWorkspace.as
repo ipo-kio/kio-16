@@ -259,6 +259,10 @@ public class TrainCarsWorkspace extends Sprite {
             update_info(_info_current, r);
             _api.submitResult(r);
         });
+
+        _positions.addEventListener(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING, function (event:Event):void {
+            trace('started moving ' + Math.random());
+        })
     }
 
     private static function update_info(i:InfoPanel, r:Object):void {
