@@ -200,6 +200,8 @@ public class TrainCarsWorkspace extends Sprite {
                 _undo_list.push(ma);
                 _uphill_steps ++;
                 ma.execute(_animation);
+                //TODO sprite of semaphores and put on the workspace
+                //TODO if ba_off.visible = false; -> make right semaphore red, left -> green else make right semaphore green
             }
         }
 
@@ -211,6 +213,8 @@ public class TrainCarsWorkspace extends Sprite {
                 _undo_list.push(ma);
                 _downhill_steps ++;
                 ma.execute(_animation);
+                //TODO sprite of semaphores put on the workspace
+                //TODO if ba_off.visible = false; -> make right semaphore green, left -> red else make right semaphore green
             }
         }
 
