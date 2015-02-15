@@ -65,9 +65,9 @@ public class TrainCarsWorkspace extends Sprite {
         var rSet:RailsSet = new RailsSet();
 
         var i1:int = rSet.add(new Point(680, 300), new Point(635, 300), new Point(590, 150));
-        var i2:int = rSet.add(new Point(590, 150), new Point(545, 0), new Point(400, 0));
-        var i3:int = rSet.add(new Point(400, 0), new Point(300, 0), new Point(100, 0));
-        var i4:int = rSet.add(new Point(100, 0), new Point(0, 0), new Point(0, 100));
+        var i2:int = rSet.add(new Point(590, 150), new Point(545, 22), new Point(400, 22));
+        var i3:int = rSet.add(new Point(400, 22), new Point(300, 22), new Point(100, 22));
+        var i4:int = rSet.add(new Point(100, 22), new Point(0, 22), new Point(0, 100));
 
         var switch1:Array = rSet.addVerticalSwitch(new Point(0, 100), 80, 40);
         var switch2:Array = rSet.addVerticalSwitch(switch1[0], 50, 20);
@@ -79,10 +79,10 @@ public class TrainCarsWorkspace extends Sprite {
 
         for (var e_point_ind:int = 0; e_point_ind < 4; e_point_ind++) {
             var p:Point = [switch2[0], switch2[1], switch3[0], switch3[1]][e_point_ind];
-            var e_point:Point = new Point(p.x, p.y + 280 - e_point_ind * 30 - 50);
+            var e_point:Point = new Point(p.x, p.y + 280 - e_point_ind * 30 - 70);
             final_way_ind_0[e_point_ind] = rSet.addLine(p, e_point);
 
-            var vert:Number = 550 - e_point_ind * 30;
+            var vert:Number = 550 - e_point_ind * (30 + 4) - 18;
             var hor:Number = 100 + e_point_ind * 20;
 
             final_way_ind_1[e_point_ind] = rSet.add(e_point, new Point(e_point.x, vert), new Point(hor, vert));
