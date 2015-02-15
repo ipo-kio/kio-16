@@ -25,6 +25,7 @@ public class Car extends Sprite {
 
     public static const EVENT_PUSH_DOWN:String = 'push down';
     public static const EVENT_PUSH_UP:String = 'push up';
+    public static const EVENT_START_MOVE:String = 'start move';
     public static const EVENT_STOP_MOVE:String = 'stop move';
 
     public static const DT_SPEED:int = 2;
@@ -130,6 +131,9 @@ public class Car extends Sprite {
     }
 
     public function addMoveDelta(delta:int, movingWay:RailWay):void {
+        if (_moveDelta == 0)
+            dispatchEvent(new Event(EVENT_START_MOVE));
+
         if (_moveDelta < 0)
             return;
 
@@ -140,6 +144,9 @@ public class Car extends Sprite {
     }
 
     public function subMoveDelta(delta:int, movingWay:RailWay):void {
+        if (_moveDelta == 0)
+            dispatchEvent(new Event(EVENT_START_MOVE));
+
         if (_moveDelta > 0)
             return;
 

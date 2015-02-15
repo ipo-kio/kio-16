@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/flexunit-4.1.0-8-as3_4.1.0.16076.swc!/" />
+      <root url="jar://$PROJECT_DIR$/lib/framework.swc!/" />
+      <root url="jar://$PROJECT_DIR$/lib/components.swc!/" />
+      <root url="jar://$PROJECT_DIR$/lib/away3d-core-fp11_4_1_4.swc!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -113,18 +113,29 @@ public class TrainCarsWorkspace extends Sprite {
             rSet.rail(final_way_ind_1[e]).drawBottom(Car.STATION_COLOR[e]);
             rSet.rail(final_way_ind_2[e]).drawBottom(Car.STATION_COLOR[e]);
         }
+
+        _positions.addEventListener(CarsPositions.EVENT_ALL_STOPPED, updateSemaphores);
+        _positions.addEventListener(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING, updateSemaphores);
+    }
+
+    private function updateSemaphores(event:Event):void {
+        //repaint semaphores
+        //if _animation = false -> all semaphores are greem
+        // else ->
+        //two sprites // first.visible = true; second.visible false;
+        //TODO _positions.mayMoveFromTop / _positions.mayMoveToTop
     }
 
     private function initInfoPanels():void {
         _info_current = new InfoPanel(
-                'KioArial', true, 14, 0x000000, 0x222222, 0x880000, 1.2, 'Решение', [
-                        'Едут верно', 'Транспозиций', 'Поднятий вверх', 'Спусков вниз'
+                'KioArial', true, 14, 0x000000, 0x222222, 0x880000, 1.2, _api.localization.solution, [
+                    _api.localization.correct, _api.localization.transpositions, _api.localization.uphill_steps, _api.localization.downhill_steps
                 ], 140
         );
 
         _info_record = new InfoPanel(
-                'KioArial', true, 14, 0x000000, 0x222222, 0x880000, 1.2, 'Рекорд', [
-                    'Едут верно', 'Транспозиций', 'Поднятий вверх', 'Спусков вниз'
+                'KioArial', true, 14, 0x000000, 0x222222, 0x880000, 1.2, _api.localization.record, [
+                    _api.localization.correct, _api.localization.transpositions, _api.localization.uphill_steps, _api.localization.downhill_steps
                 ], 140
         );
 
@@ -137,19 +148,19 @@ public class TrainCarsWorkspace extends Sprite {
     }
 
     private function putButtons():void {
-        var b01:GraphicsButton = new GraphicsButton("^1", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var b02:GraphicsButton = new GraphicsButton("^2", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var b03:GraphicsButton = new GraphicsButton("^3", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var b04:GraphicsButton = new GraphicsButton("^4", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var b1:GraphicsButton = new GraphicsButton("1", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var b2:GraphicsButton = new GraphicsButton("2", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var b3:GraphicsButton = new GraphicsButton("3", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var b4:GraphicsButton = new GraphicsButton("4", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var bu:GraphicsButton = new GraphicsButton("undo", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var b01:GraphicsButton = new GraphicsButton(_api.localization.buttons.up1, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var b02:GraphicsButton = new GraphicsButton(_api.localization.buttons.up2, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var b03:GraphicsButton = new GraphicsButton(_api.localization.buttons.up3, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var b04:GraphicsButton = new GraphicsButton(_api.localization.buttons.up4, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var b1:GraphicsButton = new GraphicsButton(_api.localization.buttons.down1, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var b2:GraphicsButton = new GraphicsButton(_api.localization.buttons.down2, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var b3:GraphicsButton = new GraphicsButton(_api.localization.buttons.down3, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var b4:GraphicsButton = new GraphicsButton(_api.localization.buttons.down4, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var bu:GraphicsButton = new GraphicsButton(_api.localization.buttons.undo, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
 
-        var ba_on:GraphicsButton = new GraphicsButton("A on", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var ba_off:GraphicsButton = new GraphicsButton("A off", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var b_cl:GraphicsButton = new GraphicsButton("clear", WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var ba_on:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_on, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var ba_off:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_off, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var b_cl:GraphicsButton = new GraphicsButton(_api.localization.buttons.clear, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
 
         addChild(b01);
         addChild(b02);
@@ -200,6 +211,8 @@ public class TrainCarsWorkspace extends Sprite {
                 _undo_list.push(ma);
                 _uphill_steps ++;
                 ma.execute(_animation);
+                //TODO sprite of semaphores and put on the workspace
+                //TODO if ba_off.visible = false; -> make right semaphore red, left -> green else make right semaphore green
             }
         }
 
@@ -211,6 +224,8 @@ public class TrainCarsWorkspace extends Sprite {
                 _undo_list.push(ma);
                 _downhill_steps ++;
                 ma.execute(_animation);
+                //TODO sprite of semaphores put on the workspace
+                //TODO if ba_off.visible = false; -> make right semaphore green, left -> red else make right semaphore green
             }
         }
 
@@ -259,6 +274,10 @@ public class TrainCarsWorkspace extends Sprite {
             update_info(_info_current, r);
             _api.submitResult(r);
         });
+
+        _positions.addEventListener(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING, function (event:Event):void {
+            trace('started moving ' + Math.random());
+        })
     }
 
     private static function update_info(i:InfoPanel, r:Object):void {
