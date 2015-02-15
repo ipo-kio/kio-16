@@ -21,7 +21,7 @@
           <sdk name="flex_sdk_4_6" />
         </dependencies>
         <compiler-options>
-          <option name="additionalOptions" value="-static-link-runtime-shared-libraries=true" />
+          <option name="additionalOptions" value="-static-link-runtime-shared-libraries=true -use-network=false" />
         </compiler-options>
         <packaging-air-desktop />
         <packaging-android />
