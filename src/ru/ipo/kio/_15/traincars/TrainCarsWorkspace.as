@@ -16,18 +16,43 @@ import ru.ipo.kio.api.controls.InfoPanel;
 
 public class TrainCarsWorkspace extends Sprite {
 
-    [Embed(source="resources/btn.png")]
+    [Embed(source="resources/fon-4.png")]
+    public static const BACKGROUND_CLASS:Class;
+    public static const BACKGROUND:BitmapData = (new BACKGROUND_CLASS).bitmapData;
+
+    [Embed(source="resources/kn-zel_01.png")]
     public static const WAY_UP_CLASS:Class;
     public static const WAY_UP_IMG:BitmapData = (new WAY_UP_CLASS).bitmapData;
-    [Embed(source="resources/btn.png")]
+    [Embed(source="resources/kn-zel_03.png")]
     public static const WAY_DOWN_CLASS:Class;
-    public static const WAY_DOWN_IMG:BitmapData = (new WAY_UP_CLASS).bitmapData;
-    [Embed(source="resources/btn.png")]
+    public static const WAY_DOWN_IMG:BitmapData = (new WAY_DOWN_CLASS).bitmapData;
+    [Embed(source="resources/kn-zel_02.png")]
     public static const WAY_OVER_CLASS:Class;
-    public static const WAY_OVER_IMG:BitmapData = (new WAY_UP_CLASS).bitmapData;
+    public static const WAY_OVER_IMG:BitmapData = (new WAY_OVER_CLASS).bitmapData;
+
+    [Embed(source="resources/kn-kr_01.png")]
+    public static const TOP_UP_CLASS:Class;
+    public static const TOP_UP_IMG:BitmapData = (new TOP_UP_CLASS).bitmapData;
+    [Embed(source="resources/kn-kr_03.png")]
+    public static const TOP_DOWN_CLASS:Class;
+    public static const TOP_DOWN_IMG:BitmapData = (new TOP_DOWN_CLASS).bitmapData;
+    [Embed(source="resources/kn-kr_02.png")]
+    public static const TOP_OVER_CLASS:Class;
+    public static const TOP_OVER_IMG:BitmapData = (new TOP_OVER_CLASS).bitmapData;
+
+    [Embed(source="resources/oboznach.png")]
+    public static const OBOZNACH_CLASS:Class;
+    public static const OBOZNACH_IMG:BitmapData = (new OBOZNACH_CLASS).bitmapData;
+    [Embed(source="resources/fon-dom.png")]
+    public static const HOUSE_CLASS:Class;
+    public static const HOUSE_IMG:BitmapData = (new HOUSE_CLASS).bitmapData;
 
     public static var TOP_END_TICK:int;
     public static var WAY_START_TICK:int;
+
+    private var background:Sprite = new Sprite();
+    private var cars:Sprite = new Sprite();
+    private var otherObjects:Sprite = new Sprite();
 
     private var _positions:CarsPositions;
 
@@ -58,9 +83,10 @@ public class TrainCarsWorkspace extends Sprite {
     }
 
     private function draw():void {
-        graphics.beginFill(0xFFFFFF);
-        graphics.drawRect(0, 0, 780, 600);
-        graphics.endFill();
+        background.graphics.beginBitmapFill(BACKGROUND);
+        //graphics.drawRect(0, 0, 780, 600);
+        background.graphics.drawRect(0, 0, 780, 600);
+        background.graphics.endFill();
 
         var rSet:RailsSet = new RailsSet();
 
@@ -95,7 +121,13 @@ public class TrainCarsWorkspace extends Sprite {
         railWays.push(new RailWay(rSet, [i1, i2, i3, i4, switch1[3][0], switch1[3][1], switch3[2][0], switch3[2][1], final_way_ind_0[2], final_way_ind_1[2], final_way_ind_2[2]]));
         railWays.push(new RailWay(rSet, [i1, i2, i3, i4, switch1[3][0], switch1[3][1], switch3[3][0], switch3[3][1], final_way_ind_0[3], final_way_ind_1[3], final_way_ind_2[3]]));
 
-        addChild(rSet);
+        //addChild(rSet);
+        //rSet.x = 100;
+        //rSet.y = 25;
+        cars.addChild(rSet);
+        cars.addChild(otherObjects);
+        background.addChild(cars);
+        addChild(background);
         rSet.x = 100;
         rSet.y = 25;
 
@@ -139,19 +171,19 @@ public class TrainCarsWorkspace extends Sprite {
                 ], 140
         );
 
-        addChild(_info_current);
-        addChild(_info_record);
-        _info_current.x = 250;
-        _info_current.y = 100;
-        _info_record.x = 250;
-        _info_record.y = 250;
+        otherObjects.addChild(_info_current);
+        otherObjects.addChild(_info_record);
+        _info_current.x = 278;
+        _info_current.y = 275;
+        _info_record.x = 470;
+        _info_record.y = 275;
     }
 
     private function putButtons():void {
-        var b01:GraphicsButton = new GraphicsButton(_api.localization.buttons.up1, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var b02:GraphicsButton = new GraphicsButton(_api.localization.buttons.up2, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var b03:GraphicsButton = new GraphicsButton(_api.localization.buttons.up3, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var b04:GraphicsButton = new GraphicsButton(_api.localization.buttons.up4, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var b01:GraphicsButton = new GraphicsButton(_api.localization.buttons.up1, TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
+        var b02:GraphicsButton = new GraphicsButton(_api.localization.buttons.up2, TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
+        var b03:GraphicsButton = new GraphicsButton(_api.localization.buttons.up3, TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
+        var b04:GraphicsButton = new GraphicsButton(_api.localization.buttons.up4, TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
         var b1:GraphicsButton = new GraphicsButton(_api.localization.buttons.down1, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
         var b2:GraphicsButton = new GraphicsButton(_api.localization.buttons.down2, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
         var b3:GraphicsButton = new GraphicsButton(_api.localization.buttons.down3, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
@@ -162,36 +194,36 @@ public class TrainCarsWorkspace extends Sprite {
         var ba_off:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_off, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
         var b_cl:GraphicsButton = new GraphicsButton(_api.localization.buttons.clear, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
 
-        addChild(b01);
-        addChild(b02);
-        addChild(b03);
-        addChild(b04);
-        addChild(b1);
-        addChild(b2);
-        addChild(b3);
-        addChild(b4);
-        addChild(bu);
-        addChild(ba_on);
-        addChild(ba_off);
-        addChild(b_cl);
+        otherObjects.addChild(b01);
+        otherObjects.addChild(b02);
+        otherObjects.addChild(b03);
+        otherObjects.addChild(b04);
+        otherObjects.addChild(b1);
+        otherObjects.addChild(b2);
+        otherObjects.addChild(b3);
+        otherObjects.addChild(b4);
+        otherObjects.addChild(bu);
+        otherObjects.addChild(ba_on);
+        otherObjects.addChild(ba_off);
+        otherObjects.addChild(b_cl);
 
-        b1.x = 445 + 80;
-        b1.y = 300;
-        b2.x = 490 + 80;
-        b2.y = 300;
-        b3.x = 535 + 80;
-        b3.y = 300;
-        b4.x = 580 + 80;
-        b4.y = 300;
+        b1.x = 269;
+        b1.y = 131;
+        b2.x = 342;
+        b2.y = 131;
+        b3.x = 415;
+        b3.y = 131;
+        b4.x = 488;
+        b4.y = 131;
 
-        b01.x = 445 + 80;
-        b01.y = 350;
-        b02.x = 490 + 80;
-        b02.y = 350;
-        b03.x = 535 + 80;
-        b03.y = 350;
-        b04.x = 580 + 80;
-        b04.y = 350;
+        b01.x = 271;
+        b01.y = 200;
+        b02.x = 344;
+        b02.y = 200;
+        b03.x = 417;
+        b03.y = 200;
+        b04.x = 488;
+        b04.y = 200;
 
         bu.x = 445 + 80;
         bu.y = 400;
