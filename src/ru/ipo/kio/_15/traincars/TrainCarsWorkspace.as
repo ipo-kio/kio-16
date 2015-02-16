@@ -6,6 +6,7 @@ import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
+import flash.geom.Matrix;
 import flash.geom.Point;
 
 import ru.ipo.kio.api.KioApi;
@@ -138,6 +139,7 @@ public class TrainCarsWorkspace extends Sprite {
 
         _positions.positionCars();
 
+        drawOtherObjects();
         initInfoPanels();
 
         //draw bottom
@@ -148,6 +150,29 @@ public class TrainCarsWorkspace extends Sprite {
 
         _positions.addEventListener(CarsPositions.EVENT_ALL_STOPPED, updateSemaphores);
         _positions.addEventListener(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING, updateSemaphores);
+    }
+
+    private function drawOtherObjects():void {
+
+        var dx_1:Number = 97 - (OBOZNACH_IMG.width*0.5);
+        var dy_1:Number = 248 - (OBOZNACH_IMG.height*0.5);
+
+        var m1:Matrix = new Matrix();
+        m1.translate(dx_1, dy_1);
+
+        otherObjects.graphics.beginBitmapFill(OBOZNACH_IMG, m1);
+        otherObjects.graphics.drawRect(dx_1, dy_1, OBOZNACH_IMG.width, OBOZNACH_IMG.height);
+        otherObjects.graphics.endFill();
+
+        var dx_2:Number = 711 - (HOUSE_IMG.width*0.5);
+        var dy_2:Number = 200 - (HOUSE_IMG.height*0.5);
+
+        var m2:Matrix = new Matrix();
+        m2.translate(dx_2, dy_2);
+
+        otherObjects.graphics.beginBitmapFill(HOUSE_IMG, m2);
+        otherObjects.graphics.drawRect(dx_2, dy_2, HOUSE_IMG.width, HOUSE_IMG.height);
+        otherObjects.graphics.endFill();
     }
 
     private function updateSemaphores(event:Event):void {
