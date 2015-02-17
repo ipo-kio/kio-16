@@ -2,13 +2,13 @@
 <project name="kio-14" default="all">
 
     <!--
-        put smth like this in kio-14.properties
+        put smth like this in kio-1x.properties
 
         path.variable.flex_ant_home=/home/ilya/opt/flex_sdk/ant
         FLEX_HOME=/home/ilya/opt/flex_sdk
         compilation.language=ru
     -->
-    <property file="kio-14.properties"/>
+    <property file="kio-15.properties"/>
 
     <taskdef
             resource="flexTasks.tasks"

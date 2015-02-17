@@ -15,7 +15,7 @@ import ru.ipo.kio._14.stars.graphs.Graph;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.base.KioBase;
 
-[SWF(width=900, height=625)]
+[SWF(width=900, height=625, frameRate=10)]
 public class SpiderRunner extends Sprite {
     public function SpiderRunner() {
         //Код в конструкторе рекомендуется всегда писать таким же, как здесь.

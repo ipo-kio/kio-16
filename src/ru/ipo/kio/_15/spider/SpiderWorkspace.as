@@ -15,7 +15,7 @@ public class SpiderWorkspace extends Sprite {
     private var m:SpiderMotion;
 
     public function SpiderWorkspace() {
-        graphics.beginFill(0xFFFFFF);
+        graphics.beginFill(0xF0F4C3);
         graphics.drawRect(0, 0, GlobalMetrics.WORKSPACE_WIDTH, GlobalMetrics.WORKSPACE_HEIGHT);
         graphics.endFill();
 
@@ -29,13 +29,11 @@ public class SpiderWorkspace extends Sprite {
 
 //        addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 
-        addEventListener(Event.ADDED_TO_STAGE, function() {
+        addEventListener(Event.ADDED_TO_STAGE, function(e:Event) {
             stage.addEventListener(KeyboardEvent.KEY_UP, enterFrameHandler);
         });
 
         addEventListener(Event.ENTER_FRAME, enterFrameHandler);
-
-        m.add_delta();
     }
 
     private function enterFrameHandler(event:Event):void {

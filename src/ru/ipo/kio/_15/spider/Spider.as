@@ -62,10 +62,10 @@ public class Spider extends Sprite {
         }
 
         return new <Point>[
-            mechanism_s(left_back),
             mechanism_s(right_back),
-            mechanism_s(left_forward),
-            mechanism_s(right_forward)
+            mechanism_s(left_back),
+            mechanism_s(right_forward),
+            mechanism_s(left_forward)
         ];
     }
 

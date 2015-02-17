@@ -12,7 +12,7 @@ public class Mechanism extends Sprite {
     private var _grayed:Boolean = false;
     private var _x_inverse:Boolean = false;
 
-    private const MUL:Number = 1;
+    private const MUL:Number = 1.5;
 
     // http://www.mekanizmalar.com/mechanicalspider.html
     private var p1x:Number = 41.395 * MUL, p1y:Number = -26.641 * MUL;
@@ -48,14 +48,21 @@ public class Mechanism extends Sprite {
         graphics.clear();
 
         if (!_grayed) {
-            graphics.lineStyle(1, 0x000000);
-            graphics.moveTo(p1x * sign, p1y);
-            graphics.lineTo(p2x * sign, p2y);
-            graphics.lineTo(p3x * sign, p3y);
-            graphics.lineTo(p1x * sign, p1y);
+//            graphics.lineStyle(1, 0x727272);
+            graphics.beginFill(0x727272);
+            graphics.drawTriangles(new <Number>[
+                p1x * sign, p1y,
+                p2x * sign, p2y,
+                p3x * sign, p3y
+            ]);
+            graphics.endFill();
+//            graphics.moveTo(p1x * sign, p1y);
+//            graphics.lineTo(p2x * sign, p2y);
+//            graphics.lineTo(p3x * sign, p3y);
+//            graphics.lineTo(p1x * sign, p1y);
         }
 
-        graphics.lineStyle(4, _grayed ? 0xFFAAAA : 0x440000, _grayed ? 1 : 0.5);
+        graphics.lineStyle(4, _grayed ? 0x03A9F4 : 0xCDDC39, 1);
         graphics.moveTo(p1x * sign, p1y);
         graphics.lineTo(mx * sign, my);
         graphics.lineTo(nx * sign, ny);
