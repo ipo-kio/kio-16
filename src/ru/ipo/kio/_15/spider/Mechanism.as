@@ -175,11 +175,11 @@ public class Mechanism extends Sprite {
         return new <Number>[x1 + lx + nx, y1 + ly + ny, x1 + lx - nx, y1 + ly - ny];
     }
 
-    private static function dist(x1:Number, y1:Number, x2:Number, y2:Number):Number {
+    public static function dist(x1:Number, y1:Number, x2:Number, y2:Number):Number {
         return Math.sqrt(dist2(x1, y1, x2, y2));
     }
 
-    private static function dist2(x1:Number, y1:Number, x2:Number, y2:Number):Number {
+    public static function dist2(x1:Number, y1:Number, x2:Number, y2:Number):Number {
         return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
     }
 

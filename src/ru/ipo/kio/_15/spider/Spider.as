@@ -13,6 +13,8 @@ public class Spider extends Sprite {
     private var right_back:Mechanism = new Mechanism();
     private var right_forward:Mechanism = new Mechanism();
 
+    private var stepsLayer:Sprite = new Sprite();
+
     public function Spider() {
         addChild(left_back);
         addChild(left_forward);
@@ -29,6 +31,10 @@ public class Spider extends Sprite {
         position_mechanism(left_forward);
         position_mechanism(right_back);
         position_mechanism(right_forward);
+
+        angle = 0;
+
+        addChild(stepsLayer);
     }
 
     private static function position_mechanism(m:Mechanism):void {
@@ -39,11 +45,11 @@ public class Spider extends Sprite {
 
 
     public function get angle():Number {
-        return _angle;
+        return -_angle;
     }
 
     public function set angle(value:Number):void {
-        _angle = value;
+        _angle = -value;
         left_back.angle = _angle;
         right_back.angle = _angle + Math.PI;
         left_forward.angle = _angle;
@@ -52,7 +58,7 @@ public class Spider extends Sprite {
 
     public function get steps():Vector.<Point> {
         function mechanism_s(m:Mechanism):Point {
-            return m.p1_p.subtract(new Point(m.x, m.y));
+            return m.s_p.add(new Point(m.x, m.y));
         }
 
         return new <Point>[
