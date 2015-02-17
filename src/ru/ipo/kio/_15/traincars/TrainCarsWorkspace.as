@@ -48,12 +48,33 @@ public class TrainCarsWorkspace extends Sprite {
     public static const HOUSE_CLASS:Class;
     public static const HOUSE_IMG:BitmapData = (new HOUSE_CLASS).bitmapData;
 
+
+    [Embed(source="resources/svetofor-L-green.png")]
+    public static const SVET_L_G:Class;
+    public static const SVET_L_G_IMG:BitmapData = (new SVET_L_G).bitmapData;
+    [Embed(source="resources/svetofor-L-red.png")]
+    public static const SVET_L_R:Class;
+    public static const SVET_L_R_IMG:BitmapData = (new SVET_L_R).bitmapData;
+
+    [Embed(source="resources/svetofor-R-green.png")]
+    public static const SVET_R_G:Class;
+    public static const SVET_R_G_IMG:BitmapData = (new SVET_R_G).bitmapData;
+    [Embed(source="resources/svetofor-R-red.png")]
+    public static const SVET_R_R:Class;
+    public static const SVET_R_R_IMG:BitmapData = (new SVET_R_R).bitmapData;
+
+
     public static var TOP_END_TICK:int;
     public static var WAY_START_TICK:int;
 
     private var background:Sprite = new Sprite();
     private var cars:Sprite = new Sprite();
     private var otherObjects:Sprite = new Sprite();
+
+    private var left_green_semaphore:Sprite = new Sprite();
+    private var right_green_semaphore:Sprite = new Sprite();
+    private var left_red_semaphore:Sprite = new Sprite();
+    private var right_red_semaphore:Sprite = new Sprite();
 
     private var _positions:CarsPositions;
 
@@ -140,6 +161,7 @@ public class TrainCarsWorkspace extends Sprite {
         _positions.positionCars();
 
         drawOtherObjects();
+        drawSemaphores();
         initInfoPanels();
 
         //draw bottom
@@ -151,6 +173,74 @@ public class TrainCarsWorkspace extends Sprite {
         _positions.addEventListener(CarsPositions.EVENT_ALL_STOPPED, updateSemaphores);
         _positions.addEventListener(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING, updateSemaphores);
     }
+
+
+
+    private function updateSemaphores(event:Event):void {
+        if (_animation == false) {
+            left_green_semaphore.visible = true;
+            right_green_semaphore.visible = true;
+            left_red_semaphore.visible = false;
+            right_red_semaphore.visible = false;
+        } else {
+            left_green_semaphore.visible = true;
+            right_red_semaphore.visible = true;
+            left_red_semaphore.visible = false;
+            right_green_semaphore.visible = false;
+        }
+        //repaint semaphores
+        //if _animation = false -> all semaphores are green
+        // else ->
+        //two sprites // first.visible = true; second.visible false;
+        //TODO _positions.mayMoveFromTop / _positions.mayMoveToTop
+    }
+
+    private function drawSemaphores():void {
+    var dx_1:Number = 55 - (SVET_L_G_IMG.width*0.5);
+    var dy_1:Number = 136 - (SVET_L_G_IMG.height*0.5);
+
+    var m1:Matrix = new Matrix();
+    m1.translate(dx_1, dy_1);
+
+    left_green_semaphore.graphics.beginBitmapFill(SVET_L_G_IMG, m1);
+    left_green_semaphore.graphics.drawRect(dx_1, dy_1, SVET_L_G_IMG.width, SVET_L_G_IMG.height);
+    left_green_semaphore.graphics.endFill();
+
+    var dx_2:Number = 145 - (SVET_R_G_IMG.width*0.5);
+    var dy_2:Number = 136 - (SVET_R_G_IMG.height*0.5);
+
+    var m2:Matrix = new Matrix();
+    m2.translate(dx_2, dy_2);
+
+    right_green_semaphore.graphics.beginBitmapFill(SVET_R_G_IMG, m2);
+    right_green_semaphore.graphics.drawRect(dx_2, dy_2, SVET_R_G_IMG.width, SVET_R_G_IMG.height);
+    right_green_semaphore.graphics.endFill();
+
+    var dx_3:Number = 55 - (SVET_L_R_IMG.width*0.5);
+    var dy_3:Number = 136 - (SVET_L_R_IMG.height*0.5);
+
+    var m3:Matrix = new Matrix();
+    m3.translate(dx_3, dy_3);
+
+    left_red_semaphore.graphics.beginBitmapFill(SVET_L_R_IMG, m3);
+    left_red_semaphore.graphics.drawRect(dx_3, dy_3, SVET_L_R_IMG.width, SVET_L_R_IMG.height);
+    left_red_semaphore.graphics.endFill();
+
+    var dx_4:Number = 145 - (SVET_R_R_IMG.width*0.5);
+    var dy_4:Number = 136 - (SVET_R_R_IMG.height*0.5);
+
+    var m4:Matrix = new Matrix();
+    m4.translate(dx_4, dy_4);
+
+    right_red_semaphore.graphics.beginBitmapFill(SVET_R_R_IMG, m4);
+    right_red_semaphore.graphics.drawRect(dx_4, dy_4, SVET_R_R_IMG.width, SVET_R_R_IMG.height);
+    right_red_semaphore.graphics.endFill();
+
+    otherObjects.addChild(left_green_semaphore);
+    otherObjects.addChild(left_red_semaphore);
+    otherObjects.addChild(right_green_semaphore);
+    otherObjects.addChild(right_red_semaphore);
+}
 
     private function drawOtherObjects():void {
 
@@ -173,14 +263,6 @@ public class TrainCarsWorkspace extends Sprite {
         otherObjects.graphics.beginBitmapFill(HOUSE_IMG, m2);
         otherObjects.graphics.drawRect(dx_2, dy_2, HOUSE_IMG.width, HOUSE_IMG.height);
         otherObjects.graphics.endFill();
-    }
-
-    private function updateSemaphores(event:Event):void {
-        //repaint semaphores
-        //if _animation = false -> all semaphores are greem
-        // else ->
-        //two sprites // first.visible = true; second.visible false;
-        //TODO _positions.mayMoveFromTop / _positions.mayMoveToTop
     }
 
     private function initInfoPanels():void {
