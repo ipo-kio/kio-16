@@ -41,12 +41,33 @@ public class TrainCarsWorkspace extends Sprite {
     public static const TOP_OVER_CLASS:Class;
     public static const TOP_OVER_IMG:BitmapData = (new TOP_OVER_CLASS).bitmapData;
 
+    [Embed(source="resources/kn-undo_01.png")]
+    public static const UNDO_1_CLASS:Class;
+    public static const UNDO_1_IMG:BitmapData = (new UNDO_1_CLASS).bitmapData;
+    [Embed(source="resources/kn-undo_02.png")]
+    public static const UNDO_2_CLASS:Class;
+    public static const UNDO_2_IMG:BitmapData = (new UNDO_2_CLASS).bitmapData;
+    [Embed(source="resources/kn-undo_03.png")]
+    public static const UNDO_3_CLASS:Class;
+    public static const UNDO_3_IMG:BitmapData = (new UNDO_3_CLASS).bitmapData;
+
     [Embed(source="resources/oboznach.png")]
     public static const OBOZNACH_CLASS:Class;
     public static const OBOZNACH_IMG:BitmapData = (new OBOZNACH_CLASS).bitmapData;
     [Embed(source="resources/fon-dom.png")]
     public static const HOUSE_CLASS:Class;
     public static const HOUSE_IMG:BitmapData = (new HOUSE_CLASS).bitmapData;
+
+    [Embed(source="resources/animazia_02_1.png")]
+    public static const ANIMATION_1_CLASS:Class;
+    public static const ANIMATION_1_IMG:BitmapData = (new ANIMATION_1_CLASS).bitmapData;
+
+    [Embed(source="resources/animazia_03_1.png")]
+    public static const ANIMATION_2_CLASS:Class;
+    public static const ANIMATION_2_IMG:BitmapData = (new ANIMATION_2_CLASS).bitmapData;
+    [Embed(source="resources/animazia_04_1.png")]
+    public static const ANIMATION_3_CLASS:Class;
+    public static const ANIMATION_3_IMG:BitmapData = (new ANIMATION_3_CLASS).bitmapData;
 
 
     [Embed(source="resources/svetofor-L-green.png")]
@@ -165,10 +186,10 @@ public class TrainCarsWorkspace extends Sprite {
         initInfoPanels();
 
         //draw bottom
-        for (var e:int = 0; e < CarsPositions.WAYS_COUNT; e++) {
+        /*for (var e:int = 0; e < CarsPositions.WAYS_COUNT; e++) {
             rSet.rail(final_way_ind_1[e]).drawBottom(Car.STATION_COLOR[e]);
             rSet.rail(final_way_ind_2[e]).drawBottom(Car.STATION_COLOR[e]);
-        }
+        }*/
 
         _positions.addEventListener(CarsPositions.EVENT_ALL_STOPPED, updateSemaphores);
         _positions.addEventListener(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING, updateSemaphores);
@@ -183,64 +204,68 @@ public class TrainCarsWorkspace extends Sprite {
             left_red_semaphore.visible = false;
             right_red_semaphore.visible = false;
         } else {
-            left_green_semaphore.visible = true;
-            right_red_semaphore.visible = true;
-            left_red_semaphore.visible = false;
-            right_green_semaphore.visible = false;
+            if (event.type == CarsPositions.EVENT_ALL_STOPPED) {
+                left_green_semaphore.visible = false;
+                right_red_semaphore.visible = false;
+                left_red_semaphore.visible = true;
+                right_green_semaphore.visible = true;
+            } else if (event.type == CarsPositions.EVENT_SOME_CAR_STARTED_MOVING) {
+                left_green_semaphore.visible = true;
+                right_red_semaphore.visible = true;
+                left_red_semaphore.visible = false;
+                right_green_semaphore.visible = false;
+            }
+
         }
-        //repaint semaphores
-        //if _animation = false -> all semaphores are green
-        // else ->
-        //two sprites // first.visible = true; second.visible false;
         //TODO _positions.mayMoveFromTop / _positions.mayMoveToTop
     }
 
     private function drawSemaphores():void {
-    var dx_1:Number = 55 - (SVET_L_G_IMG.width*0.5);
-    var dy_1:Number = 136 - (SVET_L_G_IMG.height*0.5);
+        var dx_1:Number = 55 - (SVET_L_G_IMG.width*0.5);
+        var dy_1:Number = 136 - (SVET_L_G_IMG.height*0.5);
 
-    var m1:Matrix = new Matrix();
-    m1.translate(dx_1, dy_1);
+        var m1:Matrix = new Matrix();
+        m1.translate(dx_1, dy_1);
 
-    left_green_semaphore.graphics.beginBitmapFill(SVET_L_G_IMG, m1);
-    left_green_semaphore.graphics.drawRect(dx_1, dy_1, SVET_L_G_IMG.width, SVET_L_G_IMG.height);
-    left_green_semaphore.graphics.endFill();
+        left_green_semaphore.graphics.beginBitmapFill(SVET_L_G_IMG, m1);
+        left_green_semaphore.graphics.drawRect(dx_1, dy_1, SVET_L_G_IMG.width, SVET_L_G_IMG.height);
+        left_green_semaphore.graphics.endFill();
 
-    var dx_2:Number = 145 - (SVET_R_G_IMG.width*0.5);
-    var dy_2:Number = 136 - (SVET_R_G_IMG.height*0.5);
+        var dx_2:Number = 145 - (SVET_R_G_IMG.width*0.5);
+        var dy_2:Number = 136 - (SVET_R_G_IMG.height*0.5);
 
-    var m2:Matrix = new Matrix();
-    m2.translate(dx_2, dy_2);
+        var m2:Matrix = new Matrix();
+        m2.translate(dx_2, dy_2);
 
-    right_green_semaphore.graphics.beginBitmapFill(SVET_R_G_IMG, m2);
-    right_green_semaphore.graphics.drawRect(dx_2, dy_2, SVET_R_G_IMG.width, SVET_R_G_IMG.height);
-    right_green_semaphore.graphics.endFill();
+        right_green_semaphore.graphics.beginBitmapFill(SVET_R_G_IMG, m2);
+        right_green_semaphore.graphics.drawRect(dx_2, dy_2, SVET_R_G_IMG.width, SVET_R_G_IMG.height);
+        right_green_semaphore.graphics.endFill();
 
-    var dx_3:Number = 55 - (SVET_L_R_IMG.width*0.5);
-    var dy_3:Number = 136 - (SVET_L_R_IMG.height*0.5);
+        var dx_3:Number = 55 - (SVET_L_R_IMG.width*0.5);
+        var dy_3:Number = 136 - (SVET_L_R_IMG.height*0.5);
 
-    var m3:Matrix = new Matrix();
-    m3.translate(dx_3, dy_3);
+        var m3:Matrix = new Matrix();
+        m3.translate(dx_3, dy_3);
 
-    left_red_semaphore.graphics.beginBitmapFill(SVET_L_R_IMG, m3);
-    left_red_semaphore.graphics.drawRect(dx_3, dy_3, SVET_L_R_IMG.width, SVET_L_R_IMG.height);
-    left_red_semaphore.graphics.endFill();
+        left_red_semaphore.graphics.beginBitmapFill(SVET_L_R_IMG, m3);
+        left_red_semaphore.graphics.drawRect(dx_3, dy_3, SVET_L_R_IMG.width, SVET_L_R_IMG.height);
+        left_red_semaphore.graphics.endFill();
 
-    var dx_4:Number = 145 - (SVET_R_R_IMG.width*0.5);
-    var dy_4:Number = 136 - (SVET_R_R_IMG.height*0.5);
+        var dx_4:Number = 145 - (SVET_R_R_IMG.width*0.5);
+        var dy_4:Number = 136 - (SVET_R_R_IMG.height*0.5);
 
-    var m4:Matrix = new Matrix();
-    m4.translate(dx_4, dy_4);
+        var m4:Matrix = new Matrix();
+        m4.translate(dx_4, dy_4);
 
-    right_red_semaphore.graphics.beginBitmapFill(SVET_R_R_IMG, m4);
-    right_red_semaphore.graphics.drawRect(dx_4, dy_4, SVET_R_R_IMG.width, SVET_R_R_IMG.height);
-    right_red_semaphore.graphics.endFill();
+        right_red_semaphore.graphics.beginBitmapFill(SVET_R_R_IMG, m4);
+        right_red_semaphore.graphics.drawRect(dx_4, dy_4, SVET_R_R_IMG.width, SVET_R_R_IMG.height);
+        right_red_semaphore.graphics.endFill();
 
-    otherObjects.addChild(left_green_semaphore);
-    otherObjects.addChild(left_red_semaphore);
-    otherObjects.addChild(right_green_semaphore);
-    otherObjects.addChild(right_red_semaphore);
-}
+        otherObjects.addChild(left_green_semaphore);
+        otherObjects.addChild(left_red_semaphore);
+        otherObjects.addChild(right_green_semaphore);
+        otherObjects.addChild(right_red_semaphore);
+    }
 
     private function drawOtherObjects():void {
 
@@ -295,10 +320,11 @@ public class TrainCarsWorkspace extends Sprite {
         var b2:GraphicsButton = new GraphicsButton(_api.localization.buttons.down2, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
         var b3:GraphicsButton = new GraphicsButton(_api.localization.buttons.down3, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
         var b4:GraphicsButton = new GraphicsButton(_api.localization.buttons.down4, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var bu:GraphicsButton = new GraphicsButton(_api.localization.buttons.undo, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
 
-        var ba_on:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_on, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var ba_off:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_off, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var bu:GraphicsButton = new GraphicsButton(_api.localization.buttons.undo, UNDO_2_IMG, UNDO_1_IMG, UNDO_3_IMG, 'KioArial', 20, 20);
+
+        var ba_on:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_on, ANIMATION_2_IMG, ANIMATION_3_IMG, ANIMATION_1_IMG, 'KioArial', 20, 20);
+        var ba_off:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_off, ANIMATION_2_IMG, ANIMATION_3_IMG, ANIMATION_1_IMG, 'KioArial', 20, 20);
         var b_cl:GraphicsButton = new GraphicsButton(_api.localization.buttons.clear, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
 
         otherObjects.addChild(b01);
@@ -332,15 +358,15 @@ public class TrainCarsWorkspace extends Sprite {
         b04.x = 488;
         b04.y = 200;
 
-        bu.x = 445 + 80;
-        bu.y = 400;
-        ba_on.x = 490 + 80;
-        ba_on.y = 400;
+        bu.x = 560;
+        bu.y = 129;
+        ba_on.x = 414;
+        ba_on.y = 383;
         ba_off.x = ba_on.x;
         ba_off.y = ba_on.y;
         ba_on.visible = false;
-        b_cl.x = 535 + 80;
-        b_cl.y = 400;
+        b_cl.x = 305;
+        b_cl.y = 383;
 
         function moveFromWay(way_ind:int):Function {
             return function(e:Event):void {
@@ -350,8 +376,6 @@ public class TrainCarsWorkspace extends Sprite {
                 _undo_list.push(ma);
                 _uphill_steps ++;
                 ma.execute(_animation);
-                //TODO sprite of semaphores and put on the workspace
-                //TODO if ba_off.visible = false; -> make right semaphore red, left -> green else make right semaphore green
             }
         }
 
@@ -363,8 +387,6 @@ public class TrainCarsWorkspace extends Sprite {
                 _undo_list.push(ma);
                 _downhill_steps ++;
                 ma.execute(_animation);
-                //TODO sprite of semaphores put on the workspace
-                //TODO if ba_off.visible = false; -> make right semaphore green, left -> red else make right semaphore green
             }
         }
 
