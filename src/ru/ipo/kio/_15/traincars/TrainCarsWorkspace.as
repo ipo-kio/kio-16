@@ -183,10 +183,18 @@ public class TrainCarsWorkspace extends Sprite {
             left_red_semaphore.visible = false;
             right_red_semaphore.visible = false;
         } else {
-            left_green_semaphore.visible = true;
-            right_red_semaphore.visible = true;
-            left_red_semaphore.visible = false;
-            right_green_semaphore.visible = false;
+            if (event.type == CarsPositions.EVENT_ALL_STOPPED) {
+                left_green_semaphore.visible = false;
+                right_red_semaphore.visible = false;
+                left_red_semaphore.visible = true;
+                right_green_semaphore.visible = true;
+            } else if (event.type == CarsPositions.EVENT_SOME_CAR_STARTED_MOVING) {
+                left_green_semaphore.visible = true;
+                right_red_semaphore.visible = true;
+                left_red_semaphore.visible = false;
+                right_green_semaphore.visible = false;
+            }
+
         }
         //repaint semaphores
         //if _animation = false -> all semaphores are green
@@ -350,8 +358,6 @@ public class TrainCarsWorkspace extends Sprite {
                 _undo_list.push(ma);
                 _uphill_steps ++;
                 ma.execute(_animation);
-                //TODO sprite of semaphores and put on the workspace
-                //TODO if ba_off.visible = false; -> make right semaphore red, left -> green else make right semaphore green
             }
         }
 
@@ -363,8 +369,6 @@ public class TrainCarsWorkspace extends Sprite {
                 _undo_list.push(ma);
                 _downhill_steps ++;
                 ma.execute(_animation);
-                //TODO sprite of semaphores put on the workspace
-                //TODO if ba_off.visible = false; -> make right semaphore green, left -> red else make right semaphore green
             }
         }
 
