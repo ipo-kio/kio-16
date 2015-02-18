@@ -29,11 +29,23 @@ public class SpiderWorkspace extends Sprite {
 
 //        addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 
-        addEventListener(Event.ADDED_TO_STAGE, function(e:Event) {
+        addEventListener(Event.ADDED_TO_STAGE, function(e:Event):void {
             stage.addEventListener(KeyboardEvent.KEY_UP, enterFrameHandler);
         });
 
         addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+
+        var sl:Slider = new Slider(0, 100, 100);
+        addChild(sl);
+        sl.x = 50;
+        sl.y = 50;
+
+        var tuned_mechanism:Mechanism = new Mechanism();
+        tuned_mechanism.angle = 0;
+        var mt:MechanismTuner = new MechanismTuner(tuned_mechanism);
+        addChild(mt);
+        mt.x = 300;
+        mt.y = 250;
     }
 
     private function enterFrameHandler(event:Event):void {

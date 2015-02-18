@@ -3,7 +3,6 @@
  */
 package ru.ipo.kio._15.spider {
 import flash.display.Sprite;
-import flash.events.Event;
 import flash.geom.Point;
 
 public class Mechanism extends Sprite {
@@ -13,6 +12,8 @@ public class Mechanism extends Sprite {
     private var _x_inverse:Boolean = false;
 
     private const MUL:Number = 1.5;
+
+    public static const EVENT_ANGLE_CHANGED:String = 'angle changed';
 
     // http://www.mekanizmalar.com/mechanicalspider.html
     private var p1x:Number = 41.395 * MUL, p1y:Number = -26.641 * MUL;
@@ -56,10 +57,6 @@ public class Mechanism extends Sprite {
                 p3x * sign, p3y
             ]);
             graphics.endFill();
-//            graphics.moveTo(p1x * sign, p1y);
-//            graphics.lineTo(p2x * sign, p2y);
-//            graphics.lineTo(p3x * sign, p3y);
-//            graphics.lineTo(p1x * sign, p1y);
         }
 
         graphics.lineStyle(4, _grayed ? 0x03A9F4 : 0xCDDC39, 1);
@@ -76,9 +73,17 @@ public class Mechanism extends Sprite {
         graphics.moveTo(kx * sign, ky);
         graphics.lineTo(sx * sign, sy);
 
-        /*graphics.lineStyle(0.5, 0xFFFF00);
-        graphics.drawCircle(p2x, p2y, l3);
-        graphics.drawCircle(mx, my, l2);*/
+        graphics.lineStyle(0);
+        graphics.beginFill(0x212121);
+        graphics.drawCircle(p1x * sign, p1y, 1);
+        graphics.drawCircle(p2x * sign, p2y, 1);
+        graphics.drawCircle(p3x * sign, p3y, 1);
+        graphics.drawCircle(mx * sign, my, 1);
+        graphics.drawCircle(nx * sign, ny, 1);
+        graphics.drawCircle(kx * sign, ky, 1);
+        graphics.drawCircle(lx * sign, ly, 1);
+        graphics.drawCircle(sx * sign, sy, 1);
+        graphics.endFill();
     }
 
     public function get angle():Number {
@@ -215,5 +220,7 @@ public class Mechanism extends Sprite {
 
         return new <Number>[x2 + mx, y2 + my];
     }
+
+
 }
 }

@@ -5,7 +5,6 @@ package ru.ipo.kio._15.spider {
 import flash.display.Sprite;
 import flash.geom.Matrix;
 import flash.geom.Point;
-import flash.utils.setInterval;
 
 public class SpiderMotion extends Sprite {
 
