@@ -186,10 +186,10 @@ public class TrainCarsWorkspace extends Sprite {
         initInfoPanels();
 
         //draw bottom
-        for (var e:int = 0; e < CarsPositions.WAYS_COUNT; e++) {
+        /*for (var e:int = 0; e < CarsPositions.WAYS_COUNT; e++) {
             rSet.rail(final_way_ind_1[e]).drawBottom(Car.STATION_COLOR[e]);
             rSet.rail(final_way_ind_2[e]).drawBottom(Car.STATION_COLOR[e]);
-        }
+        }*/
 
         _positions.addEventListener(CarsPositions.EVENT_ALL_STOPPED, updateSemaphores);
         _positions.addEventListener(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING, updateSemaphores);
@@ -221,51 +221,51 @@ public class TrainCarsWorkspace extends Sprite {
     }
 
     private function drawSemaphores():void {
-    var dx_1:Number = 55 - (SVET_L_G_IMG.width*0.5);
-    var dy_1:Number = 136 - (SVET_L_G_IMG.height*0.5);
+        var dx_1:Number = 55 - (SVET_L_G_IMG.width*0.5);
+        var dy_1:Number = 136 - (SVET_L_G_IMG.height*0.5);
 
-    var m1:Matrix = new Matrix();
-    m1.translate(dx_1, dy_1);
+        var m1:Matrix = new Matrix();
+        m1.translate(dx_1, dy_1);
 
-    left_green_semaphore.graphics.beginBitmapFill(SVET_L_G_IMG, m1);
-    left_green_semaphore.graphics.drawRect(dx_1, dy_1, SVET_L_G_IMG.width, SVET_L_G_IMG.height);
-    left_green_semaphore.graphics.endFill();
+        left_green_semaphore.graphics.beginBitmapFill(SVET_L_G_IMG, m1);
+        left_green_semaphore.graphics.drawRect(dx_1, dy_1, SVET_L_G_IMG.width, SVET_L_G_IMG.height);
+        left_green_semaphore.graphics.endFill();
 
-    var dx_2:Number = 145 - (SVET_R_G_IMG.width*0.5);
-    var dy_2:Number = 136 - (SVET_R_G_IMG.height*0.5);
+        var dx_2:Number = 145 - (SVET_R_G_IMG.width*0.5);
+        var dy_2:Number = 136 - (SVET_R_G_IMG.height*0.5);
 
-    var m2:Matrix = new Matrix();
-    m2.translate(dx_2, dy_2);
+        var m2:Matrix = new Matrix();
+        m2.translate(dx_2, dy_2);
 
-    right_green_semaphore.graphics.beginBitmapFill(SVET_R_G_IMG, m2);
-    right_green_semaphore.graphics.drawRect(dx_2, dy_2, SVET_R_G_IMG.width, SVET_R_G_IMG.height);
-    right_green_semaphore.graphics.endFill();
+        right_green_semaphore.graphics.beginBitmapFill(SVET_R_G_IMG, m2);
+        right_green_semaphore.graphics.drawRect(dx_2, dy_2, SVET_R_G_IMG.width, SVET_R_G_IMG.height);
+        right_green_semaphore.graphics.endFill();
 
-    var dx_3:Number = 55 - (SVET_L_R_IMG.width*0.5);
-    var dy_3:Number = 136 - (SVET_L_R_IMG.height*0.5);
+        var dx_3:Number = 55 - (SVET_L_R_IMG.width*0.5);
+        var dy_3:Number = 136 - (SVET_L_R_IMG.height*0.5);
 
-    var m3:Matrix = new Matrix();
-    m3.translate(dx_3, dy_3);
+        var m3:Matrix = new Matrix();
+        m3.translate(dx_3, dy_3);
 
-    left_red_semaphore.graphics.beginBitmapFill(SVET_L_R_IMG, m3);
-    left_red_semaphore.graphics.drawRect(dx_3, dy_3, SVET_L_R_IMG.width, SVET_L_R_IMG.height);
-    left_red_semaphore.graphics.endFill();
+        left_red_semaphore.graphics.beginBitmapFill(SVET_L_R_IMG, m3);
+        left_red_semaphore.graphics.drawRect(dx_3, dy_3, SVET_L_R_IMG.width, SVET_L_R_IMG.height);
+        left_red_semaphore.graphics.endFill();
 
-    var dx_4:Number = 145 - (SVET_R_R_IMG.width*0.5);
-    var dy_4:Number = 136 - (SVET_R_R_IMG.height*0.5);
+        var dx_4:Number = 145 - (SVET_R_R_IMG.width*0.5);
+        var dy_4:Number = 136 - (SVET_R_R_IMG.height*0.5);
 
-    var m4:Matrix = new Matrix();
-    m4.translate(dx_4, dy_4);
+        var m4:Matrix = new Matrix();
+        m4.translate(dx_4, dy_4);
 
-    right_red_semaphore.graphics.beginBitmapFill(SVET_R_R_IMG, m4);
-    right_red_semaphore.graphics.drawRect(dx_4, dy_4, SVET_R_R_IMG.width, SVET_R_R_IMG.height);
-    right_red_semaphore.graphics.endFill();
+        right_red_semaphore.graphics.beginBitmapFill(SVET_R_R_IMG, m4);
+        right_red_semaphore.graphics.drawRect(dx_4, dy_4, SVET_R_R_IMG.width, SVET_R_R_IMG.height);
+        right_red_semaphore.graphics.endFill();
 
-    otherObjects.addChild(left_green_semaphore);
-    otherObjects.addChild(left_red_semaphore);
-    otherObjects.addChild(right_green_semaphore);
-    otherObjects.addChild(right_red_semaphore);
-}
+        otherObjects.addChild(left_green_semaphore);
+        otherObjects.addChild(left_red_semaphore);
+        otherObjects.addChild(right_green_semaphore);
+        otherObjects.addChild(right_red_semaphore);
+    }
 
     private function drawOtherObjects():void {
 

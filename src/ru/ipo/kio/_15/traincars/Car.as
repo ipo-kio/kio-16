@@ -2,6 +2,8 @@
  * Created by ilya on 31.01.15.
  */
 package ru.ipo.kio._15.traincars {
+import flash.display.Bitmap;
+import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Matrix;
@@ -12,9 +14,27 @@ import flash.text.TextFormat;
 
 public class Car extends Sprite {
 
+    [Embed(source="resources/01-vagon.png")]
+    public static const CAR_1_CLASS:Class;
+    public static const CAR_1_IMG:BitmapData = (new CAR_1_CLASS).bitmapData;
+    [Embed(source="resources/02-vagon.png")]
+    public static const CAR_2_CLASS:Class;
+    public static const CAR_2_IMG:BitmapData = (new CAR_2_CLASS).bitmapData;
+    [Embed(source="resources/03-vagon.png")]
+    public static const CAR_3_CLASS:Class;
+    public static const CAR_3_IMG:BitmapData = (new CAR_3_CLASS).bitmapData;
+    [Embed(source="resources/04-vagon.png")]
+    public static const CAR_4_CLASS:Class;
+    public static const CAR_4_IMG:BitmapData = (new CAR_4_CLASS).bitmapData;
+
+    [Embed(source="resources/00-lokomotiv.png")]
+    public static const LOCO_CLASS:Class;
+    public static const LOCO_IMG:BitmapData = (new LOCO_CLASS).bitmapData;
+
     public static const LENGTH:Number = 32;
     public static const WIDTH:Number = 14;
-    public static const STATION_COLOR:Vector.<uint> = new <uint>[0x88FFFF, 0xFF88FF, 0xFFFF88, 0x88FF88, 0x888888];
+//    public static const STATION_COLOR:Vector.<uint> = new <uint>[0x88FFFF, 0xFF88FF, 0xFFFF88, 0x88FF88, 0x888888];
+    public static const STATION_COLOR:Vector.<BitmapData> = new <BitmapData>[CAR_1_IMG, CAR_2_IMG, CAR_3_IMG, CAR_4_IMG, LOCO_IMG];
     public static const TEXT_COLOR:uint = 0x000000;
     public static const NUMBER_HEIGHT:Number = 12;
     public static const CAR_TICKS_LENGTH:int = Math.ceil(LENGTH / CurveRail.DL) + 2;
@@ -46,10 +66,20 @@ public class Car extends Sprite {
         _station = station;
         _number = number;
 
-        graphics.lineStyle(0.5, 0);
-        graphics.beginFill(STATION_COLOR[station]);
+        var CUR_IMG:BitmapData = STATION_COLOR[station];
+
+        var dx_1:Number = this.x - (CUR_IMG.width*0.5);
+        var dy_1:Number = this.y - (CUR_IMG.height*0.5);
+
+        var m:Matrix = new Matrix();
+        m.translate(dx_1, dy_1);
+
+//        graphics.lineStyle(0.5, 0);
+//        graphics.beginFill(STATION_COLOR[station]);
+        graphics.beginBitmapFill(CUR_IMG);
         //noinspection JSSuspiciousNameCombination
-        graphics.drawRect(-LENGTH / 2, -WIDTH / 2, LENGTH, WIDTH);
+//        graphics.drawRect(-LENGTH / 2, -WIDTH / 2, LENGTH, WIDTH);
+        graphics.drawRect(-LENGTH / 2, -WIDTH / 2, CUR_IMG.width, CUR_IMG.height);
         graphics.endFill();
 
         initNumberView();
