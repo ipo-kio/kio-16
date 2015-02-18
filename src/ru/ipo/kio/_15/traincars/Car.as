@@ -2,7 +2,6 @@
  * Created by ilya on 31.01.15.
  */
 package ru.ipo.kio._15.traincars {
-import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
@@ -68,18 +67,18 @@ public class Car extends Sprite {
 
         var CUR_IMG:BitmapData = STATION_COLOR[station];
 
-        var dx_1:Number = this.x - (CUR_IMG.width*0.5);
-        var dy_1:Number = this.y - (CUR_IMG.height*0.5);
+        var dx:Number = (-LENGTH / 2) + 1 - (CUR_IMG.width*0.5);
+        var dy:Number = (-WIDTH / 2) + 1 - (CUR_IMG.height*0.5);
 
         var m:Matrix = new Matrix();
-        m.translate(dx_1, dy_1);
+        m.translate(dx, dy);
 
 //        graphics.lineStyle(0.5, 0);
 //        graphics.beginFill(STATION_COLOR[station]);
-        graphics.beginBitmapFill(CUR_IMG);
+        graphics.beginBitmapFill(CUR_IMG, m);
         //noinspection JSSuspiciousNameCombination
-//        graphics.drawRect(-LENGTH / 2, -WIDTH / 2, LENGTH, WIDTH);
-        graphics.drawRect((-LENGTH / 2) + 3, (-WIDTH / 2) + 3, CUR_IMG.width, CUR_IMG.height);
+//        graphics.drawRect((-LENGTH / 2) + 3, (-WIDTH / 2) + 3, LENGTH, WIDTH);
+        graphics.drawRect(dx, dy, CUR_IMG.width, CUR_IMG.height);
         graphics.endFill();
 
         initNumberView();
