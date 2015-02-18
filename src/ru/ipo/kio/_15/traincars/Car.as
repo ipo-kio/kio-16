@@ -79,7 +79,7 @@ public class Car extends Sprite {
         graphics.beginBitmapFill(CUR_IMG);
         //noinspection JSSuspiciousNameCombination
 //        graphics.drawRect(-LENGTH / 2, -WIDTH / 2, LENGTH, WIDTH);
-        graphics.drawRect(-LENGTH / 2, -WIDTH / 2, CUR_IMG.width, CUR_IMG.height);
+        graphics.drawRect((-LENGTH / 2) + 3, (-WIDTH / 2) + 3, CUR_IMG.width, CUR_IMG.height);
         graphics.endFill();
 
         initNumberView();

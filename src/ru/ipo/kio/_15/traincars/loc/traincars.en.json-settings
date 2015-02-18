@@ -115,9 +115,9 @@
         "up2": "^2",
         "up3": "^3",
         "up4": "^4",
-        "undo": "undo",
-        "a_on": "A on",
-        "a_off": "A off",
-        "clean": "Clean"
+        "undo": "Undo",
+        "a_on": "Animation On",
+        "a_off": "Animation Off",
+        "clear": "Clean"
     }
 }
