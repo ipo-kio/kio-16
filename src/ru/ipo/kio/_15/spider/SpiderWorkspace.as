@@ -24,8 +24,8 @@ public class SpiderWorkspace extends Sprite {
         m = new SpiderMotion(s, f);
 
         addChild(m);
-        m.y = 500;
-        m.x = 0;
+        m.y = 550;
+        m.x = 5;
 
 //        addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 
@@ -35,17 +35,10 @@ public class SpiderWorkspace extends Sprite {
 
         addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 
-        var sl:Slider = new Slider(0, 100, 100);
-        addChild(sl);
-        sl.x = 50;
-        sl.y = 50;
-
         var tuned_mechanism:Mechanism = new Mechanism();
         tuned_mechanism.angle = 0;
         var mt:MechanismTuner = new MechanismTuner(tuned_mechanism);
         addChild(mt);
-        mt.x = 300;
-        mt.y = 250;
     }
 
     private function enterFrameHandler(event:Event):void {

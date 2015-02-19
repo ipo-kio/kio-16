@@ -21,7 +21,7 @@ public class Floor extends Sprite {
                 new Point(500, 10),
                 new Point(600, -10),
                 new Point(700, -30),
-                new Point(780, 0)
+                new Point(770, 0)
         );
 
         redraw();

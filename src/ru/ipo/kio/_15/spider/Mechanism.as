@@ -20,13 +20,13 @@ public class Mechanism extends Sprite {
     private var p2x:Number = 27.690 * MUL, p2y:Number = -19.705 * MUL;
     private var p3x:Number = 27.690 * MUL, p3y:Number = -31.092 * MUL;
 
-    private var l1:Number = dist(p1x, p1y, 36.033 * MUL, -25.415 * MUL);
-    private var l2:Number = dist(36.033 * MUL, -25.415 * MUL, 21.501 * MUL, -22.089 * MUL);
-    private var l3:Number = dist(21.501 * MUL, -22.089 * MUL, p2x, p2y);
-    private var l4:Number = dist(21.501 * MUL, -22.089 * MUL, 10.879 * MUL, -21.918 * MUL);
-    private var l5:Number = dist(10.879 * MUL, -21.918 * MUL, 19.432 * MUL, -32.923 * MUL);
-    private var l6:Number = dist(19.432 * MUL, -32.923 * MUL, 27.690 * MUL, -31.092 * MUL);
-    private var l7:Number = dist(10.879 * MUL, -21.918 * MUL, 0, 0);
+    private var _l1:Number = dist(p1x, p1y, 36.033 * MUL, -25.415 * MUL);
+    private var _l2:Number = dist(36.033 * MUL, -25.415 * MUL, 21.501 * MUL, -22.089 * MUL);
+    private var _l3:Number = dist(21.501 * MUL, -22.089 * MUL, p2x, p2y);
+    private var _l4:Number = dist(21.501 * MUL, -22.089 * MUL, 10.879 * MUL, -21.918 * MUL);
+    private var _l5:Number = dist(10.879 * MUL, -21.918 * MUL, 19.432 * MUL, -32.923 * MUL);
+    private var _l6:Number = dist(19.432 * MUL, -32.923 * MUL, 27.690 * MUL, -31.092 * MUL);
+    private var _l7:Number = dist(10.879 * MUL, -21.918 * MUL, 0, 0);
     private var a1:Number = -rotationAngle(36.033 * MUL, -25.415 * MUL, 21.501 * MUL, -22.089 * MUL, 10.879 * MUL, -21.918 * MUL);
     private var a2:Number = rotationAngle(19.432 * MUL, -32.923 * MUL, 10.879 * MUL, -21.918 * MUL, 0, 0);
 
@@ -35,6 +35,8 @@ public class Mechanism extends Sprite {
     private var kx:Number, ky:Number;
     private var lx:Number, ly:Number;
     private var sx:Number, sy:Number;
+
+    private var _broken:Boolean = false;
 
     public function Mechanism() {
         evaluate();
@@ -146,27 +148,38 @@ public class Mechanism extends Sprite {
     }
 
     public function evaluate():void {
+        _broken = false;
+
         //M
-        mx = p1x + l1 * Math.cos(_angle);
-        my = p1y + l1 * Math.sin(_angle);
+        mx = p1x + _l1 * Math.cos(_angle);
+        my = p1y + _l1 * Math.sin(_angle);
 
         //N
-        var int1:Vector.<Number> = intersect(mx, my, l2, p2x, p2y, l3);
+        var int1:Vector.<Number> = intersect(mx, my, _l2, p2x, p2y, _l3);
+        if (int1 == null) {
+            _broken = true;
+            return;
+        }
+
         nx = int1[0];
         ny = int1[1];
 
         //K
-        var int2:Vector.<Number> = continueByAngle(mx, my, nx, ny, a1, l4);
+        var int2:Vector.<Number> = continueByAngle(mx, my, nx, ny, a1, _l4);
         kx = int2[0];
         ky = int2[1];
 
         //L
-        var int3:Vector.<Number> = intersect(p3x, p3y, l6, kx, ky, l5);
+        var int3:Vector.<Number> = intersect(p3x, p3y, _l6, kx, ky, _l5);
+        if (int3 == null) {
+            _broken = true;
+            return;
+        }
         lx = int3[0];
         ly = int3[1];
 
         //S
-        var int4:Vector.<Number> = continueByAngle(lx, ly, kx, ky, a2, l7);
+        var int4:Vector.<Number> = continueByAngle(lx, ly, kx, ky, a2, _l7);
         sx = int4[0];
         sy = int4[1];
     }
@@ -181,6 +194,8 @@ public class Mechanism extends Sprite {
         var ly:Number = (y2 - y1) * d1 / d;
 
         var t1:Number = Math.sqrt(r1 * r1 - d1 * d1);
+        if (isNaN(t1))
+            return null;
         var nx:Number = (y1 - y2) * t1 / d;
         var ny:Number = (x2 - x1) * t1 / d;
 
@@ -222,5 +237,90 @@ public class Mechanism extends Sprite {
     }
 
 
+    public function get l1():Number {
+        return _l1;
+    }
+
+    public function set l1(value:Number):void {
+        _l1 = value;
+        evaluate();
+    }
+
+    public function get l2():Number {
+        return _l2;
+    }
+
+    public function set l2(value:Number):void {
+        _l2 = value;
+        evaluate();
+    }
+
+    public function get l3():Number {
+        return _l3;
+    }
+
+    public function set l3(value:Number):void {
+        _l3 = value;
+        evaluate();
+    }
+
+    public function get l4():Number {
+        return _l4;
+    }
+
+    public function set l4(value:Number):void {
+        _l4 = value;
+        evaluate();
+    }
+
+    public function get l5():Number {
+        return _l5;
+    }
+
+    public function set l5(value:Number):void {
+        _l5 = value;
+        evaluate();
+    }
+
+    public function get l6():Number {
+        return _l6;
+    }
+
+    public function set l6(value:Number):void {
+        _l6 = value;
+        evaluate();
+    }
+
+    public function get l7():Number {
+        return _l7;
+    }
+
+    public function set l7(value:Number):void {
+        _l7 = value;
+        evaluate();
+    }
+
+    public function get broken():Boolean {
+        return _broken;
+    }
+
+    public function curve(steps:int):Vector.<Point> {
+        var was_angle:Number = _angle;
+        var res:Vector.<Point> = new <Point>[];
+
+        for (var s:int = 0; s < steps; s++) {
+            _angle = 2 * Math.PI * s / steps;
+            evaluate();
+            if (!_broken)
+                res.push(s_p);
+            else
+                res.push(null);
+        }
+
+        _angle = was_angle;
+        evaluate();
+
+        return res;
+    }
 }
 }

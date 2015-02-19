@@ -28,6 +28,7 @@ public class Stick extends Sprite {
 
         addEventListener(MouseEvent.ROLL_OVER, rollOverHandler);
         addEventListener(MouseEvent.ROLL_OUT, rollOutHandler);
+        addEventListener(MouseEvent.CLICK, clickHandler);
     }
 
     public function setCoordinates(x1:Number, y1:Number, x2:Number, y2:Number):void {
@@ -41,10 +42,10 @@ public class Stick extends Sprite {
     private function redraw():void {
         graphics.clear();
 
-        graphics.lineStyle(10, 0xA5A5A5, 1, true, LineScaleMode.NORMAL, CapsStyle.ROUND);
+        graphics.lineStyle(10, selected ? 0x474747 : 0xA5A5A5, 1, true, LineScaleMode.NORMAL, CapsStyle.ROUND);
         graphics.moveTo(x1, y1);
         graphics.lineTo(x2, y2);
-        graphics.lineStyle(6, 0xE8E8E8, 1, true, LineScaleMode.NORMAL, CapsStyle.ROUND);
+        graphics.lineStyle(6, selected ? 0xA3A3A3 : 0xE8E8E8, 1, true, LineScaleMode.NORMAL, CapsStyle.ROUND);
         graphics.moveTo(x1, y1);
         graphics.lineTo(x2, y2);
 
@@ -54,8 +55,8 @@ public class Stick extends Sprite {
         graphics.drawCircle(x2, y2, 1);
         graphics.endFill();
 
-        if (selected) {
-            graphics.lineStyle(1, 0x000000);
+        if (over) {
+            graphics.lineStyle(12, 0xCDDC39, 0.4, true, LineScaleMode.NORMAL, CapsStyle.ROUND);
             graphics.moveTo(x1, y1);
             graphics.lineTo(x2, y2);
         }
@@ -90,6 +91,14 @@ public class Stick extends Sprite {
 
     private function rollOutHandler(event:MouseEvent):void {
         over = false;
+    }
+
+    private function clickHandler(event:MouseEvent):void {
+        selected = !selected;
+    }
+
+    public function get size():Number {
+        return Math.round(Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
     }
 }
 }
