@@ -3,6 +3,7 @@
  */
 package ru.ipo.kio._15.spider {
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.geom.Point;
 
 public class Mechanism extends Sprite {
@@ -20,13 +21,13 @@ public class Mechanism extends Sprite {
     private var p2x:Number = 27.690 * MUL, p2y:Number = -19.705 * MUL;
     private var p3x:Number = 27.690 * MUL, p3y:Number = -31.092 * MUL;
 
-    private var _l1:Number = dist(p1x, p1y, 36.033 * MUL, -25.415 * MUL);
-    private var _l2:Number = dist(36.033 * MUL, -25.415 * MUL, 21.501 * MUL, -22.089 * MUL);
-    private var _l3:Number = dist(21.501 * MUL, -22.089 * MUL, p2x, p2y);
-    private var _l4:Number = dist(21.501 * MUL, -22.089 * MUL, 10.879 * MUL, -21.918 * MUL);
-    private var _l5:Number = dist(10.879 * MUL, -21.918 * MUL, 19.432 * MUL, -32.923 * MUL);
-    private var _l6:Number = dist(19.432 * MUL, -32.923 * MUL, 27.690 * MUL, -31.092 * MUL);
-    private var _l7:Number = dist(10.879 * MUL, -21.918 * MUL, 0, 0);
+    private var _l1:Number = Math.round(dist(p1x, p1y, 36.033 * MUL, -25.415 * MUL));
+    private var _l2:Number = Math.round(dist(36.033 * MUL, -25.415 * MUL, 21.501 * MUL, -22.089 * MUL));
+    private var _l3:Number = Math.round(dist(21.501 * MUL, -22.089 * MUL, p2x, p2y));
+    private var _l4:Number = Math.round(dist(21.501 * MUL, -22.089 * MUL, 10.879 * MUL, -21.918 * MUL));
+    private var _l5:Number = Math.round(dist(10.879 * MUL, -21.918 * MUL, 19.432 * MUL, -32.923 * MUL));
+    private var _l6:Number = Math.round(dist(19.432 * MUL, -32.923 * MUL, 27.690 * MUL, -31.092 * MUL));
+    private var _l7:Number = Math.round(dist(10.879 * MUL, -21.918 * MUL, 0, 0));
     private var a1:Number = -rotationAngle(36.033 * MUL, -25.415 * MUL, 21.501 * MUL, -22.089 * MUL, 10.879 * MUL, -21.918 * MUL);
     private var a2:Number = rotationAngle(19.432 * MUL, -32.923 * MUL, 10.879 * MUL, -21.918 * MUL, 0, 0);
 
@@ -37,6 +38,7 @@ public class Mechanism extends Sprite {
     private var sx:Number, sy:Number;
 
     private var _broken:Boolean = false;
+    private var _brokenStep:int = 0;
 
     public function Mechanism() {
         evaluate();
@@ -61,7 +63,7 @@ public class Mechanism extends Sprite {
             graphics.endFill();
         }
 
-        graphics.lineStyle(4, _grayed ? 0x03A9F4 : 0xCDDC39, 1);
+        graphics.lineStyle(4, _grayed ? 0xCDDC39 : 0x03A9F4, 1);
         graphics.moveTo(p1x * sign, p1y);
         graphics.lineTo(mx * sign, my);
         graphics.lineTo(nx * sign, ny);
@@ -96,6 +98,7 @@ public class Mechanism extends Sprite {
         _angle = x_inverse ? -value : value;
         evaluate();
         redraw();
+        dispatchEvent(new Event(EVENT_ANGLE_CHANGED));
     }
 
     public function get grayed():Boolean {
@@ -158,6 +161,7 @@ public class Mechanism extends Sprite {
         var int1:Vector.<Number> = intersect(mx, my, _l2, p2x, p2y, _l3);
         if (int1 == null) {
             _broken = true;
+            _brokenStep = 1;
             return;
         }
 
@@ -173,6 +177,7 @@ public class Mechanism extends Sprite {
         var int3:Vector.<Number> = intersect(p3x, p3y, _l6, kx, ky, _l5);
         if (int3 == null) {
             _broken = true;
+            _brokenStep = 2;
             return;
         }
         lx = int3[0];
@@ -304,6 +309,10 @@ public class Mechanism extends Sprite {
         return _broken;
     }
 
+    public function get brokenStep():int {
+        return _brokenStep;
+    }
+
     public function curve(steps:int):Vector.<Point> {
         var was_angle:Number = _angle;
         var res:Vector.<Point> = new <Point>[];
@@ -322,5 +331,31 @@ public class Mechanism extends Sprite {
 
         return res;
     }
+
+    public function get ls():Vector.<Number> {
+        return new <Number>[
+            l1,
+            l2,
+            l3,
+            l4,
+            l5,
+            l6,
+            l7
+        ];
+    }
+
+    public function set ls(value:Vector.<Number>):void {
+        _l1 = value[0];
+        _l2 = value[1];
+        _l3 = value[2];
+        _l4 = value[3];
+        _l5 = value[4];
+        _l6 = value[5];
+        _l7 = value[6];
+
+        evaluate();
+    }
 }
 }
+
+//TODO draw path for two double sticks

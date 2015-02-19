@@ -13,8 +13,6 @@ public class Spider extends Sprite {
     private var right_back:Mechanism = new Mechanism();
     private var right_forward:Mechanism = new Mechanism();
 
-    private var stepsLayer:Sprite = new Sprite();
-
     public function Spider() {
         addChild(left_back);
         addChild(left_forward);
@@ -33,8 +31,6 @@ public class Spider extends Sprite {
         position_mechanism(right_forward);
 
         angle = 0;
-
-        addChild(stepsLayer);
     }
 
     private static function position_mechanism(m:Mechanism):void {
