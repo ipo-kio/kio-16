@@ -202,8 +202,8 @@ public class KioBase {
 
         //place problem view on the screen
         workspace = problem.display;
-        workspace.x = GlobalMetrics.WORKSPACE_X + Math.floor((GlobalMetrics.WORKSPACE_WIDTH - workspace.width) / 2);
-        workspace.y = GlobalMetrics.WORKSPACE_Y + Math.floor((GlobalMetrics.WORKSPACE_HEIGHT - workspace.height) / 2);
+        workspace.x = GlobalMetrics.WORKSPACE_X + Math.floor(Math.max(0, GlobalMetrics.WORKSPACE_WIDTH - workspace.width) / 2);
+        workspace.y = GlobalMetrics.WORKSPACE_Y + Math.floor(Math.max(0, GlobalMetrics.WORKSPACE_HEIGHT - workspace.height) / 2);
         workspace.visible = false;
         stage.addChild(workspace);
 
@@ -259,8 +259,8 @@ public class KioBase {
 
         //place problem view on the screen
         workspace = problem.display;
-        workspace.x = GlobalMetrics.WORKSPACE_X + Math.floor((GlobalMetrics.WORKSPACE_WIDTH - workspace.width) / 2);
-        workspace.y = GlobalMetrics.WORKSPACE_Y + Math.floor((GlobalMetrics.WORKSPACE_HEIGHT - workspace.height) / 2);
+        workspace.x = GlobalMetrics.WORKSPACE_X + Math.floor(Math.max(0, GlobalMetrics.WORKSPACE_WIDTH - workspace.width) / 2);
+        workspace.y = GlobalMetrics.WORKSPACE_Y + Math.floor(Math.max(0, GlobalMetrics.WORKSPACE_HEIGHT - workspace.height) / 2);
         stage.addChild(workspace);
 
         if (_problem_header) {

@@ -21,7 +21,8 @@ public class Floor extends Sprite {
                 new Point(500, 10),
                 new Point(600, -10),
                 new Point(700, -30),
-                new Point(770, 0)
+                new Point(770, 0),
+                new Point(780, -100)
         );
 
         redraw();
@@ -126,6 +127,12 @@ public class Floor extends Sprite {
         }
 
         return 0; // can not occur;
+    }
+
+    public function pointOnLastSegment(p:Point):Boolean {
+        var l:int = _points.length;
+        var ints:Vector.<Point> = intersectSegmentWithCircle(p.x, p.y, 0.001, _points[l - 2], _points[l - 1]);
+        return ints.length > 0;
     }
 }
 }
