@@ -41,6 +41,10 @@ public class TrainCarsWorkspace extends Sprite {
     public static const TOP_OVER_CLASS:Class;
     public static const TOP_OVER_IMG:BitmapData = (new TOP_OVER_CLASS).bitmapData;
 
+    [Embed(source="resources/kn-kr-strelka.png")]
+    public static const KN_KR_STR_CLASS:Class;
+    public static const KN_KR_STR_IMG:BitmapData = (new KN_KR_STR_CLASS).bitmapData;
+
     [Embed(source="resources/kn-undo_01.png")]
     public static const UNDO_1_CLASS:Class;
     public static const UNDO_1_IMG:BitmapData = (new UNDO_1_CLASS).bitmapData;
@@ -268,7 +272,6 @@ public class TrainCarsWorkspace extends Sprite {
     }
 
     private function drawOtherObjects():void {
-
         var dx_1:Number = 97 - (OBOZNACH_IMG.width*0.5);
         var dy_1:Number = 248 - (OBOZNACH_IMG.height*0.5);
 
@@ -312,10 +315,10 @@ public class TrainCarsWorkspace extends Sprite {
     }
 
     private function putButtons():void {
-        var b01:GraphicsButton = new GraphicsButton(_api.localization.buttons.up1, TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
-        var b02:GraphicsButton = new GraphicsButton(_api.localization.buttons.up2, TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
-        var b03:GraphicsButton = new GraphicsButton(_api.localization.buttons.up3, TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
-        var b04:GraphicsButton = new GraphicsButton(_api.localization.buttons.up4, TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
+        var b01:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up1*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
+        var b02:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up2*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
+        var b03:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up3*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
+        var b04:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up4*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
         var b1:GraphicsButton = new GraphicsButton(_api.localization.buttons.down1, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
         var b2:GraphicsButton = new GraphicsButton(_api.localization.buttons.down2, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
         var b3:GraphicsButton = new GraphicsButton(_api.localization.buttons.down3, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
@@ -438,7 +441,52 @@ public class TrainCarsWorkspace extends Sprite {
 
         _positions.addEventListener(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING, function (event:Event):void {
             trace('started moving ' + Math.random());
-        })
+        });
+
+        drawArrows();
+    }
+
+    private function drawArrows():void {
+
+        var dx_1:Number = 318 - (KN_KR_STR_IMG.width*0.5);
+        var dy_1:Number = 220 - (KN_KR_STR_IMG.height*0.5);
+
+        var m1:Matrix = new Matrix();
+        m1.translate(dx_1, dy_1);
+
+        otherObjects.graphics.beginBitmapFill(KN_KR_STR_IMG, m1);
+        otherObjects.graphics.drawRect(dx_1, dy_1, KN_KR_STR_IMG.width, KN_KR_STR_IMG.height);
+        otherObjects.graphics.endFill();
+
+        var dx_2:Number = 391 - (KN_KR_STR_IMG.width*0.5);
+        var dy_2:Number = 220 - (KN_KR_STR_IMG.height*0.5);
+
+        var m2:Matrix = new Matrix();
+        m2.translate(dx_2, dy_2);
+
+        otherObjects.graphics.beginBitmapFill(KN_KR_STR_IMG, m2);
+        otherObjects.graphics.drawRect(dx_2, dy_2, KN_KR_STR_IMG.width, KN_KR_STR_IMG.height);
+        otherObjects.graphics.endFill();
+
+        var dx_3:Number = 464 - (KN_KR_STR_IMG.width*0.5);
+        var dy_3:Number = 220 - (KN_KR_STR_IMG.height*0.5);
+
+        var m3:Matrix = new Matrix();
+        m3.translate(dx_3, dy_3);
+
+        otherObjects.graphics.beginBitmapFill(KN_KR_STR_IMG, m3);
+        otherObjects.graphics.drawRect(dx_3, dy_3, KN_KR_STR_IMG.width, KN_KR_STR_IMG.height);
+        otherObjects.graphics.endFill();
+
+        var dx_4:Number = 535 - (KN_KR_STR_IMG.width*0.5);
+        var dy_4:Number = 220 - (KN_KR_STR_IMG.height*0.5);
+
+        var m4:Matrix = new Matrix();
+        m4.translate(dx_4, dy_4);
+
+        otherObjects.graphics.beginBitmapFill(KN_KR_STR_IMG, m4);
+        otherObjects.graphics.drawRect(dx_4, dy_4, KN_KR_STR_IMG.width, KN_KR_STR_IMG.height);
+        otherObjects.graphics.endFill();
     }
 
     private static function update_info(i:InfoPanel, r:Object):void {
