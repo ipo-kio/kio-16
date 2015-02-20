@@ -9,6 +9,7 @@ import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
+import flash.text.TextFieldType;
 import flash.text.TextFormat;
 
 public class Car extends Sprite {
@@ -34,8 +35,10 @@ public class Car extends Sprite {
     public static const WIDTH:Number = 14;
 //    public static const STATION_COLOR:Vector.<uint> = new <uint>[0x88FFFF, 0xFF88FF, 0xFFFF88, 0x88FF88, 0x888888];
     public static const STATION_COLOR:Vector.<BitmapData> = new <BitmapData>[CAR_1_IMG, CAR_2_IMG, CAR_3_IMG, CAR_4_IMG, LOCO_IMG];
-    public static const TEXT_COLOR:uint = 0x000000;
-    public static const NUMBER_HEIGHT:Number = 12;
+//    public static const TEXT_COLOR:uint = 0x000000;
+    public static const TEXT_COLOR:uint = 0xFFFFFF;
+//    public static const NUMBER_HEIGHT:Number = 12;
+    public static const NUMBER_HEIGHT:Number = 13;
     public static const CAR_TICKS_LENGTH:int = Math.ceil(LENGTH / CurveRail.DL) + 2;
 
     public static const MOVING_STOP:int = 0;
@@ -73,15 +76,37 @@ public class Car extends Sprite {
         var m:Matrix = new Matrix();
         m.translate(dx, dy);
 
-//        graphics.lineStyle(0.5, 0);
-//        graphics.beginFill(STATION_COLOR[station]);
         graphics.beginBitmapFill(CUR_IMG, m);
-        //noinspection JSSuspiciousNameCombination
-//        graphics.drawRect((-LENGTH / 2) + 3, (-WIDTH / 2) + 3, LENGTH, WIDTH);
         graphics.drawRect(dx, dy, CUR_IMG.width, CUR_IMG.height);
         graphics.endFill();
 
-        initNumberView();
+        if (station != 4) {
+            graphics.lineStyle(0.5, 0x000000, 1);
+            graphics.beginFill(0x000000, 1);
+            switch (station) {
+                case 0:
+                        //red
+                    graphics.drawCircle(dx + 28, dy + 1, 5);
+                    break;
+                case 1:
+                        //green
+                    graphics.drawCircle(dx + 21, dy + 1, 5);
+                    break;
+                case 2:
+                        //blue
+                    graphics.drawCircle(dx + 21, dy + 1, 5);
+                    break;
+                default:
+                        //yellow
+                    graphics.drawCircle(dx + 23, dy + 1, 5);
+                    break;
+            }
+
+
+            graphics.endFill();
+        }
+
+        initNumberView(station);
     }
 
     public function get station():int {
@@ -96,13 +121,14 @@ public class Car extends Sprite {
         return _tick;
     }
 
-    private function initNumberView():void {
+    private function initNumberView(station:int):void {
         numberView = new TextField();
 
         if (_number <= 0)
             return;
 
-        numberView.defaultTextFormat = new TextFormat('KioArial', NUMBER_HEIGHT, TEXT_COLOR, true);
+//        numberView.defaultTextFormat = new TextFormat('KioArial', NUMBER_HEIGHT, TEXT_COLOR, true);
+        numberView.defaultTextFormat = new TextFormat('Tahoma', NUMBER_HEIGHT, TEXT_COLOR, true);
         numberView.embedFonts = true;
         numberView.text = '';
 
@@ -112,6 +138,7 @@ public class Car extends Sprite {
         numberView.autoSize = TextFieldAutoSize.CENTER;
         numberView.text = '' + _number;
 
+        //todo switch (station)
         numberView.y = -numberView.height / 2;
         numberView.x = -numberView.width / 2;
 
