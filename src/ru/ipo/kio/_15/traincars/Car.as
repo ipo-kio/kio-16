@@ -9,6 +9,7 @@ import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
+import flash.text.TextFieldType;
 import flash.text.TextFormat;
 
 public class Car extends Sprite {
@@ -80,6 +81,37 @@ public class Car extends Sprite {
 //        graphics.drawRect((-LENGTH / 2) + 3, (-WIDTH / 2) + 3, LENGTH, WIDTH);
         graphics.drawRect(dx, dy, CUR_IMG.width, CUR_IMG.height);
         graphics.endFill();
+
+        if (station != 4) {
+            graphics.lineStyle(0.5, 0x000000, 1);
+            graphics.beginFill(0x000000, 1);
+            graphics.drawCircle(dx + 28, dy + 2, 6);
+            graphics.endFill();
+
+            var tf:TextFormat = new TextFormat();
+            tf.font = "Tahoma";
+            tf.size = 13;
+            tf.color = 0xFFFFFF;
+            tf.bold = true;
+
+            var tfNumber:TextField = new TextField();
+            tfNumber.width = 10;
+            tfNumber.height = 10;
+            tfNumber.selectable = false;
+            tfNumber.alwaysShowSelection = false;
+            tfNumber.multiline = false;
+            tfNumber.mouseWheelEnabled = false;
+            tfNumber.type = TextFieldType.DYNAMIC;
+            tfNumber.text = "" + number;
+
+            //tfNumber.setTextFormat(tf);
+
+            addChild(tfNumber);
+
+            tfNumber.textColor = 0xFFFFFF;
+            tfNumber.x = dx + 30;
+            tfNumber.y = dy + 7;
+        }
 
         initNumberView();
     }
