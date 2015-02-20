@@ -13,16 +13,10 @@ public class Floor extends Sprite {
         _points = new <Point>[];
         _points.push(
                 new Point(0, 0),
-                new Point(100, 0),
-                new Point(200, -20),
-                new Point(300, 0),
-                new Point(400, -30),
-                new Point(450, -30),
-                new Point(500, 10),
-                new Point(600, -10),
-                new Point(700, -30),
-                new Point(770, 0),
-                new Point(780, -100)
+                new Point(195, 0),
+                new Point(390, -30),
+                new Point(585, 30),
+                new Point(780, 0)
         );
 
         redraw();
@@ -133,6 +127,11 @@ public class Floor extends Sprite {
         var l:int = _points.length;
         var ints:Vector.<Point> = intersectSegmentWithCircle(p.x, p.y, 0.001, _points[l - 2], _points[l - 1]);
         return ints.length > 0;
+    }
+
+    public function pointToTheRight(p:Point):Boolean {
+        var l:int = _points.length;
+        return p.x >= _points[l-1].x;
     }
 }
 }

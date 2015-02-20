@@ -65,5 +65,16 @@ public class Spider extends Sprite {
         ];
     }
 
+    public function set ls(value:Vector.<Number>):void {
+        left_back.ls = value;
+        right_back.ls = value;
+        left_forward.ls = value;
+        right_forward.ls = value;
+    }
+
+    public function get ls():Vector.<Number> {
+        return left_back.ls;
+    }
+
 }
 }

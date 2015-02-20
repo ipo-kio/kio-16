@@ -12,7 +12,7 @@ public class Mechanism extends Sprite {
     private var _grayed:Boolean = false;
     private var _x_inverse:Boolean = false;
 
-    private const MUL:Number = 1.5;
+    private const MUL:Number = 1.3;
 
     public static const EVENT_ANGLE_CHANGED:String = 'angle changed';
 

@@ -10,12 +10,14 @@ public class SpiderLocation {
     private var _floor_point_position:Point;
     private var _angle:Number;
     private var _touchesEnd:Boolean;
+    private var _internal_angle:Number;
 
-    public function SpiderLocation(floor_point_ind:int, floor_point_position:Point, angle:Number, touchesEnd:Boolean) {
+    public function SpiderLocation(floor_point_ind:int, floor_point_position:Point, angle:Number, touchesEnd:Boolean, internal_angle:Number) {
         this._floor_point_ind = floor_point_ind;
         this._floor_point_position = floor_point_position;
         this._angle = angle;
         this._touchesEnd = touchesEnd;
+        this._internal_angle = internal_angle;
     }
 
     public function get floor_point_ind():int {
@@ -32,6 +34,10 @@ public class SpiderLocation {
 
     public function get touchesEnd():Boolean {
         return _touchesEnd;
+    }
+
+    public function get internal_angle():Number {
+        return _internal_angle;
     }
 }
 }

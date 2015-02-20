@@ -24,7 +24,7 @@ public class MechanismTuner extends Sprite {
     public static const ANIMATE_BUTTON_OFF:Class;
     public static const ANIMATE_BUTTON_OFF_IMG:BitmapData = (new ANIMATE_BUTTON_OFF).bitmapData;
 
-    public static const MUL:Number = 3;
+    public static const MUL:Number = 4.5;
 
     private var _m:Mechanism;
     private var _center:Point;

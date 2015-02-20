@@ -52,10 +52,7 @@ public class Slider extends Sprite {
         _value_text_color = value_text_color;
         _from_to_text_color = from_to_text_color;
 
-        if (stage)
-            init();
-        else
-            addEventListener(Event.ADDED_TO_STAGE, init);
+        init();
     }
 
     private function relocateValueText():void {
@@ -121,9 +118,11 @@ public class Slider extends Sprite {
 
         button = new Sprite();
         drawButton();
-        button.addEventListener(MouseEvent.MOUSE_DOWN, buttonMouseDown);
-        stage.addEventListener(MouseEvent.MOUSE_UP, buttonMouseUp);
-        stage.addEventListener(MouseEvent.MOUSE_MOVE, buttonMouseMove);
+        addEventListener(Event.ADDED_TO_STAGE, function (e:Event):void {
+            button.addEventListener(MouseEvent.MOUSE_DOWN, buttonMouseDown);
+            stage.addEventListener(MouseEvent.MOUSE_UP, buttonMouseUp);
+            stage.addEventListener(MouseEvent.MOUSE_MOVE, buttonMouseMove);
+        });
 
         value = (_from + _to) / 2;
         button.y = V_SKIP;
@@ -187,6 +186,15 @@ public class Slider extends Sprite {
     public function set value(value:Number):void {
         button.x = value2pos(value);
         dispatchEvent(new Event(VALUE_CHANGED));
+    }
+
+    public function get value_no_fire():Number {
+        return value;
+    }
+
+    public function set value_no_fire(value:Number):void {
+        button.x = value2pos(value);
+        relocateValueText();
     }
 
     public function reInit(from_:Number, to_:Number, value_:Number):void {

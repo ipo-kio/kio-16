@@ -4,6 +4,7 @@
 package ru.ipo.kio._15.spider {
 import flash.display.BitmapData;
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.geom.Matrix;
 import flash.geom.Point;
 
@@ -18,6 +19,7 @@ public class SpiderMotion extends Sprite {
     public static const ANIMATE_BUTTON_OFF_IMG:BitmapData = (new ANIMATE_BUTTON_OFF).bitmapData;
 
     public static const ANGLE_DELTA:Number = 0.1;
+    public static const TIME_TICKS:int = 90 * 10; //1 minute, 10 times a second
 
     private var _s:Spider;
     private var _f:Floor;
@@ -30,6 +32,8 @@ public class SpiderMotion extends Sprite {
 
     private var slider:Slider;
 
+    private var evaluated_positions:Vector.<SpiderLocation> = null;
+
     public function SpiderMotion(s:Spider, f:Floor) {
         _s = s;
         _f = f;
@@ -37,10 +41,27 @@ public class SpiderMotion extends Sprite {
         addChild(_s);
         addChild(_f);
 
-        slider = new Slider(0, 1, 400, 0x212121, 0x727272);
+        slider = new Slider(0, TIME_TICKS / 10, 400, 0x212121, 0x727272);
         addChild(slider);
+        slider.x = 200;
+        slider.y = 30;
+        slider.precision = 1;
 
         reset();
+
+        slider.addEventListener(Slider.VALUE_CHANGED, function (e:Event):void {
+            if (spider_locations == null)
+                return;
+            var ind:int = Math.round(slider.value * 10);
+            if (ind >= spider_locations.length - 1)
+                ind = spider_locations.length - 1;
+            if (ind < 0)
+                ind = 0;
+            location = spider_locations[ind];
+        });
+
+        invalidatePositions();
+        evaluatePositions();
     }
 
     public function reset():void {
@@ -54,11 +75,15 @@ public class SpiderMotion extends Sprite {
         var base_point:Point = steps[floor_point_ind];
 
         position_spider(base_point);
+
+        slider.value_no_fire = 0;
     }
 
     public function add_delta():void {
         if (touchesEnd)
             return;
+
+        slider.value_no_fire += 0.1;
 
         graphics.clear();
         graphics.lineStyle(0, 0x00FF00, 0);
@@ -119,7 +144,7 @@ public class SpiderMotion extends Sprite {
         touchesEnd = false;
         for (s_i = 0; s_i < 4; s_i++) {
             var pp:Point = _s.transform.matrix.transformPoint(s_steps[s_i]);
-            if (_f.pointOnLastSegment(pp)) {
+            if (_f.pointToTheRight(pp)) {
                 touchesEnd = true;
                 break;
             }
@@ -142,7 +167,7 @@ public class SpiderMotion extends Sprite {
     }
 
     private function get location():SpiderLocation {
-        return new SpiderLocation(floor_point_ind, floor_point_position, angle, touchesEnd);
+        return new SpiderLocation(floor_point_ind, floor_point_position, angle, touchesEnd, _s.angle);
     }
 
     private function set location(value:SpiderLocation):void {
@@ -151,12 +176,15 @@ public class SpiderMotion extends Sprite {
         angle = value.angle;
         touchesEnd = value.touchesEnd;
 
+        _s.angle = value.internal_angle;
+
         position_spider(_s.steps[floor_point_ind]);
     }
 
-    public function evaluatePositions():Vector.<SpiderLocation> {
+    private function evaluatePositions():void {
         var start_time:Number = new Date().getTime();
         var currentLocation:SpiderLocation = location;
+        var currentSliderLocation:Number = slider.value;
 
         var res:Vector.<SpiderLocation> = new <SpiderLocation>[];
 
@@ -164,7 +192,7 @@ public class SpiderMotion extends Sprite {
         res.push(location);
 
         var ok:Boolean = false;
-        for (var time:int = 0; time < 60 * 10; time++) {
+        for (var time:int = 0; time < TIME_TICKS; time++) {
             add_delta();
             res.push(location);
             if (touchesEnd) {
@@ -174,12 +202,25 @@ public class SpiderMotion extends Sprite {
         }
 
         location = currentLocation;
-
-        position_spider(_s.steps[floor_point_ind]);
+        slider.value_no_fire = currentSliderLocation;
 
         trace('evaluated positions', new Date().getTime() - start_time);
 
-        return res;
+        evaluated_positions = res;
+    }
+
+    public function invalidatePositions():void {
+        evaluated_positions = null;
+    }
+
+    public function get spider_locations():Vector.<SpiderLocation> {
+        return evaluated_positions;
+    }
+
+    public function set ls(value:Vector.<Number>):void {
+        invalidatePositions();
+        evaluatePositions();
+        _s.ls = value;
     }
 }
 }
