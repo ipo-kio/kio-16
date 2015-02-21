@@ -24,6 +24,10 @@ public class MechanismTuner extends Sprite {
     public static const ANIMATE_BUTTON_OFF:Class;
     public static const ANIMATE_BUTTON_OFF_IMG:BitmapData = (new ANIMATE_BUTTON_OFF).bitmapData;
 
+    [Embed(source="resources/btn.png")]
+    public static const USE_SETTING_BUTTON:Class;
+    public static const USE_SETTING_BUTTON_IMG:BitmapData = (new USE_SETTING_BUTTON).bitmapData;
+
     public static const MUL:Number = 4.5;
 
     private var _m:Mechanism;
@@ -37,6 +41,8 @@ public class MechanismTuner extends Sprite {
     private var a_button_on:GraphicsButton;
     private var a_button_off:GraphicsButton;
     private var err_button:GraphicsButton;
+    private var useSettingButton:GraphicsButton;
+    private var currentSettingsButton:GraphicsButton;
 
     private var last_working_ls:Vector.<Number>;
 
@@ -55,7 +61,7 @@ public class MechanismTuner extends Sprite {
 
     private var _changingInd:int = -1;
 
-    public function MechanismTuner(m:Mechanism) {
+    public function MechanismTuner(m:Mechanism, motion:SpiderMotion) {
         _m = m;
         last_working_ls = _m.ls;
         _center = _m.p1_p.add(_m.p2_p).add(_m.p3_p);
@@ -119,8 +125,8 @@ public class MechanismTuner extends Sprite {
         graphics.endFill();
 
         //draw border
-        graphics.lineStyle(1, 0x727272);
-        graphics.drawRect(-250, -150, 400, 400);
+//        graphics.lineStyle(1, 0x727272);
+//        graphics.drawRect(-250, -150, 400, 400);
 
         x = GlobalMetrics.WORKSPACE_WIDTH - 150;
         y = 150;
@@ -168,18 +174,41 @@ public class MechanismTuner extends Sprite {
         err_button.y = -110;
 
         err_button.addEventListener(MouseEvent.CLICK, function (e:Event):void {
-            _m.ls = last_working_ls;
-            if (animation)
-                turnAnimationOn();
-            positionSticks();
-            err_button.visible = false;
-            drawCurve();
-
-            if (_changingInd >= 0)
-                _slider.value = lengthByIndex(_changingInd);
+            ls = last_working_ls;
         });
 
         addChild(err_button);
+
+        useSettingButton = new GraphicsButton('Использовать', USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, 'KioTahoma', 12, 12);
+        addChild(useSettingButton);
+        useSettingButton.x = 80;
+        useSettingButton.y = 210;
+        useSettingButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
+            if (_m.broken)
+                return; //TODO disable if broken
+            motion.ls = _m.ls;
+            motion.reset();
+        });
+
+        currentSettingsButton = new GraphicsButton('Взять текущий', USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, 'KioTahoma', 12, 12);
+        addChild(currentSettingsButton);
+        currentSettingsButton.x = -40;
+        currentSettingsButton.y = 210;
+        currentSettingsButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
+            ls = motion.ls;
+        });
+    }
+
+    private function set ls(value:Vector.<Number>):void {
+        _m.ls = value;
+        if (animation)
+            turnAnimationOn();
+        positionSticks();
+        err_button.visible = false;
+        drawCurve();
+
+        if (_changingInd >= 0)
+            _slider.value = lengthByIndex(_changingInd);
     }
 
     private function animate_handler(e:Event):void {
@@ -259,6 +288,7 @@ public class MechanismTuner extends Sprite {
             }
             turnAnimationOff();
             err_button.visible = true;
+            useSettingButton.visible = false;
         } else {
             this.broken = false;
             if (animation)
@@ -266,6 +296,7 @@ public class MechanismTuner extends Sprite {
             positionSticks();
             last_working_ls = _m.ls;
             err_button.visible = false;
+            useSettingButton.visible = true;
         }
     }
 

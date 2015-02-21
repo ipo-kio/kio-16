@@ -44,7 +44,7 @@ public class SpiderMotion extends Sprite {
         slider = new Slider(0, TIME_TICKS / 10, 400, 0x212121, 0x727272);
         addChild(slider);
         slider.x = 200;
-        slider.y = 30;
+        slider.y = 50;
         slider.precision = 1;
 
         reset();
@@ -52,7 +52,7 @@ public class SpiderMotion extends Sprite {
         slider.addEventListener(Slider.VALUE_CHANGED, function (e:Event):void {
             if (spider_locations == null)
                 return;
-            var ind:int = Math.round(slider.value * 10);
+            var ind:int = slider2ind;
             if (ind >= spider_locations.length - 1)
                 ind = spider_locations.length - 1;
             if (ind < 0)
@@ -62,6 +62,10 @@ public class SpiderMotion extends Sprite {
 
         invalidatePositions();
         evaluatePositions();
+    }
+
+    private function get slider2ind():Number {
+        return Math.round(slider.value * 10);
     }
 
     public function reset():void {
@@ -205,6 +209,7 @@ public class SpiderMotion extends Sprite {
         slider.value_no_fire = currentSliderLocation;
 
         trace('evaluated positions', new Date().getTime() - start_time);
+        trace('length', res.length);
 
         evaluated_positions = res;
     }
@@ -217,10 +222,23 @@ public class SpiderMotion extends Sprite {
         return evaluated_positions;
     }
 
+    public function get ls():Vector.<Number> {
+        return _s.ls;
+    }
+
     public function set ls(value:Vector.<Number>):void {
+        _s.ls = value;
         invalidatePositions();
         evaluatePositions();
-        _s.ls = value;
+    }
+
+    public function move_slider():void {
+        if (evaluated_positions == null)
+            return;
+
+        var ind:Number = slider2ind;
+        if (ind < evaluated_positions.length)
+            slider.value += 0.1;
     }
 }
 }

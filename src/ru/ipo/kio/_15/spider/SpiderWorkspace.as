@@ -16,10 +16,6 @@ import ru.ipo.kio.base.GlobalMetrics;
 
 public class SpiderWorkspace extends Sprite {
 
-    [Embed(source="resources/btn.png")]
-    public static const USE_SETTING_BUTTON:Class;
-    public static const USE_SETTING_BUTTON_IMG:BitmapData = (new USE_SETTING_BUTTON).bitmapData;
-
     private var s:Spider;
     private var f:Floor;
     private var m:SpiderMotion;
@@ -53,23 +49,14 @@ public class SpiderWorkspace extends Sprite {
 
         var tuned_mechanism:Mechanism = new Mechanism();
         tuned_mechanism.angle = 0;
-        var mt:MechanismTuner = new MechanismTuner(tuned_mechanism);
+        var mt:MechanismTuner = new MechanismTuner(tuned_mechanism, m);
         addChild(mt);
-
-        var useSettingButton:GraphicsButton = new GraphicsButton('Использовать', USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, 'KioTahoma', 12, 12);
-        addChild(useSettingButton);
-        useSettingButton.x = 30;
-        useSettingButton.y = 550;
-        useSettingButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
-            if (tuned_mechanism.broken)
-                return; //TODO disable if broken
-            m.ls = tuned_mechanism.ls;
-            m.reset();
-        });
     }
 
+    //TODO tuner rotates with the same angle as a spider
+
     private function enterFrameHandler(event:Event):void {
-        m.add_delta();
+        m.move_slider();
     }
 }
 }
