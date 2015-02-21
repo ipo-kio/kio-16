@@ -119,6 +119,7 @@ public class MovingAction {
     private function locoPushUpHandler(event:Event):void {
         var loco:Car = Car(event.target);
         loco.removeEventListener(Car.EVENT_PUSH_UP, locoPushUpHandler);
+        _position.dispatchEvent(new Event(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING));
         loco.addMoveDelta(TrainCarsWorkspace.WAY_START_TICK - loco.tick, way);
     }
 

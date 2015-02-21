@@ -2,21 +2,43 @@
  * Created by ilya on 31.01.15.
  */
 package ru.ipo.kio._15.traincars {
+import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
+import flash.text.TextFieldType;
 import flash.text.TextFormat;
 
 public class Car extends Sprite {
 
+    [Embed(source="resources/01-vagon.png")]
+    public static const CAR_1_CLASS:Class;
+    public static const CAR_1_IMG:BitmapData = (new CAR_1_CLASS).bitmapData;
+    [Embed(source="resources/02-vagon.png")]
+    public static const CAR_2_CLASS:Class;
+    public static const CAR_2_IMG:BitmapData = (new CAR_2_CLASS).bitmapData;
+    [Embed(source="resources/03-vagon.png")]
+    public static const CAR_3_CLASS:Class;
+    public static const CAR_3_IMG:BitmapData = (new CAR_3_CLASS).bitmapData;
+    [Embed(source="resources/04-vagon.png")]
+    public static const CAR_4_CLASS:Class;
+    public static const CAR_4_IMG:BitmapData = (new CAR_4_CLASS).bitmapData;
+
+    [Embed(source="resources/00-lokomotiv.png")]
+    public static const LOCO_CLASS:Class;
+    public static const LOCO_IMG:BitmapData = (new LOCO_CLASS).bitmapData;
+
     public static const LENGTH:Number = 32;
     public static const WIDTH:Number = 14;
-    public static const STATION_COLOR:Vector.<uint> = new <uint>[0x88FFFF, 0xFF88FF, 0xFFFF88, 0x88FF88, 0x888888];
-    public static const TEXT_COLOR:uint = 0x000000;
-    public static const NUMBER_HEIGHT:Number = 12;
+//    public static const STATION_COLOR:Vector.<uint> = new <uint>[0x88FFFF, 0xFF88FF, 0xFFFF88, 0x88FF88, 0x888888];
+    public static const STATION_COLOR:Vector.<BitmapData> = new <BitmapData>[CAR_1_IMG, CAR_2_IMG, CAR_3_IMG, CAR_4_IMG, LOCO_IMG];
+//    public static const TEXT_COLOR:uint = 0x000000;
+    public static const TEXT_COLOR:uint = 0xFFFFFF;
+//    public static const NUMBER_HEIGHT:Number = 12;
+    public static const NUMBER_HEIGHT:Number = 13;
     public static const CAR_TICKS_LENGTH:int = Math.ceil(LENGTH / CurveRail.DL) + 2;
 
     public static const MOVING_STOP:int = 0;
@@ -25,6 +47,7 @@ public class Car extends Sprite {
 
     public static const EVENT_PUSH_DOWN:String = 'push down';
     public static const EVENT_PUSH_UP:String = 'push up';
+    public static const EVENT_START_MOVE:String = 'start move';
     public static const EVENT_STOP_MOVE:String = 'stop move';
 
     public static const DT_SPEED:int = 2;
@@ -45,13 +68,45 @@ public class Car extends Sprite {
         _station = station;
         _number = number;
 
-        graphics.lineStyle(0.5, 0);
-        graphics.beginFill(STATION_COLOR[station]);
-        //noinspection JSSuspiciousNameCombination
-        graphics.drawRect(-LENGTH / 2, -WIDTH / 2, LENGTH, WIDTH);
+        var CUR_IMG:BitmapData = STATION_COLOR[station];
+
+        var dx:Number = (-LENGTH / 2) + 1 - (CUR_IMG.width*0.5);
+        var dy:Number = (-WIDTH / 2) + 1 - (CUR_IMG.height*0.5);
+
+        var m:Matrix = new Matrix();
+        m.translate(dx, dy);
+
+        graphics.beginBitmapFill(CUR_IMG, m);
+        graphics.drawRect(dx, dy, CUR_IMG.width, CUR_IMG.height);
         graphics.endFill();
 
-        initNumberView();
+        if (station != 4) {
+            graphics.lineStyle(0.5, 0x000000, 1);
+            graphics.beginFill(0x000000, 1);
+            switch (station) {
+                case 0:
+                        //red
+                    graphics.drawCircle(dx + 28, dy + 1, 5);
+                    break;
+                case 1:
+                        //green
+                    graphics.drawCircle(dx + 21, dy + 1, 5);
+                    break;
+                case 2:
+                        //blue
+                    graphics.drawCircle(dx + 21, dy + 1, 5);
+                    break;
+                default:
+                        //yellow
+                    graphics.drawCircle(dx + 23, dy + 1, 5);
+                    break;
+            }
+
+
+            graphics.endFill();
+        }
+
+        initNumberView(station);
     }
 
     public function get station():int {
@@ -66,13 +121,14 @@ public class Car extends Sprite {
         return _tick;
     }
 
-    private function initNumberView():void {
+    private function initNumberView(station:int):void {
         numberView = new TextField();
 
         if (_number <= 0)
             return;
 
-        numberView.defaultTextFormat = new TextFormat('KioArial', NUMBER_HEIGHT, TEXT_COLOR, true);
+//        numberView.defaultTextFormat = new TextFormat('KioArial', NUMBER_HEIGHT, TEXT_COLOR, true);
+        numberView.defaultTextFormat = new TextFormat('Tahoma', NUMBER_HEIGHT, TEXT_COLOR, true);
         numberView.embedFonts = true;
         numberView.text = '';
 
@@ -82,6 +138,7 @@ public class Car extends Sprite {
         numberView.autoSize = TextFieldAutoSize.CENTER;
         numberView.text = '' + _number;
 
+        //todo switch (station)
         numberView.y = -numberView.height / 2;
         numberView.x = -numberView.width / 2;
 
@@ -130,6 +187,9 @@ public class Car extends Sprite {
     }
 
     public function addMoveDelta(delta:int, movingWay:RailWay):void {
+        if (_moveDelta == 0)
+            dispatchEvent(new Event(EVENT_START_MOVE));
+
         if (_moveDelta < 0)
             return;
 
@@ -140,6 +200,9 @@ public class Car extends Sprite {
     }
 
     public function subMoveDelta(delta:int, movingWay:RailWay):void {
+        if (_moveDelta == 0)
+            dispatchEvent(new Event(EVENT_START_MOVE));
+
         if (_moveDelta > 0)
             return;
 

@@ -10,6 +10,7 @@ public class CarsPositions extends EventDispatcher {
     public static const STATIONS_COUNT:int = 4;
     public static const WAYS_COUNT:int = 4;
 
+    public static const EVENT_SOME_CAR_STARTED_MOVING:String = 'some moved';
     public static const EVENT_ALL_STOPPED:String = 'all stopped';
 
     private var _top_initial:Vector.<Car>;
@@ -53,6 +54,7 @@ public class CarsPositions extends EventDispatcher {
 
         for each (var c:Car in _top) {
             _railsSet.addChild(c);
+            c.addEventListener(Car.EVENT_START_MOVE, carStartHandler);
             c.addEventListener(Car.EVENT_STOP_MOVE, carStopHandler);
         }
 
@@ -60,12 +62,14 @@ public class CarsPositions extends EventDispatcher {
             _way[wayInd] = new <Car>[];
 
         _top_loco = new Car(4, 0);
+        _top_loco.addEventListener(Car.EVENT_START_MOVE, carStartHandler);
         _top_loco.addEventListener(Car.EVENT_STOP_MOVE, carStopHandler);
         _railsSet.addChild(_top_loco);
         for (wayInd = 0; wayInd < WAYS_COUNT; wayInd++) {
             var loco:Car = new Car(4, 0);
             _way_loco.push(loco);
             _railsSet.addChild(loco);
+            loco.addEventListener(Car.EVENT_START_MOVE, carStartHandler);
             loco.addEventListener(Car.EVENT_STOP_MOVE, carStopHandler);
         }
     }
@@ -92,6 +96,11 @@ public class CarsPositions extends EventDispatcher {
 
     public function get way_loco():Vector.<Car> {
         return _way_loco;
+    }
+
+    private function carStartHandler(event:Event):void {
+        if (!isAnythingMoving())
+            dispatchEvent(new Event(EVENT_SOME_CAR_STARTED_MOVING));
     }
 
     private function carStopHandler(event:Event):void {
