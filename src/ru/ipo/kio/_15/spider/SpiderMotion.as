@@ -5,8 +5,11 @@ package ru.ipo.kio._15.spider {
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.MouseEvent;
 import flash.geom.Matrix;
 import flash.geom.Point;
+
+import ru.ipo.kio.api.controls.GraphicsButton;
 
 public class SpiderMotion extends Sprite {
 
@@ -18,7 +21,7 @@ public class SpiderMotion extends Sprite {
     public static const ANIMATE_BUTTON_OFF:Class;
     public static const ANIMATE_BUTTON_OFF_IMG:BitmapData = (new ANIMATE_BUTTON_OFF).bitmapData;
 
-    public static const ANGLE_DELTA:Number = 0.1;
+    public static const ANGLE_DELTA:Number = 0.1 / 2;
     public static const TIME_TICKS:int = 90 * 10; //1 minute, 10 times a second
 
     private var _s:Spider;
@@ -31,6 +34,8 @@ public class SpiderMotion extends Sprite {
     private var touchesEnd:Boolean = false;
 
     private var slider:Slider;
+    private var animateButtonOn:GraphicsButton;
+    private var animateButtonOff:GraphicsButton;
 
     private var evaluated_positions:Vector.<SpiderLocation> = null;
 
@@ -62,6 +67,33 @@ public class SpiderMotion extends Sprite {
 
         invalidatePositions();
         evaluatePositions();
+
+        animateButtonOn = new GraphicsButton('A on', ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, 'KioArial', 12, 12);
+        animateButtonOff = new GraphicsButton('A off', ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, 'KioArial', 12, 12);
+
+        animateButtonOn.x = 20;
+        animateButtonOn.y = 50;
+        animateButtonOff.x = animateButtonOn.x;
+        animateButtonOff.y = animateButtonOn.y;
+
+        addChild(animateButtonOn);
+        addChild(animateButtonOff);
+
+        animateButtonOn.visible = false;
+
+        animateButtonOn.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            animateButtonOn.visible = false;
+            animateButtonOff.visible = true;
+            addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+        });
+
+        animateButtonOff.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            animateButtonOn.visible = true;
+            animateButtonOff.visible = false;
+            removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+        });
+
+        addEventListener(Event.ENTER_FRAME, enterFrameHandler);
     }
 
     private function get slider2ind():Number {
@@ -135,6 +167,8 @@ public class SpiderMotion extends Sprite {
                     }
             }
 
+        // Бондаревский Александр Витальевич - история цивилизаций,
+
         if (max_ind < 0)
             return;
 
@@ -197,7 +231,10 @@ public class SpiderMotion extends Sprite {
 
         var ok:Boolean = false;
         for (var time:int = 0; time < TIME_TICKS; time++) {
+
             add_delta();
+            add_delta();
+
             res.push(location);
             if (touchesEnd) {
                 ok = true;
@@ -237,8 +274,12 @@ public class SpiderMotion extends Sprite {
             return;
 
         var ind:Number = slider2ind;
-        if (ind < evaluated_positions.length)
+        if (ind < evaluated_positions.length - 1)
             slider.value += 0.1;
+    }
+
+    private function enterFrameHandler(event:Event):void {
+        move_slider();
     }
 }
 }

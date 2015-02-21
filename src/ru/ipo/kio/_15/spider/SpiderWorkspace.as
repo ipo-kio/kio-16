@@ -41,12 +41,6 @@ public class SpiderWorkspace extends Sprite {
         m.x = 0;
         m.y = 500;
 
-        addEventListener(Event.ADDED_TO_STAGE, function(e:Event):void {
-            stage.addEventListener(KeyboardEvent.KEY_UP, enterFrameHandler);
-        });
-
-        addEventListener(Event.ENTER_FRAME, enterFrameHandler);
-
         var tuned_mechanism:Mechanism = new Mechanism();
         tuned_mechanism.angle = 0;
         var mt:MechanismTuner = new MechanismTuner(tuned_mechanism, m);
@@ -54,9 +48,5 @@ public class SpiderWorkspace extends Sprite {
     }
 
     //TODO tuner rotates with the same angle as a spider
-
-    private function enterFrameHandler(event:Event):void {
-        m.move_slider();
-    }
 }
 }
