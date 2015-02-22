@@ -42,7 +42,6 @@ public class MechanismTuner extends Sprite {
     private var a_button_off:GraphicsButton;
     private var err_button:GraphicsButton;
     private var useSettingButton:GraphicsButton;
-    private var currentSettingsButton:GraphicsButton;
 
     private var last_working_ls:Vector.<Number>;
 
@@ -97,7 +96,20 @@ public class MechanismTuner extends Sprite {
 
                     var value:Number = lengthByIndex(ind);
                     _changingInd = ind;
-                    _slider.reInit(4, 30, value);
+
+                    var l_from:Number = 3;
+                    var l_to:Number = 30;
+                    switch (ind) {
+                        case 1: l_from = 3; l_to = 16; break;
+                        case 2: l_from = 3; l_to = 30; break;
+                        case 3: l_from = 3; l_to = 16; break;
+                        case 4: l_from = 3; l_to = 30; break;
+                        case 5: l_from = 3; l_to = 30; break;
+                        case 6: l_from = 3; l_to = 30; break;
+                        case 7: l_from = 3; l_to = 32; break;
+                    }
+
+                    _slider.reInit(l_from, l_to, value);
                     _slider.visible = true;
 
                     for (var j:int = 1; j < s.length; j++)
@@ -128,7 +140,7 @@ public class MechanismTuner extends Sprite {
 //        graphics.lineStyle(1, 0x727272);
 //        graphics.drawRect(-250, -150, 400, 400);
 
-        x = GlobalMetrics.WORKSPACE_WIDTH - 150;
+        x = GlobalMetrics.WORKSPACE_WIDTH - 180;
         y = 150;
 
         _slider.x = -250 + 40;
@@ -145,9 +157,9 @@ public class MechanismTuner extends Sprite {
         addChild(a_button_on);
         addChild(a_button_off);
         a_button_on.x = 100;
-        a_button_on.y = -110;
+        a_button_on.y = -90;
         a_button_off.x = 100;
-        a_button_off.y = -110;
+        a_button_off.y = -90;
 
         a_button_on.visible = false;
         addEventListener(Event.ENTER_FRAME, animate_handler);
@@ -189,17 +201,9 @@ public class MechanismTuner extends Sprite {
             motion.ls = _m.ls;
             motion.reset();
         });
-
-        currentSettingsButton = new GraphicsButton('Взять текущий', USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, 'KioTahoma', 12, 12);
-        addChild(currentSettingsButton);
-        currentSettingsButton.x = -40;
-        currentSettingsButton.y = 210;
-        currentSettingsButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
-            ls = motion.ls;
-        });
     }
 
-    private function set ls(value:Vector.<Number>):void {
+    public function set ls(value:Vector.<Number>):void {
         _m.ls = value;
         if (animation)
             turnAnimationOn();

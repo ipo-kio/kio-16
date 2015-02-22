@@ -3,17 +3,28 @@
  */
 package ru.ipo.kio._15.spider {
 
+import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.MouseEvent;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
+import ru.ipo.kio.api.controls.GraphicsButton;
 
 import ru.ipo.kio.api.controls.InfoPanel;
 
 import ru.ipo.kio.base.GlobalMetrics;
 
 public class SpiderWorkspace extends Sprite {
+
+    [Embed(source="resources/btn.png")]
+    public static const HELP_BUTTON_ON:Class;
+    public static const HELP_BUTTON_ON_IMG:BitmapData = (new HELP_BUTTON_ON).bitmapData;
+
+    [Embed(source="resources/btn.png")]
+    public static const USE_SETTING_BUTTON:Class;
+    public static const USE_SETTING_BUTTON_IMG:BitmapData = (new USE_SETTING_BUTTON).bitmapData;
 
     private var s:Spider;
     private var f:Floor;
@@ -48,6 +59,8 @@ public class SpiderWorkspace extends Sprite {
         bigSpider.mouseEnabled = false;
         addChild(bigSpider);
 
+        bigSpider.visible = false;
+
         graphics.beginFill(0xF0F4C3);
         graphics.drawRect(0, 0, GlobalMetrics.WORKSPACE_WIDTH, GlobalMetrics.WORKSPACE_HEIGHT);
         graphics.endFill();
@@ -73,6 +86,24 @@ public class SpiderWorkspace extends Sprite {
         tuned_mechanism.angle = 0;
         var mt:MechanismTuner = new MechanismTuner(tuned_mechanism, m);
         addChild(mt);
+
+        //buttons
+
+        var bigSpiderButton:GraphicsButton = new GraphicsButton('?', HELP_BUTTON_ON_IMG, HELP_BUTTON_ON_IMG, HELP_BUTTON_ON_IMG, 'KioArial', 12, 12);
+        addChild(bigSpiderButton);
+        bigSpiderButton.x = 80;
+        bigSpiderButton.y = 550;
+        bigSpiderButton.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            bigSpider.visible = !bigSpider.visible;
+        });
+
+        var currentSettingsButton:GraphicsButton = new GraphicsButton('Взять текущий', USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, 'KioTahoma', 12, 12);
+        addChild(currentSettingsButton);
+        currentSettingsButton.x = 680;
+        currentSettingsButton.y = 550;
+        currentSettingsButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
+            mt.ls = m.ls;
+        });
     }
 
     private function init_info_panels():void {

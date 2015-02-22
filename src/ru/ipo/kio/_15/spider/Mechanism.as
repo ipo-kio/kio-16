@@ -22,13 +22,13 @@ public class Mechanism extends Sprite {
     private var p2x:Number = 27.690, p2y:Number = -19.705;
     private var p3x:Number = 27.690, p3y:Number = -31.092;
 
-    private var _l1:Number = Math.round(dist(p1x, p1y, 36.033, -25.415));
-    private var _l2:Number = Math.round(dist(36.033, -25.415, 21.501, -22.089));
-    private var _l3:Number = Math.round(dist(21.501, -22.089, p2x, p2y));
-    private var _l4:Number = Math.round(dist(21.501, -22.089, 10.879, -21.918));
-    private var _l5:Number = Math.round(dist(10.879, -21.918, 19.432, -32.923));
-    private var _l6:Number = Math.round(dist(19.432, -32.923, 27.690, -31.092));
-    private var _l7:Number = Math.round(dist(10.879, -21.918, 0, 0));
+    private var _l1:Number = dist(p1x, p1y, 36.033, -25.415);
+    private var _l2:Number = dist(36.033, -25.415, 21.501, -22.089);
+    private var _l3:Number = dist(21.501, -22.089, p2x, p2y);
+    private var _l4:Number = dist(21.501, -22.089, 10.879, -21.918);
+    private var _l5:Number = dist(10.879, -21.918, 19.432, -32.923);
+    private var _l6:Number = dist(19.432, -32.923, 27.690, -31.092);
+    private var _l7:Number = dist(10.879, -21.918, 0, 0);
     private var a1:Number = -rotationAngle(36.033, -25.415, 21.501, -22.089, 10.879, -21.918);
     private var a2:Number = rotationAngle(19.432, -32.923, 10.879, -21.918, 0, 0);
     // ----------------
@@ -51,13 +51,13 @@ public class Mechanism extends Sprite {
         p2y *= MUL;
         p3x *= MUL;
         p3y *= MUL;
-        _l1 *= MUL;
-        _l2 *= MUL;
-        _l3 *= MUL;
-        _l4 *= MUL;
-        _l5 *= MUL;
-        _l6 *= MUL;
-        _l7 *= MUL;
+        _l1 = Math.round(_l1 * MUL);
+        _l2 = Math.round(_l2 * MUL);
+        _l3 = Math.round(_l3 * MUL);
+        _l4 = Math.round(_l4 * MUL);
+        _l5 = Math.round(_l5 * MUL);
+        _l6 = Math.round(_l6 * MUL);
+        _l7 = Math.round(_l7 * MUL);
 
         evaluate();
         redraw();
