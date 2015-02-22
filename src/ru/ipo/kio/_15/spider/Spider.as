@@ -3,17 +3,23 @@
  */
 package ru.ipo.kio._15.spider {
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.geom.Point;
 
 public class Spider extends Sprite {
 
     private var _angle:Number = 0;
-    private var left_back:Mechanism = new Mechanism();
-    private var left_forward:Mechanism = new Mechanism();
-    private var right_back:Mechanism = new Mechanism();
-    private var right_forward:Mechanism = new Mechanism();
+    private var left_back:Mechanism;
+    private var left_forward:Mechanism;
+    private var right_back:Mechanism;
+    private var right_forward:Mechanism;
 
-    public function Spider() {
+    public function Spider(MUL:Number = -1) {
+        left_back = MUL > 0 ? new Mechanism(MUL) : new Mechanism();
+        left_forward = MUL > 0 ? new Mechanism(MUL) : new Mechanism();
+        right_back = MUL > 0 ? new Mechanism(MUL) : new Mechanism();
+        right_forward = MUL > 0 ? new Mechanism(MUL) : new Mechanism();
+
         addChild(left_back);
         addChild(left_forward);
         addChild(right_back);
@@ -31,6 +37,10 @@ public class Spider extends Sprite {
         position_mechanism(right_forward);
 
         angle = 0;
+
+        left_back.addEventListener(Mechanism.EVENT_ANGLE_CHANGED, function (e:Event):void {
+            dispatchEvent(new Event(Mechanism.EVENT_ANGLE_CHANGED));
+        });
     }
 
     private static function position_mechanism(m:Mechanism):void {

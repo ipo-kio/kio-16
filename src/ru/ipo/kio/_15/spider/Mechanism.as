@@ -12,24 +12,26 @@ public class Mechanism extends Sprite {
     private var _grayed:Boolean = false;
     private var _x_inverse:Boolean = false;
 
-    private const MUL:Number = 1.3;
+    private var MUL:Number;
 
     public static const EVENT_ANGLE_CHANGED:String = 'angle changed';
 
     // http://www.mekanizmalar.com/mechanicalspider.html
-    private var p1x:Number = 41.395 * MUL, p1y:Number = -26.641 * MUL;
-    private var p2x:Number = 27.690 * MUL, p2y:Number = -19.705 * MUL;
-    private var p3x:Number = 27.690 * MUL, p3y:Number = -31.092 * MUL;
+    // ----------------
+    private var p1x:Number = 41.395, p1y:Number = -26.641;
+    private var p2x:Number = 27.690, p2y:Number = -19.705;
+    private var p3x:Number = 27.690, p3y:Number = -31.092;
 
-    private var _l1:Number = Math.round(dist(p1x, p1y, 36.033 * MUL, -25.415 * MUL));
-    private var _l2:Number = Math.round(dist(36.033 * MUL, -25.415 * MUL, 21.501 * MUL, -22.089 * MUL));
-    private var _l3:Number = Math.round(dist(21.501 * MUL, -22.089 * MUL, p2x, p2y));
-    private var _l4:Number = Math.round(dist(21.501 * MUL, -22.089 * MUL, 10.879 * MUL, -21.918 * MUL));
-    private var _l5:Number = Math.round(dist(10.879 * MUL, -21.918 * MUL, 19.432 * MUL, -32.923 * MUL));
-    private var _l6:Number = Math.round(dist(19.432 * MUL, -32.923 * MUL, 27.690 * MUL, -31.092 * MUL));
-    private var _l7:Number = Math.round(dist(10.879 * MUL, -21.918 * MUL, 0, 0));
-    private var a1:Number = -rotationAngle(36.033 * MUL, -25.415 * MUL, 21.501 * MUL, -22.089 * MUL, 10.879 * MUL, -21.918 * MUL);
-    private var a2:Number = rotationAngle(19.432 * MUL, -32.923 * MUL, 10.879 * MUL, -21.918 * MUL, 0, 0);
+    private var _l1:Number = Math.round(dist(p1x, p1y, 36.033, -25.415));
+    private var _l2:Number = Math.round(dist(36.033, -25.415, 21.501, -22.089));
+    private var _l3:Number = Math.round(dist(21.501, -22.089, p2x, p2y));
+    private var _l4:Number = Math.round(dist(21.501, -22.089, 10.879, -21.918));
+    private var _l5:Number = Math.round(dist(10.879, -21.918, 19.432, -32.923));
+    private var _l6:Number = Math.round(dist(19.432, -32.923, 27.690, -31.092));
+    private var _l7:Number = Math.round(dist(10.879, -21.918, 0, 0));
+    private var a1:Number = -rotationAngle(36.033, -25.415, 21.501, -22.089, 10.879, -21.918);
+    private var a2:Number = rotationAngle(19.432, -32.923, 10.879, -21.918, 0, 0);
+    // ----------------
 
     private var mx:Number, my:Number;
     private var nx:Number, ny:Number;
@@ -40,7 +42,23 @@ public class Mechanism extends Sprite {
     private var _broken:Boolean = false;
     private var _brokenStep:int = 0;
 
-    public function Mechanism() {
+    public function Mechanism(MUL:Number = 1.3) {
+        this.MUL = MUL;
+
+        p1x *= MUL;
+        p1y *= MUL;
+        p2x *= MUL;
+        p2y *= MUL;
+        p3x *= MUL;
+        p3y *= MUL;
+        _l1 *= MUL;
+        _l2 *= MUL;
+        _l3 *= MUL;
+        _l4 *= MUL;
+        _l5 *= MUL;
+        _l6 *= MUL;
+        _l7 *= MUL;
+
         evaluate();
         redraw();
     }
@@ -345,13 +363,13 @@ public class Mechanism extends Sprite {
     }
 
     public function set ls(value:Vector.<Number>):void {
-        _l1 = value[0];
-        _l2 = value[1];
-        _l3 = value[2];
-        _l4 = value[3];
-        _l5 = value[4];
-        _l6 = value[5];
-        _l7 = value[6];
+        _l1 = value[0] * MUL / 1.3;
+        _l2 = value[1] * MUL / 1.3;
+        _l3 = value[2] * MUL / 1.3;
+        _l4 = value[3] * MUL / 1.3;
+        _l5 = value[4] * MUL / 1.3;
+        _l6 = value[5] * MUL / 1.3;
+        _l7 = value[6] * MUL / 1.3;
 
         evaluate();
     }
@@ -359,3 +377,4 @@ public class Mechanism extends Sprite {
 }
 
 //TODO draw path for two double sticks
+//TODO if point below ground, stop

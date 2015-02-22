@@ -9,6 +9,10 @@ import flash.events.MouseEvent;
 import flash.geom.Matrix;
 import flash.geom.Point;
 
+import ru.ipo.kio.api.KioApi;
+
+import ru.ipo.kio.api.KioProblem;
+
 import ru.ipo.kio.api.controls.GraphicsButton;
 
 public class SpiderMotion extends Sprite {
@@ -26,6 +30,7 @@ public class SpiderMotion extends Sprite {
 
     private var _s:Spider;
     private var _f:Floor;
+    private var _bigSpider:Spider;
 
     private var floor_point_ind:int;
     private var floor_point_position:Point;
@@ -39,9 +44,19 @@ public class SpiderMotion extends Sprite {
 
     private var evaluated_positions:Vector.<SpiderLocation> = null;
 
-    public function SpiderMotion(s:Spider, f:Floor) {
+    private var api:KioApi;
+    private var workspace:SpiderWorkspace;
+
+    public function SpiderMotion(workspace:SpiderWorkspace, problem:KioProblem, s:Spider, f:Floor, bigSpider:Spider) {
+        this.workspace = workspace;
+        api = KioApi.instance(problem);
         _s = s;
         _f = f;
+        _bigSpider = bigSpider;
+
+        api.addEventListener(KioApi.RECORD_EVENT, function(e:Event):void {
+            workspace.setRecordResult(result);
+        });
 
         addChild(_s);
         addChild(_f);
@@ -94,6 +109,10 @@ public class SpiderMotion extends Sprite {
         });
 
         addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+
+        _s.addEventListener(Mechanism.EVENT_ANGLE_CHANGED, function(e:Event):void {
+            _bigSpider.angle = _s.angle;
+        });
     }
 
     private function get slider2ind():Number {
@@ -249,6 +268,9 @@ public class SpiderMotion extends Sprite {
         trace('length', res.length);
 
         evaluated_positions = res;
+
+        api.submitResult(result);
+        workspace.setCurrentResult(result);
     }
 
     public function invalidatePositions():void {
@@ -265,6 +287,7 @@ public class SpiderMotion extends Sprite {
 
     public function set ls(value:Vector.<Number>):void {
         _s.ls = value;
+        _bigSpider.ls = value;
         invalidatePositions();
         evaluatePositions();
     }
@@ -280,6 +303,24 @@ public class SpiderMotion extends Sprite {
 
     private function enterFrameHandler(event:Event):void {
         move_slider();
+    }
+
+    public function get finishes():Boolean {
+        return evaluated_positions != null && evaluated_positions[evaluated_positions.length - 1].touchesEnd;
+    }
+
+    public function get time():Number {
+        if (evaluated_positions)
+            return (evaluated_positions.length - 1) / 10;
+        else
+            return 0;
+    }
+
+    public function get result():Object {
+        return {
+            ok: finishes,
+            t: time
+        }
     }
 }
 }

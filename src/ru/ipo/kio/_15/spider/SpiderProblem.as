@@ -33,7 +33,7 @@ public class SpiderProblem implements KioProblem {
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
         KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(LOCALIZATION_TH).data);
 
-        workspace = new SpiderWorkspace();
+        workspace = new SpiderWorkspace(this);
     }
 
     public function get id():String {
@@ -61,6 +61,18 @@ public class SpiderProblem implements KioProblem {
     }
 
     public function compare(r1:Object, r2:Object):int {
+        if (!r1.ok && !r2.ok)
+            return 0;
+        if (!r1.ok)
+            return -1;
+        if (!r2.ok)
+            return 1;
+
+        if (r1.t < r2.t)
+            return 1;
+        if (r1.t > r2.t)
+            return -1;
+
         return 0;
     }
 
@@ -78,6 +90,7 @@ public class SpiderProblem implements KioProblem {
 
     public function clear():void {
 //        workspace.clear();
+        //TODO implement
     }
 }
 }
