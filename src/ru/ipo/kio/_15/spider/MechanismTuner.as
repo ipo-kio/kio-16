@@ -10,6 +10,8 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
 
+import ru.ipo.kio.api.KioProblem;
+
 import ru.ipo.kio.api.controls.GraphicsButton;
 
 import ru.ipo.kio.base.GlobalMetrics;
@@ -45,22 +47,25 @@ public class MechanismTuner extends Sprite {
 
     private var last_working_ls:Vector.<Number>;
 
+    private var problem:KioProblem;
+
     private var s:Vector.<Stick> = new <Stick>[
         null,
-        new Stick(0xFFB86F),
-        new Stick(0x73CC81),
-        new Stick(0xDAE871),
-        new Stick(0x483A58),
-        new Stick(0x56203D),
-        new Stick(0xE0BAD7),
-        new Stick(0xD30C7B)
+        new Stick(),
+        new Stick(),
+        new Stick(),
+        new Stick(),
+        new Stick(),
+        new Stick(),
+        new Stick()
     ];
 
     private var _slider:Slider = new Slider(0, 100, 320, 0x212121, 0x727272);
 
     private var _changingInd:int = -1;
 
-    public function MechanismTuner(m:Mechanism, motion:SpiderMotion) {
+    public function MechanismTuner(problem:KioProblem, m:Mechanism, motion:SpiderMotion) {
+        this.problem = problem;
         _m = m;
         last_working_ls = _m.ls;
         _center = _m.p1_p.add(_m.p2_p).add(_m.p3_p);
@@ -71,6 +76,17 @@ public class MechanismTuner extends Sprite {
         });
 
         addChild(curveLayer);
+
+        if (problem.level >= 1) {
+            //triangle sides
+            s.push(new Stick());
+            s.push(new Stick());
+            s.push(new Stick());
+
+            addChild(s[8]);
+            addChild(s[9]);
+            addChild(s[10]);
+        }
 
         addChild(s[1]);
         addChild(s[3]);
@@ -107,6 +123,10 @@ public class MechanismTuner extends Sprite {
                         case 5: l_from = 3; l_to = 30; break;
                         case 6: l_from = 3; l_to = 30; break;
                         case 7: l_from = 3; l_to = 32; break;
+
+                        case 8: l_from = 10; l_to = 20; break;
+                        case 9: l_from = 10; l_to = 20; break;
+                        case 10: l_from = 10; l_to = 20; break;
                     }
 
                     _slider.reInit(l_from, l_to, value);
@@ -122,23 +142,6 @@ public class MechanismTuner extends Sprite {
         _slider.addEventListener(Slider.VALUE_CHANGED, slider_value_changedHandler);
 
         positionSticks();
-
-        //draw triangle
-        graphics.lineStyle(2, 0xA5A5A5);
-        graphics.beginFill(0xE8E8E8);
-        graphics.drawTriangles(new <Number>[
-                m.p1_p.x * MUL - _center.x,
-                m.p1_p.y * MUL - _center.y,
-                m.p2_p.x * MUL - _center.x,
-                m.p2_p.y * MUL - _center.y,
-                m.p3_p.x * MUL - _center.x,
-                m.p3_p.y * MUL - _center.y
-        ]);
-        graphics.endFill();
-
-        //draw border
-//        graphics.lineStyle(1, 0x727272);
-//        graphics.drawRect(-250, -150, 400, 400);
 
         x = GlobalMetrics.WORKSPACE_WIDTH - 180;
         y = 150;
@@ -232,12 +235,27 @@ public class MechanismTuner extends Sprite {
     }
 
     private function positionSticks():void {
+        //draw triangle
+        graphics.clear();
+        graphics.lineStyle(2, 0xA5A5A5);
+        graphics.beginFill(0xE8E8E8);
+        graphics.drawTriangles(new <Number>[
+            _m.p1_p.x * MUL - _center.x,
+            _m.p1_p.y * MUL - _center.y,
+            _m.p2_p.x * MUL - _center.x,
+            _m.p2_p.y * MUL - _center.y,
+            _m.p3_p.x * MUL - _center.x,
+            _m.p3_p.y * MUL - _center.y
+        ]);
+        graphics.endFill();
+
         //s[1] is always visible
         for (var i:int = 2; i < s.length; i++)
             s[i].visible = !_m.broken;
         s[2].visible ||= _m.brokenStep == 2;
         s[3].visible ||= _m.brokenStep == 2;
         s[4].visible ||= _m.brokenStep == 2;
+        //TODO visibility for step0
 
         positionStick(s[1], _m.p1_p, _m.m_p);
         positionStick(s[2], _m.m_p, _m.n_p);
@@ -246,6 +264,12 @@ public class MechanismTuner extends Sprite {
         positionStick(s[5], _m.l_p, _m.k_p);
         positionStick(s[6], _m.p3_p, _m.l_p);
         positionStick(s[7], _m.k_p, _m.s_p);
+
+        if (problem.level >= 1) {
+            positionStick(s[8], _m.p2_p, _m.p3_p);
+            positionStick(s[9], _m.p1_p, _m.p3_p);
+            positionStick(s[10], _m.p1_p, _m.p2_p);
+        }
     }
 
     private function slider_value_changedHandler(event:Event = null):void {
@@ -270,6 +294,16 @@ public class MechanismTuner extends Sprite {
                 break;
             case 7:
                 _m.l7 = Math.round(_slider.value);
+                break;
+
+            case 8:
+                _m.ll1 = Math.round(_slider.value);
+                break;
+            case 9:
+                _m.ll2 = Math.round(_slider.value);
+                break;
+            case 10:
+                _m.ll3 = Math.round(_slider.value);
                 break;
         }
 
@@ -320,6 +354,12 @@ public class MechanismTuner extends Sprite {
                 return _m.l6;
             case 7:
                 return _m.l7;
+            case 8:
+                return _m.ll1;
+            case 9:
+                return _m.ll2;
+            case 10:
+                return _m.ll3;
         }
         return NaN;
     }

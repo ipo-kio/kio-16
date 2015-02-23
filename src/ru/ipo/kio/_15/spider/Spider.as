@@ -14,11 +14,11 @@ public class Spider extends Sprite {
     private var right_back:Mechanism;
     private var right_forward:Mechanism;
 
-    public function Spider(MUL:Number = -1) {
-        left_back = MUL > 0 ? new Mechanism(MUL) : new Mechanism();
-        left_forward = MUL > 0 ? new Mechanism(MUL) : new Mechanism();
-        right_back = MUL > 0 ? new Mechanism(MUL) : new Mechanism();
-        right_forward = MUL > 0 ? new Mechanism(MUL) : new Mechanism();
+    public function Spider(level:int, MUL:Number = -1) {
+        left_back = MUL > 0 ? new Mechanism(level, MUL) : new Mechanism(level);
+        left_forward = MUL > 0 ? new Mechanism(level, MUL) : new Mechanism(level);
+        right_back = MUL > 0 ? new Mechanism(level, MUL) : new Mechanism(level);
+        right_forward = MUL > 0 ? new Mechanism(level, MUL) : new Mechanism(level);
 
         addChild(left_back);
         addChild(left_forward);

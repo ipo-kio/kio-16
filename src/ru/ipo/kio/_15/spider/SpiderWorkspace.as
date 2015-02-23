@@ -52,7 +52,7 @@ public class SpiderWorkspace extends Sprite {
 
         init_info_panels();
 
-        bigSpider = new Spider(5);
+        bigSpider = new Spider(problem.level, 5);
         bigSpider.x = GlobalMetrics.WORKSPACE_WIDTH / 2;
         bigSpider.y = 400;
         bigSpider.alpha = 0.2;
@@ -74,7 +74,7 @@ public class SpiderWorkspace extends Sprite {
     private function init(e:Event = null):void {
         removeEventListener(Event.ADDED_TO_STAGE, init);
 
-        s = new Spider();
+        s = new Spider(problem.level);
         f = new Floor();
         m = new SpiderMotion(this, problem, s, f, bigSpider);
 
@@ -82,9 +82,9 @@ public class SpiderWorkspace extends Sprite {
         m.x = 0;
         m.y = 500;
 
-        var tuned_mechanism:Mechanism = new Mechanism();
+        var tuned_mechanism:Mechanism = new Mechanism(problem.level);
         tuned_mechanism.angle = 0;
-        var mt:MechanismTuner = new MechanismTuner(tuned_mechanism, m);
+        var mt:MechanismTuner = new MechanismTuner(problem, tuned_mechanism, m);
         addChild(mt);
 
         //buttons

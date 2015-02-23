@@ -15,15 +15,13 @@ public class Stick extends Sprite {
     private var x2:Number;
     private var y2:Number;
 
-    private var _color:uint;
     private var _selected:Boolean = false;
     private var _over:Boolean = false;
 
     public static const SELECTED_CHANGED_EVENT:String = "selectedChanged";
     public static const OVER_CHANGED_EVENT:String = "overChanged";
 
-    public function Stick(color:uint) {
-        _color = color;
+    public function Stick() {
         redraw();
 
         addEventListener(MouseEvent.ROLL_OVER, rollOverHandler);

@@ -22,6 +22,10 @@ public class Mechanism extends Sprite {
     private var p2x:Number = 27.690, p2y:Number = -19.705;
     private var p3x:Number = 27.690, p3y:Number = -31.092;
 
+    private var _ll1:Number = dist(p2x, p2y, p3x, p3y);
+    private var _ll2:Number = dist(p1x, p1y, p3x, p3y);
+    private var _ll3:Number = dist(p1x, p1y, p2x, p2y);
+
     private var _l1:Number = dist(p1x, p1y, 36.033, -25.415);
     private var _l2:Number = dist(36.033, -25.415, 21.501, -22.089);
     private var _l3:Number = dist(21.501, -22.089, p2x, p2y);
@@ -41,8 +45,10 @@ public class Mechanism extends Sprite {
 
     private var _broken:Boolean = false;
     private var _brokenStep:int = 0;
+    private var _level:int = 0;
 
-    public function Mechanism(MUL:Number = 1.2) {
+    public function Mechanism(level:int, MUL:Number = 1.2) {
+        _level = level;
         this.MUL = MUL;
 
         p1x *= MUL;
@@ -51,6 +57,11 @@ public class Mechanism extends Sprite {
         p2y *= MUL;
         p3x *= MUL;
         p3y *= MUL;
+
+        _ll1 = Math.round(_ll1 * MUL);
+        _ll2 = Math.round(_ll2 * MUL);
+        _ll3 = Math.round(_ll3 * MUL);
+
         _l1 = Math.round(_l1 * MUL);
         _l2 = Math.round(_l2 * MUL);
         _l3 = Math.round(_l3 * MUL);
@@ -170,6 +181,20 @@ public class Mechanism extends Sprite {
 
     public function evaluate():void {
         _broken = false;
+
+        if (_level >= 0) {
+            //find triangle
+            p3x = p2x;
+            p3y = p2y - _ll1;
+            var int0:Vector.<Number> = intersect(p2x, p2y, _ll3, p3x, p3y, _ll2);
+            if (int0 == null) {
+                _broken = true;
+                _brokenStep = 0;
+                return;
+            }
+            p1x = int0[0];
+            p1y = int0[1];
+        }
 
         //M
         mx = p1x + _l1 * Math.cos(_angle);
@@ -323,6 +348,30 @@ public class Mechanism extends Sprite {
         evaluate();
     }
 
+    public function get ll1():Number {
+        return _ll1;
+    }
+
+    public function set ll1(value:Number):void {
+        _ll1 = value;
+    }
+
+    public function get ll2():Number {
+        return _ll2;
+    }
+
+    public function set ll2(value:Number):void {
+        _ll2 = value;
+    }
+
+    public function get ll3():Number {
+        return _ll3;
+    }
+
+    public function set ll3(value:Number):void {
+        _ll3 = value;
+    }
+
     public function get broken():Boolean {
         return _broken;
     }
@@ -351,7 +400,7 @@ public class Mechanism extends Sprite {
     }
 
     public function get ls():Vector.<Number> {
-        return new <Number>[
+        var numbers:Vector.<Number> = new <Number>[
             l1,
             l2,
             l3,
@@ -360,6 +409,12 @@ public class Mechanism extends Sprite {
             l6,
             l7
         ];
+        if (_level >= 0) {
+            numbers.push(ll1);
+            numbers.push(ll2);
+            numbers.push(ll3);
+        }
+        return numbers;
     }
 
     public function set ls(value:Vector.<Number>):void {
@@ -370,6 +425,12 @@ public class Mechanism extends Sprite {
         _l5 = value[4] * MUL / 1.2;
         _l6 = value[5] * MUL / 1.2;
         _l7 = value[6] * MUL / 1.2;
+
+        if (_level >= 0) {
+            _ll1 = value[7] * MUL / 1.2;
+            _ll2 = value[8] * MUL / 1.2;
+            _ll3 = value[9] * MUL / 1.2;
+        }
 
         evaluate();
     }
