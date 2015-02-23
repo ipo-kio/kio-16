@@ -4,18 +4,151 @@
 package ru.ipo.kio._15.markov {
 import com.nerdbucket.ToolTip;
 
-import fl.controls.Button;
-
-import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.SimpleButton;
-
 import flash.events.MouseEvent;
-import flash.sampler.sampleInternalAllocs;
 
 import ru.ipo.kio.api.controls.TextButton;
 
 public class ImageHolder {
+
+    [Embed(source="_resources/buttons/edit.png")]
+    public static const EDIT:Class;
+
+    [Embed(source="_resources/buttons/edit_Disable.png")]
+    public static const EDIT_DIS:Class;
+
+    [Embed(source="_resources/buttons/edit_Over.png")]
+    public static const EDIT_OVER:Class;
+
+    [Embed(source="_resources/buttons/edit_Press.png")]
+    public static const EDIT_PRESS:Class;
+
+
+    [Embed(source="_resources/buttons/del_min.png")]
+    public static const DELMIN:Class;
+
+    [Embed(source="_resources/buttons/del_min_Press.png")]
+    public static const DELMIN_DIS:Class;
+
+    [Embed(source="_resources/buttons/del_min_Over.png")]
+    public static const DELMIN_OVER:Class;
+
+    [Embed(source="_resources/buttons/del_min_Over_2.png")]
+    public static const DELMIN_OVER2:Class;
+
+
+    [Embed(source="_resources/buttons/del_min_Press.png")]
+    public static const DELMIN_PRESS:Class;
+
+
+
+    [Embed(source="_resources/buttons/fast.png")]
+    public static const EXEC:Class;
+
+    [Embed(source="_resources/buttons/fast_Disable.png")]
+    public static const EXEC_DIS:Class;
+
+    [Embed(source="_resources/buttons/fast_Over.png")]
+    public static const EXEC_OVER:Class;
+
+    [Embed(source="_resources/buttons/fast_Press.png")]
+    public static const EXEC_PRESS:Class;
+
+
+
+    [Embed(source="_resources/buttons/reset.png")]
+    public static const RESET:Class;
+
+    [Embed(source="_resources/buttons/reset_Disable.png")]
+    public static const RESET_DIS:Class;
+
+    [Embed(source="_resources/buttons/reset_Over.png")]
+    public static const RESET_OVER:Class;
+
+    [Embed(source="_resources/buttons/reset_Press.png")]
+    public static const RESET_PRESS:Class;
+
+
+    [Embed(source="_resources/buttons/next.png")]
+    public static const NEXT:Class;
+
+    [Embed(source="_resources/buttons/next_Disable.png")]
+    public static const NEXT_DIS:Class;
+
+    [Embed(source="_resources/buttons/next_Over.png")]
+    public static const NEXT_OVER:Class;
+
+    [Embed(source="_resources/buttons/next_Press.png")]
+    public static const NEXT_PRESS:Class;
+
+
+    [Embed(source="_resources/buttons/prev.png")]
+    public static const PREV:Class;
+
+    [Embed(source="_resources/buttons/prev_Disable.png")]
+    public static const PREV_DIS:Class;
+
+    [Embed(source="_resources/buttons/prev_Over.png")]
+    public static const PREV_OVER:Class;
+
+    [Embed(source="_resources/buttons/prev_Press.png")]
+    public static const PREV_PRESS:Class;
+
+
+    [Embed(source="_resources/buttons/play.png")]
+    public static const PLAY:Class;
+
+    [Embed(source="_resources/buttons/play_Disable.png")]
+    public static const PLAY_DIS:Class;
+
+    [Embed(source="_resources/buttons/play_Over.png")]
+    public static const PLAY_OVER:Class;
+
+    [Embed(source="_resources/buttons/play_Press.png")]
+    public static const PLAY_PRESS:Class;
+
+
+    [Embed(source="_resources/buttons/pause.png")]
+    public static const PAUSE:Class;
+
+    [Embed(source="_resources/buttons/pause_Disable.png")]
+    public static const PAUSE_DIS:Class;
+
+    [Embed(source="_resources/buttons/pause_Over.png")]
+    public static const PAUSE_OVER:Class;
+
+    [Embed(source="_resources/buttons/pause_Press.png")]
+    public static const PAUSE_PRESS:Class;
+
+
+    [Embed(source="_resources/buttons/delete.png")]
+    public static const DELETE:Class;
+
+    [Embed(source="_resources/buttons/delete_Disable.png")]
+    public static const DELETE_DIS:Class;
+
+    [Embed(source="_resources/buttons/delete_Over.png")]
+    public static const DELETE_OVER:Class;
+
+    [Embed(source="_resources/buttons/delete_Press.png")]
+    public static const DELETE_PRESS:Class;
+
+
+    [Embed(source="_resources/buttons/add.png")]
+    public static const PLUS:Class;
+
+    [Embed(source="_resources/buttons/add_Disable.png")]
+    public static const PLUS_DIS:Class;
+
+    [Embed(source="_resources/buttons/add_Over.png")]
+    public static const PLUS_OVER:Class;
+
+    [Embed(source="_resources/buttons/add_Press.png")]
+    public static const PLUS_PRESS:Class;
+
+
+
 
     [Embed(source="_resources/level0/vegetable_1.png")]
     public static const EMPTY:Class;
@@ -66,6 +199,128 @@ public class ImageHolder {
     public static const WEED_SELECT:Class;
 
 
+    [Embed(source="_resources/level0/bg.png")]
+    public static const LEVEL0_BG:Class;
+
+
+
+    [Embed(source="_resources/level1/bg.png")]
+    public static const LEVEL1_BG:Class;
+
+    [Embed(source="_resources/level1/yell.png")]
+    public static const YELL:Class;
+
+    [Embed(source="_resources/level1/yell_Over.png")]
+    public static const YELL_OVER:Class;
+
+    [Embed(source="_resources/level1/yell_Press.png")]
+    public static const YELL_PRESS:Class;
+
+    [Embed(source="_resources/level1/yell_Selected.png")]
+    public static const YELL_SELECT:Class;
+
+    [Embed(source="_resources/level1/black.png")]
+    public static const BLACK:Class;
+
+    [Embed(source="_resources/level1/black_Over.png")]
+    public static const BLACK_OVER:Class;
+
+    [Embed(source="_resources/level1/black_Press.png")]
+    public static const BLACK_PRESS:Class;
+
+    [Embed(source="_resources/level1/black_Selected.png")]
+    public static const BLACK_SELECT:Class;
+
+
+    [Embed(source="_resources/level2/bg.png")]
+    public static const LEVEL2_BG:Class;
+
+    [Embed(source="_resources/level2/1.png")]
+    public static const ONE:Class;
+
+    [Embed(source="_resources/level2/1_Over.png")]
+    public static const ONE_OVER:Class;
+
+    [Embed(source="_resources/level2/1_Selected.png")]
+    public static const ONE_PRESS:Class;
+
+    [Embed(source="_resources/level2/1_Selected.png")]
+    public static const ONE_SELECT:Class;
+
+    [Embed(source="_resources/level2/plus.png")]
+    public static const PLUSS:Class;
+
+    [Embed(source="_resources/level2/plus_Over.png")]
+    public static const PLUSS_OVER:Class;
+
+    [Embed(source="_resources/level2/plus_Selected.png")]
+    public static const PLUSS_PRESS:Class;
+
+    [Embed(source="_resources/level2/plus_Selected.png")]
+    public static const PLUSS_SELECT:Class;
+
+    [Embed(source="_resources/level2/minus.png")]
+    public static const MINUS:Class;
+
+    [Embed(source="_resources/level2/minus_Over.png")]
+    public static const MINUS_OVER:Class;
+
+    [Embed(source="_resources/level2/minus_Selected.png")]
+    public static const MINUS_PRESS:Class;
+
+    [Embed(source="_resources/level2/minus_Selected.png")]
+    public static const MINUS_SELECT:Class;
+
+    [Embed(source="_resources/level2/open.png")]
+    public static const OPEN:Class;
+
+    [Embed(source="_resources/level2/open_Over.png")]
+    public static const OPEN_OVER:Class;
+
+    [Embed(source="_resources/level2/open_Selected.png")]
+    public static const OPEN_PRESS:Class;
+
+    [Embed(source="_resources/level2/open_Selected.png")]
+    public static const OPEN_SELECT:Class;
+
+    [Embed(source="_resources/level2/close.png")]
+    public static const CLOSE:Class;
+
+    [Embed(source="_resources/level2/close_Over.png")]
+    public static const CLOSE_OVER:Class;
+
+    [Embed(source="_resources/level2/close_Selected.png")]
+    public static const CLOSE_PRESS:Class;
+
+    [Embed(source="_resources/level2/close_Selected.png")]
+    public static const CLOSE_SELECT:Class;
+
+    [Embed(source="_resources/level2/2.png")]
+    public static const TWO:Class;
+
+    [Embed(source="_resources/level2/2_Over.png")]
+    public static const TWO_OVER:Class;
+
+    [Embed(source="_resources/level2/2_Selected.png")]
+    public static const TWO_PRESS:Class;
+
+    [Embed(source="_resources/level2/2_Selected.png")]
+    public static const TWO_SELECT:Class;
+
+
+    [Embed(source="_resources/level2/0.png")]
+    public static const ZERO:Class;
+
+    [Embed(source="_resources/level2/0_Over.png")]
+    public static const ZERO_OVER:Class;
+
+    [Embed(source="_resources/level2/0_Selected.png")]
+    public static const ZERO_PRESS:Class;
+
+    [Embed(source="_resources/level2/0_Selected.png")]
+    public static const ZERO_SELECT:Class;
+
+
     public function ImageHolder() {
     }
 
@@ -76,6 +331,24 @@ public class ImageHolder {
          return new WEED();
      }else if(code=="f"){
          return new FLOWER();
+     } else if(code=="o"){
+         return new YELL();
+     } else if(code=="a"){
+         return new BLACK();
+     } else if(code=="1"){
+         return new ONE();
+     } else if(code=="+"){
+         return new PLUSS();
+     } else if(code=="-"){
+         return new MINUS();
+     } else if(code=="("){
+         return new OPEN();
+     } else if(code==")"){
+         return new CLOSE();
+     }else if(code=="0"){
+         return new ZERO();
+     }else if(code=="2"){
+         return new TWO();
      }else {
          return new EMPTY();
      }
@@ -88,6 +361,24 @@ public class ImageHolder {
             return new WEED_SELECT();
         }else if(code=="f"){
             return new FLOWER_SELECT();
+        } else if(code=="o"){
+            return new YELL_SELECT();
+        } else if(code=="a"){
+            return new BLACK_SELECT();
+        } else if(code=="1"){
+            return new ONE_SELECT();
+        } else if(code=="+"){
+            return new PLUSS_SELECT();
+        } else if(code=="-"){
+            return new MINUS_SELECT();
+        } else if(code=="("){
+            return new OPEN_SELECT();
+        } else if(code==")"){
+            return new CLOSE_SELECT();
+        }else if(code=="0"){
+            return new ZERO_SELECT();
+        }else if(code=="2"){
+            return new TWO_SELECT();
         }else {
             return new EMPTY_SELECT();
         }
@@ -100,6 +391,24 @@ public class ImageHolder {
             return new WEED_OVER();
         }else if(code=="f"){
             return new FLOWER_OVER();
+        } else if(code=="o"){
+            return new YELL_OVER();
+        } else if(code=="a"){
+            return new BLACK_OVER();
+        } else if(code=="1"){
+            return new ONE_OVER();
+        } else if(code=="+"){
+            return new PLUSS_OVER();
+        } else if(code=="-"){
+            return new MINUS_OVER();
+        } else if(code=="("){
+            return new OPEN_OVER();
+        } else if(code==")"){
+            return new CLOSE_OVER();
+        }else if(code=="0"){
+            return new ZERO_OVER();
+        }else if(code=="2"){
+            return new TWO_OVER();
         }else {
             return new EMPTY_OVER();
         }
@@ -113,13 +422,75 @@ public class ImageHolder {
             return new WEED_PRESS();
         }else if(code=="f"){
             return new FLOWER_PRESS();
+        } else if(code=="o"){
+            return new YELL_PRESS();
+        } else if(code=="a"){
+            return new BLACK_PRESS();
+        } else if(code=="1"){
+            return new ONE_PRESS();
+        } else if(code=="+"){
+            return new PLUSS_PRESS();
+        } else if(code=="-"){
+            return new MINUS_PRESS();
+        } else if(code=="("){
+            return new OPEN_PRESS();
+        } else if(code==")"){
+            return new CLOSE_PRESS();
+        }else if(code=="0"){
+            return new ZERO_PRESS();
+        }else if(code=="2"){
+            return new TWO_PRESS();
         }else {
             return new EMPTY_PRESS();
         }
     }
 
     public static function createButton(parent:DisplayObjectContainer, label:String, x:int, y:int, func, tip:String):SimpleButton {
-        var button:TextButton = new TextButton(label, 50);
+        var button:SimpleButton = new TextButton(label, 50);
+
+        if(label=="x") {
+            button = new NormalButton(new ImageHolder.DELMIN(), new ImageHolder.DELMIN_OVER(), new ImageHolder.DELMIN_PRESS(), new ImageHolder.DELMIN_DIS());
+        }
+
+
+        if(label=="X") {
+            button = new NormalButton(new ImageHolder.DELMIN_OVER(), new ImageHolder.DELMIN_OVER2(), new ImageHolder.DELMIN_PRESS(), new ImageHolder.DELMIN_DIS());
+        }
+
+        if(label=="+") {
+            button = new NormalButton(new ImageHolder.PLUS(), new ImageHolder.PLUS_OVER(), new ImageHolder.PLUS_PRESS(), new ImageHolder.PLUS_DIS());
+        }
+
+        if(label=="anim") {
+            button = new NormalButton(new ImageHolder.PLAY(), new ImageHolder.PLAY_OVER(), new ImageHolder.PLAY_PRESS(), new ImageHolder.PLAY_DIS());
+        }
+
+        if(label=="stop") {
+            button = new NormalButton(new ImageHolder.PAUSE(), new ImageHolder.PAUSE_OVER(), new ImageHolder.PAUSE_PRESS(), new ImageHolder.PAUSE_DIS());
+        }
+
+
+        if(label==">") {
+            button = new NormalButton(new ImageHolder.NEXT(), new ImageHolder.NEXT_OVER(), new ImageHolder.NEXT_PRESS(), new ImageHolder.NEXT_DIS());
+        }
+
+        if(label=="<") {
+            button = new NormalButton(new ImageHolder.PREV(), new ImageHolder.PREV_OVER(), new ImageHolder.PREV_PRESS(), new ImageHolder.PREV_DIS());
+        }
+
+        if(label=="exec") {
+            button = new NormalButton(new ImageHolder.EXEC(), new ImageHolder.EXEC_OVER(), new ImageHolder.EXEC_PRESS(), new ImageHolder.EXEC_DIS());
+        }
+
+        if(label=="reset") {
+            button = new NormalButton(new ImageHolder.RESET(), new ImageHolder.RESET_OVER(), new ImageHolder.RESET_PRESS(), new ImageHolder.RESET_DIS());
+        }
+
+        if(label=="edit") {
+            button = new NormalButton(new ImageHolder.EDIT(), new ImageHolder.EDIT_OVER(), new ImageHolder.EDIT_PRESS(), new ImageHolder.EDIT_DIS());
+        }
+
+
 
         button.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
             func();

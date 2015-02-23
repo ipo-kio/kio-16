@@ -61,6 +61,7 @@ public class MarkovProblem implements KioProblem {
      }
 
     public function loadSolution(solution:Object):Boolean {
+        RuleManager.instance.rules=  new Vector.<Rule>();
         for each(var rule:String in solution.rules){
             var r:Rule = new Rule(RuleManager.instance.rules.length);
             r.load(rule);
