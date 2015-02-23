@@ -12,6 +12,8 @@ public class SettingsManager {
         return _instance;
     }
 
+    private var _level:int=0;
+
     private var _areaWidth = 780;
 
     private var _areaHeight = 600;
@@ -24,6 +26,10 @@ public class SettingsManager {
 
     private var _ridgeHeight = 90;
 
+
+    public function set level(value:int):void {
+        _level = value;
+    }
 
     public function SettingsManager() {
     }
@@ -39,10 +45,18 @@ public class SettingsManager {
 
 
     public function get tileWidth():* {
-        return _tileWidth;
+        if(_level==0) {
+            return 47;
+        }
+        else{
+            return 44;
+        }
     }
 
     public function get tileHeight():* {
+        if(RuleManager.instance.level==2){
+            return 46;
+        }
         return _tileHeight;
     }
 
@@ -72,11 +86,24 @@ public class SettingsManager {
     }
 
     public function get ruleWidth():int {
-        return _areaWidth - tileWidth;
+        if(RuleManager.instance.level==1 || RuleManager.instance.level==0){
+            return _areaWidth - tileWidth - 16;
+        }else {
+            return _areaWidth - tileWidth - 16;
+        }
     }
 
     public function get ruleHeight():int {
-        return (tileHeight+smallSpace)*countKeys(Symbol.dictionary);
+
+        if(RuleManager.instance.level==1){
+            return (tileHeight+smallSpace)*4+65;
+        }else if(RuleManager.instance.level==2){
+            return (tileHeight+smallSpace)*7;
+        }else {
+            return (tileHeight+smallSpace)*4;
+        }
+
+
     }
 
     public static function countKeys(myDictionary:flash.utils.Dictionary):int

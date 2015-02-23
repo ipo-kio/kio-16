@@ -10,9 +10,19 @@ public class Level0Data {
 
     private var _oper:int = 0;
 
+    private var _perc:Number = 0;
+
     public function Level0Data() {
     }
 
+
+    public function get perc():Number {
+        return _perc;
+    }
+
+    public function set perc(value:Number):void {
+        _perc = value;
+    }
 
     public function get diff():int {
         return _diff;
