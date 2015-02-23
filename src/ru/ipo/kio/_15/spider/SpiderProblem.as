@@ -25,6 +25,8 @@ public class SpiderProblem implements KioProblem {
     [Embed(source="loc/spider.th.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_TH:Class;
 
+    public static const ROUND_SECONDS_UP:Boolean = true;
+
     public function SpiderProblem(level: int) {
         _level = level;
 
@@ -68,9 +70,18 @@ public class SpiderProblem implements KioProblem {
         if (!r2.ok)
             return 1;
 
-        if (r1.t < r2.t)
+        var t1:Number = ROUND_SECONDS_UP ? Math.ceil(r1.t) : r1.t;
+        var t2:Number = ROUND_SECONDS_UP ? Math.ceil(r2.t) : r2.t;
+
+        if (t1 < t2)
             return 1;
-        if (r1.t > r2.t)
+        if (t1 > t2)
+            return -1;
+
+        //now compare material
+        if (r1.m < r2.m)
+            return 1;
+        if (r1.m > r2.m)
             return -1;
 
         return 0;

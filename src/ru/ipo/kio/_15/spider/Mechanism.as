@@ -42,7 +42,7 @@ public class Mechanism extends Sprite {
     private var _broken:Boolean = false;
     private var _brokenStep:int = 0;
 
-    public function Mechanism(MUL:Number = 1.3) {
+    public function Mechanism(MUL:Number = 1.2) {
         this.MUL = MUL;
 
         p1x *= MUL;
@@ -363,13 +363,13 @@ public class Mechanism extends Sprite {
     }
 
     public function set ls(value:Vector.<Number>):void {
-        _l1 = value[0] * MUL / 1.3;
-        _l2 = value[1] * MUL / 1.3;
-        _l3 = value[2] * MUL / 1.3;
-        _l4 = value[3] * MUL / 1.3;
-        _l5 = value[4] * MUL / 1.3;
-        _l6 = value[5] * MUL / 1.3;
-        _l7 = value[6] * MUL / 1.3;
+        _l1 = value[0] * MUL / 1.2;
+        _l2 = value[1] * MUL / 1.2;
+        _l3 = value[2] * MUL / 1.2;
+        _l4 = value[3] * MUL / 1.2;
+        _l5 = value[4] * MUL / 1.2;
+        _l6 = value[5] * MUL / 1.2;
+        _l7 = value[6] * MUL / 1.2;
 
         evaluate();
     }
@@ -378,3 +378,10 @@ public class Mechanism extends Sprite {
 
 //TODO draw path for two double sticks
 //TODO if point below ground, stop
+
+//TODO набор параметров - сейчас для 0 1) второй уровень - треугольник 2) третий уровень - еще углы
+
+//TODO отладить проваливающегося таракана
+//TODO + если больше 90, то вывести "больше 90"
+//TODO + для 0 уровня без дес. точки везде
+//TODO какая форма дороги

@@ -93,7 +93,7 @@ public class SpiderWorkspace extends Sprite {
         addChild(bigSpiderButton);
         bigSpiderButton.x = 80;
         bigSpiderButton.y = 550;
-        bigSpiderButton.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+        bigSpiderButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
             bigSpider.visible = !bigSpider.visible;
         });
 
@@ -104,35 +104,40 @@ public class SpiderWorkspace extends Sprite {
         currentSettingsButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
             mt.ls = m.ls;
         });
+        currentSettingsButton.visible = false;
     }
 
     private function init_info_panels():void {
         current_info = new InfoPanel(
                 'KioArial', true, 16, 0x727272, 0x212121, 0x03A9F4, 1.5, 'Решение', [
                     'Финиш',
-                    'Время'
+                    'Время',
+                    'Материал'
                 ],
                 200
         );
         addChild(current_info);
-        current_info.x = 10;
+        current_info.x = 20;
         current_info.y = 30;
 
         record_info = new InfoPanel(
                 'KioArial', true, 16, 0x727272, 0x212121, 0x03A9F4, 1.5, 'Рекорд', [
                     'Финиш',
-                    'Время'
+                    'Время',
+                    'Материал'
                 ],
                 200
         );
         addChild(record_info);
-        record_info.x = 10;
-        record_info.y = 120;
+        record_info.x = 20;
+        record_info.y = 140;
 
         current_info.setValue(0, '-');
         current_info.setValue(1, '-');
+        current_info.setValue(2, '-');
         record_info.setValue(0, '-');
         record_info.setValue(1, '-');
+        record_info.setValue(2, '-');
     }
 
     public function setCurrentResult(result:Object):void {
@@ -143,14 +148,23 @@ public class SpiderWorkspace extends Sprite {
         setResult(record_info, result);
     }
 
-    public static function setResult(info:InfoPanel, result:Object):void {
+    public function setResult(info:InfoPanel, result:Object):void {
+        function timeToString(t:Number):String {
+            if (problem.level == 0)
+                return Math.round(t * 10).toFixed(0);
+            else
+                return t.toFixed(1);
+        }
+
         if (!result.ok) {
             info.setValue(0, 'нет');
-            info.setValue(1, '-');
+            info.setValue(1, result.t == 0 ? '-' : 'дольше ' + timeToString(result.t) + ' с');
         } else {
             info.setValue(0, 'да');
-            info.setValue(1, result.t.toFixed(1));
+            info.setValue(1, timeToString(result.t) + ' с');
         }
+
+        info.setValue(2, result.m + ' см');
     }
 
     public function get solution():Object {

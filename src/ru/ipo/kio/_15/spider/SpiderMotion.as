@@ -46,9 +46,11 @@ public class SpiderMotion extends Sprite {
 
     private var api:KioApi;
     private var workspace:SpiderWorkspace;
+    private var problem:KioProblem;
 
     public function SpiderMotion(workspace:SpiderWorkspace, problem:KioProblem, s:Spider, f:Floor, bigSpider:Spider) {
         this.workspace = workspace;
+        this.problem = problem;
         api = KioApi.instance(problem);
         _s = s;
         _f = f;
@@ -61,11 +63,11 @@ public class SpiderMotion extends Sprite {
         addChild(_s);
         addChild(_f);
 
-        slider = new Slider(0, TIME_TICKS / 10, 400, 0x212121, 0x727272);
+        slider = new Slider(0, problem.level == 0 ? TIME_TICKS : TIME_TICKS / 10, 400, 0x212121, 0x727272);
         addChild(slider);
         slider.x = 200;
         slider.y = 50;
-        slider.precision = 1;
+        slider.precision = problem.level == 0 ? 0 : 1;
 
         reset();
 
@@ -116,7 +118,7 @@ public class SpiderMotion extends Sprite {
     }
 
     private function get slider2ind():Number {
-        return Math.round(slider.value * 10);
+        return Math.round(slider.value * (problem.level == 0 ? 1 : 10));
     }
 
     public function reset():void {
@@ -298,7 +300,7 @@ public class SpiderMotion extends Sprite {
 
         var ind:Number = slider2ind;
         if (ind < evaluated_positions.length - 1)
-            slider.value += 0.1;
+            slider.value += problem.level == 0 ? 1 : 0.1;
     }
 
     private function enterFrameHandler(event:Event):void {
@@ -310,16 +312,22 @@ public class SpiderMotion extends Sprite {
     }
 
     public function get time():Number {
-        if (evaluated_positions)
-            return (evaluated_positions.length - 1) / 10;
-        else
+        if (evaluated_positions == null)
             return 0;
+
+        return (evaluated_positions.length - 1) / 10;
+    }
+
+    public function get material():Number {
+        var ls:Vector.<Number> = _s.ls;
+        return ls[0] + ls[1] + ls[2] + ls[3] + ls[4] + ls[5] + ls[6];
     }
 
     public function get result():Object {
         return {
             ok: finishes,
-            t: time
+            t: time,
+            m: material
         }
     }
 }
