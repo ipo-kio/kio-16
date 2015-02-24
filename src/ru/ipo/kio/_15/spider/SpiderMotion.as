@@ -287,7 +287,8 @@ public class SpiderMotion extends Sprite {
 
         evaluated_positions = res;
 
-        api.submitResult(result);
+        if (stage) //do not submit reslut on init
+            api.submitResult(result);
         workspace.setCurrentResult(result);
     }
 

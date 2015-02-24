@@ -62,6 +62,7 @@ public class MechanismTuner extends Sprite {
     private var err_button:GraphicsButton;
     private var err_button_text:Sprite = new Sprite();
     private var useSettingButton:GraphicsButton;
+    private var _motion:SpiderMotion;
 
     private var last_working_ls:Vector.<Number>;
 
@@ -87,6 +88,7 @@ public class MechanismTuner extends Sprite {
         this.problem = problem;
         api = KioApi.instance(problem);
         _m = m;
+        _motion = motion;
         last_working_ls = _m.ls;
         _center = _m.p1_p.add(_m.p2_p).add(_m.p3_p);
         _center.setTo(_center.x * MUL / 3, _center.y * MUL / 3);
@@ -233,12 +235,15 @@ public class MechanismTuner extends Sprite {
         addChild(useSettingButton);
         useSettingButton.x = -316;
         useSettingButton.y = -90;
-        useSettingButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
-            if (_m.broken)
-                return; //TODO disable if broken
-            motion.ls = _m.ls;
-            motion.reset();
-        });
+        useSettingButton.addEventListener(MouseEvent.CLICK, useSettingButtonHandler);
+    }
+
+    public function useSettingButtonHandler(e:Event = null):void {
+        if (_m.broken)
+            return; //TODO disable if broken
+        _motion.ls = _m.ls;
+        _motion.reset();
+        api.autoSaveSolution();
     }
 
     private function addTextToErrButton():void {

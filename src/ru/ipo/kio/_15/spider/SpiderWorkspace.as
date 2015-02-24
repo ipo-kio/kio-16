@@ -65,6 +65,7 @@ public class SpiderWorkspace extends Sprite {
     private var s:Spider;
     private var f:Floor;
     private var m:SpiderMotion;
+    private var mt:MechanismTuner;
 
     private var bigSpider:Spider;
 
@@ -73,6 +74,8 @@ public class SpiderWorkspace extends Sprite {
 
     private var api:KioApi;
     private var problem:KioProblem;
+
+    private var empty_ls:Vector.<Number>;
 
     public function SpiderWorkspace(problem:KioProblem) {
         api = KioApi.instance(problem);
@@ -120,7 +123,8 @@ public class SpiderWorkspace extends Sprite {
 
         var tuned_mechanism:Mechanism = new Mechanism(problem.level);
         tuned_mechanism.angle = 0;
-        var mt:MechanismTuner = new MechanismTuner(problem, tuned_mechanism, m);
+        empty_ls = tuned_mechanism.ls;
+        mt = new MechanismTuner(problem, tuned_mechanism, m);
         addChild(mt);
 
         //buttons
@@ -211,6 +215,24 @@ public class SpiderWorkspace extends Sprite {
 
     public function get result():Object {
         return m.result;
+    }
+
+    public function loadSolution(solution:Object):Boolean {
+        if (solution == null)
+            return false;
+
+        var ls:Vector.<Number> = solution.ls;
+        if (ls == null)
+            return false;
+
+        mt.ls = ls;
+        mt.useSettingButtonHandler();
+
+        return true;
+    }
+
+    public function clear():void {
+        loadSolution({ls: empty_ls});
     }
 }
 }
