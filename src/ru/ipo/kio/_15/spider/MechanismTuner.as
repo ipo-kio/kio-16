@@ -92,6 +92,14 @@ public class MechanismTuner extends Sprite {
             addChild(s[10]);
         }
 
+        if (problem.level >= 2) {
+            s.push(new Stick());
+            s.push(new Stick());
+
+            addChild(s[11]);
+            addChild(s[12]);
+        }
+
         addChild(s[1]);
         addChild(s[3]);
         addChild(s[6]);
@@ -131,6 +139,9 @@ public class MechanismTuner extends Sprite {
                         case 8: l_from = 10; l_to = 20; break;
                         case 9: l_from = 10; l_to = 20; break;
                         case 10: l_from = 10; l_to = 20; break;
+
+                        case 11: l_from = -30; l_to = 30; break;
+                        case 12: l_from = -30; l_to = 30; break;
                     }
 
                     _slider.reInit(l_from, l_to, value);
@@ -275,6 +286,11 @@ public class MechanismTuner extends Sprite {
             positionStick(s[9], _m.p1_p, _m.p3_p);
             positionStick(s[10], _m.p1_p, _m.p2_p);
         }
+
+        if (problem.level >= 2) {
+            positionStick(s[11], _m.p2_p.add(new Point(40, 0)), _m.p2_p.add(new Point(40, -5)));
+            positionStick(s[12], _m.p2_p.add(new Point(36, 0)), _m.p2_p.add(new Point(36, -5)));
+        }
     }
 
     private function slider_value_changedHandler(event:Event = null):void {
@@ -309,6 +325,13 @@ public class MechanismTuner extends Sprite {
                 break;
             case 10:
                 _m.ll3 = Math.round(_slider.value);
+                break;
+
+            case 11:
+                _m.a1 = Mechanism.grad2rad(Math.round(_slider.value));
+                break;
+            case 12:
+                _m.a2 = Mechanism.grad2rad(Math.round(_slider.value));
                 break;
         }
 
@@ -365,6 +388,10 @@ public class MechanismTuner extends Sprite {
                 return _m.ll2;
             case 10:
                 return _m.ll3;
+            case 11:
+                return Mechanism.rad2grad(_m.a1);
+            case 12:
+                return Mechanism.rad2grad(_m.a2);
         }
         return NaN;
     }

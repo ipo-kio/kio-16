@@ -325,7 +325,12 @@ public class SpiderMotion extends Sprite {
 
     public function get material():Number {
         var ls:Vector.<Number> = _s.ls;
-        return ls[0] + ls[1] + ls[2] + ls[3] + ls[4] + ls[5] + ls[6];
+        var res:Number = ls[0] + ls[1] + ls[2] + ls[3] + ls[4] + ls[5] + ls[6];
+
+        if (problem.level >= 1)
+            res += ls[7] + ls[8];
+
+        return res;
     }
 
     public function get result():Object {

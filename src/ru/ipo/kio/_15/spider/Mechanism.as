@@ -33,8 +33,8 @@ public class Mechanism extends Sprite {
     private var _l5:Number = dist(10.879, -21.918, 19.432, -32.923);
     private var _l6:Number = dist(19.432, -32.923, 27.690, -31.092);
     private var _l7:Number = dist(10.879, -21.918, 0, 0);
-    private var a1:Number = -rotationAngle(36.033, -25.415, 21.501, -22.089, 10.879, -21.918);
-    private var a2:Number = rotationAngle(19.432, -32.923, 10.879, -21.918, 0, 0);
+    private var _a1:Number = -rotationAngle(36.033, -25.415, 21.501, -22.089, 10.879, -21.918);
+    private var _a2:Number = rotationAngle(19.432, -32.923, 10.879, -21.918, 0, 0);
     // ----------------
 
     private var mx:Number, my:Number;
@@ -70,8 +70,27 @@ public class Mechanism extends Sprite {
         _l6 = Math.round(_l6 * MUL);
         _l7 = Math.round(_l7 * MUL);
 
+        if (level >= 2) {
+            a1 = grad2rad(Math.round(rad2grad(a1)));
+            a2 = grad2rad(Math.round(rad2grad(a2)));
+        }
+
         evaluate();
         redraw();
+
+        trace(_a1 * 180 / Math.PI, _a2 * 180 / Math.PI);
+    }
+
+    public static function rad2grad(a:Number):Number {
+        var r:Number = a * 180 / Math.PI;
+        if (r < 0)
+            r += 360;
+        return 180 - r;
+    }
+
+    public static function grad2rad(a:Number):Number {
+        var r:Number = 180 - a;
+        return r * Math.PI / 180;
     }
 
     private function get sign():Number {
@@ -212,7 +231,7 @@ public class Mechanism extends Sprite {
         ny = int1[1];
 
         //K
-        var int2:Vector.<Number> = continueByAngle(mx, my, nx, ny, a1, _l4);
+        var int2:Vector.<Number> = continueByAngle(mx, my, nx, ny, _a1, _l4);
         kx = int2[0];
         ky = int2[1];
 
@@ -227,7 +246,7 @@ public class Mechanism extends Sprite {
         ly = int3[1];
 
         //S
-        var int4:Vector.<Number> = continueByAngle(lx, ly, kx, ky, a2, _l7);
+        var int4:Vector.<Number> = continueByAngle(lx, ly, kx, ky, _a2, _l7);
         sx = int4[0];
         sy = int4[1];
     }
@@ -354,6 +373,7 @@ public class Mechanism extends Sprite {
 
     public function set ll1(value:Number):void {
         _ll1 = value;
+        evaluate();
     }
 
     public function get ll2():Number {
@@ -362,6 +382,7 @@ public class Mechanism extends Sprite {
 
     public function set ll2(value:Number):void {
         _ll2 = value;
+        evaluate();
     }
 
     public function get ll3():Number {
@@ -370,6 +391,25 @@ public class Mechanism extends Sprite {
 
     public function set ll3(value:Number):void {
         _ll3 = value;
+        evaluate();
+    }
+
+    public function get a1():Number {
+        return _a1;
+    }
+
+    public function set a1(value:Number):void {
+        _a1 = value;
+        evaluate();
+    }
+
+    public function get a2():Number {
+        return _a2;
+    }
+
+    public function set a2(value:Number):void {
+        _a2 = value;
+        evaluate();
     }
 
     public function get broken():Boolean {
@@ -409,10 +449,14 @@ public class Mechanism extends Sprite {
             l6,
             l7
         ];
-        if (_level >= 0) {
+        if (_level >= 1) {
             numbers.push(ll1);
             numbers.push(ll2);
             numbers.push(ll3);
+        }
+        if (_level >= 2) {
+            numbers.push(a1);
+            numbers.push(a2);
         }
         return numbers;
     }
@@ -426,10 +470,15 @@ public class Mechanism extends Sprite {
         _l6 = value[5] * MUL / 1.2;
         _l7 = value[6] * MUL / 1.2;
 
-        if (_level >= 0) {
+        if (_level >= 1) {
             _ll1 = value[7] * MUL / 1.2;
             _ll2 = value[8] * MUL / 1.2;
             _ll3 = value[9] * MUL / 1.2;
+        }
+
+        if (_level >= 2) {
+            _a1 = value[10];
+            _a2 = value[11];
         }
 
         evaluate();
