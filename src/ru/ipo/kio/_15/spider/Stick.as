@@ -40,10 +40,10 @@ public class Stick extends Sprite {
     private function redraw():void {
         graphics.clear();
 
-        graphics.lineStyle(10, selected ? 0x474747 : 0xA5A5A5, 1, true, LineScaleMode.NORMAL, CapsStyle.ROUND);
+        graphics.lineStyle(10, selected ? 0x7EC4F3 : 0x7EC4F3, 1, true, LineScaleMode.NORMAL, CapsStyle.ROUND);
         graphics.moveTo(x1, y1);
         graphics.lineTo(x2, y2);
-        graphics.lineStyle(6, selected ? 0xA3A3A3 : 0xE8E8E8, 1, true, LineScaleMode.NORMAL, CapsStyle.ROUND);
+        graphics.lineStyle(6, selected ? 0x3949FF : 0xE0F1FC, 1, true, LineScaleMode.NORMAL, CapsStyle.ROUND);
         graphics.moveTo(x1, y1);
         graphics.lineTo(x2, y2);
 
@@ -54,7 +54,7 @@ public class Stick extends Sprite {
         graphics.endFill();
 
         if (over) {
-            graphics.lineStyle(12, 0xCDDC39, 0.4, true, LineScaleMode.NORMAL, CapsStyle.ROUND);
+            graphics.lineStyle(10, 0xFFFC12, 0.6, true, LineScaleMode.NORMAL, CapsStyle.ROUND);
             graphics.moveTo(x1, y1);
             graphics.lineTo(x2, y2);
         }

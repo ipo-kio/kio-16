@@ -9,6 +9,9 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
+import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
+import flash.text.TextFormat;
 
 import ru.ipo.kio.api.KioApi;
 
@@ -20,17 +23,29 @@ import ru.ipo.kio.base.GlobalMetrics;
 
 public class MechanismTuner extends Sprite {
 
-    [Embed(source="resources/btn.png")]
-    public static const ANIMATE_BUTTON_ON:Class;
-    public static const ANIMATE_BUTTON_ON_IMG:BitmapData = (new ANIMATE_BUTTON_ON).bitmapData;
+    [Embed(source="resources/kn-1.png")]
+    public static const USE_SETTINGS_BUTTON_1:Class;
+    public static const USE_SETTINGS_BUTTON_1_IMG:BitmapData = (new USE_SETTINGS_BUTTON_1).bitmapData;
 
-    [Embed(source="resources/btn.png")]
-    public static const ANIMATE_BUTTON_OFF:Class;
-    public static const ANIMATE_BUTTON_OFF_IMG:BitmapData = (new ANIMATE_BUTTON_OFF).bitmapData;
+    [Embed(source="resources/kn-2.png")]
+    public static const USE_SETTINGS_BUTTON_2:Class;
+    public static const USE_SETTINGS_BUTTON_2_IMG:BitmapData = (new USE_SETTINGS_BUTTON_2).bitmapData;
 
-    [Embed(source="resources/btn.png")]
-    public static const USE_SETTING_BUTTON:Class;
-    public static const USE_SETTING_BUTTON_IMG:BitmapData = (new USE_SETTING_BUTTON).bitmapData;
+    [Embed(source="resources/kn-3.png")]
+    public static const USE_SETTINGS_BUTTON_3:Class;
+    public static const USE_SETTINGS_BUTTON_3_IMG:BitmapData = (new USE_SETTINGS_BUTTON_3).bitmapData;
+
+    [Embed(source="resources/kn01-1.png")]
+    public static const ERR_BUTTON_1:Class;
+    public static const ERR_BUTTON_1_IMG:BitmapData = (new ERR_BUTTON_1).bitmapData;
+
+    [Embed(source="resources/kn01-2.png")]
+    public static const ERR_BUTTON_2:Class;
+    public static const ERR_BUTTON_2_IMG:BitmapData = (new ERR_BUTTON_2).bitmapData;
+
+    [Embed(source="resources/kn01-3.png")]
+    public static const ERR_BUTTON_3:Class;
+    public static const ERR_BUTTON_3_IMG:BitmapData = (new ERR_BUTTON_3).bitmapData;
 
     public static const MUL:Number = 4.5;
 
@@ -45,6 +60,7 @@ public class MechanismTuner extends Sprite {
     private var a_button_on:GraphicsButton;
     private var a_button_off:GraphicsButton;
     private var err_button:GraphicsButton;
+    private var err_button_text:Sprite = new Sprite();
     private var useSettingButton:GraphicsButton;
 
     private var last_working_ls:Vector.<Number>;
@@ -63,7 +79,7 @@ public class MechanismTuner extends Sprite {
         new Stick()
     ];
 
-    private var _slider:Slider = new Slider(0, 100, 320, 0x212121, 0x727272);
+    private var _slider:Slider = new Slider(0, 100, 320, 0x212121, 0x212121);
 
     private var _changingInd:int = -1;
 
@@ -170,15 +186,15 @@ public class MechanismTuner extends Sprite {
 
         //place animation button
         //http://stackoverflow.com/questions/22885702/html-for-the-pause-symbol-in-a-video-control
-        a_button_on = new GraphicsButton('►', ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, 'KioArial', 22, 22, 0, 0, 2, 0);
-        a_button_off = new GraphicsButton('▐ ▌', ANIMATE_BUTTON_OFF_IMG, ANIMATE_BUTTON_OFF_IMG, ANIMATE_BUTTON_OFF_IMG, 'KioArial', 12, 12);
+        a_button_on = new GraphicsButton('►', SpiderMotion.ANIMATE_BUTTON_ON_1_IMG, SpiderMotion.ANIMATE_BUTTON_ON_2_IMG, SpiderMotion.ANIMATE_BUTTON_ON_3_IMG, 'KioArial', 22, 22, 0, 0, 2, 0);
+        a_button_off = new GraphicsButton('▐ ▌', SpiderMotion.ANIMATE_BUTTON_OFF_1_IMG, SpiderMotion.ANIMATE_BUTTON_OFF_2_IMG, SpiderMotion.ANIMATE_BUTTON_OFF_3_IMG, 'KioArial', 12, 12);
 
         addChild(a_button_on);
         addChild(a_button_off);
-        a_button_on.x = 100;
-        a_button_on.y = -100;
-        a_button_off.x = 100;
-        a_button_off.y = -100;
+        a_button_on.x = -316;
+        a_button_on.y = -136;
+        a_button_off.x = a_button_on.x;
+        a_button_off.y = a_button_on.y;
 
         a_button_on.visible = false;
         addEventListener(Event.ENTER_FRAME, animate_handler);
@@ -199,10 +215,13 @@ public class MechanismTuner extends Sprite {
             a_button_on.visible = true;
         });
 
-        err_button = new GraphicsButton(api.localization.broken, ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, 'KioArial', 16, 16, 0, 0, 44, 9, true);
+        err_button = new GraphicsButton('!', ERR_BUTTON_1_IMG, ERR_BUTTON_2_IMG, ERR_BUTTON_3_IMG, 'KioArial', 26, 26);
         err_button.visible = false;
-        err_button.x = -260;
-        err_button.y = -100;
+        err_button_text.visible = false;
+        err_button.x = 90;
+        err_button.y = 200;
+
+        addTextToErrButton();
 
         err_button.addEventListener(MouseEvent.CLICK, function (e:Event):void {
             ls = last_working_ls;
@@ -210,10 +229,10 @@ public class MechanismTuner extends Sprite {
 
         addChild(err_button);
 
-        useSettingButton = new GraphicsButton(api.localization.apply, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, 'KioArial', 16, 16, 0, 0, 44, 9, true);
+        useSettingButton = new GraphicsButton('↓', USE_SETTINGS_BUTTON_1_IMG, USE_SETTINGS_BUTTON_2_IMG, USE_SETTINGS_BUTTON_3_IMG, 'KioArial', 26, 26, 0, 0, 0, -4);
         addChild(useSettingButton);
-        useSettingButton.x = 0;
-        useSettingButton.y = 120;
+        useSettingButton.x = -316;
+        useSettingButton.y = -90;
         useSettingButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
             if (_m.broken)
                 return; //TODO disable if broken
@@ -222,12 +241,44 @@ public class MechanismTuner extends Sprite {
         });
     }
 
+    private function addTextToErrButton():void {
+        var x0:Number = err_button.width / 2 - 2 + err_button.x;
+        var y0:Number = err_button.height / 2 + err_button.y;
+
+        var textFormat:TextFormat = new TextFormat('KioArial', 14, 0xE30C0C, true);
+        var t1:TextField = new TextField();
+        t1.defaultTextFormat = textFormat;
+        t1.embedFonts = true;
+        t1.width = 0;
+        t1.autoSize = TextFieldAutoSize.CENTER;
+        t1.x = x0;
+        t1.y = y0 - 23 - Number(textFormat.size) - 4;
+        t1.mouseEnabled = false;
+
+        var t2:TextField = new TextField();
+        t2.defaultTextFormat = textFormat;
+        t2.embedFonts = true;
+        t2.width = 0;
+        t2.autoSize = TextFieldAutoSize.CENTER;
+        t2.x = x0;
+        t2.y = y0 + 23;
+
+        err_button_text.addChild(t1);
+        err_button_text.addChild(t2);
+        addChild(err_button_text);
+        t2.mouseEnabled = false;
+
+        t1.text = api.localization.broken;
+        t2.text = api.localization.repair;
+    }
+
     public function set ls(value:Vector.<Number>):void {
         _m.ls = value;
         if (animation)
             turnAnimationOn();
         positionSticks();
         err_button.visible = false;
+        err_button_text.visible = false;
         drawCurve();
 
         if (_changingInd >= 0)
@@ -253,8 +304,8 @@ public class MechanismTuner extends Sprite {
     private function positionSticks():void {
         //draw triangle
         graphics.clear();
-        graphics.lineStyle(2, 0xA5A5A5);
-        graphics.beginFill(0xE8E8E8);
+        graphics.lineStyle(2, 0x7EC4F3);
+        graphics.beginFill(0xE0F1FC);
         graphics.drawTriangles(new <Number>[
             _m.p1_p.x * MUL - _center.x,
             _m.p1_p.y * MUL - _center.y,
@@ -354,6 +405,7 @@ public class MechanismTuner extends Sprite {
             }
             turnAnimationOff();
             err_button.visible = true;
+            err_button_text.visible = true;
             useSettingButton.visible = false;
         } else {
             this.broken = false;
@@ -362,6 +414,7 @@ public class MechanismTuner extends Sprite {
             positionSticks();
             last_working_ls = _m.ls;
             err_button.visible = false;
+            err_button_text.visible = false;
             useSettingButton.visible = true;
         }
     }
@@ -400,7 +453,7 @@ public class MechanismTuner extends Sprite {
         var curve:Vector.<Point> = _m.curve(100);
         var g:Graphics = curveLayer.graphics;
         g.clear();
-        g.lineStyle(0.5, 0xF44336);
+        g.lineStyle(0.5, 0xE80BE5);
 
         var broken:Boolean = false;
 

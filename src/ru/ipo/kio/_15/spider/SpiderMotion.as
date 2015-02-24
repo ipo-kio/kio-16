@@ -17,13 +17,29 @@ import ru.ipo.kio.api.controls.GraphicsButton;
 
 public class SpiderMotion extends Sprite {
 
-    [Embed(source="resources/btn.png")]
-    public static const ANIMATE_BUTTON_ON:Class;
-    public static const ANIMATE_BUTTON_ON_IMG:BitmapData = (new ANIMATE_BUTTON_ON).bitmapData;
+    [Embed(source="resources/kn-1.png")]
+    public static const ANIMATE_BUTTON_ON_1:Class;
+    public static const ANIMATE_BUTTON_ON_1_IMG:BitmapData = (new ANIMATE_BUTTON_ON_1).bitmapData;
 
-    [Embed(source="resources/btn.png")]
-    public static const ANIMATE_BUTTON_OFF:Class;
-    public static const ANIMATE_BUTTON_OFF_IMG:BitmapData = (new ANIMATE_BUTTON_OFF).bitmapData;
+    [Embed(source="resources/kn-2.png")]
+    public static const ANIMATE_BUTTON_ON_2:Class;
+    public static const ANIMATE_BUTTON_ON_2_IMG:BitmapData = (new ANIMATE_BUTTON_ON_2).bitmapData;
+
+    [Embed(source="resources/kn-3.png")]
+    public static const ANIMATE_BUTTON_ON_3:Class;
+    public static const ANIMATE_BUTTON_ON_3_IMG:BitmapData = (new ANIMATE_BUTTON_ON_3).bitmapData;
+
+    [Embed(source="resources/kn-1.png")]
+    public static const ANIMATE_BUTTON_OFF_1:Class;
+    public static const ANIMATE_BUTTON_OFF_1_IMG:BitmapData = (new ANIMATE_BUTTON_OFF_1).bitmapData;
+
+    [Embed(source="resources/kn-2.png")]
+    public static const ANIMATE_BUTTON_OFF_2:Class;
+    public static const ANIMATE_BUTTON_OFF_2_IMG:BitmapData = (new ANIMATE_BUTTON_OFF_2).bitmapData;
+
+    [Embed(source="resources/kn-3.png")]
+    public static const ANIMATE_BUTTON_OFF_3:Class;
+    public static const ANIMATE_BUTTON_OFF_3_IMG:BitmapData = (new ANIMATE_BUTTON_OFF_3).bitmapData;
 
     public static const ANGLE_DELTA:Number = 0.1 / 2;
     public static const TIME_TICKS:int = 90 * 10; //1 minute, 10 times a second
@@ -85,11 +101,11 @@ public class SpiderMotion extends Sprite {
         invalidatePositions();
         evaluatePositions();
 
-        animateButtonOn = new GraphicsButton('►', ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, 'KioArial', 22, 22, 0, 0, 2, 0);
-        animateButtonOff = new GraphicsButton('▐ ▌', ANIMATE_BUTTON_OFF_IMG, ANIMATE_BUTTON_OFF_IMG, ANIMATE_BUTTON_OFF_IMG, 'KioArial', 12, 12);
+        animateButtonOn = new GraphicsButton('►', ANIMATE_BUTTON_ON_1_IMG, ANIMATE_BUTTON_ON_2_IMG, ANIMATE_BUTTON_ON_3_IMG, 'KioArial', 22, 22, 0, 0, 2, 0);
+        animateButtonOff = new GraphicsButton('▐ ▌', ANIMATE_BUTTON_OFF_1_IMG, ANIMATE_BUTTON_OFF_2_IMG, ANIMATE_BUTTON_OFF_3_IMG, 'KioArial', 12, 12);
 
-        animateButtonOn.x = 20;
-        animateButtonOn.y = 38;
+        animateButtonOn.x = 12;
+        animateButtonOn.y = 32;
         animateButtonOff.x = animateButtonOn.x;
         animateButtonOff.y = animateButtonOn.y;
 

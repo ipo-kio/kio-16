@@ -101,7 +101,6 @@ public class Mechanism extends Sprite {
         graphics.clear();
 
         if (!_grayed) {
-//            graphics.lineStyle(1, 0x727272);
             graphics.beginFill(0x727272);
             graphics.drawTriangles(new <Number>[
                 p1x * sign, p1y,
@@ -111,7 +110,7 @@ public class Mechanism extends Sprite {
             graphics.endFill();
         }
 
-        graphics.lineStyle(4, _grayed ? 0xCDDC39 : 0x03A9F4, 1);
+        graphics.lineStyle(4 * Math.sqrt(MUL / 1.2), _grayed ? 0xFFFC12 : 0x0365F4, 1);
         graphics.moveTo(p1x * sign, p1y);
         graphics.lineTo(mx * sign, my);
         graphics.lineTo(nx * sign, ny);

@@ -145,8 +145,8 @@ public class Slider extends Sprite {
         var g:Graphics = button.graphics;
 
         g.clear();
-        g.lineStyle(1, 0x555555);
-        g.beginFill(over ? 0xCDDC39 : 0xAAAAAA);
+        g.lineStyle(1, 0x212121);
+        g.beginFill(over ? 0xA7C65E : 0x0365F4);
         g.drawRect(0, 0, BUTTON_WIDTH, HEIGHT - 2 * V_SKIP);
     }
 

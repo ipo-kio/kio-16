@@ -8,8 +8,6 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 
-import ru.ipo.kio._15.spider.SpiderProblem;
-
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.controls.GraphicsButton;
@@ -20,13 +18,49 @@ import ru.ipo.kio.base.GlobalMetrics;
 
 public class SpiderWorkspace extends Sprite {
 
-    [Embed(source="resources/btn.png")]
-    public static const HELP_BUTTON_ON:Class;
-    public static const HELP_BUTTON_ON_IMG:BitmapData = (new HELP_BUTTON_ON).bitmapData;
+    [Embed(source="resources/fon.png")]
+    public static const BG:Class;
+    public static const BG_IMG:BitmapData = (new BG).bitmapData;
 
-    [Embed(source="resources/btn.png")]
-    public static const USE_SETTING_BUTTON:Class;
-    public static const USE_SETTING_BUTTON_IMG:BitmapData = (new USE_SETTING_BUTTON).bitmapData;
+    [Embed(source="resources/kn-1.png")]
+    public static const BUTTON_1:Class;
+    public static const BUTTON_1_IMG:BitmapData = (new BUTTON_1).bitmapData;
+
+    [Embed(source="resources/kn-2.png")]
+    public static const BUTTON_2:Class;
+    public static const BUTTON_2_IMG:BitmapData = (new BUTTON_2).bitmapData;
+
+    [Embed(source="resources/kn-3.png")]
+    public static const BUTTON_3:Class;
+    public static const BUTTON_3_IMG:BitmapData = (new BUTTON_3).bitmapData;
+
+    //----------------------------------------------------------------------
+
+    [Embed(source="resources/kn-1.png")]
+    public static const HELP_BUTTON_1:Class;
+    public static const HELP_BUTTON_1_IMG:BitmapData = (new HELP_BUTTON_1).bitmapData;
+
+    [Embed(source="resources/kn-2.png")]
+    public static const HELP_BUTTON_2:Class;
+    public static const HELP_BUTTON_2_IMG:BitmapData = (new HELP_BUTTON_2).bitmapData;
+
+    [Embed(source="resources/kn-3.png")]
+    public static const HELP_BUTTON_3:Class;
+    public static const HELP_BUTTON_3_IMG:BitmapData = (new HELP_BUTTON_3).bitmapData;
+
+    //----------------------------------------------------------------------
+
+    [Embed(source="resources/kn-1.png")]
+    public static const USE_SETTING_BUTTON_1:Class;
+    public static const USE_SETTING_BUTTON_1_IMG:BitmapData = (new USE_SETTING_BUTTON_1).bitmapData;
+
+    [Embed(source="resources/kn-2.png")]
+    public static const USE_SETTING_BUTTON_2:Class;
+    public static const USE_SETTING_BUTTON_2_IMG:BitmapData = (new USE_SETTING_BUTTON_2).bitmapData;
+
+    [Embed(source="resources/kn-3.png")]
+    public static const USE_SETTING_BUTTON_3:Class;
+    public static const USE_SETTING_BUTTON_3_IMG:BitmapData = (new USE_SETTING_BUTTON_3).bitmapData;
 
     private var s:Spider;
     private var f:Floor;
@@ -54,8 +88,7 @@ public class SpiderWorkspace extends Sprite {
 
         init_info_panels();
 
-        //TODO change to BG
-        graphics.beginFill(0xF0F4C3);
+        graphics.beginBitmapFill(BG_IMG);
         graphics.drawRect(0, 0, GlobalMetrics.WORKSPACE_WIDTH, GlobalMetrics.WORKSPACE_HEIGHT);
         graphics.endFill();
 
@@ -80,7 +113,7 @@ public class SpiderWorkspace extends Sprite {
 
         bigSpider.x = GlobalMetrics.WORKSPACE_WIDTH / 2;
         bigSpider.y = 400;
-        bigSpider.alpha = 0.2;
+        bigSpider.alpha = 0.3;
         bigSpider.mouseEnabled = false;
         addChild(bigSpider);
         bigSpider.visible = false;
@@ -92,15 +125,15 @@ public class SpiderWorkspace extends Sprite {
 
         //buttons
 
-        var bigSpiderButton:GraphicsButton = new GraphicsButton('?', HELP_BUTTON_ON_IMG, HELP_BUTTON_ON_IMG, HELP_BUTTON_ON_IMG, 'KioArial', 18, 18);
+        var bigSpiderButton:GraphicsButton = new GraphicsButton('?', HELP_BUTTON_1_IMG, HELP_BUTTON_2_IMG, HELP_BUTTON_3_IMG, 'KioArial', 24, 24);
         addChild(bigSpiderButton);
-        bigSpiderButton.x = 70;
-        bigSpiderButton.y = 538;
+        bigSpiderButton.x = 62;
+        bigSpiderButton.y = 532;
         bigSpiderButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
             bigSpider.visible = !bigSpider.visible;
         });
 
-        var currentSettingsButton:GraphicsButton = new GraphicsButton(api.localization.use_current, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, 'KioTahoma', 12, 12);
+        var currentSettingsButton:GraphicsButton = new GraphicsButton(api.localization.use_current, USE_SETTING_BUTTON_1_IMG, USE_SETTING_BUTTON_2_IMG, USE_SETTING_BUTTON_3_IMG, 'KioTahoma', 12, 12);
         addChild(currentSettingsButton);
         currentSettingsButton.x = 680;
         currentSettingsButton.y = 550;
@@ -112,28 +145,28 @@ public class SpiderWorkspace extends Sprite {
 
     private function init_info_panels():void {
         current_info = new InfoPanel(
-                'KioArial', true, 16, 0x727272, 0x212121, 0x03A9F4, 1.5, api.localization.solution, [
+                'KioArial', true, 16, 0x727272, 0x212121, 0x0086EF, 1.5, api.localization.solution, [
                     api.localization.finished,
                     api.localization.time,
                     api.localization.material
                 ],
-                200
+                210
         );
         addChild(current_info);
-        current_info.x = 20;
-        current_info.y = 30;
+        current_info.x = 40;
+        current_info.y = 40;
 
         record_info = new InfoPanel(
-                'KioArial', true, 16, 0x727272, 0x212121, 0x03A9F4, 1.5, api.localization.record, [
+                'KioArial', true, 16, 0x727272, 0x212121, 0x0086EF, 1.5, api.localization.record, [
                     api.localization.finished,
                     api.localization.time,
                     api.localization.material
                 ],
-                200
+                210
         );
         addChild(record_info);
-        record_info.x = 20;
-        record_info.y = 140;
+        record_info.x = 40;
+        record_info.y = 160;
 
         current_info.setValue(0, '-');
         current_info.setValue(1, '-');
