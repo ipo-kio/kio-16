@@ -2,10 +2,17 @@
  * Created by ilya on 17.02.15.
  */
 package ru.ipo.kio._15.spider {
+import flash.display.BitmapData;
+import flash.display.GraphicsPathCommand;
 import flash.display.Sprite;
+import flash.geom.Matrix;
 import flash.geom.Point;
 
 public class Floor extends Sprite {
+
+    [Embed(source="resources/SeamlessMixedStone0001ed.png")]
+    public static const STONES:Class;
+    public static const STONES_IMG:BitmapData = (new STONES).bitmapData;
 
     private var _points:Vector.<Point>;
 
@@ -23,12 +30,39 @@ public class Floor extends Sprite {
     }
 
     private function redraw():void {
-        graphics.lineStyle(2, 0x00000);
-        graphics.moveTo(_points[0].x, _points[0].y);
+        var commands:Vector.<int> = new <int>[];
+        var data:Vector.<Number> = new <Number>[];
+
+        graphics.lineStyle(1, 0x212121);
+
+        commands.push(GraphicsPathCommand.MOVE_TO);
+        data.push(_points[0].x, _points[0].y);
+
         for (var i:int = 1; i < _points.length; i++) {
             var point:Point = _points[i];
-            graphics.lineTo(point.x, point.y);
+            commands.push(GraphicsPathCommand.LINE_TO);
+            data.push(_points[i].x, _points[i].y - 2);
         }
+
+        for (i = _points.length - 1; i >= 0; i--) {
+            commands.push(GraphicsPathCommand.LINE_TO);
+            data.push(_points[i].x, _points[i].y + 2)
+        }
+        commands.push(GraphicsPathCommand.LINE_TO);
+        data.push(_points[0].x, _points[0].y);
+
+        /*commands.push(GraphicsPathCommand.LINE_TO);
+        commands.push(GraphicsPathCommand.LINE_TO);
+        commands.push(GraphicsPathCommand.LINE_TO);
+        data.push(780, 600 - 500);
+        data.push(0, 600 - 500);
+        data.push(_points[0].x, _points[0].y);*/
+
+        var m:Matrix = new Matrix();
+        m.translate(0, -STONES_IMG.height + 600 - 500);
+        graphics.beginBitmapFill(STONES_IMG, m);
+        graphics.drawPath(commands, data);
+        graphics.endFill();
     }
 
     public function get points():Vector.<Point> {
@@ -121,12 +155,6 @@ public class Floor extends Sprite {
         }
 
         return 0; // can not occur;
-    }
-
-    public function pointOnLastSegment(p:Point):Boolean {
-        var l:int = _points.length;
-        var ints:Vector.<Point> = intersectSegmentWithCircle(p.x, p.y, 0.001, _points[l - 2], _points[l - 1]);
-        return ints.length > 0;
     }
 
     public function pointToTheRight(p:Point):Boolean {

@@ -31,16 +31,19 @@ public class Spider extends Sprite {
         left_forward.x_inverse = true;
         right_forward.x_inverse = true;
 
-        position_mechanism(left_back);
-        position_mechanism(left_forward);
-        position_mechanism(right_back);
-        position_mechanism(right_forward);
-
+        position_all_mechanisms();
         angle = 0;
 
         left_back.addEventListener(Mechanism.EVENT_ANGLE_CHANGED, function (e:Event):void {
             dispatchEvent(new Event(Mechanism.EVENT_ANGLE_CHANGED));
         });
+    }
+
+    private function position_all_mechanisms():void {
+        position_mechanism(left_back);
+        position_mechanism(left_forward);
+        position_mechanism(right_back);
+        position_mechanism(right_forward);
     }
 
     private static function position_mechanism(m:Mechanism):void {
@@ -80,6 +83,8 @@ public class Spider extends Sprite {
         right_back.ls = value;
         left_forward.ls = value;
         right_forward.ls = value;
+
+        position_all_mechanisms();
     }
 
     public function get ls():Vector.<Number> {

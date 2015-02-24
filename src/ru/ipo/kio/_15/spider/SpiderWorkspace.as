@@ -8,6 +8,8 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 
+import ru.ipo.kio._15.spider.SpiderProblem;
+
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.controls.GraphicsButton;
@@ -52,15 +54,7 @@ public class SpiderWorkspace extends Sprite {
 
         init_info_panels();
 
-        bigSpider = new Spider(problem.level, 5);
-        bigSpider.x = GlobalMetrics.WORKSPACE_WIDTH / 2;
-        bigSpider.y = 400;
-        bigSpider.alpha = 0.2;
-        bigSpider.mouseEnabled = false;
-        addChild(bigSpider);
-
-        bigSpider.visible = false;
-
+        //TODO change to BG
         graphics.beginFill(0xF0F4C3);
         graphics.drawRect(0, 0, GlobalMetrics.WORKSPACE_WIDTH, GlobalMetrics.WORKSPACE_HEIGHT);
         graphics.endFill();
@@ -74,6 +68,8 @@ public class SpiderWorkspace extends Sprite {
     private function init(e:Event = null):void {
         removeEventListener(Event.ADDED_TO_STAGE, init);
 
+        bigSpider = new Spider(problem.level, 5);
+
         s = new Spider(problem.level);
         f = new Floor();
         m = new SpiderMotion(this, problem, s, f, bigSpider);
@@ -82,6 +78,13 @@ public class SpiderWorkspace extends Sprite {
         m.x = 0;
         m.y = 500;
 
+        bigSpider.x = GlobalMetrics.WORKSPACE_WIDTH / 2;
+        bigSpider.y = 400;
+        bigSpider.alpha = 0.2;
+        bigSpider.mouseEnabled = false;
+        addChild(bigSpider);
+        bigSpider.visible = false;
+
         var tuned_mechanism:Mechanism = new Mechanism(problem.level);
         tuned_mechanism.angle = 0;
         var mt:MechanismTuner = new MechanismTuner(problem, tuned_mechanism, m);
@@ -89,15 +92,15 @@ public class SpiderWorkspace extends Sprite {
 
         //buttons
 
-        var bigSpiderButton:GraphicsButton = new GraphicsButton('?', HELP_BUTTON_ON_IMG, HELP_BUTTON_ON_IMG, HELP_BUTTON_ON_IMG, 'KioArial', 12, 12);
+        var bigSpiderButton:GraphicsButton = new GraphicsButton('?', HELP_BUTTON_ON_IMG, HELP_BUTTON_ON_IMG, HELP_BUTTON_ON_IMG, 'KioArial', 18, 18);
         addChild(bigSpiderButton);
-        bigSpiderButton.x = 80;
-        bigSpiderButton.y = 550;
+        bigSpiderButton.x = 70;
+        bigSpiderButton.y = 538;
         bigSpiderButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
             bigSpider.visible = !bigSpider.visible;
         });
 
-        var currentSettingsButton:GraphicsButton = new GraphicsButton('Взять текущий', USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, 'KioTahoma', 12, 12);
+        var currentSettingsButton:GraphicsButton = new GraphicsButton(api.localization.use_current, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, 'KioTahoma', 12, 12);
         addChild(currentSettingsButton);
         currentSettingsButton.x = 680;
         currentSettingsButton.y = 550;
@@ -109,10 +112,10 @@ public class SpiderWorkspace extends Sprite {
 
     private function init_info_panels():void {
         current_info = new InfoPanel(
-                'KioArial', true, 16, 0x727272, 0x212121, 0x03A9F4, 1.5, 'Решение', [
-                    'Финиш',
-                    'Время',
-                    'Материал'
+                'KioArial', true, 16, 0x727272, 0x212121, 0x03A9F4, 1.5, api.localization.solution, [
+                    api.localization.finished,
+                    api.localization.time,
+                    api.localization.material
                 ],
                 200
         );
@@ -121,10 +124,10 @@ public class SpiderWorkspace extends Sprite {
         current_info.y = 30;
 
         record_info = new InfoPanel(
-                'KioArial', true, 16, 0x727272, 0x212121, 0x03A9F4, 1.5, 'Рекорд', [
-                    'Финиш',
-                    'Время',
-                    'Материал'
+                'KioArial', true, 16, 0x727272, 0x212121, 0x03A9F4, 1.5, api.localization.record, [
+                    api.localization.finished,
+                    api.localization.time,
+                    api.localization.material
                 ],
                 200
         );
@@ -153,18 +156,18 @@ public class SpiderWorkspace extends Sprite {
             if (problem.level == 0)
                 return Math.round(t * 10).toFixed(0);
             else
-                return t.toFixed(1);
+                return t.toFixed(SpiderProblem.ROUND_SECONDS_UP ? 0 : 1);
         }
 
         if (!result.ok) {
-            info.setValue(0, 'нет');
-            info.setValue(1, result.t == 0 ? '-' : 'дольше ' + timeToString(result.t) + ' с');
+            info.setValue(0, api.localization.no);
+            info.setValue(1, result.t == 0 ? '-' : api.localization.longer + ' ' + timeToString(result.t) + ' ' + api.localization.seconds);
         } else {
-            info.setValue(0, 'да');
-            info.setValue(1, timeToString(result.t) + ' с');
+            info.setValue(0, api.localization.yes);
+            info.setValue(1, timeToString(result.t) + ' ' + api.localization.seconds);
         }
 
-        info.setValue(2, result.m + ' см');
+        info.setValue(2, result.m + ' ' + api.localization.centimeters);
     }
 
     public function get solution():Object {

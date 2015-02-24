@@ -10,6 +10,8 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
 
+import ru.ipo.kio.api.KioApi;
+
 import ru.ipo.kio.api.KioProblem;
 
 import ru.ipo.kio.api.controls.GraphicsButton;
@@ -48,6 +50,7 @@ public class MechanismTuner extends Sprite {
     private var last_working_ls:Vector.<Number>;
 
     private var problem:KioProblem;
+    private var api:KioApi;
 
     private var s:Vector.<Stick> = new <Stick>[
         null,
@@ -66,6 +69,7 @@ public class MechanismTuner extends Sprite {
 
     public function MechanismTuner(problem:KioProblem, m:Mechanism, motion:SpiderMotion) {
         this.problem = problem;
+        api = KioApi.instance(problem);
         _m = m;
         last_working_ls = _m.ls;
         _center = _m.p1_p.add(_m.p2_p).add(_m.p3_p);
@@ -154,15 +158,16 @@ public class MechanismTuner extends Sprite {
         drawCurve();
 
         //place animation button
-        a_button_on = new GraphicsButton('ON', ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, 'KioArial', 12, 12);
-        a_button_off = new GraphicsButton('OFF', ANIMATE_BUTTON_OFF_IMG, ANIMATE_BUTTON_OFF_IMG, ANIMATE_BUTTON_OFF_IMG, 'KioArial', 12, 12);
+        //http://stackoverflow.com/questions/22885702/html-for-the-pause-symbol-in-a-video-control
+        a_button_on = new GraphicsButton('►', ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, 'KioArial', 22, 22, 0, 0, 2, 0);
+        a_button_off = new GraphicsButton('▐ ▌', ANIMATE_BUTTON_OFF_IMG, ANIMATE_BUTTON_OFF_IMG, ANIMATE_BUTTON_OFF_IMG, 'KioArial', 12, 12);
 
         addChild(a_button_on);
         addChild(a_button_off);
         a_button_on.x = 100;
-        a_button_on.y = -90;
+        a_button_on.y = -100;
         a_button_off.x = 100;
-        a_button_off.y = -90;
+        a_button_off.y = -100;
 
         a_button_on.visible = false;
         addEventListener(Event.ENTER_FRAME, animate_handler);
@@ -183,10 +188,10 @@ public class MechanismTuner extends Sprite {
             a_button_on.visible = true;
         });
 
-        err_button = new GraphicsButton('Сломано! Восстановить', ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, 'KioArial', 12, 12);
+        err_button = new GraphicsButton(api.localization.broken, ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, 'KioArial', 16, 16, 0, 0, 44, 9, true);
         err_button.visible = false;
-        err_button.x = -220;
-        err_button.y = -110;
+        err_button.x = -260;
+        err_button.y = -100;
 
         err_button.addEventListener(MouseEvent.CLICK, function (e:Event):void {
             ls = last_working_ls;
@@ -194,10 +199,10 @@ public class MechanismTuner extends Sprite {
 
         addChild(err_button);
 
-        useSettingButton = new GraphicsButton('Использовать', USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, 'KioTahoma', 12, 12);
+        useSettingButton = new GraphicsButton(api.localization.apply, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, USE_SETTING_BUTTON_IMG, 'KioArial', 16, 16, 0, 0, 44, 9, true);
         addChild(useSettingButton);
-        useSettingButton.x = 80;
-        useSettingButton.y = 210;
+        useSettingButton.x = 0;
+        useSettingButton.y = 120;
         useSettingButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
             if (_m.broken)
                 return; //TODO disable if broken

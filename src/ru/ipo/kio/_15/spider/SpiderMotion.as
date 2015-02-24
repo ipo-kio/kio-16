@@ -60,13 +60,13 @@ public class SpiderMotion extends Sprite {
             workspace.setRecordResult(result);
         });
 
-        addChild(_s);
         addChild(_f);
+        addChild(_s);
 
-        slider = new Slider(0, problem.level == 0 ? TIME_TICKS : TIME_TICKS / 10, 400, 0x212121, 0x727272);
+        slider = new Slider(0, problem.level == 0 ? TIME_TICKS : TIME_TICKS / 10, 600, 0x212121, 0x212121);
         addChild(slider);
-        slider.x = 200;
-        slider.y = 50;
+        slider.x = 140;
+        slider.y = 46;
         slider.precision = problem.level == 0 ? 0 : 1;
 
         reset();
@@ -85,11 +85,11 @@ public class SpiderMotion extends Sprite {
         invalidatePositions();
         evaluatePositions();
 
-        animateButtonOn = new GraphicsButton('A on', ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, 'KioArial', 12, 12);
-        animateButtonOff = new GraphicsButton('A off', ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, 'KioArial', 12, 12);
+        animateButtonOn = new GraphicsButton('►', ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, ANIMATE_BUTTON_ON_IMG, 'KioArial', 22, 22, 0, 0, 2, 0);
+        animateButtonOff = new GraphicsButton('▐ ▌', ANIMATE_BUTTON_OFF_IMG, ANIMATE_BUTTON_OFF_IMG, ANIMATE_BUTTON_OFF_IMG, 'KioArial', 12, 12);
 
         animateButtonOn.x = 20;
-        animateButtonOn.y = 50;
+        animateButtonOn.y = 38;
         animateButtonOff.x = animateButtonOn.x;
         animateButtonOff.y = animateButtonOn.y;
 
@@ -315,7 +315,12 @@ public class SpiderMotion extends Sprite {
         if (evaluated_positions == null)
             return 0;
 
-        return (evaluated_positions.length - 1) / 10;
+        var res:Number = (evaluated_positions.length - 1) / 10;
+
+        if (SpiderProblem.ROUND_SECONDS_UP)
+            res = Math.ceil(res);
+
+        return res;
     }
 
     public function get material():Number {

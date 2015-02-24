@@ -2,7 +2,6 @@
  * Created by ilya on 25.01.15.
  */
 package ru.ipo.kio._15.spider {
-import ru.ipo.kio._15.traincars.*;
 
 import flash.display.DisplayObject;
 
@@ -33,6 +32,7 @@ public class SpiderProblem implements KioProblem {
         KioApi.initialize(this);
 
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
+        KioApi.registerLocalization(ID, KioApi.L_EN, new Settings(LOCALIZATION_EN).data);
         KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(LOCALIZATION_TH).data);
 
         workspace = new SpiderWorkspace(this);
