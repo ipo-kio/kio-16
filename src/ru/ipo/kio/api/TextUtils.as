@@ -94,7 +94,8 @@ public class TextUtils {
                     ".footnote {color:#222266;}" +
                     ".warning {color:#00000; font-weight:bold; font-size: smaller} " +
                     ".warning_anketa {color:#00000; font-size: smaller} " +
-                    ".c {textAlign: center;} ";
+                    ".c {textAlign: center;} " +
+                    "a {color: #0000AA;} ";
 
     private static function prepareTextField(text:String, x0:int, y0:int, size:int, align:String, color:uint, alpha:Number):TextField {
         var tf:TextField = new TextField;
