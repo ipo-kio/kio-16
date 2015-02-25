@@ -51,11 +51,11 @@ public class TrainCarsProblem implements KioProblem {
     }
 
     public function get solution():Object {
-        return null;
+        return workspace.solution();
     }
 
     public function loadSolution(solution:Object):Boolean {
-        return false;
+        return workspace.loadSolution(solution);
     }
 
     public function compare(r1:Object, r2:Object):int {

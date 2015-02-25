@@ -73,7 +73,6 @@ public class TrainCarsWorkspace extends Sprite {
     public static const ANIMATION_3_CLASS:Class;
     public static const ANIMATION_3_IMG:BitmapData = (new ANIMATION_3_CLASS).bitmapData;
 
-
     [Embed(source="resources/svetofor-L-green.png")]
     public static const SVET_L_G:Class;
     public static const SVET_L_G_IMG:BitmapData = (new SVET_L_G).bitmapData;
@@ -87,7 +86,6 @@ public class TrainCarsWorkspace extends Sprite {
     [Embed(source="resources/svetofor-R-red.png")]
     public static const SVET_R_R:Class;
     public static const SVET_R_R_IMG:BitmapData = (new SVET_R_R).bitmapData;
-
 
     public static var TOP_END_TICK:int;
     public static var WAY_START_TICK:int;
@@ -114,6 +112,8 @@ public class TrainCarsWorkspace extends Sprite {
 
     private var _api:KioApi;
     private var _problem:KioProblem;
+
+    private var __loading:Boolean = false;
 
     public function TrainCarsWorkspace(problem:KioProblem) {
         _api = KioApi.instance(problem);
@@ -367,6 +367,7 @@ public class TrainCarsWorkspace extends Sprite {
                 _undo_list.push(ma);
                 _uphill_steps ++;
                 ma.execute(_animation);
+                _api.autoSaveSolution();
             }
         }
 
@@ -378,6 +379,7 @@ public class TrainCarsWorkspace extends Sprite {
                 _undo_list.push(ma);
                 _downhill_steps ++;
                 ma.execute(_animation);
+                _api.autoSaveSolution();
             }
         }
 
@@ -424,7 +426,8 @@ public class TrainCarsWorkspace extends Sprite {
         _positions.addEventListener(CarsPositions.EVENT_ALL_STOPPED, function (event:Event):void {
             var r:Object = result;
             update_info(_info_current, r);
-            _api.submitResult(r);
+            if (!__loading)
+                _api.submitResult(r);
         });
 
         _positions.addEventListener(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING, function (event:Event):void {
@@ -526,6 +529,47 @@ public class TrainCarsWorkspace extends Sprite {
         _uphill_steps = 0;
         _downhill_steps = 0;
         _positions.clear();
+
+        if (!__loading)
+            _api.autoSaveSolution();
+    }
+
+    public function solution():Object {
+        var res:Vector.<int> = new <int>[];
+
+        for (var i:int = 0; i < _undo_list.length; i++)
+            res.push(_undo_list[i].shortRepresentation);
+
+        return {
+            a: res
+        };
+    }
+
+    public function loadSolution(solution:Object):Boolean {
+        if (solution == null)
+            return false;
+
+        __loading = true;
+
+        clear();
+
+        var a:Vector.<int> = solution.a;
+
+        for (var i:int = 0; i < a.length; i++) {
+            var ma:MovingAction = MovingAction.createFromShortRepresentation(a[i], _positions);
+            _undo_list.push(ma);
+            if (ma.typ == MovingAction.TYP_FROM_TOP)
+                _downhill_steps ++;
+            else
+                _uphill_steps ++;
+            ma.execute(false);
+        }
+
+        _positions.positionCars();
+
+        __loading = false;
+
+        return true;
     }
 }
 }

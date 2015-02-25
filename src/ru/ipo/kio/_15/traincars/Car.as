@@ -129,6 +129,8 @@ public class Car extends Sprite {
         numberView.defaultTextFormat = new TextFormat('KioTahoma', NUMBER_HEIGHT, TEXT_COLOR, true);
         numberView.embedFonts = true;
         numberView.text = '';
+        numberView.selectable = false;
+        numberView.mouseEnabled = false;
 
         numberView.width = 0;
         numberView.height = 0;
