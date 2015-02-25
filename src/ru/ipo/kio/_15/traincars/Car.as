@@ -194,8 +194,11 @@ public class Car extends Sprite {
     }
 
     public function addMoveDelta(delta:int, movingWay:RailWay):void {
-        if (_moveDelta == 0)
+        var dispatchMove:Boolean = false;
+        if (_moveDelta == 0) {
             dispatchEvent(new Event(EVENT_START_MOVE));
+            dispatchMove = true;
+        }
 
         if (_moveDelta < 0)
             return;
@@ -204,11 +207,17 @@ public class Car extends Sprite {
         _movingWay = movingWay;
 
         initListener();
+
+        if (dispatchMove)
+            dispatchEvent(new Event(EVENT_START_MOVE));
     }
 
     public function subMoveDelta(delta:int, movingWay:RailWay):void {
-        if (_moveDelta == 0)
+        var dispatchMove:Boolean = false;
+        if (_moveDelta == 0) {
             dispatchEvent(new Event(EVENT_START_MOVE));
+            dispatchMove = true;
+        }
 
         if (_moveDelta > 0)
             return;
@@ -217,6 +226,9 @@ public class Car extends Sprite {
         _movingWay = movingWay;
 
         initListener();
+
+        if (dispatchMove)
+            dispatchEvent(new Event(EVENT_START_MOVE));
     }
 
     private function initListener():void {
@@ -251,7 +263,6 @@ public class Car extends Sprite {
             if (tick <= TrainCarsWorkspace.TOP_END_TICK + CAR_TICKS_LENGTH)
                 dispatchEvent(new Event(EVENT_PUSH_UP));
         }
-
     }
 
     public function get moving():int {

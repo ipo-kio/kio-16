@@ -202,10 +202,8 @@ public class TrainCarsWorkspace extends Sprite {
             left_red_semaphore.visible = false;
             right_red_semaphore.visible = false;
         } else {
-            //TODO debug
             var fromTop:Boolean = _positions.mayMoveFromTop();
             var toTop:Boolean = _positions.mayMoveToTop(0) || _positions.mayMoveToTop(1) || _positions.mayMoveToTop(2) || _positions.mayMoveToTop(3);
-            trace(fromTop, toTop, Math.random());
             left_green_semaphore.visible = fromTop;
             left_red_semaphore.visible = !fromTop;
             right_green_semaphore.visible = toTop;
@@ -368,6 +366,9 @@ public class TrainCarsWorkspace extends Sprite {
                 _uphill_steps ++;
                 ma.execute(_animation);
                 _api.autoSaveSolution();
+                updateSemaphores();
+                currentResultUpdate();
+                _api.log('from way ' + way_ind);
             }
         }
 
@@ -380,6 +381,9 @@ public class TrainCarsWorkspace extends Sprite {
                 _downhill_steps ++;
                 ma.execute(_animation);
                 _api.autoSaveSolution();
+                updateSemaphores();
+                currentResultUpdate();
+                _api.log('to way ' + way_ind);
             }
         }
 
@@ -391,6 +395,10 @@ public class TrainCarsWorkspace extends Sprite {
                 else
                     _uphill_steps --;
                 ma.undo();
+                _api.autoSaveSolution();
+                updateSemaphores();
+                currentResultUpdate();
+                _api.log('undo');
             }
         }
 
@@ -423,18 +431,22 @@ public class TrainCarsWorkspace extends Sprite {
             clear();
         });
 
-        _positions.addEventListener(CarsPositions.EVENT_ALL_STOPPED, function (event:Event):void {
-            var r:Object = result;
-            update_info(_info_current, r);
-            if (!__loading)
-                _api.submitResult(r);
-        });
+//        _positions.addEventListener(CarsPositions.EVENT_ALL_STOPPED, function (event:Event):void {
+//            currentResultUpdate();
+//        });
 
         _positions.addEventListener(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING, function (event:Event):void {
             trace('started moving ' + Math.random());
         });
 
         drawArrows();
+    }
+
+    private function currentResultUpdate():void {
+        var r:Object = result;
+        update_info(_info_current, r);
+        if (!__loading)
+            _api.submitResult(r);
     }
 
     private function drawArrows():void {
@@ -517,10 +529,26 @@ public class TrainCarsWorkspace extends Sprite {
     }
 
     public function get downhill_steps():int {
+        if (_uphill_steps + _downhill_steps != _undo_list.length) {
+            var cnt:int = 0;
+            for each (var action:MovingAction in _undo_list)
+                if (action.typ == MovingAction.TYP_FROM_TOP)
+                    cnt ++;
+            return cnt;
+        }
+
         return _downhill_steps;
     }
 
     public function get uphill_steps():int {
+        if (_uphill_steps + _downhill_steps != _undo_list.length) {
+            var cnt:int = 0;
+            for each (var action:MovingAction in _undo_list)
+                if (action.typ == MovingAction.TYP_TO_TOP)
+                    cnt ++;
+            return cnt;
+        }
+
         return _uphill_steps;
     }
 
@@ -532,6 +560,7 @@ public class TrainCarsWorkspace extends Sprite {
 
         if (!__loading)
             _api.autoSaveSolution();
+        _api.log('clear');
     }
 
     public function solution():Object {
@@ -568,6 +597,11 @@ public class TrainCarsWorkspace extends Sprite {
         _positions.positionCars();
 
         __loading = false;
+
+        updateSemaphores();
+
+        _api.submitResult(result);
+        _api.autoSaveSolution();
 
         return true;
     }

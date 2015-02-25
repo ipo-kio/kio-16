@@ -119,8 +119,8 @@ public class MovingAction {
     private function locoPushUpHandler(event:Event):void {
         var loco:Car = Car(event.target);
         loco.removeEventListener(Car.EVENT_PUSH_UP, locoPushUpHandler);
-        _position.dispatchEvent(new Event(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING));
         loco.addMoveDelta(TrainCarsWorkspace.WAY_START_TICK - loco.tick, way);
+        _position.dispatchEvent(new Event(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING));
     }
 
     public function undo():void {
@@ -152,3 +152,5 @@ public class MovingAction {
     }
 }
 }
+
+//TODO semaphore should become green when loco goes down
