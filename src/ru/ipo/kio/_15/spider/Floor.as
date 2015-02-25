@@ -24,9 +24,14 @@ public class Floor extends Sprite {
     }
 
     private function redraw():void {
+        graphics.lineStyle(5, 0x8F9688);
+        graphics.moveTo(_points[0].x, _points[0].y + 4);
+        for (var i:int = 1; i < _points.length; i++)
+            graphics.lineTo(_points[i].x, _points[i].y + 4);
+
         graphics.lineStyle(5, 0xFFFFFF);
         graphics.moveTo(_points[0].x, _points[0].y);
-        for (var i:int = 1; i < _points.length; i++)
+        for (i = 1; i < _points.length; i++)
             graphics.lineTo(_points[i].x, _points[i].y);
     }
 

@@ -23,27 +23,27 @@ import ru.ipo.kio.base.GlobalMetrics;
 
 public class MechanismTuner extends Sprite {
 
-    [Embed(source="resources/kn-1.png")]
+    [Embed(source="resources/kn-1-Update.png")]
     public static const USE_SETTINGS_BUTTON_1:Class;
     public static const USE_SETTINGS_BUTTON_1_IMG:BitmapData = (new USE_SETTINGS_BUTTON_1).bitmapData;
 
-    [Embed(source="resources/kn-2.png")]
+    [Embed(source="resources/kn-2-Update.png")]
     public static const USE_SETTINGS_BUTTON_2:Class;
     public static const USE_SETTINGS_BUTTON_2_IMG:BitmapData = (new USE_SETTINGS_BUTTON_2).bitmapData;
 
-    [Embed(source="resources/kn-3.png")]
+    [Embed(source="resources/kn-3-Update.png")]
     public static const USE_SETTINGS_BUTTON_3:Class;
     public static const USE_SETTINGS_BUTTON_3_IMG:BitmapData = (new USE_SETTINGS_BUTTON_3).bitmapData;
 
-    [Embed(source="resources/kn01-1.png")]
+    [Embed(source="resources/kn01-1-excmark.png")]
     public static const ERR_BUTTON_1:Class;
     public static const ERR_BUTTON_1_IMG:BitmapData = (new ERR_BUTTON_1).bitmapData;
 
-    [Embed(source="resources/kn01-2.png")]
+    [Embed(source="resources/kn01-2-excmark.png")]
     public static const ERR_BUTTON_2:Class;
     public static const ERR_BUTTON_2_IMG:BitmapData = (new ERR_BUTTON_2).bitmapData;
 
-    [Embed(source="resources/kn01-3.png")]
+    [Embed(source="resources/kn01-3-excmark.png")]
     public static const ERR_BUTTON_3:Class;
     public static const ERR_BUTTON_3_IMG:BitmapData = (new ERR_BUTTON_3).bitmapData;
 
@@ -92,6 +92,7 @@ public class MechanismTuner extends Sprite {
         last_working_ls = _m.ls;
         _center = _m.p1_p.add(_m.p2_p).add(_m.p3_p);
         _center.setTo(_center.x * MUL / 3, _center.y * MUL / 3);
+        _center = _center.add(new Point(0, -30));
 
         _m.addEventListener(Mechanism.EVENT_ANGLE_CHANGED, function (e:Event):void {
             positionSticks();
@@ -179,8 +180,8 @@ public class MechanismTuner extends Sprite {
         x = GlobalMetrics.WORKSPACE_WIDTH - 180;
         y = 150;
 
-        _slider.x = -250 + 40;
-        _slider.y = -150 + 6;
+        _slider.x = -250 + 64;
+        _slider.y = -150 + 24;
         _slider.visible = false;
         addChild(_slider);
 
@@ -188,8 +189,8 @@ public class MechanismTuner extends Sprite {
 
         //place animation button
         //http://stackoverflow.com/questions/22885702/html-for-the-pause-symbol-in-a-video-control
-        a_button_on = new GraphicsButton('►', SpiderMotion.ANIMATE_BUTTON_ON_1_IMG, SpiderMotion.ANIMATE_BUTTON_ON_2_IMG, SpiderMotion.ANIMATE_BUTTON_ON_3_IMG, 'KioArial', 22, 22, 0, 0, 2, 0);
-        a_button_off = new GraphicsButton('▐ ▌', SpiderMotion.ANIMATE_BUTTON_OFF_1_IMG, SpiderMotion.ANIMATE_BUTTON_OFF_2_IMG, SpiderMotion.ANIMATE_BUTTON_OFF_3_IMG, 'KioArial', 12, 12);
+        a_button_on = new GraphicsButton('', SpiderMotion.ANIMATE_BUTTON_ON_1_IMG, SpiderMotion.ANIMATE_BUTTON_ON_2_IMG, SpiderMotion.ANIMATE_BUTTON_ON_3_IMG, 'KioArial', 22, 22, 0, 0, 2, 0);
+        a_button_off = new GraphicsButton('', SpiderMotion.ANIMATE_BUTTON_OFF_1_IMG, SpiderMotion.ANIMATE_BUTTON_OFF_2_IMG, SpiderMotion.ANIMATE_BUTTON_OFF_3_IMG, 'KioArial', 12, 12);
 
         addChild(a_button_on);
         addChild(a_button_off);
@@ -217,7 +218,7 @@ public class MechanismTuner extends Sprite {
             a_button_on.visible = true;
         });
 
-        err_button = new GraphicsButton('!', ERR_BUTTON_1_IMG, ERR_BUTTON_2_IMG, ERR_BUTTON_3_IMG, 'KioArial', 26, 26);
+        err_button = new GraphicsButton('', ERR_BUTTON_1_IMG, ERR_BUTTON_2_IMG, ERR_BUTTON_3_IMG, 'KioArial', 26, 26);
         err_button.visible = false;
         err_button_text.visible = false;
         err_button.x = 90;
@@ -231,7 +232,7 @@ public class MechanismTuner extends Sprite {
 
         addChild(err_button);
 
-        useSettingButton = new GraphicsButton('↓', USE_SETTINGS_BUTTON_1_IMG, USE_SETTINGS_BUTTON_2_IMG, USE_SETTINGS_BUTTON_3_IMG, 'KioArial', 26, 26, 0, 0, 0, -4);
+        useSettingButton = new GraphicsButton(api.localization.apply, USE_SETTINGS_BUTTON_1_IMG, USE_SETTINGS_BUTTON_2_IMG, USE_SETTINGS_BUTTON_3_IMG, 'KioArial', 14, 14, 0, 0, 50, 18, true, 0, true);
         addChild(useSettingButton);
         useSettingButton.x = -316;
         useSettingButton.y = -90;

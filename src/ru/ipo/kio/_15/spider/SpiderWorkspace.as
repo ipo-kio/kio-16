@@ -22,45 +22,19 @@ public class SpiderWorkspace extends Sprite {
     public static const BG:Class;
     public static const BG_IMG:BitmapData = (new BG).bitmapData;
 
-    [Embed(source="resources/kn-1.png")]
-    public static const BUTTON_1:Class;
-    public static const BUTTON_1_IMG:BitmapData = (new BUTTON_1).bitmapData;
-
-    [Embed(source="resources/kn-2.png")]
-    public static const BUTTON_2:Class;
-    public static const BUTTON_2_IMG:BitmapData = (new BUTTON_2).bitmapData;
-
-    [Embed(source="resources/kn-3.png")]
-    public static const BUTTON_3:Class;
-    public static const BUTTON_3_IMG:BitmapData = (new BUTTON_3).bitmapData;
-
     //----------------------------------------------------------------------
 
-    [Embed(source="resources/kn-1.png")]
+    [Embed(source="resources/kn-1-quesmark.png")]
     public static const HELP_BUTTON_1:Class;
     public static const HELP_BUTTON_1_IMG:BitmapData = (new HELP_BUTTON_1).bitmapData;
 
-    [Embed(source="resources/kn-2.png")]
+    [Embed(source="resources/kn-2-quesmark.png")]
     public static const HELP_BUTTON_2:Class;
     public static const HELP_BUTTON_2_IMG:BitmapData = (new HELP_BUTTON_2).bitmapData;
 
-    [Embed(source="resources/kn-3.png")]
+    [Embed(source="resources/kn-3-quesmark.png")]
     public static const HELP_BUTTON_3:Class;
     public static const HELP_BUTTON_3_IMG:BitmapData = (new HELP_BUTTON_3).bitmapData;
-
-    //----------------------------------------------------------------------
-
-    [Embed(source="resources/kn-1.png")]
-    public static const USE_SETTING_BUTTON_1:Class;
-    public static const USE_SETTING_BUTTON_1_IMG:BitmapData = (new USE_SETTING_BUTTON_1).bitmapData;
-
-    [Embed(source="resources/kn-2.png")]
-    public static const USE_SETTING_BUTTON_2:Class;
-    public static const USE_SETTING_BUTTON_2_IMG:BitmapData = (new USE_SETTING_BUTTON_2).bitmapData;
-
-    [Embed(source="resources/kn-3.png")]
-    public static const USE_SETTING_BUTTON_3:Class;
-    public static const USE_SETTING_BUTTON_3_IMG:BitmapData = (new USE_SETTING_BUTTON_3).bitmapData;
 
     private var s:Spider;
     private var f:Floor;
@@ -129,22 +103,13 @@ public class SpiderWorkspace extends Sprite {
 
         //buttons
 
-        var bigSpiderButton:GraphicsButton = new GraphicsButton('?', HELP_BUTTON_1_IMG, HELP_BUTTON_2_IMG, HELP_BUTTON_3_IMG, 'KioArial', 24, 24);
+        var bigSpiderButton:GraphicsButton = new GraphicsButton('', HELP_BUTTON_1_IMG, HELP_BUTTON_2_IMG, HELP_BUTTON_3_IMG, 'KioArial', 24, 24);
         addChild(bigSpiderButton);
         bigSpiderButton.x = 62;
         bigSpiderButton.y = 532;
         bigSpiderButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
             bigSpider.visible = !bigSpider.visible;
         });
-
-        var currentSettingsButton:GraphicsButton = new GraphicsButton(api.localization.use_current, USE_SETTING_BUTTON_1_IMG, USE_SETTING_BUTTON_2_IMG, USE_SETTING_BUTTON_3_IMG, 'KioTahoma', 12, 12);
-        addChild(currentSettingsButton);
-        currentSettingsButton.x = 680;
-        currentSettingsButton.y = 550;
-        currentSettingsButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
-            mt.ls = m.ls;
-        });
-        currentSettingsButton.visible = false;
     }
 
     private function init_info_panels():void {

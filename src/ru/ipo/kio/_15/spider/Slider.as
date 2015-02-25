@@ -140,13 +140,17 @@ public class Slider extends Sprite {
         });
     }
 
+    private function get isBottomSlider():Boolean {
+        return internalWidth > 450;
+    }
+
     private function drawButton():void {
         var over:Boolean = dragMouseDown || dragMouseOver;
         var g:Graphics = button.graphics;
 
         g.clear();
         g.lineStyle(1, 0x212121);
-        g.beginFill(over ? 0xA7C65E : 0x0365F4);
+        g.beginFill(over ? 0xA7C65E : (isBottomSlider ? 0xFFFFFF : 0x0365F4));
         g.drawRect(0, 0, BUTTON_WIDTH, HEIGHT - 2 * V_SKIP);
     }
 

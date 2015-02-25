@@ -17,27 +17,27 @@ import ru.ipo.kio.api.controls.GraphicsButton;
 
 public class SpiderMotion extends Sprite {
 
-    [Embed(source="resources/kn-1.png")]
+    [Embed(source="resources/kn-1-play.png")]
     public static const ANIMATE_BUTTON_ON_1:Class;
     public static const ANIMATE_BUTTON_ON_1_IMG:BitmapData = (new ANIMATE_BUTTON_ON_1).bitmapData;
 
-    [Embed(source="resources/kn-2.png")]
+    [Embed(source="resources/kn-2-play.png")]
     public static const ANIMATE_BUTTON_ON_2:Class;
     public static const ANIMATE_BUTTON_ON_2_IMG:BitmapData = (new ANIMATE_BUTTON_ON_2).bitmapData;
 
-    [Embed(source="resources/kn-3.png")]
+    [Embed(source="resources/kn-3-play.png")]
     public static const ANIMATE_BUTTON_ON_3:Class;
     public static const ANIMATE_BUTTON_ON_3_IMG:BitmapData = (new ANIMATE_BUTTON_ON_3).bitmapData;
 
-    [Embed(source="resources/kn-1.png")]
+    [Embed(source="resources/kn-1-pauza.png")]
     public static const ANIMATE_BUTTON_OFF_1:Class;
     public static const ANIMATE_BUTTON_OFF_1_IMG:BitmapData = (new ANIMATE_BUTTON_OFF_1).bitmapData;
 
-    [Embed(source="resources/kn-2.png")]
+    [Embed(source="resources/kn-2-pauza.png")]
     public static const ANIMATE_BUTTON_OFF_2:Class;
     public static const ANIMATE_BUTTON_OFF_2_IMG:BitmapData = (new ANIMATE_BUTTON_OFF_2).bitmapData;
 
-    [Embed(source="resources/kn-3.png")]
+    [Embed(source="resources/kn-3-pauza.png")]
     public static const ANIMATE_BUTTON_OFF_3:Class;
     public static const ANIMATE_BUTTON_OFF_3_IMG:BitmapData = (new ANIMATE_BUTTON_OFF_3).bitmapData;
 
@@ -101,8 +101,8 @@ public class SpiderMotion extends Sprite {
         invalidatePositions();
         evaluatePositions();
 
-        animateButtonOn = new GraphicsButton('►', ANIMATE_BUTTON_ON_1_IMG, ANIMATE_BUTTON_ON_2_IMG, ANIMATE_BUTTON_ON_3_IMG, 'KioArial', 22, 22, 0, 0, 2, 0);
-        animateButtonOff = new GraphicsButton('▐ ▌', ANIMATE_BUTTON_OFF_1_IMG, ANIMATE_BUTTON_OFF_2_IMG, ANIMATE_BUTTON_OFF_3_IMG, 'KioArial', 12, 12);
+        animateButtonOn = new GraphicsButton('', ANIMATE_BUTTON_ON_1_IMG, ANIMATE_BUTTON_ON_2_IMG, ANIMATE_BUTTON_ON_3_IMG, 'KioArial', 22, 22, 0, 0, 2, 0);
+        animateButtonOff = new GraphicsButton('', ANIMATE_BUTTON_OFF_1_IMG, ANIMATE_BUTTON_OFF_2_IMG, ANIMATE_BUTTON_OFF_3_IMG, 'KioArial', 12, 12);
 
         animateButtonOn.x = 12;
         animateButtonOn.y = 32;

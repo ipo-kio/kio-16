@@ -69,9 +69,8 @@ public class GraphicsButton extends SimpleButton {
 
         var textField:TextField = TextUtils.createTextFieldWithFont(fontName, size, false, true, bold);
         textField.textColor = fontColor;
-//        TextUtils.setTextForTextField(textField, title, fontName, size);
-        //textField.htmlText = "<p>" + title + "</p>";
         textField.text = title;
+        textField.mouseEnabled = false;
         if (noCenter) {
             textField.x = dx;
             textField.y = dy;
