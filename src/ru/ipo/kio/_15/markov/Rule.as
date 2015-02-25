@@ -3,6 +3,8 @@
  */
 package ru.ipo.kio._15.markov {
 import flash.display.SimpleButton;
+import flash.events.Event;
+import flash.events.MouseEvent;
 
 public class Rule extends BasicView{
 
@@ -138,8 +140,18 @@ public class Rule extends BasicView{
             removeFictive(output);
         }
 
+        if(RuleManager.instance.level==0) {
+            if(hasEmpty(input)){
+                removeFictive(input);
+            }
 
-        if(RuleManager.instance.level!=2) {
+            if(hasEmpty(output)){
+                removeFictive(output);
+            }
+        }
+
+
+        if(RuleManager.instance.level==0) {
             for (var i = 0; i < input.length - output.length; i++) {
                 output.push(new MovingTile(null, null, true));
             }
@@ -183,9 +195,29 @@ public class Rule extends BasicView{
     }
 
     private function consumeList(list:Vector.<MovingTile>, ntile:MovingTile, x:int, y:int, move:Boolean=false):Boolean{
-        if(RuleManager.instance.level==0 && list.length>=5 && !hasFictive(list)){
+        if(RuleManager.instance.level==0 && list.length>=3 && !hasFictive(list)){
             return false;
         }else {
+            if(ntile.symbol.code=="X" || ntile.symbol.code=="x"){
+                if(list!=output || list.length!=1 || !list[0].fictive || isStart()){
+                    return false;
+                }
+            }
+
+            if(ntile.symbol.code=="S" || ntile.symbol.code=="s"){
+                if(list!=input || list.length!=1 || !list[0].fictive || isFinish()){
+                    return false;
+                }
+            }
+
+            if(list==input && isStart()){
+                return false;
+            }
+
+            if(list==output && isFinish()){
+                return false;
+            }
+
             for each(var tile:MovingTile  in list) {
                 if (tile.fictive && ntile.rule==null) {
                     if (x > tile.x && x < tile.x + tile.width &&
@@ -193,21 +225,11 @@ public class Rule extends BasicView{
                         if(!move) {
                             var t:MovingTile = new MovingTile(ntile.symbol, this);
                             list.splice(list.indexOf(tile), 1, t);
-                            if(RuleManager.instance.level==1) {
-                               putOpposite(t, ntile);
-                            }
                         }else{
                             if(tile.temp){{
                                 return true;
                             }}
-
-                            if(oldTemp!=null && input.indexOf(oldTemp)>=0){
-                                input.splice(input.indexOf(oldTemp), 1);
-                            }
-                            if(oldTemp!=null && output.indexOf(oldTemp)>=0){
-                                output.splice(output.indexOf(oldTemp), 1);
-                            }
-
+                            removeOldTemp();
                         }
                         return true;
                     }
@@ -225,20 +247,12 @@ public class Rule extends BasicView{
                         if(ntile.rule!=null){
                             list.splice(list.indexOf(ntile), 1);
                         }
-                        if(RuleManager.instance.level==1 && ntile.rule==null) {
-                            putOpposite(t, ntile);
-                        }
                     }else{
                         var temp:MovingTile = new MovingTile(ntile.symbol, this, true, true);
                         var ind:int = list.indexOf(tile);
                         if(!tile.fictive && (ind-1<0 || !list[ind-1].fictive)) {
                             list.splice(list.indexOf(tile), 0, temp);
-                            if(oldTemp!=null && input.indexOf(oldTemp)>=0){
-                                input.splice(input.indexOf(oldTemp), 1);
-                            }
-                            if(oldTemp!=null && output.indexOf(oldTemp)>=0){
-                                output.splice(output.indexOf(oldTemp), 1);
-                            }
+                            removeOldTemp();
                             oldTemp = temp;
 
                         }
@@ -256,20 +270,12 @@ public class Rule extends BasicView{
                         if(ntile.rule!=null){
                             list.splice(list.indexOf(ntile), 1);
                         }
-                        if(RuleManager.instance.level==1 && ntile.rule==null) {
-                            putOpposite(t, ntile);
-                        }
                     }else{
                         var temp:MovingTile = new MovingTile(ntile.symbol, this, true, true);
                         var ind:int = list.indexOf(tile);
                         if(!tile.fictive && (ind+1>=list.length || !list[ind+1].fictive)) {
                             list.splice(list.indexOf(tile) + 1, 0, temp);
-                            if(oldTemp!=null && input.indexOf(oldTemp)>=0){
-                                input.splice(input.indexOf(oldTemp), 1);
-                            }
-                            if(oldTemp!=null && output.indexOf(oldTemp)>=0){
-                                output.splice(output.indexOf(oldTemp), 1);
-                            }
+                            removeOldTemp();
                             oldTemp = temp;
                         }
                     }
@@ -278,6 +284,15 @@ public class Rule extends BasicView{
             }
         }
 return false;
+    }
+
+    private function removeOldTemp():void {
+        if (oldTemp != null && input.indexOf(oldTemp) >= 0) {
+            input.splice(input.indexOf(oldTemp), 1);
+        }
+        if (oldTemp != null && output.indexOf(oldTemp) >= 0) {
+            output.splice(output.indexOf(oldTemp), 1);
+        }
     }
 
     public function putOpposite(t:MovingTile, ntile:MovingTile):void {
@@ -352,16 +367,25 @@ return false;
 
     public function remove(tile:MovingTile):void {
         if(_input.indexOf(tile)>=0){
-            _input.splice(_input.indexOf(tile),1, new MovingTile(null, null, true));
-            if(RuleManager.instance.level==1){
-                removeOpposite(_output, tile.symbol);
+            if(RuleManager.instance.level==0) {
+                _input.splice(_input.indexOf(tile), 1, new MovingTile(null, null, true));
+            }else{
+                _input.splice(_input.indexOf(tile), 1);
+                if(_input.length==0){
+                    input.push(new MovingTile(null, null, true));
+                }
             }
+
         }
 
         if(_output.indexOf(tile)>=0){
-            _output.splice(_output.indexOf(tile),1, new MovingTile(null, null, true));
-            if(RuleManager.instance.level==1){
-                removeOpposite(_input, tile.symbol);
+            if(RuleManager.instance.level==0) {
+                _output.splice(_output.indexOf(tile), 1, new MovingTile(null, null, true));
+            }else{
+                _output.splice(_output.indexOf(tile), 1);
+                if(_output.length==0){
+                    output.push(new MovingTile(null, null, true));
+                }
             }
         }
     }
@@ -385,6 +409,14 @@ return false;
         }
     }
 
+    public function isStart():Boolean{
+        return input.length==1 && !input[0].fictive && (input[0].symbol.code=="S" || input[0].symbol.code=="s");
+    }
+
+    public function isFinish():Boolean{
+        return output.length==1  && !output[0].fictive  && (output[0].symbol.code=="X" || output[0].symbol.code=="x");
+    }
+
     public function getStringInput():String {
         var str:String="";
         for each(var tile:Tile in _input){
@@ -404,19 +436,17 @@ return false;
     public function load(code:String):void{
        var index:int = code.indexOf(":");
        var first:String = code.substr(0,index);
-       var second:String = code.substr(index);
+       var second:String = code.substr(index+1);
         for(var i:int=0; i<first.length; i++){
-            var s:Symbol = Symbol.getSymbol(first.charAt(i));
-            if(s!=null){
-                input.push(new MovingTile(s, this));
+            if(first.charAt(i)!="_"){
+                input.push(new MovingTile(Symbol.getSymbol(first.charAt(i)), this));
             }else{
                 input.push(new MovingTile(null, null, true));
             }
         }
         for(var i:int=0; i<second.length; i++){
-            var s:Symbol = Symbol.getSymbol(second.charAt(i));
-            if(s!=null){
-                output.push(new MovingTile(s, this));
+            if(second.charAt(i)!="_"){
+                output.push(new MovingTile(Symbol.getSymbol(second.charAt(i)), this));
             }else{
                 output.push(new MovingTile(null, null, true));
             }
@@ -429,7 +459,7 @@ return false;
         var result:String = "";
         for each(var tile: MovingTile  in _input){
             if(tile.fictive){
-                result+="-";
+                result+="_";
             }else{
                 result+=tile.symbol.code;
             }
@@ -437,7 +467,7 @@ return false;
         result+=":";
         for each(var tile: MovingTile  in _output){
             if(tile.fictive){
-                result+="-";
+                result+="_";
             }else{
                 result+=tile.symbol.code;
             }
@@ -499,6 +529,11 @@ return false;
             }
         }
         return true;
+    }
+
+    public function removeAllTemp():void{
+        removeTemp(input);
+        removeTemp(output);
     }
 
     private function removeTemp(list:Vector.<MovingTile>):Boolean {

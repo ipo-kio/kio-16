@@ -15,7 +15,7 @@ import flash.utils.Timer;
 import ru.ipo.kio.api.KioApi;
 
 import ru.ipo.kio.api.KioProblem;
-import ru.ipo.kio.base.displays.ShellButton;
+import ru.ipo.kio.base.displays.SettingsDisplay;
 
 public class MarkovWorkspace extends BasicView  {
     private var _problem:KioProblem;
@@ -24,6 +24,15 @@ public class MarkovWorkspace extends BasicView  {
     private var _correctRidge:Ridge = new Ridge();
 
     private var _workingRidge:Ridge = new Ridge();
+
+
+    public function get correctRidge():Ridge {
+        return _correctRidge;
+    }
+
+    public function get workingRidge():Ridge {
+        return _workingRidge;
+    }
 
     private var _history = new Vector.<Ridge>();
 
@@ -36,7 +45,12 @@ public class MarkovWorkspace extends BasicView  {
         if(level==0){
             loadRidges('wecececefececeww', 'wwcwwccwwwcccwww');
         }else if (level==1){
-            loadRidges('','ooooooooaaaaaaaaa');
+            Symbol.getSymbol("x");
+            Symbol.getSymbol("s");
+            Symbol.getSymbol("b");
+            Symbol.getSymbol("n");
+            Symbol.getSymbol("p");
+            loadRidges('','lKLkLKlkLklklK');
 
         }else{
             RuleManager.instance.loadExamples();
@@ -47,6 +61,10 @@ public class MarkovWorkspace extends BasicView  {
             Symbol.getSymbol(")");
             Symbol.getSymbol("0");
             Symbol.getSymbol("2");
+            Symbol.getSymbol("A");
+            Symbol.getSymbol("B");
+            Symbol.getSymbol("X");
+            Symbol.getSymbol("S");
             examples.push(new Example(RuleManager.instance.examples[0]));
             examples.push(new Example(RuleManager.instance.examples[1]));
             examples.push(new Example(RuleManager.instance.examples[2]));
@@ -54,6 +72,10 @@ public class MarkovWorkspace extends BasicView  {
             examples.push(new Example(RuleManager.instance.examples[4]));
 
         }
+        _api.addEventListener(KioApi.RECORD_EVENT, function(e:Event):void {
+            RuleManager.instance.record = RuleManager.instance.result.clone();
+            updateRecord();
+        });
         update();
     }
 
@@ -74,9 +96,54 @@ public class MarkovWorkspace extends BasicView  {
 
     private var animate:Boolean = false;
 
+    private var execution:Boolean = false;
+
     public var _userField:TextField = new TextField();
 
     private var userText:String = "1+1";
+
+    private function stepForward():void {
+        var rule:Rule = RuleManager.instance.getRule(_workingRidge);
+        if(!selectStep && rule.isStart()){
+            selectStep=true;
+        }
+        if (!selectStep) {
+            selectStep = true;
+            rule.select = true;
+            var index:int = _workingRidge.getString().indexOf(rule.getStringInput());
+            for(var i:int=0;i<rule.getStringInput().length; i++){
+                _workingRidge.tiles[i+index].select=true;
+            }
+        } else {
+            _history.push(_workingRidge.clone());
+            RuleManager.instance.applyRule(_workingRidge);
+            selectStep = false;
+            if(_history.length%100==0){
+                if(animate){
+                    animate=false;
+                }
+                if(execution){
+                    execution=false;
+                }
+                showWarning=true;
+            }
+        }
+    }
+
+    private var showWarning:Boolean=  false;
+
+    private function showWarningSp():void {
+        var spWar:BasicView = new BasicView();
+        spWar.graphics.beginFill(0x000000, 0.5);
+        spWar.graphics.drawRect(0,0,SettingsManager.instance.areaWidth, SettingsManager.instance.areaHeight);
+        spWar.graphics.endFill();
+        spWar.addChildTo(spWar.createField(_history.length+_api.localization.label.warning, 20, 0xFFFFFF),100,300);
+        spWar.addEventListener(MouseEvent.CLICK, function(e:Event){
+            showWarning=false;
+            update();
+        });
+        addChildTo(spWar,0,0);
+    }
 
     public override function update():void {
         clear();
@@ -108,14 +175,14 @@ public class MarkovWorkspace extends BasicView  {
                 var format:TextFormat = _userField.getTextFormat();
                 format.size = 40;
                 format.font = "Arial";
-                _userField.border = false;
+                _userField.border = true;
                 _userField.setTextFormat(format);
-                _userField.width = _userField.textWidth + 300;
+                _userField.width = 440;
                 _userField.height = _userField.textHeight + 10;
 
-                addChildTo(_userField, SettingsManager.instance.areaWidth/2-70, 90);
+                addChildTo(_userField, SettingsManager.instance.areaWidth/2-70, 80);
             }else{
-                addChildTo(_workingRidge, SettingsManager.instance.areaWidth/2-70, 60);
+                addChildTo(_workingRidge, SettingsManager.instance.areaWidth/2-170, 60);
             }
 
             if(wrong!=null){
@@ -148,10 +215,15 @@ public class MarkovWorkspace extends BasicView  {
         }else if(RuleManager.instance.level==0){
             addChildTo(RuleManager.instance, 16, 2 * (SettingsManager.instance.ridgeHeight));
         }else{
-            addChildTo(RuleManager.instance, 16, 2 * (SettingsManager.instance.ridgeHeight)-6);
+            addChildTo(RuleManager.instance, 5, 2 * (SettingsManager.instance.ridgeHeight)-14);
         }
 
         var buttonY:int = 11 + 2 * SettingsManager.instance.ridgeHeight + SettingsManager.instance.ruleHeight;
+
+        if(RuleManager.instance.level==2){
+            buttonY-=14;
+        }
+
 
 
         if(!RuleManager.instance.finish) {
@@ -188,9 +260,9 @@ public class MarkovWorkspace extends BasicView  {
                 RuleManager.instance.setEdit(false);
                 RuleManager.instance.deselect();
                 deselect();
+
                 if (RuleManager.instance.hasRule(_workingRidge)) {
-                    _history.push(_workingRidge.clone());
-                    RuleManager.instance.applyRule(_workingRidge);
+                   stepForward();
                 }
                 checkFinish();
                 update();
@@ -251,11 +323,11 @@ public class MarkovWorkspace extends BasicView  {
                 }
                 RuleManager.instance.setEdit(false);
 
-                while (RuleManager.instance.hasRule(_workingRidge)) {
-                    _history.push(_workingRidge.clone());
-                    RuleManager.instance.applyRule(_workingRidge);
+                execution=true;
+                while (RuleManager.instance.hasRule(_workingRidge) && execution) {
+                    stepForward();
                 }
-
+                execution=false;
                 checkFinish();
                 update();
             }, RuleManager.instance.api.localization.button.execute);
@@ -269,6 +341,7 @@ public class MarkovWorkspace extends BasicView  {
                 animate=false;
                 reset();
                 RuleManager.instance.setEdit(true);
+                selectStep=false;
                 update();
             }, RuleManager.instance.api.localization.button.reset);
 
@@ -279,12 +352,25 @@ public class MarkovWorkspace extends BasicView  {
 
         }else{
 
-            addChildTo(createField(RuleManager.instance.api.localization.label.solution), SettingsManager.instance.areaWidth / 2+10, 10+2*SettingsManager.instance.ridgeHeight+SettingsManager.instance.ruleHeight);
+            RuleManager.instance.result.ruleAmount = RuleManager.instance.rules.length;
+            var spRes =  makeResultPanel(RuleManager.instance.api.localization.label.solution, RuleManager.instance.result);
 
-            RuleManager.instance.result.size = RuleManager.instance.rules.length;
-            drawResult(RuleManager.instance.result, SettingsManager.instance.areaWidth / 2+10, 25+2*SettingsManager.instance.ridgeHeight+SettingsManager.instance.ruleHeight);
+            var labelY:int = 5+2*SettingsManager.instance.ridgeHeight+SettingsManager.instance.ruleHeight;
+            if(RuleManager.instance.level==2){
+                labelY-=15
+            }
 
-            var editButton:SimpleButton = ImageHolder.createButton(this, "edit", SettingsManager.instance.areaWidth-100, buttonY, function () {
+            if(RuleManager.instance.level==1){
+                labelY-=65;
+            }
+
+            addChildTo(spRes,SettingsManager.instance.areaWidth / 2+10, labelY);
+
+            if(RuleManager.instance.level==1){
+                buttonY-=60;
+            }
+
+            var editButton:SimpleButton = ImageHolder.createButton(this, "edit", SettingsManager.instance.areaWidth-55, buttonY, function () {
                 reset();
                 RuleManager.instance.setEdit(true);
                 RuleManager.instance.finish=false;
@@ -292,14 +378,62 @@ public class MarkovWorkspace extends BasicView  {
             }, RuleManager.instance.api.localization.button.edit);
         }
 
+        updateRecord();
 
-        if(RuleManager.instance.level==1){
-            addChildTo(createField(RuleManager.instance.api.localization.label.record), 10, 10+2*SettingsManager.instance.ridgeHeight+SettingsManager.instance.ruleHeight-65);
-        }else{
-            addChildTo(createField(RuleManager.instance.api.localization.label.record), 10, 10+2*SettingsManager.instance.ridgeHeight+SettingsManager.instance.ruleHeight);
+        if(showWarning){
+            showWarningSp();
         }
+    }
+
+    private var selectStep:Boolean = false;
+
+    var recordSprite:BasicView = null;
+
+    private function updateRecord():void {
+        if(recordSprite!=null && contains(recordSprite)){
+            removeChild(recordSprite);
+            recordSprite==null;
+        }
+        var spRec =  makeResultPanel(RuleManager.instance.api.localization.label.record, RuleManager.instance.record);
+        recordSprite = spRec;
+        var labelY:int = 5+2*SettingsManager.instance.ridgeHeight+SettingsManager.instance.ruleHeight;
+        if(RuleManager.instance.level==2){
+            labelY-=15
+        }
+        if(RuleManager.instance.level==1){
+            labelY-=65;
+        }
+        addChildTo(recordSprite, 70, labelY);
 
     }
+
+    private function makeResultPanel(header:String, data:ResultData):BasicView {
+        var sprite:BasicView = new BasicView();
+        sprite.graphics.beginFill(0xFFFFFF, 0);
+        sprite.graphics.drawRoundRect(0,0,300,80,40,40);
+        sprite.graphics.endFill();
+        sprite.addChildTo(createField(header,12,0xFFFFFF), 5, 5);
+        if(RuleManager.instance.level==0) {
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.difference + ": " + data.ridgeDiff, 12, 0xFFFFFF), 70, 5);
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.direction_amount + ": " + data.ruleAmount, 12, 0xFFFFFF), 70, 25);
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.algorithm_step + ": " + data.applyOperations, 12, 0xFFFFFF), 70, 45);
+        }
+        if(RuleManager.instance.level==2) {
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.example_amount + ": " + data.perc+"%", 12, 0xFFFFFF), 70, 5);
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.rule_amount + ": " + data.ruleAmount, 12, 0xFFFFFF), 70, 25);
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.algorithm_length + ": " + data.ruleLength, 12, 0xFFFFFF), 70, 45);
+        }
+        if(RuleManager.instance.level==1) {
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.wrongPair + ": " + data.wrongPair, 12, 0xFFFFFF), 70, 5);
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.direction_amount + ": " + data.ruleAmount, 12, 0xFFFFFF), 70, 25);
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.algorithm_step + ": " + data.applyOperations, 12, 0xFFFFFF), 70, 45);
+        }
+
+
+        return sprite;
+    }
+
+
 
     public function loadWorkingRidge():void {
         userText = _userField.text;
@@ -317,8 +451,7 @@ public class MarkovWorkspace extends BasicView  {
         RuleManager.instance.deselect();
         deselect();
         if (RuleManager.instance.hasRule(_workingRidge)) {
-            _history.push(_workingRidge.clone());
-            RuleManager.instance.applyRule(_workingRidge);
+            stepForward();
         }
         checkFinish();
         update();
@@ -333,48 +466,48 @@ public class MarkovWorkspace extends BasicView  {
         }
     }
 
+
+
     public var wrong:String = null;
 
     private function checkFinish():void {
         if (!RuleManager.instance.hasRule(_workingRidge)) {
             animate=false;
-            RuleManager.instance.result.diff=0;
+            RuleManager.instance.result.ridgeDiff=0;
+            RuleManager.instance.result.wrongPair=0;
             RuleManager.instance.finish = true;
             deselect();
             RuleManager.instance.deselect();
 
             if(RuleManager.instance.level==0) {
-
                 for (var i:int = 0; i < _workingRidge.tiles.length; i++) {
                     if (_workingRidge.tiles[i].symbol.code != _correctRidge.tiles[i].symbol.code) {
-                        RuleManager.instance.result.diff++;
+                        RuleManager.instance.result.ridgeDiff++;
                         _workingRidge.tiles[i].select = true;
                         _correctRidge.tiles[i].select = true;
                     }
                 }
+                RuleManager.instance.result.ruleAmount = RuleManager.instance.rules.length;
             }else if (RuleManager.instance.level==1){
                 var last:Tile = null;
                 for (var i:int = 0; i < _workingRidge.tiles.length; i++) {
                     if(last!=null){
-                        if(last.symbol.code!=_workingRidge.tiles[i].symbol.code){
-                            RuleManager.instance.result.diff++;
+                        if((last.symbol.code=="l" || last.symbol.code=="L")
+                                &&(_workingRidge.tiles[i].symbol.code=="k" || _workingRidge.tiles[i].symbol.code=="K")){
+                            RuleManager.instance.result.wrongPair++;
+                        }
+                        if((last.symbol.code=="k" || last.symbol.code=="K")
+                                &&(_workingRidge.tiles[i].symbol.code=="l" || _workingRidge.tiles[i].symbol.code=="L")){
+                            RuleManager.instance.result.wrongPair++;
                         }
                     }
                     last=_workingRidge.tiles[i];
                 }
+                RuleManager.instance.result.ruleAmount = RuleManager.instance.rules.length;
                 _workingRidge.select=true;
             }else{
-                RuleManager.instance.result.oper = 0;
-                for each(var rule:Rule in RuleManager.instance.rules){
-                    RuleManager.instance.result.oper+=rule.getLength();
-                }
-
                 var corCount:int = 0;
-
                 var allCount:int = 0;
-
-
-
                 for each(var str:String in RuleManager.instance.examples){
                     var result = RuleManager.instance.correct(str);
                     if(result){
@@ -387,8 +520,8 @@ public class MarkovWorkspace extends BasicView  {
                     allCount++;
                 }
 
-
                 for each(var ex:Example in examples){
+                    ex.select=true;
                     if(RuleManager.instance.correct(ex.str)){
                         ex.wrong = false;
                     }else{
@@ -397,30 +530,23 @@ public class MarkovWorkspace extends BasicView  {
                 }
 
                 RuleManager.instance.result.perc = 100*corCount/allCount;
+                RuleManager.instance.result.correctAmount = corCount;
+
+                RuleManager.instance.result.ruleAmount = RuleManager.instance.rules.length;
+
+                RuleManager.instance.result.ruleLength = 0;
+                for each(var rule:Rule in RuleManager.instance.rules){
+                    RuleManager.instance.result.ruleLength+=rule.getLength();
+                }
             }
 
 
+            _api.submitResult(RuleManager.instance.result.clone());
+            _api.autoSaveSolution();
         }
     }
 
-    private function drawResult(result:Level0Data, x:Number, y:int):void {
-        if(RuleManager.instance.level==2) {
 
-            addChildTo(createField(RuleManager.instance.api.localization.label.example_amount + ":" + result.perc+"%"), x, y);
-            addChildTo(createField(RuleManager.instance.api.localization.label.rule_amount+":"+result.size), x, y+15);
-            addChildTo(createField(RuleManager.instance.api.localization.label.algorithm_length+":"+result.oper), x, y+30);
-
-            return;
-        }
-
-        if(RuleManager.instance.level==0) {
-            addChildTo(createField(RuleManager.instance.api.localization.label.difference + ":" + result.diff), x, y);
-        }else if(RuleManager.instance.level==1){
-            addChildTo(createField(RuleManager.instance.api.localization.label.pair_amount + ":" + result.diff), x, y);
-        }
-        addChildTo(createField(RuleManager.instance.api.localization.label.direction_amount+":"+result.size), x, y+15);
-        addChildTo(createField(RuleManager.instance.api.localization.label.algorithm_step+":"+result.oper), x, y+30);
-    }
 
     public function prev():void {
         deselect();
@@ -430,7 +556,7 @@ public class MarkovWorkspace extends BasicView  {
         }
    }
 
-    private function deselect():void {
+    internal function deselect():void {
         for each(var tile:Tile in _workingRidge.tiles) {
             tile.select = false;
         }
@@ -448,9 +574,9 @@ public class MarkovWorkspace extends BasicView  {
             _workingRidge  = _history[0];
             _history = new Vector.<Ridge>();
         }
-        RuleManager.instance.result.diff=0;
-        RuleManager.instance.result.oper=0;
-        RuleManager.instance.result.size=0;
+        RuleManager.instance.result.ridgeDiff=0;
+        RuleManager.instance.result.applyOperations=0;
+        RuleManager.instance.result.ruleAmount=0;
     }
 
 
