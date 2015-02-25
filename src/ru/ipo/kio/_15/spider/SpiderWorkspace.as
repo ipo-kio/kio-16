@@ -109,6 +109,7 @@ public class SpiderWorkspace extends Sprite {
         bigSpiderButton.y = 532;
         bigSpiderButton.addEventListener(MouseEvent.CLICK, function (e:Event):void {
             bigSpider.visible = !bigSpider.visible;
+            api.log('big spider visibility = ' + bigSpider.visible);
         });
     }
 

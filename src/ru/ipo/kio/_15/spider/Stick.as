@@ -20,8 +20,10 @@ public class Stick extends Sprite {
 
     public static const SELECTED_CHANGED_EVENT:String = "selectedChanged";
     public static const OVER_CHANGED_EVENT:String = "overChanged";
+    private var _logBack:Function;
 
-    public function Stick() {
+    public function Stick(logBack:Function) {
+        _logBack = logBack;
         redraw();
 
         addEventListener(MouseEvent.ROLL_OVER, rollOverHandler);
@@ -93,6 +95,7 @@ public class Stick extends Sprite {
 
     private function clickHandler(event:MouseEvent):void {
         selected = !selected;
+        _logBack();
     }
 
     public function get size():Number {

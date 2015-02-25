@@ -71,13 +71,13 @@ public class MechanismTuner extends Sprite {
 
     private var s:Vector.<Stick> = new <Stick>[
         null,
-        new Stick(),
-        new Stick(),
-        new Stick(),
-        new Stick(),
-        new Stick(),
-        new Stick(),
-        new Stick()
+        new Stick(logBack(1)),
+        new Stick(logBack(2)),
+        new Stick(logBack(3)),
+        new Stick(logBack(4)),
+        new Stick(logBack(5)),
+        new Stick(logBack(6)),
+        new Stick(logBack(7))
     ];
 
     private var _slider:Slider = new Slider(0, 100, 320, 0x212121, 0x212121);
@@ -102,9 +102,9 @@ public class MechanismTuner extends Sprite {
 
         if (problem.level >= 1) {
             //triangle sides
-            s.push(new Stick());
-            s.push(new Stick());
-            s.push(new Stick());
+            s.push(new Stick(logBack(8)));
+            s.push(new Stick(logBack(9)));
+            s.push(new Stick(logBack(10)));
 
             addChild(s[8]);
             addChild(s[9]);
@@ -112,8 +112,8 @@ public class MechanismTuner extends Sprite {
         }
 
         if (problem.level >= 2) {
-            s.push(new Stick());
-            s.push(new Stick());
+            s.push(new Stick(logBack(11)));
+            s.push(new Stick(logBack(12)));
 
             addChild(s[11]);
             addChild(s[12]);
@@ -209,6 +209,7 @@ public class MechanismTuner extends Sprite {
             turnAnimationOn();
             a_button_on.visible = false;
             a_button_off.visible = true;
+            api.log('tuner animation on');
         });
 
         a_button_off.addEventListener(MouseEvent.CLICK, function (e:Event):void {
@@ -216,6 +217,7 @@ public class MechanismTuner extends Sprite {
             turnAnimationOff();
             a_button_off.visible = false;
             a_button_on.visible = true;
+            api.log('tuner animation off');
         });
 
         err_button = new GraphicsButton('', ERR_BUTTON_1_IMG, ERR_BUTTON_2_IMG, ERR_BUTTON_3_IMG, 'KioArial', 26, 26);
@@ -228,6 +230,7 @@ public class MechanismTuner extends Sprite {
 
         err_button.addEventListener(MouseEvent.CLICK, function (e:Event):void {
             ls = last_working_ls;
+            api.log('restore from error');
         });
 
         addChild(err_button);
@@ -245,6 +248,7 @@ public class MechanismTuner extends Sprite {
         _motion.ls = _m.ls;
         _motion.reset();
         api.autoSaveSolution();
+        api.log('apply');
     }
 
     private function addTextToErrButton():void {
@@ -483,6 +487,12 @@ public class MechanismTuner extends Sprite {
         }
 
         return broken;
+    }
+
+    private function logBack(ind:int):Function {
+        return function():void {
+            api.log('click on stick ' + ind);
+        }
     }
 }
 }

@@ -118,12 +118,14 @@ public class SpiderMotion extends Sprite {
             animateButtonOn.visible = false;
             animateButtonOff.visible = true;
             addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+            api.log('motion animation on');
         });
 
         animateButtonOff.addEventListener(MouseEvent.CLICK, function(e:Event):void {
             animateButtonOn.visible = true;
             animateButtonOff.visible = false;
             removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+            api.log('motion animation off');
         });
 
         addEventListener(Event.ENTER_FRAME, enterFrameHandler);
