@@ -171,7 +171,7 @@ public class TextUtils {
         return tf;
     }
 
-    public static function createTextFieldWithFont(fontName:String, fontSize:int, multiline:Boolean = true, centered:Boolean = false):TextField {
+    public static function createTextFieldWithFont(fontName:String, fontSize:int, multiline:Boolean = true, centered:Boolean = false, bold:Boolean = false):TextField {
         var tf:TextField = new TextField();
         tf.multiline = multiline;
         tf.wordWrap = multiline;
@@ -180,7 +180,7 @@ public class TextUtils {
         /*tf.styleSheet = new StyleSheet();
          fontName = "Arial";
          tf.styleSheet.parseCSS("p {font-family: " + fontName + "; font-size: " + fontSize +";}");*/
-        var format:TextFormat = new TextFormat(fontName, fontSize);
+        var format:TextFormat = new TextFormat(fontName, fontSize, null, bold);
         if (centered)
             format.align = TextFormatAlign.CENTER;
         tf.defaultTextFormat = format;

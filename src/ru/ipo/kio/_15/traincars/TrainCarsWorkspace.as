@@ -55,9 +55,26 @@ public class TrainCarsWorkspace extends Sprite {
     public static const UNDO_3_CLASS:Class;
     public static const UNDO_3_IMG:BitmapData = (new UNDO_3_CLASS).bitmapData;
 
-    [Embed(source="resources/oboznach.png")]
-    public static const OBOZNACH_CLASS:Class;
-    public static const OBOZNACH_IMG:BitmapData = (new OBOZNACH_CLASS).bitmapData;
+    [Embed(source="resources/oboznach0.png")]
+    public static const OBOZNACH_0_CLASS:Class;
+    public static const OBOZNACH_0_IMG:BitmapData = (new OBOZNACH_0_CLASS).bitmapData;
+    [Embed(source="resources/oboznach1.png")]
+    public static const OBOZNACH_1_CLASS:Class;
+    public static const OBOZNACH_1_IMG:BitmapData = (new OBOZNACH_1_CLASS).bitmapData;
+    [Embed(source="resources/oboznach2.png")]
+    public static const OBOZNACH_2_CLASS:Class;
+    public static const OBOZNACH_2_IMG:BitmapData = (new OBOZNACH_2_CLASS).bitmapData;
+
+    [Embed(source="resources/ochistit_01.png")]
+    public static const CLEAR_0_CLASS:Class;
+    public static const CLEAR_0_IMG:BitmapData = (new CLEAR_0_CLASS).bitmapData;
+    [Embed(source="resources/ochistit_02.png")]
+    public static const CLEAR_1_CLASS:Class;
+    public static const CLEAR_1_IMG:BitmapData = (new CLEAR_1_CLASS).bitmapData;
+    [Embed(source="resources/ochistit_03.png")]
+    public static const CLEAR_2_CLASS:Class;
+    public static const CLEAR_2_IMG:BitmapData = (new CLEAR_2_CLASS).bitmapData;
+
     [Embed(source="resources/fon-dom.png")]
     public static const HOUSE_CLASS:Class;
     public static const HOUSE_IMG:BitmapData = (new HOUSE_CLASS).bitmapData;
@@ -65,13 +82,22 @@ public class TrainCarsWorkspace extends Sprite {
     [Embed(source="resources/animazia_02_1.png")]
     public static const ANIMATION_1_CLASS:Class;
     public static const ANIMATION_1_IMG:BitmapData = (new ANIMATION_1_CLASS).bitmapData;
-
     [Embed(source="resources/animazia_03_1.png")]
     public static const ANIMATION_2_CLASS:Class;
     public static const ANIMATION_2_IMG:BitmapData = (new ANIMATION_2_CLASS).bitmapData;
     [Embed(source="resources/animazia_04_1.png")]
     public static const ANIMATION_3_CLASS:Class;
     public static const ANIMATION_3_IMG:BitmapData = (new ANIMATION_3_CLASS).bitmapData;
+
+    [Embed(source="resources/animazia_02.png")]
+    public static const ANIMATIONN_1_CLASS:Class;
+    public static const ANIMATIONN_1_IMG:BitmapData = (new ANIMATIONN_1_CLASS).bitmapData;
+    [Embed(source="resources/animazia_03.png")]
+    public static const ANIMATIONN_2_CLASS:Class;
+    public static const ANIMATIONN_2_IMG:BitmapData = (new ANIMATIONN_2_CLASS).bitmapData;
+    [Embed(source="resources/animazia_04.png")]
+    public static const ANIMATIONN_3_CLASS:Class;
+    public static const ANIMATIONN_3_IMG:BitmapData = (new ANIMATIONN_3_CLASS).bitmapData;
 
     [Embed(source="resources/svetofor-L-green.png")]
     public static const SVET_L_G:Class;
@@ -259,14 +285,17 @@ public class TrainCarsWorkspace extends Sprite {
     }
 
     private function drawOtherObjects():void {
-        var dx_1:Number = 97 - (OBOZNACH_IMG.width*0.5);
-        var dy_1:Number = 248 - (OBOZNACH_IMG.height*0.5);
+
+        var oboznach_img:BitmapData = [OBOZNACH_0_IMG, OBOZNACH_1_IMG, OBOZNACH_2_IMG][_problem.level];
+
+        var dx_1:Number = 97 - (oboznach_img.width*0.5);
+        var dy_1:Number = 248 - 18 - (oboznach_img.height*0.5);
 
         var m1:Matrix = new Matrix();
         m1.translate(dx_1, dy_1);
 
-        otherObjects.graphics.beginBitmapFill(OBOZNACH_IMG, m1);
-        otherObjects.graphics.drawRect(dx_1, dy_1, OBOZNACH_IMG.width, OBOZNACH_IMG.height);
+        otherObjects.graphics.beginBitmapFill(oboznach_img, m1);
+        otherObjects.graphics.drawRect(dx_1, dy_1, oboznach_img.width, oboznach_img.height);
         otherObjects.graphics.endFill();
 
         var dx_2:Number = 711 - (HOUSE_IMG.width*0.5);
@@ -305,16 +334,16 @@ public class TrainCarsWorkspace extends Sprite {
         var b02:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up2*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
         var b03:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up3*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
         var b04:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up4*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
-        var b1:GraphicsButton = new GraphicsButton(_api.localization.buttons.down1, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 0, 0, -6);
-        var b2:GraphicsButton = new GraphicsButton(_api.localization.buttons.down2, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 0, 0, -6);
-        var b3:GraphicsButton = new GraphicsButton(_api.localization.buttons.down3, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 0, 0, -6);
-        var b4:GraphicsButton = new GraphicsButton(_api.localization.buttons.down4, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 0, 0, -6);
+        var b1:GraphicsButton = new GraphicsButton(_api.localization.buttons.down1, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 1, 0, -6, false, 0xFFFFFF, true);
+        var b2:GraphicsButton = new GraphicsButton(_api.localization.buttons.down2, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 1, 0, -6, false, 0xFFFFFF, true);
+        var b3:GraphicsButton = new GraphicsButton(_api.localization.buttons.down3, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 1, 0, -6, false, 0xFFFFFF, true);
+        var b4:GraphicsButton = new GraphicsButton(_api.localization.buttons.down4, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 1, 0, -6, false, 0xFFFFFF, true);
 
-        var bu:GraphicsButton = new GraphicsButton(_api.localization.buttons.undo, UNDO_2_IMG, UNDO_1_IMG, UNDO_3_IMG, 'KioArial', 14, 14, 0, 0, 0, 37);
+        var bu:GraphicsButton = new GraphicsButton(_api.localization.buttons.undo, UNDO_2_IMG, UNDO_1_IMG, UNDO_3_IMG, 'KioArial', 14, 14, 0, 0, 0, 37, false, 0, true);
 
-        var ba_on:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_on, ANIMATION_2_IMG, ANIMATION_3_IMG, ANIMATION_1_IMG, 'KioArial', 14, 14);
-        var ba_off:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_off, ANIMATION_2_IMG, ANIMATION_3_IMG, ANIMATION_1_IMG, 'KioArial', 14, 14);
-        var b_cl:GraphicsButton = new GraphicsButton(_api.localization.buttons.clear, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 14, 14);
+        var ba_on:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_on, ANIMATIONN_1_IMG, ANIMATIONN_2_IMG, ANIMATIONN_3_IMG, 'KioArial', 14, 14, 0, 0, 28, 3, false, 0, true);
+        var ba_off:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_off, ANIMATION_1_IMG, ANIMATION_2_IMG, ANIMATION_3_IMG, 'KioArial', 14, 14, 0, 0, 28, 3, false, 0, true);
+        var b_cl:GraphicsButton = new GraphicsButton(_api.localization.buttons.clear, CLEAR_0_IMG, CLEAR_1_IMG, CLEAR_2_IMG, 'KioArial', 14, 14, 0, 0, -28, 3, false, 0, true);
 
         otherObjects.addChild(b01);
         otherObjects.addChild(b02);
@@ -354,8 +383,8 @@ public class TrainCarsWorkspace extends Sprite {
         ba_off.x = ba_on.x;
         ba_off.y = ba_on.y;
         ba_on.visible = false;
-        b_cl.x = 305;
-        b_cl.y = 383;
+        b_cl.x = 260;
+        b_cl.y = 382;
 
         function moveFromWay(way_ind:int):Function {
             return function(e:Event):void {
