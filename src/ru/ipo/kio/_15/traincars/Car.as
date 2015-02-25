@@ -70,8 +70,8 @@ public class Car extends Sprite {
 
         var CUR_IMG:BitmapData = STATION_COLOR[station];
 
-        var dx:Number = (-LENGTH / 2) + 1 - (CUR_IMG.width*0.5);
-        var dy:Number = (-WIDTH / 2) + 1 - (CUR_IMG.height*0.5);
+        var dx:Number = /*(-LENGTH / 2)*/ + 1 - (CUR_IMG.width * 0.5);
+        var dy:Number = (-WIDTH / 2) + 1 - (CUR_IMG.height * 0.5);
 
         var m:Matrix = new Matrix();
         m.translate(dx, dy);
@@ -86,19 +86,19 @@ public class Car extends Sprite {
             switch (station) {
                 case 0:
                         //red
-                    graphics.drawCircle(dx + 28, dy + 1, 5);
+                    graphics.drawCircle(dx + 28, dy + 1, 7);
                     break;
                 case 1:
                         //green
-                    graphics.drawCircle(dx + 21, dy + 1, 5);
+                    graphics.drawCircle(dx + 21, dy + 1, 7);
                     break;
                 case 2:
                         //blue
-                    graphics.drawCircle(dx + 21, dy + 1, 5);
+                    graphics.drawCircle(dx + 21, dy + 1, 7);
                     break;
                 default:
                         //yellow
-                    graphics.drawCircle(dx + 23, dy + 1, 5);
+                    graphics.drawCircle(dx + 23, dy + 1, 7);
                     break;
             }
 
@@ -127,8 +127,7 @@ public class Car extends Sprite {
         if (_number <= 0)
             return;
 
-//        numberView.defaultTextFormat = new TextFormat('KioArial', NUMBER_HEIGHT, TEXT_COLOR, true);
-        numberView.defaultTextFormat = new TextFormat('Tahoma', NUMBER_HEIGHT, TEXT_COLOR, true);
+        numberView.defaultTextFormat = new TextFormat('KioTahoma', NUMBER_HEIGHT, TEXT_COLOR, true);
         numberView.embedFonts = true;
         numberView.text = '';
 
@@ -139,11 +138,11 @@ public class Car extends Sprite {
         numberView.text = '' + _number;
 
         //todo switch (station)
-        if (station != 4) {
+        /*if (station != 4) {
             switch (station) {
                 case 0:
                     //red
-                    //graphics.drawCircle(dx + 28, dy + 1, 5);
+//                    graphics.drawCircle(dx + 28, dy + 1, 5);
                     numberView.y = -numberView.height / 2;
                     numberView.x = -numberView.width / 2;
                     break;
@@ -166,7 +165,7 @@ public class Car extends Sprite {
                     numberView.x = -numberView.width / 2;
                     break;
             }
-        }
+        }*/
 
         addChild(numberView);
 
@@ -193,14 +192,25 @@ public class Car extends Sprite {
         var diff:Point = rail.parametrizeDiff(t);
 
         var m:Matrix = new Matrix();
-        m.rotate(Math.atan2(diff.y, diff.x));
+        m.rotate(Math.atan2(diff.y, diff.x) + Math.PI);
         m.translate(point.x, point.y);
 
         transform.matrix = m;
 
         var mt:Matrix = new Matrix();
         mt.translate(0, -numberHeight / 2);
-        mt.rotate(-Math.atan2(diff.y, diff.x));
+        mt.rotate(-Math.atan2(diff.y, diff.x) - Math.PI);
+
+        switch (station) {
+            case 0:
+                mt.translate(13, -17); break;
+            case 1:
+                mt.translate(6, -17); break;
+            case 2:
+                mt.translate(6, -17); break;
+            default:
+                mt.translate(8, -17); break;
+        }
 
         numberView.transform.matrix = mt;
 

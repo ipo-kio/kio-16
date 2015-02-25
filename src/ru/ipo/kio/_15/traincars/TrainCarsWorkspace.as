@@ -189,39 +189,28 @@ public class TrainCarsWorkspace extends Sprite {
         drawSemaphores();
         initInfoPanels();
 
-        //draw bottom
-        /*for (var e:int = 0; e < CarsPositions.WAYS_COUNT; e++) {
-            rSet.rail(final_way_ind_1[e]).drawBottom(Car.STATION_COLOR[e]);
-            rSet.rail(final_way_ind_2[e]).drawBottom(Car.STATION_COLOR[e]);
-        }*/
-
         _positions.addEventListener(CarsPositions.EVENT_ALL_STOPPED, updateSemaphores);
         _positions.addEventListener(CarsPositions.EVENT_SOME_CAR_STARTED_MOVING, updateSemaphores);
+
+        updateSemaphores();
     }
 
-
-
-    private function updateSemaphores(event:Event):void {
-        if (_animation == false) {
+    private function updateSemaphores(event:Event = null):void {
+        if (!_animation) {
             left_green_semaphore.visible = true;
             right_green_semaphore.visible = true;
             left_red_semaphore.visible = false;
             right_red_semaphore.visible = false;
         } else {
-            if (event.type == CarsPositions.EVENT_ALL_STOPPED) {
-                left_green_semaphore.visible = false;
-                right_red_semaphore.visible = false;
-                left_red_semaphore.visible = true;
-                right_green_semaphore.visible = true;
-            } else if (event.type == CarsPositions.EVENT_SOME_CAR_STARTED_MOVING) {
-                left_green_semaphore.visible = true;
-                right_red_semaphore.visible = true;
-                left_red_semaphore.visible = false;
-                right_green_semaphore.visible = false;
-            }
-
+            //TODO debug
+            var fromTop:Boolean = _positions.mayMoveFromTop();
+            var toTop:Boolean = _positions.mayMoveToTop(0) || _positions.mayMoveToTop(1) || _positions.mayMoveToTop(2) || _positions.mayMoveToTop(3);
+            trace(fromTop, toTop, Math.random());
+            left_green_semaphore.visible = fromTop;
+            left_red_semaphore.visible = !fromTop;
+            right_green_semaphore.visible = toTop;
+            right_red_semaphore.visible = !toTop;
         }
-        //TODO _positions.mayMoveFromTop / _positions.mayMoveToTop
     }
 
     private function drawSemaphores():void {
@@ -319,16 +308,16 @@ public class TrainCarsWorkspace extends Sprite {
         var b02:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up2*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
         var b03:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up3*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
         var b04:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up4*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
-        var b1:GraphicsButton = new GraphicsButton(_api.localization.buttons.down1, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var b2:GraphicsButton = new GraphicsButton(_api.localization.buttons.down2, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var b3:GraphicsButton = new GraphicsButton(_api.localization.buttons.down3, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
-        var b4:GraphicsButton = new GraphicsButton(_api.localization.buttons.down4, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var b1:GraphicsButton = new GraphicsButton(_api.localization.buttons.down1, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 0, 0, -6);
+        var b2:GraphicsButton = new GraphicsButton(_api.localization.buttons.down2, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 0, 0, -6);
+        var b3:GraphicsButton = new GraphicsButton(_api.localization.buttons.down3, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 0, 0, -6);
+        var b4:GraphicsButton = new GraphicsButton(_api.localization.buttons.down4, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 0, 0, -6);
 
-        var bu:GraphicsButton = new GraphicsButton(_api.localization.buttons.undo, UNDO_2_IMG, UNDO_1_IMG, UNDO_3_IMG, 'KioArial', 20, 20);
+        var bu:GraphicsButton = new GraphicsButton(_api.localization.buttons.undo, UNDO_2_IMG, UNDO_1_IMG, UNDO_3_IMG, 'KioArial', 14, 14, 0, 0, 0, 37);
 
-        var ba_on:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_on, ANIMATION_2_IMG, ANIMATION_3_IMG, ANIMATION_1_IMG, 'KioArial', 20, 20);
-        var ba_off:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_off, ANIMATION_2_IMG, ANIMATION_3_IMG, ANIMATION_1_IMG, 'KioArial', 20, 20);
-        var b_cl:GraphicsButton = new GraphicsButton(_api.localization.buttons.clear, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20);
+        var ba_on:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_on, ANIMATION_2_IMG, ANIMATION_3_IMG, ANIMATION_1_IMG, 'KioArial', 14, 14);
+        var ba_off:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_off, ANIMATION_2_IMG, ANIMATION_3_IMG, ANIMATION_1_IMG, 'KioArial', 14, 14);
+        var b_cl:GraphicsButton = new GraphicsButton(_api.localization.buttons.clear, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 14, 14);
 
         otherObjects.addChild(b01);
         otherObjects.addChild(b02);
