@@ -35,6 +35,8 @@ public class MarkovRunner extends Sprite {
 
         KioApi.language = KioApi.L_RU; //устанавливаем язык, используемый в программе
 
+        ToolTip.init(stage, {textalign: 'center', opacity: 80, defaultdelay: 500});
+
         //Запускаем задачу. Метод initOneProblem() специально сделан для отладки одной задачи.
         //Первый параметр - текущий спрайт, второй параметр - задача
         KioBase.instance.initOneProblem(this, new MarkovProblem(stage, 1));

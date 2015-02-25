@@ -181,6 +181,7 @@ public class CarsPositions extends EventDispatcher {
         for each (var car:Car in _top)
             if (car.moving == Car.MOVING_BACKWARDS)
                 return false;
+            }
         for each (var cars:Vector.<Car> in _way)
             for each (car in cars)
                 if (car.moving == Car.MOVING_BACKWARDS)

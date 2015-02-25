@@ -18,6 +18,26 @@ public class ResultData {
 
     private var _wrongPair:int = 0;
 
+    private var _wrongOrder:int=0;
+
+    private var _error:Boolean = false;
+
+
+    public function get error():Boolean {
+        return _error;
+    }
+
+    public function set error(value:Boolean):void {
+        _error = value;
+    }
+
+    public function get wrongOrder():int {
+        return _wrongOrder;
+    }
+
+    public function set wrongOrder(value:int):void {
+        _wrongOrder = value;
+    }
 
     public function get wrongPair():int {
         return _wrongPair;
@@ -88,6 +108,8 @@ public class ResultData {
         resultData._ruleLength = this.ruleLength;
         resultData.correctAmount = this.correctAmount;
         resultData.wrongPair = this.wrongPair;
+        resultData.wrongOrder = this.wrongOrder;
+        resultData.error = this.error;
         return resultData;
 
 }
