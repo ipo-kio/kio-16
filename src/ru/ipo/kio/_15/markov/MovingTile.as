@@ -74,27 +74,20 @@ public class MovingTile extends Tile{
             if(!RuleManager.instance.edit){
                 return;
             }
-            if(rule!=null && RuleManager.instance.level!=1){
+            if(rule!=null){
                 return;
             }
             _moving=true;
             startX=x;
             startY=y;
-            if(rule!=null) {
-                RuleManager.instance.movingTile = tile;
-                tile.parent.addChild(tile);
-                startDrag(false, new Rectangle(0, 0, SettingsManager.instance.areaWidth, 0));
-            }else{
-                startDrag(false, new Rectangle(0, 0, SettingsManager.instance.areaWidth, SettingsManager.instance.ruleHeight));
-            }
-
+            startDrag(false, new Rectangle(0, 0, SettingsManager.instance.areaWidth, SettingsManager.instance.ruleHeight));
         });
 
         addEventListener(MouseEvent.MOUSE_UP, function(e:MouseEvent):void{
             if(!RuleManager.instance.edit){
                 return;
             }
-            if(rule!=null && RuleManager.instance.level!=1){
+            if(rule!=null){
                 return;
             }
             if(_moving){
@@ -130,6 +123,9 @@ public class MovingTile extends Tile{
 
 
         var bg = ImageHolder.getVegetable(symbol.code);
+        if(RuleManager.instance.level==2 && rule!=null){
+            bg = ImageHolder.getVegetableOver(symbol.code);
+        }
 
         if(select) {
             var bg = ImageHolder.getVegetableSelected(symbol.code);

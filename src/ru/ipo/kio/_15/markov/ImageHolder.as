@@ -207,29 +207,124 @@ public class ImageHolder {
     [Embed(source="_resources/level1/bg.png")]
     public static const LEVEL1_BG:Class;
 
-    [Embed(source="_resources/level1/yell.png")]
-    public static const YELL:Class;
 
-    [Embed(source="_resources/level1/yell_Over.png")]
-    public static const YELL_OVER:Class;
+    [Embed(source="_resources/level1/lad_white.png")]
+    public static const LADW:Class;
 
-    [Embed(source="_resources/level1/yell_Press.png")]
-    public static const YELL_PRESS:Class;
+    [Embed(source="_resources/level1/lad_white_Over.png")]
+    public static const LADW_OVER:Class;
 
-    [Embed(source="_resources/level1/yell_Selected.png")]
-    public static const YELL_SELECT:Class;
+    [Embed(source="_resources/level1/lad_white_Selected.png")]
+    public static const LADW_PRESS:Class;
 
-    [Embed(source="_resources/level1/black.png")]
-    public static const BLACK:Class;
+    [Embed(source="_resources/level1/lad_white_Selected.png")]
+    public static const LADW_SELECT:Class;
 
-    [Embed(source="_resources/level1/black_Over.png")]
-    public static const BLACK_OVER:Class;
+    [Embed(source="_resources/level1/lad_black.png")]
+    public static const LADB:Class;
 
-    [Embed(source="_resources/level1/black_Press.png")]
-    public static const BLACK_PRESS:Class;
+    [Embed(source="_resources/level1/lad_black_Over.png")]
+    public static const LADB_OVER:Class;
 
-    [Embed(source="_resources/level1/black_Selected.png")]
-    public static const BLACK_SELECT:Class;
+    [Embed(source="_resources/level1/lad_black_Selected.png")]
+    public static const LADB_PRESS:Class;
+
+    [Embed(source="_resources/level1/lad_black_Selected.png")]
+    public static const LADB_SELECT:Class;
+
+
+
+
+    [Embed(source="_resources/level1/king_white.png")]
+    public static const KINGW:Class;
+
+    [Embed(source="_resources/level1/king_white_Over.png")]
+    public static const KINGW_OVER:Class;
+
+    [Embed(source="_resources/level1/king_white_Selected.png")]
+    public static const KINGW_PRESS:Class;
+
+    [Embed(source="_resources/level1/king_white_Selected.png")]
+    public static const KINGW_SELECT:Class;
+
+    [Embed(source="_resources/level1/king_black.png")]
+    public static const KINGB:Class;
+
+    [Embed(source="_resources/level1/king_black_Over.png")]
+    public static const KINGB_OVER:Class;
+
+    [Embed(source="_resources/level1/king_black_Selected.png")]
+    public static const KINGB_PRESS:Class;
+
+    [Embed(source="_resources/level1/king_black_Selected.png")]
+    public static const KINGB_SELECT:Class;
+
+
+
+    [Embed(source="_resources/level1/bishop.png")]
+    public static const BISHOP:Class;
+
+    [Embed(source="_resources/level1/bishop_Over.png")]
+    public static const BISHOP_OVER:Class;
+
+    [Embed(source="_resources/level1/bishop_Selected.png")]
+    public static const BISHOP_PRESS:Class;
+
+    [Embed(source="_resources/level1/bishop_Selected.png")]
+    public static const BISHOP_SELECT:Class;
+
+
+
+    [Embed(source="_resources/level1/pawn.png")]
+    public static const PAWN:Class;
+
+    [Embed(source="_resources/level1/pawn_Over.png")]
+    public static const PAWN_OVER:Class;
+
+    [Embed(source="_resources/level1/pawn_Selected.png")]
+    public static const PAWN_PRESS:Class;
+
+    [Embed(source="_resources/level1/pawn_Selected.png")]
+    public static const PAWN_SELECT:Class;
+
+
+    [Embed(source="_resources/level1/knight.png")]
+    public static const KNIGHT:Class;
+
+    [Embed(source="_resources/level1/knight_Over.png")]
+    public static const KNIGHT_OVER:Class;
+
+    [Embed(source="_resources/level1/knight_Selected.png")]
+    public static const KNIGHT_PRESS:Class;
+
+    [Embed(source="_resources/level1/knight_Selected.png")]
+    public static const KNIGHT_SELECT:Class;
+
+
+    [Embed(source="_resources/level1/X_Over.png")]
+    public static const X_1:Class;
+
+    [Embed(source="_resources/level1/X_Over_Over.png")]
+    public static const X_1_OVER:Class;
+
+    [Embed(source="_resources/level1/X_Selected.png")]
+    public static const X_1_PRESS:Class;
+
+    [Embed(source="_resources/level1/X_Selected.png")]
+    public static const X_1_SELECT:Class;
+
+    [Embed(source="_resources/level1/start_Over.png")]
+    public static const ST_1:Class;
+
+    [Embed(source="_resources/level1/start_Over_Over.png")]
+    public static const ST_1_OVER:Class;
+
+    [Embed(source="_resources/level1/start_Selected.png")]
+    public static const ST_1_PRESS:Class;
+
+    [Embed(source="_resources/level1/start_Selected.png")]
+    public static const ST_1_SELECT:Class;
+
 
 
     [Embed(source="_resources/level2/bg.png")]
@@ -320,6 +415,57 @@ public class ImageHolder {
     [Embed(source="_resources/level2/0_Selected.png")]
     public static const ZERO_SELECT:Class;
 
+    [Embed(source="_resources/level2/A.png")]
+    public static const A:Class;
+
+    [Embed(source="_resources/level2/A_Over.png")]
+    public static const A_OVER:Class;
+
+    [Embed(source="_resources/level2/A_Selected.png")]
+    public static const A_PRESS:Class;
+
+    [Embed(source="_resources/level2/A_Selected.png")]
+    public static const A_SELECT:Class;
+
+
+
+    [Embed(source="_resources/level2/B.png")]
+    public static const B:Class;
+
+    [Embed(source="_resources/level2/B_Over.png")]
+    public static const B_OVER:Class;
+
+    [Embed(source="_resources/level2/B_Selected.png")]
+    public static const B_PRESS:Class;
+
+    [Embed(source="_resources/level2/B_Selected.png")]
+    public static const B_SELECT:Class;
+
+
+    [Embed(source="_resources/level2/X.png")]
+    public static const X:Class;
+
+    [Embed(source="_resources/level2/X_Over.png")]
+    public static const X_OVER:Class;
+
+    [Embed(source="_resources/level2/X_Selected.png")]
+    public static const X_PRESS:Class;
+
+    [Embed(source="_resources/level2/X_Selected.png")]
+    public static const X_SELECT:Class;
+
+    [Embed(source="_resources/level2/start.png")]
+    public static const ST:Class;
+
+    [Embed(source="_resources/level2/start_Over.png")]
+    public static const ST_OVER:Class;
+
+    [Embed(source="_resources/level2/start_Selected.png")]
+    public static const ST_PRESS:Class;
+
+    [Embed(source="_resources/level2/start_Selected.png")]
+    public static const ST_SELECT:Class;
+
 
     public function ImageHolder() {
     }
@@ -331,10 +477,6 @@ public class ImageHolder {
          return new WEED();
      }else if(code=="f"){
          return new FLOWER();
-     } else if(code=="o"){
-         return new YELL();
-     } else if(code=="a"){
-         return new BLACK();
      } else if(code=="1"){
          return new ONE();
      } else if(code=="+"){
@@ -347,8 +489,34 @@ public class ImageHolder {
          return new CLOSE();
      }else if(code=="0"){
          return new ZERO();
+     }else if(code=="A"){
+         return new A();
+     }else if(code=="B"){
+         return new B();
+     }else if(code=="X"){
+         return new X();
+     }else if(code=="S"){
+         return new ST();
      }else if(code=="2"){
          return new TWO();
+     }else if(code=="s"){
+         return new ST_1();
+     }else if(code=="x"){
+         return new X_1();
+     }else if(code=="k"){
+         return new KINGB();
+     }else if(code=="K"){
+         return new KINGW();
+     }else if(code=="l"){
+         return new LADB();
+     }else if(code=="L"){
+         return new LADW();
+     }else if(code=="p"){
+         return new PAWN();
+     }else if(code=="b"){
+         return new BISHOP();
+     }else if(code=="n"){
+         return new KNIGHT();
      }else {
          return new EMPTY();
      }
@@ -361,11 +529,7 @@ public class ImageHolder {
             return new WEED_SELECT();
         }else if(code=="f"){
             return new FLOWER_SELECT();
-        } else if(code=="o"){
-            return new YELL_SELECT();
-        } else if(code=="a"){
-            return new BLACK_SELECT();
-        } else if(code=="1"){
+         } else if(code=="1"){
             return new ONE_SELECT();
         } else if(code=="+"){
             return new PLUSS_SELECT();
@@ -379,6 +543,32 @@ public class ImageHolder {
             return new ZERO_SELECT();
         }else if(code=="2"){
             return new TWO_SELECT();
+        }else if(code=="A"){
+            return new A_SELECT();
+        }else if(code=="B"){
+            return new B_SELECT();
+        }else if(code=="X"){
+            return new X_SELECT();
+        }else if(code=="S"){
+            return new ST_SELECT();
+        }else if(code=="s"){
+            return new ST_1_SELECT();
+        }else if(code=="x"){
+            return new X_1_SELECT();
+        }else if(code=="k"){
+            return new KINGB_SELECT();
+        }else if(code=="K"){
+            return new KINGW_SELECT();
+        }else if(code=="l"){
+            return new LADB_SELECT();
+        }else if(code=="L"){
+            return new LADW_SELECT();
+        }else if(code=="p"){
+            return new PAWN_SELECT();
+        }else if(code=="b"){
+            return new BISHOP_SELECT();
+        }else if(code=="n"){
+            return new KNIGHT_SELECT();
         }else {
             return new EMPTY_SELECT();
         }
@@ -391,10 +581,6 @@ public class ImageHolder {
             return new WEED_OVER();
         }else if(code=="f"){
             return new FLOWER_OVER();
-        } else if(code=="o"){
-            return new YELL_OVER();
-        } else if(code=="a"){
-            return new BLACK_OVER();
         } else if(code=="1"){
             return new ONE_OVER();
         } else if(code=="+"){
@@ -409,6 +595,32 @@ public class ImageHolder {
             return new ZERO_OVER();
         }else if(code=="2"){
             return new TWO_OVER();
+        }else if(code=="A"){
+            return new A_OVER();
+        }else if(code=="B"){
+            return new B_OVER();
+        }else if(code=="X"){
+            return new X_OVER();
+        }else if(code=="S"){
+            return new ST_OVER();
+        }else if(code=="s"){
+            return new ST_1_OVER();
+        }else if(code=="x"){
+            return new X_1_OVER();
+        }else if(code=="k"){
+            return new KINGB_OVER();
+        }else if(code=="K"){
+            return new KINGW_OVER();
+        }else if(code=="l"){
+            return new LADB_OVER();
+        }else if(code=="L"){
+            return new LADW_OVER();
+        }else if(code=="p"){
+            return new PAWN_OVER();
+        }else if(code=="b"){
+            return new BISHOP_OVER();
+        }else if(code=="n"){
+            return new KNIGHT_OVER();
         }else {
             return new EMPTY_OVER();
         }
@@ -422,10 +634,6 @@ public class ImageHolder {
             return new WEED_PRESS();
         }else if(code=="f"){
             return new FLOWER_PRESS();
-        } else if(code=="o"){
-            return new YELL_PRESS();
-        } else if(code=="a"){
-            return new BLACK_PRESS();
         } else if(code=="1"){
             return new ONE_PRESS();
         } else if(code=="+"){
@@ -440,6 +648,32 @@ public class ImageHolder {
             return new ZERO_PRESS();
         }else if(code=="2"){
             return new TWO_PRESS();
+        }else if(code=="A"){
+            return new A_PRESS();
+        }else if(code=="B"){
+            return new B_PRESS();
+        }else if(code=="X"){
+            return new X_PRESS();
+        }else if(code=="S"){
+            return new ST_PRESS();
+        }else if(code=="s"){
+            return new ST_1_PRESS();
+        }else if(code=="x"){
+            return new X_1_PRESS();
+        }else if(code=="k"){
+            return new KINGB_PRESS();
+        }else if(code=="K"){
+            return new KINGW_PRESS();
+        }else if(code=="l"){
+            return new LADB_PRESS();
+        }else if(code=="L"){
+            return new LADW_PRESS();
+        }else if(code=="p"){
+            return new PAWN_PRESS();
+        }else if(code=="b"){
+            return new BISHOP_PRESS();
+        }else if(code=="n"){
+            return new KNIGHT_PRESS();
         }else {
             return new EMPTY_PRESS();
         }

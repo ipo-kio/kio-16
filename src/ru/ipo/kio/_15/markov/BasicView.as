@@ -9,12 +9,13 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.text.TextField;
-import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
 
 public class BasicView extends Sprite {
+
     private static const FIELD_MARGIN:int = 10;
 
+    protected var over:Boolean=false;
 
     public function BasicView(updateOnOver:Boolean=false) {
         if(updateOnOver) {
@@ -32,9 +33,6 @@ public class BasicView extends Sprite {
     public function update():void{
 
     }
-
-    protected var over:Boolean=false;
-
 
     protected function clear():void {
         while (numChildren > 0) {
@@ -58,7 +56,7 @@ public class BasicView extends Sprite {
         return x;
     }
 
-    protected function createField(text:String, size:int=12):TextField {
+    public function createField(text:String, size:int=12, color:int = 0x000000):TextField {
         var field:TextField = new TextField();
         field.background = false;
         field.selectable = false;
@@ -66,10 +64,10 @@ public class BasicView extends Sprite {
         var format:TextFormat = field.getTextFormat();
         format.size = size;
         format.font="Arial";
+        format.color=color;
         field.setTextFormat(format);
         field.width = field.textWidth+6;
         field.height = field.textHeight + FIELD_MARGIN;
-
         return field;
     }
 

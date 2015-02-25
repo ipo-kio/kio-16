@@ -8,7 +8,7 @@ public class Example extends BasicView {
 
     private var _select:Boolean = false;
 
-        private var _wrong:Boolean = false;
+    private var _wrong:Boolean = false;
 
     public function Example(str:String) {
         this._str = str;
@@ -42,8 +42,12 @@ public class Example extends BasicView {
     public override function update():void {
         clear();
         addChildTo(createField(str, 20), 0, 0);
-        if (wrong) {
-            graphics.beginFill(0xFF0000);
+        if(select) {
+            if (wrong) {
+                graphics.beginFill(0xFF3C53, 0.35);
+            }else{
+                graphics.beginFill(0x14A04C, 0.35);
+            }
             graphics.drawRect(0, 0, width, height);
             graphics.endFill();
         }
