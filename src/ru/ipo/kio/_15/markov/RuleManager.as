@@ -432,7 +432,7 @@ public class RuleManager extends BasicView {
         _examples.push("1-1+1-1+1");
         _examples.push("-1-1-1+1+1");
         _examples.push("(1-1-1)+1-0");
-        _examples.push("(0-1)-(1+1)+(-1-1)");
+        _examples.push("(0-1)-(1+1)-(-1-1)");
         _examples.push("1-(((1-1)-1)+1)");
 
         var example:String = "";
@@ -622,8 +622,11 @@ public class RuleManager extends BasicView {
                 }
 
                 RuleManager.instance.result.ruleAmount = getRuleSize();
-                RuleManager.instance.result.wrongOrder = getMinWrong(temp);
-
+                if( RuleManager.instance.result.wrongPair==1) {
+                    RuleManager.instance.result.wrongOrder = RuleManager.instance.getMinWrong(temp);
+                }else{
+                    RuleManager.instance.result.wrongOrder = 1000;
+                }
             }else{
                 RuleManager.instance.result.error=true;
                 return;
@@ -641,17 +644,21 @@ public class RuleManager extends BasicView {
     }
 
     public function getMinWrong(temp:Ridge):int {
+        var template:String;
+        if(temp.tiles[0].symbol.code=="k"||temp.tiles[0].symbol.code=="K"){
+            template=level1Cor2;
+        }else{
+            template=level1Cor1;
+        }
+
       var d1:int=0;
-      var d2:int=0;
         for(var i:int=0; i<temp.tiles.length; i++){
-            if(temp.tiles[i].symbol.code!=""+level1Cor1.charAt(i)){
+            if(temp.tiles[i].symbol.code!=""+template.charAt(i)){
                 d1++;
-            }
-            if(temp.tiles[i].symbol.code!=""+level1Cor2.charAt(i)){
-                d2++;
+                temp.tiles[i].select=true;
             }
         }
-      return Math.min(d1,d2);
+      return d1;
     }
 
 
@@ -682,9 +689,10 @@ public class RuleManager extends BasicView {
         return res;
     }
 
-    private var level1Cor1:String="lLLlLllKkKkkkK";
 
-    private var level1Cor2:String="KkKkkkKlLLlLll";
+    private var level1Cor1:String="llLlLLlKkkkKkK";
+
+    private var level1Cor2:String="KkkkKkKllLlLLl";
 
     private var level1Initial:String="lKLkLKlkLklklK";
 }

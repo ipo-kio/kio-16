@@ -12,6 +12,8 @@ import flash.text.TextFieldType;
 import flash.text.TextFormat;
 import flash.utils.Timer;
 
+import flashx.textLayout.container.ScrollPolicy;
+
 import ru.ipo.kio.api.KioApi;
 
 import ru.ipo.kio.api.KioProblem;
@@ -102,7 +104,7 @@ public class MarkovWorkspace extends BasicView  {
 
     public var _userField:TextField = new TextField();
 
-    private var userText:String = "1+1";
+    private var userText:String = "1-1";
 
     private function stepForward():void {
         var rule:Rule = RuleManager.instance.getRule(_workingRidge);
@@ -184,7 +186,14 @@ public class MarkovWorkspace extends BasicView  {
 
                 addChildTo(_userField, SettingsManager.instance.areaWidth/2-70, 80);
             }else{
-                addChildTo(_workingRidge, SettingsManager.instance.areaWidth/2-170, 60);
+
+                var  _scrollPane:MyScrollPane =new MyScrollPane();
+                _scrollPane.horizontalScrollPolicy = ScrollPolicy.AUTO;
+                _scrollPane.scrollDrag=true;
+                _scrollPane.source=_workingRidge;
+                _scrollPane.refreshPane();
+                _scrollPane.width=440;
+                addChildTo(_scrollPane,  SettingsManager.instance.areaWidth/2-70, 60);
             }
 
             if(wrong!=null){
@@ -207,7 +216,13 @@ public class MarkovWorkspace extends BasicView  {
             addChildTo(_correctRidge, 0, 0);
             addChildTo(_workingRidge, 0, SettingsManager.instance.ridgeHeight);
         }else if(RuleManager.instance.level==1){
-            addChildTo(_workingRidge, 0, SettingsManager.instance.ridgeHeight/2-30);
+            var  _scrollPane:MyScrollPane =new MyScrollPane();
+            _scrollPane.horizontalScrollPolicy = ScrollPolicy.AUTO;
+            _scrollPane.scrollDrag=true;
+            _scrollPane.source=_workingRidge;
+            _scrollPane.refreshPane();
+            _scrollPane.width=SettingsManager.instance.areaWidth;
+            addChildTo(_scrollPane, 0, SettingsManager.instance.ridgeHeight/2-30);
         }else{
 
         }
@@ -414,7 +429,13 @@ public class MarkovWorkspace extends BasicView  {
         sprite.graphics.beginFill(0xFFFFFF, 0);
         sprite.graphics.drawRoundRect(0,0,300,80,40,40);
         sprite.graphics.endFill();
-        sprite.addChildTo(createField(header,12,data.error?0xFF0000:0xFFFFFF), 5, 5);
+        if(data.error){
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.warning_level1, 12, 0xFF3C53), 5, 5);
+            return sprite;
+        }else {
+            sprite.addChildTo(createField(header, 12, 0xFFFFFF), 5, 5);
+        }
+
         if(RuleManager.instance.level==0) {
             sprite.addChildTo(createField(RuleManager.instance.api.localization.label.difference + ": " + data.ridgeDiff, 12, 0xFFFFFF), 70, 5);
             sprite.addChildTo(createField(RuleManager.instance.api.localization.label.direction_amount + ": " + data.ruleAmount, 12, 0xFFFFFF), 70, 25);
@@ -428,7 +449,7 @@ public class MarkovWorkspace extends BasicView  {
         }
         if(RuleManager.instance.level==1) {
             sprite.addChildTo(createField(RuleManager.instance.api.localization.label.wrongPair + ": " + data.wrongPair, 12, 0xFFFFFF), 70, 5);
-            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.wrongOrder + ": " + data.wrongOrder, 12, 0xFFFFFF), 70, 25);
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.wrongOrder + ": " + (data.wrongOrder==1000?"-":data.wrongOrder), 12, 0xFFFFFF), 70, 25);
             sprite.addChildTo(createField(RuleManager.instance.api.localization.label.direction_amount + ": " + data.ruleAmount, 12, 0xFFFFFF), 70, 45);
 
         }
@@ -520,8 +541,14 @@ public class MarkovWorkspace extends BasicView  {
                     last=_workingRidge.tiles[i];
                 }
                 RuleManager.instance.result.ruleAmount = RuleManager.instance.getRuleSize();
-                RuleManager.instance.result.wrongOrder = RuleManager.instance.getMinWrong(_workingRidge);
-                _workingRidge.select=true;
+                if( RuleManager.instance.result.wrongPair==1) {
+                    RuleManager.instance.result.wrongOrder = RuleManager.instance.getMinWrong(_workingRidge);
+                    _workingRidge.select=false;
+                }else{
+                    _workingRidge.select=true;
+                    RuleManager.instance.result.wrongOrder = 1000;
+                }
+
             }else{
                 var corCount:int = 0;
                 var allCount:int = 0;
