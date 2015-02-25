@@ -38,7 +38,7 @@ public class Car extends Sprite {
     public static const TEXT_COLOR:uint = 0xFFFFFF;
 //    public static const NUMBER_HEIGHT:Number = 12;
     public static const NUMBER_HEIGHT:Number = 13;
-    public static const CAR_TICKS_LENGTH:int = Math.ceil(LENGTH / CurveRail.DL) + 2;
+    public static const CAR_TICKS_LENGTH:int = Math.ceil(LENGTH / CurveRail.DL);
 
     public static const MOVING_STOP:int = 0;
     public static const MOVING_FORWARD:int = 1;
