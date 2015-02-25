@@ -35,6 +35,10 @@ public class Tile extends BasicView{
 
         var bg = ImageHolder.getVegetable(symbol.code);
 
+        if(RuleManager.instance.level==2){
+            bg = ImageHolder.getVegetableOver(symbol.code);
+        }
+
         if(_select) {
             var bg = ImageHolder.getVegetableSelected(symbol.code);
         }

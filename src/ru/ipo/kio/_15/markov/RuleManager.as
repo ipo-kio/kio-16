@@ -15,6 +15,8 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 import flashx.textLayout.container.ScrollPolicy;
 
+import ru.ipo.kio._15.markov.RuleManager;
+
 import ru.ipo.kio.api.KioApi;
 
 import ru.ipo.kio.base.displays.ShellButton;
@@ -68,20 +70,28 @@ public class RuleManager extends BasicView {
         _finish = value;
     }
 
-    private var _result:Level0Data = new Level0Data();
+    private var _result:ResultData = new ResultData();
+
+    private var _record:ResultData = new ResultData();
 
 
-    public function get result():Level0Data {
+    public function get record():ResultData {
+        return _record;
+    }
+
+    public function set record(value:ResultData):void {
+        _record = value;
+    }
+
+    public function get result():ResultData {
         return _result;
     }
 
-    public function set result(value:Level0Data):void {
+    public function set result(value:ResultData):void {
         _result = value;
     }
 
     public function RuleManager() {
-        rules.push(new Rule(_rules.length));
-        rules.push(new Rule(_rules.length));
         rules.push(new Rule(_rules.length));
     }
 
@@ -104,11 +114,19 @@ public class RuleManager extends BasicView {
         clear();
 
         _scrollPane =new MyScrollPane();
-//        _scrollPane.verticalScrollPolicy = ScrollPolicy.AUTO;
+        _scrollPane.verticalScrollPolicy = ScrollPolicy.AUTO;
 //        _scrollPane.horizontalScrollPolicy = ScrollPolicy.AUTO;
-        _scrollPane.x=SettingsManager.instance.tileWidth;
+        if(RuleManager._instance.level==2) {
+            _scrollPane.x = SettingsManager.instance.tileWidth+35;
+        }else{
+            _scrollPane.x = SettingsManager.instance.tileWidth;
+        }
         _scrollPane.y=0;
-        _scrollPane.width=SettingsManager.instance.ruleWidth;
+        if(RuleManager._instance.level==2) {
+            _scrollPane.width = SettingsManager.instance.ruleWidth-15;
+        }else{
+            _scrollPane.width = SettingsManager.instance.ruleWidth;
+        }
         _scrollPane.height=SettingsManager.instance.ruleHeight;
         _scrollPane.scrollDrag=true;
 
@@ -136,14 +154,119 @@ public class RuleManager extends BasicView {
 
         shiftY=0;
 
-        if(RuleManager._instance.level==1){
-            var tile:MovingTile = new MovingTile(Symbol.dictionary["o"]);
+        if(RuleManager._instance.level==2){
+            var tile:MovingTile = new MovingTile(Symbol.dictionary["0"]);
             tile.update();
             addChildTo(tile, 0, shiftY);
-            shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace+10;
-            var tile1:MovingTile = new MovingTile(Symbol.dictionary["a"]);
+
+            var shift2:int= 35;
+
+            var tile1:MovingTile = new MovingTile(Symbol.dictionary["1"]);
+            tile1.update();
+            addChildTo(tile1, shift2, shiftY);
+
+            shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace;
+
+            var tile2:MovingTile = new MovingTile(Symbol.dictionary["2"]);
+            tile2.update();
+            addChildTo(tile2, 0, shiftY);
+
+            shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace;
+
+            var tile3:MovingTile = new MovingTile(Symbol.dictionary["A"]);
+            tile3.update();
+            addChildTo(tile3, 0, shiftY);
+
+            var tile4:MovingTile = new MovingTile(Symbol.dictionary["B"]);
+            tile4.update();
+            addChildTo(tile4, shift2, shiftY);
+
+            shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace;
+
+            var tile5:MovingTile = new MovingTile(Symbol.dictionary["+"]);
+            tile5.update();
+            addChildTo(tile5, 0, shiftY);
+
+            var tile6:MovingTile = new MovingTile(Symbol.dictionary["-"]);
+            tile6.update();
+            addChildTo(tile6, shift2, shiftY);
+
+            shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace;
+
+            var tile7:MovingTile = new MovingTile(Symbol.dictionary["("]);
+            tile7.update();
+            addChildTo(tile7, 0, shiftY);
+
+            var tile8:MovingTile = new MovingTile(Symbol.dictionary[")"]);
+            tile8.update();
+            addChildTo(tile8, shift2, shiftY);
+
+            shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace;
+            shiftY += SettingsManager.instance.tileHeight/2 + SettingsManager.instance.smallSpace;
+
+            var tile9:MovingTile = new MovingTile(Symbol.dictionary["S"]);
+            tile9.update();
+            addChildTo(tile9, 0, shiftY);
+
+            var tile11:MovingTile = new MovingTile(Symbol.dictionary["X"]);
+            tile11.update();
+            addChildTo(tile11, shift2, shiftY);
+
+
+        }
+
+
+        else if(RuleManager._instance.level==1){
+            var tile:MovingTile = new MovingTile(Symbol.dictionary["L"]);
+            tile.update();
+            addChildTo(tile, 0, shiftY);
+
+            shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace;
+
+            var tile1:MovingTile = new MovingTile(Symbol.dictionary["K"]);
             tile1.update();
             addChildTo(tile1, 0, shiftY);
+
+            shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace;
+
+            var tile2:MovingTile = new MovingTile(Symbol.dictionary["l"]);
+            tile2.update();
+            addChildTo(tile2, 0, shiftY);
+
+            shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace;
+
+            var tile3:MovingTile = new MovingTile(Symbol.dictionary["k"]);
+            tile3.update();
+            addChildTo(tile3, 0, shiftY);
+
+            shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace;
+
+            var tile4:MovingTile = new MovingTile(Symbol.dictionary["b"]);
+            tile4.update();
+            addChildTo(tile4, 0, shiftY);
+
+            shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace;
+
+            var tile5:MovingTile = new MovingTile(Symbol.dictionary["p"]);
+            tile5.update();
+            addChildTo(tile5, 0, shiftY);
+
+            shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace;
+
+            var tile6:MovingTile = new MovingTile(Symbol.dictionary["n"]);
+            tile6.update();
+            addChildTo(tile6, 0, shiftY);
+
+            shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace;
+
+            var tile7:MovingTile = new MovingTile(Symbol.dictionary["s"]);
+            tile7.update();
+            addChildTo(tile7, -10, shiftY);
+
+
+            var tile8:MovingTile = new MovingTile(Symbol.dictionary["x"]);
+            tile8.update();
+            addChildTo(tile8, 25, shiftY);
 
         }else {
 
@@ -155,12 +278,22 @@ public class RuleManager extends BasicView {
             }
         }
 
-        _simpleButton = ImageHolder.createButton(this, "+", SettingsManager.instance.areaWidth - 50 - (16), SettingsManager.instance.ruleHeight+11, function () {
-            rules.push(new Rule(_rules.length));
-            update();
-        }, level == 2 ? _api.localization.button.add_rule : _api.localization.button.add_direction);
+        if(edit) {
+            _simpleButton = ImageHolder.createButton(this, "+", SettingsManager.instance.areaWidth - 50 - (RuleManager.instance.level == 2 ? 26 : 16), SettingsManager.instance.ruleHeight + 11, function () {
+                rules.push(new Rule(_rules.length));
+                update();
+            }, level == 2 ? _api.localization.button.add_rule : _api.localization.button.add_direction);
 
-        NormalButton(_simpleButton).enable(edit);
+            NormalButton(_simpleButton).enable(edit);
+
+
+            try{
+                _scrollPane.verticalScrollPosition = _scrollPane.maxVerticalScrollPosition;
+            }catch (e){
+
+            }
+
+        }
 
     }
 
@@ -173,6 +306,12 @@ public class RuleManager extends BasicView {
             for each(var rule:Rule in rules){
                 if(rule.consumeMove(tile, tile.x+tile.width/2-_scrollPane.x+horizontalPosition, tile.y-rule.y+tile.height/2+verticalPosition)){
                     rule.draw();
+                    for each(var rule1:Rule in rules){
+                        if(rule1!=rule){
+                            rule1.removeAllTemp();
+                            rule1.draw();
+                        }
+                    }
                     _scrollPane.refreshPane();
                     break;
                 }
@@ -216,7 +355,7 @@ public class RuleManager extends BasicView {
     public function getRule(_workingRidge:Ridge):Rule {
         var ridge:String = _workingRidge.getString();
         for each(var rule:Rule in rules){
-            if(!rule.empty && ridge.indexOf(rule.getStringInput())>=0){
+            if(!rule.empty && (ridge.indexOf(rule.getStringInput())>=0) || rule.isStart()){
                 return rule;
             }
         }
@@ -233,16 +372,21 @@ public class RuleManager extends BasicView {
         var ridge:String = _workingRidge.getString();
         var rule:Rule = getRule(_workingRidge);
         rule.select=true;
-        var index:int = ridge.indexOf(rule.getStringInput());
-        _workingRidge.tiles.splice(index, rule.input.length);
-        for (var i:int=0; i<rule.output.length; i++){
-            _workingRidge.tiles.splice(index+i, 0, new Tile(rule.output[i].symbol, true));
+        if(rule.isStart()){
+            for (var i:int=0; i<rule.output.length; i++){
+                _workingRidge.tiles.splice(i, 0, new Tile(rule.output[i].symbol, true));
+            }
+            return;
         }
 
-        RuleManager.instance.result.oper++;
-
-
-
+        var index:int = ridge.indexOf(rule.getStringInput());
+        _workingRidge.tiles.splice(index, rule.input.length);
+        if(!rule.isFinish()) {
+            for (var i:int = 0; i < rule.output.length; i++) {
+                _workingRidge.tiles.splice(index + i, 0, new Tile(rule.output[i].symbol, true));
+            }
+        }
+        RuleManager.instance.result.applyOperations++;
     }
 
     public function get edit():Boolean {
@@ -298,7 +442,7 @@ public class RuleManager extends BasicView {
                 var parser:MathParser = new MathParser([]);
                 var compiledObj:CompiledObject = parser.doCompile(example);
                 var answer:Number = parser.doEval(compiledObj.PolishArray, []);
-                if(_examples.indexOf(example)<0 && ( answer==0 || answer==1 || answer==2 )){
+                if(_examples.indexOf(example)<0 && ( answer==0 || answer==1 || answer==2  || answer==-1  || answer==-2 )){
                     _examples.push(example);
                     trace(_examples.length+": "+ example);
                 }
@@ -343,12 +487,17 @@ public class RuleManager extends BasicView {
 
 
     public function correct(str:String):Boolean {
+        if(!isValid()){
+            return false;
+        }
         var parser:MathParser = new MathParser([]);
         var compiledObj:CompiledObject = parser.doCompile(str);
         var answer:Number = parser.doEval(compiledObj.PolishArray, []);
 
-        while(getRuleStr(str)!=null){
-            str = applyRuleStr(str);
+        for(var i:int=0; i<1000; i++) {
+            if (getRuleStr(str) != null) {
+                str = applyRuleStr(str);
+            }
         }
 
         return (answer+""==str);
@@ -359,7 +508,7 @@ public class RuleManager extends BasicView {
 
     public function getRuleStr(str:String):Rule {
         for each(var rule:Rule in rules){
-            if(!rule.empty && str.indexOf(rule.getStringInput())>=0){
+            if(!rule.empty &&( str.indexOf(rule.getStringInput())>=0 || rule.isStart() )){
                 return rule;
             }
         }
@@ -368,17 +517,107 @@ public class RuleManager extends BasicView {
 
     public function applyRuleStr(str:String):String {
         var rule:Rule = getRuleStr(str);
+
+        if(rule.isStart()){
+            var newStr = "";
+            for (var i:int=0; i<rule.output.length; i++){
+                newStr += rule.output[i].symbol;
+            }
+            newStr+=str;
+            return newStr;
+        }
+
+
         var index:int = str.indexOf(rule.getStringInput());
 
         var newstr = str.substr(0, index);
-        for (var i:int=0; i<rule.output.length; i++){
-            newstr+= rule.output[i].symbol;
+        if(!rule.isFinish()) {
+            for (var i:int = 0; i < rule.output.length; i++) {
+                newstr += rule.output[i].symbol.code;
+            }
         }
         newstr+=str.substr(index+rule.getStringInput().length);
 
-        RuleManager.instance.result.oper++;
+        RuleManager.instance.result.applyOperations++;
 
         return newstr;
+
+
+    }
+
+    public function submitResult(ridge:Ridge, template:Ridge):void {
+        if(RuleManager._instance.level==0) {
+            var temp:Ridge = ridge.clone();
+            for (var i:int = 0; i < 1000; i++) {
+                if (hasRule(temp)) {
+                    applyRule(temp);
+                }
+            }
+
+            for (var i:int = 0; i < temp.tiles.length; i++) {
+                if (temp.tiles[i].symbol.code != template.tiles[i].symbol.code) {
+                    RuleManager.instance.result.ridgeDiff++;
+                }
+            }
+
+            RuleManager.instance.result.ruleAmount = RuleManager.instance.rules.length;
+
+            api.submitResult(RuleManager.instance.result.clone());
+
+            RuleManager.instance.result.applyOperations = 0;
+
+        }else if(RuleManager._instance.level==2){
+            var corCount:int = 0;
+            var allCount:int = 0;
+            for each(var str:String in RuleManager.instance.examples){
+                var result = RuleManager.instance.correct(str);
+                if(result){
+                    corCount++;
+                }
+                allCount++;
+            }
+
+           RuleManager.instance.result.perc = 100*corCount/allCount;
+            RuleManager.instance.result.correctAmount = corCount;
+
+            RuleManager.instance.result.ruleAmount = RuleManager.instance.rules.length;
+
+            RuleManager.instance.result.ruleLength = 0;
+            for each(var rule:Rule in RuleManager.instance.rules){
+                RuleManager.instance.result.ruleLength+=rule.getLength();
+            }
+
+            api.submitResult(RuleManager.instance.result.clone());
+        }else{
+            var temp:Ridge = ridge.clone();
+            for (var i:int = 0; i < 1000; i++) {
+                if (hasRule(temp)) {
+                    applyRule(temp);
+                }
+            }
+
+
+            var last:Tile = null;
+            for (var i:int = 0; i < temp.tiles.length; i++) {
+                if(last!=null){
+                    if((last.symbol.code=="l" || last.symbol.code=="L")
+                            &&(temp.tiles[i].symbol.code=="k" || temp.tiles[i].symbol.code=="K")){
+                        RuleManager.instance.result.wrongPair++;
+                    }
+                    if((last.symbol.code=="k" || last.symbol.code=="K")
+                            &&(temp.tiles[i].symbol.code=="l" || temp.tiles[i].symbol.code=="L")){
+                        RuleManager.instance.result.wrongPair++;
+                    }
+                }
+                last=temp.tiles[i];
+            }
+
+            RuleManager.instance.result.ruleAmount = RuleManager.instance.rules.length;
+
+            api.submitResult(RuleManager.instance.result.clone());
+
+            RuleManager.instance.result.applyOperations = 0;
+        }
 
 
     }

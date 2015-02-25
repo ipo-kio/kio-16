@@ -45,6 +45,11 @@ public class SettingsManager {
 
 
     public function get tileWidth():* {
+        if(RuleManager.instance.level==2){
+            return 35;
+        }
+
+
         if(_level==0) {
             return 47;
         }
@@ -55,8 +60,13 @@ public class SettingsManager {
 
     public function get tileHeight():* {
         if(RuleManager.instance.level==2){
-            return 46;
+            return 48;
         }
+
+        if(RuleManager.instance.level==1){
+            return 60;
+        }
+
         return _tileHeight;
     }
 
@@ -89,14 +99,14 @@ public class SettingsManager {
         if(RuleManager.instance.level==1 || RuleManager.instance.level==0){
             return _areaWidth - tileWidth - 16;
         }else {
-            return _areaWidth - tileWidth - 16;
+            return _areaWidth - tileWidth - 26;
         }
     }
 
     public function get ruleHeight():int {
 
         if(RuleManager.instance.level==1){
-            return (tileHeight+smallSpace)*4+65;
+            return 400;
         }else if(RuleManager.instance.level==2){
             return (tileHeight+smallSpace)*7;
         }else {
