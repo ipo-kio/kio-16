@@ -37,7 +37,7 @@ public class TrainCarsRunner extends Sprite {
 
         //Запускаем задачу. Метод initOneProblem() специально сделан для отладки одной задачи.
         //Первый параметр - текущий спрайт, второй параметр - задача
-        KioBase.instance.initOneProblem(this, new TrainCarsProblem(0));
+        KioBase.instance.initOneProblem(this, new TrainCarsProblem(2));
     }
 }
 }

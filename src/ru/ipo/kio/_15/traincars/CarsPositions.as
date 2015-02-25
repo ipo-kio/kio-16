@@ -47,6 +47,64 @@ public class CarsPositions extends EventDispatcher {
         if (problem.level >= 2)
             _top_initial.push(new Car(3, 5), new Car(3, 4), new Car(3, 3), new Car(3, 2), new Car(3, 1));
 
+        function swap(i:int, j:int):void {
+            i--;
+            j--;
+            var t:Car = _top_initial[i];
+            _top_initial[i] = _top_initial[j];
+            _top_initial[j] = t;
+        }
+
+        switch (problem.level) {
+            case 0:
+                swap(1,10);
+                swap(4,7);
+                swap(5,8);
+                swap(6,4);
+                swap(7,6);
+                swap(8,9);
+                swap(9,5);
+                swap(10,1);
+                break;
+            case 1:
+                swap(1,7);
+                swap(2,9);
+                swap(5,8);
+                swap(7,12);
+                swap(8,14);
+                swap(9,13);
+                swap(11,15);
+                swap(12,1);
+                swap(13,2);
+                swap(14,1);
+                swap(15,5);
+                break;
+            case 2:
+                swap(1,17);
+                swap(2,10);
+                swap(3,12);
+                swap(4,11);
+                swap(5,14);
+                swap(6,13);
+                swap(7,18);
+                swap(8,19);
+                swap(10,2);
+                swap(11,15);
+                swap(12,16);
+                swap(13,20);
+                swap(14,5);
+                swap(15,6);
+                swap(16,1);
+                swap(17,7);
+                swap(18,8);
+                swap(19,3);
+                swap(20,4);
+                swap(11,14);
+                swap(15,19);
+                swap(19,20);
+                break;
+        }
+
         _top = _top_initial.slice();
 
         for each (var c:Car in _top) {
@@ -181,7 +239,6 @@ public class CarsPositions extends EventDispatcher {
         for each (var car:Car in _top)
             if (car.moving == Car.MOVING_BACKWARDS)
                 return false;
-            }
         for each (var cars:Vector.<Car> in _way)
             for each (car in cars)
                 if (car.moving == Car.MOVING_BACKWARDS)
