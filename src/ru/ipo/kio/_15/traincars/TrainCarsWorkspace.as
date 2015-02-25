@@ -213,7 +213,7 @@ public class TrainCarsWorkspace extends Sprite {
 
     private function drawSemaphores():void {
         var dx_1:Number = 55 - (SVET_L_G_IMG.width*0.5);
-        var dy_1:Number = 136 - (SVET_L_G_IMG.height*0.5);
+        var dy_1:Number = 136 - 22 - (SVET_L_G_IMG.height*0.5);
 
         var m1:Matrix = new Matrix();
         m1.translate(dx_1, dy_1);
@@ -223,7 +223,7 @@ public class TrainCarsWorkspace extends Sprite {
         left_green_semaphore.graphics.endFill();
 
         var dx_2:Number = 145 - (SVET_R_G_IMG.width*0.5);
-        var dy_2:Number = 136 - (SVET_R_G_IMG.height*0.5);
+        var dy_2:Number = 136 - 22 - (SVET_R_G_IMG.height*0.5);
 
         var m2:Matrix = new Matrix();
         m2.translate(dx_2, dy_2);
@@ -233,7 +233,7 @@ public class TrainCarsWorkspace extends Sprite {
         right_green_semaphore.graphics.endFill();
 
         var dx_3:Number = 55 - (SVET_L_R_IMG.width*0.5);
-        var dy_3:Number = 136 - (SVET_L_R_IMG.height*0.5);
+        var dy_3:Number = 136 - 22 - (SVET_L_R_IMG.height*0.5);
 
         var m3:Matrix = new Matrix();
         m3.translate(dx_3, dy_3);
@@ -243,7 +243,7 @@ public class TrainCarsWorkspace extends Sprite {
         left_red_semaphore.graphics.endFill();
 
         var dx_4:Number = 145 - (SVET_R_R_IMG.width*0.5);
-        var dy_4:Number = 136 - (SVET_R_R_IMG.height*0.5);
+        var dy_4:Number = 136 - 22 - (SVET_R_R_IMG.height*0.5);
 
         var m4:Matrix = new Matrix();
         m4.translate(dx_4, dy_4);
