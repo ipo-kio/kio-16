@@ -138,36 +138,6 @@ public class Car extends Sprite {
         numberView.autoSize = TextFieldAutoSize.CENTER;
         numberView.text = '' + _number;
 
-        //todo switch (station)
-        /*if (station != 4) {
-            switch (station) {
-                case 0:
-                    //red
-//                    graphics.drawCircle(dx + 28, dy + 1, 5);
-                    numberView.y = -numberView.height / 2;
-                    numberView.x = -numberView.width / 2;
-                    break;
-                case 1:
-                    //green
-                    //graphics.drawCircle(dx + 21, dy + 1, 5);
-                    numberView.y = -numberView.height / 2;
-                    numberView.x = -numberView.width / 2;
-                    break;
-                case 2:
-                    //blue
-                    //graphics.drawCircle(dx + 21, dy + 1, 5);
-                    numberView.y = -numberView.height / 2;
-                    numberView.x = -numberView.width / 2;
-                    break;
-                default:
-                    //yellow
-                    //graphics.drawCircle(dx + 23, dy + 1, 5);
-                    numberView.y = -numberView.height / 2;
-                    numberView.x = -numberView.width / 2;
-                    break;
-            }
-        }*/
-
         addChild(numberView);
 
         numberHeight = numberView.height;
