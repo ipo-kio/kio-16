@@ -1,5 +1,8 @@
 package ru.ipo.kio._15.markov {
+import com.nerdbucket.ToolTip;
+
 import flash.display.DisplayObject;
+import flash.display.Stage;
 
 import ru.ipo.kio.api.KioApi;
 
@@ -17,8 +20,10 @@ public class MarkovProblem implements KioProblem {
 
     private var _workspace:MarkovWorkspace;
 
-    public function MarkovProblem(level: int) {
+    public function MarkovProblem(stage:Stage, level: int) {
         _level = level;
+
+        ToolTip.init(stage, {textalign: 'center', opacity: 80, defaultdelay: 500});
 
         KioApi.initialize(this);
 
