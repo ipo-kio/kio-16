@@ -59,27 +59,28 @@ public class TrainCarsProblem implements KioProblem {
     }
 
     public function compare(r1:Object, r2:Object):int {
-        /*
-         i.setValue(0, r.correct);
-         i.setValue(1, r.transpositions);
-         i.setValue(2, r.up_hill);
-         i.setValue(3, r.down_hill);
-         */
         var v:int;
-        v = r1.correct - r2.correct;
-        if (v != 0)
-            return v;
-        v = r2.transpositions - r1.transpositions;
-        if (v != 0)
-            return v;
-        v = r2.up_hill - r1.up_hill;
-        if (v != 0)
-            return v;
-        v = r2.down_hill - r1.down_hill;
+        v = r1.c - r2.c;
         if (v != 0)
             return v;
 
-        return 0;
+        v = r2.t - r1.t;
+        if (v != 0)
+            return v;
+
+        if (level > 0) {
+            v = r2.uh - r1.uh;
+            if (v != 0)
+                return v;
+            v = r2.dh - r1.dh;
+            if (v != 0)
+                return v;
+
+            return 0;
+        } else {
+            v = r2.h - r1.h;
+            return v;
+        }
     }
 
     public function get icon():Class {

@@ -5,6 +5,8 @@ package ru.ipo.kio._15.traincars {
 import flash.events.Event;
 import flash.events.EventDispatcher;
 
+import ru.ipo.kio.api.KioProblem;
+
 public class CarsPositions extends EventDispatcher {
 
     public static const STATIONS_COUNT:int = 4;
@@ -23,7 +25,7 @@ public class CarsPositions extends EventDispatcher {
     private var _railsSet:RailsSet;
     private var _railWay:Vector.<RailWay>;
 
-    public function CarsPositions(railsSet:RailsSet, railWay:Vector.<RailWay>) {
+    public function CarsPositions(problem:KioProblem, railsSet:RailsSet, railWay:Vector.<RailWay>) {
         _railsSet = railsSet;
         _railWay = railWay;
 
@@ -37,18 +39,13 @@ public class CarsPositions extends EventDispatcher {
             new Car(1, 4),
             new Car(1, 3),
             new Car(1, 2),
-            new Car(1, 1),
-            new Car(2, 5),
-            new Car(2, 4),
-            new Car(2, 3),
-            new Car(2, 2),
-            new Car(2, 1),
-            new Car(3, 5),
-            new Car(3, 4),
-            new Car(3, 3),
-            new Car(3, 2),
-            new Car(3, 1)
+            new Car(1, 1)
         ];
+
+        if (problem.level >= 1)
+            _top_initial.push(new Car(2, 5), new Car(2, 4), new Car(2, 3), new Car(2, 2), new Car(2, 1));
+        if (problem.level >= 2)
+            _top_initial.push(new Car(3, 5), new Car(3, 4), new Car(3, 3), new Car(3, 2), new Car(3, 1));
 
         _top = _top_initial.slice();
 
@@ -244,6 +241,28 @@ public class CarsPositions extends EventDispatcher {
                         cnt++;
                 used_ids.push(n);
             }
+        }
+
+        return cnt;
+    }
+
+    public function get unorderCount():int {
+        var cnt:int = 0;
+        for (var way_ind:int = 0; way_ind < WAYS_COUNT; way_ind++) {
+            var ids:Vector.<int> = new <int>[];
+            for each (var car:Car in way[way_ind]) {
+                if (car.station != way_ind)
+                    continue;
+                ids.push(car.number);
+            }
+
+            var sids:Vector.<int> = ids.slice().sort(Array.NUMERIC);
+            for (var i:int = 0; i < ids.length; i++)
+                for (var j:int = 0; j < ids.length; j++)
+                    if (ids[i] == sids[j]) {
+                        cnt += Math.abs(i - j);
+                        break;
+                    }
         }
 
         return cnt;

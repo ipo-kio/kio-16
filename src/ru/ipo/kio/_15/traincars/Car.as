@@ -9,7 +9,6 @@ import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
-import flash.text.TextFieldType;
 import flash.text.TextFormat;
 
 public class Car extends Sprite {

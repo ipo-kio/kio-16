@@ -181,7 +181,7 @@ public class TrainCarsWorkspace extends Sprite {
         TOP_END_TICK = rSet.rail(i4).startK + 100 / CurveRail.DL;
         WAY_START_TICK = rSet.rail(final_way_ind_0[0]).startK + 20 / CurveRail.DL;
 
-        _positions = new CarsPositions(rSet, railWays);
+        _positions = new CarsPositions(_problem, rSet, railWays);
 
         _positions.positionCars();
 
@@ -283,17 +283,16 @@ public class TrainCarsWorkspace extends Sprite {
     }
 
     private function initInfoPanels():void {
-        _info_current = new InfoPanel(
-                'KioArial', true, 14, 0x000000, 0x222222, 0x880000, 1.2, _api.localization.solution, [
-                    _api.localization.correct, _api.localization.transpositions, _api.localization.uphill_steps, _api.localization.downhill_steps
-                ], 140
-        );
+        var labels:Array;
+        switch (_problem.level) {
+            case 0: labels = [_api.localization.correct, _api.localization.unordered, _api.localization.steps]; break;
+            case 1: labels = [_api.localization.correct, _api.localization.unordered, _api.localization.uphill_steps, _api.localization.downhill_steps]; break;
+            case 2: labels = [_api.localization.correct, _api.localization.transpositions, _api.localization.uphill_steps, _api.localization.downhill_steps]; break;
+        }
 
-        _info_record = new InfoPanel(
-                'KioArial', true, 14, 0x000000, 0x222222, 0x880000, 1.2, _api.localization.record, [
-                    _api.localization.correct, _api.localization.transpositions, _api.localization.uphill_steps, _api.localization.downhill_steps
-                ], 140
-        );
+        _info_current = new InfoPanel('KioArial', true, 14, 0x000000, 0x222222, 0x880000, 1.2, _api.localization.solution, labels, 140);
+
+        _info_record = new InfoPanel('KioArial', true, 14, 0x000000, 0x222222, 0x880000, 1.2, _api.localization.record, labels, 140);
 
         otherObjects.addChild(_info_current);
         otherObjects.addChild(_info_record);
@@ -478,20 +477,40 @@ public class TrainCarsWorkspace extends Sprite {
         otherObjects.graphics.endFill();
     }
 
-    private static function update_info(i:InfoPanel, r:Object):void {
-        i.setValue(0, r.correct);
-        i.setValue(1, r.transpositions);
-        i.setValue(2, r.up_hill);
-        i.setValue(3, r.down_hill);
+    private function update_info(i:InfoPanel, r:Object):void {
+        i.setValue(0, r.c);
+        i.setValue(1, r.t);
+        if (_problem.level == 0)
+            i.setValue(2, r.h);
+        else {
+            i.setValue(2, r.uh);
+            i.setValue(3, r.dh);
+        }
     }
 
     public function get result():Object {
-        return {
-            correct: _positions.correctCarsCount,
-            transpositions: _positions.transpositionsCount,
-            up_hill: uphill_steps,
-            down_hill: downhill_steps
-        };
+        switch (_problem.level) {
+            case 0:
+                return {
+                    c: _positions.correctCarsCount,
+                    t: _positions.unorderCount,
+                    h: uphill_steps + downhill_steps
+                };
+            case 1:
+                return {
+                    c: _positions.correctCarsCount,
+                    t: _positions.unorderCount,
+                    uh: uphill_steps,
+                    dh: downhill_steps
+                };
+            default: //level 2
+                return {
+                    c: _positions.correctCarsCount,
+                    t: _positions.transpositionsCount,
+                    uh: uphill_steps,
+                    dh: downhill_steps
+                };
+        }
     }
 
     public function get downhill_steps():int {
