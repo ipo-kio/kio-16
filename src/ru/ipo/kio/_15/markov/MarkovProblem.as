@@ -14,6 +14,31 @@ public class MarkovProblem implements KioProblem {
     [Embed(source="loc/markov.ru.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
 
+    [Embed(source="loc/markov.ru.json-settings",mimeType="application/octet-stream")]
+    public static var LOCALIZATION_TH:Class;
+
+    [Embed(source="_resources/icon-calc.png")]
+    public static const ICON_CALC:Class;
+
+    [Embed(source="_resources/icon-carrots.png")]
+    public static const ICON_CARROTS:Class;
+
+    [Embed(source="_resources/icon-chess.png")]
+    public static const ICON_CHESS:Class;
+
+    [Embed(source="_resources/statement0.png")]
+    public static const STATEMENT_0_IMG:Class;
+    [Embed(source="_resources/help0.png")]
+    public static const HELP_0_IMG:Class;
+
+    [Embed(source="_resources/statement1.png")]
+    public static const STATEMENT_1_IMG:Class;
+    [Embed(source="_resources/help12.png")]
+    public static const HELP_12_IMG:Class;
+
+    [Embed(source="_resources/statement2.png")]
+    public static const STATEMENT_2_IMG:Class;
+
     public static const ID:String = 'markov';
 
     private var _level:int;
@@ -28,6 +53,7 @@ public class MarkovProblem implements KioProblem {
         KioApi.initialize(this);
 
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
+        KioApi.registerLocalization(ID, KioApi.L_TH, new Settings(LOCALIZATION_TH).data);
 
 
         _workspace = new MarkovWorkspace(this, level);
@@ -128,15 +154,27 @@ public class MarkovProblem implements KioProblem {
         }
 
     public function get icon():Class {
-        return null;
+        switch (level) {
+            case 0: return ICON_CARROTS;
+            case 1: return ICON_CHESS;
+            default : return ICON_CALC;
+        }
     }
 
     public function get icon_help():Class {
-        return null;
+        switch (level) {
+            case 0: return HELP_0_IMG;
+            case 1: return HELP_12_IMG;
+            default : return HELP_12_IMG;
+        }
     }
 
     public function get icon_statement():Class {
-        return null;
+        switch (level) {
+            case 0: return STATEMENT_0_IMG;
+            case 1: return STATEMENT_1_IMG;
+            default : return STATEMENT_2_IMG;
+        }
     }
 
     public function clear():void {

@@ -18,6 +18,15 @@ public class TrainCarsProblem implements KioProblem {
     [Embed(source="loc/traincars.th.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_TH:Class;
 
+    [Embed(source="resources/icon-cars.png")]
+    public static const ICON_CARS:Class;
+
+    [Embed(source="resources/statement.png")]
+    public static const STATEMENT_IMG:Class;
+
+    [Embed(source="resources/help.png")]
+    public static const HELP_IMG:Class;
+
     public static const ID:String = 'traincars';
 
     private var _level:int;
@@ -84,15 +93,15 @@ public class TrainCarsProblem implements KioProblem {
     }
 
     public function get icon():Class {
-        return null;
+        return ICON_CARS;
     }
 
     public function get icon_help():Class {
-        return null;
+        return HELP_IMG;
     }
 
     public function get icon_statement():Class {
-        return null;
+        return STATEMENT_IMG;
     }
 
     public function clear():void {

@@ -24,6 +24,15 @@ public class SpiderProblem implements KioProblem {
     [Embed(source="loc/spider.th.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_TH:Class;
 
+    [Embed(source="resources/icon-spider.png")]
+    public static const ICON_SPIDER:Class;
+
+    [Embed(source="resources/statement.png")]
+    public static const STATEMENT_IMG:Class;
+
+    [Embed(source="resources/help.png")]
+    public static const HELP_IMG:Class;
+
     public static const ROUND_SECONDS_UP:Boolean = true;
 
     public function SpiderProblem(level: int) {
@@ -88,15 +97,15 @@ public class SpiderProblem implements KioProblem {
     }
 
     public function get icon():Class {
-        return null;
+        return ICON_SPIDER;
     }
 
     public function get icon_help():Class {
-        return null;
+        return HELP_IMG;
     }
 
     public function get icon_statement():Class {
-        return null;
+        return STATEMENT_IMG;
     }
 
     public function clear():void {
