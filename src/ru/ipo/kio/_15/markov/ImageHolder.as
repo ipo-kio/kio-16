@@ -301,16 +301,16 @@ public class ImageHolder {
     public static const KNIGHT_SELECT:Class;
 
 
-    [Embed(source="_resources/level1/X_Over.png")]
+    [Embed(source="_resources/level1/x_Over.png")]
     public static const X_1:Class;
 
-    [Embed(source="_resources/level1/X_Over_Over.png")]
+    [Embed(source="_resources/level1/x_Over_Over.png")]
     public static const X_1_OVER:Class;
 
-    [Embed(source="_resources/level1/X_Selected.png")]
+    [Embed(source="_resources/level1/x_Selected.png")]
     public static const X_1_PRESS:Class;
 
-    [Embed(source="_resources/level1/X_Selected.png")]
+    [Embed(source="_resources/level1/x_Selected.png")]
     public static const X_1_SELECT:Class;
 
     [Embed(source="_resources/level1/start_Over.png")]
@@ -442,16 +442,16 @@ public class ImageHolder {
     public static const B_SELECT:Class;
 
 
-    [Embed(source="_resources/level2/X.png")]
+    [Embed(source="_resources/level2/x.png")]
     public static const X:Class;
 
-    [Embed(source="_resources/level2/X_Over.png")]
+    [Embed(source="_resources/level2/x_Over.png")]
     public static const X_OVER:Class;
 
-    [Embed(source="_resources/level2/X_Selected.png")]
+    [Embed(source="_resources/level2/x_Selected.png")]
     public static const X_PRESS:Class;
 
-    [Embed(source="_resources/level2/X_Selected.png")]
+    [Embed(source="_resources/level2/x_Selected.png")]
     public static const X_SELECT:Class;
 
     [Embed(source="_resources/level2/start.png")]
