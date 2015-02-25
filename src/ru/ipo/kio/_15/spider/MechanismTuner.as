@@ -290,7 +290,10 @@ public class MechanismTuner extends Sprite {
             _slider.value = lengthByIndex(_changingInd);
     }
 
+    private var __tick:int = 0;
     private function animate_handler(e:Event):void {
+        if (__tick++ % 3 != 0)
+            return;
         _m.angle += 0.1;
     }
 

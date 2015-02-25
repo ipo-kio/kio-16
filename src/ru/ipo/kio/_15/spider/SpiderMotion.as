@@ -320,7 +320,10 @@ public class SpiderMotion extends Sprite {
             slider.value += problem.level == 0 ? 1 : 0.1;
     }
 
+    private var __tick:int = 0;
     private function enterFrameHandler(event:Event):void {
+        if (__tick++ % 3 != 0)
+            return;
         move_slider();
     }
 

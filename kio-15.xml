@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="kio-14" default="all">
+<project name="kio-15" default="all">
 
     <!--
         put smth like this in kio-1x.properties
@@ -74,86 +74,86 @@
     <!-- Modules -->
 
 
-    <!-- Module kio-14 -->
+    <!-- Module kio-15 -->
 
-    <dirname property="module.kio-14.basedir" file="${ant.file}"/>
+    <dirname property="module.kio-15.basedir" file="${ant.file}"/>
 
-    <property name="compiler.args.kio-14" value="${compiler.args}"/>
+    <property name="compiler.args.kio-15" value="${compiler.args}"/>
 
-    <property name="kio-14.output.dir" value="${module.kio-14.basedir}/out/production/kio-14-release"/>
-    <property name="kio-14.testoutput.dir" value="${module.kio-14.basedir}/out/test/kio-14"/>
+    <property name="kio-15.output.dir" value="${module.kio-15.basedir}/out/production/kio-15-release"/>
+    <property name="kio-15.testoutput.dir" value="${module.kio-15.basedir}/out/test/kio-15"/>
 
-    <path id="kio-14.module.bootclasspath">
+    <path id="kio-15.module.bootclasspath">
         <!-- Paths to be included in compilation bootclasspath -->
     </path>
 
-    <path id="kio-14.module.production.classpath"/>
+    <path id="kio-15.module.production.classpath"/>
 
-    <path id="kio-14.runtime.production.module.classpath">
-        <pathelement location="${kio-14.output.dir}"/>
+    <path id="kio-15.runtime.production.module.classpath">
+        <pathelement location="${kio-15.output.dir}"/>
     </path>
 
-    <path id="kio-14.module.classpath">
-        <pathelement location="${kio-14.output.dir}"/>
+    <path id="kio-15.module.classpath">
+        <pathelement location="${kio-15.output.dir}"/>
     </path>
 
-    <path id="kio-14.runtime.module.classpath">
-        <pathelement location="${kio-14.testoutput.dir}"/>
-        <pathelement location="${kio-14.output.dir}"/>
+    <path id="kio-15.runtime.module.classpath">
+        <pathelement location="${kio-15.testoutput.dir}"/>
+        <pathelement location="${kio-15.output.dir}"/>
     </path>
 
-    <patternset id="excluded.from.module.kio-14">
+    <patternset id="excluded.from.module.kio-15">
         <patternset refid="ignored.files"/>
     </patternset>
 
-    <patternset id="excluded.from.compilation.kio-14">
-        <patternset refid="excluded.from.module.kio-14"/>
+    <patternset id="excluded.from.compilation.kio-15">
+        <patternset refid="excluded.from.module.kio-15"/>
     </patternset>
 
-    <path id="kio-14.module.sourcepath">
-        <dirset dir="${module.kio-14.basedir}">
+    <path id="kio-15.module.sourcepath">
+        <dirset dir="${module.kio-15.basedir}">
             <include name="src"/>
         </dirset>
     </path>
 
-    <target name="compile.module.kio-14" depends="compile.module.kio-14.production,compile.module.kio-14.tests"
-            description="Compile module kio-14"/>
+    <target name="compile.module.kio-15" depends="compile.module.kio-15.production,compile.module.kio-15.tests"
+            description="Compile module kio-15"/>
 
-    <target name="compile.module.kio-14.production" description="Compile module kio-14; production classes">
-        <mkdir dir="${kio-14.output.dir}"/>
+    <target name="compile.module.kio-15.production" description="Compile module kio-15; production classes">
+        <mkdir dir="${kio-15.output.dir}"/>
 
-        <antcall target="compile.module.kio-14.production.level-language">
+        <antcall target="compile.module.kio-15.production.level-language">
             <param name="level" value="0"/>
             <param name="language" value="${compilation.language}"/>
         </antcall>
 
-        <antcall target="compile.module.kio-14.production.level-language">
+        <antcall target="compile.module.kio-15.production.level-language">
             <param name="level" value="1"/>
             <param name="language" value="${compilation.language}"/>
         </antcall>
 
-        <antcall target="compile.module.kio-14.production.level-language">
+        <antcall target="compile.module.kio-15.production.level-language">
             <param name="level" value="2"/>
             <param name="language" value="${compilation.language}"/>
         </antcall>
 
-        <!--<copy todir="${kio-14.output.dir}">
-            <fileset dir="${module.kio-14.basedir}/gpc_ex">
+        <!--<copy todir="${kio-15.output.dir}">
+            <fileset dir="${module.kio-15.basedir}/gpc_ex">
                 <patternset refid="compiler.resources"/>
                 <type type="file"/>
             </fileset>
         </copy>-->
     </target>
 
-    <target name="compile.module.kio-14.production.level-language"
+    <target name="compile.module.kio-15.production.level-language"
             description="Compile KIO for specific level and language">
-        <property name="level_lang.output.dir" value="${kio-14.output.dir}/KIO_${level}_${language}"/>
+        <property name="level_lang.output.dir" value="${kio-15.output.dir}/KIO_${level}_${language}"/>
         <property name="level_lang.output.file_name" value="KIO_${level}_${language}"/>
 
         <mkdir dir="${level_lang.output.dir}"/>
 
         <mxmlc
-                file="${module.kio-14.basedir}/src/ru/ipo/kio/_14/KIOShell.as"
+                file="${module.kio-15.basedir}/src/ru/ipo/kio/_15/KIOShell.as"
                 output="${level_lang.output.dir}/KIO.files/${level_lang.output.file_name}.swf"
                 keep-generated-actionscript="false"
                 actionscript-file-encoding="UTF-8"
@@ -164,11 +164,11 @@
                 use-network="false"
                 default-frame-rate="10"
                 >
-            <source-path path-element="${module.kio-14.basedir}/src"/>
+            <source-path path-element="${module.kio-15.basedir}/src"/>
             <define name="KIO::language" value="'${language}'"/>
             <define name="KIO::level" value="${level}"/>
             <default-size width="900" height="625"/>
-            <compiler.library-path dir="${module.kio-14.basedir}/lib/" append="true">
+            <compiler.library-path dir="${module.kio-15.basedir}/lib/" append="true">
                 <include name="components.swc"/>
                 <include name="framework.swc"/>
                 <include name="away3d-core-fp11_4_1_4.swc"/>
@@ -178,7 +178,7 @@
 
         <!-- -->
         <copy todir="${level_lang.output.dir}/KIO.files">
-            <fileset dir="${module.kio-14.basedir}/html-template"/>
+            <fileset dir="${module.kio-15.basedir}/html-template"/>
             <filterchain>
                 <tokenfilter>
                     <replacestring from="$${title}" to="KIO ${level} ${language}"/>
@@ -196,35 +196,35 @@
         </copy>
 
         <copy
-                file="${module.kio-14.basedir}/src/KIO.html"
+                file="${module.kio-15.basedir}/src/KIO.html"
                 todir="${level_lang.output.dir}"
                 description="copy index (main) html file to start contest"
                 />
 
         <move file="${level_lang.output.dir}/KIO.files/index.template.html" tofile="${level_lang.output.dir}/KIO.files/KIO_index.html"/>
 
-        <zip destfile="${kio-14.output.dir}/KIO_${level}_${language}.zip" description="zip for ${level} ${language}">
+        <zip destfile="${kio-15.output.dir}/KIO_${level}_${language}.zip" description="zip for ${level} ${language}">
             <fileset dir="${level_lang.output.dir}">
                 <exclude name="**/*.swf.cache"/>
             </fileset>
         </zip>
     </target>
 
-    <target name="compile.module.kio-14.tests" depends="compile.module.kio-14.production"
-            description="compile module kio-14; test classes" unless="skip.tests"/>
+    <target name="compile.module.kio-15.tests" depends="compile.module.kio-15.production"
+            description="compile module kio-15; test classes" unless="skip.tests"/>
 
-    <target name="clean.module.kio-14" description="cleanup module">
-        <delete dir="${kio-14.output.dir}"/>
-        <delete dir="${kio-14.testoutput.dir}"/>
+    <target name="clean.module.kio-15" description="cleanup module">
+        <delete dir="${kio-15.output.dir}"/>
+        <delete dir="${kio-15.testoutput.dir}"/>
     </target>
 
     <target name="init" description="Build initialization">
         <!-- Perform any build initialization in this target -->
     </target>
 
-    <target name="clean" depends="clean.module.kio-14" description="cleanup all"/>
+    <target name="clean" depends="clean.module.kio-15" description="cleanup all"/>
 
-    <target name="build.modules" depends="init, clean, compile.module.kio-14" description="build all modules"/>
+    <target name="build.modules" depends="init, clean, compile.module.kio-15" description="build all modules"/>
 
     <target name="all" depends="build.modules" description="build all"/>
 </project>
