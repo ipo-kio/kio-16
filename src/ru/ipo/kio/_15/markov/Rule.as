@@ -75,7 +75,9 @@ public class Rule extends BasicView{
     public function draw():void {
         clear();
 
-        var shiftX:int = 20;
+        addChildTo(createField(number + "", 20), 0, (SettingsManager.instance.tileHeight - 20) / 2);
+
+        var shiftX:int = 30;
 
         for each(var tile:MovingTile  in input) {
             tile.update();
@@ -94,10 +96,12 @@ public class Rule extends BasicView{
         }
 
 
-        addChildTo(createField(number + "", 20), 0, (SettingsManager.instance.tileHeight - 20) / 2);
+
+
+        var r:Rule = this;
 
         _deleteButton = ImageHolder.createButton(this, "X", Math.max(SettingsManager.instance.ruleWidth - 40, shiftX), 5, function () {
-            RuleManager.instance.rules.splice(RuleManager.instance.rules.indexOf(this), 1);
+            RuleManager.instance.rules.splice(RuleManager.instance.rules.indexOf(r), 1);
             RuleManager.instance.update();
         }, RuleManager.instance.level == 2 ? RuleManager.instance.api.localization.button.delete_rule : RuleManager.instance.api.localization.button.delete_direction);
 
@@ -195,7 +199,7 @@ public class Rule extends BasicView{
     }
 
     private function consumeList(list:Vector.<MovingTile>, ntile:MovingTile, x:int, y:int, move:Boolean=false):Boolean{
-        if(RuleManager.instance.level==0 && list.length>=3 && !hasFictive(list)){
+        if(RuleManager.instance.level!=2  && list.length>=3 && !hasFictive(list)){
             return false;
         }else {
             if(ntile.symbol.code=="X" || ntile.symbol.code=="x"){

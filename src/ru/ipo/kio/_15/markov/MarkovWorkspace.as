@@ -36,6 +36,9 @@ public class MarkovWorkspace extends BasicView  {
 
     private var _history = new Vector.<Ridge>();
 
+
+
+
     public function MarkovWorkspace(problem:KioProblem, level:int) {
         _api = KioApi.instance(problem);
         RuleManager.instance.api=_api;
@@ -60,7 +63,6 @@ public class MarkovWorkspace extends BasicView  {
             Symbol.getSymbol("(");
             Symbol.getSymbol(")");
             Symbol.getSymbol("0");
-            Symbol.getSymbol("2");
             Symbol.getSymbol("A");
             Symbol.getSymbol("B");
             Symbol.getSymbol("X");
@@ -352,7 +354,7 @@ public class MarkovWorkspace extends BasicView  {
 
         }else{
 
-            RuleManager.instance.result.ruleAmount = RuleManager.instance.rules.length;
+            RuleManager.instance.result.ruleAmount = RuleManager.instance.getRuleSize();
             var spRes =  makeResultPanel(RuleManager.instance.api.localization.label.solution, RuleManager.instance.result);
 
             var labelY:int = 5+2*SettingsManager.instance.ridgeHeight+SettingsManager.instance.ruleHeight;
@@ -412,21 +414,23 @@ public class MarkovWorkspace extends BasicView  {
         sprite.graphics.beginFill(0xFFFFFF, 0);
         sprite.graphics.drawRoundRect(0,0,300,80,40,40);
         sprite.graphics.endFill();
-        sprite.addChildTo(createField(header,12,0xFFFFFF), 5, 5);
+        sprite.addChildTo(createField(header,12,data.error?0xFF0000:0xFFFFFF), 5, 5);
         if(RuleManager.instance.level==0) {
             sprite.addChildTo(createField(RuleManager.instance.api.localization.label.difference + ": " + data.ridgeDiff, 12, 0xFFFFFF), 70, 5);
             sprite.addChildTo(createField(RuleManager.instance.api.localization.label.direction_amount + ": " + data.ruleAmount, 12, 0xFFFFFF), 70, 25);
             sprite.addChildTo(createField(RuleManager.instance.api.localization.label.algorithm_step + ": " + data.applyOperations, 12, 0xFFFFFF), 70, 45);
         }
         if(RuleManager.instance.level==2) {
-            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.example_amount + ": " + data.perc+"%", 12, 0xFFFFFF), 70, 5);
-            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.rule_amount + ": " + data.ruleAmount, 12, 0xFFFFFF), 70, 25);
-            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.algorithm_length + ": " + data.ruleLength, 12, 0xFFFFFF), 70, 45);
+            var perc:int = data.perc*100;
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.example_amount + ": " + perc/100+"%", 12, 0xFFFFFF), 65, 5);
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.rule_amount + ": " + data.ruleAmount, 12, 0xFFFFFF), 65, 25);
+//            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.algorithm_length + ": " + data.ruleLength, 12, 0xFFFFFF), 70, 45);
         }
         if(RuleManager.instance.level==1) {
             sprite.addChildTo(createField(RuleManager.instance.api.localization.label.wrongPair + ": " + data.wrongPair, 12, 0xFFFFFF), 70, 5);
-            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.direction_amount + ": " + data.ruleAmount, 12, 0xFFFFFF), 70, 25);
-            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.algorithm_step + ": " + data.applyOperations, 12, 0xFFFFFF), 70, 45);
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.wrongOrder + ": " + data.wrongOrder, 12, 0xFFFFFF), 70, 25);
+            sprite.addChildTo(createField(RuleManager.instance.api.localization.label.direction_amount + ": " + data.ruleAmount, 12, 0xFFFFFF), 70, 45);
+
         }
 
 
@@ -487,9 +491,21 @@ public class MarkovWorkspace extends BasicView  {
                         _correctRidge.tiles[i].select = true;
                     }
                 }
-                RuleManager.instance.result.ruleAmount = RuleManager.instance.rules.length;
+                RuleManager.instance.result.ruleAmount = RuleManager.instance.getRuleSize();
             }else if (RuleManager.instance.level==1){
                 var last:Tile = null;
+
+                if(RuleManager.instance.checkCorrect(_workingRidge)){
+                    RuleManager.instance.result.error=false;
+                }else{
+                    RuleManager.instance.result.error=true;
+                    return;
+                }
+
+
+
+
+
                 for (var i:int = 0; i < _workingRidge.tiles.length; i++) {
                     if(last!=null){
                         if((last.symbol.code=="l" || last.symbol.code=="L")
@@ -503,17 +519,19 @@ public class MarkovWorkspace extends BasicView  {
                     }
                     last=_workingRidge.tiles[i];
                 }
-                RuleManager.instance.result.ruleAmount = RuleManager.instance.rules.length;
+                RuleManager.instance.result.ruleAmount = RuleManager.instance.getRuleSize();
+                RuleManager.instance.result.wrongOrder = RuleManager.instance.getMinWrong(_workingRidge);
                 _workingRidge.select=true;
             }else{
                 var corCount:int = 0;
                 var allCount:int = 0;
+                wrong=null;
                 for each(var str:String in RuleManager.instance.examples){
                     var result = RuleManager.instance.correct(str);
                     if(result){
                         corCount++;
                     }else{
-                        if(wrong==null || wrong.length<str.length){
+                        if(wrong==null || wrong.length>str.length){
                             wrong=str;
                         }
                     }
@@ -532,7 +550,7 @@ public class MarkovWorkspace extends BasicView  {
                 RuleManager.instance.result.perc = 100*corCount/allCount;
                 RuleManager.instance.result.correctAmount = corCount;
 
-                RuleManager.instance.result.ruleAmount = RuleManager.instance.rules.length;
+                RuleManager.instance.result.ruleAmount = RuleManager.instance.getRuleSize();
 
                 RuleManager.instance.result.ruleLength = 0;
                 for each(var rule:Rule in RuleManager.instance.rules){
@@ -545,6 +563,8 @@ public class MarkovWorkspace extends BasicView  {
             _api.autoSaveSolution();
         }
     }
+
+
 
 
 

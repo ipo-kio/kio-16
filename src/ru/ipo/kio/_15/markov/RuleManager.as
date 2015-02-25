@@ -167,12 +167,6 @@ public class RuleManager extends BasicView {
 
             shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace;
 
-            var tile2:MovingTile = new MovingTile(Symbol.dictionary["2"]);
-            tile2.update();
-            addChildTo(tile2, 0, shiftY);
-
-            shiftY += SettingsManager.instance.tileHeight + SettingsManager.instance.smallSpace;
-
             var tile3:MovingTile = new MovingTile(Symbol.dictionary["A"]);
             tile3.update();
             addChildTo(tile3, 0, shiftY);
@@ -281,21 +275,26 @@ public class RuleManager extends BasicView {
         if(edit) {
             _simpleButton = ImageHolder.createButton(this, "+", SettingsManager.instance.areaWidth - 50 - (RuleManager.instance.level == 2 ? 26 : 16), SettingsManager.instance.ruleHeight + 11, function () {
                 rules.push(new Rule(_rules.length));
+                shouldDown = true;
                 update();
             }, level == 2 ? _api.localization.button.add_rule : _api.localization.button.add_direction);
 
             NormalButton(_simpleButton).enable(edit);
 
+            if(shouldDown) {
+                shouldDown=false;
+                try {
+                    _scrollPane.verticalScrollPosition = _scrollPane.maxVerticalScrollPosition;
+                } catch (e) {
 
-            try{
-                _scrollPane.verticalScrollPosition = _scrollPane.maxVerticalScrollPosition;
-            }catch (e){
-
+                }
             }
 
         }
 
     }
+
+    private var shouldDown:Boolean = false;
 
     public function move(tile:MovingTile):void {
         verticalPosition=_scrollPane.verticalScrollPosition;
@@ -430,21 +429,20 @@ public class RuleManager extends BasicView {
     public function loadExamples():void {
         //первые пять пользователь будет видеть
 
-        _examples.push("1+1-1+1-1+1+1-1");
         _examples.push("1-1+1-1+1");
-        _examples.push("1+1+1-1-1");
-        _examples.push("(1-1+1)+(1+1-1)");
-        _examples.push("1+(((1-1)-1)+1)");
+        _examples.push("-1-1-1+1+1");
+        _examples.push("(1-1-1)+1-0");
+        _examples.push("(0-1)-(1+1)+(-1-1)");
+        _examples.push("1-(((1-1)-1)+1)");
 
         var example:String = "";
-        while (_examples.length<200){
+        while (_examples.length<300){
             if(example.indexOf("ex")<0){
                 var parser:MathParser = new MathParser([]);
                 var compiledObj:CompiledObject = parser.doCompile(example);
                 var answer:Number = parser.doEval(compiledObj.PolishArray, []);
-                if(_examples.indexOf(example)<0 && ( answer==0 || answer==1 || answer==2  || answer==-1  || answer==-2 )){
+                if(_examples.indexOf(example)<0 && ( answer==0 || answer==1 || answer==-1)){
                     _examples.push(example);
-                    trace(_examples.length+": "+ example);
                 }
                 example = "";
             }else if(example.length>20){
@@ -545,6 +543,16 @@ public class RuleManager extends BasicView {
 
     }
 
+    public function getRuleSize():int{
+        var sum:int=0;
+        for each(var rule:Rule in rules){
+            if(!rule.empty){
+                sum++;
+            }
+        }
+        return sum;
+    }
+
     public function submitResult(ridge:Ridge, template:Ridge):void {
         if(RuleManager._instance.level==0) {
             var temp:Ridge = ridge.clone();
@@ -560,7 +568,7 @@ public class RuleManager extends BasicView {
                 }
             }
 
-            RuleManager.instance.result.ruleAmount = RuleManager.instance.rules.length;
+            RuleManager.instance.result.ruleAmount = getRuleSize();
 
             api.submitResult(RuleManager.instance.result.clone());
 
@@ -580,7 +588,7 @@ public class RuleManager extends BasicView {
            RuleManager.instance.result.perc = 100*corCount/allCount;
             RuleManager.instance.result.correctAmount = corCount;
 
-            RuleManager.instance.result.ruleAmount = RuleManager.instance.rules.length;
+            RuleManager.instance.result.ruleAmount = getRuleSize();
 
             RuleManager.instance.result.ruleLength = 0;
             for each(var rule:Rule in RuleManager.instance.rules){
@@ -596,23 +604,33 @@ public class RuleManager extends BasicView {
                 }
             }
 
-
-            var last:Tile = null;
-            for (var i:int = 0; i < temp.tiles.length; i++) {
-                if(last!=null){
-                    if((last.symbol.code=="l" || last.symbol.code=="L")
-                            &&(temp.tiles[i].symbol.code=="k" || temp.tiles[i].symbol.code=="K")){
-                        RuleManager.instance.result.wrongPair++;
+            if(checkCorrect(temp)){
+                RuleManager.instance.result.error=false;
+                var last:Tile = null;
+                for (var i:int = 0; i < temp.tiles.length; i++) {
+                    if(last!=null){
+                        if((last.symbol.code=="l" || last.symbol.code=="L")
+                                &&(temp.tiles[i].symbol.code=="k" || temp.tiles[i].symbol.code=="K")){
+                            RuleManager.instance.result.wrongPair++;
+                        }
+                        if((last.symbol.code=="k" || last.symbol.code=="K")
+                                &&(temp.tiles[i].symbol.code=="l" || temp.tiles[i].symbol.code=="L")){
+                            RuleManager.instance.result.wrongPair++;
+                        }
                     }
-                    if((last.symbol.code=="k" || last.symbol.code=="K")
-                            &&(temp.tiles[i].symbol.code=="l" || temp.tiles[i].symbol.code=="L")){
-                        RuleManager.instance.result.wrongPair++;
-                    }
+                    last=temp.tiles[i];
                 }
-                last=temp.tiles[i];
+
+                RuleManager.instance.result.ruleAmount = getRuleSize();
+                RuleManager.instance.result.wrongOrder = getMinWrong(temp);
+
+            }else{
+                RuleManager.instance.result.error=true;
+                return;
             }
 
-            RuleManager.instance.result.ruleAmount = RuleManager.instance.rules.length;
+
+
 
             api.submitResult(RuleManager.instance.result.clone());
 
@@ -621,5 +639,53 @@ public class RuleManager extends BasicView {
 
 
     }
+
+    public function getMinWrong(temp:Ridge):int {
+      var d1:int=0;
+      var d2:int=0;
+        for(var i:int=0; i<temp.tiles.length; i++){
+            if(temp.tiles[i].symbol.code!=""+level1Cor1.charAt(i)){
+                d1++;
+            }
+            if(temp.tiles[i].symbol.code!=""+level1Cor2.charAt(i)){
+                d2++;
+            }
+        }
+      return Math.min(d1,d2);
+    }
+
+
+
+    public function checkCorrect(ridge:Ridge):Boolean {
+        return getNum("K",ridge) == getNumStr("K") && getNum("L",ridge) == getNumStr("L")
+                && getNum("k",ridge) == getNumStr("k") && getNum("l",ridge) == getNumStr("l")
+                && level1Initial.length == ridge.tiles.length;
+    }
+
+    private function getNumStr(s:String):int {
+        var res:int=0;
+        for(var i:int=0; i<level1Initial.length; i++){
+            if(s==""+level1Initial.charAt(i)){
+                res++;
+            }
+        }
+        return res;
+    }
+
+    private function getNum(s:String, ridge:Ridge):int {
+        var res:int=0;
+        for each(var tile:Tile in ridge.tiles) {
+            if(tile.symbol.code==s){
+                res++;
+            }
+        }
+        return res;
+    }
+
+    private var level1Cor1:String="lLLlLllKkKkkkK";
+
+    private var level1Cor2:String="KkKkkkKlLLlLll";
+
+    private var level1Initial:String="lKLkLKlkLklklK";
 }
 }

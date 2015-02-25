@@ -97,20 +97,26 @@ public class MarkovProblem implements KioProblem {
         if(RuleManager.instance.level==2){
             if(r1.correctAmount!=r2.correctAmount){
                 return getSign(r1.correctAmount-r2.correctAmount);
-            }else if(r1.ruleAmount!=r2.ruleAmount){
+            }else {
                 return getSign(r2.ruleAmount-r1.ruleAmount);
-            }else{
-                return getSign(r2.ruleLength-r1.ruleLength);
             }
         }
 
         if(RuleManager.instance.level==1){
+
+            if (r1.error){
+                return !r2.error ? -1 : 0;
+            } else if (r2.error){
+                return 1;
+            }
+
+
             if(r1.wrongPair!=r2.wrongPair){
                 return getSign(r2.wrongPair-r1.wrongPair);
-            }else if(r1.ruleAmount!=r2.ruleAmount){
-                return getSign(r2.ruleAmount-r1.ruleAmount);
+            }else if(r1.wrongOrder!=r2.wrongOrder){
+                return getSign(r2.wrongOrder-r1.wrongOrder);
             }else{
-                return getSign(r2.applyOperations-r1.applyOperations);
+                return getSign(r2.ruleAmount-r1.ruleAmount);
             }
         }
 
