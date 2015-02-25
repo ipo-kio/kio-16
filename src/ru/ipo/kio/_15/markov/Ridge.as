@@ -59,7 +59,7 @@ public class Ridge extends BasicView{
 
             var mod:int = _tiles.indexOf(tile)%2;
 
-            if(select && last!=null && last.symbol.code!=tile.symbol.code){
+            if(select && last!=null && last.symbol.code.toLowerCase()!=tile.symbol.code.toLowerCase()){
                 glass.graphics.lineStyle(2,0x990033);
                 if(mod==1) {
                     glass.graphics.drawRect(shift - SettingsManager.instance.tileWidth - 1, spaceY+5, (SettingsManager.instance.tileWidth + 2) * 2, SettingsManager.instance.tileHeight);
