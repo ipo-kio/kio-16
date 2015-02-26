@@ -6,6 +6,8 @@ import flash.display.SimpleButton;
 import flash.events.Event;
 import flash.events.MouseEvent;
 
+import ru.ipo.kio.api.KioApi;
+
 public class Rule extends BasicView{
 
     /**
@@ -86,7 +88,8 @@ public class Rule extends BasicView{
         }
 
         shiftX += 20;
-        addChildTo(createField("заменить на", 16), shiftX, (SettingsManager.instance.tileHeight - 16) / 2);
+        //TODO move to localization
+        addChildTo(createField(KioApi.language == KioApi.L_RU ? "заменить на" : "แทนด้วย", 16), shiftX, (SettingsManager.instance.tileHeight - 16) / 2);
         shiftX += 105;
 
         for each(var tile:MovingTile  in output) {

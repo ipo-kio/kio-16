@@ -207,9 +207,9 @@ KkKkkkKrRRrRrr(อักษรตัวเล็กและใหญ่หม�
 "record": "ผลบันทึก",
 
 "difference": "แตกต่าง",
-"direction_amount": "ทิศทาง",
+"direction_amount": "จำนวนครั้งของคำสั่ง",
 "pair_amount": "คู่อันดับ",
-"algorithm_step": "ลำดับขั้นตอน",
+"algorithm_step": "จำนวนที่แทน",
 
 "example_amount": "ตัวอย่าง",
 "rule_amount": "เงื่อนไขตัวเลข",
@@ -218,7 +218,7 @@ KkKkkkKrRRrRrr(อักษรตัวเล็กและใหญ่หม�
 "wrongPair": "ผิดคู่อันดับ",
 "wrongOrder": "คำสั่งผิด",
 
-"warning": " chnages performed. Infinite loop is probable.\n You may proceed or stop."
+"warning": " changes performed. Infinite loop is probable.\n You may proceed or stop."
 },
 
 "button": {
