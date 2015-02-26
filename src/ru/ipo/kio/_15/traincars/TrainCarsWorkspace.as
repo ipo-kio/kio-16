@@ -116,6 +116,8 @@ public class TrainCarsWorkspace extends Sprite {
     public static var TOP_END_TICK:int;
     public static var WAY_START_TICK:int;
 
+    public static var MAIN_FONT:String = 'KioArial';
+
     private var background:Sprite = new Sprite();
     private var cars:Sprite = new Sprite();
     private var otherObjects:Sprite = new Sprite();
@@ -144,6 +146,10 @@ public class TrainCarsWorkspace extends Sprite {
     public function TrainCarsWorkspace(problem:KioProblem) {
         _api = KioApi.instance(problem);
         _problem = problem;
+
+        if (KioApi.language == KioApi.L_TH)
+            MAIN_FONT = 'KioTahoma';
+
         draw();
         putButtons();
 
@@ -317,9 +323,9 @@ public class TrainCarsWorkspace extends Sprite {
             case 2: labels = [_api.localization.correct, _api.localization.transpositions, _api.localization.uphill_steps, _api.localization.downhill_steps]; break;
         }
 
-        _info_current = new InfoPanel('KioArial', true, 14, 0x000000, 0x222222, 0x880000, 1.2, _api.localization.solution, labels, 140);
+        _info_current = new InfoPanel(MAIN_FONT, true, 14, 0x000000, 0x222222, 0x880000, 1.2, _api.localization.solution, labels, 140);
 
-        _info_record = new InfoPanel('KioArial', true, 14, 0x000000, 0x222222, 0x880000, 1.2, _api.localization.record, labels, 140);
+        _info_record = new InfoPanel(MAIN_FONT, true, 14, 0x000000, 0x222222, 0x880000, 1.2, _api.localization.record, labels, 140);
 
         otherObjects.addChild(_info_current);
         otherObjects.addChild(_info_record);
@@ -330,20 +336,20 @@ public class TrainCarsWorkspace extends Sprite {
     }
 
     private function putButtons():void {
-        var b01:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up1*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
-        var b02:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up2*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
-        var b03:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up3*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
-        var b04:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up4*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, 'KioArial', 20, 20);
-        var b1:GraphicsButton = new GraphicsButton(_api.localization.buttons.down1, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 1, 0, -6, false, 0xFFFFFF, true);
-        var b2:GraphicsButton = new GraphicsButton(_api.localization.buttons.down2, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 1, 0, -6, false, 0xFFFFFF, true);
-        var b3:GraphicsButton = new GraphicsButton(_api.localization.buttons.down3, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 1, 0, -6, false, 0xFFFFFF, true);
-        var b4:GraphicsButton = new GraphicsButton(_api.localization.buttons.down4, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, 'KioArial', 20, 20, 0, 1, 0, -6, false, 0xFFFFFF, true);
+        var b01:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up1*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, MAIN_FONT, 20, 20);
+        var b02:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up2*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, MAIN_FONT, 20, 20);
+        var b03:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up3*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, MAIN_FONT, 20, 20);
+        var b04:GraphicsButton = new GraphicsButton(/*_api.localization.buttons.up4*/"", TOP_UP_IMG, TOP_OVER_IMG, TOP_DOWN_IMG, MAIN_FONT, 20, 20);
+        var b1:GraphicsButton = new GraphicsButton(_api.localization.buttons.down1, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, MAIN_FONT, 20, 20, 0, 1, 0, -6, false, 0xFFFFFF, true);
+        var b2:GraphicsButton = new GraphicsButton(_api.localization.buttons.down2, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, MAIN_FONT, 20, 20, 0, 1, 0, -6, false, 0xFFFFFF, true);
+        var b3:GraphicsButton = new GraphicsButton(_api.localization.buttons.down3, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, MAIN_FONT, 20, 20, 0, 1, 0, -6, false, 0xFFFFFF, true);
+        var b4:GraphicsButton = new GraphicsButton(_api.localization.buttons.down4, WAY_UP_IMG, WAY_OVER_IMG, WAY_DOWN_IMG, MAIN_FONT, 20, 20, 0, 1, 0, -6, false, 0xFFFFFF, true);
 
-        var bu:GraphicsButton = new GraphicsButton(_api.localization.buttons.undo, UNDO_2_IMG, UNDO_1_IMG, UNDO_3_IMG, 'KioArial', 14, 14, 0, 0, 0, 37, false, 0, true);
+        var bu:GraphicsButton = new GraphicsButton(_api.localization.buttons.undo, UNDO_2_IMG, UNDO_1_IMG, UNDO_3_IMG, MAIN_FONT, 14, 14, 0, 0, 0, 37, false, 0, true);
 
-        var ba_on:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_on, ANIMATIONN_1_IMG, ANIMATIONN_2_IMG, ANIMATIONN_3_IMG, 'KioArial', 14, 14, 0, 0, 28, 3, false, 0, true);
-        var ba_off:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_off, ANIMATION_1_IMG, ANIMATION_2_IMG, ANIMATION_3_IMG, 'KioArial', 14, 14, 0, 0, 28, 3, false, 0, true);
-        var b_cl:GraphicsButton = new GraphicsButton(_api.localization.buttons.clear, CLEAR_0_IMG, CLEAR_1_IMG, CLEAR_2_IMG, 'KioArial', 14, 14, 0, 0, -28, 3, false, 0, true);
+        var ba_on:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_on, ANIMATIONN_1_IMG, ANIMATIONN_2_IMG, ANIMATIONN_3_IMG, MAIN_FONT, 14, 14, 0, 0, 28, 3, false, 0, true);
+        var ba_off:GraphicsButton = new GraphicsButton(_api.localization.buttons.a_off, ANIMATION_1_IMG, ANIMATION_2_IMG, ANIMATION_3_IMG, MAIN_FONT, 14, 14, 0, 0, 28, 3, false, 0, true);
+        var b_cl:GraphicsButton = new GraphicsButton(_api.localization.buttons.clear, CLEAR_0_IMG, CLEAR_1_IMG, CLEAR_2_IMG, MAIN_FONT, 14, 14, 0, 0, -28, 3, false, 0, true);
 
         otherObjects.addChild(b01);
         otherObjects.addChild(b02);

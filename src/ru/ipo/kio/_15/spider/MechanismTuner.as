@@ -235,7 +235,7 @@ public class MechanismTuner extends Sprite {
 
         addChild(err_button);
 
-        useSettingButton = new GraphicsButton(api.localization.apply, USE_SETTINGS_BUTTON_1_IMG, USE_SETTINGS_BUTTON_2_IMG, USE_SETTINGS_BUTTON_3_IMG, 'KioArial', 14, 14, 0, 0, 50, 18, true, 0, true);
+        useSettingButton = new GraphicsButton(api.localization.apply, USE_SETTINGS_BUTTON_1_IMG, USE_SETTINGS_BUTTON_2_IMG, USE_SETTINGS_BUTTON_3_IMG, SpiderWorkspace.MAIN_FONT, 14, 14, 0, 0, 50, 18, true, 0, true);
         addChild(useSettingButton);
         useSettingButton.x = -316;
         useSettingButton.y = -90;
@@ -255,7 +255,7 @@ public class MechanismTuner extends Sprite {
         var x0:Number = err_button.width / 2 - 2 + err_button.x;
         var y0:Number = err_button.height / 2 + err_button.y;
 
-        var textFormat:TextFormat = new TextFormat('KioArial', 14, 0xE30C0C, true);
+        var textFormat:TextFormat = new TextFormat(SpiderWorkspace.MAIN_FONT, 14, 0xE30C0C, true);
         var t1:TextField = new TextField();
         t1.defaultTextFormat = textFormat;
         t1.embedFonts = true;

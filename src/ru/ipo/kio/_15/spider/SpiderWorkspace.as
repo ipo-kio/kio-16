@@ -51,9 +51,14 @@ public class SpiderWorkspace extends Sprite {
 
     private var empty_ls:Vector.<Number>;
 
+    public static var MAIN_FONT:String = 'KioArial';
+
     public function SpiderWorkspace(problem:KioProblem) {
         api = KioApi.instance(problem);
         this.problem = problem;
+
+        if (KioApi.language == KioApi.L_TH)
+            MAIN_FONT = 'KioTahoma';
 
         var mask:Sprite = new Sprite();
         mask.graphics.beginFill(0);
@@ -103,7 +108,7 @@ public class SpiderWorkspace extends Sprite {
 
         //buttons
 
-        var bigSpiderButton:GraphicsButton = new GraphicsButton('', HELP_BUTTON_1_IMG, HELP_BUTTON_2_IMG, HELP_BUTTON_3_IMG, 'KioArial', 24, 24);
+        var bigSpiderButton:GraphicsButton = new GraphicsButton('', HELP_BUTTON_1_IMG, HELP_BUTTON_2_IMG, HELP_BUTTON_3_IMG, MAIN_FONT, 24, 24);
         addChild(bigSpiderButton);
         bigSpiderButton.x = 62;
         bigSpiderButton.y = 532;
@@ -115,7 +120,7 @@ public class SpiderWorkspace extends Sprite {
 
     private function init_info_panels():void {
         current_info = new InfoPanel(
-                'KioArial', true, 16, 0x727272, 0x212121, 0x0086EF, 1.5, api.localization.solution, [
+                MAIN_FONT, true, 16, 0x727272, 0x212121, 0x0086EF, 1.5, api.localization.solution, [
                     api.localization.finished,
                     api.localization.time,
                     api.localization.material
@@ -127,7 +132,7 @@ public class SpiderWorkspace extends Sprite {
         current_info.y = 40;
 
         record_info = new InfoPanel(
-                'KioArial', true, 16, 0x727272, 0x212121, 0x0086EF, 1.5, api.localization.record, [
+                MAIN_FONT, true, 16, 0x727272, 0x212121, 0x0086EF, 1.5, api.localization.record, [
                     api.localization.finished,
                     api.localization.time,
                     api.localization.material
