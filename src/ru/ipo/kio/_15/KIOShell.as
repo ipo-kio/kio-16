@@ -49,7 +49,7 @@ public class KIOShell extends Sprite {
         KioBase.instance.init(this,
                 [
                     new TrainCarsProblem(level),
-                    new MarkovProblem(stage, level),
+                    new MarkovProblem(stage, level == 1 ? 2 : level),
                     new SpiderProblem(level)
                 ],
                 2015,

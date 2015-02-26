@@ -14,7 +14,7 @@ public class MarkovProblem implements KioProblem {
     [Embed(source="loc/markov.ru.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
 
-    [Embed(source="loc/markov.ru.json-settings",mimeType="application/octet-stream")]
+    [Embed(source="loc/markov.th.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_TH:Class;
 
     [Embed(source="_resources/icon-calc.png")]
