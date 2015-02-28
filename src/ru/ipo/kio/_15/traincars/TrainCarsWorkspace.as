@@ -593,13 +593,16 @@ public class TrainCarsWorkspace extends Sprite {
         _downhill_steps = 0;
         _positions.clear();
 
-        if (!__loading)
+        if (!__loading) {
             _api.autoSaveSolution();
+            updateSemaphores();
+            currentResultUpdate();
+        }
         _api.log('clear');
     }
 
     public function solution():Object {
-        var res:Vector.<int> = new <int>[];
+        var res:Array = [];
 
         for (var i:int = 0; i < _undo_list.length; i++)
             res.push(_undo_list[i].shortRepresentation);
@@ -613,11 +616,15 @@ public class TrainCarsWorkspace extends Sprite {
         if (solution == null)
             return false;
 
+        var a:* = solution.a;
+        if (!(a is Array)) {
+            trace('do not load broken solution');
+            return false;
+        }
+
         __loading = true;
 
         clear();
-
-        var a:Vector.<int> = solution.a;
 
         for (var i:int = 0; i < a.length; i++) {
             var ma:MovingAction = MovingAction.createFromShortRepresentation(a[i], _positions);
@@ -634,6 +641,7 @@ public class TrainCarsWorkspace extends Sprite {
         __loading = false;
 
         updateSemaphores();
+        currentResultUpdate();
 
         _api.submitResult(result);
         _api.autoSaveSolution();

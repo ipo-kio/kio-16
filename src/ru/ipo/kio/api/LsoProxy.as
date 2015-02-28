@@ -228,8 +228,6 @@ public class LsoProxy {
         }
 
         var result:String = anketa.surname + ' ' + name + ' ' + s_name;
-        if (showInstitution)
-            result += ' ' + anketa.inst_name + ' ' + anketa.grade;
         return  result;
     }
 

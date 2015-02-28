@@ -180,8 +180,15 @@ public class SpiderWorkspace extends Sprite {
 
     public function get solution():Object {
         return {
-            ls: m.ls
+            ls: vectorToArray(m.ls)
         };
+    }
+
+    private static function vectorToArray(ls:Vector.<Number>):Array {
+        var res:Array = [];
+        for each (var number:Number in ls)
+            res.push(number);
+        return res;
     }
 
     public function get result():Object {
@@ -192,18 +199,27 @@ public class SpiderWorkspace extends Sprite {
         if (solution == null)
             return false;
 
-        var ls:Vector.<Number> = solution.ls;
-        if (ls == null)
+        var ls:* = solution.ls;
+        if ((ls == null) || !(ls is Array)) {
+            trace("failed to load broken solution");
             return false;
+        }
 
-        mt.ls = ls;
+        mt.ls = arrayToVector(ls);
         mt.useSettingButtonHandler();
 
         return true;
     }
 
+    private static function arrayToVector(ls:Array):Vector.<Number> {
+        var res:Vector.<Number> = new <Number>[];
+        for each (var i:Number in ls)
+            res.push(i);
+        return res;
+    }
+
     public function clear():void {
-        loadSolution({ls: empty_ls});
+        loadSolution({ls: vectorToArray(empty_ls)});
     }
 }
 }
