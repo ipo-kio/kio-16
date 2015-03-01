@@ -617,7 +617,7 @@ public class TrainCarsWorkspace extends Sprite {
             return false;
 
         var a:* = solution.a;
-        if (!(a is Array || a is Vector)) {
+        if (!(a is Array || a is Vector.<int>)) {
             trace('do not load broken solution');
             return false;
         }
