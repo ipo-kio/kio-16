@@ -30,7 +30,7 @@ public class MarkovProblem implements KioProblem {
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
 
 
-        _workspace = new MarkovWorkspace(this, level);
+        _workspace = new MarkovWorkspace(this, level, stage);
     }
 
     public function get id():String {
