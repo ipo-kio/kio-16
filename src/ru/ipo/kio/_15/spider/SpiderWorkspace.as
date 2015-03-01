@@ -200,12 +200,12 @@ public class SpiderWorkspace extends Sprite {
             return false;
 
         var ls:* = solution.ls;
-        if ((ls == null) || !(ls is Array)) {
+        if ((ls == null) || !(ls is Array || ls is Vector)) {
             trace("failed to load broken solution");
             return false;
         }
 
-        mt.ls = arrayToVector(ls);
+        mt.ls = ls is Vector ? ls : arrayToVector(ls);
         mt.useSettingButtonHandler();
 
         return true;
