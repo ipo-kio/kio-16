@@ -52,6 +52,9 @@ public class Ridge extends BasicView{
         var spaceY:int = (SettingsManager.instance.ridgeHeight - SettingsManager.instance.tileHeight)/2;
         var spaceX:int = SettingsManager.instance.ridgeWidth-SettingsManager.instance.tileAmount*(SettingsManager.instance.tileWidth+1);
         var shift:int = spaceX/2;
+        if(RuleManager.instance.level==2){
+            shift=0;
+        }
         var last:Tile = null;
         for each(var tile:Tile in _tiles){
             tile.update();
