@@ -4,6 +4,7 @@
 package ru.ipo.kio._15.markov {
 import flash.display.SimpleButton;
 import flash.display.Sprite;
+import flash.display.Stage;
 import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.events.TimerEvent;
@@ -40,9 +41,11 @@ public class MarkovWorkspace extends BasicView  {
 
 
 
+    private var _stage:Stage;
 
-    public function MarkovWorkspace(problem:KioProblem, level:int) {
+    public function MarkovWorkspace(problem:KioProblem, level:int, stage:Stage) {
         _api = KioApi.instance(problem);
+        _stage=stage;
         RuleManager.instance.api=_api;
         RuleManager.instance.level=level;
         SettingsManager.instance.level=level;
@@ -397,6 +400,11 @@ public class MarkovWorkspace extends BasicView  {
 
         updateRecord();
 
+        if(RuleManager.instance.level==2){
+            _stage.focus = _userField;
+            _userField.setSelection(_userField.length, _userField.length);
+        }
+
         if(showWarning){
             showWarningSp();
         }
@@ -421,6 +429,8 @@ public class MarkovWorkspace extends BasicView  {
             labelY-=65;
         }
         addChildTo(recordSprite, 70, labelY);
+
+
 
     }
 
