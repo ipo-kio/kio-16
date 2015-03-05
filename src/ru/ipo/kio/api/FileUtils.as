@@ -165,8 +165,6 @@ public class FileUtils {
                 var solUTF:String = data.readUTFBytes(data.length);
 //                try {
                 var allData:* = JSON_k.decode(solUTF);
-                var save_id:String = allData.save_id;
-                KioBase.instance.log("Loading all solutions from file@t", [save_id]);
                 /*} catch (error:Error) {
                     //TODO show error message
                     trace('failed to load all data');

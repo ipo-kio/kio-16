@@ -356,6 +356,9 @@ public class KioBase {
         var lso:LsoProxy = KioBase.instance.lsoProxy;
         lso.userData = data;
 
+        var save_id:String = data.save_id;
+        KioBase.instance.log("Loading all solutions from file@t", [save_id]);
+
         if (_currentProblem)
             currentProblem = _currentProblem;
         else
@@ -386,6 +389,10 @@ public class KioBase {
         if (!global.log) {
             global.log = {};
 
+            lso.flush();
+        }
+
+        if (!(log_id in global.log)) {
             global.log[log_id] = {
                 dict: {},
                 data: new ByteArray,
@@ -394,6 +401,7 @@ public class KioBase {
                 last_log_time: 0, //last logged value, accurate to 10 ms
                 machine_info: LsoProxy.machineInfo
             };
+
             lso.flush();
         }
 
