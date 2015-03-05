@@ -150,6 +150,11 @@ public class KioApi extends EventDispatcher {
         lso.flush();
     }
 
+    public function saveBestSolutionResult(result:Object):void {
+        problemData.best_result = result;
+        lso.flush();
+    }
+
     /**
      * Возвращает задачу, соответствующую этому api
      */
@@ -171,6 +176,7 @@ public class KioApi extends EventDispatcher {
         if (_record_result == null || _problem.compare(result, _record_result) > 0) {
             _record_result = result;
             saveBestSolution();
+            saveBestSolutionResult(result);
 
             //log record if needed
             if (!KioBase.instance.baseIsPreparingAProblem) {
