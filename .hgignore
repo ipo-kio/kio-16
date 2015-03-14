@@ -1,5 +1,5 @@
 ^out/
-^.idea/workspace.xml
+.idea/workspace.xml
 ^bin-debug
 ^solutions/
 ^kio-\d+\.properties$

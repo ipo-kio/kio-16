@@ -21,7 +21,6 @@ public class SolutionsFile {
     private JsonNode root;
 
     private final Map<String, JsonObjectsComparator> id2comp = new HashMap<>();
-    ;
 
     public SolutionsFile(File file, int level, KioProblemSet problemSet) {
         this.problemSet = problemSet;
