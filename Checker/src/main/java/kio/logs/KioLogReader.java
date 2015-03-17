@@ -20,9 +20,9 @@ public class KioLogReader {
 
     public KioLogReader(File input) {
         ObjectMapper mapper = new ObjectMapper();
-        JsonFactory jfactory = mapper.getFactory();
+        JsonFactory jsonFactory = mapper.getFactory();
 
-        try (JsonParser p = jfactory.createParser(input)) {
+        try (JsonParser p = jsonFactory.createParser(input)) {
             root = p.readValueAsTree();
         } catch (IOException e) {
             root = null;
@@ -31,36 +31,32 @@ public class KioLogReader {
     }
 
     public void go(LogParserHandler handler) {
-        JsonNode kioBase = root.get("kio_base");
+        try {
+            JsonNode kioBase = root.get("kio_base");
 
-        if (kioBase == null)
-            return;
+            if (kioBase == null)
+                return;
 
-        JsonNode logBase = kioBase.get("log");
+            JsonNode logBase = kioBase.get("log");
 
-        if (logBase == null)
-            return;
+            if (logBase == null)
+                return;
 
-        Iterator<Map.Entry<String, JsonNode>> fields = logBase.fields();
-        while (fields.hasNext()) {
-            Map.Entry<String, JsonNode> next = fields.next();
-            outputLogWithMachineInfo(next.getKey(), next.getValue(), handler);
+            Iterator<Map.Entry<String, JsonNode>> fields = logBase.fields();
+            while (fields.hasNext()) {
+                Map.Entry<String, JsonNode> next = fields.next();
+                outputLogWithMachineInfo(next.getKey(), next.getValue(), handler);
+            }
+        } catch (Exception e) {
+            System.err.println("Error while parsing: " + e.getMessage());
         }
     }
 
-    private void outputLogWithMachineInfo(String logId, JsonNode log, LogParserHandler handler) {
-        /*
-        out.println("OS:             " + info.get("os"));
-        out.println("Manufacturer:   " + info.get("manufacturer"));
-        out.println("CPU:            " + info.get("cpu"));
-        out.println("Player version: " + info.get("version"));
-        out.println("Language:       " + info.get("language"));
-        out.println("Player type:    " + info.get("playerType"));
-        out.println("DPI:            " + info.get("dpi"));
-        out.println("Screen width:   " + info.get("screenWidth"));
-        out.println("Screen height:  " + info.get("screenHeight"));
-        */
+    public void go(RecordHandler handler) {
+        go(new RecordExtractor(handler));
+    }
 
+    private void outputLogWithMachineInfo(String logId, JsonNode log, LogParserHandler handler) {
         JsonNode info = log.get("machine_info");
 
         JsonNode osNode = info.get("os");
@@ -88,5 +84,4 @@ public class KioLogReader {
         LogParser logParser = new LogParser();
         logParser.parse(log, handler);
     }
-
 }

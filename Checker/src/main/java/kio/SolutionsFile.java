@@ -4,15 +4,13 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import kio.checker.KioProblemChecker;
 import kio.logs.KioLogReader;
-import kio.logs.LogParserHandler;
-import kio.logs.MachineInfo;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SolutionsFile {
 
@@ -21,8 +19,9 @@ public class SolutionsFile {
     private JsonNode root;
 
     private final Map<String, JsonObjectsComparator> id2comp = new HashMap<>();
+    private final Map<String, KioProblemChecker> id2checker = new HashMap<>();
 
-    public SolutionsFile(File file, int level, KioProblemSet problemSet) {
+    public SolutionsFile(File file, int level, KioProblemSet problemSet) throws IOException {
         this.problemSet = problemSet;
 
         this.level = level;
@@ -33,82 +32,92 @@ public class SolutionsFile {
             root = p.readValueAsTree();
 
             //fill id2comp
-            for (String pid : problemSet.getProblemIds(level))
-                id2comp.put(pid, problemSet.comparator(level, pid));
+            List<String> problemIds = problemSet.getProblemIds(level);
+
+            for (String pid : problemIds)
+                id2comp.put(pid, problemSet.getComparator(level, pid));
+
+            for (String pid : problemIds)
+                id2checker.put(pid, problemSet.getChecker(level, pid));
         } catch (IOException e) {
-            root = null;
+            throw new IOException("Failed to read JSON in file", e);
         }
     }
 
     public Map<String, JsonNode> getProblemsSolutions() {
-
+        return getProblemsNodes("best");
     }
 
     public Map<String, JsonNode> getProblemsResults() {
-        if (root == null)
-            return Collections.emptyMap();
+        return getProblemsNodes("best_result");
+    }
 
-        Map<String, JsonNode> res = new HashMap<>();
+    public Map<String, List<JsonNode>> getLogSolutions() {
+        final Map<String, List<JsonNode>> res = new HashMap<>();
 
-        List<String> problemIds = problemSet.getProblemIds(level);
-        for (String problemId : problemIds) {
-            JsonNode problemNode = root.get(problemId);
-            if (problemNode == null)
-                continue;
-            JsonNode bestResultNode = problemNode.get("best_result");
-            if (bestResultNode == null)
-                continue;
+        new KioLogReader(root).go((problemID, solution, result) -> {
+            List<JsonNode> nodes = res.get(problemID);
+            if (nodes == null) {
+                nodes = new ArrayList<>();
+                res.put(problemID, nodes);
+            }
 
-            res.put(problemId, bestResultNode);
-        }
+            nodes.add(solution);
+        });
 
         return res;
     }
 
     public Map<String, JsonNode> getLogResults() {
-        if (root == null)
-            return Collections.emptyMap();
-
         final Map<String, JsonNode> res = new HashMap<>();
-        ObjectMapper mapper = new ObjectMapper();
-        final JsonFactory f = mapper.getFactory();
-        final Pattern p = Pattern.compile("([a-zA-Z0-9_-]+): New record!");
 
-        new KioLogReader(root).go(new LogParserHandler() {
-            @Override
-            public void handleSubLog(String logId, MachineInfo info) {
-                //do nothing
-            }
+        new KioLogReader(root).go((problemId, solution, result) -> {
+            JsonObjectsComparator comparator = id2comp.get(problemId);
+            if (comparator == null)
+                return;
 
-            @Override
-            public void handleCommand(long time, String cmd, Object[] extraArgs) {
-                Matcher m = p.matcher(cmd);
-                if (!m.matches())
-                    return;
-                String pid = m.group(1);
+            JsonNode oldResult = res.get(problemId);
+            if (oldResult == null || comparator.compare(oldResult, result) < 0)
+                res.put(problemId, result);
+        });
 
-                JsonObjectsComparator comparator = id2comp.get(pid);
-                if (comparator == null)
-                    return;
+        return res;
+    }
 
-                if (extraArgs.length != 2)
-                    return;
-                String resultAsString = String.valueOf(extraArgs[1]);
+    public Map<String, JsonNode> checkProblemsSolutions() {
+        Map<String, JsonNode> res = new HashMap<>();
 
-                JsonNode newResult;
-                try {
-                    newResult = f.createParser(resultAsString).readValueAsTree();
-                } catch (IOException e) {
-                    return; //failed to parse
-                }
+        Map<String, JsonNode> problemsSolutions = getProblemsSolutions();
 
-                if (!newResult.isObject())
-                    return;
+        for (Map.Entry<String, JsonNode> entry : problemsSolutions.entrySet()) {
+            String pid = entry.getKey();
+            JsonNode solution = entry.getValue();
+            KioProblemChecker checker = id2checker.get(pid);
+            if (checker == null)
+                continue;
+            ObjectNode check = checker.check(solution);
+            if (check != null)
+                res.put(pid, check);
+        }
 
-                JsonNode oldResult = res.get(pid);
-                if (oldResult == null || comparator.compare(oldResult, newResult) < 0)
-                    res.put(pid, newResult);
-            }
+        return res;
+    }
+
+    public Map<String, JsonNode> checkLogSolutions() {
+        final Map<String, JsonNode> res = new HashMap<>();
+
+        new KioLogReader(root).go((problemId, solution, result) -> {
+            JsonObjectsComparator comparator = id2comp.get(problemId);
+            if (comparator == null)
+                return;
+            KioProblemChecker checker = id2checker.get(problemId);
+            if (checker == null)
+                return;
+
+            JsonNode oldResult = res.get(problemId);
+            JsonNode newResult = checker.check(solution);
+            if (oldResult == null || comparator.compare(oldResult, newResult) < 0)
+                res.put(problemId, newResult);
         });
 
         return res;
@@ -141,6 +150,24 @@ public class SolutionsFile {
                 continue;
 
             res.put(key, comparator.compare(n1, n2) >= 0 ? n1 : n2);
+        }
+
+        return res;
+    }
+
+    private Map<String, JsonNode> getProblemsNodes(String node) {
+        Map<String, JsonNode> res = new HashMap<>();
+
+        List<String> problemIds = problemSet.getProblemIds(level);
+        for (String problemId : problemIds) {
+            JsonNode problemNode = root.get(problemId);
+            if (problemNode == null)
+                continue;
+            JsonNode bestResultNode = problemNode.get(node);
+            if (bestResultNode == null)
+                continue;
+
+            res.put(problemId, bestResultNode);
         }
 
         return res;

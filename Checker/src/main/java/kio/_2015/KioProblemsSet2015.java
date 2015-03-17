@@ -2,6 +2,7 @@ package kio._2015;
 
 import kio.KioParameter;
 import kio.KioProblemSet;
+import kio.checker.KioProblemChecker;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +29,18 @@ public class KioProblemsSet2015 extends KioProblemSet {
                 return "Поезда";
         }
         return "???";
+    }
+
+    public KioProblemChecker getChecker(int level, String id) {
+        switch (id) {
+            case "markov":
+                return new MarkovChecker2015(level);
+            case "spider":
+                return new SpiderChecker2015(level);
+            case "traincars":
+                return new TrainCarsChecker2015(level);
+        }
+        return null;
     }
 
     public List<KioParameter> getParams(int level, String id) {
