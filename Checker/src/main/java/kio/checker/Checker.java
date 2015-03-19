@@ -7,12 +7,16 @@ import kio.SolutionsFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Checker {
+
+    public static Map<String, List<Integer>> login2levels = new HashMap<>();
 
     public static Table logTable;
     public static Table problemTable;
@@ -50,7 +54,7 @@ public class Checker {
                     if (fileLevel != level)
                         continue;
 
-                    processSolutionFile(solution, login, level, year);
+                    processSolutionFile(solution, login, level, year, solutions);
                 }
             }
 
@@ -65,6 +69,18 @@ public class Checker {
                     logNoCheckTable
             );
         }
+
+        System.out.println("Users with several levels:");
+        int manyLevelsCount = 0;
+        for (Map.Entry<String, List<Integer>> entry : login2levels.entrySet()) {
+            List<Integer> levels = entry.getValue();
+            if (levels.size() >= 2) {
+                String login = entry.getKey();
+                System.out.println(login + ": " + levels);
+                manyLevelsCount++;
+            }
+        }
+        System.out.println("total: " + manyLevelsCount);
     }
 
     private static void initTables() {
@@ -86,8 +102,15 @@ public class Checker {
         return outputFileName;
     }
 
-    private static void processSolutionFile(File solution, String login, int level, int year) {
+    private static void processSolutionFile(File solution, String login, int level, int year, File[] solutions) {
         System.out.println("Processing login " + login);
+
+        List<Integer> levels = login2levels.get(login);
+        if (levels == null) {
+            levels = new ArrayList<>();
+            login2levels.put(login, levels);
+        }
+        levels.add(level);
 
         try {
             KioProblemSet problemSet = KioProblemSet.getInstance(year);
@@ -98,6 +121,18 @@ public class Checker {
             Map<String, JsonNode> logNoCheck = file.getLogResults();
             Map<String, JsonNode> problemsNoCheck = file.getProblemsResults();
             Map<String, JsonNode> logAndProblems = file.unite(log, problems);
+
+            for (File oldFile : solutions)
+                if (oldFile.getName().startsWith(login + ".kio-" + level + ".old.")) {
+                    System.out.println("additionally processing old file");
+                    file = new SolutionsFile(oldFile, level, problemSet);
+
+                    log = file.unite(log, file.checkLogSolutions());
+                    problems = file.unite(problems, file.checkProblemsSolutions());
+                    logNoCheck = file.unite(logNoCheck, file.getLogResults());
+                    problemsNoCheck = file.unite(problemsNoCheck, file.getProblemsResults());
+                    logAndProblems = file.unite(logAndProblems, file.unite(log, problems));
+                }
 
             table(logTable, log, login, level, problemSet);
             table(problemTable, problems, login, level, problemSet);
