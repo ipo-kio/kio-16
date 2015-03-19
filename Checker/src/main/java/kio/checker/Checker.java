@@ -14,11 +14,11 @@ import java.util.regex.Pattern;
 
 public class Checker {
 
-    public static Table logTable = new Table("Logs and problems", "login");
-    public static Table problemTable = new Table("Problems", "login");
-    public static Table logAndProblemTable = new Table("Logs", "login");
-    public static Table logNoCheckTable = new Table("Logs no check", "login");
-    public static Table problemNoCheckTable = new Table("Problems no check", "login");
+    public static Table logTable;
+    public static Table problemTable;
+    public static Table logAndProblemTable;
+    public static Table logNoCheckTable;
+    public static Table problemNoCheckTable;
 
     public static void main(String[] args) throws IOException {
         if (args.length != 3) {
@@ -37,27 +37,58 @@ public class Checker {
             return;
         }
 
-        for (File solution : solutions) {
-            String fileName = solution.getName();
-            Matcher m = namePattern.matcher(fileName);
-            if (m.matches()) {
-                String login = m.group(1);
-                int level = Integer.parseInt(m.group(2));
-                processSolutionFile(solution, login, level, year);
-            }
-        }
+        for (int level = 0; level <= 2; level++) {
+            initTables();
+            
+            for (File solution : solutions) {
+                String fileName = solution.getName();
+                Matcher m = namePattern.matcher(fileName);
+                if (m.matches()) {
+                    String login = m.group(1);
+                    int fileLevel = Integer.parseInt(m.group(2));
 
-        Table.saveToFile(
-                new File(args[2]),
-                problemTable,
-                logTable,
-                logAndProblemTable,
-                problemNoCheckTable,
-                logNoCheckTable
-        );
+                    if (fileLevel != level)
+                        continue;
+
+                    processSolutionFile(solution, login, level, year);
+                }
+            }
+
+            String outputFileName = addLevelToFileName(args[2], level);
+
+            Table.saveToFile(
+                    new File(outputFileName),
+                    problemTable,
+                    logTable,
+                    logAndProblemTable,
+                    problemNoCheckTable,
+                    logNoCheckTable
+            );
+        }
+    }
+
+    private static void initTables() {
+        logTable = new Table("Logs and problems", "login");
+        problemTable = new Table("Problems", "login");
+        logAndProblemTable = new Table("Logs", "login");
+        logNoCheckTable = new Table("Logs no check", "login");
+        problemNoCheckTable = new Table("Problems no check", "login");
+    }
+
+    private static String addLevelToFileName(String arg, int level) {
+        String outputFileName = arg;
+
+        int pnt = outputFileName.lastIndexOf('.');
+        if (pnt >= 0)
+            outputFileName = outputFileName.substring(0, pnt) + "." + level + outputFileName.substring(pnt);
+        else
+            outputFileName = outputFileName + "." + level + ".ods";
+        return outputFileName;
     }
 
     private static void processSolutionFile(File solution, String login, int level, int year) {
+        System.out.println("Processing login " + login);
+
         try {
             KioProblemSet problemSet = KioProblemSet.getInstance(year);
             SolutionsFile file = new SolutionsFile(solution, level, problemSet);
@@ -68,10 +99,10 @@ public class Checker {
             Map<String, JsonNode> problemsNoCheck = file.getProblemsResults();
             Map<String, JsonNode> logAndProblems = file.unite(log, problems);
 
-//            table(logTable, log, login, level, problemSet);
-//            table(problemTable, problems, login, level, problemSet);
-//            table(logAndProblemTable, logAndProblems, login, level, problemSet);
-//            table(problemNoCheckTable, problemsNoCheck, login, level, problemSet);
+            table(logTable, log, login, level, problemSet);
+            table(problemTable, problems, login, level, problemSet);
+            table(logAndProblemTable, logAndProblems, login, level, problemSet);
+            table(problemNoCheckTable, problemsNoCheck, login, level, problemSet);
             table(logNoCheckTable, logNoCheck, login, level, problemSet);
 
         } catch (IOException e) {
@@ -93,7 +124,7 @@ public class Checker {
 
                 table.set(
                         login,
-                        param.getId(),
+                        "(" + pid + ") " + param.getName(),
                         jsonNode.asText()
                 );
             }

@@ -33,7 +33,7 @@ public class MarkovRunner extends Sprite {
         //теперь можно убрать слушателя события "добавлено на сцену", эту строку тоже рекомендуется писать всегда
         removeEventListener(Event.ADDED_TO_STAGE, init);
 
-        KioApi.language = KioApi.L_TH; //устанавливаем язык, используемый в программе
+        KioApi.language = KioApi.L_RU; //устанавливаем язык, используемый в программе
 
         ToolTip.init(stage, {textalign: 'center', opacity: 80, defaultdelay: 500});
 

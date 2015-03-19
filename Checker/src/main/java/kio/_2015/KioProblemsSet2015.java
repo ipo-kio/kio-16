@@ -49,7 +49,7 @@ public class KioProblemsSet2015 extends KioProblemSet {
                 switch (level) {
                     case 0: return kioParameters("ridgeDiff-i:различий", "ruleAmount-i:указаний", "applyOperations-i:замен");
                     case 1:
-                    case 2: return kioParameters("correctAmount+i:верно~%", "ruleAmount-i:правил");
+                    case 2: return kioParameters("correctAmount+i:верно~ из 300", "ruleAmount-i:правил");
                 }
             case "spider":
                 switch (level) {

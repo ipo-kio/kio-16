@@ -22,8 +22,10 @@ public class Table {
 
             sh.setValueAt(table.idFieldName, 0, 0);
             int colId = 1;
-            for (String field : table.fields)
+            for (String field : table.fields) {
                 sh.setValueAt(field, colId, 0);
+                colId++;
+            }
 
             int rowId = 1;
             for (Map.Entry<String, Map<String, Object>> entry : table.values.entrySet()) {
@@ -33,8 +35,10 @@ public class Table {
                 sh.setValueAt(id, 0, rowId);
 
                 colId = 1;
-                for (String field : table.fields)
+                for (String field : table.fields) {
                     sh.setValueAt(fieldValues.get(field), colId, rowId);
+                    colId++;
+                }
 
                 rowId++;
             }
@@ -104,5 +108,4 @@ public class Table {
         }
         return model;
     }
-
 }
