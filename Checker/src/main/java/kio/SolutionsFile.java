@@ -4,22 +4,18 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import kio.checker.KioProblemChecker;
 import kio.logs.KioLogReader;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SolutionsFile {
 
     private KioProblemSet problemSet;
     private int level;
     private JsonNode root;
-
-    private final Map<String, JsonObjectsComparator> id2comp = new HashMap<>();
-    private final Map<String, KioProblemChecker> id2checker = new HashMap<>();
 
     public SolutionsFile(File file, int level, KioProblemSet problemSet) throws IOException {
         this.problemSet = problemSet;
@@ -30,144 +26,93 @@ public class SolutionsFile {
         JsonFactory factory = mapper.getFactory();
         try (JsonParser p = factory.createParser(file)) {
             root = p.readValueAsTree();
-
-            //fill id2comp
-            List<String> problemIds = problemSet.getProblemIds(level);
-
-            for (String pid : problemIds)
-                id2comp.put(pid, problemSet.getComparator(level, pid));
-
-            for (String pid : problemIds)
-                id2checker.put(pid, problemSet.getChecker(level, pid));
         } catch (IOException e) {
             throw new IOException("Failed to read JSON in file", e);
         }
     }
 
-    public Map<String, JsonNode> getProblemsSolutions() {
-        return getProblemsNodes("best");
-    }
-
-    public Map<String, JsonNode> getProblemsResults() {
-        return getProblemsNodes("best_result");
-    }
-
-    public Map<String, List<JsonNode>> getLogSolutions() {
-        final Map<String, List<JsonNode>> res = new HashMap<>();
-
-        new KioLogReader(root).go((problemID, solution, result) -> {
-            List<JsonNode> nodes = res.get(problemID);
-            if (nodes == null) {
-                nodes = new ArrayList<>();
-                res.put(problemID, nodes);
-            }
-
-            nodes.add(solution);
-        });
-
-        return res;
-    }
-
-    public Map<String, JsonNode> getLogResults() {
-        final Map<String, JsonNode> res = new HashMap<>();
-
-        new KioLogReader(root).go((problemId, solution, result) -> {
-            JsonObjectsComparator comparator = id2comp.get(problemId);
-            if (comparator == null)
-                return;
-
-            JsonNode oldResult = res.get(problemId);
-            if (oldResult == null || comparator.compare(oldResult, result) < 0)
-                res.put(problemId, result);
-        });
-
-        return res;
-    }
-
-    public Map<String, JsonNode> checkProblemsSolutions() {
-        Map<String, JsonNode> res = new HashMap<>();
-
-        Map<String, JsonNode> problemsSolutions = getProblemsSolutions();
-
-        for (Map.Entry<String, JsonNode> entry : problemsSolutions.entrySet()) {
-            String pid = entry.getKey();
-            JsonNode solution = entry.getValue();
-            KioProblemChecker checker = id2checker.get(pid);
-            if (checker == null)
-                continue;
-            ObjectNode check = checker.check(solution);
-            if (check != null)
-                res.put(pid, check);
-        }
-
-        return res;
-    }
-
-    public Map<String, JsonNode> checkLogSolutions() {
-        final Map<String, JsonNode> res = new HashMap<>();
-
-        new KioLogReader(root).go((problemId, solution, result) -> {
-            JsonObjectsComparator comparator = id2comp.get(problemId);
-            if (comparator == null)
-                return;
-            KioProblemChecker checker = id2checker.get(problemId);
-            if (checker == null)
-                return;
-
-            JsonNode oldResult = res.get(problemId);
-            JsonNode newResult = checker.check(solution);
-            if (oldResult == null || comparator.compare(oldResult, newResult) < 0)
-                res.put(problemId, newResult);
-        });
-
-        return res;
-    }
-
-    public Map<String, JsonNode> uniteLogAndProblemResults() {
-        return unite(getLogResults(), getProblemsResults());
-    }
-
-    public Map<String, JsonNode> unite(Map<String, JsonNode> m1, Map<String, JsonNode> m2) {
-        Set<String> keys = new HashSet<>(m1.keySet());
-        keys.addAll(m2.keySet());
-
-        Map<String, JsonNode> res = new HashMap<>();
-
-        for (String key : keys) {
-            JsonNode n1 = m1.get(key);
-            JsonNode n2 = m2.get(key);
-            if (n1 == null) {
-                res.put(key, n2);
-                continue;
-            }
-            if (n2 == null) {
-                res.put(key, n1);
-                continue;
-            }
-
-            JsonObjectsComparator comparator = id2comp.get(key);
-            if (comparator == null)
-                continue;
-
-            res.put(key, comparator.compare(n1, n2) >= 0 ? n1 : n2);
-        }
-
-        return res;
-    }
-
-    private Map<String, JsonNode> getProblemsNodes(String node) {
-        Map<String, JsonNode> res = new HashMap<>();
+    public Map<String, Attempt> getProblemsAttempts() {
+        Map<String, Attempt> res = new HashMap<>();
 
         List<String> problemIds = problemSet.getProblemIds(level);
         for (String problemId : problemIds) {
             JsonNode problemNode = root.get(problemId);
             if (problemNode == null)
                 continue;
-            JsonNode bestResultNode = problemNode.get(node);
-            if (bestResultNode == null)
+            JsonNode bestSolutionNode = problemNode.get("best");
+            JsonNode bestResultNode = problemNode.get("best_result");
+            if (bestSolutionNode == null && bestResultNode == null)
                 continue;
 
-            res.put(problemId, bestResultNode);
+            res.put(problemId, new Attempt(problemId, level, problemSet, bestSolutionNode, bestResultNode));
+        }
+
+        return res;
+    }
+
+    public Map<String, List<Attempt>> getAllLogAttempts() {
+        final Map<String, List<Attempt>> res = new HashMap<>();
+
+        new KioLogReader(root).go((problemId, solution, result) -> {
+            List<Attempt> attempts = res.get(problemId);
+            if (attempts == null) {
+                attempts = new ArrayList<>();
+                res.put(problemId, attempts);
+            }
+
+            attempts.add(new Attempt(problemId, level, problemSet, solution, result));
+        });
+
+        return res;
+    }
+
+    public Map<String, Attempt> getBestLogAttempts() {
+        Map<String, Attempt> res = new HashMap<>();
+        for (Map.Entry<String, List<Attempt>> entry : getAllLogAttempts().entrySet()) {
+            String problemId = entry.getKey();
+            List<Attempt> allAttemptsForProblem = entry.getValue();
+            res.put(problemId, Collections.max(allAttemptsForProblem));
+        }
+        return res;
+    }
+
+    public Map<String, Attempt> checkProblemsSolutions() {
+        Map<String, Attempt> problemsSolutions = getProblemsAttempts();
+        problemsSolutions.values().forEach(Attempt::recheck);
+        return problemsSolutions;
+    }
+
+    public Map<String, Attempt> checkLogSolutions() {
+        Map<String, List<Attempt>> allLogAttempts = getAllLogAttempts();
+        allLogAttempts.values().forEach(attempts -> attempts.forEach(Attempt::recheck));
+        return allLogAttempts.entrySet().stream().collect(
+                Collectors.toMap(Map.Entry::getKey, e -> Collections.max(e.getValue()))
+        );
+    }
+
+    public Map<String, Attempt> uniteLogAndProblemAttempts() {
+        return unite(getBestLogAttempts(), getProblemsAttempts());
+    }
+
+    public Map<String, Attempt> unite(Map<String, Attempt> m1, Map<String, Attempt                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                > m2) {
+        Set<String> keys = new HashSet<>(m1.keySet());
+        keys.addAll(m2.keySet());
+
+        Map<String, Attempt> res = new HashMap<>();
+
+        for (String key : keys) {
+            Attempt a1 = m1.get(key);
+            Attempt a2 = m2.get(key);
+            if (a1 == null) {
+                res.put(key, a2);
+                continue;
+            }
+            if (a2 == null) {
+                res.put(key, a1);
+                continue;
+            }
+
+            res.put(key, a1.compareTo(a2) >= 0 ? a1 : a2);
         }
 
         return res;

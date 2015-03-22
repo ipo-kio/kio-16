@@ -17,6 +17,13 @@ public class JsonObjectsComparator implements Comparator<JsonNode> {
 
     @Override
     public int compare(JsonNode o1, JsonNode o2) {
+        if (o1 == null && o2 == null)
+            return 0;
+        if (o1 == null)
+            return -1;
+        if (o2 == null)
+            return 1;
+
         for (KioParameter param : params) {
             String field = param.getId();
             int dir = param.getSortDirection();

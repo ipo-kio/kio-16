@@ -1,16 +1,14 @@
 package kio.checker;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import kio.Attempt;
 import kio.KioParameter;
 import kio.KioProblemSet;
 import kio.SolutionsFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,10 +21,11 @@ public class Checker {
     public static Table logAndProblemTable;
     public static Table logNoCheckTable;
     public static Table problemNoCheckTable;
+    public static Table logAndProblemsNoCheckTable;
 
     public static void main(String[] args) throws IOException {
         if (args.length != 3) {
-            System.out.println("Parameters: year, directory, output");
+            System.out.println("Parameters: year, solutions directory, output");
             return;
         }
 
@@ -43,7 +42,7 @@ public class Checker {
 
         for (int level = 0; level <= 2; level++) {
             initTables();
-            
+
             for (File solution : solutions) {
                 String fileName = solution.getName();
                 Matcher m = namePattern.matcher(fileName);
@@ -66,8 +65,11 @@ public class Checker {
                     logTable,
                     logAndProblemTable,
                     problemNoCheckTable,
-                    logNoCheckTable
+                    logNoCheckTable,
+                    logAndProblemsNoCheckTable
             );
+
+            finalizeExternalCheck(level, year);
         }
 
         System.out.println("Users with several levels:");
@@ -89,6 +91,7 @@ public class Checker {
         logAndProblemTable = new Table("Logs", "login");
         logNoCheckTable = new Table("Logs no check", "login");
         problemNoCheckTable = new Table("Problems no check", "login");
+        logAndProblemsNoCheckTable = new Table("Logs and problems no check", "login");
     }
 
     private static String addLevelToFileName(String arg, int level) {
@@ -116,11 +119,13 @@ public class Checker {
             KioProblemSet problemSet = KioProblemSet.getInstance(year);
             SolutionsFile file = new SolutionsFile(solution, level, problemSet);
 
-            Map<String, JsonNode> log = file.checkLogSolutions();
-            Map<String, JsonNode> problems = file.checkProblemsSolutions();
-            Map<String, JsonNode> logNoCheck = file.getLogResults();
-            Map<String, JsonNode> problemsNoCheck = file.getProblemsResults();
-            Map<String, JsonNode> logAndProblems = file.unite(log, problems);
+            Map<String, Attempt> log = file.checkLogSolutions();
+            Map<String, Attempt> problems = file.checkProblemsSolutions();
+            Map<String, Attempt> logAndProblems = file.unite(log, problems);
+
+            Map<String, Attempt> logNoCheck = file.getBestLogAttempts();
+            Map<String, Attempt> problemsNoCheck = file.getProblemsAttempts();
+            Map<String, Attempt> logAndProblemsNoCheck = file.unite(logNoCheck, problemsNoCheck);
 
             for (File oldFile : solutions)
                 if (oldFile.getName().startsWith(login + ".kio-" + level + ".old.")) {
@@ -129,9 +134,11 @@ public class Checker {
 
                     log = file.unite(log, file.checkLogSolutions());
                     problems = file.unite(problems, file.checkProblemsSolutions());
-                    logNoCheck = file.unite(logNoCheck, file.getLogResults());
-                    problemsNoCheck = file.unite(problemsNoCheck, file.getProblemsResults());
                     logAndProblems = file.unite(logAndProblems, file.unite(log, problems));
+
+                    logNoCheck = file.unite(logNoCheck, file.getBestLogAttempts());
+                    problemsNoCheck = file.unite(problemsNoCheck, file.getProblemsAttempts());
+                    logAndProblemsNoCheck = file.unite(logAndProblemsNoCheck, file.unite(logNoCheck, problemsNoCheck));
                 }
 
             table(logTable, log, login, level, problemSet);
@@ -139,16 +146,33 @@ public class Checker {
             table(logAndProblemTable, logAndProblems, login, level, problemSet);
             table(problemNoCheckTable, problemsNoCheck, login, level, problemSet);
             table(logNoCheckTable, logNoCheck, login, level, problemSet);
+            table(logAndProblemsNoCheckTable, logAndProblemsNoCheck, login, level, problemSet);
 
+            saveForExternalCheck(logAndProblemsNoCheck, problemSet, level);
         } catch (IOException e) {
             System.out.println("failed to read solutions file: " + solution);
         }
     }
 
-    private static void table(Table table, Map<String, JsonNode> results, String login, int level, KioProblemSet problemSet) {
-        for (Map.Entry<String, JsonNode> entry : results.entrySet()) {
+    private static void saveForExternalCheck(Map<String, Attempt> attempts, KioProblemSet problemSet, int level) {
+        attempts.forEach((pid, attempt) ->
+                problemSet.getChecker(level, pid).saveForExternalCheck(attempt.getSolution(), true)
+        );
+    }
+
+    private static void finalizeExternalCheck(int level, int year) {
+        KioProblemSet problemSet = KioProblemSet.getInstance(year);
+        problemSet.getProblemIds(level).forEach(pid ->
+                problemSet.getChecker(level, pid).finalizeSavingForExternalCheck()
+        );
+    }
+
+    private static void table(Table table, Map<String, Attempt> results, String login, int level, KioProblemSet problemSet) {
+        for (Map.Entry<String, Attempt> entry : results.entrySet()) {
             String pid = entry.getKey();
-            JsonNode result = entry.getValue();
+            JsonNode result = entry.getValue().getResult();
+            if (result == null)
+                continue;
 
             List<KioParameter> params = problemSet.getParams(level, pid);
             for (KioParameter param : params) {

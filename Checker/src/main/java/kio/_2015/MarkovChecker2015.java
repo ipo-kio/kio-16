@@ -22,10 +22,8 @@ public class MarkovChecker2015 extends KioProblemChecker {
             allAnswers[i] = evaluator.eval(allExamples[i]);
     }
 
-    private int level;
-
     public MarkovChecker2015(int level) {
-        this.level = level == 1 ? 2 : level;
+        super(level == 1 ? 2 : level);
     }
 
     @Override

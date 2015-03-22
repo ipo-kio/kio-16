@@ -17,10 +17,8 @@ public class TrainCarsChecker2015 extends KioProblemChecker {
         }
     }
 
-    private final int level;
-
     public TrainCarsChecker2015(int level) {
-        this.level = level;
+        super(level);
     }
 
     @Override
