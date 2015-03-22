@@ -72,13 +72,17 @@ public class KioExternalProblemChecker extends KioProblemChecker {
 
         File file = getFileWithSolutionsCheckedExternally();
         try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
-            String solutionAsString = in.readLine();
-            String resultAsString = in.readLine();
+            while (true) {
+                String solutionAsString = in.readLine();
+                String resultAsString = in.readLine();
+                if (solutionAsString == null || resultAsString == null)
+                    return;
 
-            ObjectNode solution = factory.createParser(solutionAsString).readValueAsTree();
-            ObjectNode result = factory.createParser(resultAsString).readValueAsTree();
+                ObjectNode solution = factory.createParser(solutionAsString).readValueAsTree();
+                ObjectNode result = factory.createParser(resultAsString).readValueAsTree();
 
-            solution2result.put(solution, result);
+                solution2result.put(solution, result);
+            }
         } catch (Exception e) {
             System.out.println("Failed to read tested solutions");
             solution2result = null;

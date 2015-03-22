@@ -77,8 +77,6 @@ public class Mechanism extends Sprite {
 
         evaluate();
         redraw();
-
-        trace(_a1 * 180 / Math.PI, _a2 * 180 / Math.PI);
     }
 
     public static function rad2grad(a:Number):Number {
