@@ -48,6 +48,11 @@ public class MarkovChecker2015 extends KioProblemChecker {
             runCalculator(automata);
     }
 
+    @Override
+    public boolean getBelieveUnchecked() {
+        return false;
+    }
+
     //ridgeDiff различий, ruleAmount указаний, applyOperations замен
     public void runCarrots(MarkovAutomata automata) {
         MarkovString start = new MarkovString("wecececefececeww");

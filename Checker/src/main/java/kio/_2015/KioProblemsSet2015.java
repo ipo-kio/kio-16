@@ -31,7 +31,7 @@ public class KioProblemsSet2015 extends KioProblemSet {
         return "???";
     }
 
-    public KioProblemChecker getCheckerRaw(int level, String id) {
+    protected KioProblemChecker getCheckerRaw(int level, String id) {
         switch (id) {
             case "markov":
                 return new MarkovChecker2015(level);
@@ -43,7 +43,7 @@ public class KioProblemsSet2015 extends KioProblemSet {
         return null;
     }
 
-    public List<KioParameter> getParamsRaw(int level, String id) {
+    protected List<KioParameter> getParamsRaw(int level, String id) {
         switch (id) {
             case "markov":
                 switch (level) {

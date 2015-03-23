@@ -50,6 +50,11 @@ public class KioExternalProblemChecker extends KioProblemChecker {
         }
     }
 
+    @Override
+    public boolean getBelieveUnchecked() {
+        return true;
+    }
+
     public void saveForExternalCheck(JsonNode solution, boolean best) {
         if (getExternalCheckerType() == EXTERNAL_CHECKER_SAVE_BEST && !best)
             return;

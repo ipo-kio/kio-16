@@ -17,10 +17,8 @@ public class SolutionsFile {
     private int level;
     private JsonNode root;
 
-    public SolutionsFile(File file, int level, KioProblemSet problemSet) throws IOException {
+    public SolutionsFile(File file, KioProblemSet problemSet) throws IOException {
         this.problemSet = problemSet;
-
-        this.level = level;
 
         ObjectMapper mapper = new ObjectMapper();
         JsonFactory factory = mapper.getFactory();
@@ -29,6 +27,11 @@ public class SolutionsFile {
         } catch (IOException e) {
             throw new IOException("Failed to read JSON in file", e);
         }
+
+        int realLevel = root.get("kio_base").get("level").asInt();
+        if (!file.getName().contains("kio-" + realLevel))
+            System.out.println("Real level of file " + file.getName() + " is " + realLevel);
+        this.level = realLevel;
     }
 
     public Map<String, Attempt> getProblemsAttempts() {
@@ -118,4 +121,7 @@ public class SolutionsFile {
         return res;
     }
 
+    public int getLevel() {
+        return level;
+    }
 }

@@ -30,9 +30,9 @@ public abstract class KioProblemSet {
     
     public abstract String getProblemName(int level, String id);
     
-    public abstract KioProblemChecker getCheckerRaw(int level, String id);
+    protected abstract KioProblemChecker getCheckerRaw(int level, String id);
 
-    public abstract List<KioParameter> getParamsRaw(int level, String id);
+    protected abstract List<KioParameter> getParamsRaw(int level, String id);
 
     private Map<String, KioProblemChecker> cachedCheckers = new HashMap<>();
     public KioProblemChecker getChecker(int level, String id) {

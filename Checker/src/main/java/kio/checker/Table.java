@@ -59,7 +59,7 @@ public class Table {
         this.idFieldName = idFieldName;
     }
 
-    public void set(String id, String field, String value) {
+    public void set(String id, String field, Object value) {
         ensureFieldExists(field);
 
         Map<String, Object> field2value = values.get(id);

@@ -23,11 +23,18 @@ public class Checker {
     public static Table problemNoCheckTable;
     public static Table logAndProblemsNoCheckTable;
 
+    private static Map<String, Integer> login2forcedLevel = new HashMap<>();
+
+    public static Map<String, UserResults> results = new HashMap<>();
+    public static Table finalTable;
+
     public static void main(String[] args) throws IOException {
         if (args.length != 3) {
             System.out.println("Parameters: year, solutions directory, output");
             return;
         }
+
+        loadLevels();
 
         Pattern namePattern = Pattern.compile("(.*)\\.kio-(\\d)");
 
@@ -42,16 +49,13 @@ public class Checker {
 
         for (int level = 0; level <= 2; level++) {
             initTables();
+            results.clear();
 
             for (File solution : solutions) {
                 String fileName = solution.getName();
                 Matcher m = namePattern.matcher(fileName);
                 if (m.matches()) {
                     String login = m.group(1);
-                    int fileLevel = Integer.parseInt(m.group(2));
-
-                    if (fileLevel != level)
-                        continue;
 
                     processSolutionFile(solution, login, level, year, solutions);
                 }
@@ -61,6 +65,7 @@ public class Checker {
 
             Table.saveToFile(
                     new File(outputFileName),
+                    finalTable,
                     problemTable,
                     logTable,
                     logAndProblemTable,
@@ -70,6 +75,9 @@ public class Checker {
             );
 
             finalizeExternalCheck(level, year);
+
+            sortAllUsers(level, KioProblemSet.getInstance(year));
+            outputFinalTable(level);
         }
 
         System.out.println("Users with several levels:");
@@ -85,6 +93,20 @@ public class Checker {
         System.out.println("total: " + manyLevelsCount);
     }
 
+    private static void loadLevels() {
+        try (Scanner in = new Scanner(new File("levels.csv"))) {
+            while(in.hasNextLine()) {
+                String line = in.nextLine();
+                String[] nameAndLevel = line.split(",");
+                String name = nameAndLevel[0];
+                int level = Integer.parseInt(nameAndLevel[1]);
+                login2forcedLevel.put(name, level);
+            }
+        } catch (Exception e) {
+            System.out.println("Failed to load levels");
+        }
+    }
+
     private static void initTables() {
         logTable = new Table("Logs and problems", "login");
         problemTable = new Table("Problems", "login");
@@ -92,6 +114,7 @@ public class Checker {
         logNoCheckTable = new Table("Logs no check", "login");
         problemNoCheckTable = new Table("Problems no check", "login");
         logAndProblemsNoCheckTable = new Table("Logs and problems no check", "login");
+        finalTable = new Table("results", "login");
     }
 
     private static String addLevelToFileName(String arg, int level) {
@@ -106,18 +129,20 @@ public class Checker {
     }
 
     private static void processSolutionFile(File solution, String login, int level, int year, File[] solutions) {
-        System.out.println("Processing login " + login);
-
-        List<Integer> levels = login2levels.get(login);
-        if (levels == null) {
-            levels = new ArrayList<>();
-            login2levels.put(login, levels);
-        }
-        levels.add(level);
-
         try {
             KioProblemSet problemSet = KioProblemSet.getInstance(year);
-            SolutionsFile file = new SolutionsFile(solution, level, problemSet);
+            SolutionsFile file = new SolutionsFile(solution, problemSet);
+
+            if (file.getLevel() != level)
+                return;
+            System.out.println("Processing login " + login);
+
+            List<Integer> levels = login2levels.get(login);
+            if (levels == null) {
+                levels = new ArrayList<>();
+                login2levels.put(login, levels);
+            }
+            levels.add(level);
 
             Map<String, Attempt> log = file.checkLogSolutions();
             Map<String, Attempt> problems = file.checkProblemsSolutions();
@@ -128,9 +153,12 @@ public class Checker {
             Map<String, Attempt> logAndProblemsNoCheck = file.unite(logNoCheck, problemsNoCheck);
 
             for (File oldFile : solutions)
-                if (oldFile.getName().startsWith(login + ".kio-" + level + ".old.")) {
+                if (oldFile.getName().startsWith(login + ".kio-")) {
                     System.out.println("additionally processing old file");
-                    file = new SolutionsFile(oldFile, level, problemSet);
+                    file = new SolutionsFile(oldFile, problemSet);
+
+                    if (file.getLevel() != level)
+                        continue;
 
                     log = file.unite(log, file.checkLogSolutions());
                     problems = file.unite(problems, file.checkProblemsSolutions());
@@ -149,6 +177,9 @@ public class Checker {
             table(logAndProblemsNoCheckTable, logAndProblemsNoCheck, login, level, problemSet);
 
             saveForExternalCheck(logAndProblemsNoCheck, problemSet, level);
+
+            UserResults result = new UserResults(login, problemSet, level, logAndProblems, logAndProblemsNoCheck);
+            results.put(login, result);
         } catch (IOException e) {
             System.out.println("failed to read solutions file: " + solution);
         }
@@ -167,6 +198,7 @@ public class Checker {
         );
     }
 
+    //TODO this duplicates code from UserResults.addResultToTable
     private static void table(Table table, Map<String, Attempt> results, String login, int level, KioProblemSet problemSet) {
         for (Map.Entry<String, Attempt> entry : results.entrySet()) {
             String pid = entry.getKey();
@@ -190,4 +222,62 @@ public class Checker {
         }
     }
 
+    private static void sortAllUsers(int level, KioProblemSet problemSet) {
+        List<UserResults> r = new ArrayList<>(results.values());
+        List<String> pids = problemSet.getProblemIds(level);
+        int n = r.size();
+
+        for (String pid : pids) {
+
+            Comparator<UserResults> problemResultsComparator = (r1, r2) -> r1.getProblemResult(pid).compareTo(r2.getProblemResult(pid));
+
+            r.sort(problemResultsComparator);
+
+            int scores = 0;
+            r.get(0).setScores(pid, scores);
+            for (int i = 1; i < n; i++) {
+                UserResults prevResult = r.get(i - 1);
+                UserResults nextResult = r.get(i);
+
+                if (problemResultsComparator.compare(prevResult, nextResult) != 0)
+                    scores = i;
+
+                nextResult.setScores(pid, scores);
+            }
+
+            int rank = 1;
+            r.get(n - 1).setRank(pid, rank);
+            for (int i = n - 2; i >= 0; i--) {
+                UserResults prevResult = r.get(i + 1);
+                UserResults nextResult = r.get(i);
+                if (problemResultsComparator.compare(prevResult, nextResult) != 0)
+                    rank++;
+                nextResult.setRank(pid, rank);
+            }
+        }
+
+        r.sort((r1, r2) -> r1.getScores() - r2.getScores());
+
+        int rank = 1;
+        r.get(n - 1).setRank(rank);
+        for (int i = n - 2; i >= 0; i--) {
+            UserResults prevResult = r.get(i + 1);
+            UserResults nextResult = r.get(i);
+            if (prevResult.getScores() != nextResult.getScores())
+                rank++;
+            nextResult.setRank(rank);
+        }
+    }
+
+    private static void outputFinalTable(int level) throws IOException {
+        results.values().forEach(result -> {
+            Integer forcedLevel = login2forcedLevel.get(result.getLogin());
+            if (forcedLevel != null && forcedLevel != level) {
+                System.out.println("skipping output for login " + result.getLogin() + " and level " + level);
+                return;
+            }
+            result.addToTable(finalTable);
+        });
+        Table.saveToFile(new File("results." + level + ".ods"), finalTable);
+    }
 }

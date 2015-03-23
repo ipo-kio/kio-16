@@ -22,6 +22,8 @@ public abstract class KioProblemChecker {
 
     protected abstract void run(JsonNode solution);
 
+    public abstract boolean getBelieveUnchecked();
+
     public int getExternalCheckerType() {
         return NOT_EXTERNAL_CHECKER;
     }

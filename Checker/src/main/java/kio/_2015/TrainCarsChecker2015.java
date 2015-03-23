@@ -60,6 +60,11 @@ public class TrainCarsChecker2015 extends KioProblemChecker {
         evaluateResults(ways, downHill, upHill);
     }
 
+    @Override
+    public boolean getBelieveUnchecked() {
+        return true;
+    }
+
     private void doAction(List<List<Car>> ways, int action) {
         List<Car> topWay = ways.get(0);
         int wayInd = Math.abs(action);
