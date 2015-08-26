@@ -34,6 +34,8 @@ public abstract class KioProblemSet {
 
     protected abstract List<KioParameter> getParamsRaw(int level, String id);
 
+    public abstract String getCertificatePattern(int level, String id);
+
     private Map<String, KioProblemChecker> cachedCheckers = new HashMap<>();
     public KioProblemChecker getChecker(int level, String id) {
         String key = String.format("%d %s", level, id);

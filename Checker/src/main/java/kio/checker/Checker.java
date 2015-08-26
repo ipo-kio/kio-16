@@ -5,13 +5,16 @@ import kio.Attempt;
 import kio.KioParameter;
 import kio.KioProblemSet;
 import kio.SolutionsFile;
+import kio.certificates.Generator;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
+// 2015 "/home/ilya/programming/kio-15/Checker/solutions" "/home/ilya/programming/kio-15/Checker/res.ods"
 public class Checker {
 
     public static Map<String, List<Integer>> login2levels = new HashMap<>();
@@ -57,6 +60,16 @@ public class Checker {
                 if (m.matches()) {
                     String login = m.group(1);
 
+                    /*Set<String> loginsToCheckExternally = new HashSet<>();
+                    loginsToCheckExternally.add("31937752.13");
+                    loginsToCheckExternally.add("02643461.4");
+                    loginsToCheckExternally.add("31931365.2");
+                    loginsToCheckExternally.add("31931368.7");
+                    loginsToCheckExternally.add("31931362.2");
+
+                    if (!loginsToCheckExternally.contains(login))
+                        continue;*/
+
                     processSolutionFile(solution, login, level, year, solutions);
                 }
             }
@@ -76,8 +89,15 @@ public class Checker {
 
             finalizeExternalCheck(level, year);
 
+            filterUsersWithWrongLevel(level);
             sortAllUsers(level, KioProblemSet.getInstance(year));
             outputFinalTable(level);
+
+            try {
+                new Generator("kio-th.csv").run("th-certificates/certificates-" + level + ".pdf", results.values().stream().collect(Collectors.toList()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         System.out.println("Users with several levels:");
@@ -176,8 +196,6 @@ public class Checker {
             table(logNoCheckTable, logNoCheck, login, level, problemSet);
             table(logAndProblemsNoCheckTable, logAndProblemsNoCheck, login, level, problemSet);
 
-            saveForExternalCheck(logAndProblemsNoCheck, problemSet, level);
-
             UserResults result = new UserResults(login, problemSet, level, logAndProblems, logAndProblemsNoCheck);
             results.put(login, result);
         } catch (IOException e) {
@@ -222,6 +240,17 @@ public class Checker {
         }
     }
 
+    private static void filterUsersWithWrongLevel(int level) {
+        results = results.entrySet().stream().filter(e -> {
+            UserResults result = e.getValue();
+            Integer forcedLevel = login2forcedLevel.get(result.getLogin());
+            return forcedLevel == null || forcedLevel == level;
+        }).collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue
+        ));
+    }
+
     private static void sortAllUsers(int level, KioProblemSet problemSet) {
         List<UserResults> r = new ArrayList<>(results.values());
         List<String> pids = problemSet.getProblemIds(level);
@@ -233,6 +262,7 @@ public class Checker {
 
             r.sort(problemResultsComparator);
 
+            //r.stream().map(r -> {Attempt a = r.getProblemResult("markov").getAttempt(); if (a!=null) return a.getResult(); else return null;}).collect(Collectors.toList())
             int scores = 0;
             r.get(0).setScores(pid, scores);
             for (int i = 1; i < n; i++) {
@@ -270,14 +300,7 @@ public class Checker {
     }
 
     private static void outputFinalTable(int level) throws IOException {
-        results.values().forEach(result -> {
-            Integer forcedLevel = login2forcedLevel.get(result.getLogin());
-            if (forcedLevel != null && forcedLevel != level) {
-                System.out.println("skipping output for login " + result.getLogin() + " and level " + level);
-                return;
-            }
-            result.addToTable(finalTable);
-        });
+        results.values().forEach(result -> result.addToTable(finalTable));
         Table.saveToFile(new File("results." + level + ".ods"), finalTable);
     }
 }

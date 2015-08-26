@@ -1,7 +1,6 @@
 package kio;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.sun.istack.internal.NotNull;
 
 public class Attempt implements Comparable<Attempt> {
 

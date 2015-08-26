@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="SBT: com.itextpdf:itext-xtra:5.4.4:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.itextpdf/itext-xtra/jars/itext-xtra-5.4.4.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.itextpdf/itext-xtra/docs/itext-xtra-5.4.4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.itextpdf/itext-xtra/srcs/itext-xtra-5.4.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

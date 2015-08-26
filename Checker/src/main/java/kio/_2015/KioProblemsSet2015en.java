@@ -7,7 +7,7 @@ import kio.checker.KioProblemChecker;
 import java.util.Arrays;
 import java.util.List;
 
-public class KioProblemsSet2015 extends KioProblemSet {
+public class KioProblemsSet2015en extends KioProblemSet {
 
     public List<String> getProblemIds(int level) {
         return Arrays.asList("traincars", "markov", "spider");
@@ -18,15 +18,15 @@ public class KioProblemsSet2015 extends KioProblemSet {
             case "markov":
                 switch (level) {
                     case 0:
-                        return "Прополка";
+                        return "Weeding";
                     case 1:
                     case 2:
-                        return "Калькулятор";
+                        return "Calculator";
                 }
             case "spider":
-                return "Паук";
+                return "Spider";
             case "traincars":
-                return "Поезда";
+                return "Cars sorting";
         }
         return "???";
     }
@@ -72,27 +72,27 @@ public class KioProblemsSet2015 extends KioProblemSet {
             case "markov":
                 switch (level) {
                     case 0:
-                        return "различий: %s,\nправил: %s, операций: %s";
+                        return "differences: %s,\nrules: %s, operations: %s";
                     case 1:
                     case 2:
-                        return "верно: %s%%, правил: %s";
+                        return "correct: %s%%, rules: %s";
                 }
             case "spider":
                 switch (level) {
                     case 0:
-                        return "время: %s0, материал %s";
+                        return "time: %s0, material %s";
                     case 1:
                     case 2:
-                        return "время: %s, материал %s";
+                        return "time: %s, material %s";
                 }
             case "traincars":
                 switch (level) {
                     case 0:
-                        return "верно: %s,\\nбеспорядок: %s, действий: %s";
+                        return "correct: %s,\\nmess: %s, actions: %s";
                     case 1:
-                        return "верно: %s,\nбеспорядок: %s, действий: %s+%s";
+                        return "correct: %s,\nmess: %s, actions: %s+%s";
                     case 2:
-                        return "верно: %s,\nтранспозиций: %s, действий: %s+%s";
+                        return "correct: %s,\ntranspositions: %s, actions: %s+%s";
                 }
         }
         return null;

@@ -65,6 +65,10 @@ public class UserResults {
 
     public void addToTable(Table table) {
         table.set(login, "kio_level", level);
+
+        table.set(login, "kio_" + level + "_scores", getScores());
+        table.set(login, "kio_" + level + "_rank", rank);
+
         List<String> problemIds = problemSet.getProblemIds(level);
         problemIds.forEach(pid -> {
             ProblemResult problemResult = problemResults.get(pid);

@@ -55,8 +55,8 @@ public class MarkovChecker2015 extends KioProblemChecker {
 
     //ridgeDiff различий, ruleAmount указаний, applyOperations замен
     public void runCarrots(MarkovAutomata automata) {
-        MarkovString start = new MarkovString("wecececefececeww");
-        MarkovString golden = new MarkovString("wwcwwccwwwcccwww");
+        MarkovString start = new MarkovString("wwcwwccwwwcccwww");
+        MarkovString golden = new MarkovString("wecececefececeww");
 
         try {
             int operations = automata.go(start);

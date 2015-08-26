@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="checker-build" external.linked.project.path="$MODULE_DIR$/../../project" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" sbt.imports="sbt._, Keys._, _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.plugins.JUnitXmlReportPlugin" sbt.resolvers="http://repo1.maven.org/maven2/|maven|public, http://repo.typesafe.com/typesafe/releases/|maven|Typesafe repository, /home/ilya/.ivy2/cache|ivy|Local cache" type="SBT_MODULE" version="4">
+<module external.linked.project.id="checker-build" external.linked.project.path="/mnt/ubuntu-home/ilya/programming/kio-15/Checker/project" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" sbt.imports="sbt._, Keys._, _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.plugins.JUnitXmlReportPlugin" sbt.resolvers="http://repo1.maven.org/maven2/|maven|public, http://repo.typesafe.com/typesafe/releases/|maven|Typesafe repository, /home/ilya/.ivy2/cache|ivy|Local cache" type="SBT_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../project/target/idea-classes" />
-    <output-test url="file://$MODULE_DIR$/../../project/target/idea-test-classes" />
+    <output url="file:///mnt/ubuntu-home/ilya/programming/kio-15/Checker/project/target/idea-classes" />
+    <output-test url="file:///mnt/ubuntu-home/ilya/programming/kio-15/Checker/project/target/idea-test-classes" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../project">
-      <sourceFolder url="file://$MODULE_DIR$/../../project" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../../project/project/target" />
-      <excludeFolder url="file://$MODULE_DIR$/../../project/target" />
+    <content url="file:///mnt/ubuntu-home/ilya/programming/kio-15/Checker/project">
+      <sourceFolder url="file:///mnt/ubuntu-home/ilya/programming/kio-15/Checker/project" isTestSource="false" />
+      <excludeFolder url="file:///mnt/ubuntu-home/ilya/programming/kio-15/Checker/project/project/target" />
+      <excludeFolder url="file:///mnt/ubuntu-home/ilya/programming/kio-15/Checker/project/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -21,7 +21,6 @@
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.5/control-0.13.5.jar!/" />
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.5/tasks-0.13.5.jar!/" />
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.5/main-0.13.5.jar!/" />
-          <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.5/bcpg-jdk16-1.46.jar!/" />
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.5/jline-2.11.jar!/" />
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.5/tracking-0.13.5.jar!/" />
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.5/run-0.13.5.jar!/" />
@@ -45,7 +44,6 @@
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.5/compiler-integration-0.13.5.jar!/" />
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.5/classpath-0.13.5.jar!/" />
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.5/launcher-interface-0.13.5.jar!/" />
-          <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.5/bcprov-jdk16-1.46.jar!/" />
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.4/lib/scala-reflect.jar!/" />
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.5/completion-0.13.5.jar!/" />
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.5/apply-macro-0.13.5.jar!/" />
@@ -64,7 +62,6 @@
         <JAVADOC />
         <SOURCES>
           <root url="jar://$USER_HOME$/.ivy2/cache/org.scala-sbt/cross/srcs/cross-0.13.5-sources.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.bouncycastle/bcprov-jdk16/srcs/bcprov-jdk16-1.46-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.scala-sbt/cache/srcs/cache-0.13.5-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.scala-sbt/main/srcs/main-0.13.5-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.scala-sbt/classpath/srcs/classpath-0.13.5-sources.jar!/" />
@@ -93,7 +90,6 @@
           <root url="jar://$USER_HOME$/.ivy2/cache/org.scala-sbt/io/srcs/io-0.13.5-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/jline/jline/srcs/jline-2.11-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.scala-sbt/compiler-integration/srcs/compiler-integration-0.13.5-sources.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.bouncycastle/bcpg-jdk16/srcs/bcpg-jdk16-1.46-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.scala-sbt/run/srcs/run-0.13.5-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.scala-sbt/command/srcs/command-0.13.5-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.scala-sbt/precompiled-2_8_2/srcs/precompiled-2_8_2-0.13.5-sources.jar!/" />

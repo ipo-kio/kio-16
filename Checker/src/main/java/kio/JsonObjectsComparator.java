@@ -17,6 +17,11 @@ public class JsonObjectsComparator implements Comparator<JsonNode> {
 
     @Override
     public int compare(JsonNode o1, JsonNode o2) {
+        //if some parameter is absent, then make element null
+
+        o1 = normalize(o1);
+        o2 = normalize(o2);
+
         if (o1 == null && o2 == null)
             return 0;
         if (o1 == null)
@@ -56,6 +61,15 @@ public class JsonObjectsComparator implements Comparator<JsonNode> {
         }
 
         return 0;
+    }
+
+    private JsonNode normalize(JsonNode o) {
+        if (o == null)
+            return null;
+        for (KioParameter param : params)
+            if (o.get(param.getId()) == null)
+                return null;
+        return o;
     }
 
     protected int compareNulls(Object n1, Object n2) {

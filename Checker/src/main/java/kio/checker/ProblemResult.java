@@ -32,6 +32,10 @@ public class ProblemResult implements Comparable<ProblemResult> {
         return uncheckedAttempt;
     }
 
+    public Attempt getBelievedAttempt() {
+        return believeUnchecked ? uncheckedAttempt : attempt;
+    }
+
     public int getRank() {
         return rank;
     }
@@ -57,6 +61,6 @@ public class ProblemResult implements Comparable<ProblemResult> {
         if (a2 == null)
             return 1;
 
-        return uncheckedAttempt.compareTo(pr.uncheckedAttempt);
+        return a.compareTo(a2);
     }
 }

@@ -39,7 +39,7 @@ public class MarkovRunner extends Sprite {
 
         //Запускаем задачу. Метод initOneProblem() специально сделан для отладки одной задачи.
         //Первый параметр - текущий спрайт, второй параметр - задача
-        KioBase.instance.initOneProblem(this, new MarkovProblem(stage, 2));
+        KioBase.instance.initOneProblem(this, new MarkovProblem(stage, 0));
     }
 }
 }
