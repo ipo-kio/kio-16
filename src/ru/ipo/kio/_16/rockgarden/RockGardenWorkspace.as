@@ -35,22 +35,41 @@ public class RockGardenWorkspace extends Sprite {
 //        background.graphics.lineStyle(1, 0xFF0000);
 //        background.graphics.drawCircle(200, 200, 100);
 
-        var sl:SegmentsList = new SegmentsList(10, "");
+        /*var sl:SegmentsList = new SegmentsList(10, "");
 
-        var union:Function = function (a:String, b:String):String {
-            return a + b;
+         var union:Function = function (a:String, b:String):String {
+         return a + b;
+         };
+
+         sl.addSegment(new Segment(1, 5, "a"), union);
+         trace(sl.toString());
+
+         sl.addSegment(new Segment(6, 9, "b"), union);
+         trace(sl.toString());
+
+         sl.addSegment(new Segment(2, 8, "c"), union);
+         trace(sl.toString());
+
+         sl.addSegment(new Segment(9, 2, "r"), union);
+         trace(sl.toString());*/
+
+        var _override:Function = function (a:String, b:String):String {
+            return b;
         };
 
-        sl.addSegment(new Segment(1, 5, "a"), union);
-        trace(sl.toString());
+        /** ====-=======
+         var sl:SegmentsList = new SegmentsList(10, "");
+         sl.addSegment(new Segment(3, 4, "a"), _override);
+         trace(sl.toString());
+         sl.addSegment(new Segment(2, 5, "b"), _override);
+         trace(sl.toString());
+         */
 
-        sl.addSegment(new Segment(6, 9, "b"), union);
+        /** ====-=======*/
+        var sl:SegmentsList = new SegmentsList(10, "");
+        sl.addSegment(new Segment(2, 5, "a"), _override);
         trace(sl.toString());
-
-        sl.addSegment(new Segment(2, 8, "c"), union);
-        trace(sl.toString());
-
-        sl.addSegment(new Segment(9, 2, "r"), union);
+        sl.addSegment(new Segment(3, 4, "b"), _override);
         trace(sl.toString());
 
         var circles:Vector.<Circle> = new <Circle>[];
