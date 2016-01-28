@@ -1,12 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="kio-15" type="FlashRunConfigurationType" factoryName="Flash App">
-    <option name="BCName" value="kio-15" />
+  <configuration default="false" name="kio-16" type="FlashRunConfigurationType" factoryName="Flash App">
+    <option name="BCName" value="kio-16" />
     <option name="IOSSimulatorSdkPath" value="" />
     <option name="adlOptions" value="" />
     <option name="airProgramParameters" value="" />
     <option name="appDescriptorForEmulator" value="Android" />
     <option name="debugTransport" value="USB" />
-    <option name="debuggerSdkRaw" value="BC SDK" />
+    <option name="debuggerSdkRaw" value="apache-flex-sdk-4.15.0-bin" />
     <option name="emulator" value="NexusOne" />
     <option name="emulatorAdlOptions" value="" />
     <option name="fastPackaging" value="true" />
@@ -18,11 +18,11 @@
         <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
         <option name="launcherType" value="Player" />
         <option name="newPlayerInstance" value="false" />
-        <option name="playerPath" value="/usr/bin/flashplayerdebugger" />
+        <option name="playerPath" value="$USER_HOME$/opt/flex_sdk_4.6/runtimes/player/11.1/lnx/flashplayerdebugger" />
       </LauncherParameters>
     </option>
     <option name="mobileRunTarget" value="Emulator" />
-    <option name="moduleName" value="kio-15" />
+    <option name="moduleName" value="kio-16" />
     <option name="overriddenMainClass" value="" />
     <option name="overriddenOutputFileName" value="" />
     <option name="overrideMainClass" value="false" />
