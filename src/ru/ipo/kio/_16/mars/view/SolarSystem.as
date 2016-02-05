@@ -51,10 +51,10 @@ public class SolarSystem extends Sprite {
     }
 
     public function position2point(p:Vector2D):Point {
-        return new Point(p.r * Math.cos(p.theta) * SCALE, p.r * Math.sin(p.theta) * SCALE);
+        return new Point(p.r * Math.cos(p.theta) * SCALE, -p.r * Math.sin(p.theta) * SCALE);
     }
 
-    public function set history(history:ShipHistory) {
+    public function set history(history:ShipHistory):void {
         _history = history;
 
         if (historyView != null)
@@ -62,9 +62,6 @@ public class SolarSystem extends Sprite {
 
         historyView = new ShipHistoryView(this, _history);
         historyLayer.addChild(historyView);
-
-        while (historyLayer.numChildren > 0)
-            historyLayer.removeChildAt(0);
     }
 
     public function get history():ShipHistory {

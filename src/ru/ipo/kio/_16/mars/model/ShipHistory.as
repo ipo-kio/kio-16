@@ -11,6 +11,10 @@ public class ShipHistory {
     public function ShipHistory(initialPosition:Vector2D, initialV:Vector2D) {
         this.initialPosition = initialPosition;
         this.initialV = initialV;
+
+        _actions = new <ShipHistoryEntry>[];
+
+        evaluatePositions();
     }
 
     public function evaluatePositions():void {
@@ -23,7 +27,7 @@ public class ShipHistory {
         var currentDirection:int = initialPosition.vectorMul(initialV);
         var currentOrbit:Orbit = orbits[0];
 
-        for (var time:int = 0; time < Consts.MAX_TIME; time++) {
+        for (var time:int = 0; time <= Consts.MAX_TIME; time++) {
             var currentPosition:Vector2D = currentOrbit.position(time);
             _positions[time] = currentPosition;
 
@@ -69,6 +73,11 @@ public class ShipHistory {
 
     public function get positions():Vector.<Vector2D> {
         return _positions;
+    }
+
+    public function push(shipHistoryEntry:ShipHistoryEntry):void {
+        _actions.push(shipHistoryEntry);
+        evaluatePositions();
     }
 }
 }

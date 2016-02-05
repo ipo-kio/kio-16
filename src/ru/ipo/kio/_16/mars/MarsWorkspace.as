@@ -4,6 +4,9 @@ import flash.display.Sprite;
 import ru.ipo.kio._16.mars.model.Consts;
 
 import ru.ipo.kio._16.mars.model.Orbit;
+import ru.ipo.kio._16.mars.model.ShipHistory;
+import ru.ipo.kio._16.mars.model.ShipHistoryEntry;
+import ru.ipo.kio._16.mars.model.Vector2D;
 
 import ru.ipo.kio._16.mars.view.OrbitView;
 import ru.ipo.kio._16.mars.view.SolarSystem;
@@ -42,6 +45,10 @@ public class MarsWorkspace extends Sprite {
         addChild(ss);
         ss.x = 300;
         ss.y = 300;
+
+        var history:ShipHistory = new ShipHistory(Vector2D.create(Consts.EARTH_R, 0), Vector2D.create(0, Consts.EARTH_Vt));
+//        history.push(new ShipHistoryEntry(300, Vector2D.create(0, -Consts.EARTH_Vt / 20)));
+        ss.history = history;
 
         var slider:Slider = new Slider(0, 100, 700, 0x000000, 0x000000);
         slider.x = 20;
