@@ -47,13 +47,15 @@ public class MarsWorkspace extends Sprite {
         ss.y = 300;
 
         var history:ShipHistory = new ShipHistory(Vector2D.create(Consts.EARTH_R, 0), Vector2D.create(0, Consts.EARTH_Vt));
-//        history.push(new ShipHistoryEntry(300, Vector2D.create(0, -Consts.EARTH_Vt / 20)));
+        history.push(new ShipHistoryEntry(60, Vector2D.create(0, -Consts.EARTH_Vt / 20)));
         ss.history = history;
 
         var slider:Slider = new Slider(0, 100, 700, 0x000000, 0x000000);
         slider.x = 20;
         slider.y = 570;
         addChild(slider);
+
+        trace('earth vt = ', Consts.EARTH_Vt);
     }
 }
 }

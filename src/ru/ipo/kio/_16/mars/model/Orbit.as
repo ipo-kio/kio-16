@@ -38,8 +38,8 @@ public class Orbit {
 
         var tan_theta2:Number = Math.sqrt(tan2theta2);
         var theta:Number = 2 * Math.atan(tan_theta2);
-        if (E < 0)
-            theta = -theta;
+
+        theta = selectNearAngle(theta, E);
 
         var r:Number = _a * (1 - _eps * Math.cos(E));
 
@@ -88,12 +88,30 @@ public class Orbit {
         var tan2E2:Number = (1 - _eps) * sq(Math.tan(theta / 2)) / (1 + _eps);
 
         var E:Number = 2 * Math.sqrt(tan2E2);
-        if (theta < 0)
-            E = -E;
+        E = selectNearAngle(E, theta);
 
         var M:Number = E - _eps * Math.sin(E);
 
         return M / _n; //M = nt
+    }
+
+    private static function selectNearAngle(fixing:Number, correct:Number):Number {
+        var f1:Number = fixing - correct;
+        var f2:Number = -fixing - correct;
+
+        while (f1 < 0)
+            f1 += 2 * Math.PI;
+        while (f2 < 0)
+            f2 += 2 * Math.PI;
+        while (f1 >= 2 * Math.PI)
+            f1 -= 2 * Math.PI;
+        while (f2 >= 2 * Math.PI)
+            f2 -= 2 * Math.PI;
+
+        if (Math.abs(f1) < Math.abs(f2))
+            return f1 + correct;
+        else
+            return f2 + correct;
     }
 
     private static function sq(a:Number):Number {

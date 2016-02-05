@@ -28,7 +28,7 @@ public class ShipHistory {
         var currentOrbit:Orbit = orbits[0];
 
         for (var time:int = 0; time <= Consts.MAX_TIME; time++) {
-            var currentPosition:Vector2D = currentOrbit.position(time);
+            var currentPosition:Vector2D = currentOrbit.position(time * Consts.dt);
             _positions[time] = currentPosition;
 
             if (nextActionIndex < _actions.length && _actions[nextActionIndex].time == time) {

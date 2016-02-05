@@ -47,6 +47,7 @@ public class ShipHistoryView extends Sprite {
         graphics.lineStyle(0.5, 0x009988);
         graphics.drawCircle(finish.x, finish.y, 2);
 
+//        trace(ss.earthOrbit.position());
     }
 }
 }
