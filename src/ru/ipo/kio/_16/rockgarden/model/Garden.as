@@ -87,7 +87,7 @@ public class Garden {
 
             var c:Number = Segment.line_center(pLeft, pRight, _MAX_SEGMENTS_LIST_VALUE);
 
-            var visible_circles:Vector.<int> = visible_circles_for_point(location2point(c), i == 0);
+            var visible_circles:Vector.<int> = visible_circles_for_point(location2point(c));
             _segments.addSegment(new Segment(pLeft, pRight, visible_circles), just_add_segment, compare_int_vectors);
         }
 
@@ -102,7 +102,7 @@ public class Garden {
         trace('evaled segments in ', _finish.time - _start.time);
     }
 
-    private function visible_circles_for_point(point:Point, do_trace:Boolean = false):Vector.<int> {
+    private function visible_circles_for_point(point:Point):Vector.<int> {
         var anglesCircle:SegmentsList = new SegmentsList(2 * Math.PI, -1);
 
         var all_circles:Vector.<Circle> = new <Circle>[];
@@ -120,13 +120,6 @@ public class Garden {
 
             return dist(c2) - dist(c1);
         });
-
-        if (do_trace) {
-            var sss:String = "";
-            for each (var cc:Circle in all_circles)
-                sss += cc.index;
-            trace('all circles: ', sss);
-        }
 
         for each (c in all_circles) {
             var lines:Vector.<Line> = tangent_line(c.x, c.y, c.r, point.x, point.y, 0);
@@ -173,7 +166,6 @@ public class Garden {
             if (has_circle[i])
                 result.push(i);
 
-        trace('point', point.x, point.y, 'visible', result.toString());
         return result;
 
         function normalize_angle(a:Number):Number {
