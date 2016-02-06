@@ -27,8 +27,8 @@ public class SolarSystem extends Sprite {
     private var marsOV:OrbitView;
 
     public function SolarSystem() {
-        earthOrbit = Orbit.solveInitial(Consts.EARTH_R, 0, 0, Consts.EARTH_Vt);
-        marsOrbit = Orbit.solveInitial(Consts.MARS_R, 0, 0, Consts.MARS_Vt);
+        earthOrbit = Orbit.solveInitial(Consts.EARTH_R, 0, 0, Consts.EARTH_Vt, 0);
+        marsOrbit = Orbit.solveInitial(Consts.MARS_R, 0, 0, Consts.MARS_Vt, 0);
 
 //        earthPosition = new Vector2D(Consts.EARTH_R, 0);
 //        marsPosition = new Vector2D(Consts.MARS_R, 0);

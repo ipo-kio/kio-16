@@ -2,6 +2,7 @@ package ru.ipo.kio._16.mars.model {
 
 public class Orbit {
     private var _theta0:Number;
+    private var _t0:Number; // time at perihelium
     private var _p:Number;
     private var _eps:Number;
     private var _a:Number;
@@ -9,7 +10,15 @@ public class Orbit {
     private var _c:Number;
     private var _n:Number;
 
-    public function Orbit(theta0:Number, p:Number, eps:Number) {
+    /**
+     * creates an orbit
+     * @param theta0 perihelium theta in the general coordinate system
+     * @param p p
+     * @param eps eps
+     * @param timedTheta some theta at the orbit with time
+     * @param time the time of that theta
+     */
+    public function Orbit(theta0:Number, p:Number, eps:Number, timedTheta:Number = 0, time:Number = 0) {
         _theta0 = theta0;
         _p = p;
         _eps = eps;
@@ -24,11 +33,15 @@ public class Orbit {
         _b = Math.sqrt(1 - sq(_eps)) * a;
         _c = _eps * _a;
         _n = Math.sqrt(Consts.MU / (_a * _a * _a));
+
+        //t0 + convertTheta2time(timedTheta, _eps, _n) = time
+        _t0 = time - convertTheta2time(timedTheta, _eps, _n);
     }
 
     public function position(t:Number):Vector2D {
         //https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion#Position_as_a_function_of_time
-
+        t -= _t0;
+E
         var M:Number = _n * t;
 
         var E:Number = solveKeplerEquation(M, _eps);
@@ -46,7 +59,7 @@ public class Orbit {
         return Vector2D.createPolar(r, theta + _theta0);
     }
 
-    public static function solveInitial(r0x:Number, r0y:Number, v0x:Number, v0y:Number):Orbit {
+    public static function solveInitial(r0x:Number, r0y:Number, v0x:Number, v0y:Number, t0:Number):Orbit {
         var r:Number = Math.sqrt(sq(r0x) + sq(r0y));
 
         var r_x:Number = r0x / r;
@@ -68,38 +81,57 @@ public class Orbit {
 
         var eps:Number = Math.sqrt(sq(epsCosTheta) + sq(epsSinTheta));
 
-        //eps = 0 means circular orbit, so theta is meaningless
-        if (eps < Consts._EPS)
-            return new Orbit(0, p, eps);
-        if (eps > 1 - Consts._EPS)
+        if (eps > 1 - Consts._EPS) //parabolic or hyperbolic trajectory
             return null;
 
-        var theta:Number = Math.atan2(epsSinTheta, epsCosTheta);
-
         var thetaInitial:Number = Math.atan2(r0y, r0x);
-        var theta0:Number = thetaInitial - theta;
+        //eps = 0 means circular orbit, so theta is meaningless
+        if (eps < Consts._EPS)
+            return new Orbit(thetaInitial, p, 0, 0, t0);
 
-        return new Orbit(theta0, p, eps);
+        var thetaInOrbit:Number = Math.atan2(epsSinTheta, epsCosTheta);
+
+        //theta0 + thetaInOrbit = thetaInitial
+        var theta0:Number = thetaInitial - thetaInOrbit;
+
+        return new Orbit(theta0, p, eps, thetaInOrbit, t0);
     }
 
     public function theta2time(theta:Number):Number {
-        theta -= theta0;
+        theta -= _theta0;
 
-        var tan2E2:Number = (1 - _eps) * sq(Math.tan(theta / 2)) / (1 + _eps);
+        return convertTheta2time(theta - _theta0, _eps, _n) + _t0;
+    }
 
-        var E:Number = 2 * Math.sqrt(tan2E2);
+    private static function convertTheta2time(theta:Number, eps:Number, n:Number):Number {
+        var tan2E2:Number = (1 - eps) * sq(Math.tan(theta / 2)) / (1 + eps);
+        var tan_E2:Number = Math.sqrt(tan2E2);
+
+        var E:Number = 2 * Math.atan(tan_E2);
         E = selectNearAngle(E, theta);
 
-        var M:Number = E - _eps * Math.sin(E);
+        var M:Number = E - eps * Math.sin(E);
 
-        return M / _n; //M = nt
+        return M / n; //M = nt
     }
 
     private static function selectNearAngle(fixing:Number, correct:Number):Number {
-        var f1:Number = fixing - correct;
+        var from:int = Math.floor(correct / Math.PI);
+        var from_f:int = Math.floor(fixing / Math.PI);
+
+        if ((from - from_f) % 2 != 0)
+            fixing = -fixing;
+        while (fixing - correct > 2 * Math.PI)
+            fixing -= 2 * Math.PI;
+        while (fixing - correct <= -2 * Math.PI)
+            fixing += 2 * Math.PI;
+
+        return fixing;
+
+        /*var f1:Number = fixing - correct;
         var f2:Number = -fixing - correct;
 
-        while (f1 < 0)
+        while (f1 < -Math.PI)
             f1 += 2 * Math.PI;
         while (f2 < 0)
             f2 += 2 * Math.PI;
@@ -111,7 +143,7 @@ public class Orbit {
         if (Math.abs(f1) < Math.abs(f2))
             return f1 + correct;
         else
-            return f2 + correct;
+            return f2 + correct;*/
     }
 
     private static function sq(a:Number):Number {

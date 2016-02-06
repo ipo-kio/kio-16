@@ -3,7 +3,7 @@ public class ShipHistory {
 
     private var _actions:Vector.<ShipHistoryEntry>;
     private var _positions:Vector.<Vector2D>;
-    private var orbits:Vector.<Orbit>;
+    private var _orbits:Vector.<Orbit>;
 
     private var initialPosition:Vector2D;
     private var initialV:Vector2D;
@@ -19,19 +19,20 @@ public class ShipHistory {
 
     public function evaluatePositions():void {
         _positions = new Vector.<Vector2D>(Consts.MAX_TIME + 1, true);
-        orbits = new <Orbit>[];
+        _orbits = new <Orbit>[];
 
-        orbits[0] = Orbit.solveInitial(initialPosition.x, initialPosition.y, initialV.x, initialV.y);
+        _orbits[0] = Orbit.solveInitial(initialPosition.x, initialPosition.y, initialV.x, initialV.y, 0);
 
         var nextActionIndex:int = 0;
         var currentDirection:int = initialPosition.vectorMul(initialV);
-        var currentOrbit:Orbit = orbits[0];
+        var currentOrbit:Orbit = _orbits[0];
 
-        for (var time:int = 0; time <= Consts.MAX_TIME; time++) {
-            var currentPosition:Vector2D = currentOrbit.position(time * Consts.dt);
-            _positions[time] = currentPosition;
+        for (var timeInd:int = 0; timeInd <= Consts.MAX_TIME; timeInd++) {
+            var time:Number = timeInd * Consts.dt;
+            var currentPosition:Vector2D = currentOrbit.position(time);
+            _positions[timeInd] = currentPosition;
 
-            if (nextActionIndex < _actions.length && _actions[nextActionIndex].time == time) {
+            if (nextActionIndex < _actions.length && _actions[nextActionIndex].time == timeInd) {
                 var r_:Vector2D = currentPosition.normalize();
                 var t_:Vector2D = r_.rot90();
 
@@ -54,10 +55,10 @@ public class ShipHistory {
                 Vy += dV.y;
                 V = Vector2D.create(Vx, Vy);
 
-                var nextOrbit:Orbit = Orbit.solveInitial(currentPosition.x, currentPosition.y, Vx, Vy);
+                var nextOrbit:Orbit = Orbit.solveInitial(currentPosition.x, currentPosition.y, Vx, Vy, time);
                 var nextDirection:Number = currentPosition.vectorMul(V);
                 if (nextOrbit != null && Math.abs(nextDirection) > Consts._EPS) {
-                    orbits.push(nextOrbit);
+                    _orbits.push(nextOrbit);
                     currentOrbit = nextOrbit;
                     currentDirection = nextDirection;
                 }
@@ -73,6 +74,10 @@ public class ShipHistory {
 
     public function get positions():Vector.<Vector2D> {
         return _positions;
+    }
+
+    public function get orbits():Vector.<Orbit> {
+        return _orbits;
     }
 
     public function push(shipHistoryEntry:ShipHistoryEntry):void {

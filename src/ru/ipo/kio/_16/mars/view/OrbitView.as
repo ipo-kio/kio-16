@@ -29,13 +29,19 @@ public class OrbitView extends Sprite {
     private function redraw():void {
         var m:Matrix = new Matrix();
         m.translate(-_o.c * _scale, 0);
-        m.rotate(_o.theta0);
+        m.rotate(-_o.theta0);
 //        m.scale(_scale, _scale);
         view.transform.matrix = m;
 
         view.graphics.lineStyle(1, _color, _alpha);
 //        graphics.lineStyle(1 / _scale, _color, _alpha);
         view.graphics.drawEllipse(-_o.a * _scale, -_o.b * _scale, 2 * _o.a * _scale, 2 * _o.b * _scale);
+
+        view.graphics.lineStyle(0);
+        view.graphics.beginFill(0xFF0000);
+        view.graphics.drawCircle(-_o.a * _scale, 0, 2);
+        view.graphics.drawCircle(_o.a * _scale, 0, 2);
+        view.graphics.endFill();
     }
 
     public function get o():Orbit {
