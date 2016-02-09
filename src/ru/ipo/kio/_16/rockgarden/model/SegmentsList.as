@@ -206,5 +206,9 @@ public class SegmentsList {
                 s.end -= _maxValue;
         }
     }
+
+    public function get maxValue():Number {
+        return _maxValue;
+    }
 }
 }
