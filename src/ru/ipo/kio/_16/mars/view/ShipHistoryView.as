@@ -6,7 +6,7 @@ import ru.ipo.kio._16.mars.model.Consts;
 import ru.ipo.kio._16.mars.model.Orbit;
 
 import ru.ipo.kio._16.mars.model.ShipHistory;
-import ru.ipo.kio._16.mars.model.ShipHistoryEntry;
+import ru.ipo.kio._16.mars.model.ShipAction;
 import ru.ipo.kio._16.mars.model.Vector2D;
 
 public class ShipHistoryView extends Sprite {
@@ -22,7 +22,7 @@ public class ShipHistoryView extends Sprite {
 
     private function redraw():void {
 
-        graphics.lineStyle(2, 0x999999);
+        graphics.lineStyle(4, 0xBBBBBB, 0.6);
 
         //draw trace
         var first:Boolean = true;
@@ -37,7 +37,7 @@ public class ShipHistoryView extends Sprite {
 
         //draw actions
         graphics.lineStyle(0.5, 0x990000);
-        for each (var he:ShipHistoryEntry in history.actions) {
+        for each (var he:ShipAction in history.actions) {
             var pos:Point = ss.position2point(history.positions[he.time]);
             graphics.drawCircle(pos.x, pos.y, 3);
         }
@@ -54,8 +54,8 @@ public class ShipHistoryView extends Sprite {
 //        trace(ss.earthOrbit.position());
 
         //add orbits
-        for each (var o:Orbit in history.orbits)
-            addChild(new OrbitView(o, SolarSystem.SCALE, 0x0, 1));
+//        for each (var o:Orbit in history.orbits)
+//            addChild(new OrbitView(o, SolarSystem.SCALE, 0x0, 1));
     }
 }
 }

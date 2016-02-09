@@ -37,11 +37,12 @@ public class OrbitView extends Sprite {
 //        graphics.lineStyle(1 / _scale, _color, _alpha);
         view.graphics.drawEllipse(-_o.a * _scale, -_o.b * _scale, 2 * _o.a * _scale, 2 * _o.b * _scale);
 
-        view.graphics.lineStyle(0);
-        view.graphics.beginFill(0xFF0000);
-        view.graphics.drawCircle(-_o.a * _scale, 0, 2);
-        view.graphics.drawCircle(_o.a * _scale, 0, 2);
-        view.graphics.endFill();
+        //aphelion, perihelion
+//        view.graphics.lineStyle(0);
+//        view.graphics.beginFill(0xFF0000);
+//        view.graphics.drawCircle(-_o.a * _scale, 0, 2);
+//        view.graphics.drawCircle(_o.a * _scale, 0, 2);
+//        view.graphics.endFill();
     }
 
     public function get o():Orbit {

@@ -14,11 +14,16 @@ public class SolarSystem extends Sprite {
     private var earthOrbit:Orbit;
     private var marsOrbit:Orbit;
 
-    private var ship:Ship;
     private var historyLayer:Sprite;
     private var historyView:ShipHistoryView = null;
 
     private var _history:ShipHistory;
+
+    private var _timeInd:Number;
+
+    private var ship:BodyView;
+    private var earth:BodyView;
+    private var mars:BodyView;
 
 //    private var earthPosition:Vector2D;
 //    private var marsPosition:Vector2D;
@@ -42,8 +47,22 @@ public class SolarSystem extends Sprite {
         historyLayer = new Sprite();
         addChild(historyLayer);
 
-        ship = new Ship(this);
+        ship = new BodyView(this, "ship");
+        earth = new BodyView(this, 0x0000bb);
+        mars = new BodyView(this, 0xbb0000);
+        addChild(earth);
+        addChild(mars);
         addChild(ship);
+
+        _timeInd = 0;
+        updateTime();
+    }
+
+    private function updateTime():void {
+        earth.moveTo(earthOrbit.position(_timeInd * Consts.dt));
+        mars.moveTo(marsOrbit.position(_timeInd * Consts.dt));
+        if (_history != null)
+            ship.moveTo(_history.time2position(_timeInd));
     }
 
     public function moveShipTo(p:Vector2D):void {
@@ -62,10 +81,24 @@ public class SolarSystem extends Sprite {
 
         historyView = new ShipHistoryView(this, _history);
         historyLayer.addChild(historyView);
+
+        updateTime();
     }
 
     public function get history():ShipHistory {
         return _history;
+    }
+
+    public function get timeInd():Number {
+        return _timeInd;
+    }
+
+    public function set time(value:Number):void {
+        if (_timeInd == value)
+            return;
+        _timeInd = value;
+
+        updateTime();
     }
 }
 }

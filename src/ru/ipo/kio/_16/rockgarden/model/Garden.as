@@ -87,7 +87,7 @@ public class Garden {
 
             var c:Number = Segment.line_center(pLeft, pRight, _MAX_SEGMENTS_LIST_VALUE);
 
-            var visible_circles:Vector.<int> = visible_circles_for_point(location2point(c));
+            var visible_circles:Vector.<int> = anglesCircle2visibleCircles(visible_circles_for_point(location2point(c)));
             _segments.addSegment(new Segment(pLeft, pRight, visible_circles), just_add_segment, compare_int_vectors);
         }
 
@@ -102,7 +102,7 @@ public class Garden {
         trace('evaled segments in ', _finish.time - _start.time);
     }
 
-    private function visible_circles_for_point(point:Point):Vector.<int> {
+    public function visible_circles_for_point(point:Point):SegmentsList {
         var anglesCircle:SegmentsList = new SegmentsList(2 * Math.PI, -1);
 
         var all_circles:Vector.<Circle> = new <Circle>[];
@@ -152,9 +152,19 @@ public class Garden {
             anglesCircle.addSegment(s, function(was:int, now:int):int {return now;})
         }
 
+        return anglesCircle;
+
+        function normalize_angle(a:Number):Number {
+            while (a < 0) a += 2 * Math.PI;
+            while (a >= 2 * Math.PI) a -= 2 * Math.PI;
+            return a;
+        }
+    }
+
+    private function anglesCircle2visibleCircles(anglesCircle:SegmentsList):Vector.<int> {
         var max_index:int = 20; //we have definitely less than 20 circles
         var has_circle:Vector.<Boolean> = new Vector.<Boolean>(max_index);
-        for (i = 0; i < max_index; i++)
+        for (var i:int = 0; i < max_index; i++)
             has_circle[i] = false;
 
         for each (var ss:Segment in anglesCircle.segments)
@@ -165,14 +175,7 @@ public class Garden {
         for (i = 0; i < max_index; i++)
             if (has_circle[i])
                 result.push(i);
-
         return result;
-
-        function normalize_angle(a:Number):Number {
-            while (a < 0) a += 2 * Math.PI;
-            while (a >= 2 * Math.PI) a -= 2 * Math.PI;
-            return a;
-        }
     }
 
     private static function tangent_line(c1x:Number, c1y:Number, c1r:Number, c2x:Number, c2y:Number, c2r:Number):Vector.<Line> {
@@ -316,30 +319,48 @@ public class Garden {
         // 1) intersect with left line x = 0: b * y + c = 0
         if (Math.abs(l.b) >= EPS) {
             var y:Number = -l.c / l.b;
-            if (y >= 0 && y < _H)
+            if (y > -EPS && y < _H + EPS) {
+                if (y < 0) y = 0;
+                if (y > _H) y = _H;
                 res.push(new Point(0, y));
+            }
         }
 
         // 2) intersect with top line y = _H: a * x + b * _H + c = 0
         if (Math.abs(l.a) >= EPS) {
             var x:Number = (-l.c - l.b * _H) / l.a;
-            if (x >= 0 && x < _W)
+            if (x > -EPS && x < _W + EPS) {
+                if (x < 0) x = 0;
+                if (x > _W) x = _W;
                 res.push(new Point(x, _H));
+            }
         }
 
         // 3) intersect with right line x = _W: a * _W + b * y + c = 0
         if (Math.abs(l.b) >= EPS) {
             y = (-l.c - l.a * _W) / l.b;
-            if (y > 0 && y <= _H)
+            if (y > -EPS && y < _H + EPS) {
+                if (y < 0) y = 0;
+                if (y > _H) y = _H;
                 res.push(new Point(_W, y));
+            }
         }
 
         // 4) intersect with bottom line y = 0: a * x + c = 0
         if (Math.abs(l.a) >= EPS) {
             x = -l.c / l.a;
-            if (x > 0 && x <= _W)
+            if (x > -EPS && x < _W + EPS) {
+                if (x < 0) x = 0;
+                if (x > _W) x = _W;
                 res.push(new Point(x, 0));
+            }
         }
+
+        if (res.length > 2)
+            for (var ii:int = 0; ii < res.length; ii++)
+                for (var jj:int = ii + 1; jj < res.length; jj++)
+                    if (res[ii].x == res[jj].x && res[ii].y == res[jj].y)
+                            res.splice(jj, 1);
 
         return res;
     }

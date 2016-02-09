@@ -1,7 +1,7 @@
 package ru.ipo.kio._16.mars.model {
 public class ShipHistory {
 
-    private var _actions:Vector.<ShipHistoryEntry>;
+    private var _actions:Vector.<ShipAction>;
     private var _positions:Vector.<Vector2D>;
     private var _orbits:Vector.<Orbit>;
 
@@ -12,7 +12,7 @@ public class ShipHistory {
         this.initialPosition = initialPosition;
         this.initialV = initialV;
 
-        _actions = new <ShipHistoryEntry>[];
+        _actions = new <ShipAction>[];
 
         evaluatePositions();
     }
@@ -68,7 +68,11 @@ public class ShipHistory {
         }
     }
 
-    public function get actions():Vector.<ShipHistoryEntry> {
+    public function time2position(timeInd:int):Vector2D {
+        return _positions[timeInd];
+    }
+
+    public function get actions():Vector.<ShipAction> {
         return _actions;
     }
 
@@ -80,7 +84,7 @@ public class ShipHistory {
         return _orbits;
     }
 
-    public function push(shipHistoryEntry:ShipHistoryEntry):void {
+    public function push(shipHistoryEntry:ShipAction):void {
         _actions.push(shipHistoryEntry);
         evaluatePositions();
     }

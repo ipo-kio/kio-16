@@ -1,10 +1,10 @@
 package ru.ipo.kio._16.mars.model {
-public class ShipHistoryEntry {
+public class ShipAction {
 
     private var _time:int;
     private var _dV:Vector2D;
 
-    public function ShipHistoryEntry(time:int, dV:Vector2D) {
+    public function ShipAction(time:int, dV:Vector2D) {
         _time = time;
         _dV = dV;
     }

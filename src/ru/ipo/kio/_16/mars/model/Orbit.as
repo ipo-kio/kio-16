@@ -41,7 +41,7 @@ public class Orbit {
     public function position(t:Number):Vector2D {
         //https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion#Position_as_a_function_of_time
         t -= _t0;
-E
+
         var M:Number = _n * t;
 
         var E:Number = solveKeplerEquation(M, _eps);

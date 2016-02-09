@@ -186,5 +186,25 @@ public class SegmentsList {
         }
         return res;
     }
+
+    public function modify(f:Function, _newMaxValue:Number = 0):void {
+        if (_newMaxValue > 0)
+                _maxValue = _newMaxValue;
+
+        for each (var s:Segment in _segments) {
+            s.start = f(s.start);
+            s.end = f(s.end);
+
+            while (s.start < 0)
+                s.start += _maxValue;
+            while (s.end < 0)
+                s.end += _maxValue;
+
+            while (s.start >= _maxValue)
+                s.start -= _maxValue;
+            while (s.end >= _maxValue)
+                s.end -= _maxValue;
+        }
+    }
 }
 }

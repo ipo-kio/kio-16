@@ -92,7 +92,7 @@ public class Slider extends Sprite {
 
         _from_tf.width = 0; /*_from_tf.height = h;*/ _from_tf.y = -hh + (HEIGHT + 1) / 2;
         _to_tf.width = 0; /*_to_tf.height = h;*/ _to_tf.y = -hh + (HEIGHT + 1) / 2;
-        _value_tf.width = 0; /*_value_tf.height = h;*/ _value_tf.y = HEIGHT + V_TEXT_SKIP;
+        _value_tf.width = 0; /*_value_tf.height = h;*/ _value_tf.y = -HEIGHT+V_TEXT_SKIP;//HEIGHT + V_TEXT_SKIP;
 
         _from_tf.x = - H_TEXT_SKIP; _from_tf.autoSize = TextFieldAutoSize.RIGHT;
         _to_tf.x = internalWidth + H_TEXT_SKIP; _to_tf.autoSize = TextFieldAutoSize.LEFT;

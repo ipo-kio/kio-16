@@ -24,6 +24,18 @@ public class Segment {
         return _value;
     }
 
+    public function set start(value:Number):void {
+        _start = value;
+    }
+
+    public function set end(value:Number):void {
+        _end = value;
+    }
+
+    public function set value(value:*):void {
+        _value = value;
+    }
+
     public function pointInside(p:Number):Boolean {
         if (_start < _end)
             return _start < p && p < _end;

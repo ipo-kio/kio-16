@@ -16,6 +16,6 @@ public class Consts {
     public static const MARS_Vt:Number = Math.sqrt(MU / MARS_R); //https://en.wikipedia.org/wiki/Kepler_orbit , Determination of the Kepler orbit that corresponds to a given initial state
 
     public static const dt:Number = 60 * 60 * 24; //1 day
-    public static const MAX_TIME:int = 120; //5 * 365; //5 years in days
+    public static const MAX_TIME:int = 5 * 365; //5 years in days
 }
 }
