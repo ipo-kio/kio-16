@@ -32,7 +32,7 @@ public class Garden {
 
     public function evalSegments():void {
         var _start:Date = new Date();
-        refreshCirclesStatus();
+//        refreshCirclesStatus();
 
         _segments = new SegmentsList(_MAX_SEGMENTS_LIST_VALUE, new <int>[]);
 
@@ -161,7 +161,7 @@ public class Garden {
         }
     }
 
-    private function anglesCircle2visibleCircles(anglesCircle:SegmentsList):Vector.<int> {
+    public static function anglesCircle2visibleCircles(anglesCircle:SegmentsList):Vector.<int> {
         var max_index:int = 20; //we have definitely less than 20 circles
         var has_circle:Vector.<Boolean> = new Vector.<Boolean>(max_index);
         for (var i:int = 0; i < max_index; i++)

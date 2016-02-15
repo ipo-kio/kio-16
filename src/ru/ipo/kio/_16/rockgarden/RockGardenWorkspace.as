@@ -8,6 +8,8 @@ import ru.ipo.kio._16.rockgarden.model.SegmentsList;
 import ru.ipo.kio._16.rockgarden.model.Circle;
 import ru.ipo.kio._16.rockgarden.model.Garden;
 import ru.ipo.kio._16.rockgarden.view.GardenView;
+import ru.ipo.kio._16.rockgarden.view.RocksSideView;
+import ru.ipo.kio._16.rockgarden.view.ViewArea;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 
@@ -83,10 +85,23 @@ public class RockGardenWorkspace extends Sprite {
 
         g = new Garden(20, 10, circles);
 
-        gardenView = new GardenView(g, 35, 1 / 8);
-        gardenView.x = 30;
-        gardenView.y = 40;
+        var areas:Vector.<ViewArea> = new <ViewArea>[
+            new ViewArea(g.location2point(g.H / 2), g),
+            new ViewArea(g.location2point(g.H + g.W / 2), g),
+            new ViewArea(g.location2point(g.H + g.W + g.H / 2), g),
+            new ViewArea(g.location2point(g.H + g.W + g.H + g.W / 2), g)
+        ];
+
+        var sideView:RocksSideView = new RocksSideView(g, 400, 30);
+
+        gardenView = new GardenView(g, 35, 1 / 8, sideView, areas);
+        gardenView.x = 40;
+        gardenView.y = 50;
         addChild(gardenView);
+
+        sideView.x = gardenView.x;
+        sideView.y = gardenView.y + gardenView.height + 10;
+        addChild(sideView);
     }
 
     private var _loading:Boolean = false;
@@ -110,7 +125,7 @@ public class RockGardenWorkspace extends Sprite {
             c.r = r[i++];
         }
 
-        gardenView.evalSegments();
+        gardenView.refresh();
         gardenView.redraw_all_circles();
 
         _loading = false;

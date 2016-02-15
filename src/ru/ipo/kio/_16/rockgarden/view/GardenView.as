@@ -1,5 +1,6 @@
 package ru.ipo.kio._16.rockgarden.view {
 import flash.display.Sprite;
+import flash.events.MouseEvent;
 import flash.geom.Point;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
@@ -7,11 +8,14 @@ import flash.text.TextFormat;
 
 import mx.utils.HSBColor;
 
+import ru.ipo.kio._16.rockgarden.RockGardenProblem;
+
 import ru.ipo.kio._16.rockgarden.model.Circle;
 
 import ru.ipo.kio._16.rockgarden.model.Garden;
 import ru.ipo.kio._16.rockgarden.model.Segment;
 import ru.ipo.kio._16.rockgarden.model.SegmentInfo;
+import ru.ipo.kio._16.rockgarden.model.SegmentsList;
 
 public class GardenView extends Sprite {
     private var _g:Garden;
@@ -26,10 +30,17 @@ public class GardenView extends Sprite {
 
     private var _long_info:TextField = new TextField();
 
-    public function GardenView(g:Garden, mul:Number, grid_step:Number) {
+    private var _areas:Vector.<ViewArea>;
+
+    private var _sideView:RocksSideView;
+
+    public function GardenView(g:Garden, mul:Number, grid_step:Number, sideView: RocksSideView, areas:Vector.<ViewArea> = null) {
         _g = g;
         _mul = mul;
         _grid_step = grid_step;
+        _sideView = sideView;
+
+        _areas = areas;
 
         draw_grid();
 
@@ -39,12 +50,26 @@ public class GardenView extends Sprite {
             addChild(cv);
         }
 
-        redrawSegments();
+        if (showsAreas())
+            for each (var area:ViewArea in _areas) {
+                var pnt:Point = natural2disp(area.point);
+                area.x = pnt.x;
+                area.y = pnt.y;
+                addChild(area);
+
+                area.addEventListener(MouseEvent.CLICK, area_clickHandler);
+            }
+        else
+            redrawSegments();
 
         graphics.lineStyle(1, 0);
         graphics.drawRect(0, 0, _g.W * mul, _g.H * mul);
 
         init_long_info();
+    }
+
+    private function showsAreas():Boolean {
+        return _areas != null;
     }
 
     private function init_long_info():void {
@@ -108,6 +133,9 @@ public class GardenView extends Sprite {
     }
 
     public function redrawSegments():void {
+        if (showsAreas())
+            return;
+
         if (_segments_layer != null)
             removeChild(_segments_layer);
 
@@ -124,6 +152,8 @@ public class GardenView extends Sprite {
     }
 
     public function redrawTangents():void {
+        return;
+
         if (_tangent_layer != null)
             removeChild(_tangent_layer);
         _tangent_layer = new Sprite();
@@ -177,10 +207,18 @@ public class GardenView extends Sprite {
         return _grid_step;
     }
 
-    public function evalSegments():void {
-        _g.evalSegments();
-        redrawSegments();
-        redrawTangents();
+    public function refresh():void {
+        _g.refreshCirclesStatus();
+
+        if (showsAreas()) {
+            for each (var area:ViewArea in _areas) {
+                area.reeval();
+            }
+        } else {
+            _g.evalSegments();
+            redrawSegments();
+            redrawTangents();
+        }
     }
 
     public function redraw_all_circles():void {
@@ -190,6 +228,11 @@ public class GardenView extends Sprite {
 
     public function set long_info(info:String):void {
         _long_info.text = info;
+    }
+
+    private function area_clickHandler(event:MouseEvent):void {
+        var area:ViewArea = event.target as ViewArea;
+        _sideView.location = area == null ? null : area.point;
     }
 }
 }

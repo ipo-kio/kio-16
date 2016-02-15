@@ -18,11 +18,11 @@ public class RockPalette {
     }
 
     public function getColor(ind:int):Object {
-        return palette[ind];
+        return palette[ind - 1];
     }
 
     public function beginFill(g:Graphics, ind:int, alpha:Number = 1):void {
-        var c:* = palette[ind];
+        var c:* = getColor(ind);
         if (c is uint)
             g.beginFill(c, alpha);
         else if (c is BitmapAsset)

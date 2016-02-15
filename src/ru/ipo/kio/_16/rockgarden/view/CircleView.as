@@ -154,7 +154,7 @@ public class CircleView extends Sprite {
 
         moving_xy = false;
 
-        _g.evalSegments();
+        _g.refresh();
     }
 
     private function perimeter_layer_mouseDownHandler(event:MouseEvent):void {
@@ -168,7 +168,7 @@ public class CircleView extends Sprite {
         changing_r = false;
 
         redraw_perimeter();
-        _g.evalSegments();
+        _g.refresh();
     }
 
     private function stage_mouseMoveHandler(event:MouseEvent):void {

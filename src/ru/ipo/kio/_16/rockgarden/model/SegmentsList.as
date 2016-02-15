@@ -187,13 +187,13 @@ public class SegmentsList {
         return res;
     }
 
-    public function modify(f:Function, _newMaxValue:Number = 0):void {
-        if (_newMaxValue > 0)
-                _maxValue = _newMaxValue;
+    public function modify(f:Function, swap:Boolean = false, newMaxValue:Number = 0):void {
+        if (newMaxValue > 0)
+                _maxValue = newMaxValue;
 
         for each (var s:Segment in _segments) {
-            s.start = f(s.start);
-            s.end = f(s.end);
+            s.start = swap ? f(s.end) : f(s.start);
+            s.end = swap ? f(s.start) : f(s.end);
 
             while (s.start < 0)
                 s.start += _maxValue;
