@@ -192,8 +192,11 @@ public class SegmentsList {
                 _maxValue = newMaxValue;
 
         for each (var s:Segment in _segments) {
-            s.start = swap ? f(s.end) : f(s.start);
-            s.end = swap ? f(s.start) : f(s.end);
+            var newStart:Number = swap ? f(s.end) : f(s.start);
+            var newEnd:Number = swap ? f(s.start) : f(s.end);
+
+            s.start = newStart;
+            s.end = newEnd;
 
             while (s.start < 0)
                 s.start += _maxValue;

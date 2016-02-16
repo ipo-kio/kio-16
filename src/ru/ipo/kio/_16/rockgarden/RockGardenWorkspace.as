@@ -68,11 +68,11 @@ public class RockGardenWorkspace extends Sprite {
          */
 
         /** ====-=======*/
-        var sl:SegmentsList = new SegmentsList(10, "");
+        /*var sl:SegmentsList = new SegmentsList(10, "");
         sl.addSegment(new Segment(2, 5, "a"), _override);
         trace(sl.toString());
         sl.addSegment(new Segment(3, 4, "b"), _override);
-        trace(sl.toString());
+        trace(sl.toString());*/
 
         var circles:Vector.<Circle> = new <Circle>[];
         for (var i:int = 0; i < TOTAL_CIRCLES; i++) {
@@ -92,7 +92,7 @@ public class RockGardenWorkspace extends Sprite {
             new ViewArea(g.location2point(g.H + g.W + g.H + g.W / 2), g)
         ];
 
-        var sideView:RocksSideView = new RocksSideView(g, 400, 30);
+        var sideView:RocksSideView = new RocksSideView(g, 700, 40);
 
         gardenView = new GardenView(g, 35, 1 / 8, sideView, areas);
         gardenView.x = 40;

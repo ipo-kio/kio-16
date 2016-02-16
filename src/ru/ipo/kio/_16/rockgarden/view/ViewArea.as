@@ -34,6 +34,7 @@ public class ViewArea extends Sprite {
     private var _side:int; //Garden.SIDE_*
 
     private var _visibleCircles:Vector.<int> = null;
+    private var _over:Boolean = false;
     private var _selected:Boolean = false;
 
     private var _text:TextField;
@@ -49,12 +50,12 @@ public class ViewArea extends Sprite {
         redraw();
 
         addEventListener(MouseEvent.ROLL_OVER, function(event:MouseEvent):void {
-            _selected = true;
+            _over = true;
             redraw();
         });
 
         addEventListener(MouseEvent.ROLL_OUT, function(event:MouseEvent):void {
-            _selected = false;
+            _over = false;
             redraw();
         });
     }
@@ -124,8 +125,7 @@ public class ViewArea extends Sprite {
                 break;
         }
 
-        graphics.beginBitmapFill(_selected ? AREA_S_IMG : AREA_IMG, m);
-        trace('rotate: ', _side);
+        graphics.beginBitmapFill(_selected || _over ? AREA_S_IMG : AREA_IMG, m);
         switch (_side) {
             case Garden.SIDE_BOTTOM:
                 graphics.drawRect(-AREA_IMG.width / 2, 0, AREA_IMG.width, AREA_IMG.height);

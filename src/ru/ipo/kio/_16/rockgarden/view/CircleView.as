@@ -1,4 +1,5 @@
 package ru.ipo.kio._16.rockgarden.view {
+import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
@@ -8,10 +9,11 @@ import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
 
 import ru.ipo.kio._16.rockgarden.model.Circle;
+import ru.ipo.kio._16.rockgarden.model.RockPalette;
 
 public class CircleView extends Sprite {
 
-    public static const PERIMETER_WIDTH:int = 4;
+    public static const PERIMETER_WIDTH:int = 2;
 
     private var _g:GardenView;
     private var _c:Circle;
@@ -59,7 +61,7 @@ public class CircleView extends Sprite {
     private function initText():void {
         const fontSize:int = 14;
         addChild(_tix);
-        _tix.defaultTextFormat = new TextFormat('KioArial', fontSize);
+        _tix.defaultTextFormat = new TextFormat('KioArial', fontSize, RockPalette.textColor(_c.index), true);
         _tix.autoSize = TextFieldAutoSize.CENTER;
         _tix.text = "" + _c.index;
         _tix.x = _p.x - _tix.width / 2;
@@ -73,25 +75,37 @@ public class CircleView extends Sprite {
         moveTo();
         circle_layer.graphics.clear();
 
-        var innerColor:uint = _c.enabled ? 0x00FF66 : 0xFF6600;
-        var innerAlpha:Number = _c.enabled ? (over_circle || moving_xy ? 0.8 : 0.6) : (over_circle || moving_xy ? 0.4 : 0.2);
+        circle_layer.alpha = over_circle || moving_xy ? 0.8 : 1;
+        if (!_c.enabled) circle_layer.alpha = 0.3;
 
-        circle_layer.graphics.beginFill(innerColor, innerAlpha);
+//        var innerColor:uint = _c.enabled ? 0x00FF66 : 0xFF6600;
+//        var innerAlpha:Number = _c.enabled ? (over_circle || moving_xy ? 0.8 : 0.6) : (over_circle || moving_xy ? 0.4 : 0.2);
+//        circle_layer.graphics.beginFill(innerColor, innerAlpha);
+        RockPalette.beginFill(circle_layer.graphics, _c.index);
         circle_layer.graphics.drawCircle(_p.x, _p.y, c.r * _g.mul - PERIMETER_WIDTH / 2);
         circle_layer.graphics.endFill();
 
-        circle_layer.graphics.lineStyle(1, 0xAAAAAA);
-        circle_layer.graphics.moveTo(_p.x - 4, _p.y - 4);
-        circle_layer.graphics.lineTo(_p.x + 4, _p.y + 4);
-        circle_layer.graphics.moveTo(_p.x - 4, _p.y + 4);
-        circle_layer.graphics.lineTo(_p.x + 4, _p.y - 4);
+        if (!_c.enabled) {
+            circle_layer.graphics.beginFill(0xFF0000, 0.5);
+            circle_layer.graphics.drawCircle(_p.x, _p.y, c.r * _g.mul - PERIMETER_WIDTH / 2);
+            circle_layer.graphics.endFill();
+        }
+
+//        circle_layer.graphics.lineStyle(1, 0xAAAAAA);
+//        circle_layer.graphics.moveTo(_p.x - 4, _p.y - 4);
+//        circle_layer.graphics.lineTo(_p.x + 4, _p.y + 4);
+//        circle_layer.graphics.moveTo(_p.x - 4, _p.y + 4);
+//        circle_layer.graphics.lineTo(_p.x + 4, _p.y - 4);
     }
 
     private function redraw_perimeter():void {
         moveTo();
         perimeter_layer.graphics.clear();
 
-        perimeter_layer.graphics.lineStyle(PERIMETER_WIDTH, over_perimeter || changing_r ? 0xAAAA00 : 0x00AA00, _c.enabled ? 0.8 : 0.2);
+        perimeter_layer.graphics.lineStyle(3 * PERIMETER_WIDTH, 0xFFFFFF, 0.01);
+        perimeter_layer.graphics.drawCircle(_p.x, _p.y, c.r * _g.mul - PERIMETER_WIDTH / 2);
+
+        perimeter_layer.graphics.lineStyle(PERIMETER_WIDTH, over_perimeter || changing_r ? 0xAA0000 : 0xAAAAAA, _c.enabled ? 1 : 0.2);
         perimeter_layer.graphics.drawCircle(_p.x, _p.y, c.r * _g.mul - PERIMETER_WIDTH / 2);
     }
 

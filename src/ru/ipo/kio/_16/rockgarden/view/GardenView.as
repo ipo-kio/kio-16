@@ -8,14 +8,12 @@ import flash.text.TextFormat;
 
 import mx.utils.HSBColor;
 
-import ru.ipo.kio._16.rockgarden.RockGardenProblem;
 
 import ru.ipo.kio._16.rockgarden.model.Circle;
 
 import ru.ipo.kio._16.rockgarden.model.Garden;
 import ru.ipo.kio._16.rockgarden.model.Segment;
 import ru.ipo.kio._16.rockgarden.model.SegmentInfo;
-import ru.ipo.kio._16.rockgarden.model.SegmentsList;
 
 public class GardenView extends Sprite {
     private var _g:Garden;
@@ -213,6 +211,8 @@ public class GardenView extends Sprite {
         if (showsAreas()) {
             for each (var area:ViewArea in _areas) {
                 area.reeval();
+                if (area.selected)
+                    updateSideView(area);
             }
         } else {
             _g.evalSegments();
@@ -232,7 +232,17 @@ public class GardenView extends Sprite {
 
     private function area_clickHandler(event:MouseEvent):void {
         var area:ViewArea = event.target as ViewArea;
-        _sideView.location = area == null ? null : area.point;
+
+        if (area == null)
+            return;
+
+        for each (var a:ViewArea in _areas)
+            a.selected = a == area;
+        updateSideView(area);
+    }
+
+    private function updateSideView(area:ViewArea):void {
+        _sideView.location = area.point;
     }
 }
 }

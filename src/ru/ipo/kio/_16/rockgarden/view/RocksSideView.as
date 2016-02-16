@@ -25,48 +25,57 @@ public class RocksSideView extends Shape {
         if (_location == null)
             return;
 
-        trace('here');
-
         var anglesCircle:SegmentsList = _g.visible_circles_for_point(_location);
-        var neg_point:Number;
         switch (_side) {
             // 0  pi/2 pi
             case Garden.SIDE_BOTTOM:
                 anglesCircle.modify(function (x:Number):Number {
                     return Math.PI - x;
                 }, true);
-                neg_point = 3 * Math.PI / 2;
                 break;    // pi pi/2 0
             case Garden.SIDE_LEFT:
                 anglesCircle.modify(function (x:Number):Number {
                     return Math.PI / 2 - x;
                 }, true);
-                neg_point = Math.PI;
                 break;      // pi/2 0 -pi/2
             case Garden.SIDE_TOP:
                 anglesCircle.modify(function (x:Number):Number {
                     return -x;
                 }, true);
-                neg_point = Math.PI / 2;
                 break;       // 0  3pi/2 pi
             case Garden.SIDE_RIGHT:
                 anglesCircle.modify(function (x:Number):Number {
                     return 3 * Math.PI / 2 - x;
                 }, true);
-                neg_point = 0;
+
                 break;     // 3pi/2 pi pi/2
         }
 
+        var neg_point:Number = 3 * Math.PI / 2;
+
         graphics.clear();
+        var maxDist:Number = Math.sqrt(_g.W * _g.W + _g.H * _g.H);
         for each (var s:Segment in anglesCircle.segments)
-            if (!s.pointInside(neg_point))
-                if (s.value >= 0)
-                    draw_rect(s.value, _width * s.start / anglesCircle.maxValue, _width * s.end / anglesCircle.maxValue);
+            if (s.value >= 0 && !s.pointInside(neg_point)) {
+                var c:Circle = _g.getCircleByIndex(s.value);
+                var dx:Number = c.x - _location.x;
+                var dy:Number = c.y - _location.y;
+                var d:Number = Math.sqrt(dx * dx + dy * dy) - c.r * 0.95;
+
+                var circle_height:Number = _height * (maxDist - d) / maxDist;
+                draw_rect(s.value, _width * s.start / Math.PI, _width * s.end / Math.PI, circle_height);
+            }
+
+        //draw border
+        graphics.lineStyle(1, 0xFF0000);
+        graphics.moveTo(0, _height);
+        graphics.lineTo(_width, _height);
     }
 
-    private function draw_rect(value:int, start:Number, end:Number):void {
-        RockPalette.instance.beginFill(graphics, value);
-        graphics.drawRect(start, 0, end - start, _height);
+    private function draw_rect(value:int, start:Number, end:Number, height:Number):void {
+        graphics.lineStyle(1, 0xFF0000);
+        RockPalette.beginFill(graphics, value);
+        graphics.drawRect(start, _height - height, end - start, height);
         graphics.endFill();
     }
 

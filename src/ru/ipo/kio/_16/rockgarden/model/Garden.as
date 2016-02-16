@@ -149,7 +149,9 @@ public class Garden {
             if (s == null)
                 s = new Segment(angles[3], angles[0], c.index);
 
-            anglesCircle.addSegment(s, function(was:int, now:int):int {return now;})
+            anglesCircle.addSegment(s, function (was:int, now:int):int {
+                return now;
+            })
         }
 
         return anglesCircle;
@@ -360,7 +362,7 @@ public class Garden {
             for (var ii:int = 0; ii < res.length; ii++)
                 for (var jj:int = ii + 1; jj < res.length; jj++)
                     if (res[ii].x == res[jj].x && res[ii].y == res[jj].y)
-                            res.splice(jj, 1);
+                        res.splice(jj, 1);
 
         return res;
     }
@@ -488,6 +490,13 @@ public class Garden {
 
     public function get MAX_SEGMENTS_LIST_VALUE():Number {
         return _MAX_SEGMENTS_LIST_VALUE;
+    }
+
+    public function getCircleByIndex(ind:int):Circle {
+        for each (var c:Circle in _circles)
+            if (c.index == ind)
+                return c;
+        return null;
     }
 }
 }
