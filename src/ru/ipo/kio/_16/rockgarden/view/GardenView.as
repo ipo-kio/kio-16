@@ -8,12 +8,16 @@ import flash.text.TextFormat;
 
 import mx.utils.HSBColor;
 
+import ru.ipo.kio._16.rockgarden.RockGardenWorkspace;
+
 
 import ru.ipo.kio._16.rockgarden.model.Circle;
 
 import ru.ipo.kio._16.rockgarden.model.Garden;
 import ru.ipo.kio._16.rockgarden.model.Segment;
 import ru.ipo.kio._16.rockgarden.model.SegmentInfo;
+import ru.ipo.kio.api.KioApi;
+import ru.ipo.kio.api.KioProblem;
 
 public class GardenView extends Sprite {
     private var _g:Garden;
@@ -32,11 +36,18 @@ public class GardenView extends Sprite {
 
     private var _sideView:RocksSideView;
 
-    public function GardenView(g:Garden, mul:Number, grid_step:Number, sideView: RocksSideView, areas:Vector.<ViewArea> = null) {
+    private var _problem_style:int;
+    private var _api:KioApi;
+    private var _workspace:RockGardenWorkspace;
+
+    public function GardenView(g:Garden, mul:Number, grid_step:Number, sideView:RocksSideView, problem_style:int, problem:KioProblem, workspace:RockGardenWorkspace, areas:Vector.<ViewArea> = null) {
+        _api = KioApi.instance(problem);
+        _problem_style = problem_style;
         _g = g;
         _mul = mul;
         _grid_step = grid_step;
         _sideView = sideView;
+        _workspace = workspace;
 
         _areas = areas;
 
@@ -142,7 +153,9 @@ public class GardenView extends Sprite {
 
         var segmentsNum:int = _g.segments.segments.length;
         for (var i:int = 0; i < segmentsNum; i++) {
-            var c:uint = HSBColor.convertHSBtoRGB(360 * i / segmentsNum, 1, 0.8);
+            var j:int = s == null || s.value == null ? 0 : s.value.length;
+            var c:uint = HSBColor.convertHSBtoRGB(360 * j / _g.circles.length, 1, 0.8);
+//            var c:uint = HSBColor.convertHSBtoRGB(360 * i / segmentsNum, 1, 0.8);
             var s:Segment = _g.segments.segments[i];
             var sv:SegmentView = new SegmentView(s, this, c, getSegmentInfo);
             _segments_layer.addChild(sv);
@@ -219,6 +232,8 @@ public class GardenView extends Sprite {
             redrawSegments();
             redrawTangents();
         }
+
+        _workspace.submitResult(result);
     }
 
     public function redraw_all_circles():void {
@@ -241,8 +256,99 @@ public class GardenView extends Sprite {
         updateSideView(area);
     }
 
+    private static function nRocks(n:int):String {
+        if (n == 1)
+            return "1 камень";
+        if (n == 2 || n == 3 || n == 4)
+            return n + " камня";
+        return n + " камней";
+    }
+
     private function updateSideView(area:ViewArea):void {
         _sideView.location = area.point;
+        var vis:Vector.<int> = area.visibleCircles;
+        var text:String = area.viewName + ", видно " + nRocks(vis.length) + ": " + vis.join(" ");
+        _sideView.text = text;
+    }
+
+    public function get result():Object {
+        switch (_problem_style) {
+            case 0:
+                return resultFor0and1(3);
+            case 1:
+                return resultFor0and1(5);
+            case 2:
+                return resultFor2();
+        }
+        return null;
+    }
+
+    private function resultFor0and1(need:int):Object {
+        for each (var cc:Circle in _g.circles)
+            if (!cc.enabled)
+                return {err: true};
+
+        var r:int = 0;
+        var crc:Vector.<String> = new <String>[];
+        for each (var area:ViewArea in _areas) {
+            var vis:Vector.<int> = area.visibleCircles;
+            if (vis.length == need) {
+                r++;
+                crc.push(vis.join(""));
+            }
+        }
+
+        crc = crc.sort(0);
+        var d:int = 0;
+        for (var i:int = 0; i < crc.length; i++)
+            if (i == 0)
+                d++;
+            else if (crc[i - 1] != crc[i])
+                d++;
+
+        var s:Number = 0;
+        for each (var c:Circle in _g.circles)
+            if (c.enabled && c.r > s)
+                s = c.r;
+
+        return {
+            r: r,
+            d: d,
+            s: int(Math.round(8 * s)),
+            err: false
+        };
+    }
+
+    private function resultFor2():Object {
+        var n:int = _g.circles.length;
+
+        var sum:Number = 0;
+        var visible:Vector.<Boolean> = new Vector.<Boolean>(n + 1);
+
+        for each (var s:Segment in _g.segments.segments) {
+            //s.value: vector of ints
+
+            var v:Vector.<int> = s.value;
+            if (v == null)
+                v = new <int>[];
+            if (v.length == 6) {
+                sum += s.distance(_g.MAX_SEGMENTS_LIST_VALUE);
+                for each (var c_in:int in v)
+                    visible[c_in] = true;
+            }
+        }
+
+        var visible_circles:int = 0;
+        for (var i:int = 1; i <= n; i++)
+            if (visible[c_in])
+                visible_circles++;
+        var invisible_circles:int = n - visible_circles;
+
+        return {
+            i: invisible_circles,
+            s: 100 * sum / _g.MAX_SEGMENTS_LIST_VALUE,
+            err: false
+        }
     }
 }
 }

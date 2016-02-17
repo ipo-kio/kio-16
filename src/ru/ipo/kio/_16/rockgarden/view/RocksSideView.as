@@ -1,10 +1,14 @@
 package ru.ipo.kio._16.rockgarden.view {
+import flash.display.Sprite;
+import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
+import flash.text.TextFormat;
+
 import ru.ipo.kio._16.rockgarden.model.*;
 
-import flash.display.Shape;
 import flash.geom.Point;
 
-public class RocksSideView extends Shape {
+public class RocksSideView extends Sprite {
 
     private var _location:Point = null;
     private var _g:Garden;
@@ -13,12 +17,27 @@ public class RocksSideView extends Shape {
     private var _width:Number;
     private var _height:Number;
 
+    private var _text:TextField;
+
     public function RocksSideView(g:Garden, width:Number, height:Number) {
         _g = g;
         _width = width;
         _height = height;
 
         redraw();
+
+        initText();
+    }
+
+    private function initText():void {
+        _text = new TextField();
+        _text.autoSize = TextFieldAutoSize.LEFT;
+        _text.embedFonts = true;
+        _text.defaultTextFormat = new TextFormat('KioArial', 16);
+        _text.mouseEnabled = false;
+        _text.selectable = false;
+        addChild(_text);
+        _text.y = -18;
     }
 
     public function redraw():void {
@@ -63,6 +82,10 @@ public class RocksSideView extends Shape {
                 var d:Number = Math.sqrt(dx * dx + dy * dy) - c.r * 0.95;
 
                 var circle_height:Number = _height * (maxDist - d) / maxDist;
+
+                if (s.start > Math.PI + 0.1)
+                    s.start -= 2 * Math.PI;
+
                 draw_rect(s.value, _width * s.start / Math.PI, _width * s.end / Math.PI, circle_height);
             }
 
@@ -88,6 +111,10 @@ public class RocksSideView extends Shape {
         if (_location != null)
             _side = _g.location2side(_g.point2location(_location));
         redraw();
+    }
+
+    public function set text(value:String):void {
+        _text.text = value;
     }
 }
 }

@@ -37,13 +37,16 @@ public class ViewArea extends Sprite {
     private var _over:Boolean = false;
     private var _selected:Boolean = false;
 
+    private var _viewName:String;
     private var _text:TextField;
 
-    public function ViewArea(point:Point, g:Garden) {
+    public function ViewArea(point:Point, g:Garden, viewName:String) {
         _point = point;
         _g = g;
         _loc = _g.point2location(_point);
         _side = _g.location2side(_loc);
+
+        _viewName = viewName;
 
         initTextField();
 
@@ -185,6 +188,10 @@ public class ViewArea extends Sprite {
 
     public function get selected():Boolean {
         return _selected;
+    }
+
+    public function get viewName():String {
+        return _viewName;
     }
 
     public function set selected(value:Boolean):void {

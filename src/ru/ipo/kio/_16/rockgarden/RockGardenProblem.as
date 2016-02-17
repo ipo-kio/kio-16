@@ -9,7 +9,7 @@ import ru.ipo.kio.api.Settings;
 
 public class RockGardenProblem implements KioProblem {
 
-    [Embed(source="loc/traincars.ru.json-settings",mimeType="application/octet-stream")]
+    [Embed(source="loc/traincars.ru.json-settings", mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
 
     public static const ID:String = 'rockgarden';
@@ -17,7 +17,7 @@ public class RockGardenProblem implements KioProblem {
     private var _level:int;
     private var workspace:RockGardenWorkspace;
 
-    public function RockGardenProblem(level: int) {
+    public function RockGardenProblem(level:int) {
         _level = level;
 
         KioApi.initialize(this);
@@ -49,13 +49,41 @@ public class RockGardenProblem implements KioProblem {
 
     public function loadSolution(solution:Object):Boolean {
         if (solution == null)
-                clear();
+            clear();
         workspace.circles = solution.c;
         return true;
     }
 
     public function compare(r1:Object, r2:Object):int {
-        return 0;
+        if (r1.err && r2.err)
+            return 0;
+        if (r1.err)
+            return -1;
+        if (r2.err)
+            return 1;
+
+        var d:int;
+        if (level == 0 || level == 1) {
+            d = r1.r - r2.r; //6 rocks visible
+            if (d != 0)
+                return d;
+            d = r1.d - r2.d; // rocks visib
+            if (d != 0)
+                return d;
+            d = r2.s - r1.s;
+            return d;
+        } else {
+            d = r2.i - r1.i; //6 rocks visible
+            if (d != 0)
+                return d;
+            var dd:Number = r2.s - r1.s;
+            if (dd < 0)
+                return -1;
+            else if (dd > 0)
+                return 1;
+            else
+                return 0;
+        }
     }
 
     public function get icon():Class {
