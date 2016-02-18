@@ -114,7 +114,7 @@ public class RockGardenWorkspace extends Sprite {
         addChild(gardenView);
 
         sideView.x = gardenView.x;
-        sideView.y = gardenView.y + gardenView.height + 10;
+        sideView.y = gardenView.y + gardenView.height + 20;
         addChild(sideView);
 
         initInfos();
@@ -142,10 +142,10 @@ public class RockGardenWorkspace extends Sprite {
 
         addChild(_info);
         addChild(_record);
-        _info.x = 10;
-        _info.y = 520;
+        _info.x = 40;
+        _info.y = 530;
         _record.x = 400;
-        _record.y = 520;
+        _record.y = 530;
     }
 
     private function setInfos(info:InfoPanel, c:Object):void {

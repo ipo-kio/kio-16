@@ -16,19 +16,21 @@ public class SegmentView extends Sprite {
     private var _s:Segment;
     private var _g:GardenView;
     private var _c:uint;
+    private var _base_width:Number;
 
     private var state_over:Boolean = false;
     
-    private var _tf:TextField = new TextField();
+    private var _tf:TextField;
 
     private static const tFormat:TextFormat = new TextFormat('KioArial', 12, 0x000000);
     private static const tFormatOver:TextFormat = new TextFormat('KioArial', 12, 0xAB0028);
     private var _getSegmentInfo:Function;
 
-    public function SegmentView(s:Segment, g:GardenView, c:uint, getSegmentInfo:Function) {
+    public function SegmentView(s:Segment, g:GardenView, c:uint, base_width:Number, getSegmentInfo:Function) {
         _s = s;
         _g = g;
         _c = c;
+        _base_width = base_width;
         _getSegmentInfo = getSegmentInfo;
 
         addEventListener(MouseEvent.ROLL_OVER, rollOverHandler);
@@ -38,10 +40,17 @@ public class SegmentView extends Sprite {
 
         redraw();
 
-        initText();
+        //initText();
+    }
+
+    public function destroy():void {
+        removeEventListener(MouseEvent.ROLL_OVER, rollOverHandler);
+        removeEventListener(MouseEvent.ROLL_OUT, rollOutHandler);
     }
 
     private function initText():void {
+        _tf = new TextField();
+
         var center_location:Number = _s.center(_g.garden.MAX_SEGMENTS_LIST_VALUE);
         var center:Point = _g.natural2disp(_g.garden.location2point(center_location));
         var center_side:int = _g.garden.location2side(center_location);
@@ -87,13 +96,14 @@ public class SegmentView extends Sprite {
         graphics.clear();
 
         var c:uint = /*state_over ? _light_c : */_c;
-        var width:int = state_over ? 6 : 4;
+        var width:Number = state_over ? _base_width + 2 : _base_width;
 
         drawSegments(graphics, width, c, 1);
 
-        _tf.setTextFormat(state_over ? tFormatOver : tFormat);
+        if (_tf != null)
+            _tf.setTextFormat(state_over ? tFormatOver : tFormat);
 
-        _g.long_info = _getSegmentInfo(_s.value).longText;
+//        _g.long_info = _getSegmentInfo(_s.value).longText;
     }
 
     private function drawSegments(gr:Graphics, width:int, c:uint, a:Number):void {

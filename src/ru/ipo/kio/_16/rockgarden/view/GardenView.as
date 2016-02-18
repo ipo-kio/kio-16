@@ -6,13 +6,8 @@ import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
 
-import mx.utils.HSBColor;
-
 import ru.ipo.kio._16.rockgarden.RockGardenWorkspace;
-
-
 import ru.ipo.kio._16.rockgarden.model.Circle;
-
 import ru.ipo.kio._16.rockgarden.model.Garden;
 import ru.ipo.kio._16.rockgarden.model.Segment;
 import ru.ipo.kio._16.rockgarden.model.SegmentInfo;
@@ -33,12 +28,25 @@ public class GardenView extends Sprite {
     private var _long_info:TextField = new TextField();
 
     private var _areas:Vector.<ViewArea>;
+    private var _current_area:ViewArea; //used only in 2nd level
+    private var _mouse_over_area:ViewArea; //used only in 2nd level
 
     private var _sideView:RocksSideView;
 
     private var _problem_style:int;
     private var _api:KioApi;
     private var _workspace:RockGardenWorkspace;
+
+    private const _segments_color_palette:Vector.<uint> = new <uint>[
+            0x000000,
+            70 << 16 | 181 << 8 | 211,
+            52 << 16 | 57 << 8 | 60,
+            219 << 16 | 73 << 8 | 76,
+            235 << 16 | 164 << 8 | 50,
+            134 << 16 | 170 << 8 | 109,
+            172 << 16 | 61 << 8 | 31,
+            32 << 16 | 114 << 8 | 136
+    ];
 
     public function GardenView(g:Garden, mul:Number, grid_step:Number, sideView:RocksSideView, problem_style:int, problem:KioProblem, workspace:RockGardenWorkspace, areas:Vector.<ViewArea> = null) {
         _api = KioApi.instance(problem);
@@ -61,9 +69,7 @@ public class GardenView extends Sprite {
 
         if (showsAreas())
             for each (var area:ViewArea in _areas) {
-                var pnt:Point = natural2disp(area.point);
-                area.x = pnt.x;
-                area.y = pnt.y;
+                relocateArea(area);
                 addChild(area);
 
                 area.addEventListener(MouseEvent.CLICK, area_clickHandler);
@@ -74,7 +80,21 @@ public class GardenView extends Sprite {
         graphics.lineStyle(1, 0);
         graphics.drawRect(0, 0, _g.W * mul, _g.H * mul);
 
+        if (problem_style == 2) {
+            _current_area = new ViewArea(new Point(0, 0), _g, "", 2);
+            _mouse_over_area = new ViewArea(new Point(0, 0), _g, "", 1);
+
+            _current_area.mouseEnabled = false;
+            _mouse_over_area.mouseEnabled = false;
+        }
+
         init_long_info();
+    }
+
+    private function relocateArea(area:ViewArea):void {
+        var pnt:Point = natural2disp(area.point);
+        area.x = pnt.x;
+        area.y = pnt.y;
     }
 
     private function showsAreas():Boolean {
@@ -145,19 +165,45 @@ public class GardenView extends Sprite {
         if (showsAreas())
             return;
 
-        if (_segments_layer != null)
+        if (_segments_layer != null) {
+            if (_problem_style == 2) {
+                _segments_layer.removeEventListener(MouseEvent.CLICK, segments_layer_clickHandler);
+                _segments_layer.removeEventListener(MouseEvent.MOUSE_MOVE, segments_layer_mouseOverHandler);
+                _segments_layer.removeEventListener(MouseEvent.ROLL_OVER, segments_layer_rollOverHandler);
+                _segments_layer.removeEventListener(MouseEvent.ROLL_OUT, segments_layer_rollOutHandler);
+            }
+
+            for (var ci:int = 0; ci < _segments_layer.numChildren; ci++)
+                SegmentView(_segments_layer.getChildAt(ci)).destroy();
             removeChild(_segments_layer);
+        }
 
         _segments_layer = new Sprite();
         addChild(_segments_layer);
 
+        if (_problem_style == 2) {
+            _segments_layer.addEventListener(MouseEvent.CLICK, segments_layer_clickHandler);
+            _segments_layer.addEventListener(MouseEvent.MOUSE_MOVE, segments_layer_mouseOverHandler);
+            _segments_layer.addEventListener(MouseEvent.ROLL_OVER, segments_layer_rollOverHandler);
+            _segments_layer.addEventListener(MouseEvent.ROLL_OUT, segments_layer_rollOutHandler);
+        }
+
         var segmentsNum:int = _g.segments.segments.length;
         for (var i:int = 0; i < segmentsNum; i++) {
-            var j:int = s == null || s.value == null ? 0 : s.value.length;
-            var c:uint = HSBColor.convertHSBtoRGB(360 * j / _g.circles.length, 1, 0.8);
-//            var c:uint = HSBColor.convertHSBtoRGB(360 * i / segmentsNum, 1, 0.8);
             var s:Segment = _g.segments.segments[i];
-            var sv:SegmentView = new SegmentView(s, this, c, getSegmentInfo);
+            var j:int = s.value == null ? 0 : s.value.length;
+//            var c:uint = HSBColor.convertHSBtoRGB(360 * j / _g.circles.length, 1, 0.8);
+//            var c:uint = HSBColor.convertHSBtoRGB(360 * i / segmentsNum, 1, 0.8);
+            var c:uint = _segments_color_palette[j];
+
+            if (j <= 4)
+                var base_width:Number = 2;
+            else if (j == 6)
+                base_width = 6;
+            else
+                base_width = 4;
+
+            var sv:SegmentView = new SegmentView(s, this, c, base_width, getSegmentInfo);
             _segments_layer.addChild(sv);
         }
     }
@@ -231,6 +277,9 @@ public class GardenView extends Sprite {
             _g.evalSegments();
             redrawSegments();
             redrawTangents();
+
+            if (_current_area.parent != null)
+                updateSideView(_current_area);
         }
 
         _workspace.submitResult(result);
@@ -267,11 +316,15 @@ public class GardenView extends Sprite {
     private function updateSideView(area:ViewArea):void {
         _sideView.location = area.point;
         var vis:Vector.<int> = area.visibleCircles;
-        var text:String = area.viewName + ", видно " + nRocks(vis.length) + ": " + vis.join(" ");
+        var text:String = (area.viewName != "" ? area.viewName + ", видно " : "Видно ") + nRocks(vis.length) + ": " + vis.join(" ");
         _sideView.text = text;
     }
 
     public function get result():Object {
+        for each (var cc:Circle in _g.circles)
+            if (!cc.enabled)
+                return {err: true};
+
         switch (_problem_style) {
             case 0:
                 return resultFor0and1(3);
@@ -284,10 +337,6 @@ public class GardenView extends Sprite {
     }
 
     private function resultFor0and1(need:int):Object {
-        for each (var cc:Circle in _g.circles)
-            if (!cc.enabled)
-                return {err: true};
-
         var r:int = 0;
         var crc:Vector.<String> = new <String>[];
         for each (var area:ViewArea in _areas) {
@@ -349,6 +398,50 @@ public class GardenView extends Sprite {
             s: 100 * sum / _g.MAX_SEGMENTS_LIST_VALUE,
             err: false
         }
+    }
+
+    private function segments_layer_clickHandler(event:MouseEvent):void {
+        updateViewArea(event, _current_area, true);
+    }
+
+    private function segments_layer_mouseOverHandler(event:MouseEvent):void {
+        updateViewArea(event, _mouse_over_area, false);
+    }
+
+    private function updateViewArea(event:MouseEvent, area:ViewArea, needUpdateSideView:Boolean):void {
+        if (area.parent == null)
+            addChild(area);
+
+        var pos:Point = disp2natural(new Point(event.localX, event.localY));
+        //distance to left, right, bottom, top
+        var dl:Number = Math.abs(pos.x);
+        var dr:Number = Math.abs(_g.W - pos.x);
+        var db:Number = Math.abs(pos.y);
+        var dt:Number = Math.abs(_g.H - pos.y);
+
+        var dmin:Number = Math.min(dl, dr, db, dt);
+        if (dmin == dl)
+            pos.x = 0;
+        else if (dmin == dr)
+            pos.x = _g.W;
+        else if (dmin == db)
+            pos.y = 0;
+        else //if (dmin == dt)
+            pos.y = _g.H;
+
+        area.point = pos;
+        if (needUpdateSideView)
+            updateSideView(area);
+
+        relocateArea(area);
+    }
+
+    private function segments_layer_rollOverHandler(event:MouseEvent):void {
+        _mouse_over_area.visible = true;
+    }
+
+    private function segments_layer_rollOutHandler(event:MouseEvent):void {
+        _mouse_over_area.visible = false;
     }
 }
 }

@@ -36,11 +36,18 @@ public class ViewArea extends Sprite {
     private var _visibleCircles:Vector.<int> = null;
     private var _over:Boolean = false;
     private var _selected:Boolean = false;
+    private var _selectable:int = 0;
 
     private var _viewName:String;
     private var _text:TextField;
 
-    public function ViewArea(point:Point, g:Garden, viewName:String) {
+    /**
+     * @param point
+     * @param g
+     * @param viewName
+     * @param selectable 0 means selectable, 1 means always not selected, 2 means always selected
+     */
+    public function ViewArea(point:Point, g:Garden, viewName:String, selectable:int = 0) {
         _point = point;
         _g = g;
         _loc = _g.point2location(_point);
@@ -48,23 +55,29 @@ public class ViewArea extends Sprite {
 
         _viewName = viewName;
 
-        initTextField();
+        _text = new TextField();
+        _text.text = "";
+        addChild(_text);
 
+        initTextField();
         redraw();
 
-        addEventListener(MouseEvent.ROLL_OVER, function(event:MouseEvent):void {
-            _over = true;
-            redraw();
-        });
+        _selectable = selectable;
 
-        addEventListener(MouseEvent.ROLL_OUT, function(event:MouseEvent):void {
-            _over = false;
-            redraw();
-        });
+        if (selectable == 0) {
+            addEventListener(MouseEvent.ROLL_OVER, function (event:MouseEvent):void {
+                _over = true;
+                redraw();
+            });
+
+            addEventListener(MouseEvent.ROLL_OUT, function (event:MouseEvent):void {
+                _over = false;
+                redraw();
+            });
+        }
     }
 
     private function initTextField():void {
-        _text = new TextField();
         _text.defaultTextFormat = tFormat;
         _text.embedFonts = true;
         _text.selectable = false;
@@ -93,12 +106,21 @@ public class ViewArea extends Sprite {
                 _text.y = -FONT_SIZE / 2;
                 break;
         }
-
-        addChild(_text);
     }
 
     public function get point():Point {
         return _point;
+    }
+
+    public function set point(point:Point):void {
+        _point = point;
+
+        _loc = _g.point2location(_point);
+        _side = _g.location2side(_loc);
+
+        initTextField();
+        reeval();
+        redraw();
     }
 
     public function get g():Garden {
@@ -128,7 +150,7 @@ public class ViewArea extends Sprite {
                 break;
         }
 
-        graphics.beginBitmapFill(_selected || _over ? AREA_S_IMG : AREA_IMG, m);
+        graphics.beginBitmapFill(_selected || _over || _selectable == 2 ? AREA_S_IMG : AREA_IMG, m);
         switch (_side) {
             case Garden.SIDE_BOTTOM:
                 graphics.drawRect(-AREA_IMG.width / 2, 0, AREA_IMG.width, AREA_IMG.height);
