@@ -278,8 +278,10 @@ public class GardenView extends Sprite {
             redrawSegments();
             redrawTangents();
 
-            if (_current_area.parent != null)
+            if (_current_area.parent != null) {
+                _current_area.reeval();
                 updateSideView(_current_area);
+            }
         }
 
         _workspace.submitResult(result);
