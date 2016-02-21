@@ -1,5 +1,6 @@
 package ru.ipo.kio._16.mars {
 
+import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
 
@@ -10,10 +11,31 @@ import ru.ipo.kio._16.mars.model.ShipAction;
 import ru.ipo.kio._16.mars.model.Vector2D;
 
 import ru.ipo.kio._16.mars.view.SolarSystem;
+import ru.ipo.kio._16.mars.view.VectorView;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
+import ru.ipo.kio.api.controls.GraphicsButton;
 
 public class MarsWorkspace extends Sprite {
+
+    [Embed(source="res/plus.png")]
+    public static const ADD_BUTTON_CLASS:Class;
+    public static const ADD_BUTTON_IMG:BitmapData = (new ADD_BUTTON_CLASS).bitmapData;
+    [Embed(source="res/plus_o.png")]
+    public static const ADD_BUTTON_O_CLASS:Class;
+    public static const ADD_BUTTON_O_IMG:BitmapData = (new ADD_BUTTON_O_CLASS).bitmapData;
+    [Embed(source="res/plus_d.png")]
+    public static const ADD_BUTTON_D_CLASS:Class;
+    public static const ADD_BUTTON_D_IMG:BitmapData = (new ADD_BUTTON_D_CLASS).bitmapData;
+    [Embed(source="res/minus.png")]
+    public static const REMOVE_BUTTON_CLASS:Class;
+    public static const REMOVE_BUTTON_IMG:BitmapData = (new REMOVE_BUTTON_CLASS).bitmapData;
+    [Embed(source="res/minus_o.png")]
+    public static const REMOVE_BUTTON_O_CLASS:Class;
+    public static const REMOVE_BUTTON_O_IMG:BitmapData = (new REMOVE_BUTTON_O_CLASS).bitmapData;
+    [Embed(source="res/minus_d.png")]
+    public static const REMOVE_BUTTON_D_CLASS:Class;
+    public static const REMOVE_BUTTON_D_IMG:BitmapData = (new REMOVE_BUTTON_D_CLASS).bitmapData;
 
     public static const TOTAL_CIRCLES:int = 7;
 
@@ -25,7 +47,14 @@ public class MarsWorkspace extends Sprite {
     private var ss:SolarSystem;
     private var timeSlider:Slider;
 
+    private var bAdd:GraphicsButton = new GraphicsButton('', ADD_BUTTON_IMG, ADD_BUTTON_O_IMG, ADD_BUTTON_O_IMG, '', 10, 10);
+    private var bRemove:GraphicsButton = new GraphicsButton('', REMOVE_BUTTON_IMG, REMOVE_BUTTON_O_IMG, REMOVE_BUTTON_O_IMG, '', 10, 10);
+    private var bAdd_dis:GraphicsButton = new GraphicsButton('', ADD_BUTTON_D_IMG, ADD_BUTTON_D_IMG, ADD_BUTTON_D_IMG, '', 10, 10);
+    private var bRemove_dis:GraphicsButton = new GraphicsButton('', REMOVE_BUTTON_D_IMG, REMOVE_BUTTON_D_IMG, REMOVE_BUTTON_D_IMG, '', 10, 10);
+
     public function MarsWorkspace(problem:KioProblem) {
+//        trace(Orbit.solveKeplerEquation(2.8453268117053505, 0.5084113241345426)); //newtown fails here
+
         _problem = problem;
         _api = KioApi.instance(problem);
 
@@ -44,7 +73,15 @@ public class MarsWorkspace extends Sprite {
 //        background.graphics.drawCircle(300, 300, 280);
 //        background.graphics.drawCircle(300, 300, 280 / 1.524924921);
 
-        ss = new SolarSystem();
+        var speedView:VectorView = new VectorView(180, 40, 10000, 80);
+        addChild(speedView);
+        speedView.x = 680;
+        speedView.y = 100;
+
+//        speedView.value = Vector2D.createPolar(400, Math.PI / 3);
+        speedView.visible = false;
+
+        ss = new SolarSystem(speedView);
         addChild(ss);
         ss.x = 300;
         ss.y = 300;
@@ -62,11 +99,59 @@ public class MarsWorkspace extends Sprite {
         timeSlider.addEventListener(Slider.VALUE_CHANGED, slider_value_changedHandler);
         timeSlider.value_no_fire = 0;
 
-        trace('earth vt = ', Consts.EARTH_Vt);
+        //init add remove buttons
+        addChild(bAdd);
+        addChild(bRemove);
+        addChild(bAdd_dis);
+        addChild(bRemove_dis);
+
+        bAdd.x = 600;
+        bRemove.x = 650;
+        bAdd.y = 400;
+        bRemove.y = 400;
+
+        bAdd_dis.x = 600;
+        bRemove_dis.x = 650;
+        bAdd_dis.y = 400;
+        bRemove_dis.y = 400;
+
+        bAdd_dis.visible = false;
+        bRemove_dis.visible = false;
+
+        update_add_remove_buttons_state();
+    }
+
+    private function update_add_remove_buttons_state():void {
+        var actions:Vector.<ShipAction> = ss.history.actions;
+
+        if (actions.length == 0) {
+            bAdd.visible = true;
+            bAdd_dis.visible = false;
+            bAdd.visible = false;
+            bAdd_dis.visible = true;
+            return;
+        }
+
+        var lastAction:ShipAction = actions[actions.length - 1];
+        var addEnable:Boolean = timeSlider.value > lastAction.time;
+
+        var removeEnable:Boolean = false;
+        for each (var sa:ShipAction in actions)
+            if (sa.time == timeSlider.value) {
+                removeEnable = true;
+                break;
+            }
+
+        bAdd.visible = addEnable;
+        bAdd_dis.visible = !addEnable;
+        bRemove.visible = removeEnable;
+        bRemove_dis.visible = !removeEnable;
     }
 
     private function slider_value_changedHandler(event:Event):void {
         ss.time = Math.round(timeSlider.value);
+
+        update_add_remove_buttons_state();
     }
 }
 }

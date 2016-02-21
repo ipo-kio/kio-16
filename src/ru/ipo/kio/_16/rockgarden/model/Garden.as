@@ -74,6 +74,9 @@ public class Garden {
             if (Math.abs(all_points[0] + _MAX_SEGMENTS_LIST_VALUE - all_points[all_points.length - 1]) < Garden.EPS)
                 all_points.pop();
 
+        trace('evaled tangents in ', new Date().time - _start.time);
+        _start = new Date();
+
         // add all segments
         _segments = new SegmentsList(_MAX_SEGMENTS_LIST_VALUE, null);
         for (i = 0; i < all_points.length; i++) {
@@ -87,9 +90,14 @@ public class Garden {
 
             var c:Number = Segment.line_center(pLeft, pRight, _MAX_SEGMENTS_LIST_VALUE);
 
-            var visible_circles:Vector.<int> = anglesCircle2visibleCircles(visible_circles_for_point(location2point(c)));
+            var anglesCircle:SegmentsList = visible_circles_for_point(location2point(c));
+            var visible_circles:Vector.<int> = anglesCircle2visibleCircles(anglesCircle);
+
             _segments.addSegment(new Segment(pLeft, pRight, visible_circles), just_add_segment, compare_int_vectors);
         }
+
+        var elapsed:Number = new Date().time - _start.time;
+        trace('evaled anglesCircle2visibleCircles in ', (elapsed / all_points.length).toFixed(3) + " * " + all_points.length + " = " + elapsed);
 
         function just_add_segment(s1:Vector.<int>, s2:Vector.<int>):Vector.<int> {
             if (s1 == null)
@@ -100,6 +108,7 @@ public class Garden {
 
         var _finish:Date = new Date();
         trace('evaled segments in ', _finish.time - _start.time);
+        SegmentsList.__trace_timings();
     }
 
     public function visible_circles_for_point(point:Point):SegmentsList {
@@ -151,7 +160,7 @@ public class Garden {
 
             anglesCircle.addSegment(s, function (was:int, now:int):int {
                 return now;
-            })
+            });
         }
 
         return anglesCircle;
@@ -164,7 +173,7 @@ public class Garden {
     }
 
     public static function anglesCircle2visibleCircles(anglesCircle:SegmentsList):Vector.<int> {
-        var max_index:int = 20; //we have definitely less than 20 circles
+        var max_index:int = 10; //we have definitely less than 10 circles
         var has_circle:Vector.<Boolean> = new Vector.<Boolean>(max_index);
         for (var i:int = 0; i < max_index; i++)
             has_circle[i] = false;
@@ -177,6 +186,7 @@ public class Garden {
         for (i = 0; i < max_index; i++)
             if (has_circle[i])
                 result.push(i);
+
         return result;
     }
 

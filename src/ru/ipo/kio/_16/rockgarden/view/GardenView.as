@@ -59,6 +59,9 @@ public class GardenView extends Sprite {
 
         _areas = areas;
 
+        _segments_layer = new Sprite();
+        addChild(_segments_layer);
+
         draw_grid();
 
         for each (var circle:Circle in g.circles) {
@@ -165,21 +168,10 @@ public class GardenView extends Sprite {
         if (showsAreas())
             return;
 
-        if (_segments_layer != null) {
-            if (_problem_style == 2) {
-                _segments_layer.removeEventListener(MouseEvent.CLICK, segments_layer_clickHandler);
-                _segments_layer.removeEventListener(MouseEvent.MOUSE_MOVE, segments_layer_mouseOverHandler);
-                _segments_layer.removeEventListener(MouseEvent.ROLL_OVER, segments_layer_rollOverHandler);
-                _segments_layer.removeEventListener(MouseEvent.ROLL_OUT, segments_layer_rollOutHandler);
-            }
-
-            for (var ci:int = 0; ci < _segments_layer.numChildren; ci++)
-                SegmentView(_segments_layer.getChildAt(ci)).destroy();
-            removeChild(_segments_layer);
+        while (_segments_layer.numChildren > 0) {
+            SegmentView(_segments_layer.getChildAt(0)).destroy();
+            _segments_layer.removeChildAt(0);
         }
-
-        _segments_layer = new Sprite();
-        addChild(_segments_layer);
 
         if (_problem_style == 2) {
             _segments_layer.addEventListener(MouseEvent.CLICK, segments_layer_clickHandler);

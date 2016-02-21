@@ -28,6 +28,8 @@ public class Slider extends Sprite {
     public static const VALUE_CHANGED:String = 'slider value changed';
 
     private var button:Sprite;
+    private var plusButton:Sprite;
+    private var minusButton:Sprite;
 
     private var dragMouseDown:Boolean = false;
     private var dragMouseOver:Boolean = false;
@@ -67,6 +69,12 @@ public class Slider extends Sprite {
 
         _value_tf.x = button.x - _value_tf.width / 2 + BUTTON_WIDTH / 2;
         //TODO do centering without the "-" sign
+
+        minusButton.y = _value_tf.y + _value_tf.height / 2;
+        plusButton.y = _value_tf.y + _value_tf.height / 2;
+
+        minusButton.x = _value_tf.x - minusButton.width / 2 - 2;
+        plusButton.x = _value_tf.x + _value_tf.width + plusButton.width / 2 + 2;
     }
 
     private function init_text_fields():void {
@@ -133,10 +141,42 @@ public class Slider extends Sprite {
         addChild(button);
 
         init_text_fields();
+        initPlusMinusButtons();
 
         relocateValueText();
         addEventListener(VALUE_CHANGED, function(e:Event):void {
             relocateValueText();
+        });
+    }
+
+    private function initPlusMinusButtons():void {
+        plusButton = new Sprite();
+        minusButton = new Sprite();
+
+        plusButton.graphics.beginFill(0xCCCCCC);
+        plusButton.graphics.drawCircle(0, 0, 6);
+        plusButton.graphics.endFill();
+        plusButton.graphics.lineStyle(2, 0x000000);
+        plusButton.graphics.moveTo(-3, 0);
+        plusButton.graphics.lineTo(3, 0);
+        plusButton.graphics.moveTo(0, -3);
+        plusButton.graphics.lineTo(0, 3);
+
+        minusButton.graphics.beginFill(0xCCCCCC);
+        minusButton.graphics.drawCircle(0, 0, 6);
+        minusButton.graphics.endFill();
+        minusButton.graphics.lineStyle(2, 0x000000);
+        minusButton.graphics.moveTo(-3, 0);
+        minusButton.graphics.lineTo(3, 0);
+
+        addChild(plusButton);
+        addChild(minusButton);
+
+        plusButton.addEventListener(MouseEvent.CLICK, function(event:MouseEvent):void {
+            value += 1;
+        });
+        minusButton.addEventListener(MouseEvent.CLICK, function(event:MouseEvent):void {
+            value -= 1;
         });
     }
 

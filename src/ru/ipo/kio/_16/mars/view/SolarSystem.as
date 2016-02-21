@@ -1,9 +1,11 @@
 package ru.ipo.kio._16.mars.view {
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.geom.Point;
 
 import ru.ipo.kio._16.mars.model.Consts;
 import ru.ipo.kio._16.mars.model.Orbit;
+import ru.ipo.kio._16.mars.model.ShipAction;
 import ru.ipo.kio._16.mars.model.ShipHistory;
 import ru.ipo.kio._16.mars.model.Vector2D;
 
@@ -25,13 +27,17 @@ public class SolarSystem extends Sprite {
     private var earth:BodyView;
     private var mars:BodyView;
 
+    private var _currentShipAction:ShipAction = null;
+
 //    private var earthPosition:Vector2D;
 //    private var marsPosition:Vector2D;
 
     private var earthOV:OrbitView;
     private var marsOV:OrbitView;
+    private var _speedView:VectorView;
 
-    public function SolarSystem() {
+    public function SolarSystem(speedView:VectorView) {
+        _speedView = speedView;
         earthOrbit = Orbit.solveInitial(Consts.EARTH_R, 0, 0, Consts.EARTH_Vt, 0);
         marsOrbit = Orbit.solveInitial(Consts.MARS_R, 0, 0, Consts.MARS_Vt, 0);
 
@@ -56,6 +62,8 @@ public class SolarSystem extends Sprite {
 
         _timeInd = 0;
         updateTime();
+
+        _speedView.addEventListener(VectorView.VALUE_CHANGED, speedView_vector_view_value_changedHandler);
     }
 
     private function updateTime():void {
@@ -99,6 +107,30 @@ public class SolarSystem extends Sprite {
         _timeInd = value;
 
         updateTime();
+    }
+
+    public function set currentShipAction(value:ShipAction):void {
+        if (value == _currentShipAction)
+            return;
+
+        _currentShipAction = value;
+
+        if (_currentShipAction == null)
+            _speedView.visible = false;
+        else {
+            _speedView.visible = true;
+            _speedView.value = _currentShipAction.dV;
+        }
+
+        historyView.currentShipAction = value;
+    }
+
+    private function speedView_vector_view_value_changedHandler(event:Event):void {
+        if (_currentShipAction != null) {
+            _currentShipAction.dV = _speedView.value;
+            history.evaluatePositions();
+            historyView.redraw();
+        }
     }
 }
 }

@@ -16,5 +16,9 @@ public class ShipAction {
     public function get dV():Vector2D {
         return _dV;
     }
+
+    public function set dV(dV:Vector2D):void {
+        _dV = dV;
+    }
 }
 }

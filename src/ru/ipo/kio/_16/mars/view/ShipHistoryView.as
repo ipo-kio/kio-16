@@ -13,6 +13,10 @@ public class ShipHistoryView extends Sprite {
     private var ss:SolarSystem;
     private var history:ShipHistory;
 
+    private var _actionsViews:Vector.<ShipActionView> = new <ShipActionView>[];
+
+    private var _currentShipAction:ShipAction = null;
+
     public function ShipHistoryView(ss:SolarSystem, history:ShipHistory) {
         this.ss = ss;
         this.history = history;
@@ -20,7 +24,14 @@ public class ShipHistoryView extends Sprite {
         redraw();
     }
 
-    private function redraw():void {
+    public function redraw():void {
+        //first clear all
+        graphics.clear();
+        for each (var av:ShipActionView in _actionsViews) {
+            removeChild(av);
+            av.destroy();
+        }
+        _actionsViews.splice(0, _actionsViews.length);
 
         graphics.lineStyle(4, 0xBBBBBB, 0.6);
 
@@ -39,7 +50,11 @@ public class ShipHistoryView extends Sprite {
         graphics.lineStyle(0.5, 0x990000);
         for each (var he:ShipAction in history.actions) {
             var pos:Point = ss.position2point(history.positions[he.time]);
-            graphics.drawCircle(pos.x, pos.y, 3);
+            av = new ShipActionView(ss, he);
+            _actionsViews.push(av);
+            if (he == _currentShipAction)
+                av.selected = true;
+            addChild(av);
         }
 
         //draw start and finish
@@ -56,6 +71,23 @@ public class ShipHistoryView extends Sprite {
         //add orbits
 //        for each (var o:Orbit in history.orbits)
 //            addChild(new OrbitView(o, SolarSystem.SCALE, 0x0, 1));
+    }
+
+    public function get actionsViews():Vector.<ShipActionView> {
+        return _actionsViews;
+    }
+
+    public function get currentShipAction():ShipAction {
+        return _currentShipAction;
+    }
+
+    public function set currentShipAction(value:ShipAction):void {
+        if (value == _currentShipAction)
+            return;
+        _currentShipAction = value;
+
+        for each (var av:ShipActionView in _actionsViews)
+            av.selected = av.action == _currentShipAction;
     }
 }
 }

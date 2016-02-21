@@ -4,6 +4,7 @@ import flash.events.Event;
 
 import ru.ipo.kio._16.rockgarden.model.Circle;
 import ru.ipo.kio._16.rockgarden.model.Garden;
+import ru.ipo.kio._16.rockgarden.model.SegmentsList;
 import ru.ipo.kio._16.rockgarden.view.GardenView;
 import ru.ipo.kio._16.rockgarden.view.RocksSideView;
 import ru.ipo.kio._16.rockgarden.view.ViewArea;
@@ -27,6 +28,8 @@ public class RockGardenWorkspace extends Sprite {
     public function RockGardenWorkspace(problem:KioProblem) {
         _problem = problem;
         _api = KioApi.instance(problem);
+
+        SegmentsList.__reset_timings();
 
         TOTAL_CIRCLES = 5 + problem.level; //5, 6, 7 circles
 

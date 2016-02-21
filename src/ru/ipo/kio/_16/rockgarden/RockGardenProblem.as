@@ -76,7 +76,7 @@ public class RockGardenProblem implements KioProblem {
             d = r2.i - r1.i; //6 rocks visible
             if (d != 0)
                 return d;
-            var dd:Number = r2.s - r1.s;
+            var dd:Number = r1.s - r2.s;
             if (dd < 0)
                 return -1;
             else if (dd > 0)

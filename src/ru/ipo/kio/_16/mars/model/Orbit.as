@@ -39,6 +39,10 @@ public class Orbit {
     }
 
     public function position(t:Number):Vector2D {
+//        if (t == 70 * 60 * 60 * 24 || t == 71 * 60 * 60 * 24) {
+//            trace("asdf");
+//        }
+
         //https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion#Position_as_a_function_of_time
         t -= _t0;
 
@@ -150,7 +154,7 @@ public class Orbit {
         return a * a;
     }
 
-    private static function solveKeplerEquation(M:Number, eps:Number):Number {
+    public static function solveKeplerEquation(M:Number, eps:Number):Number {
         //M = E - eps * sin(E)
 
         //http://mathworld.wolfram.com/KeplersEquation.html
@@ -159,8 +163,8 @@ public class Orbit {
 
         var E_i:Number = 0;
         for (var i:int = 0; i < 20; i++)
-//            E_i = M + eps * Math.sin(E_i);
-            E_i = E_i + (M + eps * Math.sin(E_i) - E_i) / (1 - eps * Math.cos(E_i));
+            E_i = M + eps * Math.sin(E_i);
+//            E_i = E_i + (M + eps * Math.sin(E_i) - E_i) / (1 - eps * Math.cos(E_i));
 
         return E_i;
     }

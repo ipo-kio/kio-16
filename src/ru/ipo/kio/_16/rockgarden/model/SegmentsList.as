@@ -37,7 +37,53 @@ public class SegmentsList {
         }
     }
 
+    private static var __timings:Vector.<Number>;
+    private static var __counts:Vector.<int>;
+    private static var __starts:Vector.<Number>;
+
+    public static function __reset_timings():void {
+        __timings = new Vector.<Number>(100);
+        __counts = new Vector.<int>(100);
+        __starts = new Vector.<Number>(100);
+
+        function zero():int {
+            return 0
+        }
+
+        __timings = __timings.map(zero);
+        __counts = __counts.map(zero);
+        __starts = __starts.map(zero);
+    }
+
+    private static function __start_block_timing(ind:int, _time:Number = 0):void {
+        if (_time == 0)
+            _time = new Date().time;
+        __starts[ind] = _time;
+    }
+    private static function __stop_block_timing(ind:int, _time:Number = 0):void {
+        if (_time == 0)
+            _time = new Date().time;
+        var elapsed:Number = _time - __starts[ind];
+        __counts[ind]++;
+        __timings[ind] += elapsed;
+    }
+    private static function __stop_start_block_timing(ind1:int, ind2:int):void {
+        var _time:Number = new Date().time;
+        __start_block_timing(ind2, _time);
+        __stop_block_timing(ind1, _time);
+    }
+    public static function __trace_timings():void {
+        for (var i:int = 0; i < __counts.length; i++) {
+            var c:int = __counts[i];
+            if (c == 0)
+                continue;
+            trace("timing block " + i, __timings[i] / c, "*", c, "=", __timings[i]);
+        }
+    }
+
     private function insert_general_case(s:Segment, union:Function):Vector.<Segment> {
+        __start_block_timing(1);
+
         var points:Vector.<PointDescription> = new Vector.<PointDescription>(_segments.length + 2, true);
         points[0] = new PointDescription(s.start, true, s);
         points[1] = new PointDescription(s.end, true, null);
@@ -46,14 +92,20 @@ public class SegmentsList {
             points[i + 2] = new PointDescription(ss.start, false, ss);
         }
 
+        __stop_start_block_timing(1, 11);
+
         points.sort(function (d1:PointDescription, d2:PointDescription):Number {
             return d1.pos - d2.pos;
         });
+
+        __stop_start_block_timing(11, 12);
 
         //search for the new segment start
         for (var start_ind:int = 0; start_ind < points.length; start_ind++)
             if (points[start_ind].is_new && points[start_ind].start_of != null)
                 break;
+
+        __stop_start_block_timing(12, 2);
 
         var prev_start_ind:int = start_ind;
         while (true) {
@@ -63,6 +115,8 @@ public class SegmentsList {
             if (!points[prev_start_ind].is_new)
                 break;
         }
+
+        __stop_start_block_timing(2, 3);
 
         var new_segments:Vector.<Segment> = new <Segment>[];
         var inside:Boolean = true;
@@ -89,57 +143,10 @@ public class SegmentsList {
             pd_prev = pd_next;
         }
 
+        __stop_block_timing(3);
+
         return new_segments;
     }
-
-    /*
-     private function insert_general_case(s:Segment, union:Function):Vector.<Segment> {
-     var begin_ind:int;
-
-     for (var i:int = 0; i < _segments.length; i++) {
-     var ss:Segment = _segments[i];
-
-     //searching for begin in ss
-     if (s.start == ss.start || ss.pointInside(s.start)) {
-     begin_ind = i;
-     break;
-     }
-     }
-
-     var new_segments:Vector.<Segment> = new <Segment>[];
-     var inside:Boolean = true;
-     i = begin_ind;
-
-     var prev:Number = s.start;
-     while (true) {
-     ss = _segments[i];
-
-     if (inside) {
-     if (ss.pointInside(prev))
-     new_segments.push(new Segment(ss.start, prev, ss.value));
-
-     if (ss.pointInside(s.end) || ss.end == s.end) {
-     new_segments.push(new Segment(prev, s.end, union(ss.value, s.value)));
-     if (s.end != ss.end)
-     new_segments.push(new Segment(s.end, ss.end, ss.value));
-     inside = false;
-     } else {
-     new_segments.push(new Segment(prev, ss.end, union(ss.value, s.value)));
-     prev = ss.end;
-     }
-     } else
-     new_segments.push(ss);
-
-     //increment i
-     i++;
-     if (i >= _segments.length)
-     i = 0;
-     if (i == begin_ind)
-     break;
-     }
-     return new_segments;
-     }
-     */
 
     private function normalize(segments:Vector.<Segment>, comparator:Function):Vector.<Segment> {
         //1st, remove all zero segments
@@ -189,7 +196,7 @@ public class SegmentsList {
 
     public function modify(f:Function, swap:Boolean = false, newMaxValue:Number = 0):void {
         if (newMaxValue > 0)
-                _maxValue = newMaxValue;
+            _maxValue = newMaxValue;
 
         for each (var s:Segment in _segments) {
             var newStart:Number = swap ? f(s.end) : f(s.start);
