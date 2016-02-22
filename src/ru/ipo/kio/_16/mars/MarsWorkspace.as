@@ -3,6 +3,7 @@ package ru.ipo.kio._16.mars {
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.MouseEvent;
 
 import ru.ipo.kio._16.mars.model.Consts;
 
@@ -115,10 +116,16 @@ public class MarsWorkspace extends Sprite {
         bAdd_dis.y = 400;
         bRemove_dis.y = 400;
 
+        bAdd_dis.useHandCursor = false;
+        bRemove_dis.useHandCursor = false;
+
         bAdd_dis.visible = false;
         bRemove_dis.visible = false;
 
         update_add_remove_buttons_state();
+
+        bAdd.addEventListener(MouseEvent.CLICK, bAdd_clickHandler);
+        bRemove.addEventListener(MouseEvent.CLICK, bRemove_clickHandler);
     }
 
     private function update_add_remove_buttons_state():void {
@@ -133,11 +140,11 @@ public class MarsWorkspace extends Sprite {
         }
 
         var lastAction:ShipAction = actions[actions.length - 1];
-        var addEnable:Boolean = timeSlider.value > lastAction.time;
+        var addEnable:Boolean = timeSlider.valueRounded > lastAction.time;
 
         var removeEnable:Boolean = false;
         for each (var sa:ShipAction in actions)
-            if (sa.time == timeSlider.value) {
+            if (sa.time == timeSlider.valueRounded) {
                 removeEnable = true;
                 break;
             }
@@ -149,8 +156,34 @@ public class MarsWorkspace extends Sprite {
     }
 
     private function slider_value_changedHandler(event:Event):void {
-        ss.time = Math.round(timeSlider.value);
+        ss.time = timeSlider.valueRounded;
 
+        update_add_remove_buttons_state();
+    }
+
+    private function bAdd_clickHandler(event:MouseEvent):void {
+        ss.history.actions.push(new ShipAction(timeSlider.valueRounded, Vector2D.create(0, 0)));
+
+        historyUpdated();
+    }
+
+    private function bRemove_clickHandler(event:MouseEvent):void {
+        var actions:Vector.<ShipAction> = ss.history.actions;
+        for (var i:int = 0; i < actions.length; i++) {
+            var action:ShipAction = actions[i];
+            if (action.time == timeSlider.valueRounded) {
+                actions.splice(i, 1);
+
+                historyUpdated();
+
+                break;
+            }
+        }
+    }
+
+    private function historyUpdated():void {
+        ss.history.evaluatePositions();
+        ss.historyView.redraw();
         update_add_remove_buttons_state();
     }
 }

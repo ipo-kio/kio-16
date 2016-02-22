@@ -227,6 +227,10 @@ public class Slider extends Sprite {
         return pos2value(button.x);
     }
 
+    public function get valueRounded():Number {
+        return Math.round(value);
+    }
+
     public function set value(value:Number):void {
         button.x = value2pos(value);
         dispatchEvent(new Event(VALUE_CHANGED));

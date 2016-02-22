@@ -17,7 +17,7 @@ public class SolarSystem extends Sprite {
     private var marsOrbit:Orbit;
 
     private var historyLayer:Sprite;
-    private var historyView:ShipHistoryView = null;
+    private var _historyView:ShipHistoryView = null;
 
     private var _history:ShipHistory;
 
@@ -84,11 +84,11 @@ public class SolarSystem extends Sprite {
     public function set history(history:ShipHistory):void {
         _history = history;
 
-        if (historyView != null)
-            historyLayer.removeChild(historyView);
+        if (_historyView != null)
+            historyLayer.removeChild(_historyView);
 
-        historyView = new ShipHistoryView(this, _history);
-        historyLayer.addChild(historyView);
+        _historyView = new ShipHistoryView(this, _history);
+        historyLayer.addChild(_historyView);
 
         updateTime();
     }
@@ -122,15 +122,19 @@ public class SolarSystem extends Sprite {
             _speedView.value = _currentShipAction.dV;
         }
 
-        historyView.currentShipAction = value;
+        _historyView.currentShipAction = value;
     }
 
     private function speedView_vector_view_value_changedHandler(event:Event):void {
         if (_currentShipAction != null) {
             _currentShipAction.dV = _speedView.value;
             history.evaluatePositions();
-            historyView.redraw();
+            _historyView.redraw();
         }
+    }
+
+    public function get historyView():ShipHistoryView {
+        return _historyView;
     }
 }
 }
