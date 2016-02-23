@@ -232,6 +232,11 @@ public class Slider extends Sprite {
     }
 
     public function set value(value:Number):void {
+        if (value < _from)
+            value = _from;
+        if (value > _to)
+            value = _to;
+
         button.x = value2pos(value);
         dispatchEvent(new Event(VALUE_CHANGED));
     }

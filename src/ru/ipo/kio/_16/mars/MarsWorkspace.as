@@ -53,6 +53,9 @@ public class MarsWorkspace extends Sprite {
     private var bAdd_dis:GraphicsButton = new GraphicsButton('', ADD_BUTTON_D_IMG, ADD_BUTTON_D_IMG, ADD_BUTTON_D_IMG, '', 10, 10);
     private var bRemove_dis:GraphicsButton = new GraphicsButton('', REMOVE_BUTTON_D_IMG, REMOVE_BUTTON_D_IMG, REMOVE_BUTTON_D_IMG, '', 10, 10);
 
+    private var speedView:VectorView;
+    private var setSpeedView:VectorView;
+
     public function MarsWorkspace(problem:KioProblem) {
 //        trace(Orbit.solveKeplerEquation(2.8453268117053505, 0.5084113241345426)); //newtown fails here
 
@@ -74,23 +77,28 @@ public class MarsWorkspace extends Sprite {
 //        background.graphics.drawCircle(300, 300, 280);
 //        background.graphics.drawCircle(300, 300, 280 / 1.524924921);
 
-        var speedView:VectorView = new VectorView(180, 40, 10000, 80);
+        setSpeedView = new VectorView(180, 40, 10000, 80);
+        speedView = new VectorView(180, 40, 50000, 80);
+        addChild(setSpeedView);
         addChild(speedView);
+        setSpeedView.x = 680;
+        setSpeedView.y = 100;
         speedView.x = 680;
-        speedView.y = 100;
+        speedView.y = 280;
 
-//        speedView.value = Vector2D.createPolar(400, Math.PI / 3);
-        speedView.visible = false;
+        speedView.editable = false;
 
-        ss = new SolarSystem(speedView);
+        setSpeedView.visible = false;
+
+        ss = new SolarSystem(this, setSpeedView);
         addChild(ss);
         ss.x = 300;
         ss.y = 300;
 
         var history:ShipHistory = new ShipHistory(Vector2D.create(Consts.EARTH_R, 0), Vector2D.create(0, Consts.EARTH_Vt));
-        history.push(new ShipAction(60, Vector2D.create(0, Consts.EARTH_Vt / 20)));
-        history.push(new ShipAction(120, Vector2D.create(0, Consts.EARTH_Vt / 20)));
-        history.push(new ShipAction(180, Vector2D.create(0, Consts.EARTH_Vt / 20)));
+//        history.push(new ShipAction(60, Vector2D.create(0, Consts.EARTH_Vt / 20)));
+//        history.push(new ShipAction(120, Vector2D.create(0, Consts.EARTH_Vt / 20)));
+//        history.push(new ShipAction(180, Vector2D.create(0, Consts.EARTH_Vt / 20)));
         ss.history = history;
 
         timeSlider = new Slider(0, Consts.MAX_TIME, 700, 0x000000, 0x000000);
@@ -128,26 +136,27 @@ public class MarsWorkspace extends Sprite {
         bRemove.addEventListener(MouseEvent.CLICK, bRemove_clickHandler);
     }
 
-    private function update_add_remove_buttons_state():void {
+    public function update_add_remove_buttons_state():void {
         var actions:Vector.<ShipAction> = ss.history.actions;
 
         if (actions.length == 0) {
             bAdd.visible = true;
             bAdd_dis.visible = false;
-            bAdd.visible = false;
-            bAdd_dis.visible = true;
+            bRemove.visible = false;
+            bRemove_dis.visible = true;
             return;
         }
 
         var lastAction:ShipAction = actions[actions.length - 1];
         var addEnable:Boolean = timeSlider.valueRounded > lastAction.time;
 
-        var removeEnable:Boolean = false;
+        /*var removeEnable:Boolean = false;
         for each (var sa:ShipAction in actions)
             if (sa.time == timeSlider.valueRounded) {
                 removeEnable = true;
                 break;
-            }
+            }*/
+        var removeEnable:Boolean = ss.currentShipAction != null;
 
         bAdd.visible = addEnable;
         bAdd_dis.visible = !addEnable;
@@ -159,20 +168,42 @@ public class MarsWorkspace extends Sprite {
         ss.time = timeSlider.valueRounded;
 
         update_add_remove_buttons_state();
+
+        update_speed_view();
+    }
+
+    private function update_speed_view():void {
+        var valueRounded:Number = timeSlider.valueRounded;
+
+        if (valueRounded < 0)
+            valueRounded = 0;
+        if (valueRounded > Consts.MAX_TIME)
+            valueRounded = Consts.MAX_TIME;
+
+        speedView.value = ss.history.speeds[valueRounded];
     }
 
     private function bAdd_clickHandler(event:MouseEvent):void {
-        ss.history.actions.push(new ShipAction(timeSlider.valueRounded, Vector2D.create(0, 0)));
+        var shipAction:ShipAction = new ShipAction(timeSlider.valueRounded, Vector2D.create(0, 0));
+        ss.history.actions.push(shipAction);
 
         historyUpdated();
+
+        ss.currentShipAction = shipAction;
     }
 
     private function bRemove_clickHandler(event:MouseEvent):void {
+        if (ss.currentShipAction == null)
+            return;
+
         var actions:Vector.<ShipAction> = ss.history.actions;
+
         for (var i:int = 0; i < actions.length; i++) {
             var action:ShipAction = actions[i];
-            if (action.time == timeSlider.valueRounded) {
+            if (action == ss.currentShipAction) {
                 actions.splice(i, 1);
+
+                ss.currentShipAction = null;
 
                 historyUpdated();
 
@@ -188,3 +219,8 @@ public class MarsWorkspace extends Sprite {
     }
 }
 }
+
+// +- в слайдере выходит за границу
+// добавить точку, если корабль вне экрана
+// добавить маску вообще
+// Танечка

@@ -5,6 +5,7 @@ import flash.geom.Point;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
+import flash.utils.Dictionary;
 
 import ru.ipo.kio._16.rockgarden.RockGardenWorkspace;
 import ru.ipo.kio._16.rockgarden.model.Circle;
@@ -362,7 +363,58 @@ public class GardenView extends Sprite {
         };
     }
 
+    private function invertVector(v:Vector.<int>):int {
+        var aa:Vector.<Boolean> = new Vector.<Boolean>(8, true);
+        for (var i:int = 1; i <= 7; i++)
+            aa[i] = false;
+        for (i = 0; i < v.length; i++)
+            aa[v[i]] = true;
+        var r:int = 0;
+        for (i = 1; i <= 7; i++)
+            if (!aa[i])
+                r = r * 10 + i;
+        return r;
+    }
+
     private function resultFor2():Object {
+        var pairsDict:Dictionary = new Dictionary();
+
+        var visibilityDict:Dictionary = new Dictionary();
+
+        for each (var s:Segment in _g.segments.segments) {
+            var twoInvisible:int = invertVector(s.value);
+            if (twoInvisible < 100 && twoInvisible > 9)
+                pairsDict[twoInvisible] = true;
+
+            var l:Number = s.distance(_g.MAX_SEGMENTS_LIST_VALUE);
+
+            for each (var c:int in s.value) {
+                if (c in visibilityDict)
+                    visibilityDict[c] += l;
+                else
+                    visibilityDict[c] = l;
+            }
+        }
+
+        var pairs:int = 0;
+        for (var o:Object in pairsDict)
+            pairs++;
+
+        var sum:Number = 0;
+        var sum2:Number = 0;
+        for (c = 1; c <= 7; c++) {
+            var d:Number = c in visibilityDict ? visibilityDict[c] : 0;
+            sum += d;
+            sum2 += d * d;
+        }
+
+        return {
+            p: pairs,
+            v: Math.sqrt(sum2 / 7 - sum * sum / 49)
+        }
+    }
+
+    private function resultFor2old():Object {
         var n:int = _g.circles.length;
 
         var sum:Number = 0;

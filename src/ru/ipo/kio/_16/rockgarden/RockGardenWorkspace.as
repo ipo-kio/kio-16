@@ -135,9 +135,15 @@ public class RockGardenWorkspace extends Sprite {
                 "Размер камней"
             ];
         } else
+                /*
             labels = [
                 "Невидимых камней",
                 "Видно 6 камней"
+            ];
+            */
+            labels = [
+                "Пар невидимых",
+                "Равномерность"
             ];
 
         _info = new InfoPanel('KioArial', true, 14, 0x000000, 0x000000, 0x884400, 1, "Результат", labels, 200);
@@ -169,8 +175,10 @@ public class RockGardenWorkspace extends Sprite {
             info.setValue(1, c.d);
             info.setValue(2, c.s);
         } else {
-            info.setValue(0, c.i);
-            info.setValue(1, Number(c.s).toFixed(2) + "%");
+//            info.setValue(0, c.i);
+//            info.setValue(1, Number(c.s).toFixed(2) + "%");
+            info.setValue(0, c.p);
+            info.setValue(1, Number(c.v).toFixed(2));
         }
     }
 

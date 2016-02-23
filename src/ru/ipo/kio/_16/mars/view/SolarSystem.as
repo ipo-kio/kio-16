@@ -3,6 +3,8 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Point;
 
+import ru.ipo.kio._16.mars.MarsWorkspace;
+
 import ru.ipo.kio._16.mars.model.Consts;
 import ru.ipo.kio._16.mars.model.Orbit;
 import ru.ipo.kio._16.mars.model.ShipAction;
@@ -11,7 +13,8 @@ import ru.ipo.kio._16.mars.model.Vector2D;
 
 public class SolarSystem extends Sprite {
 
-    public static const SCALE:Number = 280 / Consts.MARS_R;
+    public static const VISIBLE_RADIUS:Number = 280;
+    public static const SCALE:Number = VISIBLE_RADIUS / Consts.MARS_R;
 
     private var earthOrbit:Orbit;
     private var marsOrbit:Orbit;
@@ -36,7 +39,10 @@ public class SolarSystem extends Sprite {
     private var marsOV:OrbitView;
     private var _speedView:VectorView;
 
-    public function SolarSystem(speedView:VectorView) {
+    private var _workspace:MarsWorkspace;
+
+    public function SolarSystem(workspace:MarsWorkspace, speedView:VectorView) {
+        _workspace = workspace;
         _speedView = speedView;
         earthOrbit = Orbit.solveInitial(Consts.EARTH_R, 0, 0, Consts.EARTH_Vt, 0);
         marsOrbit = Orbit.solveInitial(Consts.MARS_R, 0, 0, Consts.MARS_Vt, 0);
@@ -64,6 +70,15 @@ public class SolarSystem extends Sprite {
         updateTime();
 
         _speedView.addEventListener(VectorView.VALUE_CHANGED, speedView_vector_view_value_changedHandler);
+
+        //setup mask
+        var maskSprite:Sprite = new Sprite();
+        mask = maskSprite;
+        maskSprite.graphics.beginFill(0xFF0000);
+        var r:Number = VISIBLE_RADIUS + 4;
+        maskSprite.graphics.drawRect(-r, -r, 2 * r, 2 * r);
+        maskSprite.graphics.endFill();
+        addChild(maskSprite);
     }
 
     private function updateTime():void {
@@ -123,6 +138,8 @@ public class SolarSystem extends Sprite {
         }
 
         _historyView.currentShipAction = value;
+
+        _workspace.update_add_remove_buttons_state();
     }
 
     private function speedView_vector_view_value_changedHandler(event:Event):void {
@@ -130,11 +147,16 @@ public class SolarSystem extends Sprite {
             _currentShipAction.dV = _speedView.value;
             history.evaluatePositions();
             _historyView.redraw();
+            updateTime();
         }
     }
 
     public function get historyView():ShipHistoryView {
         return _historyView;
+    }
+
+    public function get currentShipAction():ShipAction {
+        return _currentShipAction;
     }
 }
 }

@@ -23,6 +23,8 @@ public class VectorView extends Sprite {
 
     private var _arrow_layer:Sprite;
 
+    private var _editable:Boolean = true;
+
     public function VectorView(anglesNumber:int, radiusesNumber:int, maxValue:Number, size:Number) {
         _anglesNumber = anglesNumber;
         _radiusesNumber = radiusesNumber;
@@ -58,6 +60,10 @@ public class VectorView extends Sprite {
     }
 
     private function initBg():void {
+        graphics.beginFill(0xFFFFFF);
+        graphics.drawCircle(0, 0, _size + 4);
+        graphics.endFill();
+
         graphics.lineStyle(1, 0xAAAAAA);
         for (var i:int = 1; i <= _radiusesNumber; i++)
             graphics.drawCircle(0, 0, _size * i / _radiusesNumber);
@@ -141,9 +147,20 @@ public class VectorView extends Sprite {
     }
 
     private function newMousePosition(event:MouseEvent):void {
+        if (!_editable)
+            return;
+
         var vector2D:Vector2D = positionXY2value(event.localX, event.localY);
         value = vector2D;
         dispatchEvent(new Event(VALUE_CHANGED));
+    }
+
+    public function get editable():Boolean {
+        return _editable;
+    }
+
+    public function set editable(value:Boolean):void {
+        _editable = value;
     }
 }
 }
