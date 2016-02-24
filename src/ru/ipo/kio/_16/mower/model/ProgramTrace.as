@@ -60,12 +60,12 @@ public class ProgramTrace {
                 var forward_see:int = prev_field.getAt(forward_i, forward_j);
                 var left_see:int = prev_field.getAt(left_i, left_j);
 
-                if (prev_state.getMowerAt(forward_i, forward_j) != null)
+                if (forward_see == Field.FIELD_GRASS_MOWED && prev_state.getMowerAt(forward_i, forward_j) != null)
                     forward_see = Field.FIELD_PROGRAM_MOWER;
-                if (prev_state.getMowerAt(left_i, left_j) != null)
+                if (left_see == Field.FIELD_GRASS_MOWED && prev_state.getMowerAt(left_i, left_j) != null)
                     left_see = Field.FIELD_PROGRAM_MOWER;
 
-                var c:int = _program.commands.getAt(1 + left_see, 1 + forward_see);
+                var c:int = _program.getCommandAt(left_see, forward_see);
 
                 var new_mower:Mower;
                 switch (c) {
@@ -95,11 +95,36 @@ public class ProgramTrace {
                 }
 
                 new_mowers.push(new_mower);
-
-                prev_state = new State(, new_mowers);
-                trace.push(prev_state);
             }
+
+            var field:Field = prev_field.deriveGrass(new_mowed_grass);
+
+            break_mowers(new_mowers, mower_meets_mower);
+
+            prev_state = new State(field, new_mowers);
+            trace.push(prev_state);
         }
+    }
+
+    private static function break_mowers(new_mowers:Vector.<Mower>, mower_meets_mower:Dictionary):void {
+        for each (var mower:Mower in new_mowers) {
+            //if there are two mowers at the same place
+            for each (var second:Mower in new_mowers)
+                if (mower.isAt(second.i, second.j)) {
+                    mower.broken = true;
+                    second.broken = true;
+                }
+
+            //if mowers go through each other
+
+            if (mower in mower_meets_mower)
+                second = mower_meets_mower[mower];
+                if (mower_meets_mower[second] == mower) {
+                    mower.broken = true;
+                    second.broken = true;
+                }
+        }
+
     }
 
 }

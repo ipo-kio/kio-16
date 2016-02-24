@@ -26,7 +26,7 @@ public class FieldView extends Sprite {
         redrawView();
     }
 
-    private function redrawHighlight():void {
+    public function redrawHighlight():void {
         var g:Graphics = highlight_layer.graphics;
         g.clear();
 
@@ -39,7 +39,7 @@ public class FieldView extends Sprite {
         g.endFill();
     }
 
-    private function redrawView():void {
+    public function redrawView():void {
         var g:Graphics = view_layer.graphics;
         g.clear();
 
@@ -63,6 +63,12 @@ public class FieldView extends Sprite {
         _highlight_i = i;
         _highlight_j = j;
         redrawHighlight();
+    }
+
+    public function removeHighlight():void {
+        _highlight_i = -1;
+        _highlight_j= -1;
+        redrawHighlight()
     }
 
     public function position2cell(x0:Number, y0:Number):Position {

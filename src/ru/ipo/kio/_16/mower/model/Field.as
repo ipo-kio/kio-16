@@ -10,9 +10,10 @@ public class Field {
     public static const FIELD_TURN_LEFT:int = 6;
     public static const FIELD_TURN_RIGHT:int = 7;
     public static const FIELD_NOP:int = 8;
+    public static const FIELD_EMPTY:int = 9;
 
     public static const FIELD_PROGRAM_GRASS:int = 10;
-    public static const FIELD_PROGRAM_MOWED_GRASS:int = 11;
+//    public static const FIELD_PROGRAM_MOWED_GRASS:int = 11;
     public static const FIELD_PROGRAM_TREE:int = 12;
     public static const FIELD_PROGRAM_SWAMP:int = 13;
     public static const FIELD_PROGRAM_MOWER:int = 14;
@@ -81,6 +82,22 @@ public class Field {
         if (i < 0 || i >= _m || j < 0 || j >= _n)
             return FIELD_SWAMP;
         return f[i][j];
+    }
+
+    public function setAt(i:int, j:int, value:int):int {
+        if (i >= 0 && i < _m && j >= 0 && j < _n)
+            f[i][j] = value;
+    }
+
+    public function deriveGrass(new_mowed_grass:Vector.<Position>):Field {
+        var newF:Vector.<Vector.<int>> = new Vector.<Vector.<int>>(_m, true);
+        for (var i:int = 0; i < _m; i++)
+            newF[i] = f[i].slice();
+
+        for each (var position:Position in new_mowed_grass)
+            newF[position.i][position.j] = FIELD_GRASS_MOWED;
+
+        return new Field(_m, _n, newF);
     }
 }
 }

@@ -36,7 +36,6 @@ public class CellsDrawer {
                 g.endFill();
                 break;
             case Field.FIELD_GRASS_MOWED:
-            case Field.FIELD_GRASS_MOWED:
                 g.lineStyle(1, 0x000000);
                 g.beginFill(0x00AA00);
                 g.drawRect(x0, y0, length, length);
