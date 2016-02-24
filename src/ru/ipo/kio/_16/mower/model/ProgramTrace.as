@@ -40,7 +40,7 @@ public class ProgramTrace {
         trace.push(initial_state);
 
         var prev_state:State = initial_state;
-        for (var step:int = 1; step <= MAX_STEPS; step++) {
+        for (var step:int = 1; step <= MAX_STEPS && !final_state(prev_state); step++) {
             var prev_field:Field = prev_state.field;
             var new_mowers:Vector.<Mower> = new <Mower>[];
 
@@ -104,6 +104,25 @@ public class ProgramTrace {
             prev_state = new State(field, new_mowers);
             trace.push(prev_state);
         }
+    }
+
+    private static function final_state(state:State):Boolean {
+        var has_unbroken_mowers:Boolean = false;
+        for each (var m:Mower in state.mowers)
+            if (!m.broken) {
+                has_unbroken_mowers = true;
+                break;
+            }
+
+        var has_grass:Boolean = false;
+        for (var i:int = 0; i < state.field.m; i++)
+            for (var j:int = 0; j < state.field.n; j++)
+                if (state.field.getAt(i, j) == Field.FIELD_GRASS) {
+                    has_grass = true;
+                    break;
+                }
+
+        return !has_grass || !has_unbroken_mowers;
     }
 
     private static function break_mowers(new_mowers:Vector.<Mower>, mower_meets_mower:Dictionary):void {
