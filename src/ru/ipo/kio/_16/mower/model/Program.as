@@ -5,7 +5,7 @@ public class Program {
     private var _commands: Field;
 
     public function Program(canSeeMower:Boolean = true) {
-        var size:int = canSeeMower ? 4 : 5;
+        var size:int = canSeeMower ? 5 : 4;
         _commands = new Field(size, size, Field.FIELD_NOP);
 
         _commands.setAt(0, 0, Field.FIELD_EMPTY);

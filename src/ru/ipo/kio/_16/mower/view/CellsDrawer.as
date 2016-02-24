@@ -2,6 +2,7 @@ package ru.ipo.kio._16.mower.view {
 import flash.display.Graphics;
 
 import ru.ipo.kio._16.mower.model.Field;
+import ru.ipo.kio._16.mower.model.Mower;
 
 public class CellsDrawer {
 
@@ -85,6 +86,27 @@ public class CellsDrawer {
                 g.drawCircle(x0 + length / 2, y0 + length / 2, 4);
                 break;
         }
+    }
+
+    public static function drawMower(g:Graphics, mower:Mower, size:int):void {
+        var length:Number = size2length(size);
+
+        var x0:Number = mower.j * length;
+        var y0:Number = mower.i * length;
+
+        g.lineStyle(1, 0x000000);
+        g.drawCircle(x0 + length / 2, y0 + length / 2, 3);
+        g.drawCircle(x0 + length / 2, y0 + length / 2, 5);
+
+        g.moveTo(x0 + length / 2, y0 + length / 2);
+        if (mower.di == 1) //down
+            g.lineTo(x0 + length / 2, y0 + length - 2);
+        else if (mower.di == -1) // up
+            g.lineTo(x0 + length / 2, y0 + 2);
+        else if (mower.dj == 1) // left
+            g.lineTo(x0 + 2, y0 + length / 2);
+        else //if (mower.dj == -1) // right
+            g.lineTo(x0 + length - 2, y0 + length / 2);
     }
 }
 }

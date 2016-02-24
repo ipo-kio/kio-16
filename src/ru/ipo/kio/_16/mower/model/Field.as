@@ -84,7 +84,7 @@ public class Field {
         return f[i][j];
     }
 
-    public function setAt(i:int, j:int, value:int):int {
+    public function setAt(i:int, j:int, value:int):void {
         if (i >= 0 && i < _m && j >= 0 && j < _n)
             f[i][j] = value;
     }

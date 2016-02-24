@@ -1,4 +1,5 @@
 package ru.ipo.kio._16.mower.view {
+import flash.display.Sprite;
 import flash.events.MouseEvent;
 
 import ru.ipo.kio._16.mower.model.Field;
@@ -17,7 +18,16 @@ public class ProgramView {
         _view = new FieldView(CellsDrawer.SIZE_BIG, program.commands);
 
         _view.addEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
+        _view.addEventListener(MouseEvent.ROLL_OUT, view_rollOutHandler);
         _view.addEventListener(MouseEvent.CLICK, view_clickHandler);
+
+        var hit_area:Sprite = new Sprite();
+        hit_area.mouseEnabled = false;
+        _view.addChild(hit_area);
+        hit_area.visible = false;
+        hit_area.graphics.beginFill(0xFF0000);
+        hit_area.graphics.drawRect(_view.len, _view.len, _view.len * (_program.commands.m - 1), _view.len * (_program.commands.n - 1));
+        _view.hitArea = hit_area;
     }
 
     //0       н х
@@ -76,6 +86,14 @@ public class ProgramView {
             _program.commands.setAt(position.i, position.j, new_action);
             _view.redrawView();
         }
+    }
+
+    public function get view():FieldView {
+        return _view;
+    }
+
+    private function view_rollOutHandler(event:MouseEvent):void {
+        _view.removeHighlight();
     }
 }
 }
