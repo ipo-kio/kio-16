@@ -17,6 +17,7 @@ import ru.ipo.kio._16.mars.view.VectorView;
 import ru.ipo.kio._16.mower.model.Field;
 import ru.ipo.kio._16.mower.model.Mower;
 import ru.ipo.kio._16.mower.model.Program;
+import ru.ipo.kio._16.mower.model.ProgramTrace;
 import ru.ipo.kio._16.mower.model.State;
 import ru.ipo.kio._16.mower.view.CellsDrawer;
 import ru.ipo.kio._16.mower.view.FieldView;
@@ -33,6 +34,10 @@ public class MowerWorkspace extends Sprite {
     private var _api:KioApi;
 
     private var timeSlider:Slider;
+    private var programTrace:ProgramTrace;
+    private var stateView:StateView;
+    private var program_view:ProgramView;
+    private var initial_state:State;
 
     public function MowerWorkspace(problem:KioProblem) {
         _problem = problem;
@@ -70,24 +75,51 @@ public class MowerWorkspace extends Sprite {
                 new Mower(6, 8, 0, 1, false)
         ];
 
-        var initial_state:State = new State(initial_field, initial_mowers);
+        for each (var mower:Mower in initial_mowers)
+            initial_field.setAt(mower.i, mower.j, Field.FIELD_GRASS_MOWED);
+
+        initial_state = new State(initial_field, initial_mowers);
 
 //        var fieldView:FieldView = new FieldView(CellsDrawer.SIZE_SMALL, initial_field);
-        var stateView:StateView = new StateView(initial_state);
+        stateView = new StateView(initial_state);
 
         addChild(stateView);
         stateView.x = 10;
         stateView.y = 10;
 
         var program:Program = new Program(true);
-        var program_view:ProgramView = new ProgramView(program);
+        program_view = new ProgramView(program);
         addChild(program_view.view);
         program_view.view.x = 420;
         program_view.view.y = 10;
-//        program_view.view.visible = false;
+        program_view.addEventListener(ProgramView.PROGRAM_CHANGED, program_changed_eventHandler);
 
-        stateView.beginAnimation(program);
+        programTrace = new ProgramTrace(program, initial_state);
+        programTrace.run();
+
+        timeSlider = new Slider(0, programTrace.fullTrace.length - 1, 700, 0x000000, 0x000000);
+        timeSlider.x = 20;
+        timeSlider.y = 570;
+        addChild(timeSlider);
+        timeSlider.addEventListener(Slider.VALUE_CHANGED, slider_value_changedHandler);
+        timeSlider.value_no_fire = 0;
     }
 
+    private function slider_value_changedHandler(event:Event):void {
+        var time:int = timeSlider.valueRounded;
+        if (time < 0)
+            time = 0;
+        if (time >= programTrace.fullTrace.length)
+            time = programTrace.fullTrace.length - 1;
+
+        stateView.state = programTrace.fullTrace[time];
+    }
+
+    private function program_changed_eventHandler(event:Event):void {
+        trace('asf');
+        programTrace = new ProgramTrace(program_view.program, initial_state);
+        programTrace.run();
+        timeSlider.reInit(0, programTrace.fullTrace.length - 1, 0);
+    }
 }
 }

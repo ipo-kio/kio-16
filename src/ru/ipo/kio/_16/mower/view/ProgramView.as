@@ -1,5 +1,7 @@
 package ru.ipo.kio._16.mower.view {
 import flash.display.Sprite;
+import flash.events.Event;
+import flash.events.EventDispatcher;
 import flash.events.MouseEvent;
 
 import ru.ipo.kio._16.mower.model.Field;
@@ -8,10 +10,11 @@ import ru.ipo.kio._16.mower.model.Position;
 
 import ru.ipo.kio._16.mower.model.Program;
 
-public class ProgramView {
+public class ProgramView extends EventDispatcher {
 
     private var _view:FieldView;
     private var _program:Program;
+    public static const PROGRAM_CHANGED:String = 'program changed';
 
     public function ProgramView(program:Program) {
         _program = program;
@@ -85,6 +88,8 @@ public class ProgramView {
             }
             _program.commands.setAt(position.i, position.j, new_action);
             _view.redrawView();
+
+            dispatchEvent(new Event(PROGRAM_CHANGED));
         }
     }
 
@@ -94,6 +99,10 @@ public class ProgramView {
 
     private function view_rollOutHandler(event:MouseEvent):void {
         _view.removeHighlight();
+    }
+
+    public function get program():Program {
+        return _program;
     }
 }
 }

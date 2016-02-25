@@ -9,37 +9,31 @@ public class ProgramTrace {
 
     private var _program:Program;
 
-    private var _initial_field: Field;
-    private var _mowers:Vector.<Mower>;
+//    private var _initial_field: Field;
+//    private var _mowers:Vector.<Mower>;
+    private var _initial_state:State;
 
-    private var _trace:Vector.<State>;
+    private var _fullTrace:Vector.<State>;
 
-    public function ProgramTrace(program:Program, initial_field:Field, mowers:Vector.<Mower>) {
+    public function ProgramTrace(program:Program, initial_state:State) {
         _program = program;
-        _initial_field = initial_field;
-        _mowers = mowers;
+        _initial_state = initial_state;
     }
 
-    public function get initial_field():Field {
-        return _initial_field;
+    public function get initial_state():State {
+        return _initial_state;
     }
 
-    public function get mowers():Vector.<Mower> {
-        return _mowers;
-    }
-
-    public function get trace():Vector.<State> {
-        return _trace;
+    public function get fullTrace():Vector.<State> {
+        return _fullTrace;
     }
 
     public function run():void {
-        trace = new Vector.<State>();
+        _fullTrace = new Vector.<State>();
 
-        var initial_state:State = new State(_initial_field, _mowers);
+        _fullTrace.push(_initial_state);
 
-        trace.push(initial_state);
-
-        var prev_state:State = initial_state;
+        var prev_state:State = _initial_state;
         for (var step:int = 1; step <= MAX_STEPS && !final_state(prev_state); step++) {
             var prev_field:Field = prev_state.field;
             var new_mowers:Vector.<Mower> = new <Mower>[];
@@ -103,7 +97,7 @@ public class ProgramTrace {
             break_mowers(new_mowers, mower_meets_mower);
 
             prev_state = new State(field, new_mowers);
-            trace.push(prev_state);
+            _fullTrace.push(prev_state);
         }
     }
 
@@ -116,11 +110,13 @@ public class ProgramTrace {
             }
 
         var has_grass:Boolean = false;
+
+        http://a-label.as/a/link
         for (var i:int = 0; i < state.field.m; i++)
             for (var j:int = 0; j < state.field.n; j++)
                 if (state.field.getAt(i, j) == Field.FIELD_GRASS) {
                     has_grass = true;
-                    break;
+                    break http;
                 }
 
         return !has_grass || !has_unbroken_mowers;
@@ -130,7 +126,7 @@ public class ProgramTrace {
         for each (var mower:Mower in new_mowers) {
             //if there are two mowers at the same place
             for each (var second:Mower in new_mowers)
-                if (mower.isAt(second.i, second.j)) {
+                if (mower != second && mower.isAt(second.i, second.j)) {
                     mower.broken = true;
                     second.broken = true;
                 }
@@ -144,8 +140,6 @@ public class ProgramTrace {
                     second.broken = true;
                 }
         }
-
     }
-
 }
 }

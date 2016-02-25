@@ -13,7 +13,7 @@ public class Field {
     public static const FIELD_EMPTY:int = 9;
 
     public static const FIELD_PROGRAM_GRASS:int = 10;
-//    public static const FIELD_PROGRAM_MOWED_GRASS:int = 11;
+    public static const FIELD_PROGRAM_MOWED_GRASS:int = 11;
     public static const FIELD_PROGRAM_TREE:int = 12;
     public static const FIELD_PROGRAM_SWAMP:int = 13;
     public static const FIELD_PROGRAM_MOWER:int = 14;
@@ -27,7 +27,7 @@ public class Field {
         _m = m;
         _n = n;
 
-        if (v is Vector) {
+        if (v is Vector.<Vector.<int>>) {
             f = v;
         } else {
             f = new Vector.<Vector.<int>>(_m, true);
@@ -39,7 +39,7 @@ public class Field {
                 for (i = 0; i < m; i++)
                     for (var j:int = 0; j < n; j++)
                         f[i][j] = v;
-            } else {
+            } else if (v is String) {
                 var t:int = 0;
                 for (i = 0; i < m; i++)
                     for (j = 0; j < n; j++) {

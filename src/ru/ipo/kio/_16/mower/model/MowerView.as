@@ -39,6 +39,8 @@ public class MowerView extends Sprite {
         var len:Number = CellsDrawer.size2length(CellsDrawer.SIZE_SMALL);
         var p:Point = CellsDrawer.position2point(_mower.i, _mower.j);
 
+        graphics.clear();
+
         graphics.lineStyle(1, 0x000000);
         graphics.drawCircle(p.x + len / 2, p.y + len / 2, 3);
         graphics.drawCircle(p.x + len / 2, p.y + len / 2, 5);
@@ -57,7 +59,6 @@ public class MowerView extends Sprite {
     }
 
     public function animationPlus():void {
-        trace('animation');
         if (_animation_step == ANIMATION_STEPS) {
             animation = ANIMATE_NO;
             return;

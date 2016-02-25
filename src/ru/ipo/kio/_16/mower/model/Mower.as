@@ -39,11 +39,11 @@ public class Mower {
     //up -1, 0
     //left 0, -1
 
-    public function left_di():int {
+    public function get left_di():int {
         return -_dj;
     }
 
-    public function left_dj():int {
+    public function get left_dj():int {
         return _di;
     }
 
@@ -64,11 +64,11 @@ public class Mower {
     }
 
     public function turnLeft():Mower {
-        return new Mower(_i, _j, left_di(), left_dj(), false);
+        return new Mower(_i, _j, left_di, left_dj, false);
     }
 
     public function turnRight():Mower {
-        return new Mower(_i, _j, -left_di(), -left_dj(), false);
+        return new Mower(_i, _j, -left_di, -left_dj, false);
     }
 
     public function copy():Mower {

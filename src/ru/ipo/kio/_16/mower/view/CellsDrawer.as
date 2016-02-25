@@ -3,15 +3,13 @@ import flash.display.Graphics;
 import flash.geom.Point;
 
 import ru.ipo.kio._16.mower.model.Field;
-import ru.ipo.kio._16.mower.model.Mower;
-import ru.ipo.kio._16.mower.model.Position;
 
 public class CellsDrawer {
 
     public static const SIZE_BIG:int = 0;
     public static const SIZE_SMALL:int = 1;
     
-    public static const BIG_LENGTH:Number = 30;
+    public static const BIG_LENGTH:Number = 50;
     public static const SMALL_LENGTH:Number = 20;
 
     public static function size2length(size:int):Number {
@@ -39,12 +37,13 @@ public class CellsDrawer {
                 g.endFill();
                 break;
             case Field.FIELD_GRASS_MOWED:
+            case Field.FIELD_PROGRAM_MOWED_GRASS:
                 g.lineStyle(1, 0x000000);
                 g.beginFill(0x00AA00);
                 g.drawRect(x0, y0, length, length);
                 g.endFill();
 
-                g.drawCircle(x0 + length / 2, y0 + length / 2, length / 2 - 3);
+//                g.drawCircle(x0 + length / 2, y0 + length / 2, length / 2 - 3);
                 break;
             case Field.FIELD_TREE:
             case Field.FIELD_PROGRAM_TREE:

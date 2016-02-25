@@ -2,7 +2,6 @@ package ru.ipo.kio._16.mower.view {
 
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.utils.escapeMultiByte;
 
 import ru.ipo.kio._16.mower.model.Field;
 
@@ -61,9 +60,6 @@ public class StateView extends Sprite {
                     view.animation = MowerView.ANIMATE_NO;
                     break;
             }
-
-            //...........
-            view.animation = MowerView.ANIMATE_FORWARD;
         }
     }
 
