@@ -52,6 +52,7 @@ public class ProgramTrace {
                 if (m.broken)
                     continue;
 
+                //warning code duplication (1)
                 var forward_i:int = m.i + m.di;
                 var forward_j:int = m.j + m.dj;
                 var left_i:int = m.i + m.left_di;

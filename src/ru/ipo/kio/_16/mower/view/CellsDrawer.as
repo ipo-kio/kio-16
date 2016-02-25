@@ -1,8 +1,10 @@
 package ru.ipo.kio._16.mower.view {
 import flash.display.Graphics;
+import flash.geom.Point;
 
 import ru.ipo.kio._16.mower.model.Field;
 import ru.ipo.kio._16.mower.model.Mower;
+import ru.ipo.kio._16.mower.model.Position;
 
 public class CellsDrawer {
 
@@ -88,7 +90,16 @@ public class CellsDrawer {
         }
     }
 
-    public static function drawMower(g:Graphics, mower:Mower, size:int):void {
+    public static function position2point(i:Number, j:Number, size:int = SIZE_SMALL):Point {
+        var length:Number = size2length(size);
+
+        var x0:Number = j * length;
+        var y0:Number = i * length;
+
+        return new Point(x0, y0);
+    }
+
+    /*public static function drawMower(g:Graphics, mower:Mower, size:int):void {
         var length:Number = size2length(size);
 
         var x0:Number = mower.j * length;
@@ -107,6 +118,6 @@ public class CellsDrawer {
             g.lineTo(x0 + 2, y0 + length / 2);
         else //if (mower.dj == -1) // right
             g.lineTo(x0 + length - 2, y0 + length / 2);
-    }
+    }*/
 }
 }
