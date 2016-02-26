@@ -3,10 +3,11 @@ package ru.ipo.kio._16.mower.model {
 public class Program {
 
     private var _commands: Field;
+    private var _size:int;
 
     public function Program(canSeeMower:Boolean = true) {
-        var size:int = canSeeMower ? 6 : 5;
-        _commands = new Field(size, size, Field.FIELD_NOP);
+        _size = canSeeMower ? 6 : 5;
+        _commands = new Field(_size, _size, Field.FIELD_NOP);
 
         _commands.setAt(0, 0, Field.FIELD_EMPTY);
 
@@ -47,6 +48,30 @@ public class Program {
 
     public function getCommandAt(left_see:int, program_see:int):int {
         return _commands.getAt(see2prg(left_see), see2prg(program_see));
+    }
+
+    public function get as_object():Object {
+        var a:Array = [];
+        for (var i:int = 1; i < _size; i++) {
+            var line:Array = [];
+            a.push(line);
+            for (var j:int = 1; j < _size; j++)
+                line.push(_commands.getAt(i, j));
+        }
+
+        return {a: a};
+    }
+
+    public function set as_object(o:Object):void {
+        if (!o)
+            return;
+        var a:Array = o.a;
+        if (!a)
+            return;
+
+        for (var i:int = 1; i < _size; i++)
+            for (var j:int = 1; j < _size; j++)
+                _commands.setAt(i, j, a[i - 1][j - 1]);
     }
 }
 }

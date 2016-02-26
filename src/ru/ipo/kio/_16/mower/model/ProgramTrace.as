@@ -28,6 +28,16 @@ public class ProgramTrace {
         return _fullTrace;
     }
 
+    public function get statesCount():int {
+        return _fullTrace.length;
+    }
+
+    public function get lastState():State {
+        if (statesCount == 0)
+            return null;
+        return _fullTrace[fullTrace.length - 1];
+    }
+
     public function run():void {
         _fullTrace = new Vector.<State>();
 

@@ -44,17 +44,29 @@ public class MowerProblem implements KioProblem {
     }
 
     public function get solution():Object {
-        return {};
+        return workspace.solution;
     }
 
     public function loadSolution(solution:Object):Boolean {
         if (solution == null)
             clear();
+        workspace.solution = solution;
         return true;
     }
 
     public function compare(r1:Object, r2:Object):int {
-        return 0;
+        if (r1 == null && r2 == null)
+            return 0;
+        if (r1 == null)
+            return 1;
+        if (r2 == null)
+            return -1;
+
+        var d:int = r1.m - r2.m;
+        if (d != 0)
+            return d;
+        d = r2.s - r1.s;
+        return d;
     }
 
     public function get icon():Class {

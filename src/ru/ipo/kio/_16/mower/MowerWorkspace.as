@@ -6,29 +6,19 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 
-import ru.ipo.kio._16.mars.model.Consts;
-
-import ru.ipo.kio._16.mars.model.ShipHistory;
-import ru.ipo.kio._16.mars.model.ShipAction;
-import ru.ipo.kio._16.mars.model.Vector2D;
-
-import ru.ipo.kio._16.mars.view.SolarSystem;
-import ru.ipo.kio._16.mars.view.VectorView;
 import ru.ipo.kio._16.mower.model.Field;
 import ru.ipo.kio._16.mower.model.Mower;
 import ru.ipo.kio._16.mower.model.Program;
 import ru.ipo.kio._16.mower.model.ProgramTrace;
 import ru.ipo.kio._16.mower.model.State;
-import ru.ipo.kio._16.mower.view.CellsDrawer;
-import ru.ipo.kio._16.mower.view.FieldView;
 import ru.ipo.kio._16.mower.view.ProgramView;
 import ru.ipo.kio._16.mower.view.StateView;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.controls.GraphicsButton;
+import ru.ipo.kio.api.controls.InfoPanel;
 
 public class MowerWorkspace extends Sprite {
-    private var background:Sprite = new Sprite();
 
     private var _problem:KioProblem;
     private var _api:KioApi;
@@ -43,6 +33,9 @@ public class MowerWorkspace extends Sprite {
 
     private var animate:GraphicsButton;
     private var pauseAnimation:GraphicsButton;
+
+    private var _info:InfoPanel;
+    private var _record:InfoPanel;
 
     public function MowerWorkspace(problem:KioProblem) {
         _problem = problem;
@@ -113,6 +106,37 @@ public class MowerWorkspace extends Sprite {
         stateView.addEventListener(StateView.ANIMATION_FINISHED, stateView_animation_finishedHandler);
 
         initButtons();
+
+        initInfo();
+    }
+
+    private function initInfo():void {
+        var titles:Array = ["Скошено", "Шагов"];
+        _info = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0xAAAA00, 1.2, 'Результат', titles, 160);
+        _record = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0xAAAA00, 1.2, 'Рекорд', titles, 160);
+        addChild(_info);
+        addChild(_record);
+        _info.x = 520;
+        _info.y = 320;
+        _record.x = 520;
+        _record.y = _info.y + _info.height + 20;
+
+        setInfo(_info, null);
+        setInfo(_record, null);
+
+        _api.addEventListener(KioApi.RECORD_EVENT, function (e:Event):void {
+            setInfo(_record, result);
+        });
+    }
+
+    private static function setInfo(info:InfoPanel, result:Object):void {
+        if (result == null) {
+            info.setValue(0, '-');
+            info.setValue(1, '-');
+        } else {
+            info.setValue(0, result.m);
+            info.setValue(1, result.s);
+        }
     }
 
     private function initButtons():void {
@@ -130,8 +154,8 @@ public class MowerWorkspace extends Sprite {
         addChild(animate);
         addChild(pauseAnimation);
 
-        var buttonsY:int = 400;
-        var buttonsX:int = 500;
+        var buttonsY:int = 260;
+        var buttonsX:int = 560;
         toStart.x = buttonsX;
         toStart.y = buttonsY;
         stepBack.x = buttonsX + toStart.width + 2;
@@ -219,6 +243,21 @@ public class MowerWorkspace extends Sprite {
         }
     }
 
+    public function get solution():Object {
+        return program_view.program.as_object;
+    }
+
+    public function set solution(value:Object):void {
+        program_view.program.as_object = value;
+    }
+
+    public function get result():Object {
+        var state:State = programTrace.lastState;
+        if (state == null)
+            return {m: 0, s: 0};
+        return {m: state.field.countCells(Field.FIELD_GRASS_MOWED), s: programTrace.statesCount - 1};
+    }
+
     //embed images
     [Embed(source="res/animate.png")]
     public static const BTN_ANIMATE:Class;
@@ -296,7 +335,5 @@ public class MowerWorkspace extends Sprite {
     [Embed(source="res/toStart_p.png")]
     public static const BTN_TO_START_P:Class;
     public static const BTN_TO_START_P_BMP:BitmapData = (new BTN_TO_START_P).bitmapData;
-    
-    
 }
 }

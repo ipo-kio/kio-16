@@ -99,5 +99,14 @@ public class Field {
 
         return new Field(_m, _n, newF);
     }
+
+    public function countCells(v:int):int {
+        var cnt:int = 0;
+        for (var i:int = 0; i < _m; i++)
+            for (var j:int = 0; j < _n; j++)
+                if (f[i][j] == v)
+                    cnt++;
+        return cnt;
+    }
 }
 }
