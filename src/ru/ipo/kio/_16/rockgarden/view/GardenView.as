@@ -189,9 +189,9 @@ public class GardenView extends Sprite {
 //            var c:uint = HSBColor.convertHSBtoRGB(360 * i / segmentsNum, 1, 0.8);
             var c:uint = _segments_color_palette[j];
 
-            if (j <= 4)
+            if (j <= 3 || j == 7)
                 var base_width:Number = 2;
-            else if (j == 6)
+            else if (j == 5)
                 base_width = 6;
             else
                 base_width = 4;

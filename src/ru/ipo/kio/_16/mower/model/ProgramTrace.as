@@ -5,7 +5,7 @@ public class ProgramTrace {
     public static const STATUS_OK:int = 0;
     public static const STATUS_TIME_OUT:int = 1;
 
-    public static const MAX_STEPS:int = 1000;
+    public static const MAX_STEPS:int = 5000;
 
     private var _program:Program;
 
@@ -44,8 +44,8 @@ public class ProgramTrace {
         _fullTrace.push(_initial_state);
 
         var prev_state:State = _initial_state;
-        var all_was_nops:Boolean = false;
-        for (var step:int = 1; step <= MAX_STEPS && !final_state(prev_state) && !all_was_nops; step++) {
+        for (var step:int = 1; step <= MAX_STEPS && !final_state(prev_state); step++) {
+
             var prev_field:Field = prev_state.field;
             var new_mowers:Vector.<Mower> = new <Mower>[];
 
@@ -110,8 +110,10 @@ public class ProgramTrace {
                 new_mowers.push(new_mower);
                 mower_to_old_mower[new_mower] = m;
                 mower_to_new_mower[m] = new_mower;
-                all_was_nops = nops_count == new_mowers.length;
             }
+
+            if (nops_count == new_mowers.length) // if all commands were nops
+                break;
 
             var field:Field = prev_field.deriveGrass(new_mowed_grass);
 

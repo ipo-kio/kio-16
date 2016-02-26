@@ -69,9 +69,9 @@ public class MowerWorkspace extends Sprite {
         var initial_field:Field = new Field(20, 20, cells);
 
         var initial_mowers:Vector.<Mower> = new <Mower>[
-            new Mower(3, 4, -1, 0, false),
-            new Mower(6, 8, 0, 1, false),
-            new Mower(6, 11, 0, -1, false)
+            new Mower(1, 1, 0, 1, false),
+            new Mower(18, 18, 0, -1, false)
+//            new Mower(6, 11, 0, -1, false)
         ];
 
         for each (var mower:Mower in initial_mowers)
@@ -230,6 +230,11 @@ public class MowerWorkspace extends Sprite {
         programTrace = new ProgramTrace(program_view.program, initial_state);
         programTrace.run();
         timeSlider.reInit(0, programTrace.fullTrace.length - 1, 0);
+
+        var res:Object = result;
+        setInfo(_info, res);
+        _api.autoSaveSolution();
+        _api.submitResult(res);
     }
 
     private function stateView_animation_finishedHandler(event:Event):void {
@@ -249,6 +254,8 @@ public class MowerWorkspace extends Sprite {
 
     public function set solution(value:Object):void {
         program_view.program.as_object = value;
+        program_view.view.redrawView();
+        program_changed_eventHandler(null);
     }
 
     public function get result():Object {

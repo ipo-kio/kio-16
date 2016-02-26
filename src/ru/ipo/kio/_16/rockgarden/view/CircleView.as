@@ -3,6 +3,7 @@ import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
+import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
@@ -12,6 +13,10 @@ import ru.ipo.kio._16.rockgarden.model.Circle;
 import ru.ipo.kio._16.rockgarden.model.RockPalette;
 
 public class CircleView extends Sprite {
+
+    [Embed(source="../res/teni-1.png")]
+    public static const SHADOW_CLASS:Class;
+    public static const SHADOW_BMP:BitmapData = (new SHADOW_CLASS).bitmapData;
 
     public static const PERIMETER_WIDTH:int = 2;
 
@@ -59,9 +64,9 @@ public class CircleView extends Sprite {
     }
 
     private function initText():void {
-        const fontSize:int = 14;
+        const fontSize:int = 16;
         addChild(_tix);
-        _tix.defaultTextFormat = new TextFormat('KioArial', fontSize, RockPalette.textColor(_c.index), true);
+        _tix.defaultTextFormat = new TextFormat('KioTahoma', fontSize, RockPalette.textColor(_c.index), true);
         _tix.autoSize = TextFieldAutoSize.CENTER;
         _tix.text = "" + _c.index;
         _tix.x = _p.x - _tix.width / 2;
@@ -82,12 +87,22 @@ public class CircleView extends Sprite {
 //        var innerAlpha:Number = _c.enabled ? (over_circle || moving_xy ? 0.8 : 0.6) : (over_circle || moving_xy ? 0.4 : 0.2);
 //        circle_layer.graphics.beginFill(innerColor, innerAlpha);
         RockPalette.beginFill(circle_layer.graphics, _c.index);
-        circle_layer.graphics.drawCircle(_p.x, _p.y, c.r * _g.mul - PERIMETER_WIDTH / 2);
+        var rock_radius:Number = c.r * _g.mul - PERIMETER_WIDTH / 2;
+        circle_layer.graphics.drawCircle(_p.x, _p.y, rock_radius);
+        circle_layer.graphics.endFill();
+
+        //now draw shadow
+        var m:Matrix = new Matrix();
+        m.scale(2 * rock_radius / SHADOW_BMP.width, 2 * rock_radius / SHADOW_BMP.height);
+        m.translate(_p.x - rock_radius, _p.y - rock_radius);
+        circle_layer.graphics.beginBitmapFill(SHADOW_BMP, m, false);
+        circle_layer.graphics.drawCircle(_p.x, _p.y, rock_radius);
+//        circle_layer.graphics.drawRect(_p.x - rock_radius, _p.y - rock_radius, 2 * rock_radius, 2 * rock_radius);
         circle_layer.graphics.endFill();
 
         if (!_c.enabled) {
             circle_layer.graphics.beginFill(0xFF0000, 0.5);
-            circle_layer.graphics.drawCircle(_p.x, _p.y, c.r * _g.mul - PERIMETER_WIDTH / 2);
+            circle_layer.graphics.drawCircle(_p.x, _p.y, rock_radius);
             circle_layer.graphics.endFill();
         }
 

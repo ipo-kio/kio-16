@@ -6,19 +6,19 @@ import mx.core.BitmapAsset;
 
 public class RockPalette {
 
-    [Embed(source="../res/rock_blue_sand_stone.jpg")]
+    [Embed(source="../res/rocks/kamen-1.png")]
     public static const R_1:Class;
-    [Embed(source="../res/rock_purple_granite.jpg")]
+    [Embed(source="../res/rocks/kamen-2.png")]
     public static const R_2:Class;
-    [Embed(source="../res/rock_forest_green_abstract_stone_pattern_tileable.jpg")]
+    [Embed(source="../res/rocks/kamen-4.png")]
     public static const R_3:Class;
-    [Embed(source="../res/rock_green_granite.jpg")]
+    [Embed(source="../res/rocks/kamen-6.png")]
     public static const R_4:Class;
-    [Embed(source="../res/rock_pink_marble_background_seamless.jpg")]
+    [Embed(source="../res/rocks/kamen-7.png")]
     public static const R_5:Class;
-    [Embed(source="../res/rock_sand_stone.jpg")]
+    [Embed(source="../res/rocks/kamen-9.png")]
     public static const R_6:Class;
-    [Embed(source="../res/rock_yellow_textured_rock_seamless_pattern.jpg")]
+    [Embed(source="../res/rocks/kamen-11.png")]
     public static const R_7:Class;
 
     public static const R_IMG:Vector.<BitmapData> = new <BitmapData>[
@@ -56,8 +56,8 @@ public class RockPalette {
     }
 
     public static function textColor(ind:int):uint {
-        if (ind == 2 || ind == 3 || ind == 4)
-            return 0xFFFFFF;
+        if (ind == 4 /*|| ind == 5 || ind == 7*/)
+            return 0xffffff;
         else
             return 0x000000;
     }

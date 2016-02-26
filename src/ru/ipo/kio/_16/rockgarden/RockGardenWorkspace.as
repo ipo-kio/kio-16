@@ -1,4 +1,5 @@
 package ru.ipo.kio._16.rockgarden {
+import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
 
@@ -13,6 +14,9 @@ import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.controls.InfoPanel;
 
 public class RockGardenWorkspace extends Sprite {
+
+    [Embed(source="res/imgs/fon.png")]
+    public static const FON_CLASS:Class;
 
     public static var TOTAL_CIRCLES:int = 7;
 
@@ -33,7 +37,7 @@ public class RockGardenWorkspace extends Sprite {
 
         TOTAL_CIRCLES = 5 + problem.level; //5, 6, 7 circles
 
-        background.graphics.beginFill(0xFFFFFF);
+        background.graphics.beginBitmapFill((new FON_CLASS).bitmapData);
         background.graphics.drawRect(0, 0, 780, 600);
         background.graphics.endFill();
 
@@ -113,7 +117,7 @@ public class RockGardenWorkspace extends Sprite {
 
         gardenView = new GardenView(g, 35, 1 / 8, sideView, _api.problem.level, problem, this, areas);
         gardenView.x = 40;
-        gardenView.y = 50;
+        gardenView.y = 36;
         addChild(gardenView);
 
         sideView.x = gardenView.x;
