@@ -77,7 +77,8 @@ public class MowerWorkspace extends Sprite {
 
         var initial_mowers:Vector.<Mower> = new <Mower>[
             new Mower(3, 4, -1, 0, false),
-            new Mower(6, 8, 0, 1, false)
+            new Mower(6, 8, 0, 1, false),
+            new Mower(6, 11, 0, -1, false)
         ];
 
         for each (var mower:Mower in initial_mowers)
@@ -92,10 +93,10 @@ public class MowerWorkspace extends Sprite {
         stateView.x = 10;
         stateView.y = 10;
 
-        var program:Program = new Program(true);
+        var program:Program = new Program(initial_mowers.length >= 2);
         program_view = new ProgramView(program);
         addChild(program_view.view);
-        program_view.view.x = 420;
+        program_view.view.x = 520;
         program_view.view.y = 10;
         program_view.addEventListener(ProgramView.PROGRAM_CHANGED, program_changed_eventHandler);
 

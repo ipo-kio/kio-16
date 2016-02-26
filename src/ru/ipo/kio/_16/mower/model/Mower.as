@@ -72,7 +72,7 @@ public class Mower {
     }
 
     public function copy():Mower {
-        return new Mower(_i, _j, _di, _dj, false);
+        return new Mower(_i, _j, _di, _dj, _broken);
     }
 }
 }

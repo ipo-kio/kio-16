@@ -42,6 +42,9 @@ public class Slider extends Sprite {
     private var _to_tf:TextField = new TextField();
     private var _value_tf:TextField = new TextField();
 
+    private var _value_that_was_set_by_programmer:Number = 0;
+    private var _value_was_set_by_programmer:Boolean = false;
+
     private var _precision:int = 0;
 
     private var _value_text_color:uint;
@@ -195,8 +198,10 @@ public class Slider extends Sprite {
     }
 
     private function buttonMouseMove(event:MouseEvent):void {
-        if (dragMouseDown)
+        if (dragMouseDown) {
+            _value_was_set_by_programmer = false;
             dispatchEvent(new Event(VALUE_CHANGED));
+        }
     }
 
     private function buttonMouseUp(event:MouseEvent):void {
@@ -224,7 +229,7 @@ public class Slider extends Sprite {
     }
 
     public function get value():Number {
-        return pos2value(button.x);
+        return _value_was_set_by_programmer ? _value_that_was_set_by_programmer : pos2value(button.x);
     }
 
     public function get valueRounded():Number {
@@ -237,6 +242,9 @@ public class Slider extends Sprite {
         if (value > _to)
             value = _to;
 
+        _value_that_was_set_by_programmer = value;
+        _value_was_set_by_programmer = true;
+
         button.x = value2pos(value);
         dispatchEvent(new Event(VALUE_CHANGED));
     }
@@ -247,6 +255,8 @@ public class Slider extends Sprite {
 
     public function set value_no_fire(value:Number):void {
         button.x = value2pos(value);
+        _value_was_set_by_programmer = true;
+        _value_that_was_set_by_programmer = value;
         relocateValueText();
     }
 

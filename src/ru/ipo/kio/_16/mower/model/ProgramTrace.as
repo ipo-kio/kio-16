@@ -34,14 +34,18 @@ public class ProgramTrace {
         _fullTrace.push(_initial_state);
 
         var prev_state:State = _initial_state;
-        for (var step:int = 1; step <= MAX_STEPS && !final_state(prev_state); step++) {
+        var all_was_nops:Boolean = false;
+        for (var step:int = 1; step <= MAX_STEPS && !final_state(prev_state) && !all_was_nops; step++) {
             var prev_field:Field = prev_state.field;
             var new_mowers:Vector.<Mower> = new <Mower>[];
 
             var new_mowed_grass:Vector.<Position> = new <Position>[];
 
             var mower_meets_mower:Dictionary = new Dictionary();
+            var mower_to_old_mower:Dictionary = new Dictionary();
+            var mower_to_new_mower:Dictionary = new Dictionary();
 
+            var nops_count:int = 0;
             for each (var m:Mower in prev_state.mowers) {
                 if (m.broken) {
                     new_mowers.push(m.copy());
@@ -75,6 +79,7 @@ public class ProgramTrace {
                         if (target_cell == Field.FIELD_SWAMP || target_cell == Field.FIELD_TREE) {
                             new_mower = m.move(forward_i, forward_j);
                             new_mower.broken = true;
+                            trace("broke it here");
                         } else if (target_cell == Field.FIELD_GRASS || target_cell == Field.FIELD_GRASS_MOWED) {
                             new_mower = m.move(forward_i, forward_j);
                             if (target_cell == Field.FIELD_GRASS)
@@ -89,14 +94,18 @@ public class ProgramTrace {
                         break;
                     case Field.FIELD_NOP:
                         new_mower = m.copy();
+                        nops_count++;
                 }
 
                 new_mowers.push(new_mower);
+                mower_to_old_mower[new_mower] = m;
+                mower_to_new_mower[m] = new_mower;
+                all_was_nops = nops_count == new_mowers.length;
             }
 
             var field:Field = prev_field.deriveGrass(new_mowed_grass);
 
-            break_mowers(new_mowers, mower_meets_mower);
+            break_mowers(new_mowers, mower_meets_mower, mower_to_old_mower, mower_to_new_mower);
 
             prev_state = new State(field, new_mowers);
             _fullTrace.push(prev_state);
@@ -124,7 +133,7 @@ public class ProgramTrace {
         return !has_grass || !has_unbroken_mowers;
     }
 
-    private static function break_mowers(new_mowers:Vector.<Mower>, mower_meets_mower:Dictionary):void {
+    private static function break_mowers(new_mowers:Vector.<Mower>, mower_meets_mower:Dictionary, mower_to_old_mower:Dictionary, mower_to_new_mower:Dictionary):void {
         for each (var mower:Mower in new_mowers) {
             //if there are two mowers at the same place
             for each (var second:Mower in new_mowers)
@@ -135,12 +144,16 @@ public class ProgramTrace {
 
             //if mowers go through each other
 
-            if (mower in mower_meets_mower)
-                second = mower_meets_mower[mower];
-                if (mower_meets_mower[second] == mower) {
+            var old_mower:Mower = mower_to_old_mower[mower];
+            if (old_mower in mower_meets_mower) {
+                var old_second:Mower = mower_meets_mower[old_mower];
+                second = mower_to_new_mower[old_second];
+
+                if (mower_meets_mower[old_second] == old_mower) {
                     mower.broken = true;
                     second.broken = true;
                 }
+            }
         }
     }
 }

@@ -9,8 +9,8 @@ public class CellsDrawer {
     public static const SIZE_BIG:int = 0;
     public static const SIZE_SMALL:int = 1;
     
-    public static const BIG_LENGTH:Number = 50;
-    public static const SMALL_LENGTH:Number = 20;
+    public static const BIG_LENGTH:Number = 40;
+    public static const SMALL_LENGTH:Number = 25;
 
     public static function size2length(size:int):Number {
         return size == SIZE_BIG ? BIG_LENGTH : SMALL_LENGTH;

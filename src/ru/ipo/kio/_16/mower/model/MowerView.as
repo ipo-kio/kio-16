@@ -41,7 +41,7 @@ public class MowerView extends Sprite {
 
         graphics.clear();
 
-        graphics.lineStyle(1, 0x000000);
+        graphics.lineStyle(1, mower.broken ? 0xFF0000 : 0x000000);
         graphics.drawCircle(p.x + len / 2, p.y + len / 2, 3);
         graphics.drawCircle(p.x + len / 2, p.y + len / 2, 5);
         graphics.moveTo(p.x + len / 2, p.y + len / 2);
