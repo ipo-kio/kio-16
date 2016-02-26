@@ -1,5 +1,7 @@
 package ru.ipo.kio._16.rockgarden.view {
+import flash.display.BitmapData;
 import flash.display.Sprite;
+import flash.geom.Matrix;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
@@ -9,6 +11,14 @@ import ru.ipo.kio._16.rockgarden.model.*;
 import flash.geom.Point;
 
 public class RocksSideView extends Sprite {
+
+    [Embed(source="../res/teni-pramougoln-gorizontal-1.png")]
+    public static const HOR_SHADOWS:Class;
+    public static var HOR_SHADOWS_IMG:BitmapData = (new HOR_SHADOWS).bitmapData;
+
+    [Embed(source="../res/teni-pramougoln-vertikal-1.png")]
+    public static const VERT_SHADOWS:Class;
+    public static var VERT_SHADOWS_IMG:BitmapData = (new VERT_SHADOWS).bitmapData;
 
     private var _location:Point = null;
     private var _g:Garden;
@@ -96,8 +106,22 @@ public class RocksSideView extends Sprite {
     }
 
     private function draw_rect(value:int, start:Number, end:Number, height:Number):void {
-        graphics.lineStyle(1, 0xFF0000);
+//        graphics.lineStyle(1, 0xFF0000);
         RockPalette.beginFill(graphics, value);
+        graphics.drawRect(start, _height - height, end - start, height);
+        graphics.endFill();
+
+        var m:Matrix = new Matrix();
+        m.scale((end - start) / HOR_SHADOWS_IMG.width, height / HOR_SHADOWS_IMG.height);
+        m.translate(start, _height);
+        graphics.beginBitmapFill(HOR_SHADOWS_IMG, m);
+        graphics.drawRect(start, _height - height, end - start, height);
+        graphics.endFill();
+
+        m = new Matrix();
+        m.scale((end - start) / VERT_SHADOWS_IMG.width, height / VERT_SHADOWS_IMG.height);
+        m.translate(start, _height);
+        graphics.beginBitmapFill(VERT_SHADOWS_IMG, m);
         graphics.drawRect(start, _height - height, end - start, height);
         graphics.endFill();
     }

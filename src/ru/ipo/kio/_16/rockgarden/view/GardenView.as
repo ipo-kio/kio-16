@@ -65,12 +65,6 @@ public class GardenView extends Sprite {
 
         draw_grid();
 
-        for each (var circle:Circle in g.circles) {
-            var cv:CircleView = new CircleView(this, circle);
-            _circles.push(cv);
-            addChild(cv);
-        }
-
         if (showsAreas())
             for each (var area:ViewArea in _areas) {
                 relocateArea(area);
@@ -81,6 +75,12 @@ public class GardenView extends Sprite {
         else
             redrawSegments();
 
+        for each (var circle:Circle in g.circles) {
+            var cv:CircleView = new CircleView(this, circle);
+            _circles.push(cv);
+            addChild(cv);
+        }
+
         graphics.lineStyle(1, 0);
         graphics.drawRect(0, 0, _g.W * mul, _g.H * mul);
 
@@ -90,6 +90,12 @@ public class GardenView extends Sprite {
 
             _current_area.mouseEnabled = false;
             _mouse_over_area.mouseEnabled = false;
+
+            addChild(_current_area);
+            addChild(_mouse_over_area);
+
+            _current_area.visible = false;
+            _mouse_over_area.visible = false;
         }
 
         init_long_info();
@@ -271,7 +277,7 @@ public class GardenView extends Sprite {
             redrawSegments();
             redrawTangents();
 
-            if (_current_area.parent != null) {
+            if (_current_area.visible) {
                 _current_area.reeval();
                 updateSideView(_current_area);
             }
@@ -447,6 +453,7 @@ public class GardenView extends Sprite {
     }
 
     private function segments_layer_clickHandler(event:MouseEvent):void {
+        _current_area.visible = true;
         updateViewArea(event, _current_area, true);
     }
 
@@ -455,9 +462,6 @@ public class GardenView extends Sprite {
     }
 
     private function updateViewArea(event:MouseEvent, area:ViewArea, needUpdateSideView:Boolean):void {
-        if (area.parent == null)
-            addChild(area);
-
         var pos:Point = disp2natural(new Point(event.localX, event.localY));
         //distance to left, right, bottom, top
         var dl:Number = Math.abs(pos.x);
@@ -488,6 +492,14 @@ public class GardenView extends Sprite {
 
     private function segments_layer_rollOutHandler(event:MouseEvent):void {
         _mouse_over_area.visible = false;
+    }
+
+    public function get realWidth():Number {
+        return _mul * _g.W;
+    }
+
+    public function get realHeight():Number {
+        return _mul * _g.H;
     }
 }
 }

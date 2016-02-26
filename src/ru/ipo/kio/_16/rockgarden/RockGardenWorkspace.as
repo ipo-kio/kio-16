@@ -113,15 +113,15 @@ public class RockGardenWorkspace extends Sprite {
         else
             areas = null;
 
-        var sideView:RocksSideView = new RocksSideView(g, 700, 40);
+        var sideView:RocksSideView = new RocksSideView(g, 580, 40);
 
         gardenView = new GardenView(g, 35, 1 / 8, sideView, _api.problem.level, problem, this, areas);
         gardenView.x = 40;
         gardenView.y = 36;
         addChild(gardenView);
 
-        sideView.x = gardenView.x;
-        sideView.y = gardenView.y + gardenView.height + 20;
+        sideView.x = 190;
+        sideView.y = gardenView.y + gardenView.height + 26;
         addChild(sideView);
 
         initInfos();
@@ -150,15 +150,15 @@ public class RockGardenWorkspace extends Sprite {
                 "Равномерность"
             ];
 
-        _info = new InfoPanel('KioArial', true, 14, 0x000000, 0x000000, 0x884400, 1, "Результат", labels, 200);
-        _record = new InfoPanel('KioArial', true, 14, 0x000000, 0x000000, 0x884400, 1, "Рекорд", labels, 200);
+        _info = new InfoPanel('KioArial', true, 16, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 1.1, "Результат", labels, 240);
+        _record = new InfoPanel('KioArial', true, 16, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 1.1, "Рекорд", labels, 240);
 
         addChild(_info);
         addChild(_record);
-        _info.x = 40;
-        _info.y = 530;
-        _record.x = 400;
-        _record.y = 530;
+        _info.x = 230;
+        _info.y = 516;
+        _record.x = 516;
+        _record.y = 520;
     }
 
     private function setInfos(info:InfoPanel, c:Object):void {

@@ -1,5 +1,6 @@
 package ru.ipo.kio._16.rockgarden.view {
 import flash.display.BitmapData;
+import flash.display.Graphics;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 import flash.geom.Matrix;
@@ -14,19 +15,23 @@ import ru.ipo.kio._16.rockgarden.model.SegmentsList;
 public class ViewArea extends Sprite {
 
     public static const R:Number = 10;
-    private static const c:Number = 0.551915024494; //http://spencermortensen.com/articles/bezier-circle/
+//    private static const c:Number = 0.551915024494; //http://spencermortensen.com/articles/bezier-circle/
 
-    [Embed(source="../res/area.png")]
+    [Embed(source="../res/imgs/eye.png")]
     public static const AREA_CLASS:Class;
     public static var AREA_IMG:BitmapData = (new AREA_CLASS).bitmapData;
 
-    [Embed(source="../res/area_selected.png")]
+    [Embed(source="../res/imgs/eye-ball.png")]
     public static const AREA_S_CLASS:Class;
     public static var AREA_S_IMG:BitmapData = (new AREA_S_CLASS).bitmapData;
 
-    private static const FONT_SIZE:int = 14;
+    [Embed(source="../res/imgs/svitok.png")]
+    public static const SVITOK_CLASS:Class;
+    public static var SVITOK_IMG:BitmapData = (new SVITOK_CLASS).bitmapData;
+
+    private static const FONT_SIZE:int = 16;
     private static const SKIP:int = 16;
-    private static const tFormat:TextFormat = new TextFormat('KioArial', FONT_SIZE, 0x000000);
+    private static const tFormat:TextFormat = new TextFormat('KioArial', FONT_SIZE, 0x000000, true);
 
     private var _point:Point;
     private var _loc:Number;
@@ -41,7 +46,9 @@ public class ViewArea extends Sprite {
     private var _viewName:String;
     private var _text:TextField;
 
-    /**
+    private var _eye_layer:Sprite;
+
+    /**TextFor
      * @param point
      * @param g
      * @param viewName
@@ -54,6 +61,11 @@ public class ViewArea extends Sprite {
         _side = _g.location2side(_loc);
 
         _viewName = viewName;
+
+        mouseChildren = false;
+
+        _eye_layer = new Sprite();
+        addChild(_eye_layer);
 
         _text = new TextField();
         _text.text = "";
@@ -132,6 +144,19 @@ public class ViewArea extends Sprite {
     }
 
     public function redraw():void {
+        var g:Graphics = _eye_layer.graphics;
+
+        g.clear();
+
+        var m:Matrix = new Matrix();
+        m.translate(-AREA_IMG.width / 2, -AREA_IMG.height / 2);
+
+        g.beginBitmapFill(_selected || _over || _selectable == 2 ? AREA_S_IMG : AREA_IMG, m);
+        g.drawRect(-AREA_IMG.width / 2, -AREA_IMG.height / 2, AREA_IMG.width, AREA_IMG.height);
+        g.endFill();
+    }
+
+    public function redrawOld():void {
         graphics.clear();
 
         var m:Matrix = new Matrix();
@@ -185,7 +210,7 @@ public class ViewArea extends Sprite {
         placeText();
     }
 
-    private function placeText():void {
+    private function placeTextOld():void {
         var dx:Number = 0;
         var dy:Number = 0;
 
@@ -206,6 +231,89 @@ public class ViewArea extends Sprite {
 
         _text.x = dx - _text.width / 2;
         _text.y = dy - _text.height / 2;
+    }
+
+    private function placeText():void {
+        var gw:GardenView = parent as GardenView;
+        if (gw == null)
+            return;
+
+        graphics.clear();
+        var x0:Number;
+        var y0:Number;
+        var rot:Number;
+
+        var sw:Number = SVITOK_IMG.width;
+        var sh:Number = SVITOK_IMG.height;
+
+        var dd:Point = new Point(0, 8);
+
+        var pnt:Point = gw.natural2disp(_point);
+
+        switch (_side) {
+            case Garden.SIDE_BOTTOM:
+                x0 = 0;
+                y0 = 0;
+                rot = 0;
+
+                if (pnt.x + x0 + sw > gw.realWidth)
+                    x0 = -sw;
+
+                break;
+            case Garden.SIDE_RIGHT:
+                x0 = 0;
+                y0 = 0;
+                rot = -Math.PI / 2;
+
+                if (pnt.y + y0 + sw > gw.realHeight)
+                    y0 = -sw;
+
+                break;
+            case Garden.SIDE_TOP:
+                x0 = -sw;
+                y0 = -sh;
+                rot = Math.PI;
+
+                if (pnt.x + x0 < 0)
+                    x0 = 0;
+
+                break;
+            case Garden.SIDE_LEFT:
+                x0 = -sh;
+                y0 = 0;
+
+                rot = Math.PI / 2;
+
+                if (pnt.y + y0 + sw > gw.realHeight)
+                    y0 = -sw;
+
+                break;
+        }
+
+        //draw scroll
+        var cx:Number;
+        var cy:Number;
+
+        var m:Matrix = new Matrix();
+        m.translate(dd.x, dd.y);
+        m.rotate(rot);
+        graphics.beginBitmapFill(SVITOK_IMG, m);
+
+        var dd_transformed:Point = m.transformPoint(new Point(0, 0));
+
+        if (_side == Garden.SIDE_TOP || _side == Garden.SIDE_BOTTOM) {
+            graphics.drawRect(x0 + dd_transformed.x, y0 + dd_transformed.y, sw, sh);
+            cx = x0 + sw / 2;
+            cy = y0 + sh / 2;
+        } else {
+            graphics.drawRect(x0 + dd_transformed.x, y0 + dd_transformed.y, sh, sw);
+            cx = x0 + sh / 2;
+            cy = y0 + sw / 2;
+        }
+        graphics.endFill();
+
+        _text.x = cx + dd_transformed.x / 2 - _text.width / 2;
+        _text.y = cy + dd_transformed.y / 2 - _text.height / 2;
     }
 
     public function get selected():Boolean {
