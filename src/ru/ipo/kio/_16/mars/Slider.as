@@ -277,5 +277,14 @@ public class Slider extends Sprite {
     public function set precision(value:int):void {
         _precision = value;
     }
+
+
+    public function get from_():Number {
+        return _from;
+    }
+
+    public function get to_():Number {
+        return _to;
+    }
 }
 }

@@ -66,6 +66,7 @@ public class StateView extends Sprite {
     public function stopAnimation():void {
         _animating_step = 0;
         removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+        dispatchEvent(new Event(ANIMATION_FINISHED));
     }
 
     private function enterFrameHandler(event:Event):void {
