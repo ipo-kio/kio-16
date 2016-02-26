@@ -52,6 +52,7 @@ public class MowerView extends Sprite {
         if (value == _animation)
             return;
         _animation = value;
+        _animation_step = 0;
 //        if (value == ANIMATE_NO)
 //            removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 //        else
@@ -61,15 +62,16 @@ public class MowerView extends Sprite {
     public function animationPlus():void {
         if (_animation_step == ANIMATION_STEPS) {
             animation = ANIMATE_NO;
+            _animation_step = 0;
             return;
         }
 
         switch (_animation) {
             case ANIMATE_TURN_LEFT:
-                angle += /*_animation_step **/ Math.PI / 2 / ANIMATION_STEPS;
+                angle -= /*_animation_step **/ Math.PI / 2 / ANIMATION_STEPS;
                 break;
             case ANIMATE_TURN_RIGHT:
-                angle -= /*_animation_step **/ Math.PI / 2 / ANIMATION_STEPS;
+                angle += /*_animation_step **/ Math.PI / 2 / ANIMATION_STEPS;
                 break;
             case ANIMATE_FORWARD:
                 var len:Number = CellsDrawer.size2length(CellsDrawer.SIZE_SMALL);

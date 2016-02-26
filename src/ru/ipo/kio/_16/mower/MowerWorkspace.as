@@ -150,7 +150,7 @@ public class MowerWorkspace extends Sprite {
             timeSlider.value = 0;
         });
         toEnd.addEventListener(MouseEvent.CLICK, function (event:Event):void {
-            timeSlider.value = timeSlider.value = 10000;
+            timeSlider.value = 10000;
         });
         stepForward.addEventListener(MouseEvent.CLICK, function (event:Event):void {
             timeSlider.value += 1;
@@ -159,20 +159,26 @@ public class MowerWorkspace extends Sprite {
             timeSlider.value -= 1;
         });
         animate.addEventListener(MouseEvent.CLICK, function (event:Event):void {
-            if (animating)
-                return;
-            animating = true;
-            stateView.beginAnimation(program_view.program);
-
-            animate.visible = false;
-            pauseAnimation.visible = true;
+            doStartAnimation();
         });
         pauseAnimation.addEventListener(MouseEvent.CLICK, function (event:Event):void {
             doPauseAnimation();
         });
     }
 
+    private function doStartAnimation():void {
+        if (animating)
+            return;
+        animating = true;
+        stateView.beginAnimation(program_view.program);
+
+        animate.visible = false;
+        pauseAnimation.visible = true;
+    }
+
     private function doPauseAnimation():void {
+        if (!animating)
+            return;
         animating = false;
 
         pauseAnimation.visible = false;
@@ -186,11 +192,16 @@ public class MowerWorkspace extends Sprite {
         if (time >= programTrace.fullTrace.length)
             time = programTrace.fullTrace.length - 1;
 
+        var wasAnimating:Boolean = animating;
+
+        if (wasAnimating)
+            doPauseAnimation();
         stateView.state = programTrace.fullTrace[time];
+        if (wasAnimating)
+            doStartAnimation();
     }
 
     private function program_changed_eventHandler(event:Event):void {
-        trace('asf');
         programTrace = new ProgramTrace(program_view.program, initial_state);
         programTrace.run();
         timeSlider.reInit(0, programTrace.fullTrace.length - 1, 0);

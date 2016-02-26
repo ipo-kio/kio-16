@@ -43,8 +43,10 @@ public class ProgramTrace {
             var mower_meets_mower:Dictionary = new Dictionary();
 
             for each (var m:Mower in prev_state.mowers) {
-                if (m.broken)
+                if (m.broken) {
+                    new_mowers.push(m.copy());
                     continue;
+                }
 
                 //warning code duplication (1)
                 var forward_i:int = m.i + m.di;
