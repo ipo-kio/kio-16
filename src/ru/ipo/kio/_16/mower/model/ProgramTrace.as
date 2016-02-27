@@ -76,10 +76,12 @@ public class ProgramTrace {
                 if (left_see == Field.FIELD_GRASS_MOWED && prev_state.getMowerAt(left_i, left_j) != null)
                     left_see = Field.FIELD_PROGRAM_MOWER;
 
-                var c:int = _program.getCommandAt(left_see, forward_see);
+                var c:Command = _program.getCommandAt(left_see, forward_see, m.state);
+                var next_action:int = c.action;
+                var next_state:int = c.state;
 
                 var new_mower:Mower;
-                switch (c) {
+                switch (next_action) {
                     case Field.FIELD_FORWARD:
                         var target_cell:int = prev_field.getAt(forward_i, forward_j);
 
@@ -87,23 +89,22 @@ public class ProgramTrace {
                         mower_meets_mower[m] = forward_mower; //may assign null
 
                         if (target_cell == Field.FIELD_SWAMP || target_cell == Field.FIELD_TREE) {
-                            new_mower = m.move(forward_i, forward_j);
+                            new_mower = m.move(forward_i, forward_j, next_state);
                             new_mower.broken = true;
-                            trace("broke it here");
                         } else if (target_cell == Field.FIELD_GRASS || target_cell == Field.FIELD_GRASS_MOWED) {
-                            new_mower = m.move(forward_i, forward_j);
+                            new_mower = m.move(forward_i, forward_j, next_state);
                             if (target_cell == Field.FIELD_GRASS)
                                 new_mowed_grass.push(new Position(new_mower.i, new_mower.j));
                         }
                         break;
                     case Field.FIELD_TURN_LEFT:
-                        new_mower = m.turnLeft();
+                        new_mower = m.turnLeft(next_state);
                         break;
                     case Field.FIELD_TURN_RIGHT:
-                        new_mower = m.turnRight();
+                        new_mower = m.turnRight(next_state);
                         break;
                     case Field.FIELD_NOP:
-                        new_mower = m.copy();
+                        new_mower = m.copy(next_state);
                         nops_count++;
                 }
 

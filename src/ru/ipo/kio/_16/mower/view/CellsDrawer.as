@@ -9,8 +9,11 @@ public class CellsDrawer {
     public static const SIZE_BIG:int = 0;
     public static const SIZE_SMALL:int = 1;
     
-    public static const BIG_LENGTH:Number = 40;
+    public static const BIG_LENGTH:Number = 30;
     public static const SMALL_LENGTH:Number = 25;
+    public static const SIGN_SELECTION_SIZE:Number = 10;
+
+    public static const SIGN_SIZE:Number = 6;
 
     public static function size2length(size:int):Number {
         return size == SIZE_BIG ? BIG_LENGTH : SMALL_LENGTH;
@@ -118,5 +121,31 @@ public class CellsDrawer {
         else //if (mower.dj == -1) // right
             g.lineTo(x0 + length - 2, y0 + length / 2);
     }*/
+
+    public static function drawSymbol(g:Graphics, i:int, j:int, typ:int, size:int = SIZE_BIG):void {
+        var p:Point = position2point(i, j, size);
+        var x0:Number = p.x;
+        var y0:Number = p.y;
+        g.lineStyle(1, 0);
+        switch (typ) {
+            case 1: //blue circle
+                g.beginFill(0x0000FF);
+                g.drawCircle(x0 + SIGN_SIZE / 2, y0 + SIGN_SIZE / 2, SIGN_SIZE / 2);
+                g.endFill();
+                break;
+            case 2: //red triangle
+                g.beginFill(0xFF0000);
+                g.moveTo(x0 + SIGN_SIZE / 2, y0);
+                g.lineTo(x0 + SIGN_SIZE, y0 + SIGN_SIZE);
+                g.lineTo(x0, y0 + SIGN_SIZE);
+                g.endFill();
+                break;
+            case 3: //green square
+                g.beginFill(0x00FF00);
+                g.drawRect(x0, y0, SIGN_SIZE, SIGN_SIZE);
+                g.endFill();
+                break;
+        }
+    }
 }
 }

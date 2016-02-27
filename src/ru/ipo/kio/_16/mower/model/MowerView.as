@@ -19,9 +19,11 @@ public class MowerView extends Sprite {
 
     private var _animation:int = ANIMATE_NO;
     private var _animation_step:int = 0;
+    private var _show_state:Boolean;
 
-    public function MowerView(mower:Mower) {
+    public function MowerView(mower:Mower, show_state:Boolean) {
         this.mower = mower;
+        _show_state = show_state;
     }
 
     private function updateAngle():void {
@@ -46,6 +48,9 @@ public class MowerView extends Sprite {
         graphics.drawCircle(p.x + len / 2, p.y + len / 2, 5);
         graphics.moveTo(p.x + len / 2, p.y + len / 2);
         graphics.lineTo(p.x + len / 2, p.y + 2);
+
+        if (_show_state)
+            CellsDrawer.drawSymbol(graphics, _mower.i, _mower.j, _mower.state, CellsDrawer.SIZE_SMALL);
     }
 
     public function set animation(value:int):void {

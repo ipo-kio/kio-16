@@ -8,12 +8,15 @@ public class Mower {
 
     private var _broken:Boolean = false;
 
-    public function Mower(i:int, j:int, di:int, dj:int, broken:Boolean) {
+    private var _state:int;
+
+    public function Mower(i:int, j:int, di:int, dj:int, broken:Boolean, state:int = 1) {
         _i = i;
         _j = j;
         _di = di;
         _dj = dj;
         _broken = broken;
+        _state = state;
     }
 
     public function get i():int {
@@ -56,23 +59,34 @@ public class Mower {
     }
 
     public function break_():Mower {
-        return new Mower(_i, _j, _di, _dj, true);
+        return new Mower(_i, _j, _di, _dj, true, _state);
     }
 
-    public function move(new_i:int, new_j:int):Mower {
-        return new Mower(new_i, new_j, _di, _dj, false);
+    public function move(new_i:int, new_j:int, state:int = -1):Mower {
+        return new Mower(new_i, new_j, _di, _dj, _broken, getState(state));
     }
 
-    public function turnLeft():Mower {
-        return new Mower(_i, _j, left_di, left_dj, false);
+    public function turnLeft(state:int = -1):Mower {
+        return new Mower(_i, _j, left_di, left_dj, false, getState(state));
     }
 
-    public function turnRight():Mower {
-        return new Mower(_i, _j, -left_di, -left_dj, false);
+    public function turnRight(state:int = -1):Mower {
+        return new Mower(_i, _j, -left_di, -left_dj, false, getState(state));
     }
 
-    public function copy():Mower {
-        return new Mower(_i, _j, _di, _dj, _broken);
+    public function copy(state:int = -1):Mower {
+        return new Mower(_i, _j, _di, _dj, _broken, getState(state));
+    }
+
+    public function get state():int {
+        return _state;
+    }
+
+    public function getState(s:int):int {
+        if (s >= 0)
+            return s;
+        else
+            return _state;
     }
 }
 }

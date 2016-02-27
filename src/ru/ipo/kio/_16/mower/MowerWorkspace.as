@@ -46,31 +46,29 @@ public class MowerWorkspace extends Sprite {
         graphics.endFill();
 
         var cells:String =
-                "&&&&&&&&&&&&&&&&&&&&" +
-                "&..................&" +
-                "&...........*......&" +
-                "&..................&" +
-                "&..................&" +
-                "&......*...........&" +
-                "&......*...........&" +
-                "&......*...........&" +
-                "&.............*....&" +
-                "&..................&" +
-                "&..................&" +
-                "&............***...&" +
-                "&.....*........*...&" +
-                "&..............*...&" +
-                "&..................&" +
-                "&........***.......&" +
-                "&..................&" +
-                "&....*.............&" +
-                "&..................&" +
-                "&&&&&&&&&&&&&&&&&&&&";
-        var initial_field:Field = new Field(20, 20, cells);
+                "&&&&&&&&&&&&&&&&&&&&&&" +
+                "&....................&" +
+                "&...........*........&" +
+                "&......*.............&" +
+                "&......*.............&" +
+                "&......*.............&" +
+                "&.............*......&" +
+                "&....................&" +
+                "&....................&" +
+                "&............***.....&" +
+                "&.....*........*.....&" +
+                "&..............*.....&" +
+                "&....................&" +
+                "&........***.........&" +
+                "&....................&" +
+                "&....*...............&" +
+                "&....................&" +
+                "&&&&&&&&&&&&&&&&&&&&&&";
+        var initial_field:Field = new Field(18, 22, cells);
 
         var initial_mowers:Vector.<Mower> = new <Mower>[
             new Mower(1, 1, 0, 1, false),
-            new Mower(18, 18, 0, -1, false)
+            new Mower(16, 20, 0, -1, false)
 //            new Mower(6, 11, 0, -1, false)
         ];
 
@@ -79,18 +77,19 @@ public class MowerWorkspace extends Sprite {
 
         initial_state = new State(initial_field, initial_mowers);
 
+        var program:Program = new Program(initial_mowers.length >= 2, 3);
+
 //        var fieldView:FieldView = new FieldView(CellsDrawer.SIZE_SMALL, initial_field);
-        stateView = new StateView(initial_state);
+        stateView = new StateView(initial_state, program.states_num > 1);
 
         addChild(stateView);
         stateView.x = 10;
         stateView.y = 10;
 
-        var program:Program = new Program(initial_mowers.length >= 2);
         program_view = new ProgramView(program);
-        addChild(program_view.view);
-        program_view.view.x = 520;
-        program_view.view.y = 10;
+        addChild(program_view);
+        program_view.x = 580;
+        program_view.y = 10;
         program_view.addEventListener(ProgramView.PROGRAM_CHANGED, program_changed_eventHandler);
 
         programTrace = new ProgramTrace(program, initial_state);
@@ -112,14 +111,16 @@ public class MowerWorkspace extends Sprite {
 
     private function initInfo():void {
         var titles:Array = ["Скошено", "Шагов"];
-        _info = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0xAAAA00, 1.2, 'Результат', titles, 160);
-        _record = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0xAAAA00, 1.2, 'Рекорд', titles, 160);
+        _info = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0xAAAA00, 1.2, 'Результат', titles, 100);
+        _record = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0xAAAA00, 1.2, 'Рекорд', titles, 100);
         addChild(_info);
         addChild(_record);
-        _info.x = 520;
-        _info.y = 320;
-        _record.x = 520;
-        _record.y = _info.y + _info.height + 20;
+        _info.x = 220;
+        _info.y = 480;
+//        _record.x = 520;
+//        _record.y = _info.y + _info.height + 20;
+        _record.x = _info.x + _info.width + 60;
+        _record.y = _info.y;
 
         setInfo(_info, null);
         setInfo(_record, null);
@@ -154,8 +155,8 @@ public class MowerWorkspace extends Sprite {
         addChild(animate);
         addChild(pauseAnimation);
 
-        var buttonsY:int = 260;
-        var buttonsX:int = 560;
+        var buttonsY:int = 500;
+        var buttonsX:int = 20;
         toStart.x = buttonsX;
         toStart.y = buttonsY;
         stepBack.x = buttonsX + toStart.width + 2;
@@ -224,6 +225,8 @@ public class MowerWorkspace extends Sprite {
         stateView.state = programTrace.fullTrace[time];
         if (wasAnimating)
             doStartAnimation();
+
+//        stateView.allow_replacing_mowers = time == 0;
     }
 
     private function program_changed_eventHandler(event:Event):void {
@@ -254,7 +257,7 @@ public class MowerWorkspace extends Sprite {
 
     public function set solution(value:Object):void {
         program_view.program.as_object = value;
-        program_view.view.redrawView();
+        program_view.redrawViews();
         program_changed_eventHandler(null);
     }
 

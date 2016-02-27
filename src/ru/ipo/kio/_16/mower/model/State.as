@@ -23,7 +23,7 @@ public class State {
         return null;
     }
 
-    public function getCommand(program:Program, m:Mower):int {
+    public function getCommand(program:Program, m:Mower):Command {
         var forward_i:int = m.i + m.di;
         var forward_j:int = m.j + m.dj;
         var left_i:int = m.i + m.left_di;
@@ -37,7 +37,7 @@ public class State {
         if (left_see == Field.FIELD_GRASS_MOWED && getMowerAt(left_i, left_j) != null)
             left_see = Field.FIELD_PROGRAM_MOWER;
 
-        return program.getCommandAt(left_see, forward_see);
+        return program.getCommandAt(left_see, forward_see, m.state);
     }
 }
 }
