@@ -96,19 +96,19 @@ public class RockGardenWorkspace extends Sprite {
 
         if (problem.level == 0)
             var areas:Vector.<ViewArea> = new <ViewArea>[
-                new ViewArea(g.location2point(g.H / 2), g, "Запад"),
-                new ViewArea(g.location2point(g.H + g.W / 2), g, "Север"),
-                new ViewArea(g.location2point(g.H + g.W + g.H / 2), g, "Восток"),
-                new ViewArea(g.location2point(g.H + g.W + g.H + g.W / 2), g, "Юг")
+                new ViewArea(g.location2point(g.H / 2), g, "left"),
+                new ViewArea(g.location2point(g.H + g.W / 2), g, "top"),
+                new ViewArea(g.location2point(g.H + g.W + g.H / 2), g, "right"),
+                new ViewArea(g.location2point(g.H + g.W + g.H + g.W / 2), g, "bottom")
             ];
         else if (problem.level == 1)
             areas = new <ViewArea>[
-                new ViewArea(g.location2point(g.H / 2), g, "Запад"),
-                new ViewArea(g.location2point(g.H + g.W / 3), g, "Северо-Запад"),
-                new ViewArea(g.location2point(g.H + 2 * g.W / 3), g, "Северо-Восток"),
-                new ViewArea(g.location2point(g.H + g.W + g.H / 2), g, "Восток"),
-                new ViewArea(g.location2point(g.H + g.W + g.H + g.W / 3), g, "Юго-Восток"),
-                new ViewArea(g.location2point(g.H + g.W + g.H + 2 * g.W / 3), g, "Юго-Запад")
+                new ViewArea(g.location2point(g.H / 2), g, "left"),
+                new ViewArea(g.location2point(g.H + g.W / 3), g, "top left"),
+                new ViewArea(g.location2point(g.H + 2 * g.W / 3), g, "top right"),
+                new ViewArea(g.location2point(g.H + g.W + g.H / 2), g, "right"),
+                new ViewArea(g.location2point(g.H + g.W + g.H + g.W / 3), g, "bottom right"),
+                new ViewArea(g.location2point(g.H + g.W + g.H + 2 * g.W / 3), g, "bottom left")
             ];
         else
             areas = null;
@@ -120,7 +120,7 @@ public class RockGardenWorkspace extends Sprite {
         gardenView.y = 36;
         addChild(gardenView);
 
-        sideView.x = 190;
+        sideView.x = 194;
         sideView.y = gardenView.y + gardenView.height + 26;
         addChild(sideView);
 

@@ -28,6 +28,7 @@ public class RocksSideView extends Sprite {
     private var _height:Number;
 
     private var _text:TextField;
+    private var _text_2:TextField;
 
     public function RocksSideView(g:Garden, width:Number, height:Number) {
         _g = g;
@@ -47,7 +48,16 @@ public class RocksSideView extends Sprite {
         _text.mouseEnabled = false;
         _text.selectable = false;
         addChild(_text);
-        _text.y = -18;
+        _text.text = "";
+
+        _text_2 = new TextField();
+        _text_2.autoSize = TextFieldAutoSize.LEFT;
+        _text_2.embedFonts = true;
+        _text_2.defaultTextFormat = new TextFormat('KioArial', 16, 0x000000, true);
+        _text_2.mouseEnabled = false;
+        _text_2.selectable = false;
+        addChild(_text_2);
+        _text_2.text = "";
     }
 
     public function redraw():void {
@@ -113,14 +123,14 @@ public class RocksSideView extends Sprite {
 
         var m:Matrix = new Matrix();
         m.scale((end - start) / HOR_SHADOWS_IMG.width, height / HOR_SHADOWS_IMG.height);
-        m.translate(start, _height);
+        m.translate(start, _height - height);
         graphics.beginBitmapFill(HOR_SHADOWS_IMG, m);
         graphics.drawRect(start, _height - height, end - start, height);
         graphics.endFill();
 
         m = new Matrix();
         m.scale((end - start) / VERT_SHADOWS_IMG.width, height / VERT_SHADOWS_IMG.height);
-        m.translate(start, _height);
+        m.translate(start, _height - height);
         graphics.beginBitmapFill(VERT_SHADOWS_IMG, m);
         graphics.drawRect(start, _height - height, end - start, height);
         graphics.endFill();
@@ -138,7 +148,18 @@ public class RocksSideView extends Sprite {
     }
 
     public function set text(value:String):void {
+        var p:Point = globalToLocal(new Point(104, 25 + 550));
+
         _text.text = value;
+        var split:Array = value.split("|");
+        _text.text = split[0];
+        _text_2.text = split[1];
+
+        _text.x = p.x - _text.width / 2;
+        _text.y = p.y - _text.height / 2;
+
+        _text_2.x = p.x - _text_2.width / 2;
+        _text_2.y = 16 + p.y - _text_2.height / 2;
     }
 }
 }

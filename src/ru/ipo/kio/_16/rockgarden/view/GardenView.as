@@ -1,6 +1,9 @@
 package ru.ipo.kio._16.rockgarden.view {
+import flash.display.BitmapData;
+import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
+import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
@@ -16,6 +19,9 @@ import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 
 public class GardenView extends Sprite {
+    [Embed(source="../res/imgs/green-ball.png")]
+    public static const BALL_CLASS:Class;
+
     private var _g:Garden;
     private var _mul:Number;
     private var _grid_step:Number;
@@ -37,6 +43,8 @@ public class GardenView extends Sprite {
     private var _problem_style:int;
     private var _api:KioApi;
     private var _workspace:RockGardenWorkspace;
+
+    private var green_ball:Shape;
 
     private const _segments_color_palette:Vector.<uint> = new <uint>[
             0x000000,
@@ -99,6 +107,23 @@ public class GardenView extends Sprite {
         }
 
         init_long_info();
+        init_green_ball();
+    }
+
+    private function init_green_ball():void {
+        if (_problem_style == 2)
+            return;
+        green_ball = new Shape();
+
+        var bitmap:BitmapData = (new BALL_CLASS).bitmapData;
+        var m:Matrix = new Matrix();
+        m.translate(-bitmap.width / 2, -bitmap.height / 2);
+
+        green_ball.graphics.beginBitmapFill(bitmap, m);
+        green_ball.graphics.drawRect(-bitmap.width / 2, -bitmap.height / 2, bitmap.width, bitmap.height);
+        green_ball.graphics.endFill();
+        addChild(green_ball);
+        green_ball.visible = false;
     }
 
     private function relocateArea(area:ViewArea):void {
@@ -317,8 +342,47 @@ public class GardenView extends Sprite {
     private function updateSideView(area:ViewArea):void {
         _sideView.location = area.point;
         var vis:Vector.<int> = area.visibleCircles;
-        var text:String = (area.viewName != "" ? area.viewName + ", видно " : "Видно ") + nRocks(vis.length) + ": " + vis.join(" ");
+//        var text:String = (area.viewName != "" ? area.viewName + ", видно " : "Видно ") + nRocks(vis.length) + ": " + vis.join(" ");
+        var text:String = "Видно " + nRocks(vis.length) + "|" + vis.join(" ");
         _sideView.text = text;
+
+        //update green circle
+        if (_problem_style == 2)
+            return;
+
+        green_ball.visible = true;
+        switch (area.viewName) {
+            case "left":
+                var p:Point = new Point(88, 486);
+                break;
+            case "right":
+                p = new Point(166, 486);
+                break;
+            case "top":
+                p = new Point(128, 448);
+                break;
+            case "bottom":
+                p = new Point(128, 526);
+                break;
+
+            case "bottom left":
+                p = new Point(128 - 14, 526);
+                break;
+            case "bottom right":
+                p = new Point(128 + 14, 526);
+                break;
+            case "top left":
+                p = new Point(128 - 14, 448);
+                break;
+            case "top right":
+                p = new Point(128 + 14, 448);
+                break;
+        }
+        p.y += 25;
+
+        p = globalToLocal(p);
+        green_ball.x = p.x;
+        green_ball.y = p.y;
     }
 
     public function get result():Object {

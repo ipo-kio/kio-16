@@ -27,7 +27,7 @@ public class RockGardenRunner extends Sprite {
 
         KioApi.language = KioApi.L_RU; //устанавливаем язык, используемый в программе
 
-        //Запускаем задачу. Метод initOneProblem() специально сделан для отладки одной задачи.
+        //Запускаем задачу. Метод initOneProblem) специально сделан для отладки одной задачи.
         //Первый параметр - текущий спрайт, второй параметр - задача
         KioBase.instance.initOneProblem(this, new RockGardenProblem(2));
     }
