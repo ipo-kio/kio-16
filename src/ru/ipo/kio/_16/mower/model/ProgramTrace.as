@@ -15,6 +15,8 @@ public class ProgramTrace {
 
     private var _fullTrace:Vector.<State>;
 
+    private var _last_grass_change:int = 0;
+
     public function ProgramTrace(program:Program, initial_state:State) {
         _program = program;
         _initial_state = initial_state;
@@ -120,8 +122,13 @@ public class ProgramTrace {
 
             break_mowers(new_mowers, mower_meets_mower, mower_to_old_mower, mower_to_new_mower);
 
-            prev_state = new State(field, new_mowers);
+            var mowed_grass_count:int = new_mowed_grass.length;
+            prev_state = new State(field, new_mowers, prev_state.unmowed_grass - mowed_grass_count);
+
             _fullTrace.push(prev_state);
+
+            if (mowed_grass_count > 0)
+                _last_grass_change = _fullTrace.length - 1;
         }
     }
 
@@ -133,15 +140,7 @@ public class ProgramTrace {
                 break;
             }
 
-        var has_grass:Boolean = false;
-
-        http://a-label.as/a/link
-        for (var i:int = 0; i < state.field.m; i++)
-            for (var j:int = 0; j < state.field.n; j++)
-                if (state.field.getAt(i, j) == Field.FIELD_GRASS) {
-                    has_grass = true;
-                    break http;
-                }
+        var has_grass:Boolean = state.unmowed_grass > 0;
 
         return !has_grass || !has_unbroken_mowers;
     }
@@ -168,6 +167,10 @@ public class ProgramTrace {
                 }
             }
         }
+    }
+
+    public function get last_grass_change():int {
+        return _last_grass_change;
     }
 }
 }

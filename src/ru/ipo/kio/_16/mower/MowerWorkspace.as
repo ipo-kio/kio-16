@@ -94,7 +94,7 @@ public class MowerWorkspace extends Sprite {
 
         initial_state = new State(initial_field, initial_mowers);
 
-        var program:Program = new Program(initial_mowers.length >= 2, 3);
+        var program:Program = new Program(initial_mowers.length >= 2, _problem.level + 1);
 
 //        var fieldView:FieldView = new FieldView(CellsDrawer.SIZE_SMALL, initial_field);
         stateView = new StateView(initial_state, program.states_num > 1);
@@ -128,15 +128,16 @@ public class MowerWorkspace extends Sprite {
 
     private function initInfo():void {
         var titles:Array = ["Скошено", "Шагов"];
-        _info = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0xAAAA00, 1.2, 'Результат', titles, 100);
-        _record = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0xAAAA00, 1.2, 'Рекорд', titles, 100);
+        _info = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0x000000, 1.2, 'Результат', titles, 100);
+        _record = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0x000000, 1.2, 'Рекорд', titles, 100);
         addChild(_info);
         addChild(_record);
-        _info.x = 220;
+        var skip:int = 40;
+        _info.x = 10 + 6; //560 - _info.width - _record.width - skip - 6;
         _info.y = 480;
 //        _record.x = 520;
 //        _record.y = _info.y + _info.height + 20;
-        _record.x = _info.x + _info.width + 60;
+        _record.x = _info.x + _info.width + skip;
         _record.y = _info.y;
 
         setInfo(_info, null);
@@ -145,6 +146,14 @@ public class MowerWorkspace extends Sprite {
         _api.addEventListener(KioApi.RECORD_EVENT, function (e:Event):void {
             setInfo(_record, result);
         });
+
+        graphics.beginFill(0x008fc5, 0.6);
+
+        graphics.drawRect(_info.x - 6, _info.y -6, _info.width + _record.width + skip + 12, _info.height + 12);
+
+        graphics.drawRect(program_view.x - 6, program_view.y - 6, program_view.width + 12, program_view.height + 12);
+
+        graphics.endFill();
     }
 
     private static function setInfo(info:InfoPanel, result:Object):void {
@@ -173,7 +182,7 @@ public class MowerWorkspace extends Sprite {
         addChild(pauseAnimation);
 
         var buttonsY:int = 480;
-        var buttonsX:int = 10;
+        var buttonsX:int = 560 - 4 * 2 - toStart.width * 5;
         toStart.x = buttonsX;
         toStart.y = buttonsY;
         stepBack.x = buttonsX + toStart.width + 2;
@@ -240,6 +249,7 @@ public class MowerWorkspace extends Sprite {
         if (wasAnimating)
             doPauseAnimation();
         stateView.state = programTrace.fullTrace[time];
+        //TODO highlight current move
         if (wasAnimating)
             doStartAnimation();
 
@@ -282,7 +292,7 @@ public class MowerWorkspace extends Sprite {
         var state:State = programTrace.lastState;
         if (state == null)
             return {m: 0, s: 0};
-        return {m: state.field.countCells(Field.FIELD_GRASS_MOWED), s: programTrace.statesCount - 1};
+        return {m: state.field.countCells(Field.FIELD_GRASS_MOWED), s: programTrace.last_grass_change};
     }
 
     //embed images

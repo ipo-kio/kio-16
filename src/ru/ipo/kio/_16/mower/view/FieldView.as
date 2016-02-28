@@ -32,6 +32,15 @@ public class FieldView extends Sprite {
         addChild(view_layer);
 
         redrawView();
+
+        var hit:Sprite = new Sprite();
+        addChild(hit);
+        hit.visible = false;
+        hit.mouseEnabled = false;
+        hit.graphics.beginFill(0xFF0000);
+        hit.graphics.drawRect(0, 0, _len * field.m, _len * field.n);
+        hit.graphics.endFill();
+        hitArea = hit;
     }
 
     public function redrawHighlight():void {

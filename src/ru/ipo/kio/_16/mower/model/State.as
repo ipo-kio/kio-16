@@ -2,10 +2,16 @@ package ru.ipo.kio._16.mower.model {
 public class State {
     private var _field:Field;
     private var _mowers:Vector.<Mower>;
+    private var _unmowed_grass:int;
 
-    public function State(field:Field, mowers:Vector.<Mower>) {
+    public function State(field:Field, mowers:Vector.<Mower>, unmowed_grass:int = -1) {
         _field = field;
         _mowers = mowers;
+
+        if (unmowed_grass < 0)
+            unmowed_grass = field.countCells(Field.FIELD_GRASS);
+
+        _unmowed_grass = unmowed_grass;
     }
 
     public function get field():Field {
@@ -14,6 +20,10 @@ public class State {
 
     public function get mowers():Vector.<Mower> {
         return _mowers;
+    }
+
+    public function get unmowed_grass():int {
+        return _unmowed_grass;
     }
 
     public function getMowerAt(i:int, j:int):Mower {

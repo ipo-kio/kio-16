@@ -161,6 +161,7 @@ public class ProgramView extends Sprite {
     private function view_rollOutHandler(event:MouseEvent):void {
         for (var state:int = 0; state < _program.states_num; state++)
             _views[state].removeHighlight(_current_highlight);
+        _current_highlight = null;
     }
 
     public function get program():Program {

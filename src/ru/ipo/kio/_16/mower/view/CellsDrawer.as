@@ -59,21 +59,13 @@ public class CellsDrawer {
                 bmp = MOWER_BMP;
                 break;
             case Field.FIELD_TURN_LEFT:
-                g.lineStyle(1, 0x000000);
-                g.moveTo(x0 + length / 2, y0 + length - 2);
-                g.lineTo(x0 + length / 2, y0 + 2);
-                g.lineTo(x0 + 2, y0 + 2);
+                bmp = ARROW_LEFT_BMP;
                 break;
             case Field.FIELD_TURN_RIGHT:
-                g.lineStyle(1, 0x000000);
-                g.moveTo(x0 + length / 2, y0 + length - 2);
-                g.lineTo(x0 + length / 2, y0 + 2);
-                g.lineTo(x0 + length - 2, y0 + 2);
+                bmp = ARROW_RIGHT_BMP;
                 break;
             case Field.FIELD_FORWARD:
-                g.lineStyle(1, 0x000000);
-                g.moveTo(x0 + length / 2, y0 + length - 2);
-                g.lineTo(x0 + length / 2, y0 + 2);
+                bmp = ARROW_TOP_BMP;
                 break;
             case Field.FIELD_NOP:
                 g.drawCircle(x0 + length / 2, y0 + length / 2, 4);
@@ -154,5 +146,17 @@ public class CellsDrawer {
     [Embed(source="../res/cells/25-swamp.png")]
     public static const SWAMP_CLASS:Class;
     public static const SWAMP_BMP:BitmapData = (new SWAMP_CLASS).bitmapData;
+
+    [Embed(source="../res/cells/25-arrow-left.png")]
+    public static const ARROW_LEFT_CLASS:Class;
+    public static const ARROW_LEFT_BMP:BitmapData = (new ARROW_LEFT_CLASS).bitmapData;
+
+    [Embed(source="../res/cells/25-arrow-right.png")]
+    public static const ARROW_RIGHT_CLASS:Class;
+    public static const ARROW_RIGHT_BMP:BitmapData = (new ARROW_RIGHT_CLASS).bitmapData;
+
+    [Embed(source="../res/cells/25-arrow-top.png")]
+    public static const ARROW_TOP_CLASS:Class;
+    public static const ARROW_TOP_BMP:BitmapData = (new ARROW_TOP_CLASS).bitmapData;
 }
 }
