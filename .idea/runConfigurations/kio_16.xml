@@ -26,7 +26,7 @@
     <option name="overriddenMainClass" value="" />
     <option name="overriddenOutputFileName" value="" />
     <option name="overrideMainClass" value="false" />
-    <option name="runTrusted" value="true" />
+    <option name="runTrusted" value="false" />
     <option name="screenDpi" value="0" />
     <option name="screenHeight" value="0" />
     <option name="screenWidth" value="0" />

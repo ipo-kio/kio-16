@@ -85,7 +85,7 @@ public class RockGardenProblem implements KioProblem {
             d = r1.d - r2.d; // rocks visib
             if (d != 0)
                 return d;
-            d = r2.s - r1.s;
+            d = r1.s - r2.s;
             return d;
         } else {
             d = r1.p - r2.p;

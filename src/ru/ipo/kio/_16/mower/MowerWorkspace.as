@@ -103,6 +103,8 @@ public class MowerWorkspace extends Sprite {
 //        var fieldView:FieldView = new FieldView(CellsDrawer.SIZE_SMALL, initial_field);
         stateView = new StateView(initial_state, program.states_num > 1);
 
+        //TODO state is not shown initially
+
         addChild(stateView);
         stateView.x = 10;
         stateView.y = 10;

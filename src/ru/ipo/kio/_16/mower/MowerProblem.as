@@ -18,14 +18,14 @@ public class MowerProblem implements KioProblem {
     [Embed(source="res/help.jpg")]
     public static var HELP_CLASS:Class;
 
-//    [Embed(source="res/Cov_Stone-0.jpg")]
-//    public static var ICON_0_CLASS:Class;
-//
-//    [Embed(source="res/Cov_Stone-1.jpg")]
-//    public static var ICON_1_CLASS:Class;
-//
-//    [Embed(source="res/Cov_Stone-2.jpg")]
-//    public static var ICON_2_CLASS:Class;
+    [Embed(source="res/Robot-0 level.png")]
+    public static var ICON_0_CLASS:Class;
+
+    [Embed(source="res/Robot-1 level.png")]
+    public static var ICON_1_CLASS:Class;
+
+    [Embed(source="res/Robot-2 level.png")]
+    public static var ICON_2_CLASS:Class;
 
     public static const ID:String = 'mower';
 
@@ -85,6 +85,11 @@ public class MowerProblem implements KioProblem {
     }
 
     public function get icon():Class {
+        switch (level) {
+            case 0: return ICON_0_CLASS;
+            case 1: return ICON_1_CLASS;
+            case 2: return ICON_2_CLASS;
+        }
         return null;
     }
 

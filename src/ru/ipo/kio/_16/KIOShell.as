@@ -49,7 +49,7 @@ public class KIOShell extends Sprite {
                     new MowerProblem(level),
                     new MarsProblem(level)
                 ],
-                2015,
+                2016,
                 level
         );
 
@@ -59,7 +59,5 @@ public class KIOShell extends Sprite {
 }
 }
 
-//TODO highlight current move
-//TODO tangents
 //TODO stub for the third problem
 //TODO logs

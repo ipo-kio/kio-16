@@ -54,7 +54,7 @@
         },
         "welcome":{
 			"greeting": <<<
-				Welcome to competition CTE-2015!
+				Welcome to competition CTE-2016!
 	        >>>,
     		"mainMessage_0": <<<
     		    <p>We would like to offer you to solve 3 problems and get acquainted with welcome address.</p>
@@ -126,7 +126,7 @@
             "screen_header":"Problem"
         },
         "about": {
-            "header": <<<О Конкурсе КИО-2015>>>, /*About authors and copy right*/
+            "header": <<<О Конкурсе КИО-2016>>>, /*About authors and copy right*/
            "text" : <<<
                <p class='h1c'>Институт продуктивного обучения РАО</p>
 
