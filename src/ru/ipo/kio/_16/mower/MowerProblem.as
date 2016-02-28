@@ -9,8 +9,23 @@ import ru.ipo.kio.api.Settings;
 
 public class MowerProblem implements KioProblem {
 
-    [Embed(source="loc/traincars.ru.json-settings",mimeType="application/octet-stream")]
+    [Embed(source="loc/mower.ru.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
+
+    [Embed(source="res/statement.jpg")]
+    public static var STATEMENT_CLASS:Class;
+
+    [Embed(source="res/help.jpg")]
+    public static var HELP_CLASS:Class;
+
+//    [Embed(source="res/Cov_Stone-0.jpg")]
+//    public static var ICON_0_CLASS:Class;
+//
+//    [Embed(source="res/Cov_Stone-1.jpg")]
+//    public static var ICON_1_CLASS:Class;
+//
+//    [Embed(source="res/Cov_Stone-2.jpg")]
+//    public static var ICON_2_CLASS:Class;
 
     public static const ID:String = 'mower';
 
@@ -74,14 +89,15 @@ public class MowerProblem implements KioProblem {
     }
 
     public function get icon_help():Class {
-        return null;
+        return HELP_CLASS;
     }
 
     public function get icon_statement():Class {
-        return null;
+        return STATEMENT_CLASS;
     }
 
     public function clear():void {
+        loadSolution(workspace.empty_solution);
     }
 }
 }

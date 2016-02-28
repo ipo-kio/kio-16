@@ -39,6 +39,8 @@ public class MowerWorkspace extends Sprite {
     private var _info:InfoPanel;
     private var _record:InfoPanel;
 
+    private var _empty_solution:Object;
+
     public function MowerWorkspace(problem:KioProblem) {
         _problem = problem;
         _api = KioApi.instance(problem);
@@ -124,6 +126,8 @@ public class MowerWorkspace extends Sprite {
         initButtons();
 
         initInfo();
+
+        _empty_solution = solution;
     }
 
     private function initInfo():void {
@@ -295,7 +299,11 @@ public class MowerWorkspace extends Sprite {
         return {m: state.field.countCells(Field.FIELD_GRASS_MOWED), s: programTrace.last_grass_change};
     }
 
-    //embed images
+    public function get empty_solution():Object {
+        return _empty_solution;
+    }
+
+//embed images
     [Embed(source="res/bg.png")]
     public static const BG_CLASS:Class;
 

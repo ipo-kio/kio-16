@@ -74,7 +74,7 @@ public class Garden {
             if (Math.abs(all_points[0] + _MAX_SEGMENTS_LIST_VALUE - all_points[all_points.length - 1]) < Garden.EPS)
                 all_points.pop();
 
-        trace('evaled tangents in ', new Date().time - _start.time);
+//        trace('evaled tangents in ', new Date().time - _start.time);
         _start = new Date();
 
         // add all segments
@@ -97,7 +97,7 @@ public class Garden {
         }
 
         var elapsed:Number = new Date().time - _start.time;
-        trace('evaled anglesCircle2visibleCircles in ', (elapsed / all_points.length).toFixed(3) + " * " + all_points.length + " = " + elapsed);
+//        trace('evaled anglesCircle2visibleCircles in ', (elapsed / all_points.length).toFixed(3) + " * " + all_points.length + " = " + elapsed);
 
         function just_add_segment(s1:Vector.<int>, s2:Vector.<int>):Vector.<int> {
             if (s1 == null)
@@ -107,7 +107,7 @@ public class Garden {
         }
 
         var _finish:Date = new Date();
-        trace('evaled segments in ', _finish.time - _start.time);
+//        trace('evaled segments in ', _finish.time - _start.time);
         SegmentsList.__trace_timings();
     }
 

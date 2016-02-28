@@ -77,7 +77,7 @@ public class SegmentsList {
             var c:int = __counts[i];
             if (c == 0)
                 continue;
-            trace("timing block " + i, __timings[i] / c, "*", c, "=", __timings[i]);
+//            trace("timing block " + i, __timings[i] / c, "*", c, "=", __timings[i]);
         }
     }
 

@@ -8,9 +8,9 @@ package ru.ipo.kio._16 {
 import flash.display.Sprite;
 import flash.events.Event;
 
-import ru.ipo.kio._15.markov.MarkovProblem;
-import ru.ipo.kio._15.spider.SpiderProblem;
-import ru.ipo.kio._15.traincars.TrainCarsProblem;
+import ru.ipo.kio._16.mars.MarsProblem;
+import ru.ipo.kio._16.mower.MowerProblem;
+import ru.ipo.kio._16.rockgarden.RockGardenProblem;
 
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.Settings;
@@ -45,9 +45,9 @@ public class KIOShell extends Sprite {
 
         KioBase.instance.init(this,
                 [
-                    new TrainCarsProblem(level),
-                    new MarkovProblem(stage, level == 1 ? 2 : level),
-                    new SpiderProblem(level)
+                    new RockGardenProblem(level),
+                    new MowerProblem(level),
+                    new MarsProblem(level)
                 ],
                 2015,
                 level
@@ -58,3 +58,8 @@ public class KIOShell extends Sprite {
 
 }
 }
+
+//TODO highlight current move
+//TODO tangents
+//TODO clear solutions in mower and rocks
+//TODO stub for the third problem

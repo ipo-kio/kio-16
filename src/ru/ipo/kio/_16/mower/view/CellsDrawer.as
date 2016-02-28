@@ -4,8 +4,6 @@ import flash.display.Graphics;
 import flash.geom.Matrix;
 import flash.geom.Point;
 
-import org.hamcrest.object.nullValue;
-
 import ru.ipo.kio._16.mower.model.Field;
 
 public class CellsDrawer {

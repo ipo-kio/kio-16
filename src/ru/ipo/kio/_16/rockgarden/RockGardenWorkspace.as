@@ -1,5 +1,4 @@
 package ru.ipo.kio._16.rockgarden {
-import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
 
@@ -28,6 +27,8 @@ public class RockGardenWorkspace extends Sprite {
     private var _api:KioApi;
 
     private var _info:InfoPanel, _record:InfoPanel;
+
+    private var _empty_solution:Object;
 
     public function RockGardenWorkspace(problem:KioProblem) {
         _problem = problem;
@@ -129,6 +130,12 @@ public class RockGardenWorkspace extends Sprite {
         _api.addEventListener(KioApi.RECORD_EVENT, function (event:Event):void {
             setInfos(_record, _api.record_result);
         });
+
+        _empty_solution = solution;
+    }
+
+    public function get solution():Object {
+        return {c: circles};
     }
 
     private function initInfos():void {
@@ -150,14 +157,14 @@ public class RockGardenWorkspace extends Sprite {
                 "Равномерность"
             ];
 
-        _info = new InfoPanel('KioArial', true, 16, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 1.1, "Результат", labels, 240);
-        _record = new InfoPanel('KioArial', true, 16, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 1.1, "Рекорд", labels, 240);
+        _info = new InfoPanel('KioArial', true, 16, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 1.1, "Результат", labels, 256);
+        _record = new InfoPanel('KioArial', true, 16, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 1.1, "Рекорд", labels, 256);
 
         addChild(_info);
         addChild(_record);
-        _info.x = 230;
+        _info.x = 226;
         _info.y = 516;
-        _record.x = 516;
+        _record.x = 510;
         _record.y = 520;
     }
 
@@ -227,6 +234,10 @@ public class RockGardenWorkspace extends Sprite {
     public function submitResult(result:Object):void {
         _api.submitResult(result);
         setInfos(_info, result);
+    }
+
+    public function get empty_solution():Object {
+        return _empty_solution;
     }
 }
 }

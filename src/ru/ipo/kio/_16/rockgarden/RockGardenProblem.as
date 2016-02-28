@@ -9,8 +9,23 @@ import ru.ipo.kio.api.Settings;
 
 public class RockGardenProblem implements KioProblem {
 
-    [Embed(source="loc/traincars.ru.json-settings", mimeType="application/octet-stream")]
+    [Embed(source="loc/rockgarden.ru.json-settings", mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
+
+    [Embed(source="res/statement.jpg")]
+    public static var STATEMENT_CLASS:Class;
+
+    [Embed(source="res/help.jpg")]
+    public static var HELP_CLASS:Class;
+
+    [Embed(source="res/Cov_Stone-0.jpg")]
+    public static var ICON_0_CLASS:Class;
+
+    [Embed(source="res/Cov_Stone-1.jpg")]
+    public static var ICON_1_CLASS:Class;
+
+    [Embed(source="res/Cov_Stone-2.jpg")]
+    public static var ICON_2_CLASS:Class;
 
     public static const ID:String = 'rockgarden';
 
@@ -44,7 +59,7 @@ public class RockGardenProblem implements KioProblem {
     }
 
     public function get solution():Object {
-        return {c: workspace.circles};
+        return workspace.solution;
     }
 
     public function loadSolution(solution:Object):Boolean {
@@ -73,17 +88,6 @@ public class RockGardenProblem implements KioProblem {
             d = r2.s - r1.s;
             return d;
         } else {
-            /*d = r2.i - r1.i;
-            if (d != 0)
-                return d;
-            var dd:Number = r1.s - r2.s;
-            if (dd < 0)
-                return -1;
-            else if (dd > 0)
-                return 1;
-            else
-                return 0;*/
-
             d = r1.p - r2.p;
             if (d != 0)
                 return d;
@@ -99,18 +103,27 @@ public class RockGardenProblem implements KioProblem {
     }
 
     public function get icon():Class {
+        switch (level) {
+            case 0:
+                return ICON_0_CLASS;
+            case 1:
+                return ICON_1_CLASS;
+            case 2:
+                return ICON_2_CLASS;
+        }
         return null;
     }
 
     public function get icon_help():Class {
-        return null;
+        return HELP_CLASS;
     }
 
     public function get icon_statement():Class {
-        return null;
+        return STATEMENT_CLASS;
     }
 
     public function clear():void {
+        loadSolution(workspace.empty_solution);
     }
 }
 }
