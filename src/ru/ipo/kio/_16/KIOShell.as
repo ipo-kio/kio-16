@@ -61,5 +61,5 @@ public class KIOShell extends Sprite {
 
 //TODO highlight current move
 //TODO tangents
-//TODO clear solutions in mower and rocks
 //TODO stub for the third problem
+//TODO logs

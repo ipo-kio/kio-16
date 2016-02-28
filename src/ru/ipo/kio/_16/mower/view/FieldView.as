@@ -51,7 +51,7 @@ public class FieldView extends Sprite {
             var x0:Number = hCell.j * _len;
             var y0:Number = hCell.i * _len;
 
-            g.beginFill(hCell.c);
+            g.beginFill(hCell.c, hCell.alpha);
 
             var s:Number = hCell.small ? CellsDrawer.SIGN_SELECTION_SIZE : _len;
 

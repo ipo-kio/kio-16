@@ -18,6 +18,8 @@ public class ProgramView extends Sprite {
 
     private var _current_highlight:HighlightedCell = null;
 
+    private var _mowers_highlights:Vector.<HighlightedCell> = new <HighlightedCell>[];
+
     public function ProgramView(program:Program) {
         _program = program;
         _views = new <FieldView>[];
@@ -166,6 +168,18 @@ public class ProgramView extends Sprite {
 
     public function get program():Program {
         return _program;
+    }
+
+    public function clearMowersHighlights():void {
+        for each (var cell:HighlightedCell in _mowers_highlights)
+            for each (var view:FieldView in _views)
+                view.removeHighlight(cell);
+    }
+
+    public function setMowerHighlight(state:int, i:int, j:int):void {
+        var hCell:HighlightedCell = new HighlightedCell(i, j, 0x00FF00, false, 0.4);
+        _mowers_highlights.push(hCell);
+        _views[state - 1].setHighlight(hCell);
     }
 }
 }

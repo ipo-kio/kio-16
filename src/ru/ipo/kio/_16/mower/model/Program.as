@@ -69,14 +69,14 @@ public class Program {
         return see;
     }
 
-    public function getCommandAt(left_see:int, program_see:int, state:int):Command {
+    public function getCommandAt(left_see:int, forward_see:int, state:int):Command {
         var i:int = see2prg(left_see);
-        var j:int = see2prg(program_see);
+        var j:int = see2prg(forward_see);
 
         var action:int = _commands[state - 1].getAt(i, j);
         var new_state:int = _states[state - 1].getAt(i, j);
 
-        return new Command(action, new_state);
+        return new Command(action, new_state, i, j);
     }
 
     public function get states_num():int {

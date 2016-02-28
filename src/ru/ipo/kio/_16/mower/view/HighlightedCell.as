@@ -5,12 +5,14 @@ public class HighlightedCell {
     private var _j:int;
     private var _c:uint;
     private var _small:Boolean;
+    private var _alpha:Number;
 
-    public function HighlightedCell(i:int, j:int, c:uint, small:Boolean) {
+    public function HighlightedCell(i:int, j:int, c:uint, small:Boolean, alpha:Number = 1) {
         _i = i;
         _j = j;
         _c = c;
         _small = small;
+        _alpha = alpha;
     }
 
     public function get i():int {
@@ -27,6 +29,10 @@ public class HighlightedCell {
 
     public function get small():Boolean {
         return _small;
+    }
+
+    public function get alpha():Number {
+        return _alpha;
     }
 
     public function equals(hc:HighlightedCell):Boolean {

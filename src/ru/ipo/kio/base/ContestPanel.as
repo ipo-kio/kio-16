@@ -66,7 +66,6 @@ public class ContestPanel extends Sprite {
         });
 
         clearButton.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void {
-            trace('here!!1');
             if (!e.ctrlKey)
                 return;
             KioBase.instance.log('BTN clear in contest', []);

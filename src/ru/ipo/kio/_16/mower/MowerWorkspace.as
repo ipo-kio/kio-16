@@ -8,6 +8,8 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 
+import ru.ipo.kio._16.mower.model.Command;
+
 import ru.ipo.kio._16.mower.model.Field;
 import ru.ipo.kio._16.mower.model.Mower;
 import ru.ipo.kio._16.mower.model.Program;
@@ -128,6 +130,9 @@ public class MowerWorkspace extends Sprite {
         initInfo();
 
         _empty_solution = solution;
+
+        setInfo(_info, result);
+        setInfo(_record, result);
     }
 
     private function initInfo():void {
@@ -253,11 +258,15 @@ public class MowerWorkspace extends Sprite {
         if (wasAnimating)
             doPauseAnimation();
         stateView.state = programTrace.fullTrace[time];
-        //TODO highlight current move
         if (wasAnimating)
             doStartAnimation();
 
-//        stateView.allow_replacing_mowers = time == 0;
+        //highlight current move
+        program_view.clearMowersHighlights();
+        for each (var mower:Mower in stateView.state.mowers) {
+            var c:Command = stateView.state.getCommand(program_view.program, mower);
+            program_view.setMowerHighlight(mower.state, c.i_lookup, c.j_lookup);
+        }
     }
 
     private function program_changed_eventHandler(event:Event):void {
