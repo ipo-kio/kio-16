@@ -1,6 +1,8 @@
 package ru.ipo.kio._16.rockgarden {
+import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.MouseEvent;
 
 import ru.ipo.kio._16.rockgarden.model.Circle;
 import ru.ipo.kio._16.rockgarden.model.Garden;
@@ -132,6 +134,15 @@ public class RockGardenWorkspace extends Sprite {
         });
 
         _empty_solution = solution;
+
+        var show_hide_tangents:Sprite = new Sprite();
+        var show_hide_tangents_img:DisplayObject = (new ViewArea.AREA_CLASS);
+        show_hide_tangents.addChild(show_hide_tangents_img);
+        addChild(show_hide_tangents);
+        show_hide_tangents.x = 780 - show_hide_tangents_img.width;
+        show_hide_tangents.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+            gardenView.show_tangents = !gardenView.show_tangents;
+        });
     }
 
     public function get solution():Object {

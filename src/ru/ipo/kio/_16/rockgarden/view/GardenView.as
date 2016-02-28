@@ -30,7 +30,7 @@ public class GardenView extends Sprite {
 
     private var _segments_layer:Sprite = null;
 
-    private var _tangent_layer:Sprite = null;
+    private var _tangent_layer:Shape = null;
 
     private var _long_info:TextField = new TextField();
 
@@ -45,6 +45,8 @@ public class GardenView extends Sprite {
     private var _workspace:RockGardenWorkspace;
 
     private var green_ball:Shape;
+
+    private var _show_tangents:Boolean = false;
 
     private const _segments_color_palette:Vector.<uint> = new <uint>[
             0x000000,
@@ -108,6 +110,9 @@ public class GardenView extends Sprite {
 
         init_long_info();
         init_green_ball();
+
+        _tangent_layer = new Shape();
+        addChild(_tangent_layer);
     }
 
     private function init_green_ball():void {
@@ -233,15 +238,9 @@ public class GardenView extends Sprite {
     }
 
     public function redrawTangents():void {
-        return;
-
-        if (_tangent_layer != null)
-            removeChild(_tangent_layer);
-        _tangent_layer = new Sprite();
-        addChild(_tangent_layer);
-
         var t:Vector.<Point> = _g.tangent_lines;
 
+        _tangent_layer.graphics.clear();
         _tangent_layer.graphics.lineStyle(1, 0x888888);
 
         for (var i:int = 0; i < t.length; i += 2) {
@@ -297,16 +296,23 @@ public class GardenView extends Sprite {
                 if (area.selected)
                     updateSideView(area);
             }
+
+            if (_show_tangents)
+                _g.evalSegments();
         } else {
             _g.evalSegments();
             redrawSegments();
-            redrawTangents();
 
             if (_current_area.visible) {
                 _current_area.reeval();
                 updateSideView(_current_area);
             }
         }
+
+        if (_show_tangents)
+            redrawTangents();
+        else
+            _tangent_layer.graphics.clear();
 
         _workspace.submitResult(result);
     }
@@ -564,6 +570,15 @@ public class GardenView extends Sprite {
 
     public function get realHeight():Number {
         return _mul * _g.H;
+    }
+
+    public function get show_tangents():Boolean {
+        return _show_tangents;
+    }
+
+    public function set show_tangents(value:Boolean):void {
+        _show_tangents = value;
+        refresh();
     }
 }
 }
