@@ -1,4 +1,6 @@
 package ru.ipo.kio._16.mower {
+import flash.geom.Matrix;
+
 import ru.ipo.kio._16.mars.*;
 
 import flash.display.BitmapData;
@@ -23,7 +25,7 @@ public class MowerWorkspace extends Sprite {
     private var _problem:KioProblem;
     private var _api:KioApi;
 
-    private var timeSlider:Slider;
+    private var timeSlider:MowerSlider;
     private var programTrace:ProgramTrace;
     private var stateView:StateView;
     private var program_view:ProgramView;
@@ -41,19 +43,34 @@ public class MowerWorkspace extends Sprite {
         _problem = problem;
         _api = KioApi.instance(problem);
 
-        graphics.beginFill(0xFFFFFF);
+        graphics.lineStyle();
+        graphics.beginBitmapFill((new BG_CLASS).bitmapData);
         graphics.drawRect(0, 0, 780, 600);
+        graphics.endFill();
+
+        var m:Matrix = new Matrix();
+        m.translate(10, 10);
+        var swamp_bmp:BitmapData = (new BG_SWAMP_CLASS).bitmapData;
+        graphics.beginBitmapFill(swamp_bmp, m);
+        graphics.drawRect(10, 10, swamp_bmp.width, swamp_bmp.height);
+        graphics.endFill();
+
+        var bottom_bmp:BitmapData = (new BG_BOTTOM_CLASS).bitmapData;
+        m = new Matrix();
+        m.translate(0, 600 - bottom_bmp.height);
+        graphics.beginBitmapFill(bottom_bmp, m);
+        graphics.drawRect(0, 600 - bottom_bmp.height, bottom_bmp.width, bottom_bmp.height);
         graphics.endFill();
 
         var cells:String =
                 "&&&&&&&&&&&&&&&&&&&&&&" +
-                "&....................&" +
+                "&................*...&" +
                 "&...........*........&" +
                 "&......*.............&" +
                 "&......*.............&" +
-                "&......*.............&" +
-                "&.............*......&" +
-                "&....................&" +
+                "&......*...........**&" +
+                "&.............*...**.&" +
+                "&*...................&" +
                 "&....................&" +
                 "&............***.....&" +
                 "&.....*........*.....&" +
@@ -95,8 +112,8 @@ public class MowerWorkspace extends Sprite {
         programTrace = new ProgramTrace(program, initial_state);
         programTrace.run();
 
-        timeSlider = new Slider(0, programTrace.fullTrace.length - 1, 700, 0x000000, 0x000000);
-        timeSlider.x = 20;
+        timeSlider = new MowerSlider(0, programTrace.fullTrace.length - 1, 700, 0x000000, 0x000000);
+        timeSlider.x = 26;
         timeSlider.y = 570;
         addChild(timeSlider);
         timeSlider.addEventListener(Slider.VALUE_CHANGED, slider_value_changedHandler);
@@ -141,12 +158,12 @@ public class MowerWorkspace extends Sprite {
     }
 
     private function initButtons():void {
-        var toStart:GraphicsButton = new GraphicsButton('<<', BTN_TO_START_BMP, BTN_TO_START_O_BMP, BTN_TO_START_P_BMP, 'KioArial', 14, 14);
-        var toEnd:GraphicsButton = new GraphicsButton('>>', BTN_TO_END_BMP, BTN_TO_END_O_BMP, BTN_TO_END_P_BMP, 'KioArial', 14, 14);
-        var stepForward:GraphicsButton = new GraphicsButton('>', BTN_STEP_FORWARD_BMP, BTN_STEP_FORWARD_O_BMP, BTN_STEP_FORWARD_P_BMP, 'KioArial', 14, 14);
-        var stepBack:GraphicsButton = new GraphicsButton('<', BTN_STEP_BACK_BMP, BTN_STEP_BACK_O_BMP, BTN_STEP_BACK_P_BMP, 'KioArial', 14, 14);
-        animate = new GraphicsButton('~>', BTN_ANIMATE_BMP, BTN_ANIMATE_O_BMP, BTN_ANIMATE_P_BMP, 'KioArial', 14, 14);
-        pauseAnimation = new GraphicsButton('||', BTN_PAUSE_ANIMATION_BMP, BTN_PAUSE_ANIMATION_O_BMP, BTN_PAUSE_ANIMATION_P_BMP, 'KioArial', 14, 14);
+        var toStart:GraphicsButton = new GraphicsButton('', BTN_TO_START_BMP, BTN_TO_START_O_BMP, BTN_TO_START_P_BMP, 'KioArial', 14, 14);
+        var toEnd:GraphicsButton = new GraphicsButton('', BTN_TO_END_BMP, BTN_TO_END_O_BMP, BTN_TO_END_P_BMP, 'KioArial', 14, 14);
+        var stepForward:GraphicsButton = new GraphicsButton('', BTN_STEP_FORWARD_BMP, BTN_STEP_FORWARD_O_BMP, BTN_STEP_FORWARD_P_BMP, 'KioArial', 14, 14);
+        var stepBack:GraphicsButton = new GraphicsButton('', BTN_STEP_BACK_BMP, BTN_STEP_BACK_O_BMP, BTN_STEP_BACK_P_BMP, 'KioArial', 14, 14);
+        animate = new GraphicsButton('', BTN_ANIMATE_BMP, BTN_ANIMATE_O_BMP, BTN_ANIMATE_P_BMP, 'KioArial', 14, 14);
+        pauseAnimation = new GraphicsButton('', BTN_PAUSE_ANIMATION_BMP, BTN_PAUSE_ANIMATION_O_BMP, BTN_PAUSE_ANIMATION_P_BMP, 'KioArial', 14, 14);
 
         addChild(toStart);
         addChild(toEnd);
@@ -155,8 +172,8 @@ public class MowerWorkspace extends Sprite {
         addChild(animate);
         addChild(pauseAnimation);
 
-        var buttonsY:int = 500;
-        var buttonsX:int = 20;
+        var buttonsY:int = 480;
+        var buttonsX:int = 10;
         toStart.x = buttonsX;
         toStart.y = buttonsY;
         stepBack.x = buttonsX + toStart.width + 2;
@@ -269,80 +286,89 @@ public class MowerWorkspace extends Sprite {
     }
 
     //embed images
-    [Embed(source="res/animate.png")]
+    [Embed(source="res/bg.png")]
+    public static const BG_CLASS:Class;
+
+    [Embed(source="res/bg-swamp.png")]
+    public static const BG_SWAMP_CLASS:Class;
+
+    [Embed(source="res/bg-bottom.png")]
+    public static const BG_BOTTOM_CLASS:Class;
+
+    [Embed(source="res/buttons/animate.png")]
     public static const BTN_ANIMATE:Class;
     public static const BTN_ANIMATE_BMP:BitmapData = (new BTN_ANIMATE).bitmapData;
 
-    [Embed(source="res/animate_o.png")]
+    [Embed(source="res/buttons/animate_o.png")]
     public static const BTN_ANIMATE_O:Class;
     public static const BTN_ANIMATE_O_BMP:BitmapData = (new BTN_ANIMATE_O).bitmapData;
 
-    [Embed(source="res/animate_p.png")]
+    [Embed(source="res/buttons/animate_p.png")]
     public static const BTN_ANIMATE_P:Class;
     public static const BTN_ANIMATE_P_BMP:BitmapData = (new BTN_ANIMATE_P).bitmapData;
 
 
-    [Embed(source="res/pauseAnimation.png")]
+    [Embed(source="res/buttons/pauseAnimation.png")]
     public static const BTN_PAUSE_ANIMATION:Class;
     public static const BTN_PAUSE_ANIMATION_BMP:BitmapData = (new BTN_PAUSE_ANIMATION).bitmapData;
 
-    [Embed(source="res/pauseAnimation_o.png")]
+    [Embed(source="res/buttons/pauseAnimation_o.png")]
     public static const BTN_PAUSE_ANIMATION_O:Class;
     public static const BTN_PAUSE_ANIMATION_O_BMP:BitmapData = (new BTN_PAUSE_ANIMATION_O).bitmapData;
 
-    [Embed(source="res/pauseAnimation_p.png")]
+    [Embed(source="res/buttons/pauseAnimation_p.png")]
     public static const BTN_PAUSE_ANIMATION_P:Class;
     public static const BTN_PAUSE_ANIMATION_P_BMP:BitmapData = (new BTN_PAUSE_ANIMATION_P).bitmapData;
 
 
-    [Embed(source="res/stepBack.png")]
+    [Embed(source="res/buttons/stepBack.png")]
     public static const BTN_STEP_BACK:Class;
     public static const BTN_STEP_BACK_BMP:BitmapData = (new BTN_STEP_BACK).bitmapData;
 
-    [Embed(source="res/stepBack_o.png")]
+    [Embed(source="res/buttons/stepBack_o.png")]
     public static const BTN_STEP_BACK_O:Class;
     public static const BTN_STEP_BACK_O_BMP:BitmapData = (new BTN_STEP_BACK_O).bitmapData;
 
-    [Embed(source="res/stepBack_p.png")]
+    [Embed(source="res/buttons/stepBack_p.png")]
     public static const BTN_STEP_BACK_P:Class;
     public static const BTN_STEP_BACK_P_BMP:BitmapData = (new BTN_STEP_BACK_P).bitmapData;
 
 
-    [Embed(source="res/stepForward.png")]
+    [Embed(source="res/buttons/stepForward.png")]
     public static const BTN_STEP_FORWARD:Class;
     public static const BTN_STEP_FORWARD_BMP:BitmapData = (new BTN_STEP_FORWARD).bitmapData;
 
-    [Embed(source="res/stepForward_o.png")]
+    [Embed(source="res/buttons/stepForward_o.png")]
     public static const BTN_STEP_FORWARD_O:Class;
     public static const BTN_STEP_FORWARD_O_BMP:BitmapData = (new BTN_STEP_FORWARD_O).bitmapData;
 
-    [Embed(source="res/stepForward_p.png")]
+    [Embed(source="res/buttons/stepForward_p.png")]
     public static const BTN_STEP_FORWARD_P:Class;
     public static const BTN_STEP_FORWARD_P_BMP:BitmapData = (new BTN_STEP_FORWARD_P).bitmapData;
 
 
-    [Embed(source="res/toEnd.png")]
+    [Embed(source="res/buttons/toEnd.png")]
     public static const BTN_TO_END:Class;
     public static const BTN_TO_END_BMP:BitmapData = (new BTN_TO_END).bitmapData;
 
-    [Embed(source="res/toEnd_o.png")]
+    [Embed(source="res/buttons/toEnd_o.png")]
     public static const BTN_TO_END_O:Class;
     public static const BTN_TO_END_O_BMP:BitmapData = (new BTN_TO_END_O).bitmapData;
 
-    [Embed(source="res/toEnd_p.png")]
+    [Embed(source="res/buttons/toEnd_p.png")]
     public static const BTN_TO_END_P:Class;
     public static const BTN_TO_END_P_BMP:BitmapData = (new BTN_TO_END_P).bitmapData;
 
     
-    [Embed(source="res/toStart.png")]
+    [Embed(source="res/buttons/toStart.png")]
     public static const BTN_TO_START:Class;
     public static const BTN_TO_START_BMP:BitmapData = (new BTN_TO_START).bitmapData;
 
-    [Embed(source="res/toStart_o.png")]
+    [Embed(source="res/buttons/toStart_o.png")]
     public static const BTN_TO_START_O:Class;
     public static const BTN_TO_START_O_BMP:BitmapData = (new BTN_TO_START_O).bitmapData;
 
-    [Embed(source="res/toStart_p.png")]
+    [Embed(source="res/buttons/toStart_p.png")]
     public static const BTN_TO_START_P:Class;
     public static const BTN_TO_START_P_BMP:BitmapData = (new BTN_TO_START_P).bitmapData;
 }

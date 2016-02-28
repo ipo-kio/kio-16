@@ -1,4 +1,5 @@
 package ru.ipo.kio._16.mower.model {
+import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.geom.Matrix;
 import flash.geom.Point;
@@ -38,19 +39,26 @@ public class MowerView extends Sprite {
     }
 
     private function redraw():void {
-        var len:Number = CellsDrawer.size2length(CellsDrawer.SIZE_SMALL);
+//        var len:Number = CellsDrawer.size2length(CellsDrawer.SIZE_SMALL);
         var p:Point = CellsDrawer.position2point(_mower.i, _mower.j);
 
         graphics.clear();
 
-        graphics.lineStyle(1, mower.broken ? 0xFF0000 : 0x000000);
-        graphics.drawCircle(p.x + len / 2, p.y + len / 2, 3);
-        graphics.drawCircle(p.x + len / 2, p.y + len / 2, 5);
-        graphics.moveTo(p.x + len / 2, p.y + len / 2);
-        graphics.lineTo(p.x + len / 2, p.y + 2);
+//        graphics.lineStyle(1, mower.broken ? 0xFF0000 : 0x000000);
+//        graphics.drawCircle(p.x + len / 2, p.y + len / 2, 3);
+//        graphics.drawCircle(p.x + len / 2, p.y + len / 2, 5);
+//        graphics.moveTo(p.x + len / 2, p.y + len / 2);
+//        graphics.lineTo(p.x + len / 2, p.y + 2);
+
+        var m:Matrix = new Matrix();
+        m.translate(p.x, p.y);
+        var bmp:BitmapData = _mower.broken ? CellsDrawer.BROKEN_MOWER_BMP : CellsDrawer.MOWER_BMP;
+        graphics.beginBitmapFill(bmp, m);
+        graphics.drawRect(p.x, p.y, bmp.width, bmp.height);
+        graphics.endFill();
 
         if (_show_state)
-            CellsDrawer.drawSymbol(graphics, _mower.i, _mower.j, _mower.state, CellsDrawer.SIZE_SMALL);
+            CellsDrawer.drawSymbol(graphics, _mower.i - 7 / 25, _mower.j - 7 / 25, _mower.state, CellsDrawer.SIZE_SMALL);
     }
 
     public function set animation(value:int):void {

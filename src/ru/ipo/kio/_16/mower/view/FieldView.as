@@ -59,8 +59,17 @@ public class FieldView extends Sprite {
             for (var j:int = 0; j < _field.n; j++) {
                 CellsDrawer.drawCell(g, i, j, _field.getAt(i, j), _size);
 
-                if (_additional_field)
-                    CellsDrawer.drawSymbol(g, i, j, _additional_field.getAt(i, j));
+                if (_additional_field) {
+                    var ii:Number = i;
+                    var jj:Number = j;
+
+                    if (i == 0 && j == 0) {
+                        ii = 8 / 25;
+                        jj = 8 / 25;
+                    }
+
+                    CellsDrawer.drawSymbol(g, ii, jj, _additional_field.getAt(i, j));
+                }
             }
     }
 

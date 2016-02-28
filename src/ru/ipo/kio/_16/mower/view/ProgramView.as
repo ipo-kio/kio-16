@@ -124,7 +124,7 @@ public class ProgramView extends Sprite {
         var position:Position = view.position2cell(event.localX, event.localY);
         if (filterPosition(position)) {
             if (!_current_highlight.small) {
-                var new_action:int = Field.FIELD_NOP;
+                var new_action:int = Field.FIELD_FORWARD;
                 switch (_program.commands[state].getAt(position.i, position.j)) {
                     case Field.FIELD_FORWARD:
                         new_action = Field.FIELD_TURN_LEFT;
@@ -133,7 +133,7 @@ public class ProgramView extends Sprite {
                         new_action = Field.FIELD_TURN_RIGHT;
                         break;
                     case Field.FIELD_TURN_RIGHT:
-                        new_action = Field.FIELD_NOP;
+                        new_action = Field.FIELD_FORWARD;
                         break;
                     case Field.FIELD_NOP:
                         new_action = Field.FIELD_FORWARD;
