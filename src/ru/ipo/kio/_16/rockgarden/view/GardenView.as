@@ -392,7 +392,7 @@ public class GardenView extends Sprite {
 
         switch (_problem_style) {
             case 0:
-                return resultFor0and1(3);
+                return resultFor0and1(4);
             case 1:
                 return resultFor0and1(5);
             case 2:
@@ -422,13 +422,13 @@ public class GardenView extends Sprite {
 
         var s:Number = 0;
         for each (var c:Circle in _g.circles)
-            if (c.enabled && c.r > s)
-                s = c.r;
+            if (c.enabled)
+                s += c.r * c.r;
 
         return {
             r: r,
             d: d,
-            s: int(Math.round(8 * s)),
+            s: int(Math.round(64 * s)),
             err: false
         };
     }

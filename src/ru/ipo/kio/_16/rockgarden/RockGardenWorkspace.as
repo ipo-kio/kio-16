@@ -134,7 +134,7 @@ public class RockGardenWorkspace extends Sprite {
     private function initInfos():void {
         if (_problem.level == 0 || _problem.level == 1) {
             var labels:Array = [
-                _problem.level == 0 ? "Площадок с тремя камнями" : "Площадок с пятью камнями",
+                _problem.level == 0 ? "Площадок с четырьмя камнями" : "Площадок с пятью камнями",
                 "Различных площадок",
                 "Размер камней"
             ];
