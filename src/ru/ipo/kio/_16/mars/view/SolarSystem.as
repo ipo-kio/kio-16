@@ -50,8 +50,8 @@ public class SolarSystem extends Sprite {
 //        earthPosition = new Vector2D(Consts.EARTH_R, 0);
 //        marsPosition = new Vector2D(Consts.MARS_R, 0);
 
-        earthOV = new OrbitView(earthOrbit, SCALE, 0x000088, 1);
-        marsOV = new OrbitView(marsOrbit, SCALE, 0x880000, 1);
+        earthOV = new OrbitView(earthOrbit, SCALE, 0x7469ff, 1);
+        marsOV = new OrbitView(marsOrbit, SCALE, 0xFF4eaf, 1);
 
         addChild(earthOV);
         addChild(marsOV);

@@ -38,6 +38,9 @@ public class MarsWorkspace extends Sprite {
     public static const REMOVE_BUTTON_D_CLASS:Class;
     public static const REMOVE_BUTTON_D_IMG:BitmapData = (new REMOVE_BUTTON_D_CLASS).bitmapData;
 
+    [Embed(source="res/bg.png")]
+    public static const BG_CLASS:Class;
+
     public static const TOTAL_CIRCLES:int = 7;
 
     private var background:Sprite = new Sprite();
@@ -62,7 +65,7 @@ public class MarsWorkspace extends Sprite {
         _problem = problem;
         _api = KioApi.instance(problem);
 
-        background.graphics.beginFill(0xFFFFFF);
+        background.graphics.beginBitmapFill((new BG_CLASS).bitmapData);
         background.graphics.drawRect(0, 0, 780, 600);
         background.graphics.endFill();
 
@@ -77,16 +80,17 @@ public class MarsWorkspace extends Sprite {
 //        background.graphics.drawCircle(300, 300, 280);
 //        background.graphics.drawCircle(300, 300, 280 / 1.524924921);
 
-        setSpeedView = new VectorView(180, 40, 10000, 80);
-        speedView = new VectorView(180, 40, 50000, 80);
+        setSpeedView = new VectorView(180, 40, 10000, 80, 0xFFFFFF);
+        speedView = new VectorView(180, 40, 50000, 80, 0xFFFFFF);
         addChild(setSpeedView);
         addChild(speedView);
         setSpeedView.x = 680;
         setSpeedView.y = 100;
         speedView.x = 680;
-        speedView.y = 280;
+        speedView.y = 100;
 
         speedView.editable = false;
+        speedView.mouseEnabled = false;
 
         setSpeedView.visible = false;
 

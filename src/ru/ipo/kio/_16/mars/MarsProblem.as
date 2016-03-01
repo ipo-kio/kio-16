@@ -9,7 +9,7 @@ import ru.ipo.kio.api.Settings;
 
 public class MarsProblem implements KioProblem {
 
-    [Embed(source="loc/traincars.ru.json-settings",mimeType="application/octet-stream")]
+    [Embed(source="loc/mars.ru.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
 
     public static const ID:String = 'mars';

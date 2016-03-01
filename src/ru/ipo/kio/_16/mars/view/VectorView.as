@@ -21,21 +21,23 @@ public class VectorView extends Sprite {
     private var _delta_Phi:Number;
     private var _mul:Number;
 
+    private var _arrow_color:uint;
     private var _arrow_layer:Sprite;
 
     private var _editable:Boolean = true;
 
-    public function VectorView(anglesNumber:int, radiusesNumber:int, maxValue:Number, size:Number) {
+    public function VectorView(anglesNumber:int, radiusesNumber:int, maxValue:Number, size:Number, arrow_color:uint) {
         _anglesNumber = anglesNumber;
         _radiusesNumber = radiusesNumber;
         _maxValue = maxValue;
         _size = size;
+        _arrow_color = arrow_color;
 
         _delta_R = _maxValue / _radiusesNumber;
         _delta_Phi = 2 * Math.PI / _anglesNumber;
         _mul = size / maxValue;
 
-        initBg();
+//        initBg();
 
         _arrow_layer = new Sprite();
         addChild(_arrow_layer);
@@ -52,7 +54,7 @@ public class VectorView extends Sprite {
         hit_area.visible = false;
         hitArea = hit_area;
 
-        hit_area.graphics.beginFill(0x000000);
+        hit_area.graphics.beginFill(0x0FF000);
         hit_area.graphics.drawCircle(0, 0, _size);
         hit_area.graphics.endFill();
 
@@ -83,7 +85,7 @@ public class VectorView extends Sprite {
         var g:Graphics = _arrow_layer.graphics;
         g.clear();
 
-        g.lineStyle(2, 0x000000);
+        g.lineStyle(2, _arrow_color);
         var point:Point = value2position(_value);
         g.moveTo(0, 0);
         g.lineTo(point.x, point.y);

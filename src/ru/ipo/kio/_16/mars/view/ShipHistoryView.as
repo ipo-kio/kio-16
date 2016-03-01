@@ -47,7 +47,6 @@ public class ShipHistoryView extends Sprite {
         }
 
         //draw actions
-        graphics.lineStyle(0.5, 0x990000);
         for each (var he:ShipAction in history.actions) {
             var pos:Point = ss.position2point(history.positions[he.time]);
             av = new ShipActionView(ss, he);

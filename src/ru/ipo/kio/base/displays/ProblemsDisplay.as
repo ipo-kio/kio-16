@@ -80,6 +80,8 @@ public class ProblemsDisplay extends Sprite {
 
             prb.addEventListener(MouseEvent.CLICK, function(pind:int):Function {
                 return function(event:Event):void {
+                    if (pind == 2)
+                        return;
                     KioBase.instance.log('BTN select problem ' + pind, []);
                     KioBase.instance.setProblem(pind);
                 }
