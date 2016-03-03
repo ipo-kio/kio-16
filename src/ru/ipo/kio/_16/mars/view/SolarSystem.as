@@ -4,7 +4,6 @@ import flash.events.Event;
 import flash.geom.Point;
 
 import ru.ipo.kio._16.mars.MarsWorkspace;
-
 import ru.ipo.kio._16.mars.model.Consts;
 import ru.ipo.kio._16.mars.model.Orbit;
 import ru.ipo.kio._16.mars.model.ShipAction;
@@ -41,11 +40,17 @@ public class SolarSystem extends Sprite {
 
     private var _workspace:MarsWorkspace;
 
-    public function SolarSystem(workspace:MarsWorkspace, speedView:VectorView) {
+    public function SolarSystem(workspace:MarsWorkspace, speedView:VectorView, history:ShipHistory) {
         _workspace = workspace;
         _speedView = speedView;
         earthOrbit = Orbit.solveInitial(Consts.EARTH_R, 0, 0, Consts.EARTH_Vt, 0);
         marsOrbit = Orbit.solveInitial(Consts.MARS_R, 0, 0, Consts.MARS_Vt, 0);
+        _history = history;
+
+        _historyView = new ShipHistoryView(this, _history);
+        historyLayer = new Sprite();
+        historyLayer.addChild(_historyView);
+        addChild(historyLayer);
 
 //        earthPosition = new Vector2D(Consts.EARTH_R, 0);
 //        marsPosition = new Vector2D(Consts.MARS_R, 0);
@@ -55,9 +60,6 @@ public class SolarSystem extends Sprite {
 
         addChild(earthOV);
         addChild(marsOV);
-
-        historyLayer = new Sprite();
-        addChild(historyLayer);
 
         ship = new BodyView(this, "ship");
         earth = new BodyView(this, 0x0000bb);
@@ -71,6 +73,8 @@ public class SolarSystem extends Sprite {
 
         _speedView.addEventListener(VectorView.VALUE_CHANGED, speedView_vector_view_value_changedHandler);
 
+        updateTime();
+
         //setup mask
         var maskSprite:Sprite = new Sprite();
         mask = maskSprite;
@@ -82,6 +86,7 @@ public class SolarSystem extends Sprite {
     }
 
     private function updateTime():void {
+        historyView.time = _timeInd;
         earth.moveTo(earthOrbit.position(_timeInd * Consts.dt));
         mars.moveTo(marsOrbit.position(_timeInd * Consts.dt));
         if (_history != null)
@@ -94,18 +99,6 @@ public class SolarSystem extends Sprite {
 
     public function position2point(p:Vector2D):Point {
         return new Point(p.r * Math.cos(p.theta) * SCALE, -p.r * Math.sin(p.theta) * SCALE);
-    }
-
-    public function set history(history:ShipHistory):void {
-        _history = history;
-
-        if (_historyView != null)
-            historyLayer.removeChild(_historyView);
-
-        _historyView = new ShipHistoryView(this, _history);
-        historyLayer.addChild(_historyView);
-
-        updateTime();
     }
 
     public function get history():ShipHistory {

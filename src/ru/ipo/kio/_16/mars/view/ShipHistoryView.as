@@ -17,6 +17,8 @@ public class ShipHistoryView extends Sprite {
 
     private var _currentShipAction:ShipAction = null;
 
+    private var _time:int = 0;
+
     public function ShipHistoryView(ss:SolarSystem, history:ShipHistory) {
         this.ss = ss;
         this.history = history;
@@ -33,22 +35,31 @@ public class ShipHistoryView extends Sprite {
         }
         _actionsViews.splice(0, _actionsViews.length);
 
-        graphics.lineStyle(4, 0xBBBBBB, 0.6);
-
         //draw trace
+        graphics.lineStyle(4, 0xFFFFFF, 0.5);
         var first:Boolean = true;
+        var time_index:int = 0;
         for each (var v:Vector2D in history.positions) {
+
             var point:Point = ss.position2point(v);
+
+            if (_time == time_index) {
+                graphics.lineStyle(4, 0xFFFFFF, 0.2);
+                graphics.moveTo(point.x, point.y);
+//                first = true;
+            }
+
             if (first) {
                 graphics.moveTo(point.x, point.y);
                 first = false;
             } else
                 graphics.lineTo(point.x, point.y);
+
+            time_index++;
         }
 
         //draw actions
         for each (var he:ShipAction in history.actions) {
-            var pos:Point = ss.position2point(history.positions[he.time]);
             av = new ShipActionView(ss, he);
             _actionsViews.push(av);
             if (he == _currentShipAction)
@@ -87,6 +98,12 @@ public class ShipHistoryView extends Sprite {
 
         for each (var av:ShipActionView in _actionsViews)
             av.selected = av.action == _currentShipAction;
+    }
+
+    public function set time(value:int):void {
+        _time = value;
+
+        redraw();
     }
 }
 }

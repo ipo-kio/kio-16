@@ -80,30 +80,30 @@ public class MarsWorkspace extends Sprite {
 //        background.graphics.drawCircle(300, 300, 280);
 //        background.graphics.drawCircle(300, 300, 280 / 1.524924921);
 
-        setSpeedView = new VectorView(180, 40, 10000, 80, 0xFFFFFF);
-        speedView = new VectorView(180, 40, 50000, 80, 0xFFFFFF);
+        setSpeedView = new VectorView(360, 100, 10000, 80, 0xFFFFFF, false, 0, 0xFFFFFF);
+        speedView = new VectorView(180, 40, 50000, 80, 0xFFFF00, true, 2, 0xFFFF00);
         addChild(setSpeedView);
         addChild(speedView);
         setSpeedView.x = 680;
-        setSpeedView.y = 100;
+        setSpeedView.y = 140;
         speedView.x = 680;
-        speedView.y = 100;
+        speedView.y = 140;
 
         speedView.editable = false;
         speedView.mouseEnabled = false;
+        speedView.mouseChildren = false;
 
         setSpeedView.visible = false;
-
-        ss = new SolarSystem(this, setSpeedView);
-        addChild(ss);
-        ss.x = 300;
-        ss.y = 300;
 
         var history:ShipHistory = new ShipHistory(Vector2D.create(Consts.EARTH_R, 0), Vector2D.create(0, Consts.EARTH_Vt));
 //        history.push(new ShipAction(60, Vector2D.create(0, Consts.EARTH_Vt / 20)));
 //        history.push(new ShipAction(120, Vector2D.create(0, Consts.EARTH_Vt / 20)));
 //        history.push(new ShipAction(180, Vector2D.create(0, Consts.EARTH_Vt / 20)));
-        ss.history = history;
+
+        ss = new SolarSystem(this, setSpeedView, history);
+        addChild(ss);
+        ss.x = 300;
+        ss.y = 300;
 
         timeSlider = new Slider(0, Consts.MAX_TIME, 700, 0x000000, 0x000000);
         timeSlider.x = 20;
@@ -120,13 +120,13 @@ public class MarsWorkspace extends Sprite {
 
         bAdd.x = 600;
         bRemove.x = 650;
-        bAdd.y = 400;
-        bRemove.y = 400;
+        bAdd.y = 500;
+        bRemove.y = 500;
 
         bAdd_dis.x = 600;
         bRemove_dis.x = 650;
-        bAdd_dis.y = 400;
-        bRemove_dis.y = 400;
+        bAdd_dis.y = 500;
+        bRemove_dis.y = 500;
 
         bAdd_dis.useHandCursor = false;
         bRemove_dis.useHandCursor = false;
