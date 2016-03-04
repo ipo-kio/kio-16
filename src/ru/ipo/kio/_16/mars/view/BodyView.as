@@ -11,6 +11,7 @@ import ru.ipo.kio._16.mars.view.SolarSystem;
 public class BodyView extends Shape {
 
     private var _ss:SolarSystem;
+    private var _position:Vector2D;
 
     public function BodyView(ss:SolarSystem, _image_class:*) {
         _ss = ss;
@@ -33,9 +34,15 @@ public class BodyView extends Shape {
     }
 
     public function moveTo(position:Vector2D):void {
+        _position = position;
+
         var point:Point = _ss.position2point(position);
         x = point.x;
         y = point.y;
+    }
+
+    public function get position():Vector2D {
+        return _position;
     }
 }
 }

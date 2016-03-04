@@ -10,6 +10,9 @@ public class Vector2D {
         _theta = theta;
         _x = x;
         _y = y;
+
+        while (_theta < 0)
+            _theta += 2 * Math.PI;
     }
 
     public static function create(x:Number, y:Number):Vector2D {

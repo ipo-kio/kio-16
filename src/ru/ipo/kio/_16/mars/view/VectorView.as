@@ -164,7 +164,7 @@ public class VectorView extends Sprite {
         _arrow_layer.hitArea = hit_area;
 
         hit_area.graphics.beginFill(0x0FF000);
-        hit_area.graphics.drawCircle(0, 0, _size + 6);
+        hit_area.graphics.drawCircle(0, 0, _size + 10);
         hit_area.graphics.endFill();
 
         addChild(hit_area);

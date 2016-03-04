@@ -1,6 +1,7 @@
 package ru.ipo.kio._16.mars.view {
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.geom.Matrix;
 import flash.geom.Point;
 
 import ru.ipo.kio._16.mars.MarsWorkspace;
@@ -18,7 +19,7 @@ public class SolarSystem extends Sprite {
     private var earthOrbit:Orbit;
     private var marsOrbit:Orbit;
 
-    private var historyLayer:Sprite;
+//    private var historyLayer:Sprite;
     private var _historyView:ShipHistoryView = null;
 
     private var _history:ShipHistory;
@@ -40,6 +41,8 @@ public class SolarSystem extends Sprite {
 
     private var _workspace:MarsWorkspace;
 
+    private var _scaledLayer:Sprite = new Sprite();
+
     public function SolarSystem(workspace:MarsWorkspace, speedView:VectorView, history:ShipHistory) {
         _workspace = workspace;
         _speedView = speedView;
@@ -48,9 +51,7 @@ public class SolarSystem extends Sprite {
         _history = history;
 
         _historyView = new ShipHistoryView(this, _history);
-        historyLayer = new Sprite();
-        historyLayer.addChild(_historyView);
-        addChild(historyLayer);
+        _scaledLayer.addChild(_historyView);
 
 //        earthPosition = new Vector2D(Consts.EARTH_R, 0);
 //        marsPosition = new Vector2D(Consts.MARS_R, 0);
@@ -58,15 +59,15 @@ public class SolarSystem extends Sprite {
         earthOV = new OrbitView(earthOrbit, SCALE, 0x7469ff, 1);
         marsOV = new OrbitView(marsOrbit, SCALE, 0xFF4eaf, 1);
 
-        addChild(earthOV);
-        addChild(marsOV);
+        _scaledLayer.addChild(earthOV);
+        _scaledLayer.addChild(marsOV);
 
         ship = new BodyView(this, "ship");
         earth = new BodyView(this, 0x0000bb);
         mars = new BodyView(this, 0xbb0000);
-        addChild(earth);
-        addChild(mars);
-        addChild(ship);
+        _scaledLayer.addChild(earth);
+        _scaledLayer.addChild(mars);
+        _scaledLayer.addChild(ship);
 
         _timeInd = 0;
         updateTime();
@@ -83,6 +84,8 @@ public class SolarSystem extends Sprite {
         maskSprite.graphics.drawRect(-r, -r, 2 * r, 2 * r);
         maskSprite.graphics.endFill();
         addChild(maskSprite);
+
+        addChild(_scaledLayer);
     }
 
     private function updateTime():void {
@@ -91,6 +94,41 @@ public class SolarSystem extends Sprite {
         mars.moveTo(marsOrbit.position(_timeInd * Consts.dt));
         if (_history != null)
             ship.moveTo(_history.time2position(_timeInd));
+
+        updateScale();
+    }
+
+    private function updateScale():void {
+        var dx:Number = ship.x - mars.x;
+        var dy:Number = ship.y - mars.y;
+        var d:Number = Math.sqrt(dx * dx + dy * dy);
+
+        var d0:Number = 50;
+        var d1:Number = 1;
+        var finalVisibleD:Number = VISIBLE_RADIUS / 2;
+        // --- d0 --- 1
+//            d0      VISIBLE_RADIUS / 2
+        //d = d0, k = 1
+        //d = 1, k = VISIBLE_RADIUS / 2
+        if (d >= d0) {
+            var k:Number = 1;
+            var x0:Number = 0;
+            var y0:Number = 0;
+        } else if (d >= d1) {
+            k = ((d - d0) * (finalVisibleD - d0) / (d1 - d0) + d0) / d;
+            var t:Number = 1 - Math.pow(1 - (d - d0) / (d1 - d0), 3);
+            x0 = mars.x * t;
+            y0 = mars.y * t;
+        } else {
+            k = finalVisibleD / d1;
+            x0 = mars.x;
+            y0 = mars.y;
+        }
+
+        var m:Matrix = new Matrix();
+        m.translate(-x0, -y0);
+        m.scale(k, k);
+        _scaledLayer.transform.matrix = m;
     }
 
     public function moveShipTo(p:Vector2D):void {

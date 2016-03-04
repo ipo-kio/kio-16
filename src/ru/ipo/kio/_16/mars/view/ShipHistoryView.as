@@ -1,9 +1,7 @@
 package ru.ipo.kio._16.mars.view {
+import flash.display.LineScaleMode;
 import flash.display.Sprite;
 import flash.geom.Point;
-
-import ru.ipo.kio._16.mars.model.Consts;
-import ru.ipo.kio._16.mars.model.Orbit;
 
 import ru.ipo.kio._16.mars.model.ShipHistory;
 import ru.ipo.kio._16.mars.model.ShipAction;
@@ -36,7 +34,7 @@ public class ShipHistoryView extends Sprite {
         _actionsViews.splice(0, _actionsViews.length);
 
         //draw trace
-        graphics.lineStyle(4, 0xFFFFFF, 0.5);
+        graphics.lineStyle(4, 0xFFFFFF, 0.5, false, LineScaleMode.NONE);
         var first:Boolean = true;
         var time_index:int = 0;
         for each (var v:Vector2D in history.positions) {
@@ -44,7 +42,7 @@ public class ShipHistoryView extends Sprite {
             var point:Point = ss.position2point(v);
 
             if (_time == time_index) {
-                graphics.lineStyle(4, 0xFFFFFF, 0.2);
+                graphics.lineStyle(4, 0xFFFFFF, 0.2, false, LineScaleMode.NONE);
                 graphics.moveTo(point.x, point.y);
 //                first = true;
             }
@@ -66,21 +64,6 @@ public class ShipHistoryView extends Sprite {
                 av.selected = true;
             addChild(av);
         }
-
-        //draw start and finish
-        var start:Point = ss.position2point(history.positions[0]);
-        var finish:Point = ss.position2point(history.positions[Consts.MAX_TIME]);
-
-        graphics.lineStyle(0.5, 0x009900);
-        graphics.drawCircle(start.x, start.y, 2);
-        graphics.lineStyle(0.5, 0x009988);
-        graphics.drawCircle(finish.x, finish.y, 2);
-
-//        trace(ss.earthOrbit.position());
-
-        //add orbits
-//        for each (var o:Orbit in history.orbits)
-//            addChild(new OrbitView(o, SolarSystem.SCALE, 0x0, 1));
     }
 
     public function get actionsViews():Vector.<ShipActionView> {
