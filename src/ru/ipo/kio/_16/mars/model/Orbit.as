@@ -63,6 +63,22 @@ public class Orbit {
         return Vector2D.createPolar(r, theta + _theta0);
     }
 
+    public function speed(t:Number):Vector2D {
+        var currentPosition:Vector2D = position(t);
+        var r_:Vector2D = currentPosition.normalize();
+        var t_:Vector2D = r_.rot90();
+
+        var theta:Number = currentPosition.theta - this.theta0;
+        var Vt:Number = Math.sqrt((this.eps * Math.cos(theta) + 1) * Consts.MU / currentPosition.r);
+        var Vr:Number = this.eps * Math.sin(theta) * Consts.MU / currentPosition.r / Vt;
+
+        var Vx:Number = r_.x * Vr + t_.x * Vt;
+        var Vy:Number = r_.y * Vr + t_.y * Vt;
+        var V:Vector2D = Vector2D.create(Vx, Vy);
+
+        return V;
+    }
+
     public static function solveInitial(r0x:Number, r0y:Number, v0x:Number, v0y:Number, t0:Number):Orbit {
         var r:Number = Math.sqrt(sq(r0x) + sq(r0y));
 

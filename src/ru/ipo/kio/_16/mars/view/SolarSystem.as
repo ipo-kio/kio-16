@@ -17,7 +17,7 @@ public class SolarSystem extends Sprite {
     public static const SCALE:Number = VISIBLE_RADIUS / Consts.MARS_R;
 
     private var earthOrbit:Orbit;
-    private var marsOrbit:Orbit;
+    public static const _marsOrbit:Orbit = Orbit.solveInitial(Consts.MARS_R, 0, 0, Consts.MARS_Vt, 0);
 
 //    private var historyLayer:Sprite;
     private var _historyView:ShipHistoryView = null;
@@ -47,7 +47,7 @@ public class SolarSystem extends Sprite {
         _workspace = workspace;
         _speedView = speedView;
         earthOrbit = Orbit.solveInitial(Consts.EARTH_R, 0, 0, Consts.EARTH_Vt, 0);
-        marsOrbit = Orbit.solveInitial(Consts.MARS_R, 0, 0, Consts.MARS_Vt, 0);
+//        _marsOrbit = Orbit.solveInitial(Consts.MARS_R, 0, 0, Consts.MARS_Vt, 0);
         _history = history;
 
         _historyView = new ShipHistoryView(this, _history);
@@ -57,7 +57,7 @@ public class SolarSystem extends Sprite {
 //        marsPosition = new Vector2D(Consts.MARS_R, 0);
 
         earthOV = new OrbitView(earthOrbit, SCALE, 0x7469ff, 1);
-        marsOV = new OrbitView(marsOrbit, SCALE, 0xFF4eaf, 1);
+        marsOV = new OrbitView(_marsOrbit, SCALE, 0xFF4eaf, 1);
 
         _scaledLayer.addChild(earthOV);
         _scaledLayer.addChild(marsOV);
@@ -91,7 +91,7 @@ public class SolarSystem extends Sprite {
     private function updateTime():void {
         historyView.time = _timeInd;
         earth.moveTo(earthOrbit.position(_timeInd * Consts.dt));
-        mars.moveTo(marsOrbit.position(_timeInd * Consts.dt));
+        mars.moveTo(_marsOrbit.position(_timeInd * Consts.dt));
         if (_history != null)
             ship.moveTo(_history.time2position(_timeInd));
 
@@ -176,8 +176,9 @@ public class SolarSystem extends Sprite {
     private function speedView_vector_view_value_changedHandler(event:Event):void {
         if (_currentShipAction != null) {
             _currentShipAction.dV = _speedView.value;
-            history.evaluatePositions();
-            _historyView.redraw();
+//            history.evaluatePositions();
+//            _historyView.redraw();
+            _workspace.historyUpdated();
             updateTime();
         }
     }
@@ -188,6 +189,10 @@ public class SolarSystem extends Sprite {
 
     public function get currentShipAction():ShipAction {
         return _currentShipAction;
+    }
+
+    public static function get marsOrbit():Orbit {
+        return _marsOrbit;
     }
 }
 }

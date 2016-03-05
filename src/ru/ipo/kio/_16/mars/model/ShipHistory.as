@@ -5,13 +5,18 @@ public class ShipHistory {
     private var _positions:Vector.<Vector2D>;
     private var _speeds:Vector.<Vector2D>;
     private var _orbits:Vector.<Orbit>;
+    private var _marsResults:Vector.<MarsResult>;
+
+    private var _bestMarsResult:MarsResult;
 
     private var initialPosition:Vector2D;
     private var initialV:Vector2D;
+    private var marsOrbit:Orbit;
 
-    public function ShipHistory(initialPosition:Vector2D, initialV:Vector2D) {
+    public function ShipHistory(initialPosition:Vector2D, initialV:Vector2D, marsOrbit:Orbit) {
         this.initialPosition = initialPosition;
         this.initialV = initialV;
+        this.marsOrbit = marsOrbit;
 
         _actions = new <ShipAction>[];
 
@@ -21,6 +26,8 @@ public class ShipHistory {
     public function evaluatePositions():void {
         _positions = new Vector.<Vector2D>(Consts.MAX_TIME + 1, true);
         _speeds = new Vector.<Vector2D>(Consts.MAX_TIME + 1, true);
+        _marsResults = new Vector.<MarsResult>(Consts.MAX_TIME + 1, true);
+        _bestMarsResult = null;
 
         _orbits = new <Orbit>[];
 
@@ -30,6 +37,8 @@ public class ShipHistory {
         var currentDirection:int = initialPosition.vectorMul(initialV);
         var currentOrbit:Orbit = _orbits[0];
 
+        var currentFuel:Number = 0;
+
         for (var timeInd:int = 0; timeInd <= Consts.MAX_TIME; timeInd++) {
             //eval position
 
@@ -37,7 +46,7 @@ public class ShipHistory {
             var currentPosition:Vector2D = currentOrbit.position(time);
             _positions[timeInd] = currentPosition;
 
-            //eval speed
+            //eval speed (now copied to Orbit.speed)
 
             var r_:Vector2D = currentPosition.normalize();
             var t_:Vector2D = r_.rot90();
@@ -58,6 +67,15 @@ public class ShipHistory {
 //            }
 
             _speeds[timeInd] = V;
+            _marsResults[timeInd] = new MarsResult(
+                    timeInd,
+                    marsOrbit.position(timeInd * Consts.dt).distanceTo(currentPosition),
+                    marsOrbit.speed(timeInd * Consts.dt).sub(V).r,
+                    currentFuel
+            );
+
+            if (_bestMarsResult == null || _bestMarsResult.compareTo(_marsResults[timeInd]) < 0)
+                _bestMarsResult = _marsResults[timeInd];
 
             if (nextActionIndex < _actions.length && _actions[nextActionIndex].time == timeInd) {
 
@@ -65,6 +83,8 @@ public class ShipHistory {
                 Vx += dV.x;
                 Vy += dV.y;
                 V = Vector2D.create(Vx, Vy);
+
+                currentFuel += dV.r;
 
                 var nextOrbit:Orbit = Orbit.solveInitial(currentPosition.x, currentPosition.y, Vx, Vy, time);
                 var nextDirection:Number = currentPosition.vectorMul(V);
@@ -102,6 +122,42 @@ public class ShipHistory {
 
     public function get speeds():Vector.<Vector2D> {
         return _speeds;
+    }
+
+    public function get marsResults():Vector.<MarsResult> {
+        return _marsResults;
+    }
+
+    public function get bestMarsResult():MarsResult {
+        return _bestMarsResult;
+    }
+
+    public function get as_object():Object {
+        var a:Array = [];
+        for each (var action:ShipAction in _actions) {
+            a.push({
+                dvr: action.dV.r,
+                dvt: action.dV.theta,
+                t: action.time
+            });
+        }
+
+        return {a: a};
+    }
+
+    public function set as_object(value:Object):void {
+        if (value == null)
+            return;
+
+//        if (!('a' in value))
+//            return;
+
+        var a:Array = value.a;
+
+        _actions = new <ShipAction>[];
+        for each (var o:Object in a) {
+            _actions.push(new ShipAction(o.t, Vector2D.createPolar(o.dvr, o.dvt)));
+        }
     }
 }
 }

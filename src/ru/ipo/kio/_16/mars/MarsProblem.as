@@ -2,6 +2,8 @@ package ru.ipo.kio._16.mars {
 
 import flash.display.DisplayObject;
 
+import ru.ipo.kio._16.mars.model.MarsResult;
+
 import ru.ipo.kio.api.KioApi;
 
 import ru.ipo.kio.api.KioProblem;
@@ -44,17 +46,21 @@ public class MarsProblem implements KioProblem {
     }
 
     public function get solution():Object {
-        return {};
+        return workspace.solution;
     }
 
     public function loadSolution(solution:Object):Boolean {
         if (solution == null)
             clear();
+        workspace.solution = solution;
         return true;
     }
 
     public function compare(r1:Object, r2:Object):int {
-        return 0;
+        var mr1:MarsResult = MarsResult.create_from_object(r1);
+        var mr2:MarsResult = MarsResult.create_from_object(r2);
+
+        return mr1.compareTo(mr2);
     }
 
     public function get icon():Class {
@@ -70,6 +76,7 @@ public class MarsProblem implements KioProblem {
     }
 
     public function clear():void {
+        loadSolution({a: []});
     }
 }
 }

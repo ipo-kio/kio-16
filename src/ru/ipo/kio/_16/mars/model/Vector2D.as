@@ -49,6 +49,10 @@ public class Vector2D {
         return _x * v2._x + _y * v2._y;
     }
 
+    public function sub(v:Vector2D):Vector2D {
+        return Vector2D.create(_x - v._x, _y - v._y);
+    }
+
     public function rot90():Vector2D {
 //        return createPolar(_r, _theta + Math.PI / 2);
         //noinspection JSSuspiciousNameCombination
@@ -65,14 +69,11 @@ public class Vector2D {
         return createPolar(1, _theta);
     }
 
-//    public function addIn(v2:Vector2D):void {
-//        _x += v2._x;
-//        _y += v2._y;
-//    }
-//
-//    public function mulIn(a:Number):void {
-//        _x *= a;
-//        _y *= a;
-//    }
+    public function distanceTo(v:Vector2D):Number {
+        var dx:Number = x - v.x;
+        var dy:Number = y - v.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
 }
 }

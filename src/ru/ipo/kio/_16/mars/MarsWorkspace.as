@@ -6,6 +6,7 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 
 import ru.ipo.kio._16.mars.model.Consts;
+import ru.ipo.kio._16.mars.model.MarsResult;
 
 import ru.ipo.kio._16.mars.model.ShipHistory;
 import ru.ipo.kio._16.mars.model.ShipAction;
@@ -16,6 +17,7 @@ import ru.ipo.kio._16.mars.view.VectorView;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.controls.GraphicsButton;
+import ru.ipo.kio.api.controls.InfoPanel;
 
 public class MarsWorkspace extends Sprite {
 
@@ -59,6 +61,10 @@ public class MarsWorkspace extends Sprite {
     private var speedView:VectorView;
     private var setSpeedView:VectorView;
 
+    private var _current_info:InfoPanel;
+    private var _closest_info:InfoPanel;
+    private var _closest_record:InfoPanel;
+
     public function MarsWorkspace(problem:KioProblem) {
 //        trace(Orbit.solveKeplerEquation(2.8453268117053505, 0.5084113241345426)); //newtown fails here
 
@@ -95,14 +101,14 @@ public class MarsWorkspace extends Sprite {
 
         setSpeedView.visible = false;
 
-        var history:ShipHistory = new ShipHistory(Vector2D.create(Consts.EARTH_R, 0), Vector2D.create(0, Consts.EARTH_Vt));
+        var history:ShipHistory = new ShipHistory(Vector2D.create(Consts.EARTH_R, 0), Vector2D.create(0, Consts.EARTH_Vt), SolarSystem.marsOrbit);
 //        history.push(new ShipAction(60, Vector2D.create(0, Consts.EARTH_Vt / 20)));
 //        history.push(new ShipAction(120, Vector2D.create(0, Consts.EARTH_Vt / 20)));
 //        history.push(new ShipAction(180, Vector2D.create(0, Consts.EARTH_Vt / 20)));
 
         ss = new SolarSystem(this, setSpeedView, history);
         addChild(ss);
-        ss.x = 300;
+        ss.x = 290;
         ss.y = 300;
 
         timeSlider = new Slider(0, Consts.MAX_TIME, 700, 0x000000, 0x000000);
@@ -118,15 +124,15 @@ public class MarsWorkspace extends Sprite {
         addChild(bAdd_dis);
         addChild(bRemove_dis);
 
-        bAdd.x = 600;
-        bRemove.x = 650;
-        bAdd.y = 500;
-        bRemove.y = 500;
+        bAdd.x = 500;
+        bAdd.y = 10;
+        bRemove.x = bAdd.x + 50;
+        bRemove.y = bAdd.y;
 
-        bAdd_dis.x = 600;
-        bRemove_dis.x = 650;
-        bAdd_dis.y = 500;
-        bRemove_dis.y = 500;
+        bAdd_dis.x = bAdd.x;
+        bRemove_dis.x = bRemove.x;
+        bAdd_dis.y = bAdd.y;
+        bRemove_dis.y = bRemove.y;
 
         bAdd_dis.useHandCursor = false;
         bRemove_dis.useHandCursor = false;
@@ -138,6 +144,39 @@ public class MarsWorkspace extends Sprite {
 
         bAdd.addEventListener(MouseEvent.CLICK, bAdd_clickHandler);
         bRemove.addEventListener(MouseEvent.CLICK, bRemove_clickHandler);
+
+        init_info();
+
+        _api.addEventListener(KioApi.RECORD_EVENT, api_recordHandler);
+    }
+
+    private function init_info():void {
+        var labels:Array = [
+//                "День",
+//                "Расстояние до Марса",
+//                "Скорость отн. Марса",
+//                "Топливо"
+                "День",
+                "Расст.",
+                "Скор.",
+                "Топл."
+        ];
+
+        _current_info = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Текущие', labels, 190);
+        _closest_info = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Максимальное сближение', labels, 190);
+        _closest_record = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Рекорд', labels, 190);
+
+        addChild(_current_info);
+        addChild(_closest_info);
+        addChild(_closest_record);
+
+        _current_info.x = 580;
+        _closest_info.x = _current_info.x;
+        _closest_record.x = _current_info.x;
+
+        _current_info.y = 300;
+        _closest_info.y = _current_info.y + _closest_info.height;
+        _closest_record.y = _closest_info.y + _closest_record.height;
     }
 
     public function update_add_remove_buttons_state():void {
@@ -174,6 +213,21 @@ public class MarsWorkspace extends Sprite {
         update_add_remove_buttons_state();
 
         update_speed_view();
+
+        update_current_info();
+    }
+
+    private function update_current_info():void {
+        var time:int = timeSlider.valueRounded;
+        var marsResult:MarsResult = ss.history.marsResults[time];
+        update_info(_current_info, marsResult);
+    }
+
+    private static function update_info(infoPanel:InfoPanel, marsResult:MarsResult):void {
+        infoPanel.setValue(0, marsResult.day);
+        infoPanel.setValue(1, (marsResult.isClose ? "ok " : "") + (marsResult.mars_dist / 1000000).toFixed(0) + " т.км");
+        infoPanel.setValue(2, (marsResult.isSlow ? "ok " : "") + (marsResult.mars_speed * 3.6).toFixed(0) + " км/ч");
+        infoPanel.setValue(3, marsResult.fuel.toFixed(0));
     }
 
     private function update_speed_view():void {
@@ -216,10 +270,34 @@ public class MarsWorkspace extends Sprite {
         }
     }
 
-    private function historyUpdated():void {
+    public function historyUpdated(autosave:Boolean = true):void {
         ss.history.evaluatePositions();
         ss.historyView.redraw();
         update_add_remove_buttons_state();
+
+        var r:MarsResult = ss.history.bestMarsResult;
+        if (autosave)
+            _api.autoSaveSolution();
+        _api.submitResult(r.as_object);
+        update_info(_closest_info, r);
+    }
+
+    public function get solution():Object {
+        return ss.history.as_object;
+    }
+
+    public function set solution(o:Object):void {
+        ss.history.as_object = o;
+        historyUpdated(false);
+    }
+
+//    public function resultForDay(day:int)
+    public function get api():KioApi {
+        return _api;
+    }
+
+    private function api_recordHandler(event:Event):void {
+        update_info(_closest_record, ss.history.bestMarsResult);
     }
 }
 }
