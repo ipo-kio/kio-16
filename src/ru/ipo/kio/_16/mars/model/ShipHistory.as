@@ -39,6 +39,8 @@ public class ShipHistory {
 
         var currentFuel:Number = 0;
 
+        var nearEarth:Boolean = true;
+
         for (var timeInd:int = 0; timeInd <= Consts.MAX_TIME; timeInd++) {
             //eval position
 
@@ -80,13 +82,45 @@ public class ShipHistory {
             if (nextActionIndex < _actions.length && _actions[nextActionIndex].time == timeInd) {
 
                 var dV:Vector2D = _actions[nextActionIndex].dV;
-                Vx += dV.x;
-                Vy += dV.y;
+
+                if (nearEarth) {
+                    /*
+                     В момент применения deltaV тело ещё находится в гравитационном поле Земли, т.е. если мы применили импульс в сторону от Земли, то скорость удаления от Земли падает по сравнению с изначальным v1 + deltaV.
+                     Можно в этой ситуации говорить о скорости выхода из сферы действия Земли (V_вых). Это скорость относительно Земли, которую КА будет иметь к тому моменту, как окажется на таком расстоянии от Земли, что действием земной гравитации можно пренебречь.
+
+                     Формула для V_вых следующая: V_вых = sqrt(V^2 - V_осв^2).
+                     где V -- скорость сразу после применения deltaV, а V_осв -- вторая космическая скорость для данной высоты.
+                     Формула взята из книги [1], которая содержит всю теорию, необходимую для вычисления орбит КА. В нашем случае см. часть 4 "межпланетные перелёты".
+
+                     Если мы применим импульс ровно такой, чтобы слететь с земной орбиты (V = V_осв), то получим Vвых = 0, т.е. КА останется в итоге неподвижным относительно Земли и будет вращаться вокруг Солнца по орбите, схожей с орбитой Земли.
+
+                     Посчитаем, как набрать "гомановскую" скорость (Vвых = 2.94 км/c) с низкой околоземной орбиты:
+                     r = 6600 км, орбитальная скорость = 7.77 км/c, V_осв = 10.99 км/c.
+                     V = sqrt(Vвых^2 + V_осв^2) = 11.38 км/c.
+                     следовательно deltaV = 11.38 - 7.77 = 3.61 км/c.
+                     */
+
+                    var VV:Number = Consts.EARTH_V1 + dV.r;
+
+                    if (VV < Consts.EARTH_V2) {
+                        //do nothing with V
+                    } else {
+                        var Vout:Number = Math.sqrt(VV * VV - Consts.EARTH_V2 * Consts.EARTH_V2);
+                        V = Vector2D.createPolar(Vout, dV.theta);
+                        Vx += V.x;
+                        Vy += V.y;
+                        nearEarth = false;
+                    }
+                } else {
+                    Vx += dV.x;
+                    Vy += dV.y;
+                }
+
                 V = Vector2D.create(Vx, Vy);
 
                 currentFuel += dV.r;
 
-                var nextOrbit:Orbit = Orbit.solveInitial(currentPosition.x, currentPosition.y, Vx, Vy, time);
+                var nextOrbit:Orbit = Orbit.solveInitial(currentPosition.x, currentPosition.y, V.x, V.y, time);
                 var nextDirection:Number = currentPosition.vectorMul(V);
                 if (nextOrbit != null && Math.abs(nextDirection) > Consts._EPS) {
                     _orbits.push(nextOrbit);

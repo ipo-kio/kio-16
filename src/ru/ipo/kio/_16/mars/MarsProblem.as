@@ -17,7 +17,7 @@ public class MarsProblem implements KioProblem {
     public static const ID:String = 'mars';
 
     private var _level:int;
-    private var workspace:MarsWorkspace;
+    private var workspace:*;
 
     public function MarsProblem(level: int) {
         _level = level;
@@ -26,7 +26,7 @@ public class MarsProblem implements KioProblem {
 
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
 
-        workspace = new MarsWorkspace(this);
+        workspace = /*level < 2 ? new PlanetsWorkspace(this) : */new MarsWorkspace(this);
     }
 
     public function get id():String {

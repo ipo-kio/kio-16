@@ -332,7 +332,7 @@ public class VectorView extends Sprite {
 
         var r:Number = parseFloat(t);
         if (isNaN(r))
-            return NaN;
+            return 0;
 
         r = Math.round(r / digits) * digits;
 

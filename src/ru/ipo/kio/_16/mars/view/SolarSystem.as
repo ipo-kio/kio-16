@@ -11,7 +11,7 @@ import ru.ipo.kio._16.mars.model.ShipAction;
 import ru.ipo.kio._16.mars.model.ShipHistory;
 import ru.ipo.kio._16.mars.model.Vector2D;
 
-public class SolarSystem extends Sprite {
+public class SolarSystem extends Sprite implements SpaceSystem {
 
     public static const VISIBLE_RADIUS:Number = 280;
     public static const SCALE:Number = VISIBLE_RADIUS / Consts.MARS_R;
@@ -29,6 +29,7 @@ public class SolarSystem extends Sprite {
     private var ship:BodyView;
     private var earth:BodyView;
     private var mars:BodyView;
+    private var sun:BodyView;
 
     private var _currentShipAction:ShipAction = null;
 
@@ -56,18 +57,20 @@ public class SolarSystem extends Sprite {
 //        earthPosition = new Vector2D(Consts.EARTH_R, 0);
 //        marsPosition = new Vector2D(Consts.MARS_R, 0);
 
-        earthOV = new OrbitView(earthOrbit, SCALE, 0x7469ff, 1);
-        marsOV = new OrbitView(_marsOrbit, SCALE, 0xFF4eaf, 1);
+        earthOV = new OrbitView(this, earthOrbit, SCALE, 0x7469ff, 1);
+        marsOV = new OrbitView(this, _marsOrbit, SCALE, 0xFF4eaf, 1);
 
         _scaledLayer.addChild(earthOV);
         _scaledLayer.addChild(marsOV);
 
-        ship = new BodyView(this, "ship");
-        earth = new BodyView(this, 0x0000bb);
-        mars = new BodyView(this, 0xbb0000);
+        ship = new BodyView(this, BodyView.SHIP_BMP);
+        earth = new BodyView(this, BodyView.EARTH_BMP);
+        mars = new BodyView(this, BodyView.MARS_BMP);
+        sun = new BodyView(this, BodyView.SUN_BMP);
         _scaledLayer.addChild(earth);
         _scaledLayer.addChild(mars);
         _scaledLayer.addChild(ship);
+        _scaledLayer.addChild(sun);
 
         _timeInd = 0;
         updateTime();
@@ -104,7 +107,7 @@ public class SolarSystem extends Sprite {
         var d:Number = Math.sqrt(dx * dx + dy * dy);
 
         var d0:Number = 50;
-        var d1:Number = 1;
+        var d1:Number = 5;
         var finalVisibleD:Number = VISIBLE_RADIUS / 2;
         // --- d0 --- 1
 //            d0      VISIBLE_RADIUS / 2
@@ -129,6 +132,11 @@ public class SolarSystem extends Sprite {
         m.translate(-x0, -y0);
         m.scale(k, k);
         _scaledLayer.transform.matrix = m;
+
+        ship.updateTransformation();
+        earth.updateTransformation();
+        mars.updateTransformation();
+        sun.updateTransformation();
     }
 
     public function moveShipTo(p:Vector2D):void {

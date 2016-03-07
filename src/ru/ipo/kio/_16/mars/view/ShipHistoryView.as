@@ -41,17 +41,16 @@ public class ShipHistoryView extends Sprite {
 
             var point:Point = ss.position2point(v);
 
-            if (_time == time_index) {
-                graphics.lineStyle(4, 0xFFFFFF, 0.2, false, LineScaleMode.NONE);
-                graphics.moveTo(point.x, point.y);
-//                first = true;
-            }
-
             if (first) {
                 graphics.moveTo(point.x, point.y);
                 first = false;
             } else
                 graphics.lineTo(point.x, point.y);
+
+            if (_time == time_index) {
+//                graphics.moveTo(point.x, point.y);
+                graphics.lineStyle(4, 0xFFFFFF, 0.2, false, LineScaleMode.NONE);
+            }
 
             time_index++;
         }

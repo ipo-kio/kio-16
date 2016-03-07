@@ -10,6 +10,9 @@ public class Consts {
     public static const EARTH_M:Number = 5.9726e24; //kg
     public static const EARTH_R:Number = 149.6e9; //m
     public static const EARTH_Vt:Number = Math.sqrt(MU / EARTH_R); //https://en.wikipedia.org/wiki/Kepler_orbit , Determination of the Kepler orbit that corresponds to a given initial state
+    public static const EARTH_ORBIT_R:Number = 6600000; //8000000; //6371000;
+    public static const EARTH_V1:Number = Math.sqrt(G * EARTH_M / EARTH_ORBIT_R);
+    public static const EARTH_V2:Number = EARTH_V1 * Math.sqrt(2);
 
     public static const MARS_M:Number = 6.4185e23; //kg
     public static const MARS_R:Number = 227.9e9; //m
@@ -19,6 +22,6 @@ public class Consts {
     public static const MAX_TIME:int = 2000; //5 * 365; //5 years in days
 
     public static const MAX_DIST:Number = 982000000; //Hill Sphere
-    public static const MAX_SPEED:Number = 43610; //Max orbit
+    public static const MAX_SPEED:Number = 12420; //43610; //Max orbit
 }
 }
