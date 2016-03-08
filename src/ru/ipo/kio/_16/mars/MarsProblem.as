@@ -57,10 +57,18 @@ public class MarsProblem implements KioProblem {
     }
 
     public function compare(r1:Object, r2:Object):int {
-        var mr1:MarsResult = MarsResult.create_from_object(r1);
-        var mr2:MarsResult = MarsResult.create_from_object(r2);
+        if (level == 2) {
+            var mr1:MarsResult = MarsResult.create_from_object(r1);
+            var mr2:MarsResult = MarsResult.create_from_object(r2);
 
-        return mr1.compareTo(mr2);
+            return mr1.compareTo(mr2);
+        } else {
+            var d:int = r1.o - r2.o;
+            if (d != 0)
+                return d;
+            d = r2.s - r1.s;
+            return d;
+        }
     }
 
     public function get icon():Class {

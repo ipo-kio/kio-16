@@ -64,6 +64,7 @@ public class PlanetsWorkspace extends Sprite {
     private var _closest_record:InfoPanel;
 
     private var planetInfos:Vector.<InfoPanel>;
+    private var answer_year_days:Vector.<int>;
 
     public function PlanetsWorkspace(problem:KioProblem) {
 //        trace(Orbit.solveKeplerEquation(2.8453268117053505, 0.5084113241345426)); //newtown fails here
@@ -114,25 +115,27 @@ public class PlanetsWorkspace extends Sprite {
 
     private function init_planets_info():void {
         planetInfos = new <InfoPanel>[];
+        answer_year_days = new <int>[];
         for (var i:int = 0; i < Consts.planets_names.length; i++) {
             var realOrbit:Orbit = Orbit.createOrbitByInitial(Vector2D.createPolar(
                     Consts.AU * Consts.planets_orbits[i], Math.PI / 180 * Consts.planets_phis[i]
             ));
-            var daysRotate:int = Math.round(realOrbit.circleTime / 60 / 60 / 24);
+            var daysRotate:int = days_in_orbit(realOrbit);
+            answer_year_days.push(daysRotate);
             var ip:InfoPanel = new InfoPanel(
                     'KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, Consts.planets_names[i],
                     [
-                            'Год (' + daysRotate + ')',
-                            'Позиция'
+                        'Год (' + daysRotate + ')',
+                        'Позиция'
                     ],
-                    160
+                    150
             );
             addChild(ip);
             planetInfos.push(ip);
 
             var dh:Number = 24;
 
-            ip.x = 580 + dh;
+            ip.x = 590 + dh;
             ip.y = 10 + (ip.height + 2) * i;
 
             var m:Matrix = new Matrix();
@@ -190,10 +193,10 @@ public class PlanetsWorkspace extends Sprite {
 //                "Расстояние до Марса",
 //                "Скорость отн. Марса",
 //                "Топливо"
-                "День",
-                "Расст.",
-                "Скор.",
-                "Топл."
+            "День",
+            "Расст.",
+            "Скор.",
+            "Топл."
         ];
 
         _current_info = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Текущие', labels, 160);
@@ -232,9 +235,27 @@ public class PlanetsWorkspace extends Sprite {
         infoPanel.setValue(3, marsResult.fuel.toFixed(0));
     }
 
-    public function set solution(o:Object):void {
-//        ss.history.as_object = o;
-//        historyUpdated(false);
+    public function get solution():Object {
+        var s:Array = [];
+
+        for each (var o:Orbit in ss.orbits)
+            s.push(o.ind, o.phi);
+
+        return {s: s};
+    }
+
+    public function set solution(s:Object):void {
+        if (!s || !s.s)
+            return;
+        var a:Array = s.s;
+        for (var i:int = 0; i < a.length; i += 2) {
+            var orbit:Orbit = Orbit.createOrbitByInitial(Vector2D.createPolar(
+                    ss.all_orbits[a[i]].o.a, Math.PI / 180 * a[i + 1]
+            ));
+            orbit.ind = a[i];
+            orbit.phi = a[i + 1];
+            ss.setOrbitForBody(ss.bodies[i / 2], orbit);
+        }
     }
 
 //    public function resultForDay(day:int)
@@ -262,13 +283,42 @@ public class PlanetsWorkspace extends Sprite {
 //                    Consts.AU * Consts.planets_orbits[i], Math.PI / 180 * Consts.planets_phis[i]
 //            ));
 //            var realDaysRotate:int = Math.round(realOrbit.circleTime / 60 / 60 / 24);
-            var userDaysRotate:int = Math.round(ss.orbits[i].circleTime / 60 / 60 / 24);
+            var userDaysRotate:int = days_in_orbit(ss.orbits[i]);
 
-            var diff:int = Math.round(ss.orbits[i].theta0 / Math.PI * 180) - Math.round(Math.PI / 180 * Consts.planets_phis[i]);
+            var diff:int = time_shift_in_orbit(ss.orbits[i]) - Consts.planets_phis[i];
 
             planetInfos[i].setValue(0, userDaysRotate);
             planetInfos[i].setValue(1, diff);
         }
+    }
+
+    private static function time_shift_in_orbit(orbit:Orbit):Number {
+        return Math.round(orbit.theta0 / Math.PI * 180);
+    }
+
+    private static function days_in_orbit(orbit:Orbit):Number {
+        return Math.round(orbit.circleTime / 60 / 60 / 24);
+    }
+
+    public function get result():Object {
+        //count planets on their orbits
+        var right_orbit:int = 0;
+        var time_shift:int = 0;
+        for (var i:int = 0; i < Consts.planets_names.length - 1; i++) {
+            if (days_in_orbit(ss.orbits[i]) == answer_year_days[i])
+                right_orbit++;
+            time_shift += Math.abs(time_shift_in_orbit(ss.orbits[i]) - Consts.planets_phis[i]);
+        }
+
+        return {
+            'o': right_orbit,
+            's': time_shift
+        };
+    }
+
+    public function viewsUpdated():void {
+        _api.submitResult(result);
+        _api.autoSaveSolution();
     }
 }
 }

@@ -11,6 +11,7 @@ import mx.core.BitmapAsset;
 import ru.ipo.kio._16.mars.model.Orbit;
 
 import ru.ipo.kio._16.mars.model.Vector2D;
+import ru.ipo.kio._16.mars.view.PlanetsSystem;
 
 public class BodyView extends Sprite {
 
@@ -113,24 +114,35 @@ public class BodyView extends Sprite {
 
         var minDistance:Number = +Infinity;
         var optOrbit:OrbitView = null;
+        var optInd:int = 0;
 
+        var all_orbits_ind:int = 0;
         for each (var orbit:OrbitView in PlanetsSystem(_ss).all_orbits) {
             var t:Number = orbit.o.a * orbit.scale;
 
             var dist_to_cursor:Number = Math.abs(d - t);
             if (dist_to_cursor < minDistance) {
                 optOrbit = orbit;
+                optInd = all_orbits_ind;
                 minDistance = dist_to_cursor;
             }
+
+            all_orbits_ind++;
         }
 
         if (optOrbit != null) {
             var theta:Number = Math.atan2(-y, x);
-            theta = Math.round(theta / Math.PI * 180) * Math.PI / 180;
-            trace('theta', Math.round(theta / Math.PI * 180));
+            var phi_in_deg:Number = Math.round(theta / Math.PI * 180);
+            theta = phi_in_deg * Math.PI / 180;
             var newOrbit:Orbit = Orbit.createOrbitByInitial(Vector2D.createPolar(optOrbit.o.a, theta));
+
+            newOrbit.ind = optInd;
+            newOrbit.phi = phi_in_deg;
+
             PlanetsSystem(_ss).setOrbitForBody(this, newOrbit);
         }
+
+        PlanetsSystem(_ss).viewsUpdated();
     }
 
     private function addedToStageHandler(event:Event):void {

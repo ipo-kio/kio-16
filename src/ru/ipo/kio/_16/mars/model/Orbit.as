@@ -10,6 +10,9 @@ public class Orbit {
     private var _c:Number;
     private var _n:Number;
 
+    private var _ind:int;
+    private var _phi:int;
+
     /**
      * creates an orbit
      * @param theta0 perihelium theta in the general coordinate system
@@ -217,6 +220,22 @@ public class Orbit {
         var orbitSpeed:Number = Math.sqrt(Consts.MU / vec.r);
         var speed:Vector2D = Vector2D.createPolar(orbitSpeed, vec.theta - Math.PI / 2);
         return Orbit.solveInitial(vec.x, vec.y, speed.x, speed.y, 0);
+    }
+
+    public function get ind():int {
+        return _ind;
+    }
+
+    public function set ind(value:int):void {
+        _ind = value;
+    }
+
+    public function get phi():int {
+        return _phi;
+    }
+
+    public function set phi(value:int):void {
+        _phi = value;
     }
 }
 }

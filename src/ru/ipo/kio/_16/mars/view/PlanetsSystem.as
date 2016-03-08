@@ -23,7 +23,6 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
 
     private var _scaledLayer:Sprite = new Sprite();
 
-    private var _planets:Vector.<Vector2D> = new <Vector2D>[];
     private var _all_orbits:Vector.<OrbitView>;
     private var _orbits:Vector.<Orbit>;
     private var _orbitViews:Vector.<OrbitView>;
@@ -36,19 +35,14 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
 
         init_all_orbits();
 
-        _planets = new <Vector2D>[];
-        for (var i:int = 0; i < Consts.planets_names.length; i++) {
-            _planets.push(Vector2D.createPolar(_all_orbits[i + 5].o.a, 2 * Math.PI / 180 * i));
-        }
-
         ONE_SCALE_FACTOR = Math.pow(Consts.planets_orbits[3] / Consts.planets_orbits[Consts.planets_orbits.length - 1] / 1.1, 1 / MAX_SCALE_LEVEL);
 
         sun = new BodyView(this, BodyView.SUN_BMP);
         _scaledLayer.addChild(sun);
 
-        _orbits = new Vector.<Orbit>(_planets.length, true);
-        _orbitViews = new Vector.<OrbitView>(_planets.length, true);
-        _bodies = new Vector.<BodyView>(_planets.length, true);
+        _orbits = new Vector.<Orbit>(Consts.planets_names.length, true);
+        _orbitViews = new Vector.<OrbitView>(Consts.planets_names.length, true);
+        _bodies = new Vector.<BodyView>(Consts.planets_names.length, true);
 
         initOrbits();
 
@@ -84,9 +78,13 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
     }
 
     private function initOrbits():void {
-        var i:int = 0;
-        for each (var v2d:Vector2D in _planets) {
+        for (var i:int = 0; i < Consts.planets_names.length; i++) {
+            var orbInd:int = i + 5;
+            var orbPhi:int = 2 * i;
+            var v2d:Vector2D = Vector2D.createPolar(_all_orbits[orbInd].o.a, orbPhi * Math.PI / 180);
             var orbit:Orbit = Orbit.createOrbitByInitial(v2d);
+            orbit.ind = orbInd;
+            orbit.phi = orbPhi;
             var orbitView:OrbitView = new OrbitView(this, orbit, SCALE, 0x7469ff, 1);
             var body:BodyView = new BodyView(this, Consts.planet_view[i]);
             body.enableMouse();
@@ -97,8 +95,6 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
 
             _scaledLayer.addChild(orbitView);
             _scaledLayer.addChild(body);
-
-            i++;
         }
     }
 
@@ -124,7 +120,6 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
     private function updateScaleLevel():void {
         var m:Matrix = new Matrix();
         var s:Number = Math.pow(ONE_SCALE_FACTOR, _scale_level);
-        trace('s', s);
         m.scale(s, s);
         _scaledLayer.transform.matrix = m;
 
@@ -177,6 +172,14 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
 
     public function get orbits():Vector.<Orbit> {
         return _orbits;
+    }
+
+    public function get bodies():Vector.<BodyView> {
+        return _bodies;
+    }
+
+    public function viewsUpdated():void {
+        _workspace.viewsUpdated();
     }
 }
 }
