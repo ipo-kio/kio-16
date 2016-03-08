@@ -21,7 +21,7 @@ import ru.ipo.kio.api.controls.InfoPanel;
 
 public class MarsWorkspace extends Sprite {
 
-    [Embed(source="res/plus.png")]
+    /*[Embed(source="res/plus.png")]
     public static const ADD_BUTTON_CLASS:Class;
     public static const ADD_BUTTON_IMG:BitmapData = (new ADD_BUTTON_CLASS).bitmapData;
     [Embed(source="res/plus_o.png")]
@@ -38,7 +38,23 @@ public class MarsWorkspace extends Sprite {
     public static const REMOVE_BUTTON_O_IMG:BitmapData = (new REMOVE_BUTTON_O_CLASS).bitmapData;
     [Embed(source="res/minus_d.png")]
     public static const REMOVE_BUTTON_D_CLASS:Class;
-    public static const REMOVE_BUTTON_D_IMG:BitmapData = (new REMOVE_BUTTON_D_CLASS).bitmapData;
+    public static const REMOVE_BUTTON_D_IMG:BitmapData = (new REMOVE_BUTTON_D_CLASS).bitmapData;*/
+
+    [Embed(source="res/ser-kn-1.png")]
+    public static const BUTTON_1_CLASS:Class;
+    public static const BUTTON_1_BMP:BitmapData = (new BUTTON_1_CLASS).bitmapData;
+    [Embed(source="res/ser-kn-2.png")]
+    public static const BUTTON_2_CLASS:Class;
+    public static const BUTTON_2_BMP:BitmapData = (new BUTTON_2_CLASS).bitmapData;
+    [Embed(source="res/ser-kn-3.png")]
+    public static const BUTTON_3_CLASS:Class;
+    public static const BUTTON_3_BMP:BitmapData = (new BUTTON_3_CLASS).bitmapData;
+    [Embed(source="res/ser-kn-plus.png")]
+    public static const BUTTON_PLUS_CLASS:Class;
+    public static const BUTTON_PLUS_BMP:BitmapData = (new BUTTON_PLUS_CLASS).bitmapData;
+    [Embed(source="res/ser-kn-minus.png")]
+    public static const BUTTON_MINUS_CLASS:Class;
+    public static const BUTTON_MINUS_BMP:BitmapData = (new BUTTON_MINUS_CLASS).bitmapData;
 
     [Embed(source="res/bg.png")]
     public static const BG_CLASS:Class;
@@ -53,10 +69,10 @@ public class MarsWorkspace extends Sprite {
     private var ss:SolarSystem;
     private var timeSlider:Slider;
 
-    private var bAdd:GraphicsButton = new GraphicsButton('', ADD_BUTTON_IMG, ADD_BUTTON_O_IMG, ADD_BUTTON_O_IMG, '', 10, 10);
-    private var bRemove:GraphicsButton = new GraphicsButton('', REMOVE_BUTTON_IMG, REMOVE_BUTTON_O_IMG, REMOVE_BUTTON_O_IMG, '', 10, 10);
-    private var bAdd_dis:GraphicsButton = new GraphicsButton('', ADD_BUTTON_D_IMG, ADD_BUTTON_D_IMG, ADD_BUTTON_D_IMG, '', 10, 10);
-    private var bRemove_dis:GraphicsButton = new GraphicsButton('', REMOVE_BUTTON_D_IMG, REMOVE_BUTTON_D_IMG, REMOVE_BUTTON_D_IMG, '', 10, 10);
+    private var bAdd:GraphicsButton = new GraphicsButton('', [BUTTON_1_BMP, BUTTON_PLUS_BMP], [BUTTON_2_BMP, BUTTON_PLUS_BMP], [BUTTON_1_BMP, BUTTON_PLUS_BMP], '', 10, 10);
+    private var bRemove:GraphicsButton = new GraphicsButton('', [BUTTON_1_BMP, BUTTON_PLUS_BMP], [BUTTON_2_BMP, BUTTON_PLUS_BMP], [BUTTON_1_BMP, BUTTON_PLUS_BMP], '', 10, 10);
+    private var bAdd_dis:GraphicsButton = new GraphicsButton('', [BUTTON_3_BMP, BUTTON_PLUS_BMP], [BUTTON_3_BMP, BUTTON_PLUS_BMP], [BUTTON_3_BMP, BUTTON_PLUS_BMP], '', 10, 10);
+    private var bRemove_dis:GraphicsButton = new GraphicsButton('', [BUTTON_3_BMP, BUTTON_PLUS_BMP], [BUTTON_3_BMP, BUTTON_PLUS_BMP], [BUTTON_3_BMP, BUTTON_PLUS_BMP], '', 10, 10);
 
     private var speedView:VectorView;
     private var setSpeedView:VectorView;

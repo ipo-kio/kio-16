@@ -34,7 +34,7 @@ public class GraphicsButton extends SimpleButton {
      * @param dx общий сдвиг текста на кнопке относительно центра по x
      * @param dy общий сдвиг текста на кнопке относительно центра по y
      */
-    public function GraphicsButton(title:String, up:BitmapData, over:BitmapData, down:BitmapData, fontName:String, up_size:int, down_size:int, move_x:int = 0, move_y:int = 0, dx:int = 0, dy:int = 0, noCenter:Boolean = false, fontColor:uint = 0x000000, bold:Boolean = false) {
+    public function GraphicsButton(title:String, up:*, over:*, down:*, fontName:String, up_size:int, down_size:int, move_x:int = 0, move_y:int = 0, dx:int = 0, dy:int = 0, noCenter:Boolean = false, fontColor:uint = 0x000000, bold:Boolean = false) {
         var size_inc_res:Array = getSizeInc(title);
         title = size_inc_res[0];
         up_size += size_inc_res[1];
@@ -60,12 +60,24 @@ public class GraphicsButton extends SimpleButton {
         return [title, res];
     }
 
-    private static function createSprite(title:String, bmp:BitmapData, fontName:String, size:int, dx:int = 0, dy:int = 0, noCenter:Boolean = false, fontColor:uint = 0x000000, bold:Boolean = false):Sprite {
+    private static function createSprite(title:String, bmp:*, fontName:String, size:int, dx:int = 0, dy:int = 0, noCenter:Boolean = false, fontColor:uint = 0x000000, bold:Boolean = false):Sprite {
         var sprite:Sprite = new Sprite;
 
-        sprite.graphics.beginBitmapFill(bmp);
-        sprite.graphics.drawRect(0, 0, bmp.width, bmp.height);
-        sprite.graphics.endFill();
+        if (bmp is BitmapData) {
+            var width:Number = bmp.width;
+            var height:Number = bmp.height;
+            sprite.graphics.beginBitmapFill(bmp);
+            sprite.graphics.drawRect(0, 0, width, height);
+            sprite.graphics.endFill();
+        } else {
+            for each (var b:BitmapData in bmp) {
+                width = b.width;
+                height = b.height;
+                sprite.graphics.beginBitmapFill(b);
+                sprite.graphics.drawRect(0, 0, width, height);
+                sprite.graphics.endFill();
+            }
+        }
 
         var textField:TextField = TextUtils.createTextFieldWithFont(fontName, size, false, true, bold);
         textField.textColor = fontColor;
@@ -75,8 +87,8 @@ public class GraphicsButton extends SimpleButton {
             textField.x = dx;
             textField.y = dy;
         } else {
-            textField.x = dx + (bmp.width - textField.width) / 2;
-            textField.y = dy + (bmp.height - textField.height) / 2;
+            textField.x = dx + (width - textField.width) / 2;
+            textField.y = dy + (height - textField.height) / 2;
         }
         sprite.addChild(textField);
 

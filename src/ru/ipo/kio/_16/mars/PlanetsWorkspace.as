@@ -6,8 +6,9 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Matrix;
 
+import ru.ipo.kio._16.mars.MarsWorkspace;
+
 import ru.ipo.kio._16.mars.model.Consts;
-import ru.ipo.kio._16.mars.model.MarsResult;
 import ru.ipo.kio._16.mars.model.Orbit;
 
 import ru.ipo.kio._16.mars.model.ShipHistory;
@@ -22,25 +23,6 @@ import ru.ipo.kio.api.controls.InfoPanel;
 
 public class PlanetsWorkspace extends Sprite {
 
-    [Embed(source="res/plus.png")]
-    public static const ADD_BUTTON_CLASS:Class;
-    public static const ADD_BUTTON_IMG:BitmapData = (new ADD_BUTTON_CLASS).bitmapData;
-    [Embed(source="res/plus_o.png")]
-    public static const ADD_BUTTON_O_CLASS:Class;
-    public static const ADD_BUTTON_O_IMG:BitmapData = (new ADD_BUTTON_O_CLASS).bitmapData;
-    [Embed(source="res/plus_d.png")]
-    public static const ADD_BUTTON_D_CLASS:Class;
-    public static const ADD_BUTTON_D_IMG:BitmapData = (new ADD_BUTTON_D_CLASS).bitmapData;
-    [Embed(source="res/minus.png")]
-    public static const REMOVE_BUTTON_CLASS:Class;
-    public static const REMOVE_BUTTON_IMG:BitmapData = (new REMOVE_BUTTON_CLASS).bitmapData;
-    [Embed(source="res/minus_o.png")]
-    public static const REMOVE_BUTTON_O_CLASS:Class;
-    public static const REMOVE_BUTTON_O_IMG:BitmapData = (new REMOVE_BUTTON_O_CLASS).bitmapData;
-    [Embed(source="res/minus_d.png")]
-    public static const REMOVE_BUTTON_D_CLASS:Class;
-    public static const REMOVE_BUTTON_D_IMG:BitmapData = (new REMOVE_BUTTON_D_CLASS).bitmapData;
-
     [Embed(source="res/bg.png")]
     public static const BG_CLASS:Class;
 
@@ -54,14 +36,19 @@ public class PlanetsWorkspace extends Sprite {
     private var ss:PlanetsSystem;
     private var timeSlider:Slider;
 
-    private var bZoomIn:GraphicsButton = new GraphicsButton('', ADD_BUTTON_IMG, ADD_BUTTON_O_IMG, ADD_BUTTON_O_IMG, '', 10, 10);
-    private var bZoomOut:GraphicsButton = new GraphicsButton('', REMOVE_BUTTON_IMG, REMOVE_BUTTON_O_IMG, REMOVE_BUTTON_O_IMG, '', 10, 10);
-    private var bZoomIn_dis:GraphicsButton = new GraphicsButton('', ADD_BUTTON_D_IMG, ADD_BUTTON_D_IMG, ADD_BUTTON_D_IMG, '', 10, 10);
-    private var bZoomOut_dis:GraphicsButton = new GraphicsButton('', REMOVE_BUTTON_D_IMG, REMOVE_BUTTON_D_IMG, REMOVE_BUTTON_D_IMG, '', 10, 10);
+    /*
+     private var bAdd:GraphicsButton = 
+     private var bRemove:GraphicsButton = new GraphicsButton('', [BUTTON_1_BMP, BUTTON_PLUS_BMP], [BUTTON_2_BMP, BUTTON_PLUS_BMP], [BUTTON_1_BMP, BUTTON_PLUS_BMP], '', 10, 10);
+     private var bAdd_dis:GraphicsButton = new GraphicsButton('', [BUTTON_3_BMP, BUTTON_PLUS_BMP], [BUTTON_3_BMP, BUTTON_PLUS_BMP], [BUTTON_3_BMP, BUTTON_PLUS_BMP], '', 10, 10);
+     private var bRemove_dis:GraphicsButton = new GraphicsButton('', [BUTTON_3_BMP, BUTTON_PLUS_BMP], [BUTTON_3_BMP, BUTTON_PLUS_BMP], [BUTTON_3_BMP, BUTTON_PLUS_BMP], '', 10, 10);
+     */
+    private var bZoomIn:GraphicsButton = new GraphicsButton('', [MarsWorkspace.BUTTON_1_BMP, MarsWorkspace.BUTTON_PLUS_BMP], [MarsWorkspace.BUTTON_2_BMP, MarsWorkspace.BUTTON_PLUS_BMP], [MarsWorkspace.BUTTON_1_BMP, MarsWorkspace.BUTTON_PLUS_BMP], '', 10, 10);
+    private var bZoomOut:GraphicsButton = new GraphicsButton('', [MarsWorkspace.BUTTON_1_BMP, MarsWorkspace.BUTTON_MINUS_BMP], [MarsWorkspace.BUTTON_2_BMP, MarsWorkspace.BUTTON_MINUS_BMP], [MarsWorkspace.BUTTON_1_BMP, MarsWorkspace.BUTTON_MINUS_BMP], '', 10, 10);
+    private var bZoomIn_dis:GraphicsButton = new GraphicsButton('', [MarsWorkspace.BUTTON_3_BMP, MarsWorkspace.BUTTON_PLUS_BMP], [MarsWorkspace.BUTTON_3_BMP, MarsWorkspace.BUTTON_PLUS_BMP], [MarsWorkspace.BUTTON_3_BMP, MarsWorkspace.BUTTON_PLUS_BMP], '', 10, 10);
+    private var bZoomOut_dis:GraphicsButton = new GraphicsButton('', [MarsWorkspace.BUTTON_3_BMP, MarsWorkspace.BUTTON_MINUS_BMP], [MarsWorkspace.BUTTON_2_BMP, MarsWorkspace.BUTTON_MINUS_BMP], [MarsWorkspace.BUTTON_3_BMP, MarsWorkspace.BUTTON_MINUS_BMP], '', 10, 10);
 
-    private var _current_info:InfoPanel;
-    private var _closest_info:InfoPanel;
-    private var _closest_record:InfoPanel;
+    private var _info_panel:InfoPanel;
+    private var _record_panel:InfoPanel;
 
     private var planetInfos:Vector.<InfoPanel>;
     private var answer_year_days:Vector.<int>;
@@ -71,6 +58,8 @@ public class PlanetsWorkspace extends Sprite {
 
         _problem = problem;
         _api = KioApi.instance(problem);
+
+        _api.addEventListener(KioApi.RECORD_EVENT, api_recordHandler);
 
         background.graphics.beginBitmapFill((new BG_CLASS).bitmapData);
         background.graphics.drawRect(0, 0, 780, 600);
@@ -108,9 +97,9 @@ public class PlanetsWorkspace extends Sprite {
 
         init_info();
 
-        _api.addEventListener(KioApi.RECORD_EVENT, api_recordHandler);
-
         init_planets_info();
+
+        update_current_info();
     }
 
     private function init_planets_info():void {
@@ -125,7 +114,7 @@ public class PlanetsWorkspace extends Sprite {
             var ip:InfoPanel = new InfoPanel(
                     'KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, Consts.planets_names[i],
                     [
-                        'Год (' + daysRotate + ')',
+                        'Год',
                         'Позиция'
                     ],
                     150
@@ -189,31 +178,21 @@ public class PlanetsWorkspace extends Sprite {
 
     private function init_info():void {
         var labels:Array = [
-//                "День",
-//                "Расстояние до Марса",
-//                "Скорость отн. Марса",
-//                "Топливо"
-            "День",
-            "Расст.",
-            "Скор.",
-            "Топл."
+            "На правильной орбите",
+            "Неправильное время"
         ];
 
-        _current_info = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Текущие', labels, 160);
-        _closest_info = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Максимальное сближение', labels, 160);
-        _closest_record = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Рекорд', labels, 160);
+        _info_panel = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Результат', labels, 200);
+        _record_panel = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Рекорд', labels, 200);
 
-//        addChild(_current_info);
-//        addChild(_closest_info);
-//        addChild(_closest_record);
+        addChild(_info_panel);
+        addChild(_record_panel);
 
-        _current_info.x = 580;
-        _closest_info.x = _current_info.x;
-        _closest_record.x = _current_info.x;
+        _info_panel.x = 564;
+        _record_panel.x = _info_panel.x;
 
-        _current_info.y = 300;
-        _closest_info.y = _current_info.y + _closest_info.height;
-        _closest_record.y = _closest_info.y + _closest_record.height;
+        _info_panel.y = 460;
+        _record_panel.y = _info_panel.y + _info_panel.height;
     }
 
     private function slider_value_changedHandler(event:Event):void {
@@ -223,16 +202,12 @@ public class PlanetsWorkspace extends Sprite {
     }
 
     private function update_current_info():void {
-//        var time:int = timeSlider.valueRounded;
-//        var marsResult:MarsResult = ss.history.marsResults[time];
-//        update_info(_current_info, marsResult);
+        update_info(_info_panel, result);
     }
 
-    private static function update_info(infoPanel:InfoPanel, marsResult:MarsResult):void {
-        infoPanel.setValue(0, marsResult.day);
-        infoPanel.setValue(1, (marsResult.isClose ? "ok " : "") + (marsResult.mars_dist / 1000000).toFixed(0) + " т.км");
-        infoPanel.setValue(2, (marsResult.isSlow ? "ok " : "") + (marsResult.mars_speed * 3.6).toFixed(0) + " км/ч");
-        infoPanel.setValue(3, marsResult.fuel.toFixed(0));
+    private static function update_info(infoPanel:InfoPanel, result:Object):void {
+        infoPanel.setValue(0, result.o);
+        infoPanel.setValue(1, result.s);
     }
 
     public function get solution():Object {
@@ -245,6 +220,7 @@ public class PlanetsWorkspace extends Sprite {
     }
 
     public function set solution(s:Object):void {
+        return;
         if (!s || !s.s)
             return;
         var a:Array = s.s;
@@ -256,6 +232,9 @@ public class PlanetsWorkspace extends Sprite {
             orbit.phi = a[i + 1];
             ss.setOrbitForBody(ss.bodies[i / 2], orbit);
         }
+
+        update_current_info();
+        _api.submitResult(result);
     }
 
 //    public function resultForDay(day:int)
@@ -264,7 +243,7 @@ public class PlanetsWorkspace extends Sprite {
     }
 
     private function api_recordHandler(event:Event):void {
-        //TODO
+        update_info(_record_panel, result);
     }
 
     private function bZoomIn_clickHandler(event:MouseEvent):void {
@@ -285,7 +264,9 @@ public class PlanetsWorkspace extends Sprite {
 //            var realDaysRotate:int = Math.round(realOrbit.circleTime / 60 / 60 / 24);
             var userDaysRotate:int = days_in_orbit(ss.orbits[i]);
 
-            var diff:int = time_shift_in_orbit(ss.orbits[i]) - Consts.planets_phis[i];
+            var diff:int = time_shift_in_orbit(ss.orbits[i]);
+            if (diff < 0)
+                diff += 360;
 
             planetInfos[i].setValue(0, userDaysRotate);
             planetInfos[i].setValue(1, diff);
@@ -301,13 +282,23 @@ public class PlanetsWorkspace extends Sprite {
     }
 
     public function get result():Object {
+        var earth:int = 2;
+
         //count planets on their orbits
         var right_orbit:int = 0;
         var time_shift:int = 0;
-        for (var i:int = 0; i < Consts.planets_names.length - 1; i++) {
+        for (var i:int = 0; i < Consts.planets_names.length; i++) {
             if (days_in_orbit(ss.orbits[i]) == answer_year_days[i])
                 right_orbit++;
-            time_shift += Math.abs(time_shift_in_orbit(ss.orbits[i]) - Consts.planets_phis[i]);
+
+            var shift:int = time_shift_in_orbit(ss.orbits[i]) - time_shift_in_orbit(ss.orbits[earth]);
+            var needShift:int = Consts.planets_phis[i] - Consts.planets_phis[earth];
+            var d:int = Math.abs(shift - needShift);
+
+            if (_problem.level == 0)
+                time_shift += d;
+            if (_problem.level == 1 && time_shift < d)
+                time_shift = d;
         }
 
         return {
@@ -319,6 +310,7 @@ public class PlanetsWorkspace extends Sprite {
     public function viewsUpdated():void {
         _api.submitResult(result);
         _api.autoSaveSolution();
+        update_current_info();
     }
 }
 }
