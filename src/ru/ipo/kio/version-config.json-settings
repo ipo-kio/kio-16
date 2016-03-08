@@ -1,5 +1,5 @@
 {
-    "version" : "ver. 1.01",
+    "version" : "ver. 1.1",
     "log_mouse_and_keyboard_level" : 0, /*0 = don't log, 1 = only mouse or keyboard up and down, 2 = log also mouse move*/
     "save_log_button" : false
 }

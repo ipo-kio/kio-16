@@ -80,7 +80,8 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
     private function initOrbits():void {
         for (var i:int = 0; i < Consts.planets_names.length; i++) {
             var orbInd:int = 6;
-            var orbPhi:int = 45 * i;
+            var j:int = [3, 5, 0, 2, 6, 7, 1, 4][i];
+            var orbPhi:int = 45 * j;
             var v2d:Vector2D = Vector2D.createPolar(_all_orbits[orbInd].o.a, orbPhi * Math.PI / 180);
             var orbit:Orbit = Orbit.createOrbitByInitial(v2d);
             orbit.ind = orbInd;
@@ -182,6 +183,10 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
 
     public function viewsUpdated():void {
         _workspace.viewsUpdated();
+    }
+
+    public function planetDragStarted():void {
+        _workspace.planetDragStarted();
     }
 }
 }

@@ -136,6 +136,7 @@ public class SolarSystem extends Sprite implements SpaceSystem {
         earth.updateTransformation();
         mars.updateTransformation();
         sun.updateTransformation();
+        historyView.updateTransformation();
     }
 
     public function moveShipTo(p:Vector2D):void {

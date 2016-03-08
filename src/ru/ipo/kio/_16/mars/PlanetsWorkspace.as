@@ -179,7 +179,7 @@ public class PlanetsWorkspace extends Sprite {
     private function init_info():void {
         var labels:Array = [
             "На правильной орбите",
-            "Неправильное время"
+            "Ошибка положения"
         ];
 
         _info_panel = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Результат', labels, 200);
@@ -220,7 +220,6 @@ public class PlanetsWorkspace extends Sprite {
     }
 
     public function set solution(s:Object):void {
-        return;
         if (!s || !s.s)
             return;
         var a:Array = s.s;
@@ -295,10 +294,10 @@ public class PlanetsWorkspace extends Sprite {
             var needShift:int = Consts.planets_phis[i] - Consts.planets_phis[earth];
             var d:int = Math.abs(shift - needShift);
 
-            if (_problem.level == 0)
-                time_shift += d;
-            if (_problem.level == 1 && time_shift < d)
-                time_shift = d;
+//            if (_problem.level == 0)
+            time_shift += d;
+//            if (_problem.level == 1 && time_shift < d)
+//                time_shift = d;
         }
 
         return {
@@ -311,6 +310,10 @@ public class PlanetsWorkspace extends Sprite {
         _api.submitResult(result);
         _api.autoSaveSolution();
         update_current_info();
+    }
+
+    public function planetDragStarted():void {
+        timeSlider.value = 0;
     }
 }
 }

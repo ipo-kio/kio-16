@@ -12,6 +12,7 @@ import ru.ipo.kio._16.mars.model.Orbit;
 
 import ru.ipo.kio._16.mars.model.Vector2D;
 import ru.ipo.kio._16.mars.view.PlanetsSystem;
+import ru.ipo.kio._16.mars.view.PlanetsSystem;
 
 public class BodyView extends Sprite {
 
@@ -93,6 +94,11 @@ public class BodyView extends Sprite {
     private var dragging:Boolean = false;
 
     private function mouseDownHandler(event:MouseEvent):void {
+        var xx:Number = x;
+        var yy:Number = y;
+        PlanetsSystem(_ss).planetDragStarted();
+        x = xx;
+        y = yy;
         startDrag();
         dragging = true;
     }

@@ -87,5 +87,10 @@ public class ShipHistoryView extends Sprite {
 
         redraw();
     }
+
+    public function updateTransformation():void {
+        for each (var view:ShipActionView in _actionsViews)
+            view.updateTransformation();
+    }
 }
 }

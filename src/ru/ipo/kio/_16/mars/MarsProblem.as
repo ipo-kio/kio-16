@@ -14,6 +14,24 @@ public class MarsProblem implements KioProblem {
     [Embed(source="loc/mars.ru.json-settings",mimeType="application/octet-stream")]
     public static var LOCALIZATION_RU:Class;
 
+    [Embed(source="res/statement.png")]
+    public static var STATEMENT_CLASS:Class;
+
+    [Embed(source="res/help.png")]
+    public static var HELP_CLASS:Class;
+
+    [Embed(source="res/statement01.png")]
+    public static var STATEMENT01_CLASS:Class;
+
+    [Embed(source="res/help01.png")]
+    public static var HELP01_CLASS:Class;
+
+    [Embed(source="res/icon01.png")]
+    public static var ICON01_CLASS:Class;
+
+    [Embed(source="res/icon2.png")]
+    public static var ICON_CLASS:Class;
+
     public static const ID:String = 'mars';
 
     private var _level:int;
@@ -72,15 +90,15 @@ public class MarsProblem implements KioProblem {
     }
 
     public function get icon():Class {
-        return null;
+        return level == 2 ? ICON_CLASS : ICON01_CLASS;
     }
 
     public function get icon_help():Class {
-        return null;
+        return level == 2 ? HELP_CLASS : HELP01_CLASS;
     }
 
     public function get icon_statement():Class {
-        return null;
+        return level == 2 ? STATEMENT_CLASS : STATEMENT01_CLASS;
     }
 
     public function clear():void {

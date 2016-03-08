@@ -1,6 +1,8 @@
 package ru.ipo.kio._16.mars.view {
+import flash.display.LineScaleMode;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
+import flash.geom.Matrix;
 import flash.geom.Point;
 
 import ru.ipo.kio._16.mars.model.ShipAction;
@@ -9,7 +11,7 @@ import ru.ipo.kio._16.mars.model.Vector2D;
 public class ShipActionView extends Sprite {
     private static const ACTION_COLOR:uint = 0xCC0000;
     private static const ACTION_COLOR_S:uint = 0x00CC00;
-    private static const SIZE:int = 3;
+    private static const SIZE:int = 6;
 
     private var _ss:SolarSystem;
     private var _a:ShipAction;
@@ -46,7 +48,7 @@ public class ShipActionView extends Sprite {
         var position:Vector2D = _ss.history.time2position(_a.time);
         var point:Point = _ss.position2point(position);
 
-        graphics.lineStyle(2, _selected || _over ? ACTION_COLOR_S : ACTION_COLOR);
+        graphics.lineStyle(2, _selected || _over ? ACTION_COLOR_S : ACTION_COLOR, 1, false, LineScaleMode.NONE);
         graphics.moveTo(point.x - SIZE, point.y - SIZE);
         graphics.lineTo(point.x + SIZE, point.y + SIZE);
         graphics.moveTo(point.x + SIZE, point.y - SIZE);
@@ -54,7 +56,7 @@ public class ShipActionView extends Sprite {
 
         hitArea.graphics.clear();
         hitArea.graphics.beginFill(0xFF0000);
-        hitArea.graphics.drawCircle(point.x, point.y, 5);
+        hitArea.graphics.drawRect(point.x - SIZE, point.y - SIZE, 2 * SIZE, 2 * SIZE);
         hitArea.graphics.endFill();
     }
 
@@ -87,6 +89,17 @@ public class ShipActionView extends Sprite {
 
     public function get action():ShipAction {
         return _a;
+    }
+
+    //TODO code duplication with BodyView.updateTransformation
+    public function updateTransformation(size:Number = 1):void {
+        var pm:Matrix = parent.transform.matrix;
+        var m:Matrix = transform.matrix;
+
+        m.a = size / pm.a;
+        m.d = size / pm.d;
+
+        transform.matrix = m;
     }
 }
 }

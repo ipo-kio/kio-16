@@ -3,6 +3,7 @@ package ru.ipo.kio._16.mars {
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 
 import ru.ipo.kio._16.mars.model.Consts;
@@ -22,23 +23,23 @@ import ru.ipo.kio.api.controls.InfoPanel;
 public class MarsWorkspace extends Sprite {
 
     /*[Embed(source="res/plus.png")]
-    public static const ADD_BUTTON_CLASS:Class;
-    public static const ADD_BUTTON_IMG:BitmapData = (new ADD_BUTTON_CLASS).bitmapData;
-    [Embed(source="res/plus_o.png")]
-    public static const ADD_BUTTON_O_CLASS:Class;
-    public static const ADD_BUTTON_O_IMG:BitmapData = (new ADD_BUTTON_O_CLASS).bitmapData;
-    [Embed(source="res/plus_d.png")]
-    public static const ADD_BUTTON_D_CLASS:Class;
-    public static const ADD_BUTTON_D_IMG:BitmapData = (new ADD_BUTTON_D_CLASS).bitmapData;
-    [Embed(source="res/minus.png")]
-    public static const REMOVE_BUTTON_CLASS:Class;
-    public static const REMOVE_BUTTON_IMG:BitmapData = (new REMOVE_BUTTON_CLASS).bitmapData;
-    [Embed(source="res/minus_o.png")]
-    public static const REMOVE_BUTTON_O_CLASS:Class;
-    public static const REMOVE_BUTTON_O_IMG:BitmapData = (new REMOVE_BUTTON_O_CLASS).bitmapData;
-    [Embed(source="res/minus_d.png")]
-    public static const REMOVE_BUTTON_D_CLASS:Class;
-    public static const REMOVE_BUTTON_D_IMG:BitmapData = (new REMOVE_BUTTON_D_CLASS).bitmapData;*/
+     public static const ADD_BUTTON_CLASS:Class;
+     public static const ADD_BUTTON_IMG:BitmapData = (new ADD_BUTTON_CLASS).bitmapData;
+     [Embed(source="res/plus_o.png")]
+     public static const ADD_BUTTON_O_CLASS:Class;
+     public static const ADD_BUTTON_O_IMG:BitmapData = (new ADD_BUTTON_O_CLASS).bitmapData;
+     [Embed(source="res/plus_d.png")]
+     public static const ADD_BUTTON_D_CLASS:Class;
+     public static const ADD_BUTTON_D_IMG:BitmapData = (new ADD_BUTTON_D_CLASS).bitmapData;
+     [Embed(source="res/minus.png")]
+     public static const REMOVE_BUTTON_CLASS:Class;
+     public static const REMOVE_BUTTON_IMG:BitmapData = (new REMOVE_BUTTON_CLASS).bitmapData;
+     [Embed(source="res/minus_o.png")]
+     public static const REMOVE_BUTTON_O_CLASS:Class;
+     public static const REMOVE_BUTTON_O_IMG:BitmapData = (new REMOVE_BUTTON_O_CLASS).bitmapData;
+     [Embed(source="res/minus_d.png")]
+     public static const REMOVE_BUTTON_D_CLASS:Class;
+     public static const REMOVE_BUTTON_D_IMG:BitmapData = (new REMOVE_BUTTON_D_CLASS).bitmapData;*/
 
     [Embed(source="res/ser-kn-1.png")]
     public static const BUTTON_1_CLASS:Class;
@@ -70,9 +71,9 @@ public class MarsWorkspace extends Sprite {
     private var timeSlider:Slider;
 
     private var bAdd:GraphicsButton = new GraphicsButton('', [BUTTON_1_BMP, BUTTON_PLUS_BMP], [BUTTON_2_BMP, BUTTON_PLUS_BMP], [BUTTON_1_BMP, BUTTON_PLUS_BMP], '', 10, 10);
-    private var bRemove:GraphicsButton = new GraphicsButton('', [BUTTON_1_BMP, BUTTON_PLUS_BMP], [BUTTON_2_BMP, BUTTON_PLUS_BMP], [BUTTON_1_BMP, BUTTON_PLUS_BMP], '', 10, 10);
+    private var bRemove:GraphicsButton = new GraphicsButton('', [BUTTON_1_BMP, BUTTON_MINUS_BMP], [BUTTON_2_BMP, BUTTON_MINUS_BMP], [BUTTON_1_BMP, BUTTON_MINUS_BMP], '', 10, 10);
     private var bAdd_dis:GraphicsButton = new GraphicsButton('', [BUTTON_3_BMP, BUTTON_PLUS_BMP], [BUTTON_3_BMP, BUTTON_PLUS_BMP], [BUTTON_3_BMP, BUTTON_PLUS_BMP], '', 10, 10);
-    private var bRemove_dis:GraphicsButton = new GraphicsButton('', [BUTTON_3_BMP, BUTTON_PLUS_BMP], [BUTTON_3_BMP, BUTTON_PLUS_BMP], [BUTTON_3_BMP, BUTTON_PLUS_BMP], '', 10, 10);
+    private var bRemove_dis:GraphicsButton = new GraphicsButton('', [BUTTON_3_BMP, BUTTON_MINUS_BMP], [BUTTON_3_BMP, BUTTON_MINUS_BMP], [BUTTON_3_BMP, BUTTON_MINUS_BMP], '', 10, 10);
 
     private var speedView:VectorView;
     private var setSpeedView:VectorView;
@@ -80,6 +81,9 @@ public class MarsWorkspace extends Sprite {
     private var _current_info:InfoPanel;
     private var _closest_info:InfoPanel;
     private var _closest_record:InfoPanel;
+
+    private var beginAnim:GraphicsButton = new GraphicsButton(">", BUTTON_1_BMP, BUTTON_2_BMP, BUTTON_3_BMP, 'KioArial', 20, 20);
+    private var pauseAnim:GraphicsButton  = new GraphicsButton("||", BUTTON_1_BMP, BUTTON_2_BMP, BUTTON_3_BMP, 'KioArial', 20, 20);
 
     public function MarsWorkspace(problem:KioProblem) {
 //        trace(Orbit.solveKeplerEquation(2.8453268117053505, 0.5084113241345426)); //newtown fails here
@@ -127,7 +131,7 @@ public class MarsWorkspace extends Sprite {
         ss.x = 290;
         ss.y = 300;
 
-        timeSlider = new Slider(0, Consts.MAX_TIME, 700, 0x000000, 0x000000);
+        timeSlider = new Slider(0, Consts.MAX_TIME, 660, 0x000000, 0x000000);
         timeSlider.x = 20;
         timeSlider.y = 570;
         addChild(timeSlider);
@@ -174,20 +178,34 @@ public class MarsWorkspace extends Sprite {
 
         var VV:Number = Math.sqrt(dv * dv + Consts.EARTH_V2 * Consts.EARTH_V2);
 
+        update_speed_view();
+
         trace('hohmann: ', dv * 3.6, dvp * 3.6, VV * 3.6, (VV - Consts.EARTH_V1) * 3.6);
         trace('hohmann: ', dv, dvp, VV, VV - Consts.EARTH_V1);
+
+        //init buttons
+//        var toStart:GraphicsButton = new GraphicsButton("<<", BUTTON_1_BMP, BUTTON_2_BMP, BUTTON_3_BMP, 'KioArial', 14, 14);
+
+//        var toOpt:GraphicsButton  = new GraphicsButton("o", BUTTON_1_BMP, BUTTON_2_BMP, BUTTON_3_BMP, 'KioArial', 14, 14);
+
+        addChild(beginAnim);
+        addChild(pauseAnim);
+        beginAnim.x = 780 - beginAnim.width - 4;
+        beginAnim.y = 600 - beginAnim.height - 4;
+        pauseAnim.x = beginAnim.x;
+        pauseAnim.y = beginAnim.y;
+
+        pauseAnim.visible = false;
+        beginAnim.addEventListener(MouseEvent.CLICK, beginAnim_clickHandler);
+        pauseAnim.addEventListener(MouseEvent.CLICK, pauseAnim_clickHandler);
     }
 
     private function init_info():void {
         var labels:Array = [
-//                "День",
-//                "Расстояние до Марса",
-//                "Скорость отн. Марса",
-//                "Топливо"
-                "День",
-                "Расст.",
-                "Скор.",
-                "Топл."
+            "Расст.",
+            "Скор.",
+            "Топл.",
+            "День"
         ];
 
         _current_info = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Текущие', labels, 190);
@@ -202,7 +220,7 @@ public class MarsWorkspace extends Sprite {
         _closest_info.x = _current_info.x;
         _closest_record.x = _current_info.x;
 
-        _current_info.y = 300;
+        _current_info.y = 280;
         _closest_info.y = _current_info.y + _closest_info.height;
         _closest_record.y = _closest_info.y + _closest_record.height;
     }
@@ -218,16 +236,17 @@ public class MarsWorkspace extends Sprite {
             return;
         }
 
-        var lastAction:ShipAction = actions[actions.length - 1];
-        var addEnable:Boolean = timeSlider.valueRounded > lastAction.time;
+//        var lastAction:ShipAction = actions[actions.length - 1];
+//        var addEnable:Boolean = timeSlider.valueRounded > lastAction.time;
 
-        /*var removeEnable:Boolean = false;
+        var hasActionAtThisTime:Boolean = false;
         for each (var sa:ShipAction in actions)
             if (sa.time == timeSlider.valueRounded) {
-                removeEnable = true;
+                hasActionAtThisTime = true;
                 break;
-            }*/
+            }
         var removeEnable:Boolean = ss.currentShipAction != null;
+        var addEnable:Boolean = !hasActionAtThisTime;
 
         bAdd.visible = addEnable;
         bAdd_dis.visible = !addEnable;
@@ -252,10 +271,10 @@ public class MarsWorkspace extends Sprite {
     }
 
     private static function update_info(infoPanel:InfoPanel, marsResult:MarsResult):void {
-        infoPanel.setValue(0, marsResult.day);
-        infoPanel.setValue(1, (marsResult.isClose ? "ok " : "") + (marsResult.mars_dist / 1000000).toFixed(0) + " т.км");
-        infoPanel.setValue(2, (marsResult.isSlow ? "ok " : "") + (marsResult.mars_speed * 3.6).toFixed(0) + " км/ч");
-        infoPanel.setValue(3, marsResult.fuel.toFixed(0));
+        infoPanel.setValue(0, (marsResult.isClose ? "ok " : "") + (marsResult.mars_dist / 1000000).toFixed(0) + " т.км");
+        infoPanel.setValue(1, (marsResult.isSlow ? "ok " : "") + (marsResult.mars_speed * 3.6).toFixed(0) + " км/ч");
+        infoPanel.setValue(2, marsResult.fuel.toFixed(0));
+        infoPanel.setValue(3, marsResult.day);
     }
 
     private function update_speed_view():void {
@@ -270,7 +289,7 @@ public class MarsWorkspace extends Sprite {
     }
 
     private function bAdd_clickHandler(event:MouseEvent):void {
-        var shipAction:ShipAction = new ShipAction(timeSlider.valueRounded, Vector2D.create(0, 0));
+        var shipAction:ShipAction = new ShipAction(timeSlider.valueRounded, Vector2D.create(0, 2000));
         ss.history.actions.push(shipAction);
 
         historyUpdated();
@@ -326,6 +345,33 @@ public class MarsWorkspace extends Sprite {
 
     private function api_recordHandler(event:Event):void {
         update_info(_closest_record, ss.history.bestMarsResult);
+    }
+
+    private function beginAnim_clickHandler(event:MouseEvent):void {
+        if (!beginAnim.visible)
+            return;
+        beginAnim.visible = false;
+        pauseAnim.visible = true;
+        framesCounter = 0;
+        addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+    }
+
+    private function pauseAnim_clickHandler(event:MouseEvent):void {
+        if (!pauseAnim.visible)
+            return;
+        pauseAnim.visible = false;
+        beginAnim.visible = true;
+        removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+    }
+
+    private var framesCounter:int = 0;
+    private function enterFrameHandler(event:Event):void {
+        framesCounter ++;
+        if (framesCounter % 5 == 0)
+            timeSlider.value += 1;
+
+        if (timeSlider.valueRounded == Consts.MAX_TIME)
+            pauseAnim_clickHandler(null);
     }
 }
 }
