@@ -116,7 +116,7 @@ public class PlanetsWorkspace extends Sprite {
         planetInfos = new <InfoPanel>[];
         for (var i:int = 0; i < Consts.planets_names.length; i++) {
             var realOrbit:Orbit = Orbit.createOrbitByInitial(Vector2D.createPolar(
-                    Consts.planets_orbits[i], Math.PI / 180 * Consts.planets_phis[i]
+                    Consts.AU * Consts.planets_orbits[i], Math.PI / 180 * Consts.planets_phis[i]
             ));
             var daysRotate:int = Math.round(realOrbit.circleTime / 60 / 60 / 24);
             var ip:InfoPanel = new InfoPanel(
@@ -258,14 +258,15 @@ public class PlanetsWorkspace extends Sprite {
 
     public function updatePlanetsInfo():void {
         for (var i:int = 0; i < Consts.planets_names.length; i++) {
-            var realOrbit:Orbit = Orbit.createOrbitByInitial(Vector2D.createPolar(
-                    Consts.planets_orbits[i], Math.PI / 180 * Consts.planets_phis[i]
-            ));
-            var daysRotate:int = Math.round(realOrbit.circleTime / 60 / 60 / 24);
+//            var realOrbit:Orbit = Orbit.createOrbitByInitial(Vector2D.createPolar(
+//                    Consts.AU * Consts.planets_orbits[i], Math.PI / 180 * Consts.planets_phis[i]
+//            ));
+//            var realDaysRotate:int = Math.round(realOrbit.circleTime / 60 / 60 / 24);
+            var userDaysRotate:int = Math.round(ss.orbits[i].circleTime / 60 / 60 / 24);
 
             var diff:int = Math.round(ss.orbits[i].theta0 / Math.PI * 180) - Math.round(Math.PI / 180 * Consts.planets_phis[i]);
 
-            planetInfos[i].setValue(0, daysRotate);
+            planetInfos[i].setValue(0, userDaysRotate);
             planetInfos[i].setValue(1, diff);
         }
     }

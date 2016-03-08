@@ -209,7 +209,7 @@ public class Orbit {
         return _c;
     }
 
-    public function get circleTime():int {
+    public function get circleTime():Number {
         return 2 * Math.PI * a * Math.sqrt(a / Consts.MU);
     }
 
