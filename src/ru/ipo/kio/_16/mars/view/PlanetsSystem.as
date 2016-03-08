@@ -19,8 +19,6 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
 
     private var sun:BodyView;
 
-    private var _speedView:VectorView;
-
     private var _workspace:PlanetsWorkspace;
 
     private var _scaledLayer:Sprite = new Sprite();
@@ -33,12 +31,17 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
 
     private var _scale_level:int = 0;
 
-    public function PlanetsSystem(workspace:PlanetsWorkspace, speedView:VectorView, planets:Vector.<Vector2D>) {
+    public function PlanetsSystem(workspace:PlanetsWorkspace) {
         _workspace = workspace;
-        _speedView = speedView;
-        _planets = planets;
 
-        ONE_SCALE_FACTOR = Math.pow(planets[3].r / planets[planets.length - 1].r / 1.1, 1 / MAX_SCALE_LEVEL);
+        init_all_orbits();
+
+        _planets = new <Vector2D>[];
+        for (var i:int = 0; i < Consts.planets_names.length; i++) {
+            _planets.push(Vector2D.createPolar(_all_orbits[i + 5].o.a, 2 * Math.PI / 180 * i));
+        }
+
+        ONE_SCALE_FACTOR = Math.pow(Consts.planets_orbits[3] / Consts.planets_orbits[Consts.planets_orbits.length - 1] / 1.1, 1 / MAX_SCALE_LEVEL);
 
         sun = new BodyView(this, BodyView.SUN_BMP);
         _scaledLayer.addChild(sun);
@@ -65,10 +68,9 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
         addChild(_scaledLayer);
     }
 
-    private function initOrbits():void {
-        //init all orbits
+    private function init_all_orbits():void {
         _all_orbits = new <OrbitView>[];
-        for (i = 0; i < _planets.length; i++) {
+        for (var i:int = 0; i < Consts.planets_names.length; i++) {
             var r:Number = Consts.planets_orbits[i];
             var r1:Number = i == 0 ? 0 : Consts.planets_orbits[i - 1];
             var cnt:Number = Consts.orbits_between[i];
@@ -79,7 +81,9 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
                 _scaledLayer.addChild(ov);
             }
         }
+    }
 
+    private function initOrbits():void {
         var i:int = 0;
         for each (var v2d:Vector2D in _planets) {
             var orbit:Orbit = Orbit.createOrbitByInitial(v2d);
@@ -114,6 +118,10 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
             return;
         _scale_level = value;
 
+        updateScaleLevel();
+    }
+
+    private function updateScaleLevel():void {
         var m:Matrix = new Matrix();
         var s:Number = Math.pow(ONE_SCALE_FACTOR, _scale_level);
         trace('s', s);
@@ -162,6 +170,7 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
             }
         }
 
+        updateScaleLevel();
         updateTime();
     }
 }

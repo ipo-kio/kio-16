@@ -69,5 +69,15 @@ public class Consts {
             8,
             9
     ];
+    public static const planets_phis:Vector.<Number> = new <Number>[
+            0,
+            -60,
+            -90,
+            -80,
+            -45,
+            -80,
+            -10,
+            15
+    ];
 }
 }

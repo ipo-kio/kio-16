@@ -116,9 +116,6 @@ public class BodyView extends Sprite {
 
         for each (var orbit:OrbitView in PlanetsSystem(_ss).all_orbits) {
             var t:Number = orbit.o.a * orbit.scale;
-            var theta:Number = Math.atan2(-y, x);
-
-            theta = Math.round(theta / Math.PI * 180) * Math.PI / 180;
 
             var dist_to_cursor:Number = Math.abs(d - t);
             if (dist_to_cursor < minDistance) {
@@ -128,6 +125,9 @@ public class BodyView extends Sprite {
         }
 
         if (optOrbit != null) {
+            var theta:Number = Math.atan2(-y, x);
+            theta = Math.round(theta / Math.PI * 180) * Math.PI / 180;
+            trace('theta', Math.round(theta / Math.PI * 180));
             var newOrbit:Orbit = Orbit.createOrbitByInitial(Vector2D.createPolar(optOrbit.o.a, theta));
             PlanetsSystem(_ss).setOrbitForBody(this, newOrbit);
         }

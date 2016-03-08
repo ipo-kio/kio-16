@@ -209,6 +209,10 @@ public class Orbit {
         return _c;
     }
 
+    public function get circleTime():int {
+        return 2 * Math.PI * a * Math.sqrt(a / Consts.MU);
+    }
+
     public static function createOrbitByInitial(vec:Vector2D):Orbit {
         var orbitSpeed:Number = Math.sqrt(Consts.MU / vec.r);
         var speed:Vector2D = Vector2D.createPolar(orbitSpeed, vec.theta - Math.PI / 2);

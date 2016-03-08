@@ -4,16 +4,17 @@ import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
+import flash.geom.Matrix;
 
 import ru.ipo.kio._16.mars.model.Consts;
 import ru.ipo.kio._16.mars.model.MarsResult;
+import ru.ipo.kio._16.mars.model.Orbit;
 
 import ru.ipo.kio._16.mars.model.ShipHistory;
 import ru.ipo.kio._16.mars.model.Vector2D;
 import ru.ipo.kio._16.mars.view.PlanetsSystem;
 
 import ru.ipo.kio._16.mars.view.SolarSystem;
-import ru.ipo.kio._16.mars.view.VectorView;
 import ru.ipo.kio.api.KioApi;
 import ru.ipo.kio.api.KioProblem;
 import ru.ipo.kio.api.controls.GraphicsButton;
@@ -58,12 +59,11 @@ public class PlanetsWorkspace extends Sprite {
     private var bZoomIn_dis:GraphicsButton = new GraphicsButton('', ADD_BUTTON_D_IMG, ADD_BUTTON_D_IMG, ADD_BUTTON_D_IMG, '', 10, 10);
     private var bZoomOut_dis:GraphicsButton = new GraphicsButton('', REMOVE_BUTTON_D_IMG, REMOVE_BUTTON_D_IMG, REMOVE_BUTTON_D_IMG, '', 10, 10);
 
-    private var speedView:VectorView;
-    private var setSpeedView:VectorView;
-
     private var _current_info:InfoPanel;
     private var _closest_info:InfoPanel;
     private var _closest_record:InfoPanel;
+
+    private var planetInfos:Vector.<InfoPanel>;
 
     public function PlanetsWorkspace(problem:KioProblem) {
 //        trace(Orbit.solveKeplerEquation(2.8453268117053505, 0.5084113241345426)); //newtown fails here
@@ -77,34 +77,19 @@ public class PlanetsWorkspace extends Sprite {
 
         addChild(background);
 
-        setSpeedView = new VectorView(360, 100, 5000, 80, 0xFFFFFF, false, 0, 0xFFFFFF);
-        speedView = new VectorView(180, 40, 50000, 80, 0xFFFF00, true, 2, 0xFFFF00);
-        addChild(setSpeedView);
-        addChild(speedView);
-        setSpeedView.x = 680;
-        setSpeedView.y = 140;
-        speedView.x = 680;
-        speedView.y = 140;
-
-        speedView.editable = false;
-        speedView.mouseEnabled = false;
-        speedView.mouseChildren = false;
-
-        setSpeedView.visible = false;
-
         var history:ShipHistory = new ShipHistory(Vector2D.create(Consts.EARTH_R, 0), Vector2D.create(0, Consts.EARTH_Vt), SolarSystem.marsOrbit);
 //        history.push(new ShipAction(60, Vector2D.create(0, Consts.EARTH_Vt / 20)));
 //        history.push(new ShipAction(120, Vector2D.create(0, Consts.EARTH_Vt / 20)));
 //        history.push(new ShipAction(180, Vector2D.create(0, Consts.EARTH_Vt / 20)));
 
         var au:Number = 148e6;
-        var _planets:Vector.<Vector2D> = new <Vector2D>[];
+//        var _planets:Vector.<Vector2D> = new <Vector2D>[];
+//
+//        for (var i:int = 0; i < Consts.planets_names.length; i++) {
+//            _planets.push(Vector2D.createPolar(Consts.AU * Consts.planets_orbits[i], 0));
+//        }
 
-        for (var i:int = 0; i < Consts.planets_names.length; i++) {
-            _planets.push(Vector2D.createPolar(Consts.AU * Consts.planets_orbits[i], 0));
-        }
-
-        ss = new PlanetsSystem(this, setSpeedView, _planets);
+        ss = new PlanetsSystem(this);
         addChild(ss);
         ss.x = 290;
         ss.y = 300;
@@ -123,6 +108,43 @@ public class PlanetsWorkspace extends Sprite {
         init_info();
 
         _api.addEventListener(KioApi.RECORD_EVENT, api_recordHandler);
+
+        init_planets_info();
+    }
+
+    private function init_planets_info():void {
+        planetInfos = new <InfoPanel>[];
+        for (var i:int = 0; i < Consts.planets_names.length; i++) {
+            var realOrbit:Orbit = Orbit.createOrbitByInitial(Vector2D.createPolar(
+                    Consts.planets_orbits[i], Math.PI / 180 * Consts.planets_phis[i]
+            ));
+            var daysRotate:int = Math.round(realOrbit.circleTime / 60 / 60 / 24);
+            var ip:InfoPanel = new InfoPanel(
+                    'KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, Consts.planets_names[i],
+                    [
+                            'Год (' + daysRotate + ')',
+                            'Позиция'
+                    ],
+                    190
+            );
+            addChild(ip);
+
+            var dh:Number = 24;
+
+            ip.x = 580 + dh;
+            ip.y = 10 + (ip.height + 2) * i;
+
+            var m:Matrix = new Matrix();
+
+            var w:int = Consts.planet_view[i].width;
+            var h:int = Consts.planet_view[i].height;
+
+            m.translate(ip.x - dh + (dh - w) / 2, ip.y + (ip.height - h) / 2);
+            background.graphics.beginBitmapFill(Consts.planet_view[i], m);
+
+            background.graphics.drawRect(ip.x - dh + (dh - w) / 2, ip.y + (ip.height - h) / 2, w, h);
+            background.graphics.endFill();
+        }
     }
 
     private function init_zoom_in_and_out_buttons():void {
