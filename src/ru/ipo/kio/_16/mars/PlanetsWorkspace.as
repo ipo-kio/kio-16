@@ -125,9 +125,10 @@ public class PlanetsWorkspace extends Sprite {
                             'Год (' + daysRotate + ')',
                             'Позиция'
                     ],
-                    190
+                    160
             );
             addChild(ip);
+            planetInfos.push(ip);
 
             var dh:Number = 24;
 
@@ -195,13 +196,13 @@ public class PlanetsWorkspace extends Sprite {
                 "Топл."
         ];
 
-        _current_info = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Текущие', labels, 190);
-        _closest_info = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Максимальное сближение', labels, 190);
-        _closest_record = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Рекорд', labels, 190);
+        _current_info = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Текущие', labels, 160);
+        _closest_info = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Максимальное сближение', labels, 160);
+        _closest_record = new InfoPanel('KioArial', true, 14, 0xFFFFFF, 0xFFFFFF, 0xFFFF00, 1.2, 'Рекорд', labels, 160);
 
-        addChild(_current_info);
-        addChild(_closest_info);
-        addChild(_closest_record);
+//        addChild(_current_info);
+//        addChild(_closest_info);
+//        addChild(_closest_record);
 
         _current_info.x = 580;
         _closest_info.x = _current_info.x;
@@ -253,6 +254,20 @@ public class PlanetsWorkspace extends Sprite {
     private function bZoomOut_clickHandler(event:MouseEvent):void {
         ss.scale_level += 1;
         update_zoom_in_and_out_buttons_state();
+    }
+
+    public function updatePlanetsInfo():void {
+        for (var i:int = 0; i < Consts.planets_names.length; i++) {
+            var realOrbit:Orbit = Orbit.createOrbitByInitial(Vector2D.createPolar(
+                    Consts.planets_orbits[i], Math.PI / 180 * Consts.planets_phis[i]
+            ));
+            var daysRotate:int = Math.round(realOrbit.circleTime / 60 / 60 / 24);
+
+            var diff:int = Math.round(ss.orbits[i].theta0 / Math.PI * 180) - Math.round(Math.PI / 180 * Consts.planets_phis[i]);
+
+            planetInfos[i].setValue(0, daysRotate);
+            planetInfos[i].setValue(1, diff);
+        }
     }
 }
 }

@@ -172,6 +172,11 @@ public class PlanetsSystem extends Sprite implements SpaceSystem {
 
         updateScaleLevel();
         updateTime();
+        _workspace.updatePlanetsInfo();
+    }
+
+    public function get orbits():Vector.<Orbit> {
+        return _orbits;
     }
 }
 }
