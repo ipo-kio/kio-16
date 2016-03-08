@@ -26,7 +26,7 @@ public class MarsProblem implements KioProblem {
 
         KioApi.registerLocalization(ID, KioApi.L_RU, new Settings(LOCALIZATION_RU).data);
 
-        workspace = /*level < 2 ? new PlanetsWorkspace(this) : */new MarsWorkspace(this);
+        workspace = level < 2 ? new PlanetsWorkspace(this) : new MarsWorkspace(this);
     }
 
     public function get id():String {

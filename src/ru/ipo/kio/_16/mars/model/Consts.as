@@ -1,4 +1,8 @@
 package ru.ipo.kio._16.mars.model {
+import flash.display.BitmapData;
+
+import ru.ipo.kio._16.mars.view.BodyView;
+
 public class Consts {
 
     public static const _EPS:Number = 1e-10;
@@ -22,6 +26,48 @@ public class Consts {
     public static const MAX_TIME:int = 2000; //5 * 365; //5 years in days
 
     public static const MAX_DIST:Number = 982000000; //Hill Sphere
-    public static const MAX_SPEED:Number = 12420; //43610; //Max orbit
+    public static const MAX_SPEED:Number = 3450; //43610; //Max orbit
+
+    public static const AU:Number = 149597870700;
+    public static const planets_orbits:Vector.<Number> = new <Number>[ //http://lnfm1.sai.msu.ru/neb/rw/natsat/plaorbw.htm
+        0.3870983098,
+        0.7233298200,
+        1.0000010178,
+        1.5236793419,
+        5.2026032092,
+        9.5549091915,
+        19.2184460618,
+        30.1103868694
+    ];
+    public static const planets_names:Vector.<String> = new <String>[
+        "Меркурий",
+        "Венера",
+        "Земля",
+        "Марс",
+        "Юпитер",
+        "Сатурн",
+        "Уран",
+        "Нептун"
+    ];
+    public static const planet_view:Vector.<BitmapData> = new <BitmapData>[
+        BodyView.MERCURY_BMP,
+        BodyView.VENERA_BMP,
+        BodyView.EARTH_BMP,
+        BodyView.MARS_BMP,
+        BodyView.JUPITER_BMP,
+        BodyView.SATURN_BMP,
+        BodyView.URAN_BMP,
+        BodyView.NEPTUN_BMP
+    ];
+    public static const orbits_between:Vector.<int> = new <int>[
+            3,
+            2,
+            3,
+            4,
+            6,
+            7,
+            8,
+            9
+    ];
 }
 }

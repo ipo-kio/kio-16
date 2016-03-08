@@ -208,5 +208,11 @@ public class Orbit {
     public function get c():Number {
         return _c;
     }
+
+    public static function createOrbitByInitial(vec:Vector2D):Orbit {
+        var orbitSpeed:Number = Math.sqrt(Consts.MU / vec.r);
+        var speed:Vector2D = Vector2D.createPolar(orbitSpeed, vec.theta - Math.PI / 2);
+        return Orbit.solveInitial(vec.x, vec.y, speed.x, speed.y, 0);
+    }
 }
 }

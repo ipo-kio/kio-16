@@ -73,7 +73,6 @@ public class SolarSystem extends Sprite implements SpaceSystem {
         _scaledLayer.addChild(sun);
 
         _timeInd = 0;
-        updateTime();
 
         _speedView.addEventListener(VectorView.VALUE_CHANGED, speedView_vector_view_value_changedHandler);
 

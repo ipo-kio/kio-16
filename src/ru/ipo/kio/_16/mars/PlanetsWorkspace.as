@@ -9,7 +9,6 @@ import ru.ipo.kio._16.mars.model.Consts;
 import ru.ipo.kio._16.mars.model.MarsResult;
 
 import ru.ipo.kio._16.mars.model.ShipHistory;
-import ru.ipo.kio._16.mars.model.ShipAction;
 import ru.ipo.kio._16.mars.model.Vector2D;
 import ru.ipo.kio._16.mars.view.PlanetsSystem;
 
@@ -54,10 +53,10 @@ public class PlanetsWorkspace extends Sprite {
     private var ss:PlanetsSystem;
     private var timeSlider:Slider;
 
-    private var bAdd:GraphicsButton = new GraphicsButton('', ADD_BUTTON_IMG, ADD_BUTTON_O_IMG, ADD_BUTTON_O_IMG, '', 10, 10);
-    private var bRemove:GraphicsButton = new GraphicsButton('', REMOVE_BUTTON_IMG, REMOVE_BUTTON_O_IMG, REMOVE_BUTTON_O_IMG, '', 10, 10);
-    private var bAdd_dis:GraphicsButton = new GraphicsButton('', ADD_BUTTON_D_IMG, ADD_BUTTON_D_IMG, ADD_BUTTON_D_IMG, '', 10, 10);
-    private var bRemove_dis:GraphicsButton = new GraphicsButton('', REMOVE_BUTTON_D_IMG, REMOVE_BUTTON_D_IMG, REMOVE_BUTTON_D_IMG, '', 10, 10);
+    private var bZoomIn:GraphicsButton = new GraphicsButton('', ADD_BUTTON_IMG, ADD_BUTTON_O_IMG, ADD_BUTTON_O_IMG, '', 10, 10);
+    private var bZoomOut:GraphicsButton = new GraphicsButton('', REMOVE_BUTTON_IMG, REMOVE_BUTTON_O_IMG, REMOVE_BUTTON_O_IMG, '', 10, 10);
+    private var bZoomIn_dis:GraphicsButton = new GraphicsButton('', ADD_BUTTON_D_IMG, ADD_BUTTON_D_IMG, ADD_BUTTON_D_IMG, '', 10, 10);
+    private var bZoomOut_dis:GraphicsButton = new GraphicsButton('', REMOVE_BUTTON_D_IMG, REMOVE_BUTTON_D_IMG, REMOVE_BUTTON_D_IMG, '', 10, 10);
 
     private var speedView:VectorView;
     private var setSpeedView:VectorView;
@@ -77,15 +76,6 @@ public class PlanetsWorkspace extends Sprite {
         background.graphics.endFill();
 
         addChild(background);
-
-//        background.graphics.lineStyle(0);
-//        background.graphics.beginFill(0xFFFF00);
-//        background.graphics.drawCircle(300, 300, 280 / 1.524924921 / 100);
-//        background.graphics.endFill();
-
-//        background.graphics.lineStyle(1, 0xFF0000);
-//        background.graphics.drawCircle(300, 300, 280);
-//        background.graphics.drawCircle(300, 300, 280 / 1.524924921);
 
         setSpeedView = new VectorView(360, 100, 5000, 80, 0xFFFFFF, false, 0, 0xFFFFFF);
         speedView = new VectorView(180, 40, 50000, 80, 0xFFFF00, true, 2, 0xFFFF00);
@@ -107,6 +97,13 @@ public class PlanetsWorkspace extends Sprite {
 //        history.push(new ShipAction(120, Vector2D.create(0, Consts.EARTH_Vt / 20)));
 //        history.push(new ShipAction(180, Vector2D.create(0, Consts.EARTH_Vt / 20)));
 
+        var au:Number = 148e6;
+        var _planets:Vector.<Vector2D> = new <Vector2D>[];
+
+        for (var i:int = 0; i < Consts.planets_names.length; i++) {
+            _planets.push(Vector2D.createPolar(Consts.AU * Consts.planets_orbits[i], 0));
+        }
+
         ss = new PlanetsSystem(this, setSpeedView, _planets);
         addChild(ss);
         ss.x = 290;
@@ -119,31 +116,49 @@ public class PlanetsWorkspace extends Sprite {
         timeSlider.addEventListener(Slider.VALUE_CHANGED, slider_value_changedHandler);
         timeSlider.value_no_fire = 0;
 
-        //init add remove buttons
-        addChild(bAdd);
-        addChild(bRemove);
-        addChild(bAdd_dis);
-        addChild(bRemove_dis);
+        init_zoom_in_and_out_buttons();
 
-        bAdd.x = 500;
-        bAdd.y = 10;
-        bRemove.x = bAdd.x + 50;
-        bRemove.y = bAdd.y;
-
-        bAdd_dis.x = bAdd.x;
-        bRemove_dis.x = bRemove.x;
-        bAdd_dis.y = bAdd.y;
-        bRemove_dis.y = bRemove.y;
-
-        bAdd_dis.useHandCursor = false;
-        bRemove_dis.useHandCursor = false;
-
-        bAdd_dis.visible = false;
-        bRemove_dis.visible = false;
+        update_zoom_in_and_out_buttons_state();
 
         init_info();
 
         _api.addEventListener(KioApi.RECORD_EVENT, api_recordHandler);
+    }
+
+    private function init_zoom_in_and_out_buttons():void {
+        addChild(bZoomIn);
+        addChild(bZoomOut);
+        addChild(bZoomIn_dis);
+        addChild(bZoomOut_dis);
+
+        bZoomIn.x = 10;
+        bZoomIn.y = 10;
+        bZoomOut.x = bZoomIn.x;
+        bZoomOut.y = bZoomIn.y + bZoomIn.height + 4;
+
+        bZoomIn_dis.x = bZoomIn.x;
+        bZoomOut_dis.x = bZoomOut.x;
+        bZoomIn_dis.y = bZoomIn.y;
+        bZoomOut_dis.y = bZoomOut.y;
+
+        bZoomIn_dis.useHandCursor = false;
+        bZoomOut_dis.useHandCursor = false;
+
+        bZoomIn_dis.visible = false;
+        bZoomOut_dis.visible = false;
+
+        bZoomIn.addEventListener(MouseEvent.CLICK, bZoomIn_clickHandler);
+        bZoomOut.addEventListener(MouseEvent.CLICK, bZoomOut_clickHandler);
+    }
+
+    public function update_zoom_in_and_out_buttons_state():void {
+        var zoom_in_enabled:Boolean = ss.scale_level > 0;
+        var zoom_out_enabled:Boolean = ss.scale_level < PlanetsSystem.MAX_SCALE_LEVEL;
+
+        bZoomIn.visible = zoom_in_enabled;
+        bZoomIn_dis.visible = !zoom_in_enabled;
+        bZoomOut.visible = zoom_out_enabled;
+        bZoomOut_dis.visible = !zoom_out_enabled;
     }
 
     private function init_info():void {
@@ -206,6 +221,16 @@ public class PlanetsWorkspace extends Sprite {
 
     private function api_recordHandler(event:Event):void {
         //TODO
+    }
+
+    private function bZoomIn_clickHandler(event:MouseEvent):void {
+        ss.scale_level -= 1;
+        update_zoom_in_and_out_buttons_state();
+    }
+
+    private function bZoomOut_clickHandler(event:MouseEvent):void {
+        ss.scale_level += 1;
+        update_zoom_in_and_out_buttons_state();
     }
 }
 }
