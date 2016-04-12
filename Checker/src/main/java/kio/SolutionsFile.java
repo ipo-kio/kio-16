@@ -16,6 +16,7 @@ public class SolutionsFile {
     private KioProblemSet problemSet;
     private int level;
     private JsonNode root;
+    private int year;
 
     public SolutionsFile(File file, KioProblemSet problemSet) throws IOException {
         this.problemSet = problemSet;
@@ -32,6 +33,9 @@ public class SolutionsFile {
         if (!file.getName().contains("kio-" + realLevel))
             System.out.println("Real level of file " + file.getName() + " is " + realLevel);
         this.level = realLevel;
+
+        //TODO get year in normal way
+        this.year = root.get("mower") == null ? 2015 : 2016;
     }
 
     public Map<String, Attempt> getProblemsAttempts() {
@@ -123,5 +127,9 @@ public class SolutionsFile {
 
     public int getLevel() {
         return level;
+    }
+
+    public int getYear() {
+        return year;
     }
 }

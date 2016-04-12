@@ -250,5 +250,9 @@ public class RockGardenWorkspace extends Sprite {
     public function get empty_solution():Object {
         return _empty_solution;
     }
+    
+    public function get result():Object {
+        return gardenView.result;
+    }
 }
 }

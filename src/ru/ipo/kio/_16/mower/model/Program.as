@@ -118,6 +118,9 @@ public class Program {
         if (!c || !s)
             return;
 
+        if (c.length != states_num)
+            return;
+
         for (var state:int = 0; state < _states_num; state++)
             for (var i:int = 1; i < _size; i++)
                 for (var j:int = 1; j < _size; j++) {

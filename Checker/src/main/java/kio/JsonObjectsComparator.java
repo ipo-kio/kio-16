@@ -51,6 +51,17 @@ public class JsonObjectsComparator implements Comparator<JsonNode> {
                 case 'd':
                     double d1 = f1.asDouble();
                     double d2 = f2.asDouble();
+
+                    if (param.isHasBound()) {
+                        if (dir > 0) {
+                            d1 = Math.min(d1, param.getBound());
+                            d2 = Math.min(d2, param.getBound());
+                        } else {
+                            d1 = Math.max(d1, param.getBound());
+                            d2 = Math.max(d2, param.getBound());
+                        }
+                    }
+
                     cmp = d1 > d2 ? 1 : (d1 < d2 ? -1 : 0);
                     break;
             }

@@ -26,14 +26,14 @@ public class KioExternalProblemChecker extends KioProblemChecker {
 
     @Override
     protected void run(JsonNode solution) {
+        saveForExternalCheck(solution, false);
+
         if (solution2result == null)
             return;
 
         JsonNode result = solution2result.get(solution);
         if (result == null)
             return;
-
-        saveForExternalCheck(solution, false);
 
         Iterator<Map.Entry<String, JsonNode>> fields = result.fields();
         while (fields.hasNext()) {

@@ -329,6 +329,10 @@ public class MarsWorkspace extends Sprite {
         update_info(_closest_info, r);
     }
 
+    public function get result():Object {
+        return ss.history.bestMarsResult.as_object;
+    }
+
     public function get solution():Object {
         return ss.history.as_object;
     }

@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 // 2015 "/home/ilya/programming/kio-15/Checker/solutions" "/home/ilya/programming/kio-15/Checker/res.ods"
-public class Checker {
+public class Checker2015 {
 
     public static Map<String, List<Integer>> login2levels = new HashMap<>();
 

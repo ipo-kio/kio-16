@@ -1,8 +1,8 @@
 package kio;
 
 import kio._2015.KioProblemsSet2015;
+import kio._2016.KioProblemsSet2016;
 import kio.checker.KioProblemChecker;
-import org.apache.commons.collections.map.HashedMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,10 +14,11 @@ public abstract class KioProblemSet {
     public static final int CHECK_LOGS_AND_PROBLEMS = 0; // do real check of problems results and logs results
     public static final int CHECK_PROBLEMS = 1; // check only problem results
 
-    public static Map<Integer, KioProblemSet> instances = new HashMap<>();
+    private static Map<Integer, KioProblemSet> instances = new HashMap<>();
 
     static {
         instances.put(2015, new KioProblemsSet2015());
+        instances.put(2016, new KioProblemsSet2016());
     }
 
     public static KioProblemSet getInstance(int year) {

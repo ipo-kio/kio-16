@@ -41,6 +41,7 @@ public class Attempt implements Comparable<Attempt> {
             return 1;
 
         JsonObjectsComparator comparator = problemSet.getComparator(level, problemId);
+
         return comparator.compare(result, a.result);
     }
 
