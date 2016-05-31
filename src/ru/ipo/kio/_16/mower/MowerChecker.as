@@ -1,5 +1,6 @@
 package ru.ipo.kio._16.mower {
-import ru.ipo.kio._16.mower.MowerWorkspace;
+import com.adobe.serialization.json.JSON_k;
+
 import ru.ipo.kio._16.mower.model.Field;
 import ru.ipo.kio._16.mower.model.Mower;
 import ru.ipo.kio._16.mower.model.Program;
@@ -19,10 +20,14 @@ public class MowerChecker implements ExternalProblemChecker {
     public function MowerChecker(level:int) {
         _program = new Program(_initial_mowers.length >= 2, level + 1);
         _field = new Field(18, 22, MowerWorkspace.INITIAL_FIELD_CELLS);
+
+        for each (var mower:Mower in _initial_mowers)
+            _field.setAt(mower.i, mower.j, Field.FIELD_GRASS_MOWED);
     }
 
     public function set solution(solution:Object):void {
         _program.as_object = solution;
+        trace('this is the solution to test: ', JSON_k.encode(solution));
         var initial_state:State = new State(_field, _initial_mowers);
         _program_trace = new ProgramTrace(_program, initial_state);
         _program_trace.run();

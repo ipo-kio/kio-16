@@ -277,7 +277,7 @@ public class GardenView extends Sprite {
 
         var visible_circles_cnt:int = visible_circles.length;
         return new SegmentInfo(
-                visible_circles_cnt + "",
+                visible_circles_cnt + "", //long text is not really used
                 "Видно кругов: " + visible_circles_cnt + ", спрятанные круги: " + hidden_circles.toString()
         );
 //        return new SegmentInfo(visible_circles + "", visible_circles + "");
@@ -337,19 +337,19 @@ public class GardenView extends Sprite {
         updateSideView(area);
     }
 
-    private static function nRocks(n:int):String {
+    private function nRocks(n:int):String {
         if (n == 1)
-            return "1 камень";
+            return "1 " + _api.localization.rock.one;
         if (n == 2 || n == 3 || n == 4)
-            return n + " камня";
-        return n + " камней";
+            return n + " " +  _api.localization.rock.two_three_four;
+        return n + " " + _api.localization.rock.more;
     }
 
     private function updateSideView(area:ViewArea):void {
         _sideView.location = area.point;
         var vis:Vector.<int> = area.visibleCircles;
 //        var text:String = (area.viewName != "" ? area.viewName + ", видно " : "Видно ") + nRocks(vis.length) + ": " + vis.join(" ");
-        var text:String = "Видно " + nRocks(vis.length) + "|" + vis.join(" ");
+        var text:String = _api.localization.its_visible + " " + nRocks(vis.length) + "|" + vis.join(" ");
         _sideView.text = text;
 
         //update green circle

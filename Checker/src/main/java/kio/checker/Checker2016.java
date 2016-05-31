@@ -95,6 +95,8 @@ public class Checker2016 {
             sortAllUsers(level, KioProblemSet.getInstance(year));
             outputFinalTable(level);
 
+            System.out.println("LEVEL " + level + " PARTICIPANTS: " + results.size());
+
 //            try {
 //                new Generator("kio-th.csv").run("th-certificates/certificates-" + level + ".pdf", results.values().stream().collect(Collectors.toList()));
 //            } catch (Exception e) {

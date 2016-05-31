@@ -35,7 +35,14 @@ public class SolutionsFile {
         this.level = realLevel;
 
         //TODO get year in normal way
-        this.year = root.get("mower") == null ? 2015 : 2016;
+        int wrongYearDetection = root.get("mower") == null ? 2015 : 2016;
+        int correctYearDetection =
+                root.get("mower") != null ||
+                root.get("rockgarden") != null ||
+                root.get("mars") != null ? 2016 : 2015;
+        if (wrongYearDetection != correctYearDetection)
+            System.out.println("Wrongly detected year previously");
+        this.year = correctYearDetection;
     }
 
     public Map<String, Attempt> getProblemsAttempts() {

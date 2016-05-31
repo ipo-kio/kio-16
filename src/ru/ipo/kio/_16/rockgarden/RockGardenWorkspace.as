@@ -152,9 +152,9 @@ public class RockGardenWorkspace extends Sprite {
     private function initInfos():void {
         if (_problem.level == 0 || _problem.level == 1) {
             var labels:Array = [
-                _problem.level == 0 ? "Площадок с четырьмя камнями" : "Площадок с пятью камнями",
-                "Различных площадок",
-                "Размер камней"
+                _problem.level == 0 ? _api.localization.params.areas_with_four_rocks : _api.localization.params.areas_with_five_rocks,
+                _api.localization.params.different_areas,
+                _api.localization.params.rocks_size
             ];
         } else
                 /*
@@ -164,12 +164,12 @@ public class RockGardenWorkspace extends Sprite {
             ];
             */
             labels = [
-                "Пар невидимых",
-                "Равномерность"
+                _api.localization.params.invisible_pairs,
+                _api.localization.params.uniformity
             ];
 
-        _info = new InfoPanel('KioArial', true, 16, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 1.1, "Результат", labels, 256);
-        _record = new InfoPanel('KioArial', true, 16, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 1.1, "Рекорд", labels, 256);
+        _info = new InfoPanel('KioArial', true, 16, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 1.1, _api.localization.result, labels, 256);
+        _record = new InfoPanel('KioArial', true, 16, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 1.1, _api.localization.record, labels, 256);
 
         addChild(_info);
         addChild(_record);
