@@ -139,9 +139,9 @@ public class MowerWorkspace extends Sprite {
     }
 
     private function initInfo():void {
-        var titles:Array = ["Скошено", "Шагов"];
-        _info = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0x000000, 1.2, 'Результат', titles, 100);
-        _record = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0x000000, 1.2, 'Рекорд', titles, 100);
+        var titles:Array = [_api.localization.mowed, _api.localization.steps];
+        _info = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0x000000, 1.2, _api.localization.result, titles, 100);
+        _record = new InfoPanel('KioArial', true, 16, 0x000000, 0x000000, 0x000000, 1.2, _api.localization.record, titles, 100);
         addChild(_info);
         addChild(_record);
         var skip:int = 40;
